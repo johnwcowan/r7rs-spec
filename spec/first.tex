@@ -1,0 +1,100 @@
+% First page
+
+\thispagestyle{empty}
+
+% \todo{"another" report?}
+
+\topnewpage[{
+\begin{center}   {\huge\bf
+	Revised{\Huge$^{\mathbf{5}}$} Report on the Algorithmic Language \\
+			      \vskip 3pt
+				Scheme}
+
+\vskip 1ex
+$$
+\begin{tabular}{l@{\extracolsep{.5in}}lll}
+\multicolumn{4}{c}{R\authorsc{ICHARD} K\authorsc{ELSEY},
+ W\authorsc{ILLIAM} C\authorsc{LINGER, AND}
+ J\authorsc{ONATHAN} R\authorsc{EES}
+ ({\itshape Editors\/})} \\
+H. A\authorsc{BELSON}     &
+R. K. D\authorsc{YBVIG}   &
+C. T. H\authorsc{AYNES}   &
+G. J. R\authorsc{OZAS}    \\
+N. I. A\authorsc{DAMS IV} &
+D. P. F\authorsc{RIEDMAN} &
+E. K\authorsc{OHLBECKER}  &
+G. L. S\authorsc{TEELE} J\authorsc{R}. \\
+D. H. B\authorsc{ARTLEY}  &
+R. H\authorsc{ALSTEAD}    &
+D. O\authorsc{XLEY}	     &
+G. J. S\authorsc{USSMAN}  \\
+G. B\authorsc{ROOKS}	     &
+C. H\authorsc{ANSON}	     &
+K. M. P\authorsc{ITMAN}   &
+M. W\authorsc{AND}	     \\
+\end{tabular}
+$$
+\vskip 2ex
+% {\it Dedicated to the Memory of ALGOL 60}
+{\it Dedicated to the Memory of Robert Hieb} % [For the macros in R5RS -RK]
+\vskip 2.6ex
+\end{center}
+}]
+
+
+\chapter*{Summary}
+
+The report gives a defining description of the programming language
+Scheme.  Scheme is a statically scoped and properly tail-recursive
+dialect of the Lisp programming language invented by Guy Lewis
+Steele~Jr.\ and Gerald Jay~Sussman.  It was designed to have an
+exceptionally clear and simple semantics and few different ways to
+form expressions.  A wide variety of programming paradigms, including
+imperative, functional, and message passing styles, find convenient
+expression in Scheme.
+
+\vest The introduction offers a brief history of the language and of
+the report.
+
+\vest The first three chapters present the fundamental ideas of the
+language and describe the notational conventions used for describing the
+language and for writing programs in the language.
+
+\vest Chapters~\ref{expressionchapter} and~\ref{programchapter} describe
+the syntax and semantics of expressions, programs, and definitions.
+
+\vest Chapter~\ref{builtinchapter} describes Scheme's built-in
+procedures, which include all of the language's data manipulation and
+input/output primitives.
+
+\vest Chapter~\ref{formalchapter} provides a formal syntax for Scheme
+written in extended BNF, along with a formal denotational semantics.
+An example of the use of the language follows the formal syntax and
+semantics.
+
+\vest The report concludes with a list of references and an
+alphabetic index.
+
+\todo{expand the summary so that it fills up the column.}
+
+%\vfill
+%\begin{center}
+%{\large \bf
+%*** DRAFT*** \\
+%%August 31, 1989
+%\today
+%}\end{center}
+
+\vfill
+\eject
+
+\chapter*{Contents}
+\addvspace{3.5pt}                  % don't shrink this gap
+\renewcommand{\tocshrink}{-3.5pt}  % value determined experimentally
+{\footnotesize
+\tableofcontents
+}
+
+\vfill
+\eject

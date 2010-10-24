@@ -1,0 +1,201 @@
+\chapter{Program structure}
+\label{programchapter}
+
+\section{Programs}
+
+A Scheme program consists of a sequence of expressions, definitions,
+and syntax definitions.
+Expressions are described in chapter~\ref{expressionchapter};
+definitions and syntax definitions are the subject of the rest of the
+present chapter.
+
+Programs are typically stored in files or entered interactively to a
+running Scheme system, although other paradigms are possible;
+questions of user interface lie outside the scope of this report.
+(Indeed, Scheme would still be useful as a notation for expressing
+computational methods even in the absence of a mechanical
+implementation.)
+
+Definitions and syntax definitions occurring at the top level of a program
+can be interpreted
+declaratively.
+They cause bindings to be created in the top level
+environment or modify the value of existing top-level bindings.
+Expressions occurring at the top level of a program are
+interpreted imperatively; they are executed in order when the program is
+invoked or loaded, and typically perform some kind of initialization.
+
+At the top level of a program {\tt(begin \hyperi{form} \dotsfoo)} is
+equivalent to the sequence of expressions, definitions, and syntax definitions
+that form the body of the \ide{begin}.
+
+\todo{Cromarty, etc.: disclaimer about top level?}
+
+\section{Definitions}
+\label{defines}
+
+Definitions are valid in some, but not all, contexts where expressions
+are allowed.  They are valid only at the top level of a \hyper{program}
+and at the beginning of a \hyper{body}.
+\mainindex{definition}
+
+A definition should have one of the following forms:\mainschindex{define}
+
+\begin{itemize}
+
+\item{\tt(define \hyper{variable} \hyper{expression})}
+
+\item{\tt(define (\hyper{variable} \hyper{formals}) \hyper{body})}
+
+\hyper{Formals} should be either a
+sequence of zero or more variables, or a sequence of one or more
+variables followed by a space-delimited period and another variable (as
+in a lambda expression).  This form is equivalent to
+\begin{scheme}
+(define \hyper{variable}
+  (lambda (\hyper{formals}) \hyper{body}))\rm.%
+\end{scheme}
+
+\item{\tt(define (\hyper{variable} .\ \hyper{formal}) \hyper{body})}
+
+\hyper{Formal} should be a single
+variable.  This form is equivalent to
+\begin{scheme}
+(define \hyper{variable}
+  (lambda \hyper{formal} \hyper{body}))\rm.%
+\end{scheme}
+
+\end{itemize}
+
+\subsection{Top level definitions}
+
+At the top level of a program, a definition
+\begin{scheme}
+(define \hyper{variable} \hyper{expression})%
+\end{scheme}
+has essentially the same effect as the assignment expression
+\begin{scheme}
+(\ide{set!}\ \hyper{variable} \hyper{expression})%
+\end{scheme}
+if \hyper{variable} is bound.  If \hyper{variable} is not bound,
+however, then the definition will bind \hyper{variable} to a new
+location before performing the assignment, whereas it would be an error
+to perform a {\cf set!}\ on an unbound\index{unbound} variable.
+
+\begin{scheme}
+(define add3
+  (lambda (x) (+ x 3)))
+(add3 3)                            \ev  6
+(define first car)
+(first '(1 2))                      \ev  1%
+\end{scheme}
+
+Some implementations of Scheme use an initial environment in
+which all possible variables are bound to locations, most of
+which contain undefined values.  Top level definitions in
+such an implementation are truly equivalent to assignments.
+
+\todo{Rozas: equal time for opposition semantics?}
+
+
+\subsection{Internal definitions}
+\label{internaldefines}
+
+Definitions may occur at the
+beginning of a \hyper{body} (that is, the body of a \ide{lambda},
+\ide{let}, \ide{let*}, \ide{letrec}, \ide{let-syntax}, or \ide{letrec-syntax}
+expression or that of a definition of an appropriate form).
+Such definitions are known as {\em internal definitions} \mainindex{internal
+definition} as opposed to the top level definitions described above.
+The variable defined by an internal definition is local to the
+\hyper{body}.  That is, \hyper{variable} is bound rather than assigned,
+and the region of the binding is the entire \hyper{body}.  For example,
+
+\begin{scheme}
+(let ((x 5))
+  (define foo (lambda (y) (bar x y)))
+  (define bar (lambda (a b) (+ (* a b) a)))
+  (foo (+ x 3)))                \ev  45%
+\end{scheme}
+
+A \hyper{body} containing internal definitions can always be converted
+into a completely equivalent {\cf letrec} expression.  For example, the
+{\cf let} expression in the above example is equivalent to
+
+\begin{scheme}
+(let ((x 5))
+  (letrec ((foo (lambda (y) (bar x y)))
+           (bar (lambda (a b) (+ (* a b) a))))
+    (foo (+ x 3))))%
+\end{scheme}
+
+Just as for the equivalent {\cf letrec} expression, it must be
+possible to evaluate each \hyper{expression} of every internal
+definition in a \hyper{body} without assigning or referring to
+the value of any \hyper{variable} being defined.
+
+Wherever an internal definition may occur
+{\tt(begin \hyperi{definition} \dotsfoo)}
+is equivalent to the sequence of definitions
+that form the body of the \ide{begin}.
+
+\section{Syntax definitions}
+
+Syntax definitions are valid only at the top level of a \hyper{program}.
+\mainindex{syntax definition}
+They have the following form:\mainschindex{define-syntax}
+
+{\tt(define-syntax \hyper{keyword} \hyper{transformer spec})}
+
+\hyper{Keyword} is an identifier, and
+the \hyper{transformer spec} should be an instance of \ide{syntax-rules}.
+The top-level syntactic environment is extended by binding the
+\hyper{keyword} to the specified transformer.
+
+There is no {\cf define-syntax} analogue of internal definitions.
+
+%[Rationale flushed because it may or may not be true and isn't the
+% real rationale anyway. -RK]
+%\begin{rationale}
+%As discussed below, the syntax and scope rules for syntax definitions
+%can give rise to syntactic ambiguities when syntactic keywords are
+%shadowed.
+%Further ambiguities would arise if {\cf define-syntax}
+%were permitted at the beginning of a \meta{body}, with scope
+%rules analogous to those for internal definitions.
+%\end{rationale}
+
+% It is an error for a program to contain more than one top-level
+% \meta{definition} or \meta{syntax definition} of any identifier.
+%
+% [I flushed this because it isn't an error for a program to
+% contain more than one top-level definition of an identifier,
+% and I didn't want to introduce any gratuitous incompatibilities
+% with the existing Scheme language. -- Will]
+
+Although macros may expand into definitions and syntax definitions in
+any context that permits them, it is an error for a definition or syntax
+definition to shadow a syntactic keyword whose meaning is needed to
+determine whether some form in the group of forms that contains the
+shadowing definition is in fact a definition, or, for internal definitions,
+is needed to determine the boundary between the group and the expressions
+that follow the group.  For example, the following are errors:
+
+\begin{scheme}
+(define define 3)
+
+(begin (define begin list))
+
+(let-syntax
+  ((foo (syntax-rules ()
+          ((foo (proc args ...) body ...)
+           (define proc
+             (lambda (args ...)
+               body ...))))))
+  (let ((x 3))
+    (foo (plus x y) (+ x y))
+    (define foo x)
+    (plus foo x)))
+\end{scheme}
+
+
