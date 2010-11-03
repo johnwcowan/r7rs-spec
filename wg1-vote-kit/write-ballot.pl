@@ -31,13 +31,13 @@ my $proposal_depth;
 
 my %votes;
 my %rationales;
+my %options;
 
 ########################################################################
 # load user votes
 
-for my $file (glob("WG1Ballot[A-Z]*")) {
-  next if $file =~ /^WG1BallotResult/i or $file =~ /~$/i;
-  (my $user = $file) =~ s/^WG1Ballot//i;
+sub load_votes {
+  my ($user, $file) = @_;
   undef $ticket;
   open(IN, '<', $file);
   while (<IN>) {
@@ -53,7 +53,19 @@ for my $file (glob("WG1Ballot[A-Z]*")) {
       # handle a|b|... equal votes
       map {$_ = "($_)" if s/\|/ /g} @prefs;
       @prefs = grep /\S/, @prefs;
+      # handle foo/bar variations with no foo
+      foreach (@prefs) {
+        if (m{([^()|/]*)/([^()|/]*)}) {
+          my ($base, $variation) = ($1, $2);
+          if (exists $options{$base}
+              and not grep /\b\Q$base\E\b/, @prefs) {
+            warn "$file: vote for $base/$variation with no vote for $base";
+          }
+        }
+      }
       $votes{$ticket}{$user} = [@prefs] if @prefs;
+    } elsif (/^\s*\*\s*'*Options:\s*'*\s*([^']\S.*)/i) {
+      %options = map {$_ => 1} split(/\s*,\s*/, lc $1);
     } elsif (/^(\s*)\*\s*'*Proposals:\s*'*/i) {
       $in_proposals = 1;
       $proposal_depth = length($1);
@@ -77,6 +89,22 @@ for my $file (glob("WG1Ballot[A-Z]*")) {
     }
   }
   close(IN);
+}
+
+# load initial ballots
+for my $file (glob("WG1Ballot[A-Z]*")) {
+  next if $file =~ /~$/i;
+  (my $user = $file) =~ s/^WG1Ballot//i;
+  next if not $user or $user =~ /Result/;
+  load_votes($user, $file);
+}
+
+# load update ballots
+for my $file (glob("WG1ReBallot[A-Z]*")) {
+  next if $file =~ /~$/i;
+  (my $user = $file) =~ s/^WG1ReBallot//i;
+  next if not $user or $user =~ /Result/;
+  load_votes($user, $file);
 }
 
 ########################################################################
