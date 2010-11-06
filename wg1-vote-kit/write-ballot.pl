@@ -32,6 +32,7 @@ my $proposal_depth;
 my %votes;
 my %rationales;
 my %options;
+my %defaults;
 
 ########################################################################
 # load user votes
@@ -54,18 +55,20 @@ sub load_votes {
       map {$_ = "($_)" if s/\|/ /g} @prefs;
       @prefs = grep /\S/, @prefs;
       # handle foo/bar variations with no foo
+      my @prefs2;
       foreach (@prefs) {
+        push @prefs2, $_;
         if (m{([^()|/]*)/([^()|/]*)}) {
           my ($base, $variation) = ($1, $2);
-          if (exists $options{$base}
-              and not grep /\b\Q$base\E\b/, @prefs) {
-            warn "$file: vote for $base/$variation with no vote for $base";
+          if (exists $options{$ticket}{$base}
+              and not grep(/(^|,)\s*\Q$base\E\s*(,|$)/, (@prefs, @prefs2))) {
+            push @prefs2, $base;
           }
         }
       }
-      $votes{$ticket}{$user} = [@prefs] if @prefs;
+      $votes{$ticket}{$user} = [@prefs2] if @prefs2;
     } elsif (/^\s*\*\s*'*Options:\s*'*\s*([^']\S.*)/i) {
-      %options = map {$_ => 1} split(/\s*,\s*/, lc $1);
+      $options{$ticket}{$_}++ for split(/\s*,\s*/, lc $1);
     } elsif (/^(\s*)\*\s*'*Proposals:\s*'*/i) {
       $in_proposals = 1;
       $proposal_depth = length($1);
@@ -109,6 +112,15 @@ for my $file (glob("WG1ReBallot[A-Z]*")) {
 
 ########################################################################
 
+sub get_index {
+  my ($array, $elt) = @_;
+  my @array = @$array;
+  for (my $i=0; $i < $#array; $i++) {
+    return $i if $array[$i] eq $elt;
+  }
+  return -1;
+}
+
 sub get_voters {
   my $votes = shift;
   my @voters = grep {ref $votes->{$_} and @{$votes->{$_}}} sort keys %$votes;
@@ -117,7 +129,7 @@ sub get_voters {
 }
 
 sub get_result {
-  my $votes = shift;
+  my ($votes, $default) = @_;
   return "" unless %$votes;
   my $input = "(";
   for my $user (keys %$votes) {
@@ -127,12 +139,24 @@ sub get_result {
   my $result = `echo "$input" | ./ranked-pairs.scm`;
   #print "result: $result\n";
   (my $ratios = $result) =~ s/.*?\)\s*\(//;
-  $result =~ s/\)\s*\(.*//;
-  $result =~ s/[()]//g;
   my @ratios;
   push @ratios, "$1:$2"
     while ($ratios =~ /\((\d+)\s+(\d+)\)/g);
-  return "  * '''Results:''' ".join(", ", split(/\s+/, $result))."\n"
+  $result =~ s/\)\s*\(.*//;
+  $result =~ s/[()]//g;
+  my @results = split(/\s+/, $result);
+  my $default_index = defined $default ? get_index(\@results, $default) : -1;
+  if (($default_index > 0) and ($default_index <= $#results)
+      and ($ratios[$default_index-1] =~ /(\d+):(\d+)/)) {
+    if ($1 > $2) {
+      $results[0] = "'''$results[0]'''";
+    } else {
+      $results[$default_index] = "'''$results[$default_index]'''";
+    }
+  } elsif ($default_index == 0) {
+    $results[0] = "'''$results[0]'''";
+  }
+  return "  * '''Results:''' ".join(", ", @results)."\n"
     . "  * '''Ratios:''' ".join(", ", @ratios)."\n";
 }
 
@@ -153,7 +177,7 @@ while (<>) {
     my $votes = $votes{$ticket};
     if (ref $votes) {
       print "  * '''Voters:''' ".get_voters($votes)."\n";
-      print get_result($votes);
+      print get_result($votes, $defaults{$ticket});
       if (ref $rationales{$ticket}) {
         print "  * '''Rationales:'''\n\n";
         for my $user (sort keys %{$rationales{$ticket}}) {
@@ -163,6 +187,9 @@ while (<>) {
         }
       }
     }
+  } elsif (/^\s*\*\s*'*Default:\s*'*\s*(\S+)/i) {
+    print;
+    $defaults{$ticket} ||= lc $1;
   } else {
     print;
     $ticket = int($1) if /^=== #?(\d+) .*===\s*$/;
