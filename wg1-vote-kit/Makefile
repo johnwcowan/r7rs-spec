@@ -1,5 +1,5 @@
 
-.PHONY: all clean extract
+.PHONY: all clean
 
 all: WG1BallotResults
 
@@ -9,5 +9,7 @@ extract:
 clean:
 	rm -f *~ WG1Ballot* WG1ReBallot*
 
-WG1BallotResults: WG1Ballot
-	./write-ballot.pl $< > $@
+WG1Ballot: extract
+
+WG1BallotResults:
+	./write-ballot.pl WG1Ballot $< > $@
