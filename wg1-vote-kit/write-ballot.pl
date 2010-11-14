@@ -3,8 +3,15 @@
 use strict;
 use warnings;
 
+# Per-ticket aliases found on the fly.
 my %aliases;
-my %all_aliases =    (none => 'no');
+
+# Fixed aliases for English synonyms.
+my %all_aliases =    (neither => 'no',
+		      none => 'no');
+
+# Fixed aliases added as the options changed.  Mostly mapping a naive
+# 'yes' option to a sensible default as more options are added.
 my %ticket_aliases = (37 => {keep => 'yes'},
                       17 => {yes => 'srfi-23'},
                       6 => {r5rs => 'no',
@@ -37,6 +44,14 @@ my %defaults;
 ########################################################################
 # load user votes
 
+sub normalize_option {
+  my $option = lc shift;
+  return $aliases{$ticket}{$option}
+    || $ticket_aliases{$ticket}{$option}
+      || $all_aliases{$option}
+	|| $option;
+}
+
 sub load_votes {
   my ($user, $file) = @_;
   undef $ticket;
@@ -45,11 +60,7 @@ sub load_votes {
     $in_rationale = 0 if /^[-=]+/;
     if (/^\s*\*\s*'*Preferences:\s*'*\s*([^']\S.*)/i) {
       $in_rationale = 1;
-      my @prefs = map {$aliases{$_}
-                         || $all_aliases{$_}
-                           || $ticket_aliases{$ticket}{$_}
-                             || $_}
-        split(/\s*,\s*/, lc $1);
+      my @prefs = map {normalize_option($_)} split(/\s*,\s*/, lc $1);
       next if $#prefs == 0 and $prefs[0] =~ /\babstain\b/i;
       # handle a|b|... equal votes
       map {$_ = "($_)" if s/\|/ /g} @prefs;
@@ -75,14 +86,13 @@ sub load_votes {
     } elsif ($in_proposals
              and /^(\s*)\*\s*'*([-\w\d]+):\s*'*\s*([-\w\d]+)/) {
       if (length($1) > $proposal_depth) {
-        $aliases{lc $3} = lc $2;
+        $aliases{$ticket}{lc $3} = lc $2;
       } else {
         $in_proposals = 0;
       }
     } elsif (/^=== #?(\d+) .*===\s*$/) {
       $ticket = int($1);
       $in_proposals = 0;
-      %aliases = ();
       $votes{$ticket} = {} unless exists $votes{$ticket};
     } elsif ($ticket
              and $in_rationale
@@ -115,7 +125,7 @@ for my $file (glob("WG1ReBallot[A-Z]*")) {
 sub get_index {
   my ($array, $elt) = @_;
   my @array = @$array;
-  for (my $i=0; $i < $#array; $i++) {
+  for (my $i=0; $i <= $#array; $i++) {
     return $i if $array[$i] eq $elt;
   }
   return -1;
@@ -137,7 +147,6 @@ sub get_result {
   }
   $input .= ")";
   my $result = `echo "$input" | ./ranked-pairs.scm`;
-  #print "result: $result\n";
   (my $ratios = $result) =~ s/.*?\)\s*\(//;
   my @ratios;
   push @ratios, "$1:$2"
@@ -146,14 +155,31 @@ sub get_result {
   $result =~ s/[()]//g;
   my @results = split(/\s+/, $result);
   my $default_index = defined $default ? get_index(\@results, $default) : -1;
-  if (($default_index > 0) and ($default_index <= $#results)
-      and ($ratios[$default_index-1] =~ /(\d+):(\d+)/)) {
-    if ($1 > $2) {
-      $results[0] = "'''$results[0]'''";
-    } else {
+  # print STDERR "#$ticket  \nresults: ".join(", ", @results)."\n  ratios: ".
+  #   join(", ", @ratios)."\n  default: $default_index".
+  #   (($default_index>=0)?" => $results[$default_index]":"")."\n";
+  if (($default_index > 0) and ($ratios[$default_index-1] =~ /(\d+):(\d+)/)) {
+    if ($results[0] eq "undecided" or $results[0] eq "wg2") {
+      # for an undecided winner, choose the default
+      # print STDERR "  undecided/wg2 won\n";
+      $results[0] = "''$results[0]''";
       $results[$default_index] = "'''$results[$default_index]'''";
+    } elsif ($1*2 > scalar keys %$votes) {
+      # we have a majority of all voters over the default, bold the result
+      # print STDERR "  strong majority: $1*2 > ".scalar(keys %$votes)."\n";
+      $results[0] = "'''$results[0]'''";
+    } elsif ($1 > $2) {
+      # we won pairwise over the default, italicize the result
+      # print STDERR "  weak majority: $1 > $2\n";
+      $results[0] = "''$results[0]''";
+    } else {
+      # otherwise use italics for the default
+      # print STDERR "  use default\n";
+      $results[$default_index] = "''$results[$default_index]''";
     }
-  } elsif ($default_index == 0) {
+  } else {
+    # no default or the default won
+    # print STDERR "  ".(($default_index == 0)?"default won":"no default")."\n";
     $results[0] = "'''$results[0]'''";
   }
   return "  * '''Results:''' ".join(", ", @results)."\n"
@@ -189,7 +215,7 @@ while (<>) {
     }
   } elsif (/^\s*\*\s*'*Default:\s*'*\s*(\S+)/i) {
     print;
-    $defaults{$ticket} ||= lc $1;
+    $defaults{$ticket} ||= normalize_option($1);
   } else {
     print;
     $ticket = int($1) if /^=== #?(\d+) .*===\s*$/;
