@@ -9,7 +9,8 @@ extract:
 clean:
 	rm -f *~ WG1Ballot* WG1ReBallot*
 
-WG1Ballot: extract
+WG1Ballot:
+	curl -s "http://trac.sacrideo.us/wg/report/1?format=csv&sort=component&asc=1" | ./generate-ballot.scm > $@
 
 WG1BallotResults:
-	./write-ballot.pl WG1Ballot $< > $@
+	./write-ballot.pl WG1Ballot > $@
