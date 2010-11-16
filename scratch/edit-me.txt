@@ -2,3 +2,4 @@
 This is just for testing write permissions, feel free
 to sign your name or write anything here.
 
+This is Arthur's first test of updating a WG1 file using Mercurial.
