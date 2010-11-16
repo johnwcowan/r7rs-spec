@@ -8,4 +8,4 @@ Emmanuel updating test, Onward and Upward Schemers !
 
 Alaric also has an edit!
 
-John Cowan edited this file with `ex'.
+John Cowan edited this file twice with `ex'.
