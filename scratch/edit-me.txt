@@ -7,3 +7,5 @@ This is Arthur's first test of updating a WG1 file using Mercurial.
 Emmanuel updating test, Onward and Upward Schemers !
 
 Alaric also has an edit!
+
+John Cowan edited this file with `ex'.
