@@ -94,7 +94,7 @@ The formal syntax of Scheme is described in section~\ref{BNF}.
 \section{Notation and terminology}
 
 
-\subsection{Primitive, library, and optional features}
+\subsection{Primitive, module, and optional features}
 \label{qualifiers}
 
 It is required that every implementation of Scheme support all
@@ -110,6 +110,10 @@ as \defining{library}. These can be easily implemented in terms of the other,
 primitive, features.  They are redundant in the strict sense of
 the word, but they capture common patterns of usage, and are therefore
 provided as convenient abbreviations.
+
+In addition, some features or sections are marked as being provided by
+a specific \defining{module}.  A summary of all the standard modules
+and feature they provide is given in \ref{stdmodules}.
 
 \subsection{Error situations and unspecified behavior}
 
@@ -163,7 +167,7 @@ for required, primitive features, or
 \noindent\pproto{\var{template}}{\var{qualifier} \var{category}}\unpenalty
 
 where \var{qualifier} is either ``library'' or ``optional'' as defined
- in section~\ref{qualifiers}.
+ in section~\ref{qualifiers}, or
 
 If \var{category} is ``\exprtype'', the entry describes an expression
 type, and the template gives the syntax of the expression type.
