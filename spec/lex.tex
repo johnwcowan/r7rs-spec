@@ -85,19 +85,34 @@ otherwise insignificant.  Whitespace may occur between any two tokens,
 but not within a token.  Whitespace may also occur inside a string,
 where it is significant.
 
-A semicolon ({\tt;}) indicates the start of a
+The lexical syntax includes several comment forms. In all cases,
+comments are invisible to Scheme, except that they act as delimiters,
+so, for example, a comment cannot appear in the middle of an
+identifier or representation of a number object.
+
+A semicolon ({\tt;}) indicates the start of a line
 comment.\mainindex{comment}\mainschindex{;}  The comment continues to the
-end of the line on which the semicolon appears.  Comments are invisible
-to Scheme, but the end of the line is visible as whitespace.  This
-prevents a comment from appearing in the middle of an identifier or
-number.
+end of the line on which the semicolon appears.
+
+Another way to indicate a comment is to prefix a \hyper{datum}
+(cf.\ section~\ref{datumsyntax}) with {\tt \#;}\sharpindex{;}, possibly with
+\meta{interlexeme space} before the \hyper{datum}.  The comment consists of
+the comment prefix {\tt \#;} and the \hyper{datum} together.  This
+notation is useful for ``commenting out'' sections of code.
+
+Block comments may be indicated with properly nested {\tt
+  \#|}\index{#"|@\texttt{\sharpsign\verticalbar}}\index{"|#@\texttt{\verticalbar\sharpsign}}
+and {\tt |\#} pairs.
 
 \begin{scheme}
-;;; The FACT procedure computes the factorial
-;;; of a non-negative integer.
+\#|
+   The FACT procedure computes the factorial
+   of a non-negative integer.
+|\#
 (define fact
   (lambda (n)
     (if (= n 0)
+        \#;(= n 1)
         1        ;Base case: return 1
         (* n (fact (- n 1))))))%
 \end{scheme}

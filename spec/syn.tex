@@ -48,6 +48,13 @@ language: {\tt \verb"[" \verb"]" \verb"{" \verb"}" \verb"|"}
 \meta{whitespace} \: \meta{space or newline}
 \meta{comment} \: ; \= $\langle$\rm all subsequent characters up to a
 		    \>\ \rm line break$\rangle$\index{comment}
+\> \| \meta{nested comment}
+\> \| \#; \meta{whitespace} \meta{datum}
+\meta{nested comment} \: \#| \= \meta{comment text}
+\> \arbno{\meta{comment cont}} |\#
+\meta{comment text} \: \= $\langle$\rm character sequence not containing
+\>\ \rm {\tt \#|} or {\tt |\#}$\rangle$
+\meta{comment cont} \: \meta{nested comment} \meta{comment text}
 \meta{atmosphere} \: \meta{whitespace} \| \meta{comment}
 \meta{intertoken space} \: \arbno{\meta{atmosphere}}%
 \end{grammar}
