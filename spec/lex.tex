@@ -7,10 +7,10 @@ This section gives an informal account of some of the lexical
 conventions used in writing Scheme programs.  For a formal syntax of
 Scheme, see section~\ref{BNF}.
 
-\vest Upper and lower case forms of a letter are never distinguished
-except within character and string constants.  For example, {\cf Foo} is
-the same identifier as {\cf FOO}, and {\tt\#x1AB} is the same number as
-{\tt\#X1ab}.
+%% \vest Upper and lower case forms of a letter are never distinguished
+%% except within character and string constants.  For example, {\cf Foo} is
+%% the same identifier as {\cf FOO}, and {\tt\#x1AB} is the same number as
+%% {\tt\#X1ab}.
 
 \section{Identifiers}
 \label{syntaxsection}
@@ -64,8 +64,29 @@ See section~\ref{extendedalphas} for a formal syntax of identifiers.
 \item When an identifier appears as a literal or within a literal
 (see section~\ref{quote}), it is being used to denote a {\em symbol}
 (see section~\ref{symbolsection}).
-
 \end{itemize}
+
+In contrast with earlier revisions of the report~\cite{R5RS}, the
+syntax of data distinguishes upper and lower case in identifiers and in
+characters specified via their names.
+
+Implementors may wish to support case-insensitive syntax for backward
+compatibility or other reasons.
+If they do so, they should adopt the following optional directives
+to control case folding.
+
+\begin{entry}{%
+{\cf{}\#!fold-case}\sharpbangindex{fold-case}\\
+{\cf{}\#!no-fold-case}\sharpbangindex{no-fold-case}}
+
+These directives may appear anywhere comments may appear and are
+treated as comments, except that they affect the reading of subsequent
+lexemes.
+The {\cf{}\#!fold-case} causes the reader to case-fold
+each \meta{identifier} and \meta{character name}.
+The {\cf{}\#!no-fold-case} directive causes the reader to return
+to the default, non-folding behavior.
+\end{entry}
 
 %\label{keywordsection}
 %The following identifiers are syntactic keywords, and should not be used
