@@ -67,17 +67,23 @@ language: {\tt \verb"[" \verb"]" \verb"{" \verb"}" \verb"|"}
 
 \begin{grammar}%
 \meta{identifier} \: \meta{initial} \arbno{\meta{subsequent}}
+ \>  \| \meta{vertical bar} \arbno{\meta{symbol element}} \meta{vertical bar}
  \>  \| \meta{peculiar identifier}
 \meta{initial} \: \meta{letter} \| \meta{special initial}
+ \> \| \meta{inline hex escape}
 \meta{letter} \: a \| b \| c \| ... \| z
-
+\> \| A \| B \| C \| ... \| Z
 \meta{special initial} \: ! \| \$ \| \% \| \verb"&" \| * \| / \| : \| < \| =
  \>  \| > \| ? \| \verb"^" \| \verb"_" \| \verb"~"
 \meta{subsequent} \: \meta{initial} \| \meta{digit}
  \>  \| \meta{special subsequent}
 \meta{digit} \: 0 \| 1 \| 2 \| 3 \| 4 \| 5 \| 6 \| 7 \| 8 \| 9
+\meta{hex digit} \: \meta{digit}
+ \> \| a \| A \| b \| B \| c \| C \| d \| D \| e \| E \| f \| F
 \meta{explicit sign} \: + \| -
 \meta{special subsequent} \: \meta{explicit sign} \| . \| @
+\meta{inline hex escape} \: \backwhack{}x\meta{hex scalar value};
+\meta{hex scalar value} \: \atleastone{\meta{hex digit}}
 \meta{peculiar identifier} \: \meta{explicit sign}
  \> \| \meta{explicit sign} \meta{sign subsequent} \arbno{\meta{subsequent}}
  \> \| \meta{explicit sign} . \meta{dot subsequent} \arbno{\meta{subsequent}}
@@ -86,6 +92,7 @@ language: {\tt \verb"[" \verb"]" \verb"{" \verb"}" \verb"|"}
 \meta{non-digit} \: \meta{dot subsequent} \| \meta{explicit sign}
 \meta{dot subsequent} \: \meta{sign subsequent} \| .
 \meta{sign subsequent} \: \meta{initial} \| \meta{explicit sign} \| @
+\meta{symbol element} \: \meta{any character other than \meta{vertical bar} or \backwhack}
 \meta{syntactic keyword} \: \meta{expression keyword}\index{keyword}\index{syntactic keyword}
  \>  \| else \| => \| define 
  \>  \| unquote \| unquote-splicing
@@ -100,11 +107,14 @@ language: {\tt \verb"[" \verb"]" \verb"{" \verb"}" \verb"|"}
 \meta{boolean} \: \schtrue{} \| \schfalse{}
 \meta{character} \: \#\backwhack{} \meta{any character}
  \>  \| \#\backwhack{} \meta{character name}
-\meta{character name} \: space \| newline
+ \>  \| \#\backwhack{}x\meta{hex scalar value}
+\meta{character name} \: null \| alarm \| backspace \| tab
+\> \| newline \| return \| escape \| space \| delete
 \todo{Explain what happens in the ambiguous case.}
 \meta{string} \: " \arbno{\meta{string element}} "
 \meta{string element} \: \meta{any character other than \doublequote{} or \backwhack}
- \>  \| \backwhack\doublequote{} \| \backwhack\backwhack %
+ \> \| \backwhack{}a \| \backwhack{}b \| \backwhack{}t \| \backwhack{}n \| \backwhack{}r \| \backwhack\doublequote{} \| \backwhack\backwhack 
+ \>  \| \meta{inline hex escape}%
 \end{grammar}
 
 

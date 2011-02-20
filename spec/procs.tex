@@ -1919,7 +1919,8 @@ letters and digits.
 %encouraged to have a separate character data type, but may choose to
 %represent characters as integers, strings, or some other type.
 Characters are written using the notation \sharpsign\backwhack\hyper{character}
-or \sharpsign\backwhack\hyper{character name}.
+or \sharpsign\backwhack\hyper{character name} or
+\sharpsign\backwhack{}x\meta{hex scalar value}.
 For example:
 
 $$
@@ -1929,13 +1930,21 @@ $$
 {\tt \#\backwhack{}(}&; left parenthesis\\
 {\tt \#\backwhack{} }&; the space character\\
 {\tt \#\backwhack{}space}&; the preferred way to write a space\\
-{\tt \#\backwhack{}newline}&; the newline character\\
+{\tt \#\backwhack{}tab}&; the tab character, \textrm{U+0009}\\
+{\tt \#\backwhack{}newline}&; the linefeed character, \textrm{U+000A}\\
+{\tt \#\backwhack{}return}&; the return character, \textrm{U+000D}\\
+{\tt \#\backwhack{}null}&; the null character, \textrm{U+0000}\\
+{\tt \#\backwhack{}alarm}&; \textrm{U+0007}\\
+{\tt \#\backwhack{}backspace}&; \textrm{U+0008}\\
+{\tt \#\backwhack{}escape}&; \textrm{U+001B}\\
+{\tt \#\backwhack{}delete}&; \textrm{U+007F}\\
+{\tt \#\backwhack{}x03BB}&; $\lambda$ (if supported)\\
 \end{tabular}
 $$
 
-Case is significant in \sharpsign\backwhack\hyper{character}, but not in
-\sharpsign\backwhack{\rm$\langle$character name$\rangle$}.  % \hyper doesn't
-                                                            % allow a linebreak
+Case is significant in \sharpsign\backwhack\hyper{character}, and in
+\sharpsign\backwhack{\rm$\langle$character name$\rangle$},
+but not in {\cf\sharpsign\backwhack{}x}\meta{hex scalar value}.  
 If \hyper{character} in
 \sharpsign\backwhack\hyper{character} is alphabetic, then the character
 following \hyper{character} must be a delimiter character such as a
@@ -2091,16 +2100,24 @@ Strings are sequences of characters.
 %they are immutable; other implementations provide destructive procedures
 %such as {\cf string-set!}\ that alter string objects.
 \vest Strings are written as sequences of characters enclosed within doublequotes
-({\cf "}).  A doublequote can be written inside a string only by escaping
-it with a backslash (\backwhack{}), as in
+({\cf "}).  Within a string literal, various escape
+sequences\mainindex{escape sequence} represent characters other than
+themselves.  Escape sequences always start with a backslash (\backwhack{}):
 
-\begin{scheme}
-"The word \backwhack{}"recursion\backwhack{}" has many meanings."%
-\end{scheme}
+\begin{itemize}
+\item{\cf\backwhack{}a} : alarm, U+0007
+\item{\cf\backwhack{}b} : backspace, U+0008 
+\item{\cf\backwhack{}t} : character tabulation, U+0009 
+\item{\cf\backwhack{}n} : linefeed, U+000A 
+\item{\cf\backwhack{}r} : return, U+000D 
+\item{\cf\backwhack{}}\verb|"| : doublequote, U+0022 
+\item{\cf\backwhack{}\backwhack{}} : backslash, U+005C 
+\item{\cf\backwhack{}x\meta{hex scalar value};} : specified character (note the
+  terminating semi-colon).
+\end{itemize}
 
-A backslash can be written inside a string only by escaping it with another
-backslash.  Scheme does not specify the effect of a backslash within a
-string that is not followed by a doublequote or backslash.
+The result is unspecified if any other character in a string occurs
+after a backslash.
 
 \vest A string constant may continue from one line to the next, but
 the exact contents of such a string are unspecified.
@@ -2108,6 +2125,12 @@ the exact contents of such a string are unspecified.
 %usually a bad idea because 
 %the exact effect may vary from one computer
 %system to another.
+
+Example:
+
+\begin{scheme}
+"The word \backwhack{}"recursion\backwhack{}" has many meanings."%
+\end{scheme}
 
 \vest The {\em length} of a string is the number of characters that it
 contains.  This number is an exact, non-negative integer that is fixed when the

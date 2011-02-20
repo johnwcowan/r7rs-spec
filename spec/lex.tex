@@ -39,6 +39,20 @@ they were letters.  The following are extended alphabetic characters:
 !\ \$ \% \verb"&" * + - . / :\ < = > ? @ \verb"^" \verb"_" \verb"~" %
 \end{scheme}
 
+In addition, any character can be used within an identifier when
+specified via an \meta{inline hex escape}.  For example, the
+identifier \verb|H\x65;llo| is the same as the identifier
+\verb|Hello|, and in an implementation which has the appropriate
+Unicode character the identifier \verb|\x3BB;| is the same as the
+identifier $\lambda$.
+
+As a convenience, idenfitiers may also be written as a sequence of
+characters enclosed within vertical bars ({\cf $|$}), analogous to
+string literals.  Vertical bars and other characters can be included
+in the identifier with an \meta{inline hex escape}.  Thus the
+identifier \verb+|foo bar|+ is the same as the identifier
+\verb+foo\x20;bar+.
+
 See section~\ref{extendedalphas} for a formal syntax of identifiers.
 
 \vest Identifiers have two uses within Scheme programs:
