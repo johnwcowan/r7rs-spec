@@ -4,10 +4,12 @@
 \section{Programs}
 
 A Scheme program consists of a sequence of expressions, definitions,
-and syntax definitions.
+syntax definitions, and imports.  A collection of these same program
+parts may also be encapsulated in a module to be reused by multiple
+programs.
 Expressions are described in chapter~\ref{expressionchapter};
-definitions and syntax definitions are the subject of the rest of the
-present chapter.
+definitions, syntax definitions, imports, and modules are the subject of the
+rest of the present chapter.
 
 Programs are typically stored in files or entered interactively to a
 running Scheme system, although other paradigms are possible;
@@ -199,3 +201,216 @@ that follow the group.  For example, the following are errors:
 \end{scheme}
 
 
+\section{Modules}
+
+Modules provide a way to encapsulate programs and manage the top-level
+namespace.  This section defines the notation for modules and their
+semantics.
+
+\subsection{Module Syntax}
+
+A module definition takes the following form:
+
+\begin{scheme}
+(module \hyper{module name}
+  \hyper{module declaration} \dotsfoo)
+\end{scheme}
+
+\hyper{module name} is a list of identifiers or exact integers used to
+uniquely identify the module when importing from other programs or
+modules.
+
+A \hyper{module declaration} can be any of:
+
+\begin{itemize}
+
+\item{\tt(export \hyper{export spec} \dotsfoo)}
+
+\item{\tt(import \hyper{import set} \dotsfoo)}
+
+\item{\tt(begin \hyper{command or definition} \dotsfoo)}
+
+\item{\tt(include \hyper{$filename_1$} \hyper{$filename_2$} \dotsfoo)}
+
+\item{\tt(include-ci \hyper{$filename_1$} \hyper{$filename_2$} \dotsfoo)}
+
+\item{\tt(cond-expand \hyper{cond-expand clause} \dotsfoo)}
+
+\end{itemize}
+
+An \ide{export} declaration specifies a list of identifiers which
+may be made visible to other modules or programs.  An
+\hyper{export spec} must have one of the following forms:
+
+\begin{itemize}
+\item{\hyper{identifier}}
+\item{\tt{(rename \hyper{$identifier_1$} \hyper{$identifier_2$})}}
+\end{itemize}
+
+In an \hyper{export spec}, an \hyper{identifier} names a single
+binding defined within or imported into the library, where the
+external name for the export is the same as the name of the binding
+within the library. A rename spec exports the binding named by
+\hyper{$identifier_1$} in each
+{\tt(\hyper{$identifier_1$} \hyper{$identifier_2$})} pairing,
+using \hyper{$identifier_2$} as the external name.
+
+An \ide{import} declaration provides a way to import the identifiers
+exported by a module.  Each \hyper{import set} names a set of bindings
+from another module and possibly specifies local names for the
+imported bindings. It must be one of the following:
+
+\begin{itemize}
+\item {\tt\hyper{module name}}
+\item {\tt(only \hyper{import set} \hyper{identifier} \dotsfoo)}
+\item {\tt(except \hyper{import set} \hyper{identifier} \dotsfoo)}
+\item {\tt(prefix \hyper{import set} \hyper{identifier})}
+\item {\tt(rename \hyper{import set} (\hyper{$identifier_1$} \hyper{$identifier_2$}) \dotsfoo)}
+\end{itemize}
+
+In the first form, all of the identifiers in the named module's export
+clauses are imported with the same names (or the exported names if
+exported with a \ide{rename} form).  The additional \hyper{import set}
+forms modify this set as follows:
+
+\begin{itemize}
+
+\item An \ide{only} form produces a subset of the given
+  \hyper{import set}, including only the listed identifiers (after any
+  renaming).  It is an error if any of the listed identifiers are
+  not found in the original set.
+
+\item An \ide{except} form produces a subset of the given
+  \hyper{import set}, excluding the listed identifiers (after any
+  renaming). It is an error if any of the listed identifiers are not
+  found in the original set.
+
+\item A \ide{rename} form modifies the given \hyper{import set},
+  replacing each instance of \hyper{$identifier_1$} with
+  \hyper{$identifier_2$}. It is an error if any of the listed
+  \hyper{$identifier_1$}s are not found in the original set.
+
+\item A \ide{prefix} form automatically renames all identifiers in
+  the given \hyper{import set}, prefixing each with the specified
+  \hyper{identifier}.
+
+\end{itemize}
+
+\ide{import} declarations may also be made at the top-level of a
+program.  In a module declaration, the same identifier may not be
+imported more than once.
+
+The \ide{begin}, \ide{include}, and \ide{include-ci} declarations are
+used to specify the commands and definitions that make up the body of
+the module.  \ide{begin} takes a list of forms to be spliced
+literally, analagous to the top-level \ide{begin}.  \ide{include} and
+\ide{include-ci} both take one or more filenames, read all top-level
+forms from the files and include the results into the module body as
+though wrapped in a \ide{begin}.  \ide{include-ci} uses a case-folding
+reader when reading the forms from the file.
+
+The forms from all \ide{begin}, \ide{include}, and \ide{include-ci}
+declarations are expanded in the order in which they occur in the
+module declaration.
+
+The \ide{cond-expand} module declaration provides a way to statically
+select expand different module declarations depending on the platform
+or implementation under which the module is being resolved.  A
+\hyper{cond-expand clause} must be of the following form:
+
+{\tt(\hyper{feature requirement} \hyper{module declaration} \dotsfoo)}
+
+The last clause may be an ``else clause,'' which has the form
+
+{\tt(else \hyper{module declaration} \dotsfoo)}
+
+A \hyper{feature requirement} must be one of the following forms:
+
+\begin{itemize}
+\item {\tt\hyper{feature identifier}}
+\item {\tt(module \hyper{module name})}
+\item {\tt(and \hyper{feature requirement} \dotsfoo)}
+\item {\tt(or \hyper{feature requirement} \dotsfoo)}
+\item {\tt(not \hyper{feature requirement})}
+\end{itemize}
+
+Each implementation maintains a list of feature identifier which are
+present, as well as a list of modules which can be imported.  The
+value of a \hyper{feature requirement} can be determined by replacing
+each \hyper{feature identifier} and {\tt(module \hyper{module name})}
+on the implementation's list with \schtrue, and all other feature
+identifiers and module names with \schfalse, then evaluating the
+resulting expression as a Scheme boolean expression under the normal
+interpretation of \hyper{and}, \hyper{or} and \hyper{not}.
+
+A \ide{cond-expand} form is then expanded by evaluating the
+\hyper{feature requirement}s of successive \hyper{cond-expand clause}
+in order, until one of them returns \schtrue.  When a true clause is
+found, the corresponding \hyper{module declaration}s are spliced into
+the current module definition and the remaining clauses are ignored.
+If none of the \hyper{feature requirement}s evaluate to \schtrue, then
+if there is an \ide{else} clause its \hyper{module declaration}s are
+included, otherwise the \ide{cond-expand} has no effect.
+
+The exact features provided are implementation-defined, but for
+portability a set of recommended features is given in
+appendix~\ref{stdfeatures}.
+
+\subsection{Module Examples}
+
+\begin{scheme}
+
+(module (stack)
+  (export make push! pop! empty!)
+  (import (scheme))
+  (begin
+   (define (make) (list กว()))
+   (define (push! s v) (set-car! s (cons v (car s))))
+   (define (pop! s) (let ((v (caar s)))
+                      (set-car! s (cdar s))
+                      v))
+   (define (empty! s) (set-car! s กว()))))
+
+(module (balloons)
+  (export make push pop)
+  (import (scheme))
+  (begin
+   (define (make w h) (cons w h))
+   (define (push b amt)
+     (cons (- (car b) amt) (+ (cdr b) amt)))
+   (define (pop b) (display "Boom! ") 
+                   (display (* (car b) (cdr b))) 
+                   (newline))))
+
+(module (party)
+  ;; Total exports:
+  ;; make, push, push!, make-party, pop!
+  (export (rename (balloon:make make)
+                  (balloon:push push))
+          push!
+          make-party
+          (rename (party-pop! pop!)))
+  (import (scheme)
+          (only (stack) make push! pop!) ; not empty!
+          (prefix (balloons) balloon:))
+  (begin
+   ;; Creates a party as a stack of balloons,
+   ;; starting with two balloons
+   (define (make-party)
+     (let ((s (make))) ; from stack
+       (push! s (balloon:make 10 10))
+       (push! s (balloon:make 12 9))
+       s))
+   (define (party-pop! p)
+     (balloon:pop (pop! p)))))
+
+(module (main)
+  (export)
+  (import (scheme) (party))
+  (begin
+   (define p (make-party))
+   (pop! p)        ; displays "Boom! 108"
+   (push! p (push (make 5 5) 1))
+   (pop! p)))      ; displays "Boom! 24"
+
+\end{scheme}

@@ -329,6 +329,7 @@ un\-quo\-ta\-tion $D$} takes precedence.
 \meta{command or definition} \: \meta{command}
 \> \| \meta{definition}
 \> \| \meta{syntax definition}
+\> \| (import \atleastone{\meta{import set}})
 \> \| (begin \atleastone{\meta{command or definition}})
 \meta{definition} \: (define \meta{variable} \meta{expression})
 \>   \| (define (\meta{variable} \meta{def formals}) \meta{body})
@@ -337,4 +338,32 @@ un\-quo\-ta\-tion $D$} takes precedence.
 \>   \| \arbno{\meta{variable}} .\ \meta{variable}
 \meta{syntax definition} \:
 \>  (define-syntax \meta{keyword} \meta{transformer spec})
+\end{grammar}
+
+\subsection{Modules}
+
+\begin{grammar}%
+\meta{module} \: (module \meta{module name} \arbno{\meta{module declaration}})
+\meta{module name} \: (\atleastone{module name part})
+\meta{module name part} \: \meta{identifier} \| \meta{uinteger 10}
+\meta{module declaration} \: (export \arbno{\meta{export spec}})
+\> \| (import \arbno{\meta{import set}})
+\> \| (begin \arbno{\meta{command or definition}})
+\> \| (include \atleastone{\meta{string}})
+\> \| (include-ci \atleastone{\meta{string}})
+\> \| (cond-expand \arbno{\meta{cond-expand clause}})
+\> \| (cond-expand \arbno{\meta{cond-expand clause}} (else \arbno{\meta{module declaration}}))
+\meta{export spec} \: \meta{identifier}
+\> \| (rename \meta{identifier} \meta{identifier})
+\meta{import set} \: \meta{module name}
+\> \| (only \meta{import set} \atleastone{\meta{identifier}})
+\> \| (except \meta{import set} \atleastone{\meta{identifier}})
+\> \| (prefix \meta{import set} \meta{identifier})
+\> \| (rename \meta{import set} \atleastone{\meta{export spec}})
+\meta{cond-expand clause} \: (\meta{feature requirement} \arbno{\meta{module declaration}})
+\meta{feature requirement} \: \meta{identifier}
+\> \| \meta{module name}
+\> \| (and \arbno{\meta{feature requirement}})
+\> \| (or \arbno{\meta{feature requirement}})
+\> \| (not \meta{feature requirement})
 \end{grammar}
