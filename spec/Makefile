@@ -15,3 +15,4 @@ SOURCES=r7rs.tex basic.tex example.tex intro.tex prog.tex struct.tex \
 
 r7rs.pdf: $(SOURCES)
 	pdflatex $<
+	pdflatex $<
