@@ -3257,7 +3257,8 @@ deserve description here.
 
 
 \begin{entry}{%
-\proto{load}{ filename}{optional procedure}}
+\proto{load}{ filename}{optional procedure}
+\proto{include}{ filename}{optional syntax}}
 
 \todo{Fix}
 
@@ -3269,7 +3270,9 @@ expressions and definitions from the file and evaluates them
 sequentially.  It is unspecified whether the results of the expressions
 are printed.  The {\cf load} procedure does not affect the values
 returned by {\cf current-input-port} and {\cf current-output-port}.
-{\cf Load} returns an unspecified value.
+{\cf Load} returns an unspecified value.  {\cf Include} is identical
+to {\cf load} except that it is syntax and can only take a literal
+\var{filename}.
 
 \begin{rationale}
 For portability, {\cf load} must operate on source files.
