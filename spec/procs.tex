@@ -2476,7 +2476,8 @@ arguments.
 \domain{The \var{list}s must be lists, and \var{proc} must be a
 procedure taking as many arguments as there are {\it list}s
 and returning a single value.  If more
-than one \var{list} is given, then they must all be the same length.}
+than one \var{list} is given and not all lists have the same length,
+{\cf map} terminates when the shortest list runs out.}
 {\cf Map} applies \var{proc} element-wise to the elements of the
 \var{list}s and returns a list of the results, in order.
 The dynamic order in which \var{proc} is applied to the elements of the
