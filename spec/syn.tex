@@ -204,7 +204,7 @@ successfully parses.  Note that any string that parses as an
 \meta{lambda expression} \: (lambda \meta{formals} \meta{body})
 \meta{formals} \: (\arbno{\meta{variable}}) \| \meta{variable}
 \>  \| (\atleastone{\meta{variable}} .\ \meta{variable})
-\meta{body} \: \arbno{\meta{definition}} \meta{sequence}
+\meta{body} \:  \arbno{\meta{syntax definition}} \arbno{\meta{definition}} \meta{sequence}
 \meta{sequence} \: \arbno{\meta{command}} \meta{expression}
 \meta{command} \: \meta{expression}
 
@@ -341,4 +341,5 @@ un\-quo\-ta\-tion $D$} takes precedence.
 \>   \| \arbno{\meta{variable}} .\ \meta{variable}
 \meta{syntax definition} \:
 \>  (define-syntax \meta{keyword} \meta{transformer spec})
+\>   \| (begin \arbno{\meta{syntax definition}})
 \end{grammar}

@@ -1163,3 +1163,29 @@ which would result in an invalid procedure call.
 
 \end{entry}
 
+\subsection{Signalling errors in macros}
+\label{syntax-error}
+
+% Is it better to describe this as part of the template language?
+
+\begin{entry}{%
+\pproto{(syntax-error \hyper{message} \hyper{args} \dotsfoo)}{\exprtype}}
+
+{\cf syntax-error} is similar to {\cf error} except that implementations
+with an expansion pass separate from evaluation should signal an error
+as soon as the {\cf syntax-error} form is expanded.  This can be used as
+a {\cf syntax-rules} \hyper{template} for a \hyper{pattern} that is
+an invalid use of the macro, which can provide more descriptive error
+messages.  \hyper{message} should be a string literal, and \hyper{args}
+arbitrary forms providing additional information.
+
+\todo{Shinn: This doesn't check all non-identifier cases, think of a better example.}
+
+\begin{scheme}
+(define-syntax simple-let
+  (syntax-rules ()
+    ((simple-let (head ... ((x . y) val) . tail) body1 body2 ...)
+     (syntax-error ``name should be an identifier, but got'' (x . y)))
+    ((simple-let ((name val) ...) body1 body2 ...)
+     ((lambda (name ...) body1 body2 ...) val ...))))
+\end{scheme}

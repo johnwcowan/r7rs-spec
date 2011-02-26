@@ -141,7 +141,7 @@ that form the body of the \ide{begin}.
 
 \section{Syntax definitions}
 
-Syntax definitions are valid only at the top level of a \hyper{program}.
+Syntax definitions are valid wherever definitions are.
 \mainindex{syntax definition}
 They have the following form:\mainschindex{define-syntax}
 
@@ -149,10 +149,27 @@ They have the following form:\mainschindex{define-syntax}
 
 \hyper{Keyword} is an identifier, and
 the \hyper{transformer spec} should be an instance of \ide{syntax-rules}.
-The top-level syntactic environment is extended by binding the
-\hyper{keyword} to the specified transformer.
+If the {\cf define-syntax} occurs at the top-level, then the top-level
+syntactic environment is extended by binding the
+\hyper{keyword} to the specified transformer.  Otherwise, it is an
+{\em internal syntax definition}, and is local to the \hyper{body} in which
+it is defined.
+Any {\em internal syntax definitions} in a body must come before any
+{\em internal definitions}.
 
-There is no {\cf define-syntax} analogue of internal definitions.
+\begin{scheme}
+(let ((x 1) (y 2))
+  (define-syntax swap!
+    (syntax-rules ()
+      ((swap! a b)
+       (let ((tmp a))
+         (set! a b)
+         (set! b tmp)))))
+  (swap! x y)
+  (list x y))                \ev (2 1)%
+\end{scheme}
+
+%There is no {\cf define-syntax} analogue of internal definitions.
 
 %[Rationale flushed because it may or may not be true and isn't the
 % real rationale anyway. -RK]
