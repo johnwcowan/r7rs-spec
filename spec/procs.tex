@@ -3279,21 +3279,21 @@ implementations.
 \end{entry}
 
 
-\begin{entry}{%
-\proto{transcript-on}{ filename}{optional procedure}\nopagebreak{}
-\proto{transcript-off}{}{optional procedure}}
+%% \begin{entry}{%
+%% \proto{transcript-on}{ filename}{optional procedure}\nopagebreak{}
+%% \proto{transcript-off}{}{optional procedure}}
 
-\domain{\var{Filename} must be a string naming an output file to be
-created.} The effect of {\cf transcript-on} is to open the named file
-for output, and to cause a transcript of subsequent interaction between
-the user and the Scheme system to be written to the file.  The
-transcript is ended by a call to {\cf transcript-off}, which closes the
-transcript file.  Only one transcript may be in progress at any time,
-though some implementations may relax this restriction.  The values
-returned by these procedures are unspecified.
+%% \domain{\var{Filename} must be a string naming an output file to be
+%% created.} The effect of {\cf transcript-on} is to open the named file
+%% for output, and to cause a transcript of subsequent interaction between
+%% the user and the Scheme system to be written to the file.  The
+%% transcript is ended by a call to {\cf transcript-off}, which closes the
+%% transcript file.  Only one transcript may be in progress at any time,
+%% though some implementations may relax this restriction.  The values
+%% returned by these procedures are unspecified.
 
-%\begin{note}
-%These procedures are redundant in some systems, but
-%systems that need them should provide them.
-%\end{note}
-\end{entry}
+%% %\begin{note}
+%% %These procedures are redundant in some systems, but
+%% %systems that need them should provide them.
+%% %\end{note}
+%% \end{entry}
