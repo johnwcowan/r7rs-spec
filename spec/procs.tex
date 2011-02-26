@@ -3281,7 +3281,7 @@ implementations.
 \begin{entry}{%
 \proto{file-exists?}{ filename}{optional procedure}}
 
-Filename must be a string. The {\cf file-exists?} procedure returns
+\var{Filename} must be a string. The {\cf file-exists?} procedure returns
 \schtrue if the named file exists at the time the procedure is called,
 \schfalse otherwise.
 
@@ -3290,10 +3290,42 @@ Filename must be a string. The {\cf file-exists?} procedure returns
 \begin{entry}{%
 \proto{delete-file}{ filename}{optional procedure}}
 
-Filename must be a string. The {\cf delete-file} procedure deletes the
+\var{Filename} must be a string. The {\cf delete-file} procedure deletes the
 named file if it exists and can be deleted, and returns an unspecified
 value.  If the file does not exist or cannot be deleted, an exception
 is raised.
+
+\end{entry}
+
+\todo{Shinn: Do we need any description of what an environment variable is?}
+
+\begin{entry}{%
+\proto{get-environment-variable}{ name}{optional procedure}}
+
+\var{Name} must be a string.  Returns the value of the named
+environment variable as a string, or \schfalse if the named
+environment variable is not found.  {\cf get-environment-variable} may
+use locale-setting information to encode the name and decode the value
+of the environment variable.  If {\cf get-environment-variable} can't
+decode the value it may raise an exception.
+
+\begin{scheme}
+(get-environment-variable "PATH") \lev "/usr/local/bin:/usr/bin:/bin"
+\end{scheme}
+
+\end{entry}
+
+\begin{entry}{%
+\proto{get-environment-variables}{}{optional procedure}}
+
+Returns the names and values of all the environment variables as an
+a-list, where the car of each entry is the name of an environment
+variable and the cdr is the value as would be returned by
+{\cf get-environment-variable}.  The order of the list is unspecified.
+
+\begin{scheme}
+(get-environment-variables) \lev (("USER" . "root") ("HOME" . "/"))
+\end{scheme}
 
 \end{entry}
 
