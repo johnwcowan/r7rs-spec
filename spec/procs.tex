@@ -1818,19 +1818,19 @@ and~\ref{identifiersyntax}.
 \vest It is guaranteed that any symbol that has been returned as part of
 a literal expression, or read using the {\cf read} procedure, and
 subsequently written out using the {\cf write} procedure, will read back
-in as the identical symbol (in the sense of {\cf eqv?}).  The
-{\cf string\coerce{}symbol} procedure, however, can create symbols for
-which this write/read invariance may not hold because their names
-contain special characters or letters in the non-standard case.
+in as the identical symbol (in the sense of {\cf eqv?}).
+%% The {\cf string\coerce{}symbol} procedure, however, can create symbols for
+%% which this write/read invariance may not hold because their names
+%% contain special characters or letters in the non-standard case.
 
 \begin{note}
-Some implementations of Scheme have a feature known as ``slashification''
-in order to guarantee write/read invariance for all symbols, but
-historically the most important use of this feature has been to
-compensate for the lack of a string data type.
-
-\vest Some implementations also have ``uninterned symbols'', which
-defeat write/read invariance even in implementations with slashification,
+%% Some implementations of Scheme have a feature known as ``slashification''
+%% in order to guarantee write/read invariance for all symbols, but
+%% historically the most important use of this feature has been to
+%% compensate for the lack of a string data type.
+%\vest
+Some implementations have a values known as ``uninterned symbols'', which
+defeat write/read invariance,
 and also generate exceptions to the rule that two symbols are the same
 if and only if their names are spelled the same.
 \end{note}
@@ -1855,25 +1855,14 @@ Returns \schtrue{} if \var{obj} is a symbol, otherwise returns \schfalse.
 \begin{entry}{%
 \proto{symbol->string}{ symbol}{procedure}}
 
-Returns the name of \var{symbol} as a string.  If the symbol was part of
-an object returned as the value of a literal expression
-(section~\ref{literalsection}) or by a call to the {\cf read} procedure,
-and its name contains alphabetic characters, then the string returned
-will contain characters in the implementation's preferred standard
-case---some implementations will prefer upper case, others lower case.
-If the symbol was returned by {\cf string\coerce{}symbol}, the case of
-characters in the string returned will be the same as the case in the
-string that was passed to {\cf string\coerce{}symbol}.  It is an error
+Returns the name of \var{symbol} as a string.  It is an error
 to apply mutation procedures like \ide{string-set!} to strings returned
 by this procedure.
-
-The following examples assume that the implementation's standard case is
-lower case:
 
 \begin{scheme}
 (symbol->string 'flying-fish)     
                                   \ev  "flying-fish"
-(symbol->string 'Martin)          \ev  "martin"
+(symbol->string 'Martin)          \ev  "Martin"
 (symbol->string
    (string->symbol "Malvina"))     
                                   \ev  "Malvina"%
@@ -1885,19 +1874,14 @@ lower case:
 \proto{string->symbol}{ string}{procedure}}
 
 Returns the symbol whose name is \var{string}.  This procedure can
-create symbols with names containing special characters or letters in
-the non-standard case, but it is usually a bad idea to create such
-symbols because in some implementations of Scheme they cannot be read as
-themselves.  See {\cf symbol\coerce{}string}.
-
-The following examples assume that the implementation's standard case is
-lower case:
+create symbols with names containing special characters that would
+require escaping when written.
 
 \begin{scheme}
-(eq? 'mISSISSIppi 'mississippi)  \lev  \schtrue
+%(eq? 'mISSISSIppi 'mississippi)  \lev  \schtrue
 (string->symbol "mISSISSIppi")  \lev%
-  {\rm{}the symbol with name} "mISSISSIppi"
-(eq? 'bitBlt (string->symbol "bitBlt"))     \lev  \schfalse
+  'mISSISSIppi
+(eq? 'bitBlt (string->symbol "bitBlt"))     \lev  \schtrue
 (eq? 'JollyWog
      (string->symbol
        (symbol->string 'JollyWog)))  \lev  \schtrue
