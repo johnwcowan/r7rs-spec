@@ -3278,6 +3278,24 @@ implementations.
 \end{rationale}
 \end{entry}
 
+\begin{entry}{%
+\proto{file-exists?}{ filename}{optional procedure}}
+
+Filename must be a string. The {\cf file-exists?} procedure returns
+\schtrue if the named file exists at the time the procedure is called,
+\schfalse otherwise.
+
+\end{entry}
+
+\begin{entry}{%
+\proto{delete-file}{ filename}{optional procedure}}
+
+Filename must be a string. The {\cf delete-file} procedure deletes the
+named file if it exists and can be deleted, and returns an unspecified
+value.  If the file does not exist or cannot be deleted, an exception
+is raised.
+
+\end{entry}
 
 \begin{entry}{%
 \proto{transcript-on}{ filename}{optional procedure}\nopagebreak{}
