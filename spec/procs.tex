@@ -1739,7 +1739,8 @@ It is an error if \var{list} has fewer than \vr{k} elements.
 \begin{entry}{%
 \proto{memq}{ obj list}{library procedure}
 \proto{memv}{ obj list}{library procedure}
-\proto{member}{ obj list}{library procedure}}
+\proto{member}{ obj list}{library procedure}
+\proto{member}{ obj list compare}{library procedure}}
 
 These procedures return the first sublist of \var{list} whose car is
 \var{obj}, where the sublists of \var{list} are the non-empty lists
@@ -1747,7 +1748,8 @@ returned by {\tt (list-tail \var{list} \var{k})} for \var{k} less
 than the length of \var{list}.  If
 \var{obj} does not occur in \var{list}, then \schfalse{} (not the empty list) is
 returned.  {\cf Memq} uses {\cf eq?}\ to compare \var{obj} with the elements of
-\var{list}, while {\cf memv} uses {\cf eqv?}\ and {\cf member} uses {\cf equal?}.
+\var{list}, while {\cf memv} uses {\cf eqv?} and 
+{\cf member} uses \var{compare} if given and {\cf equal?} otherwise.
 
 \begin{scheme}
 (memq 'a '(a b c))              \ev  (a b c)
@@ -1756,6 +1758,9 @@ returned.  {\cf Memq} uses {\cf eq?}\ to compare \var{obj} with the elements of
 (memq (list 'a) '(b (a) c))     \ev  \schfalse
 (member (list 'a)
         '(b (a) c))             \ev  ((a) c)
+(member "B"
+        '("a" "b" "c")
+        string-ci=?)            \ev  ("b" "c")
 (memq 101 '(100 101 102))       \ev  \unspecified
 (memv 101 '(100 101 102))       \ev  (101 102)%
 \end{scheme} 
@@ -1766,14 +1771,16 @@ returned.  {\cf Memq} uses {\cf eq?}\ to compare \var{obj} with the elements of
 \begin{entry}{%
 \proto{assq}{ obj alist}{library procedure}
 \proto{assv}{ obj alist}{library procedure}
-\proto{assoc}{ obj alist}{library procedure}}
+\proto{assoc}{ obj alist}{library procedure}
+\proto{assoc}{ obj alist compare}{library procedure}}
 
 \domain{\var{Alist} (for ``association list'') must be a list of
 pairs.}  These procedures find the first pair in \var{alist} whose car field is \var{obj},
 and returns that pair.  If no pair in \var{alist} has \var{obj} as its
 car, then \schfalse{} (not the empty list) is returned.  {\cf Assq} uses
 {\cf eq?}\ to compare \var{obj} with the car fields of the pairs in \var{alist},
-while {\cf assv} uses {\cf eqv?}\ and {\cf assoc} uses {\cf equal?}.
+while {\cf assv} uses {\cf eqv?}\ and {\cf assoc} uses \var{compare} if given
+and {\cf equal?} otherwise.
 
 \begin{scheme}
 (define e '((a 1) (b 2) (c 3)))
