@@ -3270,9 +3270,13 @@ expressions and definitions from the file and evaluates them
 sequentially.  It is unspecified whether the results of the expressions
 are printed.  The {\cf load} procedure does not affect the values
 returned by {\cf current-input-port} and {\cf current-output-port}.
-{\cf Load} returns an unspecified value.  {\cf Include} is identical
-to {\cf load} except that it is syntax and can only take a literal
-\var{filename}.
+{\cf Load} returns an unspecified value.
+
+{\cf Include} is similar to {\cf load} except that it is syntax which
+expands into the expressions and definitions from the file.  Thus it
+can be used to include internal definitions and otherwise interact
+with the current lexical scope.  In an {\cf include} form
+\var{filename} must be a string literal.
 
 \begin{rationale}
 For portability, {\cf load} must operate on source files.
