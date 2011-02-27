@@ -2417,13 +2417,100 @@ The value returned by {\cf vector-fill!}\ is unspecified.  % <!>
 \end{entry}
 
 
+\section{Record types}
+\label{usertypes}
+
+This section describes syntax for creating new data types, called
+record types.  A predicate, constructor, and field accessors and
+modifiers are defined for each record type.
+
+\begin{entry}{%
+\proto{define-record-type}{ name constructor pred field \dotsfoo}{syntax}}
+
+\syntax
+\hyper{name} and \hyper{pred} should be identifiers.
+The \hyper{constructor} should be of the form
+\begin{scheme}
+(\hyper{constructor name} \hyper{field name} \dotsfoo)%
+\end{scheme}
+and each \hyper{field} should be of the form
+\begin{scheme}
+(\hyper{field name} \hyper{accessor name})%
+\end{scheme}
+\begin{scheme}
+$|$ (\hyper{field name} \hyper{accessor name} \hyper{modifier name})%
+\end{scheme}
+
+{\cf define-record-type} is generative: each use creates a new record
+type that is distinct from all existing types, including other record
+types and Scheme's predefined types.
+
+An instance of {\cf define-record-type} is equivalent to the following
+definitions:
+
+\begin{itemize}
+
+\item \hyper{name} is bound to a representation of the record type
+  itself, possibly as a syntactic form.
+
+\item \hyper{constructor name} is bound to a procedure that takes as
+  many arguments as there are \hyper{field name}s in the
+  \texttt{(\hyper{constructor name} \dotsfoo)} subform and returns a
+  new record of type \hyper{name}.  Fields whose names are listed with
+  \hyper{constructor name} have the corresponding argument as their
+  initial value.  The initial values of all other fields are
+  unspecified.
+
+\item \hyper{pred} is a predicate that returns \schtrue when given a
+  value returned by \hyper{constructor name} and \schfalse for
+  everything else.
+
+\item Each \hyper{accessor name} is a procedure that takes a record of
+  type \hyper{name} and returns the current value of the corresponding
+  field.  It is an error to pass an accessor a value which is not a
+  record of the appropriate type.
+
+\item Each \hyper{modifier name} is a procedure that takes a record of
+  type \hyper{name} and a value which becomes the new value of the
+  corresponding field; an unspecified value is returned.  It is an
+  error to pass a modifier a first argument which is not a record of
+  the appropriate type.
+
+\end{itemize}
+
+The following
+
+\begin{scheme}
+(define-record-type <pare>
+  (kons x y)
+  pare?
+  (x kar set-kar!)
+  (y kdr))
+\end{scheme}
+
+defines \hyper{kons} to be a constructor, \hyper{kar} and \hyper{kdr}
+to be accessors, \hyper{set-kar!} to be a modifier, and \hyper{pare?}
+to be a predicate for \hyper{<pare>}s.
+
+\begin{scheme}
+  (pare? (kons 1 2))        \ev \schtrue
+  (pare? (cons 1 2))        \ev \schfalse
+  (kar (kons 1 2))          \ev 1
+  (kdr (kons 1 2))          \ev 2
+  (let ((k (kons 1 2)))
+    (set-kar! k 3)
+    (kar k))                \ev 3
+\end{scheme}
+
+\end{entry}
+
 \section{Control features}
 \label{proceduresection}
  
 % Intro flushed; not very a propos any more.
 % Procedures should be discussed somewhere, however.
 
-This chapter describes various primitive procedures which control the
+This section describes various primitive procedures which control the
 flow of program execution in special ways.
 The {\cf procedure?}\ predicate is also described here.
 
