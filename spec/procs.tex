@@ -2997,6 +2997,17 @@ kind of port, respectively, otherwise returns \schfalse.
 
 
 \begin{entry}{%
+\proto{port-open?}{ port}{procedure}}
+
+Returns \schtrue{} if \var{port} is still open and capable of
+performing input or output, and \schfalse otherwise.
+
+\todo{If a port is no longer a port after being closed, this should return false in those cases and not raise a domain error.}
+
+\end{entry}
+
+
+\begin{entry}{%
 \proto{current-input-port}{}{procedure}
 \proto{current-output-port}{}{procedure}}
  
@@ -3079,7 +3090,6 @@ different close procedures.}
 \todo{A port isn't necessarily still a port after it has been closed?}
 
 \end{entry}
-
 
 \subsection{Input}
 \label{inputsection}
