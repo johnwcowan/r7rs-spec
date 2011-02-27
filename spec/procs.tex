@@ -2985,10 +2985,11 @@ both {\cf call-with-current-continuation} and {\cf call-with-input-file} or
 
 \begin{entry}{%
 \proto{input-port?}{ obj}{procedure}
-\proto{output-port?}{ obj}{procedure}}
+\proto{output-port?}{ obj}{procedure}
+\proto{port?}{ obj}{procedure}}
 
-Returns \schtrue{} if \var{obj} is an input port or output port
-respectively, otherwise returns \schfalse.
+Returns \schtrue{} if \var{obj} is an input port, output port, or any
+kind of port, respectively, otherwise returns \schfalse.
 
 \todo{Won't necessarily return true after port is closed.}
 
