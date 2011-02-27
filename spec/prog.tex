@@ -5,7 +5,7 @@
 
 A Scheme program consists of a sequence of expressions, definitions,
 syntax definitions, and imports.  A collection of these same program
-parts may also be encapsulated in a module to be reused by multiple
+parts may be encapsulated in a module to be reused by multiple
 programs.
 Expressions are described in chapter~\ref{expressionchapter};
 definitions, syntax definitions, imports, and modules are the subject of the
@@ -204,8 +204,7 @@ that follow the group.  For example, the following are errors:
 \section{Modules}
 
 Modules provide a way to encapsulate programs and manage the top-level
-namespace.  This section defines the notation for modules and their
-semantics.
+namespace.  This section defines the notation and semantics for modules.
 
 \subsection{Module Syntax}
 
@@ -217,7 +216,7 @@ A module definition takes the following form:
 \end{scheme}
 
 \hyper{module name} is a list of identifiers or exact integers used to
-uniquely identify the module when importing from other programs or
+identify the module uniquely when importing from other programs or
 modules.
 
 A \hyper{module declaration} can be any of:
@@ -314,8 +313,8 @@ declarations are expanded in the order in which they occur in the
 module declaration.
 
 The \ide{cond-expand} module declaration provides a way to statically
-select expand different module declarations depending on the platform
-or implementation under which the module is being resolved.  A
+expand different module declarations depending on the platform
+or implementation under which the module is being loaded.  A
 \hyper{cond-expand clause} must be of the following form:
 
 {\tt(\hyper{feature requirement} \hyper{module declaration} \dotsfoo)}
