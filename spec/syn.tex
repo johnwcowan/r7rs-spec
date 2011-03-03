@@ -58,6 +58,8 @@ language: {\tt \verb"[" \verb"]" \verb"{" \verb"}" \verb"|"}
 % This is a kludge, but \multicolumn doesn't work in tabbing environments.
 \setbox0\hbox{\cf\meta{variable} \goesto{} $\langle$}
 
+\todo{Disambiguate +/-i +/-inf.0 and +nan.0 with identifier syntax.}
+
 \begin{grammar}%
 \meta{identifier} \: \meta{initial} \arbno{\meta{subsequent}}
  \>  \| \meta{peculiar identifier}
@@ -124,7 +126,7 @@ decimal points or exponents must be in decimal radix.
       \| - \meta{ureal $R$} i %
       \| + i %
       \| - i
-\meta{real $R$} \: \meta{sign} \meta{ureal $R$}
+\meta{real $R$} \: \meta{sign} \meta{ureal $R$} \| \meta{infinity} %
 \meta{ureal $R$} \: %
          \meta{uinteger $R$}
    \> \| \meta{uinteger $R$} / \meta{uinteger $R$}
@@ -138,6 +140,7 @@ decimal points or exponents must be in decimal radix.
 \meta{prefix $R$} \: %
          \meta{radix $R$} \meta{exactness}
    \> \| \meta{exactness} \meta{radix $R$}
+\meta{infinity} \: +inf.0 \| -inf.0 \| +nan.0
 \end{grammar}
 
 \begin{grammar}%

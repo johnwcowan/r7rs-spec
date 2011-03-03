@@ -551,6 +551,22 @@ the most precise \tupe{flonum} format available must be used; but if the result
 is represented in some other way then the representation must have at least as
 much precision as the most precise \tupe{flonum} format available.
 
+In addition, implementations that use flonum representations may
+distinguish special number objects called \tupe{positive infinity},
+\tupe{negative infinity}, and \tupe{NaN}.
+
+Positive infinity is regarded as an inexact real (but not rational)
+number object that represents an indeterminate number greater than the
+numbers represented by all rational number objects. Negative infinity
+is regarded as an inexact real (but not rational) number object that
+represents an indeterminate number less than the numbers represented
+by all rational numbers.
+
+A NaN is regarded as an inexact real (but not rational) number object
+so indeterminate that it might represent any real number, including
+positive or negative infinity, and might even be greater than positive
+infinity or less than negative infinity.
+
 Although Scheme allows a variety of written
 %%R4%% representations of 
 notations for
@@ -639,6 +655,8 @@ implementations may wish to allow this default to be set by the user.
        {\rm Extend to long ---} .600000000000000%
 \end{scheme}
 
+The numbers positive infinity, negative infinity and NaN are written
+{\cf +inf.0}, {\cf -inf.0} and {\cf +nan.0} respectively.
 
 \subsection{Numerical operations}
 
@@ -722,6 +740,35 @@ support some kind of non-complex numbers.
 These numerical predicates provide tests for the exactness of a
 quantity.  For any Scheme number, precisely one of these predicates
 is true.
+
+\begin{scheme}
+(finite? 3+4i)         \ev  \schtrue
+(finite? +inf.0)       \ev  \schfalse
+(infinite? +inf.0)     \ev  \schtrue
+(infinite? -inf.0)     \ev  \schtrue
+(nan? +nan.0)          \ev  \schtrue
+\end{scheme}
+
+\end{entry}
+
+
+\begin{entry}{%
+\proto{exact-integer?}{ \vr{z}}{procedure}}
+
+The conjunction of {\cf exact?} and {\cf integer?}, returns \schtrue{}
+iff \vr{z} is both \tupe{exact} and an \tupe{integer}.
+
+\end{entry}
+
+
+\begin{entry}{%
+\proto{finite?}{ \vr{z}}{procedure}
+\proto{infinite?}{ \vr{z}}{procedure}
+\proto{nan?}{ \vr{z}}{procedure}}
+
+These numerical predicates provide tests for the infinite and NaN
+numbers.  For any Scheme number, precisely one of these predicates is
+true.
 
 \end{entry}
 
@@ -1062,6 +1109,19 @@ ones cited, so we're really on our own here.}
 Returns the principal square root of \vr{z}.  The result will have
 either positive real part, or zero real part and non-negative imaginary
 part.
+\end{entry}
+
+
+\begin{entry}{%
+\proto{exact-integer-sqrt}{ k}{procedure}}
+
+Returns two non-negative exact integer objects $s$ and $r$ where
+$\var{k} = s^2 + r$ and $\var{k} < (s+1)^2$.
+
+\begin{scheme}
+(exact-integer-sqrt 4) \ev 2 0
+(exact-integer-sqrt 5) \ev 2 1
+\end{scheme}
 \end{entry}
 
 
