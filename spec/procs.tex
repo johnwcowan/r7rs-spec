@@ -2870,6 +2870,42 @@ extent of a call to \var{before} or \var{after} is undefined.
 \end{scheme}
 \end{entry}
 
+\begin{entry}{%
+\proto{make-parameter}{ init}{procedure}
+\proto{make-parameter}{ init converter}{procedure}}
+
+Returns a new parameter object which is associated with the value
+returned by the call \texttt{(\var{converter} \var{init})}. If the
+conversion procedure \var{converter} is not specified the identity
+function is used instead.
+
+A parameter object is a procedure which accepts zero arguments and
+returns its associated value.
+
+\end{entry}
+
+\begin{entry}{%
+\proto{parameterize}{ ((param value) \dotsfoo) \hyperi{expr} \hyperii{expr} \dotsfoo}{library syntax}}
+
+The {\cf parameterize} form is used to change the values returned by
+parameter objects for the dynamic extent of the body.  The expressions
+\var{param} and \texttt{(\var{converter} \var{value})} are evaluated
+in an unspecified order.  The value of the \var{param} expressions
+must be parameter objects.  The \hyper{expr}s are evaluated in order
+in a dynamic extent during which calls to the \var{param} parameter
+objects return the result of the corresponding
+\texttt{(\var{converter} \var{value})}.  The result(s) of the last
+\hyper{expr} is(are) returned as the result(s) of the entire
+{\cf parameterize} form.
+
+\todo{What to say about threads?  The dynamic extent of a parameterize
+  form should not be visible to existing threads.  Child threads
+  created in that extent are handled differently by different
+  implementations.}
+
+\end{entry}
+
+
 \section{\tt{Eval}}
 
 \begin{entry}{%
