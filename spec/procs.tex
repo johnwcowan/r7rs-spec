@@ -2572,12 +2572,12 @@ The dynamic order in which \var{proc} is applied to the elements of the
 \begin{scheme}
 (string-map char-foldcase "AbdEgH") \lev  "abdegh"
 
-(string-map (lambda (c)
-  (integer->char (+ 1 (char->integer c))))
+(string-map
+  (lambda (c) (integer->char (+ 1 (char->integer c))))
      "HAL")                \lev  "IBM"
 
 (string-map (lambda (c k)
-  (if (eqv? k #\u) c (char-upcase c)))
+  (if (eqv? k #\u) (char-upcase c) (char-downcase c)))
     "studlycaps" "ululululul")   \lev   "StUdLyCaPs"
 
 \end{scheme}
