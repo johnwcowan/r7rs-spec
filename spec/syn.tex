@@ -223,6 +223,9 @@ successfully parses.  Note that any string that parses as an
 \>  \| (c\=ase \meta{expression}
 \>       \>\arbno{\meta{case clause}}
 \>       \>(else \meta{sequence}))
+\>  \| (c\=ase \meta{expression}
+\>       \>\arbno{\meta{case clause}}
+\>       \>(else => \meta{recipient}))
 \>  \| (and \arbno{\meta{test}})
 \>  \| (or \arbno{\meta{test}})
 \>  \| (let (\arbno{\meta{binding spec}}) \meta{body})
@@ -241,6 +244,7 @@ successfully parses.  Note that any string that parses as an
 \>   \| (\meta{test} => \meta{recipient})
 \meta{recipient} \: \meta{expression}
 \meta{case clause} \: ((\arbno{\meta{datum}}) \meta{sequence})
+\>   \| ((\arbno{\meta{datum}}) => \meta{recipient})
 \meta{binding spec} \: (\meta{variable} \meta{expression})
 \meta{iteration spec} \: (\meta{variable} \meta{init} \meta{step})
 \> \| (\meta{variable} \meta{init})

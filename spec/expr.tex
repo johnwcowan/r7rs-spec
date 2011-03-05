@@ -363,9 +363,17 @@ the form
 \end{scheme}
 where each \hyper{datum} is an external representation of some object.
 All the \hyper{datum}s must be distinct.
-The last \hyper{clause} may be an ``else clause,'' which has the form
+Alternatively, a \hyper{clause} may be of the form
 \begin{scheme}
-(else \hyperi{expression} \hyperii{expression} \dotsfoo)\rm.%
+((\hyperi{datum} \dotsfoo) => \hyper{expression})%
+\end{scheme}
+The last \hyper{clause} may be an ``else clause,'' which has one of the forms
+\begin{scheme}
+(else \hyperi{expression} \hyperii{expression} \dotsfoo)
+\end{scheme}
+or
+\begin{scheme}
+(else => \hyper{expression})\rm.%
 \end{scheme}
 \schindex{else}
 
@@ -376,11 +384,17 @@ result of evaluating \hyper{key} is equivalent (in the sense of
 {\cf eqv?}; see section~\ref{eqv?}) to a \hyper{datum}, then the
 expressions in the corresponding \hyper{clause} are evaluated from left
 to right and the result(s) of the last expression in the \hyper{clause} is(are)
-returned as the result(s) of the {\cf case} expression.  If the result of
+returned as the result(s) of the {\cf case} expression.
+If the result of
 evaluating \hyper{key} is different from every \hyper{datum}, then if
 there is an else clause its expressions are evaluated and the
 result(s) of the last is(are) the result(s) of the {\cf case} expression;
 otherwise the result of the {\cf case} expression is unspecified.
+If the selected \hyper{clause} or else clause uses the
+\ide{=>} alternate form, then the \hyper{expression} is evaluated.
+Its value must be a procedure that accepts one argument; this procedure is then
+called on the value of the \hyper{key} and the value(s) returned by this
+procedure is(are) returned by the {\cf case} expression.
 
 \begin{scheme}
 (case (* 2 3)
@@ -392,7 +406,7 @@ otherwise the result of the {\cf case} expression is unspecified.
 (case (car '(c d))
   ((a e i o u) 'vowel)
   ((w y) 'semivowel)
-  (else 'consonant))            \ev  consonant%
+  (else => (lambda (x) x)))     \ev  c%
 \end{scheme}
 
 \end{entry}
