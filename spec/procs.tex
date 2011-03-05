@@ -3330,6 +3330,30 @@ variable and the cdr is the value as would be returned by
 \end{entry}
 
 \begin{entry}{%
+\proto{current-second}{}{optional procedure}}
+
+Returns an exact integer representing the current second of the Posix
+epoch, which began on 00:00:00 on 1 January 1970, Coordinated
+Universal Time.  Whether leap seconds are included is
+implementation-defined.
+\end{entry}
+
+\begin{entry}{%
+\proto{current-jiffy}{}{optional procedure}}
+
+Returns an exact integer representing the number of jiffies (arbitrary
+elapsed time units) since an arbitrary epoch which may vary between
+runs of a program.
+\end{entry}
+
+\begin{entry}{%
+\proto{jiffies-per-second}{}{optional procedure}}
+
+Returns an exact integer representing the number of jiffies per SI
+second. This value is an implementation-specified constant.
+\end{entry}
+
+\begin{entry}{%
 \proto{transcript-on}{ filename}{optional procedure}\nopagebreak{}
 \proto{transcript-off}{}{optional procedure}}
 
