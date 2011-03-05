@@ -2417,6 +2417,85 @@ The value returned by {\cf vector-fill!}\ is unspecified.  % <!>
 \end{entry}
 
 
+\subsection{Blobs}
+\label{blobsection}
+
+Blobs are a disjoint type for representing blocks of binary data.
+Conceptually, blobs can be thought of as homogenous vectors of 8-bit
+bytes, but they typically occupy less space than a vector.
+
+\vest The {\em length} of a blob is the number of elements that it
+contains.  This number is a non-negative integer that is fixed when
+the blob is created.  The {\em valid indexes}\index{valid indexes} of
+a blob are the exact non-negative integers less than the length of the
+blob, starting at index zero as with vectors.
+
+\begin{entry}{%
+\proto{blob?}{ obj}{procedure}}
+
+Returns \schtrue{} iff \var{obj} is a blob.
+\end{entry}
+
+\begin{entry}{%
+\proto{make-blob}{ k}{procedure}}
+
+Returns a newly allocated blob of \var{k} bytes.  The initial contents
+of each element is unspecified.
+\end{entry}
+
+\begin{entry}{%
+\proto{blob-length}{ blob}{procedure}}
+
+Returns the length of \var{blob} in bytes as an exact integer.
+\end{entry}
+
+\begin{entry}{%
+\proto{blob-u8-ref}{ blob k}{procedure}}
+
+Returns the \var{k}th byte of \var{blob} as an exact integer in the
+range $[0..255]$.
+\end{entry}
+
+\begin{entry}{%
+\proto{blob-u8-set!}{ blob k u8}{procedure}}
+
+Stores \var{u8} as the \var{k}th byte of \var{blob}.  \var{u8} must be
+an exact integer in the range $[0..255]$.  The value returned by
+{\cf blob-u8-set!} is unspecified.
+\end{entry}
+
+\begin{entry}{%
+\proto{copy-blob}{ blob}{procedure}}
+
+Returns a newly allocated blob containing the same bytes as
+\var{blob}.
+\end{entry}
+
+\begin{entry}{%
+\proto{copy-blob!}{ from to}{procedure}}
+
+Copy the bytes of blob \var{from} to blob \var{to}, which must not be
+shorter.  The value returned by {\cf copy-blob!} is unspecified.
+\end{entry}
+
+\begin{entry}{%
+\proto{partial-blob}{ blob start end}{procedure}}
+
+Returns a newly allocated blob containing the same bytes in \var{blob}
+starting at \var{start} (inclusive) and ending at \var{end}
+(exclusive).
+\end{entry}
+
+\begin{entry}{%
+\proto{copy-partial-blob!}{ from start end to at}{procedure}}
+
+Copy the bytes of blob \var{from} starting at \var{start} and ending
+at \var{end} to blob \var{to}, starting at \var{at}.  The inequality
+\texttt{({\cf >=} ({\cf -} ({\cf blob-length} \var{to}) \var{at}) ({\cf -} \var{end} \var{start}))}
+must be true.  The value returned by {\cf copy-blob!} is unspecified.
+\end{entry}
+
+
 \section{Control features}
 \label{proceduresection}
  
