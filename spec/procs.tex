@@ -2091,18 +2091,18 @@ returns that character.
 The {\cf char-upcase} procedure, given an argument that forms the
 lowercase part of a Unicode casing pair, returns the uppercase member
 of the pair, provided that both characters are supported by the Scheme
-implementation.  Note that Turkic casing pairs are ignored.  If the
+implementation.  Note that Turkic casing pairs are not used.  If the
 argument is not the lowercase part of such a pair, it is returned.
 
 The {\cf char-downcase} procedure, given an argument that forms the
 uppercase part of a Unicode casing pair, returns the lowercase member
 of the pair, provided that both characters are supported by the Scheme
-implementation.  Note that Turkic casing pairs are ignored.  If the
+implementation.  Note that Turkic casing pairs are not used.  If the
 argument is not the uppercase part of such a pair, it is returned.
 
 The {\cf char-foldcase} procedure applies the Unicode simple
 case-folding algorithm to its argument and returns the result.  Note that
-Turkic-specific folding is ignored.  If the argument is an uppercase
+Turkic-specific folding is not used.  If the argument is an uppercase
 letter, the result will be a lowercase letter.
 
 Note that many Unicode lowercase characters don't have uppercase
@@ -2130,8 +2130,8 @@ A backslash can be written inside a string only by escaping it with another
 backslash.  Scheme does not specify the effect of a backslash within a
 string that is not followed by a doublequote or backslash.
 
-\vest A string constant may continue from one line to the next, but
-the exact contents of such a string are unspecified.
+\vest A string constant may continue from one line to the next, which
+has the same effect as inserting a newline character into the string.
 % this is
 %usually a bad idea because 
 %the exact effect may vary from one computer
@@ -2222,13 +2222,20 @@ and returns an unspecified value.  % <!>
 
 \begin{entry}{%
 \proto{string=?}{ \vari{string} \varii{string}}{library procedure}
-\proto{string-ci=?}{ \vari{string} \varii{string}}{library procedure}}
 
-Returns \schtrue{} if the two strings are the same length and contain the same
-characters in the same positions, otherwise returns \schfalse.
-{\cf String-ci=?}\ treats
-upper and lower case letters as though they were the same character, but
-{\cf string=?}\ treats upper and lower case as distinct characters.
+Returns \schtrue{} if the two strings are the same length and contain
+exactly the same characters in the same positions, otherwise returns
+\schfalse.
+
+\end{entry}
+
+\begin{entry}{%
+\proto{string-ci=?}{ \vari{string} \varii{string}}{unicode module procedure}}
+
+Returns \schtrue{} if, after case-folding, the two strings are the same
+length and contain the same characters in the same positions, otherwise
+returns \schfalse.  Specifically, these procedures behave as if 
+{\cf string-foldcase\} were applied to their arguments before comparing them.
 
 \end{entry}
 
@@ -2238,21 +2245,51 @@ upper and lower case letters as though they were the same character, but
 \proto{string>?}{ \vari{string} \varii{string}}{library procedure}
 \proto{string<=?}{ \vari{string} \varii{string}}{library procedure}
 \proto{string>=?}{ \vari{string} \varii{string}}{library procedure}
-\proto{string-ci<?}{ \vari{string} \varii{string}}{library procedure}
-\proto{string-ci>?}{ \vari{string} \varii{string}}{library procedure}
-\proto{string-ci<=?}{ \vari{string} \varii{string}}{library procedure}
-\proto{string-ci>=?}{ \vari{string} \varii{string}}{library procedure}}
+\proto{string-ci<?}{ \vari{string} \varii{string}}{unicode module procedure}
+\proto{string-ci>?}{ \vari{string} \varii{string}}{unicode module procedure}
+\proto{string-ci<=?}{ \vari{string} \varii{string}}{unicode module procedure}
+\proto{string-ci>=?}{ \vari{string} \varii{string}}{unicode module procedure}}
 
-These procedures are the lexicographic extensions to strings of the
-corresponding orderings on characters.  For example, {\cf string<?}\ is
-the lexicographic ordering on strings induced by the ordering
-{\cf char<?}\ on characters.  If two strings differ in length but
+These procedures compare strings in an implementation-defined way.
+One approach is to make them the lexicographic extensions to strings of
+the corresponding orderings on characters.  In that case, {\cf string<?}\
+would be the lexicographic ordering on strings induced by the ordering
+{\cf char<?}\ on characters, and if the two strings differ in length but
 are the same up to the length of the shorter string, the shorter string
-is considered to be lexicographically less than the longer string.
+would be considered to be lexicographically less than the longer string.
+However, it is also permitted to use the natural ordering imposed by the
+internal representation of strings, or a more complex locale-specific
+ordering.
+
+In all cases, a pair of strings must satisfy exactly one of
+{\cf string<?}, {\cf string=?}, and {\cf string>?}, and must satisfy
+{\cf string<=?} if and only if they do not satisfy {\cf string>?} and
+{\cf string>=?} if and only if they do not satisfy {\cf string<?}.
+
+The \hbox{``{\tt -ci}''} procedures behave as if they applied
+{\cf string-fold} to their arguments before invoking the corresponding
+procedures without  \hbox{``{\tt -ci}''}.
 
 Implementations may generalize these and the {\cf string=?}\ and
 {\cf string-ci=?} procedures to take more than two arguments, as with
 the corresponding numerical predicates.
+
+\end{entry}
+
+\begin{entry}{%
+\proto{string-upcase}{ string}{unicode module procedure}
+\proto{string-downcase}{ string}{unicode module procedure}}
+\proto{string-foldcase}{ string}{unicode module procedure}}
+
+\nodomain{\var{String} must be a string.}
+
+These procedures apply the Unicode full string uppercasing, lowercasing,
+and case-folding algorithms to their arguments and return the result.
+Note that Turkic-specific mappings and foldings are not used.  This may
+cause the result to differ in length from the argument.  What is more, a
+few characters have case-mappings that depend on the surrounding context.
+For example, Greek capital sigma normally lowercases to Greek small sigma,
+but at the end of a word it downcases to Greek small final sigma instead.
 
 \end{entry}
 
