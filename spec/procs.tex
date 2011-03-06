@@ -3093,6 +3093,50 @@ different close procedures.}
 
 \end{entry}
 
+%% \subsection{String Ports}
+%% \label{stringportsection}
+
+\begin{entry}{%
+\proto{open-input-string}{ string}{procedure}}
+
+Takes a string and returns an input port that delivers characters from
+the string.
+
+%% \begin{scheme}
+%% (define p
+%%   (open-input-string "(a . (b . (c . ()))) 34"))
+
+%% (input-port? p)                 \ev  \schtrue
+%% (read p)                        \ev  (a b c)
+%% (read p)                        \ev  34
+%% (eof-object? (peek-char p))     \ev  \schtrue
+%% \end{scheme}
+\end{entry}
+
+\begin{entry}{%
+\proto{open-output-string}{}{procedure}}
+
+Returns an output port that will accumulate characters for retrieval
+by {\cf get-output-string}.
+
+%% \begin{scheme}
+%% (let ((q (open-output-string))
+%%       (x '(a b c)))
+%%   (write (car x) q)
+%%   (write (cdr x) q)
+%%   (get-output-string q))        \ev  "a(b c)"
+%% \end{scheme}
+\end{entry}
+
+\begin{entry}{%
+\proto{get-output-string}{ port}{procedure}}
+
+Given an output port created by {\cf open-output-string}, returns a
+string consisting of the characters that have been output to the port
+so far.
+\end{entry}
+
+
 \subsection{Input}
 \label{inputsection}
 
