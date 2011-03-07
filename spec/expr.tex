@@ -441,13 +441,14 @@ expressions then \schfalse{} is returned.
 
 \subsection{Binding constructs}
 
-The three binding constructs {\cf let}, {\cf let*}, and {\cf letrec}
+The four binding constructs {\cf let}, {\cf let*}, {\cf letrec}, and {\cf letrec*}
 give Scheme a block structure, like Algol 60.  The syntax of the three
 constructs is identical, but they differ in the regions\index{region} they establish
 for their variable bindings.  In a {\cf let} expression, the initial
 values are computed before any of the variables become bound; in a
 {\cf let*} expression, the bindings and evaluations are performed
-sequentially; while in a {\cf letrec} expression, all the bindings are in
+sequentially; while in {\cf letrec} and {\cf letrec*} expressions,
+all the bindings are in
 effect while their initial values are being computed, thus allowing
 mutually recursive definitions.
 
@@ -565,6 +566,54 @@ name.  In the most common uses of {\cf letrec}, all the \hyper{init}s are
 \lambdaexp{}s and the restriction is satisfied automatically.
 
 % \todo{use or uses?  --- Jinx.}
+
+\end{entry}
+
+
+\begin{entry}{%
+\proto{letrec*}{ \hyper{bindings} \hyper{body}}{library \exprtype}}
+
+\syntax
+\hyper{Bindings} should have the form
+\begin{scheme}
+((\hyperi{variable} \hyperi{init}) \dotsfoo)\rm,%
+\end{scheme}
+and \hyper{body} should be a sequence of
+one or more expressions. It is an error for a \hyper{variable} to appear more
+than once in the list of variables being bound.
+
+\semantics
+The \hyper{variable}s are bound to fresh locations,
+each \hyper{variable} is assigned in left-to-right order to the
+result of evaluating the corresponding \hyper{init}, the \hyper{body} is
+evaluated in the resulting environment, and the values of the last
+expression in \hyper{body} are returned. 
+Despite the left-to-right evaluation and assignment order, each binding of
+a \hyper{variable} has the entire {\cf letrec*} expression as its
+region\index{region}, making it possible to define mutually recursive
+procedures.
+
+\begin{scheme}
+(letrec* ((p
+           (lambda (x)
+             (+ 1 (q (- x 1)))))
+          (q
+           (lambda (y)
+             (if (zero? y)
+                 0
+                 (+ 1 (p (- y 1))))))
+          (x (p 5))
+          (y x))
+  y)
+                \ev  5%
+\end{scheme}
+
+It must be possible to evaluate each \hyper{init} without assigning or
+referring to the value of the corresponding \hyper{variable} or the
+\hyper{variable} of any of the bindings that follow it in
+\hyper{bindings}.
+Another restriction is that the continuation of each \hyper{init}
+should not be invoked more than once.
 
 \end{entry}
 

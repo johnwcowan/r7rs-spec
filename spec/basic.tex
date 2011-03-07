@@ -36,6 +36,7 @@ The most fundamental of the variable binding constructs is the
 {\cf lambda} expression, because all other variable binding constructs
 can be explained in terms of {\cf lambda} expressions.  The other
 variable binding constructs are {\cf let}, {\cf let*}, {\cf letrec},
+{\cf letrec*},
 and {\cf do} expressions (see sections~\ref{lambda}, \ref{letrec}, and
 \ref{do}).
 
@@ -262,6 +263,7 @@ are shown here.
 (let \meta{variable} (\arbno{\meta{binding spec}}) \meta{tail body})
 (let* (\arbno{\meta{binding spec}}) \meta{tail body})
 (letrec (\arbno{\meta{binding spec}}) \meta{tail body})
+(letrec* (\arbno{\meta{binding spec}}) \meta{tail body})
 
 (let-syntax (\arbno{\meta{syntax spec}}) \meta{tail body})
 (letrec-syntax (\arbno{\meta{syntax spec}}) \meta{tail body})
