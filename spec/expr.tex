@@ -779,6 +779,44 @@ Unpredictable behavior can result if any of the symbols
 \ide{quasiquote}, \ide{unquote}, or \ide{unquote-splicing} appear in
 positions within a \hyper{qq template} otherwise than as described above.
 
+\begin{entry}{%
+\proto{case-lambda}{ \hyperi{clause} \hyperii{clause} \dotsfoo}{library \exprtype}}
+
+\syntax
+Each \hyper{clause} should be of the form
+(\hyper{formals} \hyper{body})%
+where \hyper{formals} and \hyper{body} have the same syntax
+as in a \lambdaexp.
+
+\semantics
+A {\cf case-lambda} expression evaluates to a procedure that accepts
+a variable number of arguments and is lexically scoped in the same
+manner as procedures resulting from a \lambdaexp. When the procedure
+is called, then the first \hyper{clause} for which the arguments agree
+with \hyper{formals} is selected, where agreement is specified as for
+the \hyper{formals} of a \lambdaexp. The variables of \hyper{formals} are
+bound to fresh locations, the values of the arguments are stored in those
+locations, the \hyper{body} is evaluated in the extended environment,
+and the results of \hyper{body} are returned as the results of the
+procedure call.
+
+It is an error for the arguments not to agree with
+the \hyper{formals} of any \hyper{clause}.
+
+\begin{scheme}
+(define plus
+  (case-lambda 
+    (() 0)
+    ((x) x)
+    ((x y) (+ x y))
+    ((x y z) (+ (+ x y) z))
+    (args (apply + args))))
+
+(plus) \ev 0
+(plus 1) \ev 1
+(plus 1 2 3) \ev 6
+\end{scheme}
+
 \end{entry}
 
 \section{Macros}
