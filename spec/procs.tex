@@ -847,38 +847,68 @@ however, they return the additive or multiplicative inverse of their argument.
 
 
 \begin{entry}{%
+\proto{floor/}{ \vri{n} \vrii{n}}{procedure}
+\proto{floor-quotient}{ \vri{n} \vrii{n}}{procedure}
+\proto{floor-remainder}{ \vri{n} \vrii{n}}{procedure}
+\proto{ceiling/}{ \vri{n} \vrii{n}}{procedure}
+\proto{ceiling-quotient}{ \vri{n} \vrii{n}}{procedure}
+\proto{ceiling-remainder}{ \vri{n} \vrii{n}}{procedure}
+\proto{truncate/}{ \vri{n} \vrii{n}}{procedure}
+\proto{truncate-quotient}{ \vri{n} \vrii{n}}{procedure}
+\proto{truncate-remainder}{ \vri{n} \vrii{n}}{procedure}
+\proto{round/}{ \vri{n} \vrii{n}}{procedure}
+\proto{round-quotient}{ \vri{n} \vrii{n}}{procedure}
+\proto{round-remainder}{ \vri{n} \vrii{n}}{procedure}
+\proto{euclidean/}{ \vri{n} \vrii{n}}{procedure}
+\proto{euclidean-quotient}{ \vri{n} \vrii{n}}{procedure}
+\proto{euclidean-remainder}{ \vri{n} \vrii{n}}{procedure}}
+
+These procedures implement number-theoretic (integer) division.
+\vrii{n} should be non-zero.  All fifteen procedures return integers.
+The procedures compute a quotient \vr{n_q} and remainder \vr{n_r} such
+that $\vri{n} = \vrii{n} \vr{n_q} + \vr{n_r}$.  For each of the five
+division operators {\cf ceiling}, {\cf floor}, {\cf truncate}, {\cf
+  round}, and {\cf euclidean}, there are three procedures defined as
+follows:
+
+\begin{scheme}
+(\hyper{operator}/)             \ev ({\cf values} \vr{n_q} \vr{n_r})
+(\hyper{operator}-quotient)     \ev \vr{n_q}
+(\hyper{operator}-remainder)    \ev \vr{n_r}
+\end{scheme}
+
+The remainder \vr{n_r} is determined by the choice of integer
+\vr{n_q}: $\vr{n_r} = \vri{n} - \vrii{n} \vr{n_q}$.  Each set of
+operators uses a different choice of \vr{n_q}:
+
+\begin{tabular}{l l}
+\textbf{ceiling}   & $\vr{n_q} = \lceil\vri{n} / \vrii{n}\rceil$ \\
+\textbf{floor}     & $\vr{n_q} = \lfloor\vri{n} / \vrii{n}\rfloor$ \\
+\textbf{truncate}  & $\vr{n_q} = \text{truncate}(\vri{n} / \vrii{n})$ \\
+\textbf{round}     & $\vr{n_q} = [\vri{n} / \vrii{n}]$ \\
+\textbf{euclidean} & $\text{if } \vrii{n} > 0, \vr{n_q} = \lfloor\vri{n} / \vrii{n}\rfloor; \text{ if } \vrii{n} < 0, \vr{n_q} = \lceil\vri{n} / \vrii{n}\rceil$ \\
+\end{tabular}
+
+For any of the operators, and for integers \vri{n} and \vrii{n}
+with \vrii{n} not equal to 0,
+\begin{scheme}
+     (= \vri{n} (+ (* \vrii{n} (\hyper{operator}-quotient \vri{n} \vrii{n}))
+           (\hyper{operator}remainder \vri{n} \vrii{n})))
+                                 \ev  \schtrue%
+\end{scheme}
+provided all numbers involved in that computation are exact.
+
+\end{entry}
+
+
+\begin{entry}{%
 \proto{quotient}{ \vri{n} \vrii{n}}{procedure}
 \proto{remainder}{ \vri{n} \vrii{n}}{procedure}
 \proto{modulo}{ \vri{n} \vrii{n}}{procedure}}
 
-These procedures implement number-theoretic (integer)
-division.  \vrii{n} should be non-zero.  All three procedures
-return integers.  If \vri{n}/\vrii{n} is an integer:
-\begin{scheme}
-    (quotient \vri{n} \vrii{n})   \ev \vri{n}/\vrii{n}
-    (remainder \vri{n} \vrii{n})  \ev 0
-    (modulo \vri{n} \vrii{n})     \ev 0
-\end{scheme}
-If \vri{n}/\vrii{n} is not an integer:
-\begin{scheme}
-    (quotient \vri{n} \vrii{n})   \ev \vr{n_q}
-    (remainder \vri{n} \vrii{n})  \ev \vr{n_r}
-    (modulo \vri{n} \vrii{n})     \ev \vr{n_m}
-\end{scheme}
-where \vr{n_q} is $\vri{n}/\vrii{n}$ rounded towards zero,
-$0 < |\vr{n_r}| < |\vrii{n}|$, $0 < |\vr{n_m}| < |\vrii{n}|$,
-\vr{n_r} and \vr{n_m} differ from \vri{n} by a multiple of \vrii{n},
-\vr{n_r} has the same sign as \vri{n}, and
-\vr{n_m} has the same sign as \vrii{n}.
-
-From this we can conclude that for integers \vri{n} and \vrii{n} with
-\vrii{n} not equal to 0,
-\begin{scheme}
-     (= \vri{n} (+ (* \vrii{n} (quotient \vri{n} \vrii{n}))
-           (remainder \vri{n} \vrii{n})))
-                                 \ev  \schtrue%
-\end{scheme}
-provided all numbers involved in that computation are exact.
+{\cf Quotient} and {\cf remainder} are shorthand for {\cf
+  truncate-quotient} and {\cf truncate-remainder}, respectively.  {\cf
+  Modulo} is equivalent to {\cf floor-remainder}.
 
 \begin{scheme}
 (modulo 13 4)           \ev  1
