@@ -44,6 +44,8 @@ language: {\tt \verb"[" \verb"]" \verb"{" \verb"}" \verb"|"}
 \meta{token} \: \meta{identifier} \| \meta{boolean} \| \meta{number}\index{identifier}
 \>  \| \meta{character} \| \meta{string}
 \>  \| ( \| ) \| \sharpsign( \| \singlequote{} \| \backquote{} \| , \| ,@ \| {\bf.}
+\>  \| \meta{label} \= \meta{token} \| \meta{label} \#
+\meta{label} \: \# \atleastone{\meta{digit $10$}}
 \meta{delimiter} \: \meta{whitespace} \| ( \| ) \| " \| ;
 \meta{whitespace} \: \meta{space or newline}
 \meta{comment} \: ; \= $\langle$\rm all subsequent characters up to a
