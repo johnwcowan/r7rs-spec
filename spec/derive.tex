@@ -192,6 +192,27 @@ value.
      y)))
 \end{scheme}
 
+\begin{scheme}
+(define-syntax \ide{case-lambda}
+  (syntax-rules ()
+    ((case-lambda (params body0 body1 ...) ...)
+     (lambda args
+       (let ((len (length args)))
+         (let-syntax
+             ((cl (syntax-rules ::: ()
+                    ((cl)
+                     (error "no matching case-lambda clauses"))
+                    ((cl ((p :::) . body) . rest)
+                     (if (= len (length '(p :::)))
+                         (apply (lambda (p :::) . body) args)
+                         (cl . rest)))
+                    ((cl ((p ::: . tail) . body) . rest)
+                     (if (>= len (length '(p :::)))
+                         (apply (lambda (p ::: . tail) . body) args)
+                         (cl . rest))))))
+           (cl (params body0 body1 ...) ...)))))))
+\end{scheme}
+
 % `a                =  Q_1[a]
 % `(a b c ... . z)  =  `(a . (b c ...))
 % `(a . b)          =  (append Q*_0[a] `b)
