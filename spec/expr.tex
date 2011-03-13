@@ -363,9 +363,17 @@ the form
 \end{scheme}
 where each \hyper{datum} is an external representation of some object.
 All the \hyper{datum}s must be distinct.
-The last \hyper{clause} may be an ``else clause,'' which has the form
+Alternatively, a \hyper{clause} may be of the form
 \begin{scheme}
-(else \hyperi{expression} \hyperii{expression} \dotsfoo)\rm.%
+((\hyperi{datum} \dotsfoo) => \hyper{expression})%
+\end{scheme}
+The last \hyper{clause} may be an ``else clause,'' which has one of the forms
+\begin{scheme}
+(else \hyperi{expression} \hyperii{expression} \dotsfoo)
+\end{scheme}
+or
+\begin{scheme}
+(else => \hyper{expression})\rm.%
 \end{scheme}
 \schindex{else}
 
@@ -376,11 +384,17 @@ result of evaluating \hyper{key} is equivalent (in the sense of
 {\cf eqv?}; see section~\ref{eqv?}) to a \hyper{datum}, then the
 expressions in the corresponding \hyper{clause} are evaluated from left
 to right and the result(s) of the last expression in the \hyper{clause} is(are)
-returned as the result(s) of the {\cf case} expression.  If the result of
+returned as the result(s) of the {\cf case} expression.
+If the result of
 evaluating \hyper{key} is different from every \hyper{datum}, then if
 there is an else clause its expressions are evaluated and the
 result(s) of the last is(are) the result(s) of the {\cf case} expression;
 otherwise the result of the {\cf case} expression is unspecified.
+If the selected \hyper{clause} or else clause uses the
+\ide{=>} alternate form, then the \hyper{expression} is evaluated.
+Its value must be a procedure that accepts one argument; this procedure is then
+called on the value of the \hyper{key} and the value(s) returned by this
+procedure is(are) returned by the {\cf case} expression.
 
 \begin{scheme}
 (case (* 2 3)
@@ -392,7 +406,7 @@ otherwise the result of the {\cf case} expression is unspecified.
 (case (car '(c d))
   ((a e i o u) 'vowel)
   ((w y) 'semivowel)
-  (else 'consonant))            \ev  consonant%
+  (else => (lambda (x) x)))     \ev  c%
 \end{scheme}
 
 \end{entry}
@@ -441,13 +455,14 @@ expressions then \schfalse{} is returned.
 
 \subsection{Binding constructs}
 
-The three binding constructs {\cf let}, {\cf let*}, and {\cf letrec}
+The four binding constructs {\cf let}, {\cf let*}, {\cf letrec}, and {\cf letrec*}
 give Scheme a block structure, like Algol 60.  The syntax of the three
 constructs is identical, but they differ in the regions\index{region} they establish
 for their variable bindings.  In a {\cf let} expression, the initial
 values are computed before any of the variables become bound; in a
 {\cf let*} expression, the bindings and evaluations are performed
-sequentially; while in a {\cf letrec} expression, all the bindings are in
+sequentially; while in {\cf letrec} and {\cf letrec*} expressions,
+all the bindings are in
 effect while their initial values are being computed, thus allowing
 mutually recursive definitions.
 
@@ -565,6 +580,54 @@ name.  In the most common uses of {\cf letrec}, all the \hyper{init}s are
 \lambdaexp{}s and the restriction is satisfied automatically.
 
 % \todo{use or uses?  --- Jinx.}
+
+\end{entry}
+
+
+\begin{entry}{%
+\proto{letrec*}{ \hyper{bindings} \hyper{body}}{library \exprtype}}
+
+\syntax
+\hyper{Bindings} should have the form
+\begin{scheme}
+((\hyperi{variable} \hyperi{init}) \dotsfoo)\rm,%
+\end{scheme}
+and \hyper{body} should be a sequence of
+one or more expressions. It is an error for a \hyper{variable} to appear more
+than once in the list of variables being bound.
+
+\semantics
+The \hyper{variable}s are bound to fresh locations,
+each \hyper{variable} is assigned in left-to-right order to the
+result of evaluating the corresponding \hyper{init}, the \hyper{body} is
+evaluated in the resulting environment, and the values of the last
+expression in \hyper{body} are returned. 
+Despite the left-to-right evaluation and assignment order, each binding of
+a \hyper{variable} has the entire {\cf letrec*} expression as its
+region\index{region}, making it possible to define mutually recursive
+procedures.
+
+\begin{scheme}
+(letrec* ((p
+           (lambda (x)
+             (+ 1 (q (- x 1)))))
+          (q
+           (lambda (y)
+             (if (zero? y)
+                 0
+                 (+ 1 (p (- y 1))))))
+          (x (p 5))
+          (y x))
+  y)
+                \ev  5%
+\end{scheme}
+
+It must be possible to evaluate each \hyper{init} without assigning or
+referring to the value of the corresponding \hyper{variable} or the
+\hyper{variable} of any of the bindings that follow it in
+\hyper{bindings}.
+Another restriction is that the continuation of each \hyper{init}
+should not be invoked more than once.
 
 \end{entry}
 
@@ -938,36 +1001,41 @@ introduced by the {\cf letrec-syntax} expression.
 A \hyper{transformer spec} has the following form:
 
 \begin{entry}{%
-\proto{syntax-rules}{ \hyper{literals} \hyper{syntax rule} \dotsfoo}{}}
+\pproto{(syntax-rules (\hyper{literal} \dotsfoo) \hyper{syntax rule} \dotsfoo)}{\exprtype}
+\pproto{(syntax-rules \hyper{ellipsis} (\hyper{literal} \dotsfoo) \hyper{syntax rule} \dotsfoo)}{\exprtype}}
 
 \syntax
-\hyper{Literals} is a list of identifiers and each \hyper{syntax rule}
-should be of the form
+Each \hyper{literal}, as well as the \hyper{ellipsis} in the second form must
+be an identifier, and each
+\hyper{syntax rule} should be of the form
 \begin{scheme}
 (\hyper{pattern} \hyper{template})%
 \end{scheme}
 The \hyper{pattern} in a \hyper{syntax rule} is a list \hyper{pattern}
-that begins with the keyword for the macro.
+whose first subform is an identifier or an underscore {\cf \_}.
 
 A \hyper{pattern} is either an identifier, a constant, or one of the
 following
 \begin{scheme}
 (\hyper{pattern} \ldots)
 (\hyper{pattern} \hyper{pattern} \ldots . \hyper{pattern})
-(\hyper{pattern} \ldots \hyper{pattern} \hyper{ellipsis})
+(\hyper{pattern} \ldots \hyper{pattern} \hyper{ellipsis} \hyper{pattern} \ldots)
+(\hyper{pattern} \ldots \hyper{pattern} \hyper{ellipsis} \hyper{pattern} \ldots . \hyper{pattern})
 \#(\hyper{pattern} \ldots)
-\#(\hyper{pattern} \ldots \hyper{pattern} \hyper{ellipsis})%
+\#(\hyper{pattern} \ldots \hyper{pattern} \hyper{ellipsis} \hyper{pattern} \ldots)%
 \end{scheme}
 and a template is either an identifier, a constant, or one of the following
 \begin{scheme}
 (\hyper{element} \ldots)
 (\hyper{element} \hyper{element} \ldots . \hyper{template})
+(\hyper{ellipsis} \hyper{element})
 \#(\hyper{element} \ldots)%
 \end{scheme}
 where an \hyper{element} is a \hyper{template} optionally
-followed by an \hyper{ellipsis} and
-an \hyper{ellipsis} is the identifier ``{\cf ...}'' (which cannot be used as
-an identifier in either a template or a pattern).\schindex{...}
+followed by an \hyper{ellipsis}.
+An \hyper{ellipsis} is the identifier specified in the second form
+of {\cf syntax-rules}, or the default identifier ``{\cf ...}''
+otherwise.\schindex{...}
 
 \semantics An instance of {\cf syntax-rules} produces a new macro
 transformer by specifying a sequence of hygienic rewrite rules.  A use
@@ -977,34 +1045,42 @@ of a macro whose keyword is associated with a transformer specified by
 When a match is found, the macro use is transcribed hygienically
 according to the template.
 
-An identifier that appears in the pattern of a \hyper{syntax rule} is
-a {\em pattern variable}, unless it is the keyword that begins the pattern,
-is listed in \hyper{literals}, or is the identifier ``{\cf ...}''.
-Pattern variables match arbitrary input elements and
-are used to refer to elements of the input in the template.  It is an
-error for the same pattern variable to appear more than once in a
-\hyper{pattern}.
+An identifier appearing within a \hyper{pattern} may be an underscore
+(``{\cf \_}''), a literal identifier listed in the list of \hyper{literal}s,
+or the \hyper{ellipsis}.
+All other identifiers appearing within a \hyper{pattern} are
+{\em pattern variables}.
 
 The keyword at the beginning of the pattern in a
 \hyper{syntax rule} is not involved in the matching and
 is not considered a pattern variable or literal identifier.
 
-\begin{rationale}
-The scope of the keyword is determined by the expression or syntax
-definition that binds it to the associated macro transformer.
-If the keyword were a pattern variable or literal
-identifier, then
-the template that follows the pattern would be within its scope
-regardless of whether the keyword were bound by {\cf let-syntax}
-or by {\cf letrec-syntax}.
-\end{rationale}
+%% \begin{rationale}
+%% The scope of the keyword is determined by the expression or syntax
+%% definition that binds it to the associated macro transformer.
+%% If the keyword were a pattern variable or literal
+%% identifier, then
+%% the template that follows the pattern would be within its scope
+%% regardless of whether the keyword were bound by {\cf let-syntax}
+%% or by {\cf letrec-syntax}.
+%% \end{rationale}
 
-Identifiers that appear in \hyper{literals} are interpreted as literal
+Pattern variables match arbitrary input elements and
+are used to refer to elements of the input in the template.  
+It is an error for the same pattern variable to appear more than once in a
+\hyper{pattern}.
+
+Underscores also match arbitrary input subforms but are not pattern variables
+and so cannot be used to refer to those elements.  If an underscore appears
+in the \hyper{literal}s list, then that takes precedence and
+underscores in the \hyper{pattern} match as literals.
+Multiple underscores may appear in a \hyper{pattern}.
+
+Identifiers that appear in \texttt{(\hyper{literal} \dotsfoo)} are
+interpreted as literal
 identifiers to be matched against corresponding subforms of the input.
-A subform
-in the input matches a literal identifier if and only if it is an
-identifier
-and either both its occurrence in the macro expression and its
+A subform in the input matches a literal identifier if and only if it is an
+identifier and either both its occurrence in the macro expression and its
 occurrence in the macro definition have the same lexical binding, or
 the two identifiers are equal and both have no lexical binding.
 
@@ -1012,14 +1088,15 @@ the two identifiers are equal and both have no lexical binding.
 % identifiers, but in their most interesting uses, such as a setf
 % macro, they aren't noise words at all. -- Will]
 
-A subpattern followed by {\cf ...} can match zero or more elements of the
-input.  It is an error for {\cf ...} to appear in \hyper{literals}.
-Within a pattern the identifier {\cf ...} must follow the last element of
-a nonempty sequence of subpatterns.
+A subpattern followed by \hyper{ellipsis} can match zero or more elements of
+the input, unless \hyper{ellipsis} appears in the \hyper{literal}s in which
+case it is matched as a literal.
 
 More formally, an input form $F$ matches a pattern $P$ if and only if:
 
 \begin{itemize}
+\item $P$ is an underscore (``{\cf \_}'').
+
 \item $P$ is a non-literal identifier; or
 
 \item $P$ is a literal identifier and $F$ is an identifier with the same
@@ -1036,24 +1113,32 @@ More formally, an input form $F$ matches a pattern $P$ if and only if:
       respectively, and whose $n$th ``cdr'' matches $P_{n+1}$; or
 
 \item $P$ is of the form
-      {\cf ($P_1$ $\dots$ $P_n$ $P_{n+1}$ \meta{ellipsis})}
-      where \meta{ellipsis} is the identifier {\cf ...}
-      and $F$ is
-      a proper list of at least $n$ forms, the first $n$ of which match
-      $P_1$ through $P_n$, respectively, and each remaining element of $F$
-      matches $P_{n+1}$; or
+      {\cf ($P_1$ $\dots$ $P_{e-1}$ $P_{e}$ \meta{ellipsis} $P_{m+1}$ \dotsfoo{} $P_n$)}
+      where $F$ is
+      a proper list of $n$ forms, the first $e-1$ of which match
+      $P_1$ through $P_{e-1}$, respectively,
+      whose next $m-k$ forms each match $P_e$,
+      whose remaining $n-m$ forms match $P_{m+1}$ through $P_n$; or
+
+\item $P$ is of the form
+      {\cf ($P_1$ $\dots$ $P_{e-1}$ $P_{e}$ \meta{ellipsis} $P_{m+1}$ \dotsfoo{} $P_n$ . $P_x$)}
+      where $F$ is
+      an list or improper list of $n$ forms, the first $e-1$ of which match
+      $P_1$ through $P_{e-1}$,
+      whose next $m-k$ forms each match $P_e$,
+      whose remaining $n-m$ forms match $P_{m+1}$ through $P_n$,
+      and whose $n$th and final cdr matches $P_x$; or
 
 \item $P$ is a vector of the form {\cf \#($P_1$ $\dots$ $P_n$)}
       and $F$ is a vector
       of $n$ forms that match $P_1$ through $P_n$; or
 
 \item $P$ is of the form
-      {\cf \#($P_1$ $\dots$ $P_n$ $P_{n+1}$ \meta{ellipsis})}
-      where \meta{ellipsis} is the identifier {\cf ...}
-      and $F$ is a vector of $n$
-      or more forms the first $n$ of which match
-      $P_1$ through $P_n$, respectively, and each remaining element of $F$
-      matches $P_{n+1}$; or
+      {\cf \#($P_1$ $\dots$ $P_{e-1}$ $P_{e}$ \meta{ellipsis} $P_{m+1}$ \dotsfoo $P_n$)}
+      where $F$ is a vector of $n$
+      forms the first $e-1$ of which match $P_1$ through $P_{e-1}$,
+      whose next $m-k$ forms each match $P_e$,
+      and whose remaining $n-m$ forms matche $P_{m+1}$ through $P_n$; or
 
 \item $P$ is a datum and $F$ is equal to $P$ in the sense of
       the {\cf equal?} procedure.
@@ -1067,8 +1152,8 @@ matching \hyper{syntax rule}, pattern variables that occur in the
 template are replaced by the subforms they match in the input.
 Pattern variables that occur in subpatterns followed by one or more
 instances of the identifier
-{\cf ...} are allowed only in subtemplates that are
-followed by as many instances of {\cf ...}.
+\hyper{ellipsis} are allowed only in subtemplates that are
+followed by as many instances of \hyper{ellipsis}.
 They are replaced in the
 output by all of the subforms they match in the input, distributed as
 indicated.  It is an error if the output cannot be built up as
@@ -1079,12 +1164,36 @@ specified.
 
 Identifiers that appear in the template but are not pattern variables
 or the identifier
-{\cf ...} are inserted into the output as literal identifiers.  If a
+\hyper{ellipsis} are inserted into the output as literal identifiers.  If a
 literal identifier is inserted as a free identifier then it refers to the
 binding of that identifier within whose scope the instance of
 {\cf syntax-rules} appears.
 If a literal identifier is inserted as a bound identifier then it is
 in effect renamed to prevent inadvertent captures of free identifiers.
+
+A template of the form
+{\cf (\hyper{ellipsis} \hyper{template})} is identical to \hyper{template},
+except that
+ellipses within the template have no special meaning.
+That is, any ellipses contained within \hyper{template} are
+treated as ordinary identifiers.
+In particular, the template {\cf (\hyper{ellipsis} \hyper{ellipsis})} produces
+a single \hyper{ellipsis}.
+This allows syntactic abstractions to expand into forms containing
+ellipses.
+
+\begin{scheme}
+(define-syntax be-like-begin
+  (syntax-rules ()
+    ((be-like-begin name)
+     (define-syntax name
+       (syntax-rules ()
+         ((name expr (... ...))
+          (begin expr (... ...))))))))
+
+(be-like-begin sequence)
+(sequence 1 2 3 4) \ev 4%
+\end{scheme}
 
 As an example, if \ide{let} and \ide{cond} are defined as in
 section~\ref{derivedsection} then they are hygienic (as required) and
@@ -1117,3 +1226,29 @@ which would result in an invalid procedure call.
 
 \end{entry}
 
+\subsection{Signalling errors in macros}
+\label{syntax-error}
+
+% Is it better to describe this as part of the template language?
+
+\begin{entry}{%
+\pproto{(syntax-error \hyper{message} \hyper{args} \dotsfoo)}{\exprtype}}
+
+{\cf syntax-error} is similar to {\cf error} except that implementations
+with an expansion pass separate from evaluation should signal an error
+as soon as the {\cf syntax-error} form is expanded.  This can be used as
+a {\cf syntax-rules} \hyper{template} for a \hyper{pattern} that is
+an invalid use of the macro, which can provide more descriptive error
+messages.  \hyper{message} should be a string literal, and \hyper{args}
+arbitrary forms providing additional information.
+
+\todo{Shinn: This doesn't check all non-identifier cases, think of a better example.}
+
+\begin{scheme}
+(define-syntax simple-let
+  (syntax-rules ()
+    ((simple-let (head ... ((x . y) val) . tail) body1 body2 ...)
+     (syntax-error ``name should be an identifier, but got'' (x . y)))
+    ((simple-let ((name val) ...) body1 body2 ...)
+     ((lambda (name ...) body1 body2 ...) val ...))))
+\end{scheme}

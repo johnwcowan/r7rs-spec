@@ -36,6 +36,7 @@ The most fundamental of the variable binding constructs is the
 {\cf lambda} expression, because all other variable binding constructs
 can be explained in terms of {\cf lambda} expressions.  The other
 variable binding constructs are {\cf let}, {\cf let*}, {\cf letrec},
+{\cf letrec*},
 and {\cf do} expressions (see sections~\ref{lambda}, \ref{letrec}, and
 \ref{do}).
 
@@ -80,17 +81,17 @@ No object satisfies more than one of the following predicates:
 boolean?          pair?
 symbol?           number?
 char?             string?
-vector?           port?
-procedure?%
+vector?           blob?
+port?             procedure?%
 \end{scheme}
 
 These predicates define the types {\em boolean}, {\em pair}, {\em
 symbol}, {\em number}, {\em char} (or {\em character}), {\em string}, {\em
-vector}, {\em port}, and {\em procedure}.  The empty list is a special
+vector}, {\em blob} {\em port}, and {\em procedure}.  The empty list is a special
 object of its own type; it satisfies none of the above predicates.
 \mainindex{type}\schindex{boolean?}\schindex{pair?}\schindex{symbol?}
 \schindex{number?}\schindex{char?}\schindex{string?}\schindex{vector?}
-\schindex{port?}\schindex{procedure?}\index{empty list}
+\schindex{blob?}\schindex{port?}\schindex{procedure?}\index{empty list}
 
 Although there is a separate boolean type,
 any Scheme value can be used as a boolean value for the purpose of a
@@ -262,6 +263,7 @@ are shown here.
 (let \meta{variable} (\arbno{\meta{binding spec}}) \meta{tail body})
 (let* (\arbno{\meta{binding spec}}) \meta{tail body})
 (letrec (\arbno{\meta{binding spec}}) \meta{tail body})
+(letrec* (\arbno{\meta{binding spec}}) \meta{tail body})
 
 (let-syntax (\arbno{\meta{syntax spec}}) \meta{tail body})
 (letrec-syntax (\arbno{\meta{syntax spec}}) \meta{tail body})
