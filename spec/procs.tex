@@ -294,6 +294,11 @@ circular data structures.
         (lambda (y) y))  \ev  \unspecified%
 \end{scheme}
 
+\begin{note}
+  The {\cf equal?} procedure must always terminate, even if its
+  arguments contain cycles.
+\end{note}
+
 \end{entry}
 
 
@@ -1679,6 +1684,13 @@ the empty list.
           (set-cdr! x x)
           (list? x))         \ev  \schfalse%
 \end{scheme}
+
+\todo{Do we need to emphasize the following note?}
+
+%% \begin{note}
+%%   The {\cf list?} procedure must terminate and return \schfalse{} if \var{obj}
+%%   contains cycles.
+%% \end{note}
 \end{entry}
 
 \begin{entry}{%
@@ -1716,6 +1728,13 @@ Returns the length of \var{list}.
 (length '(a (b) (c d e)))       \ev  3
 (length '())                    \ev  0%
 \end{scheme}
+
+\todo{Do we need to emphasize the following note?}
+
+%% \begin{note}
+%%   The {\cf length} procedure must detect and signal an error if its
+%%   argument contains cycles.
+%% \end{note}
 \end{entry}
 
 
