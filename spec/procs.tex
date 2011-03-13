@@ -2961,6 +2961,14 @@ handler returns, the values it returns become the values returned by
 the call to {\cf raise-continuable}.
 \end{entry}
 
+\begin{entry}{%
+\proto{error}{ \var{message} \var{obj} $\ldots$}{procedure}}
+
+A convenience procedure to raise an exception.  Equivalent to calling
+{\cf raise} on an implementation-defined object which encapsulates the
+information provided by \var{message} and any \var{obj}s.
+\end{entry}
+
 \begin{scheme}
 (with-exception-handler
   (lambda (con)
