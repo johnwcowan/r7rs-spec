@@ -2942,20 +2942,59 @@ expressions dynamically typed by the user.
 \subsection{Ports}
 \label{portsection}
 
-Ports represent input and output devices.  To Scheme, an input port is a
-Scheme object that can deliver characters upon command, while an output port
-is a Scheme object that can accept characters. \mainindex{port}
+Ports represent input and output devices.  To Scheme, an input port is
+a Scheme object that can deliver data upon command, while an output
+port is a Scheme object that can accept data.\mainindex{port}
+Different {\em port types} operate on different data.  Scheme
+imple\-men\-ta\-tions are required to support {\em character ports}
+and {\em binary ports}, but may also provide other {\em port types}.
 
-\todo{Haase: Mention that there are alternatives to files?}
+A character port supports reading or writing of character data, such
+as {\cf read-char} and {\cf write-char} below, as well as operations
+defined in terms of characters such as {\cf read} and {\cf write}.
+
+A binary port supports reading or writing of binary data at the level
+of individual octets with {\cf read-u8} and {\cf write-u8}, below.
+Every binary port is also automatically a character port, by treating
+the sequence of octets as an implementation-determined character set
+encoding.  Conversely, not all character ports are binary ports.
+
+Ports can be used to access objects called {\em files} on the host
+system in which the Scheme program is running.  In the procedures
+below files are referenced with \hyper{file-spec}s, which can either
+be a string or a {\em settings list}, which is a list of alternating
+\hyper{keys} and \hyper{values} where every \hyper{key} is a symbol.
+Specifying a string is equivalent to the settings list \texttt{({\cf
+    path} \var{string})}. The following keys are defined:
+
+\begin{itemize}
+
+\item {\cf path} - A string naming the file.  The interpretation of
+  filenames is implementation-dependent.  There is no default value,
+  but implementations may accept other keys in lieu of this for
+  opening file objects that don't have string names.
+
+\item {\cf buffer} - Specifies what kind of buffering is present.  The
+  value \schfalse{} means no buffering is employed; the symbol
+  \texttt{binary} means that there is a binary buffer but no character
+  buffer; \schtrue{} means there are both character and binary
+  buffering.  Other values may be specified by an implementation.
+  Buffer sizes are implementation-dependent.  The default value is
+  implementation-dependent.
+
+\end{itemize}
+
+Implementations may support other \var{key}s, should warn if they
+detect keys they do not understand or implement, and may signal an
+error in such cases.
 
 \begin{entry}{%
-\proto{call-with-input-file}{ string proc}{library procedure}
-\proto{call-with-output-file}{ string proc}{library procedure}}
+\proto{call-with-input-file}{ file-spec proc}{library procedure}
+\proto{call-with-output-file}{ file-spec proc}{library procedure}}
 
-\var{String} should be a string naming a file, and
-\var{proc} should be a procedure that accepts one argument.
+\var{Proc} should be a procedure that accepts one argument.
 For {\cf call-with-input-file},
-the file should already exist; for
+the file named by \var{file-spec} should already exist; for
 {\cf call-with-output-file},
 the effect is unspecified if the file
 already exists. These procedures call \var{proc} with one argument: the
@@ -2995,6 +3034,14 @@ kind of port, respectively, otherwise returns \schfalse.
 
 \end{entry}
 
+\begin{entry}{%
+\proto{character-port?}{ obj}{procedure}
+\proto{binary-port?}{ obj}{procedure}}
+
+Returns \schtrue{} if \var{obj} is a character port or binary port,
+respectively.
+\end{entry}
+
 
 \begin{entry}{%
 \proto{port-open?}{ port}{procedure}}
@@ -3013,19 +3060,18 @@ performing input or output, and \schfalse otherwise.
 \proto{current-error-port}{}{procedure}}
  
 Returns the current default input port, output port, or error port (an
-output port), respectively.
+output port), respectively.  All three ports are binary.
 
 \end{entry}
 
 
 \begin{entry}{%
-\proto{with-input-from-file}{ string thunk}{optional procedure}
-\proto{with-output-to-file}{ string thunk}{optional procedure}}
+\proto{with-input-from-file}{ file-spec thunk}{optional procedure}
+\proto{with-output-to-file}{ file-spec thunk}{optional procedure}}
 
-\var{String} should be a string naming a file, and
-\var{proc} should be a procedure of no arguments.
+\var{Proc} should be a procedure of no arguments.
 For {\cf with-input-from-file},
-the file should already exist; for
+the file named by \var{file-spec} should already exist; for
 {\cf with-output-to-file},
 the effect is unspecified if the file
 already exists.
@@ -3056,19 +3102,19 @@ instead of ``the value returned by \var{current-input-port}''.  (Same for
 
 
 \begin{entry}{%
-\proto{open-input-file}{ filename}{procedure}}
+\proto{open-input-file}{ file-spec}{procedure}}
  
-Takes a string naming an existing file and returns an input port capable of
-delivering characters from the file.  If the file cannot be opened, an error is
+Takes a \var{file-spec} for an existing file and returns an input port capable of
+delivering data from the file.  If the file cannot be opened, an error is
 signalled.
 
 \end{entry}
 
 
 \begin{entry}{%
-\proto{open-output-file}{ filename}{procedure}}
+\proto{open-output-file}{ file-spec}{procedure}}
 
-Takes a string naming an output file to be created and returns an output
+Takes a \var{file-spec} naming an output file to be created and returns an output
 port capable of writing characters to a new file by that name.  If the file
 cannot be opened, an error is signalled.  If a file with the given name
 already exists, the effect is unspecified.
@@ -3152,7 +3198,8 @@ so far.
 objects themselves.  That is, it is a parser for the nonterminal
 \meta{datum} (see sections~\ref{datum} and
 \ref{listsection}).  {\cf Read} returns the next
-object parsable from the given input \var{port}, updating \var{port} to point to
+object parsable from the given character input \var{port}, updating
+\var{port} to point to
 the first character past the end of the external representation of the object.
 
 \vest If an end of file is encountered in the input before any
@@ -3172,7 +3219,8 @@ a closed port.
 \proto{read-char}{}{procedure}
 \rproto{read-char}{ port}{procedure}}
 
-Returns the next character available from the input \var{port}, updating
+Returns the next character available from the character input \var{port},
+updating
 the \var{port} to point to the following character.  If no more characters
 are available, an end of file object is returned.  \var{Port} may be
 omitted, in which case it defaults to the value returned by {\cf current-input-port}.
@@ -3184,7 +3232,7 @@ omitted, in which case it defaults to the value returned by {\cf current-input-p
 \proto{peek-char}{}{procedure}
 \rproto{peek-char}{ port}{procedure}}
 
-Returns the next character available from the input \var{port},
+Returns the next character available from the character input \var{port},
 {\em without} updating
 the \var{port} to point to the following character.  If no more characters
 are available, an end of file object is returned.  \var{Port} may be
@@ -3218,7 +3266,7 @@ that can be read in using {\cf read}.
 \proto{char-ready?}{}{procedure}
 \rproto{char-ready?}{ port}{procedure}}
 
-Returns \schtrue{} if a character is ready on the input \var{port} and
+Returns \schtrue{} if a character is ready on the character input \var{port} and
 returns \schfalse{} otherwise.  If {\cf char-ready} returns \schtrue{} then
 the next {\cf read-char} operation on the given \var{port} is guaranteed
 not to hang.  If the \var{port} is at end of file then {\cf char-ready?}\
@@ -3236,6 +3284,50 @@ port that has no ready characters.
 \end{rationale}
 \end{entry}
 
+\begin{entry}{%
+\proto{read-u8}{}{procedure}
+\rproto{read-u8}{ port}{procedure}}
+
+Returns the next octet available from the binary input \var{port},
+updating the \var{port} to point to the following octet.  The value is
+an exact integer in the range $[0..255]$.  If no more octets are
+available, an end of file object is returned.  \var{Port} may be
+omitted, in which case it defaults to the value returned by {\cf
+  current-input-port}.
+
+\end{entry}
+
+
+\begin{entry}{%
+\proto{peek-u8}{}{procedure}
+\rproto{peek-u8}{ port}{procedure}}
+
+Returns the next octet available from the binary input \var{port},
+{\em without} updating the \var{port} to point to the following
+character.  If no more octets are available, an end of file object is
+returned.  \var{Port} may be omitted, in which case it defaults to the
+value returned by {\cf current-input-port}.
+
+\end{entry}
+
+
+\begin{entry}{%
+\proto{u8-ready?}{}{procedure}
+\rproto{u8-ready?}{ port}{procedure}}
+
+Returns \schtrue{} if an octet is ready on the binary input \var{port}
+and returns \schfalse{} otherwise.  If {\cf u8-ready?} returns
+\schtrue{} then the next {\cf read-u8} operation on the given
+\var{port} is guaranteed not to hang.  If the \var{port} is at end of
+file then {\cf u8-ready?}\ returns \schtrue.  \var{Port} may be
+omitted, in which case it defaults to the value returned by {\cf
+  current-input-port}.
+
+\begin{note}
+If {\cf u8-ready?} returns \schtrue{}, a subsequent {\cf read-char}
+operation may still hang.
+\end{note}
+\end{entry}
 
 \subsection{Output}
 \label{outputsection}
@@ -3248,7 +3340,8 @@ port that has no ready characters.
 \proto{write}{ obj}{library procedure}
 \rproto{write}{ obj port}{library procedure}}
 
-Writes a written representation of \var{obj} to the given \var{port}.  Strings
+Writes a written representation of \var{obj} to the given character output
+\var{port}.  Strings
 that appear in the written representation are enclosed in doublequotes, and
 within those strings backslash and doublequote characters are
 escaped by backslashes.
@@ -3264,8 +3357,8 @@ returned by {\cf current-output-port}.
 \proto{display}{ obj}{library procedure}
 \rproto{display}{ obj port}{library procedure}}
 
-Writes a representation of \var{obj} to the given \var{port}.  Strings
-that appear in the written representation are not enclosed in
+Writes a representation of \var{obj} to the given character output \var{port}.
+Strings that appear in the written representation are not enclosed in
 doublequotes, and no characters are escaped within those strings.  Character
 objects appear in the representation as if written by {\cf write-char}
 instead of by {\cf write}.  {\cf Display} returns an unspecified value.
@@ -3286,7 +3379,8 @@ slashify funny characters in symbols.
 \proto{newline}{}{library procedure}
 \rproto{newline}{ port}{library procedure}}
 
-Writes an end of line to \var{port}.  Exactly how this is done differs
+Writes an end of line to character output \var{port}.  Exactly how this
+is done differs
 from one operating system to another.  Returns an unspecified value.
 The \var{port} argument may be omitted, in which case it defaults to the
 value returned by {\cf current-output-port}.
@@ -3299,9 +3393,21 @@ value returned by {\cf current-output-port}.
 \rproto{write-char}{ char port}{procedure}}
 
 Writes the character \var{char} (not an external representation of the
-character) to the given \var{port} and returns an unspecified value.  The
+character) to the given character output \var{port} and returns an unspecified
+value.  The
 \var{port} argument may be omitted, in which case it defaults to the value
 returned by {\cf current-output-port}.
+
+\end{entry}
+
+\begin{entry}{%
+\proto{write-u8}{ octet}{procedure}
+\rproto{write-u8}{ octet port}{procedure}}
+
+Writes the \var{octet}, an exact integer in the range $[0..255]$, to
+the given binary output \var{port} and returns an unspecified value.
+The \var{port} argument may be omitted, in which case it defaults to
+the value returned by {\cf current-output-port}.
 
 \end{entry}
 
@@ -3314,7 +3420,7 @@ deserve description here.
 
 
 \begin{entry}{%
-\proto{load}{ filename}{optional procedure}}
+\proto{load}{ file-spec}{optional procedure}}
 
 \todo{Fix}
 
