@@ -2765,10 +2765,12 @@ and \cf{+}:
 \end{entry}
 
 \begin{entry}{%
-\proto{call-with-current-continuation}{ proc}{procedure}}
+\proto{call-with-current-continuation}{ proc}{procedure}
+\proto{call/cc}{ proc}{procedure}}
 
 \label{continuations} \domain{\var{Proc} must be a procedure of one
-argument.} The procedure {\cf call-with-current-continuation} packages
+argument.} The procedure {\cf call-with-current-continuation} (or its
+equivalent abbreviation {\cf call/cc}) packages
 up the current continuation (see the rationale below) as an ``escape
 procedure''\mainindex{escape procedure} and passes it as an argument to
 \var{proc}.  The escape procedure is a Scheme procedure that, if it is
