@@ -2004,7 +2004,7 @@ These procedures are similar to {\cf char=?}\ et cetera, but they treat
 upper case and lower case letters as the same.  For example, {\cf
 (char-ci=?\ \#\backwhack{}A \#\backwhack{}a)} returns \schtrue.
 
-Specifically, these procedures behave as if {\cf char-foldcase\} were
+Specifically, these procedures behave as if {\cf char-foldcase} were
 applied to their arguments before comparing them.
 
 Some implementations may generalize these procedures to take more than
@@ -2025,7 +2025,7 @@ numeric, whitespace, upper case, or lower case characters, respectively,
 otherwise they return \schfalse.  
 
 Specifically, they must return \schtrue when applied to characters with
-the Unicode properties Alphabetic, Numeric, White_Space, Uppercase, and
+the Unicode properties Alphabetic, Numeric, White\_Space, Uppercase, and
 Lowercase respectively, and \schfalse when applied to any other Unicode
 characters.  Note that many Unicode characters are alphabetic but neither
 upper nor lower case.
@@ -2048,9 +2048,9 @@ upper nor lower case.
 \proto{integer->char}{ \vr{n}}{procedure}}
 
 Given a Unicode character, {\cf char\coerce{}integer} returns an
-exact integer between 0 and #xD7FF or between #xE000 and #x10FFFF
+exact integer between 0 and \#xD7FF or between \#xE000 and \#x10FFFF
 which is equal to the Unicode code point of that character.  Given a
-non-Unicode character, it returns an exact integer greater than #x10FFFF.
+non-Unicode character, it returns an exact integer greater than \#x10FFFF.
 This is true independent of whether the implementation uses the Unicode
 representation internally.
 
@@ -2083,7 +2083,7 @@ returns that character.
 
 \begin{entry}{%
 \proto{char-upcase}{ char}{unicode module procedure}
-\proto{char-downcase}{ char}{unicode module procedure}}
+\proto{char-downcase}{ char}{unicode module procedure}
 \proto{char-foldcase}{ char}{unicode module procedure}}
 
 \nodomain{\var{Char} must be a character.}
@@ -2223,7 +2223,7 @@ and returns an unspecified value.  % <!>
 
 
 \begin{entry}{%
-\proto{string=?}{ \vari{string} \varii{string}}{library procedure}
+\proto{string=?}{ \vari{string} \varii{string}}{library procedure}}
 
 Returns \schtrue{} if the two strings are the same length and contain
 exactly the same characters in the same positions, otherwise returns
@@ -2237,7 +2237,26 @@ exactly the same characters in the same positions, otherwise returns
 Returns \schtrue{} if, after case-folding, the two strings are the same
 length and contain the same characters in the same positions, otherwise
 returns \schfalse.  Specifically, these procedures behave as if 
-{\cf string-foldcase\} were applied to their arguments before comparing them.
+{\cf string-foldcase} were applied to their arguments before comparing them.
+
+\end{entry}
+
+
+\begin{entry}{%
+\proto{string-ni=?}{ \vari{string} \varii{string}}{unicode module procedure}}
+
+Returns \schtrue{} if, after an implementation-defined normalization,
+the two strings are the same length and contain the same characters in
+the same positions, otherwise returns \schfalse.  The intent is to
+provide a means of comparing strings that should be considered
+equivalent in some situations but may be represented by a different
+sequence of characters.  Specifically, an implementation which
+supports Unicode should consider using Unicode normalization NFC or
+NFD as specified by Unicode TR\#15.  Implementations which only
+support ASCII or some other character set which provides no ambiguous
+representations of character sequences may define the normalization to
+be the identity operation, in which case {\cf string-ni=?}\ is
+equivalent to {\cf string=?}.
 
 \end{entry}
 
@@ -2250,7 +2269,11 @@ returns \schfalse.  Specifically, these procedures behave as if
 \proto{string-ci<?}{ \vari{string} \varii{string}}{unicode module procedure}
 \proto{string-ci>?}{ \vari{string} \varii{string}}{unicode module procedure}
 \proto{string-ci<=?}{ \vari{string} \varii{string}}{unicode module procedure}
-\proto{string-ci>=?}{ \vari{string} \varii{string}}{unicode module procedure}}
+\proto{string-ci>=?}{ \vari{string} \varii{string}}{unicode module procedure}
+\proto{string-ni<?}{ \vari{string} \varii{string}}{unicode module procedure}
+\proto{string-ni>?}{ \vari{string} \varii{string}}{unicode module procedure}
+\proto{string-ni<=?}{ \vari{string} \varii{string}}{unicode module procedure}
+\proto{string-ni>=?}{ \vari{string} \varii{string}}{unicode module procedure}}
 
 These procedures compare strings in an implementation-defined way.
 One approach is to make them the lexicographic extensions to strings of
@@ -2272,15 +2295,19 @@ The \hbox{``{\tt -ci}''} procedures behave as if they applied
 {\cf string-fold} to their arguments before invoking the corresponding
 procedures without  \hbox{``{\tt -ci}''}.
 
-Implementations may generalize these and the {\cf string=?}\ and
-{\cf string-ci=?} procedures to take more than two arguments, as with
-the corresponding numerical predicates.
+The \hbox{``{\tt -ni}''} procedures behave as if they applied the
+implementation-defined normalization to their arguments before
+invoking the corresponding procedures without \hbox{``{\tt -ni}''}.
+
+Implementations may generalize these and the {\cf string=?},\ {\cf
+  string-ci=?}, and {\cf string-ni=?}\ procedures to take more than
+two arguments, as with the corresponding numerical predicates.
 
 \end{entry}
 
 \begin{entry}{%
 \proto{string-upcase}{ string}{unicode module procedure}
-\proto{string-downcase}{ string}{unicode module procedure}}
+\proto{string-downcase}{ string}{unicode module procedure}
 \proto{string-foldcase}{ string}{unicode module procedure}}
 
 \nodomain{\var{String} must be a string.}
