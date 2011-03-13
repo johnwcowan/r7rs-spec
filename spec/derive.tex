@@ -140,6 +140,16 @@ This could also be accomplished by using an auxiliary macro.
 \end{scheme}
 
 \begin{scheme}
+(define-syntax \ide{letrec*}
+  (syntax-rules ()
+    ((letrec* ((var1 init1) ...) body1 body2 ...)
+     (let ((var1 <undefined>) ...)
+       (set! var1 init1)
+       ...
+       (let () body1 body2 ...)))))%
+\end{scheme}
+
+\begin{scheme}
 (define-syntax \ide{begin}
   (syntax-rules ()
     ((begin exp ...)

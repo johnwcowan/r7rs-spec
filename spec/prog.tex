@@ -105,7 +105,8 @@ such an implementation are truly equivalent to assignments.
 
 Definitions may occur at the
 beginning of a \hyper{body} (that is, the body of a \ide{lambda},
-\ide{let}, \ide{let*}, \ide{letrec}, \ide{let-syntax}, or \ide{letrec-syntax}
+\ide{let}, \ide{let*}, \ide{letrec}, \ide{letrec*}, \ide{let-syntax},
+or \ide{letrec-syntax}
 expression or that of a definition of an appropriate form).
 Such definitions are known as {\em internal definitions} \mainindex{internal
 definition} as opposed to the top level definitions described above.
@@ -121,20 +122,21 @@ and the region of the binding is the entire \hyper{body}.  For example,
 \end{scheme}
 
 A \hyper{body} containing internal definitions can always be converted
-into a completely equivalent {\cf letrec} expression.  For example, the
+into a completely equivalent {\cf letrec*} expression.  For example, the
 {\cf let} expression in the above example is equivalent to
 
 \begin{scheme}
 (let ((x 5))
-  (letrec ((foo (lambda (y) (bar x y)))
-           (bar (lambda (a b) (+ (* a b) a))))
+  (letrec* ((foo (lambda (y) (bar x y)))
+            (bar (lambda (a b) (+ (* a b) a))))
     (foo (+ x 3))))%
 \end{scheme}
 
-Just as for the equivalent {\cf letrec} expression, it must be
+Just as for the equivalent {\cf letrec*} expression, it must be
 possible to evaluate each \hyper{expression} of every internal
 definition in a \hyper{body} without assigning or referring to
-the value of any \hyper{variable} being defined.
+the value of the corresponding \hyper{variable} or the \hyper{variable}
+of any of the bindings that follow it in \hyper{bindings}.
 
 Wherever an internal definition may occur
 {\tt(begin \hyperi{definition} \dotsfoo)}
