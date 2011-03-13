@@ -225,7 +225,7 @@ successfully parses.  Note that any string that parses as an
 \meta{lambda expression} \: (lambda \meta{formals} \meta{body})
 \meta{formals} \: (\arbno{\meta{variable}}) \| \meta{variable}
 \>  \| (\atleastone{\meta{variable}} .\ \meta{variable})
-\meta{body} \: \arbno{\meta{definition}} \meta{sequence}
+\meta{body} \:  \arbno{\meta{syntax definition}} \arbno{\meta{definition}} \meta{sequence}
 \meta{sequence} \: \arbno{\meta{command}} \meta{expression}
 \meta{command} \: \meta{expression}
 
@@ -319,13 +319,16 @@ un\-quo\-ta\-tion $D$} takes precedence.
 \begin{grammar}%
 \meta{transformer spec} \:
 \> (syntax-rules (\arbno{\meta{identifier}}) \arbno{\meta{syntax rule}})
+\> \| (syntax-rules \meta{identifier} (\arbno{\meta{identifier}}) \arbno{\meta{syntax rule}})
 \meta{syntax rule} \: (\meta{pattern} \meta{template})
 \meta{pattern} \: \meta{pattern identifier}
+\>  \| \meta{underscore}
 \>  \| (\arbno{\meta{pattern}})
 \>  \| (\atleastone{\meta{pattern}} . \meta{pattern})
-\>  \| (\arbno{\meta{pattern}} \meta{pattern} \meta{ellipsis})
+\>  \| (\arbno{\meta{pattern}} \meta{pattern} \meta{ellipsis} \arbno{\meta{pattern}})
+\>  \| (\arbno{\meta{pattern}} \meta{pattern} \meta{ellipsis} \arbno{\meta{pattern}} .\ \meta{pattern})
 \>  \| \#(\arbno{\meta{pattern}})
-\>  \| \#(\arbno{\meta{pattern}} \meta{pattern} \meta{ellipsis})
+\>  \| \#(\arbno{\meta{pattern}} \meta{pattern} \meta{ellipsis} \arbno{\meta{pattern}})
 \>  \| \meta{pattern datum}
 \meta{pattern datum} \: \meta{string}
 \>  \| \meta{character}
@@ -333,14 +336,15 @@ un\-quo\-ta\-tion $D$} takes precedence.
 \>  \| \meta{number}
 \meta{template} \: \meta{pattern identifier}
 \>  \| (\arbno{\meta{template element}})
-\>  \| (\atleastone{\meta{template element}} . \meta{template})
+\>  \| (\atleastone{\meta{template element}} .\ \meta{template})
 \>  \| \#(\arbno{\meta{template element}})
 \>  \| \meta{template datum}
 \meta{template element} \: \meta{template}
 \>  \| \meta{template} \meta{ellipsis}
 \meta{template datum} \: \meta{pattern datum}
 \meta{pattern identifier} \: \meta{any identifier except {\cf ...}}
-\meta{ellipsis} \: \meta{the identifier {\cf ...}}
+\meta{ellipsis} \: \meta{an identifier defaulting to {\cf ...}}
+\meta{underscore} \: \meta{the identifier {\cf \_}}
 \end{grammar}
 
 \subsection{Programs and definitions}
@@ -359,6 +363,7 @@ un\-quo\-ta\-tion $D$} takes precedence.
 \>   \| \arbno{\meta{variable}} .\ \meta{variable}
 \meta{syntax definition} \:
 \>  (define-syntax \meta{keyword} \meta{transformer spec})
+\>   \| (begin \arbno{\meta{syntax definition}})
 \end{grammar}
 
 \subsection{Modules}
