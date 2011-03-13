@@ -392,9 +392,15 @@ un\-quo\-ta\-tion $D$} takes precedence.
 \> \| (begin \atleastone{\meta{command or definition}})
 \meta{definition} \: (define \meta{variable} \meta{expression})
 \>   \| (define (\meta{variable} \meta{def formals}) \meta{body})
+\>   \| (define-record-type \meta{variable}
+\> \> \ \ \meta{constructor} \meta{variable} \arbno(\meta{field spec}))
 \>   \| (begin \arbno{\meta{definition}})
 \meta{def formals} \: \arbno{\meta{variable}}
 \>   \| \arbno{\meta{variable}} .\ \meta{variable}
+\meta{constructor} \: (\meta{variable} \arbno{\meta{field name}})
+\meta{field spec} \: (\meta{field name} \meta{variable})
+\>   \| (\meta{field name} \meta{variable} \meta{variable})
+\meta{field name} \: \meta{identifier}
 \meta{syntax definition} \:
 \>  (define-syntax \meta{keyword} \meta{transformer spec})
 \>   \| (begin \arbno{\meta{syntax definition}})
