@@ -140,6 +140,16 @@ This could also be accomplished by using an auxiliary macro.
 \end{scheme}
 
 \begin{scheme}
+(define-syntax \ide{letrec*}
+  (syntax-rules ()
+    ((letrec* ((var1 init1) ...) body1 body2 ...)
+     (let ((var1 <undefined>) ...)
+       (set! var1 init1)
+       ...
+       (let () body1 body2 ...)))))%
+\end{scheme}
+
+\begin{scheme}
 (define-syntax \ide{begin}
   (syntax-rules ()
     ((begin exp ...)
@@ -190,6 +200,27 @@ value.
      x)
     ((do "step" x y)
      y)))
+\end{scheme}
+
+\begin{scheme}
+(define-syntax \ide{case-lambda}
+  (syntax-rules ()
+    ((case-lambda (params body0 body1 ...) ...)
+     (lambda args
+       (let ((len (length args)))
+         (let-syntax
+             ((cl (syntax-rules ::: ()
+                    ((cl)
+                     (error "no matching case-lambda clauses"))
+                    ((cl ((p :::) . body) . rest)
+                     (if (= len (length '(p :::)))
+                         (apply (lambda (p :::) . body) args)
+                         (cl . rest)))
+                    ((cl ((p ::: . tail) . body) . rest)
+                     (if (>= len (length '(p :::)))
+                         (apply (lambda (p ::: . tail) . body) args)
+                         (cl . rest))))))
+           (cl (params body0 body1 ...) ...)))))))
 \end{scheme}
 
 % `a                =  Q_1[a]
