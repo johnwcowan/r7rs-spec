@@ -1621,6 +1621,17 @@ the empty list.
 \end{scheme}
 \end{entry}
 
+\begin{entry}{%
+\proto{make-list}{ k}{procedure}
+\rproto{make-list}{ k fill}{procedure}}
+
+Returns a newly allocated list of \var{k} elements.  If a second
+argument is given, then each element is initialized to \var{fill}.
+Otherwise the initial contents of each element is unspecified.
+
+\end{entry}
+
+
 
 \begin{entry}{%
 \proto{list}{ \var{obj} \dotsfoo}{library procedure}}
@@ -1718,6 +1729,22 @@ It is an error if \var{list} has fewer than \vr{k} elements.
 \end{scheme}
 \end{entry}
 
+\begin{entry}{%
+\proto{list-set!}{ list k obj}{procedure}}
+
+\domain{\vr{k} must be a valid index of \var{list}.}
+{\cf List-set!} stores \var{obj} in element \vr{k} of \var{list}.
+The value returned by {\cf list-set!}\ is unspecified.  % <!>
+
+\begin{scheme}
+(let ((lst (list 0 '(2 2 2 2) "Anna")))
+  (list-set! lst 1 '("Sue" "Sue"))
+  vec)      \lev  (0 ("Sue" "Sue") "Anna")
+
+(list-set! '(0 1 2) 1 "doe")  \lev  \scherror  ; constant list%
+\end{scheme}
+\end{entry}
+
 
 %\begin{entry}{%
 %\proto{last-pair}{ list}{library procedure}}
@@ -1804,6 +1831,13 @@ Although they are ordinarily used as predicates,
 have question marks in their names because they return useful values rather
 than just \schtrue{} or \schfalse{}.
 \end{rationale}
+\end{entry}
+
+\begin{entry}{%
+\proto{list-copy}{ list}{library procedure}}
+
+Returns a newly allocated copy of the given \var{list}.
+
 \end{entry}
 
 
@@ -2508,6 +2542,28 @@ created vector initialized to the elements of the list \var{list}.
 \end{scheme}
 \end{entry}
 
+\begin{entry}{%
+\proto{vector->string}{ string}{library procedure}
+\proto{string->vector}{ vector}{library procedure}}
+
+{\cf Vector->string} returns a newly allocated string of the objects contained
+in the elements of \var{vector}, which must be characters.
+{\cf String->vector} returns a newly
+created vector initialized to the elements of the string \var{string}.
+
+\begin{scheme}
+(vector->list '\#(dah dah didah))  \lev  (dah dah didah)
+(list->vector '(dididit dah))   \lev  \#(dididit dah)%
+\end{scheme}
+\end{entry}
+
+\begin{entry}{%
+\proto{vector-copy}{ vector}{library procedure}}
+
+Returns a newly allocated copy of the given \var{vector}.
+
+\end{entry}
+
 
 \begin{entry}{%
 \proto{vector-fill!}{ vector fill}{library procedure}}
@@ -2680,6 +2736,64 @@ The dynamic order in which \var{proc} is applied to the elements of the
 
 \end{entry}
 
+\begin{entry}{%
+\proto{string-map}{ proc \vari{string} \varii{string} \dotsfoo}{library procedure}}
+
+\domain{The \var{string}s must be strings, and \var{proc} must be a
+procedure taking as many arguments as there are {\it string}s
+and returning a single value.  If more
+than one \var{string} is given and not all strings have the same length,
+{\cf string-map} terminates when the shortest list runs out.}
+{\cf String-map} applies \var{proc} element-wise to the elements of the
+\var{string}s and returns a string of the results, in order.
+The dynamic order in which \var{proc} is applied to the elements of the
+\var{string}s is unspecified.
+
+\begin{scheme}
+(string-map char-foldcase "AbdEgH") \lev  "abdegh"
+
+(string-map
+  (lambda (c) (integer->char (+ 1 (char->integer c))))
+     "HAL")                \lev  "IBM"
+
+(string-map (lambda (c k)
+  (if (eqv? k #\u) (char-upcase c) (char-downcase c)))
+    "studlycaps" "ululululul")   \lev   "StUdLyCaPs"
+
+\end{scheme}
+
+\end{entry}
+
+\begin{entry}{%
+\proto{vector-map}{ proc \vari{vector} \varii{vector} \dotsfoo}{library procedure}}
+
+\domain{The \var{vector}s must be vectors, and \var{proc} must be a
+procedure taking as many arguments as there are {\it vector}s
+and returning a single value.  If more
+than one \var{vector} is given and not all vectors have the same length,
+{\cf vector-map} terminates when the shortest list runs out.}
+{\cf Vector-map} applies \var{proc} element-wise to the elements of the
+\var{vector}s and returns a vector of the results, in order.
+The dynamic order in which \var{proc} is applied to the elements of the
+\var{vector}s is unspecified.
+
+\begin{scheme}
+(vector-map cadr '\#((a b) (d e) (g h)))   \lev  \#(b e h)
+
+(vector-map (lambda (n) (expt n n))
+     '\#(1 2 3 4 5))                \lev  \#(1 4 27 256 3125)
+
+(vector-map + '\#(1 2 3) '\#(4 5 6))         \ev  \#(5 7 9)
+
+(let ((count 0))
+  (vector-map (lambda (ignored)
+         (set! count (+ count 1))
+         count)
+       '\#(a b)))                 \ev  \#(1 2) \var{or} \#(2 1)
+\end{scheme}
+
+\end{entry}
+
 
 \begin{entry}{%
 \proto{for-each}{ proc \vari{list} \varii{list} \dotsfoo}{library procedure}}
@@ -2689,6 +2803,8 @@ The arguments to {\cf for-each} are like the arguments to {\cf map}, but
 values.  Unlike {\cf map}, {\cf for-each} is guaranteed to call \var{proc} on
 the elements of the \var{list}s in order from the first element(s) to the
 last, and the value returned by {\cf for-each} is unspecified.
+If more than one \var{list} is given and not all lists have the same length,
+{\cf for-each terminates when the shortest list runs out.}
 
 \begin{scheme}
 (let ((v (make-vector 5)))
@@ -2696,6 +2812,50 @@ last, and the value returned by {\cf for-each} is unspecified.
               (vector-set! v i (* i i)))
             '(0 1 2 3 4))
   v)                                \ev  \#(0 1 4 9 16)%
+\end{scheme}
+
+\end{entry}
+
+\begin{entry}{%
+\proto{string-for-each}{ proc \vari{string} \varii{string} \dotsfoo}{library procedure}}
+
+The arguments to {\cf string-for-each} are like the arguments to {\cf
+string-map}, but {\cf string-for-each} calls \var{proc} for its side
+effects rather than for its values.  Unlike {\cf string-map}, {\cf
+string-for-each} is guaranteed to call \var{proc} on the elements of
+the \var{list}s in order from the first element(s) to the last, and the
+value returned by {\cf string-for-each} is unspecified.
+If more than one \var{string} is given and not all strings have the same length,
+{\cf string-for-each terminates when the shortest string runs out.}
+
+\begin{scheme}
+(let ((v (make-vector 5)))
+  (string-for-each (lambda (c)
+              (vector-set! v c (char->integer c)))
+            "abcde")
+  v)                                \ev  \#(97 98 99 100 101)%
+\end{scheme}
+
+\end{entry}
+
+\begin{entry}{%
+\proto{vector-for-each}{ proc \vari{vector} \varii{vector} \dotsfoo}{library procedure}}
+
+The arguments to {\cf vector-for-each} are like the arguments to {\cf
+vector-map}, but {\cf vector-for-each} calls \var{proc} for its side
+effects rather than for its values.  Unlike {\cf vector-map}, {\cf
+vector-for-each} is guaranteed to call \var{proc} on the elements of
+the \var{vector}s in order from the first element(s) to the last, and
+the value returned by {\cf vector-for-each} is unspecified.
+If more than one \var{vector} is given and not all vectors have the same length,
+{\cf vector-for-each terminates when the shortest vector runs out.}
+
+\begin{scheme}
+(let ((v (make-list 5)))
+  (vector-for-each (lambda (i)
+              (list-set! v i (* i i)))
+            '\#(0 1 2 3 4))
+  v)                                \ev  (0 1 4 9 16)%
 \end{scheme}
 
 \end{entry}
