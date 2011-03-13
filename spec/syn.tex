@@ -37,8 +37,29 @@ within a token.
 characters, and dot) may be terminated by any \meta{delimiter}, but not
 necessarily by anything else.
 
-The following five characters are reserved for future extensions to the
+The following five characters from the ASCII repertoire
+are reserved for future extensions to the
 language: {\tt \verb"[" \verb"]" \verb"{" \verb"}" \verb"|"}
+
+In addition to the identifier characters of the ASCII repertoire specified
+below, Scheme implementations may permit any additional repertoire of
+Unicode characters to be employed in symbols (and therefore identifiers),
+provided that each such character has a Unicode general category of Lu,
+Ll, Lt, Lm, Lo, Mn, Mc, Me, Nd, Nl, No, Pd, Pc, Po, Sc, Sm, Sk, So,
+or Co, or is U+200C or U+200D (the zero-width non-joiner and joiner,
+respectively, which are needed for correct spelling in Persian, Hindi,
+and other languages). No non-Unicode characters may be used explicitly
+(that is, other than by specifying an escape) in symbols or identifiers.
+
+All Scheme implementations must permit the sequence
+{\tt \backwhack{}x<hexdigits>;}
+to appear in Scheme symbols (and therefore identifiers). If the character
+with the given Unicode scalar value is supported by the implementation,
+identifiers containing such a sequence are equivalent to identifiers
+containing the corresponding character. The {\cf symbol\coerce{}string}
+procedure may return the actual character or the escape sequence at the
+implementation's option, but any leading zeros must be removed from the
+escape sequence.
 
 \begin{grammar}%
 \meta{token} \: \meta{identifier} \| \meta{boolean} \| \meta{number}\index{identifier}
@@ -204,7 +225,7 @@ successfully parses.  Note that any string that parses as an
 \meta{lambda expression} \: (lambda \meta{formals} \meta{body})
 \meta{formals} \: (\arbno{\meta{variable}}) \| \meta{variable}
 \>  \| (\atleastone{\meta{variable}} .\ \meta{variable})
-\meta{body} \: \arbno{\meta{definition}} \meta{sequence}
+\meta{body} \:  \arbno{\meta{syntax definition}} \arbno{\meta{definition}} \meta{sequence}
 \meta{sequence} \: \arbno{\meta{command}} \meta{expression}
 \meta{command} \: \meta{expression}
 
@@ -298,13 +319,16 @@ un\-quo\-ta\-tion $D$} takes precedence.
 \begin{grammar}%
 \meta{transformer spec} \:
 \> (syntax-rules (\arbno{\meta{identifier}}) \arbno{\meta{syntax rule}})
+\> \| (syntax-rules \meta{identifier} (\arbno{\meta{identifier}}) \arbno{\meta{syntax rule}})
 \meta{syntax rule} \: (\meta{pattern} \meta{template})
 \meta{pattern} \: \meta{pattern identifier}
+\>  \| \meta{underscore}
 \>  \| (\arbno{\meta{pattern}})
 \>  \| (\atleastone{\meta{pattern}} . \meta{pattern})
-\>  \| (\arbno{\meta{pattern}} \meta{pattern} \meta{ellipsis})
+\>  \| (\arbno{\meta{pattern}} \meta{pattern} \meta{ellipsis} \arbno{\meta{pattern}})
+\>  \| (\arbno{\meta{pattern}} \meta{pattern} \meta{ellipsis} \arbno{\meta{pattern}} .\ \meta{pattern})
 \>  \| \#(\arbno{\meta{pattern}})
-\>  \| \#(\arbno{\meta{pattern}} \meta{pattern} \meta{ellipsis})
+\>  \| \#(\arbno{\meta{pattern}} \meta{pattern} \meta{ellipsis} \arbno{\meta{pattern}})
 \>  \| \meta{pattern datum}
 \meta{pattern datum} \: \meta{string}
 \>  \| \meta{character}
@@ -312,14 +336,15 @@ un\-quo\-ta\-tion $D$} takes precedence.
 \>  \| \meta{number}
 \meta{template} \: \meta{pattern identifier}
 \>  \| (\arbno{\meta{template element}})
-\>  \| (\atleastone{\meta{template element}} . \meta{template})
+\>  \| (\atleastone{\meta{template element}} .\ \meta{template})
 \>  \| \#(\arbno{\meta{template element}})
 \>  \| \meta{template datum}
 \meta{template element} \: \meta{template}
 \>  \| \meta{template} \meta{ellipsis}
 \meta{template datum} \: \meta{pattern datum}
 \meta{pattern identifier} \: \meta{any identifier except {\cf ...}}
-\meta{ellipsis} \: \meta{the identifier {\cf ...}}
+\meta{ellipsis} \: \meta{an identifier defaulting to {\cf ...}}
+\meta{underscore} \: \meta{the identifier {\cf \_}}
 \end{grammar}
 
 \subsection{Programs and definitions}
@@ -329,6 +354,7 @@ un\-quo\-ta\-tion $D$} takes precedence.
 \meta{command or definition} \: \meta{command}
 \> \| \meta{definition}
 \> \| \meta{syntax definition}
+\> \| (import \atleastone{\meta{import set}})
 \> \| (begin \atleastone{\meta{command or definition}})
 \meta{definition} \: (define \meta{variable} \meta{expression})
 \>   \| (define (\meta{variable} \meta{def formals}) \meta{body})
@@ -337,4 +363,36 @@ un\-quo\-ta\-tion $D$} takes precedence.
 \>   \| \arbno{\meta{variable}} .\ \meta{variable}
 \meta{syntax definition} \:
 \>  (define-syntax \meta{keyword} \meta{transformer spec})
+\>   \| (begin \arbno{\meta{syntax definition}})
+\end{grammar}
+
+\subsection{Modules}
+
+\begin{grammar}%
+\meta{module} \:
+\> (module \meta{module name} \arbno{\meta{module declaration}})
+\meta{module name} \: (\atleastone{module name part})
+\meta{module name part} \: \meta{identifier} \| \meta{uinteger 10}
+\meta{module declaration} \: (export \arbno{\meta{export spec}})
+\> \| (import \arbno{\meta{import set}})
+\> \| (begin \arbno{\meta{command or definition}})
+\> \| (include \atleastone{\meta{string}})
+\> \| (include-ci \atleastone{\meta{string}})
+\> \| (cond-expand \arbno{\meta{cond-expand clause}})
+\> \| (cond-expand \arbno{\meta{cond-expand clause}}
+\hbox to 1\wd0{\hfill}\ \rm(else \arbno{\meta{module declaration}}))
+\meta{export spec} \: \meta{identifier}
+\> \| (rename \meta{identifier} \meta{identifier})
+\meta{import set} \: \meta{module name}
+\> \| (only \meta{import set} \atleastone{\meta{identifier}})
+\> \| (except \meta{import set} \atleastone{\meta{identifier}})
+\> \| (prefix \meta{import set} \meta{identifier})
+\> \| (rename \meta{import set} \atleastone{\meta{export spec}})
+\meta{cond-expand clause} \:
+\> (\meta{feature requirement} \arbno{\meta{module declaration}})
+\meta{feature requirement} \: \meta{identifier}
+\> \| \meta{module name}
+\> \| (and \arbno{\meta{feature requirement}})
+\> \| (or \arbno{\meta{feature requirement}})
+\> \| (not \meta{feature requirement})
 \end{grammar}

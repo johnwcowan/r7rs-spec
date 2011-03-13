@@ -32,7 +32,8 @@ the-word-recursion-has-many-meanings%
 \end{scheme}
 
 Extended alphabetic characters may be used within identifiers as if
-they were letters.  The following are extended alphabetic characters:
+they were letters.  The following are always permitted as alphabetic characters
+(but implementations may allow a variety of other characters in identifiers):
 
 \begin{scheme}
 !\ \$ \% \verb"&" * + - . / :\ < = > ? @ \verb"^" \verb"_" \verb"~" %
@@ -141,7 +142,8 @@ The double quote character is used to delimit strings (section~\ref{stringsectio
 \item[\backwhack]
 Backslash is used in the syntax for character constants
 (section~\ref{charactersection}) and as an escape character within string
-constants (section~\ref{stringsection}).
+constants (section~\ref{stringsection}) and identifiers
+(section~\ref{extendedalphas}).
 
 % A box used because \verb is not allowed in command arguments.
 \setbox0\hbox{\tt \verb"[" \verb"]" \verb"{" \verb"}" \verb"|"}

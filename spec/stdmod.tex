@@ -1,0 +1,262 @@
+\chapter{Standard Modules}
+\label{stdmodules}
+
+This section lists the exports provided by the standard modules.  The
+modules are factored so as to separate features which may not be
+supported by all implementations, or which may be expensive to load.
+
+The {\cf scheme} module prefix is used for all standard modules, and
+is reserved for use by future standards.
+
+\section{Base Module}
+
+The \texttt{(scheme base)} module exports many of the procedures and
+syntax bindings that are traditionally associated with Scheme.
+
+\begin{scheme}
+{\cf *}                {\cf +}                {\cf -}
+{\cf /}                {\cf <=}               {\cf <}
+{\cf =>}               {\cf =}                {\cf >=}
+{\cf >}                {\cf abs}              {\cf and}
+{\cf append}           {\cf apply}            {\cf assoc}
+{\cf assq}             {\cf assv}             {\cf begin}
+{\cf boolean?}         {\cf caar}             {\cf cadr}
+{\cf call-with-current-continuation}     {\cf call/cc}
+{\cf car}              {\cf case-lambda}      {\cf case}
+{\cf cdddar}           {\cf cddddr}           {\cf cdr}
+{\cf ceiling}          {\cf char->integer}    {\cf char-alphabetic?}
+{\cf char-lower-case?} {\cf char-numeric?}    {\cf char-upper-case?}
+{\cf char-whitespace?} {\cf char<=?}          {\cf char<?}
+{\cf char=?}           {\cf char>=?}          {\cf char>?}
+{\cf char?}            {\cf complex?}         {\cf cond}
+{\cf cons}             {\cf copy-list}        {\cf copy-vector}
+{\cf define-syntax}    {\cf define}           {\cf denominator}
+{\cf display}          {\cf do}               {\cf dynamic-wind}
+{\cf eq?}              {\cf equal?}           {\cf eqv?}
+{\cf error}            {\cf even?}            {\cf exact->inexact}
+{\cf exact-integer-sqrt}                 {\cf exact-integer?}
+{\cf exact?}           {\cf expt}             {\cf floor}
+{\cf for-each}         {\cf gcd}              {\cf guard}
+{\cf if}               {\cf import}           {\cf include}
+{\cf inexact->exact}   {\cf inexact?}         {\cf integer->char}
+{\cf integer?}         {\cf lambda}           {\cf lcm}
+{\cf length}           {\cf let*}             {\cf let-syntax}
+{\cf letrec*}          {\cf letrec-syntax}    {\cf letrec}
+{\cf let}              {\cf list->string}     {\cf list->vector}
+{\cf list-ref}         {\cf list-set!}        {\cf list-tail}
+{\cf list?}            {\cf list}             {\cf make-list}
+{\cf make-parameter}   {\cf make-string}      {\cf make-vector}
+{\cf map}              {\cf max}              {\cf member}
+{\cf memq}             {\cf memv}             {\cf min}
+{\cf modulo}           {\cf negative?}        {\cf newline}
+{\cf nil}              {\cf not}              {\cf null?}
+{\cf number->string}   {\cf number?}          {\cf numerator}
+{\cf odd?}             {\cf or}               {\cf pair?}
+{\cf parameterize}     {\cf positive?}        {\cf procedure?}
+{\cf quasiquote}       {\cf quote}            {\cf quotient}
+{\cf raise-continuable}                  {\cf raise}
+{\cf rational?}        {\cf rationalize}      {\cf real?}
+{\cf remainder}        {\cf reverse}          {\cf round}
+{\cf set!}             {\cf set-car!}         {\cf set-cdr!}
+{\cf string->list}     {\cf string->number}   {\cf string->symbol}
+{\cf string->vector}   {\cf string-append}    {\cf string-copy}
+{\cf string-fill!}     {\cf string-for-each}  {\cf string-length}
+{\cf string-map}       {\cf string-ref}       {\cf string-set!}
+{\cf string<=?}        {\cf string<?}         {\cf string=?}
+{\cf string>=?}        {\cf string>?}         {\cf string?}
+{\cf string}           {\cf substring}        {\cf symbol->string}
+{\cf symbol?}          {\cf syntax-error}     {\cf syntax-rules}
+{\cf truncate}         {\cf vector->list}     {\cf vector->string}
+{\cf vector-fill!}     {\cf vector-for-each}  {\cf vector-length}
+{\cf vector-map}       {\cf vector-ref}       {\cf vector-set!}
+{\cf vector?}          {\cf vector}           {\cf zero?}
+{\cf with-exception-handler}
+\end{scheme}
+
+\section{Inexact Module}
+
+The \texttt{(scheme inexact)} module exports procedures which are
+typically only useful with inexact values.
+
+\begin{scheme}
+{\cf exp}     {\cf log}      {\cf sqrt}
+{\cf sin}     {\cf cos}      {\cf tan}
+{\cf asin}    {\cf acos}     {\cf atan}
+{\cf finite?}\ {\cf nan?}
+\end{scheme}
+
+\section{Complex Module}
+
+The \texttt{(scheme complex)} module exports procedures which are
+typically only useful with complex values.
+
+\begin{scheme}
+{\cf angle}   {\cf magnitude}   {\cf imag-part}   {\cf real-part}
+{\cf make-polar}          {\cf make-rectangular}
+\end{scheme}
+
+\section{Division Module}
+
+The \texttt{(scheme division)} module exports procedures for integer
+division.
+
+\begin{scheme}
+{\cf floor/}     {\cf floor-quotient}     {\cf floor-remainder}
+{\cf ceiling/}   {\cf ceiling-quotient}   {\cf ceiling-remainder}
+{\cf truncate/}  {\cf truncate-quotient}  {\cf truncate-remainder}
+{\cf round/}     {\cf round-quotient}     {\cf round-remainder}
+{\cf euclidean/} {\cf euclidean-quotient} {\cf euclidean-remainder}
+\end{scheme}
+
+\section{Lazy Module}
+
+The \texttt{(scheme lazy)} module exports forms for lazy evaluation.
+
+\begin{scheme}
+{\cf delay}   {\cf force}
+\end{scheme}
+
+\section{Eval Module}
+
+The \texttt{(scheme eval)} module exports forms for evaluating Scheme
+data as programs.
+
+\begin{scheme}
+{\cf eval}
+{\cf null-environment}
+{\cf scheme-report-environment}
+\end{scheme}
+
+\section{Repl Module}
+
+The \texttt{(scheme repl)} module exports the {\cf
+  interaction-environment} procedure.
+
+\begin{scheme}
+{\cf interaction-environment}
+\end{scheme}
+
+\section{Process Context Module}
+
+The \texttt{(scheme process-context)} module exports procedures for
+accessing with the program's calling context.
+
+\begin{scheme}
+{\cf environment-variable}
+{\cf environment-variables}
+{\cf command-line}
+\end{scheme}
+
+\section{Load Module}
+
+The \texttt{(scheme load)} module exports forms for loading and
+including Scheme expressions from files.
+
+\begin{scheme}
+{\cf load}   {\cf include}
+\end{scheme}
+
+\section{Multiple Values Module}
+
+The \texttt{(scheme multiple-values)} module exports procedures for
+generating and receiving multiple values.
+
+\begin{scheme}
+{\cf call-with-value}  {\cf values}
+\end{scheme}
+
+\section{Records Module}
+
+The \texttt{(scheme records)} module exports syntax for defining new
+record types.
+
+\begin{scheme}
+{\cf define-record-type}
+\end{scheme}
+
+\section{Blobs}
+
+The \texttt{(scheme blobs)} module provides an interface to the blob type.
+
+\begin{scheme}
+{\cf blob-length}         {\cf blob-u8-ref}
+{\cf blob-u8-set!}        {\cf blob?}
+{\cf copy-blob!}          {\cf copy-blob}
+{\cf copy-partial-blob!}  {\cf make-blob}
+{\cf partial-blob}
+\end{scheme}
+
+\section{I/O Module}
+
+The \texttt{(scheme io)} module exports procedures for general input
+and output on ports.
+
+\begin{scheme}
+{\cf binary-port?}             {\cf char-ready?}
+{\cf character-port?}          {\cf close-input-port}
+{\cf close-output-port}        {\cf current-error-port}
+{\cf current-input-port}       {\cf current-output-port}
+{\cf eof-object?}              {\cf get-output-string}
+{\cf input-port?}              {\cf newline}
+{\cf open-input-string}        {\cf open-output-string}
+{\cf output-port?}             {\cf peek-char}
+{\cf peek-u8?}                 {\cf port?}
+{\cf read-char}                {\cf read-u8}
+{\cf u8-ready?}                {\cf write-char}
+{\cf write-u8}
+\end{scheme}
+
+\section{File Module}
+
+The \texttt{(scheme file)} module provides procedures for accessing
+files.
+
+\begin{scheme}
+{\cf call-with-input-file}    {\cf call-with-output-file}
+{\cf delete-file}             {\cf file-exists?}
+{\cf open-input-file}         {\cf open-output-file}
+{\cf with-input-from-file}    {\cf with-output-to-file}
+\end{scheme}
+
+\section{Read Module}
+
+The \texttt{(scheme read)} module provides procedures for reading
+Scheme objects.
+
+\begin{scheme}
+{\cf read}
+\end{scheme}
+
+\section{Write Module}
+
+The \texttt{(scheme write)} module provides procedures for writing
+Scheme objects.
+
+\begin{scheme}
+{\cf write}  {\cf display}
+\end{scheme}
+
+\section{Unicode Module}
+
+The \texttt{(scheme unicode)} module provides procedures for dealing
+with Unicode case conversions and normalization.
+
+\begin{scheme}
+{\cf char-ci=?}       {\cf char-ci<?}       {\cf char-ci>?}
+{\cf char-ci<=?}      {\cf char-ci>=?}      {\cf char-upcase}
+{\cf char-downcase}   {\cf char-foldcase}   {\cf string-ci=?}
+{\cf string-ni=?}     {\cf string-ci<?}     {\cf string-ci>?}
+{\cf string-ci<=?}    {\cf string-ci>=?}    {\cf string-ni<?}
+{\cf string-ni>?}     {\cf string-ni<=?}    {\cf string-ni>=?}
+{\cf string-upcase}   {\cf string-downcase} {\cf string-foldcase}
+\end{scheme}
+
+\section{Time}
+
+The \texttt{(scheme time)} module provides access to the system time.
+
+\begin{scheme}
+{\cf current-posix-second}
+{\cf current-jiffy}
+{\cf jiffies-per-second}
+\end{scheme}
