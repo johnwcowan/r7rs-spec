@@ -88,7 +88,6 @@ As noted in section~\ref{storagemodel}, it is an error to alter a constant
 
 \end{entry}
 
-
 \subsection{Procedure calls}\unsection
 
 \begin{entry}{%
@@ -841,6 +840,39 @@ car is one of these symbols may vary between implementations.
 Unpredictable behavior can result if any of the symbols
 \ide{quasiquote}, \ide{unquote}, or \ide{unquote-splicing} appear in
 positions within a \hyper{qq template} otherwise than as described above.
+
+\end{entry}
+
+\subsection{Reader Labels}\unsection
+\label{labelsection}
+
+\begin{entry}{%
+\pproto{\#\hyper{n}=\hyper{datum}}{\exprtype}
+\pproto{\#\hyper{n}\#}{\exprtype}}
+
+\hyper{N} must be an unsigned decimal integer.  The syntax
+\texttt{\#\hyper{n}=\hyper{datum}} reads as \hyper{datum}, except
+that within the syntax of \hyper{datum} the \hyper{datum} is labelled
+by \hyper{n}.
+
+The syntax \texttt{\#\hyper{n}\#} serves as a reference to some
+object labelled by \texttt{\#\hyper{n}=}; the result is the same
+object as the \texttt{\#\hyper{n}}= as compared with {\cf eqv?}
+(see section~\ref{equivalencesection}). This permits notation of
+structures with shared or circular substructure.
+
+\begin{scheme}
+(let ((x (list 'a 'b 'c)))
+  (set-cdr! (cddr x) x)
+  x)                       \ev \#0=(a b c . \#0\#)
+\end{scheme}
+
+A reference \texttt{\#\hyper{n}\#} may occur only after a label
+\texttt{\#\hyper{n}=}; forward references are not permitted. In
+addition, the reference may not appear as the labelled object itself
+(that is, one may not write \texttt{\#\hyper{n}= \#\hyper{n}\#}),
+because the object labelled by \texttt{\#\hyper{n}=} is not well
+defined in this case.
 
 \end{entry}
 

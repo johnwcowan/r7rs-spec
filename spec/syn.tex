@@ -65,10 +65,19 @@ escape sequence.
 \meta{token} \: \meta{identifier} \| \meta{boolean} \| \meta{number}\index{identifier}
 \>  \| \meta{character} \| \meta{string}
 \>  \| ( \| ) \| \sharpsign( \| \singlequote{} \| \backquote{} \| , \| ,@ \| {\bf.}
+\>  \| \meta{label} \= \meta{token} \| \meta{label} \#
+\meta{label} \: \# \atleastone{\meta{digit $10$}}
 \meta{delimiter} \: \meta{whitespace} \| ( \| ) \| " \| ;
 \meta{whitespace} \: \meta{space or newline}
 \meta{comment} \: ; \= $\langle$\rm all subsequent characters up to a
 		    \>\ \rm line break$\rangle$\index{comment}
+\> \| \meta{nested comment}
+\> \| \#; \meta{whitespace} \meta{datum}
+\meta{nested comment} \: \#| \= \meta{comment text}
+\> \arbno{\meta{comment cont}} |\#
+\meta{comment text} \: \= $\langle$\rm character sequence not containing
+\>\ \rm {\tt \#|} or {\tt |\#}$\rangle$
+\meta{comment cont} \: \meta{nested comment} \meta{comment text}
 \meta{atmosphere} \: \meta{whitespace} \| \meta{comment}
 \meta{intertoken space} \: \arbno{\meta{atmosphere}}%
 \end{grammar}
@@ -83,18 +92,32 @@ escape sequence.
 
 \begin{grammar}%
 \meta{identifier} \: \meta{initial} \arbno{\meta{subsequent}}
+ \>  \| \meta{vertical bar} \arbno{\meta{symbol element}} \meta{vertical bar}
  \>  \| \meta{peculiar identifier}
 \meta{initial} \: \meta{letter} \| \meta{special initial}
+ \> \| \meta{inline hex escape}
 \meta{letter} \: a \| b \| c \| ... \| z
-
+\> \| A \| B \| C \| ... \| Z
 \meta{special initial} \: ! \| \$ \| \% \| \verb"&" \| * \| / \| : \| < \| =
  \>  \| > \| ? \| \verb"^" \| \verb"_" \| \verb"~"
 \meta{subsequent} \: \meta{initial} \| \meta{digit}
  \>  \| \meta{special subsequent}
 \meta{digit} \: 0 \| 1 \| 2 \| 3 \| 4 \| 5 \| 6 \| 7 \| 8 \| 9
-\meta{special subsequent} \: + \| - \| .\ \| @
-\meta{peculiar identifier} \: + \| - \| ...
-%\| 1+ \| -1+
+\meta{hex digit} \: \meta{digit}
+ \> \| a \| A \| b \| B \| c \| C \| d \| D \| e \| E \| f \| F
+\meta{explicit sign} \: + \| -
+\meta{special subsequent} \: \meta{explicit sign} \| . \| @
+\meta{inline hex escape} \: \backwhack{}x\meta{hex scalar value};
+\meta{hex scalar value} \: \atleastone{\meta{hex digit}}
+\meta{peculiar identifier} \: \meta{explicit sign}
+ \> \| \meta{explicit sign} \meta{sign subsequent} \arbno{\meta{subsequent}}
+ \> \| \meta{explicit sign} . \meta{dot subsequent} \arbno{\meta{subsequent}}
+ \> \| . \meta{non-digit} \arbno{\meta{subsequent}}
+ %\| 1+ \| -1+
+\meta{non-digit} \: \meta{dot subsequent} \| \meta{explicit sign}
+\meta{dot subsequent} \: \meta{sign subsequent} \| .
+\meta{sign subsequent} \: \meta{initial} \| \meta{explicit sign} \| @
+\meta{symbol element} \: \meta{any character other than \meta{vertical bar} or \backwhack}
 \meta{syntactic keyword} \: \meta{expression keyword}\index{keyword}\index{syntactic keyword}
  \>  \| else \| => \| define 
  \>  \| unquote \| unquote-splicing
@@ -109,11 +132,14 @@ escape sequence.
 \meta{boolean} \: \schtrue{} \| \schfalse{}
 \meta{character} \: \#\backwhack{} \meta{any character}
  \>  \| \#\backwhack{} \meta{character name}
-\meta{character name} \: space \| newline
+ \>  \| \#\backwhack{}x\meta{hex scalar value}
+\meta{character name} \: null \| alarm \| backspace \| tab
+\> \| newline \| return \| escape \| space \| delete
 \todo{Explain what happens in the ambiguous case.}
 \meta{string} \: " \arbno{\meta{string element}} "
 \meta{string element} \: \meta{any character other than \doublequote{} or \backwhack}
- \>  \| \backwhack\doublequote{} \| \backwhack\backwhack %
+ \> \| \backwhack{}a \| \backwhack{}b \| \backwhack{}t \| \backwhack{}n \| \backwhack{}r \| \backwhack\doublequote{} \| \backwhack\backwhack 
+ \>  \| \meta{inline hex escape}%
 \end{grammar}
 
 

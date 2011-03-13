@@ -1968,19 +1968,19 @@ and~\ref{identifiersyntax}.
 \vest It is guaranteed that any symbol that has been returned as part of
 a literal expression, or read using the {\cf read} procedure, and
 subsequently written out using the {\cf write} procedure, will read back
-in as the identical symbol (in the sense of {\cf eqv?}).  The
-{\cf string\coerce{}symbol} procedure, however, can create symbols for
-which this write/read invariance may not hold because their names
-contain special characters or letters in the non-standard case.
+in as the identical symbol (in the sense of {\cf eqv?}).
+%% The {\cf string\coerce{}symbol} procedure, however, can create symbols for
+%% which this write/read invariance may not hold because their names
+%% contain special characters or letters in the non-standard case.
 
 \begin{note}
-Some implementations of Scheme have a feature known as ``slashification''
-in order to guarantee write/read invariance for all symbols, but
-historically the most important use of this feature has been to
-compensate for the lack of a string data type.
-
-\vest Some implementations also have ``uninterned symbols'', which
-defeat write/read invariance even in implementations with slashification,
+%% Some implementations of Scheme have a feature known as ``slashification''
+%% in order to guarantee write/read invariance for all symbols, but
+%% historically the most important use of this feature has been to
+%% compensate for the lack of a string data type.
+%\vest
+Some implementations have a values known as ``uninterned symbols'', which
+defeat write/read invariance,
 and also generate exceptions to the rule that two symbols are the same
 if and only if their names are spelled the same.
 \end{note}
@@ -2005,25 +2005,14 @@ Returns \schtrue{} if \var{obj} is a symbol, otherwise returns \schfalse.
 \begin{entry}{%
 \proto{symbol->string}{ symbol}{procedure}}
 
-Returns the name of \var{symbol} as a string.  If the symbol was part of
-an object returned as the value of a literal expression
-(section~\ref{literalsection}) or by a call to the {\cf read} procedure,
-and its name contains alphabetic characters, then the string returned
-will contain characters in the implementation's preferred standard
-case---some implementations will prefer upper case, others lower case.
-If the symbol was returned by {\cf string\coerce{}symbol}, the case of
-characters in the string returned will be the same as the case in the
-string that was passed to {\cf string\coerce{}symbol}.  It is an error
+Returns the name of \var{symbol} as a string.  It is an error
 to apply mutation procedures like \ide{string-set!} to strings returned
 by this procedure.
-
-The following examples assume that the implementation's standard case is
-lower case:
 
 \begin{scheme}
 (symbol->string 'flying-fish)     
                                   \ev  "flying-fish"
-(symbol->string 'Martin)          \ev  "martin"
+(symbol->string 'Martin)          \ev  "Martin"
 (symbol->string
    (string->symbol "Malvina"))     
                                   \ev  "Malvina"%
@@ -2035,19 +2024,14 @@ lower case:
 \proto{string->symbol}{ string}{procedure}}
 
 Returns the symbol whose name is \var{string}.  This procedure can
-create symbols with names containing special characters or letters in
-the non-standard case, but it is usually a bad idea to create such
-symbols because in some implementations of Scheme they cannot be read as
-themselves.  See {\cf symbol\coerce{}string}.
-
-The following examples assume that the implementation's standard case is
-lower case:
+create symbols with names containing special characters that would
+require escaping when written.
 
 \begin{scheme}
-(eq? 'mISSISSIppi 'mississippi)  \lev  \schtrue
+%(eq? 'mISSISSIppi 'mississippi)  \lev  \schtrue
 (string->symbol "mISSISSIppi")  \lev%
-  {\rm{}the symbol with name} "mISSISSIppi"
-(eq? 'bitBlt (string->symbol "bitBlt"))     \lev  \schfalse
+  'mISSISSIppi
+(eq? 'bitBlt (string->symbol "bitBlt"))     \lev  \schtrue
 (eq? 'JollyWog
      (string->symbol
        (symbol->string 'JollyWog)))  \lev  \schtrue
@@ -2075,7 +2059,8 @@ following procedures to a non-Unicode character is implementation-dependent.
 %encouraged to have a separate character data type, but may choose to
 %represent characters as integers, strings, or some other type.
 Characters are written using the notation \sharpsign\backwhack\hyper{character}
-or \sharpsign\backwhack\hyper{character name}.
+or \sharpsign\backwhack\hyper{character name} or
+\sharpsign\backwhack{}x\meta{hex scalar value}.
 For example:
 
 $$
@@ -2085,13 +2070,21 @@ $$
 {\tt \#\backwhack{}(}&; left parenthesis\\
 {\tt \#\backwhack{} }&; the space character\\
 {\tt \#\backwhack{}space}&; the preferred way to write a space\\
-{\tt \#\backwhack{}newline}&; the newline character\\
+{\tt \#\backwhack{}tab}&; the tab character, \textrm{U+0009}\\
+{\tt \#\backwhack{}newline}&; the linefeed character, \textrm{U+000A}\\
+{\tt \#\backwhack{}return}&; the return character, \textrm{U+000D}\\
+{\tt \#\backwhack{}null}&; the null character, \textrm{U+0000}\\
+{\tt \#\backwhack{}alarm}&; \textrm{U+0007}\\
+{\tt \#\backwhack{}backspace}&; \textrm{U+0008}\\
+{\tt \#\backwhack{}escape}&; \textrm{U+001B}\\
+{\tt \#\backwhack{}delete}&; \textrm{U+007F}\\
+{\tt \#\backwhack{}x03BB}&; $\lambda$ (if supported)\\
 \end{tabular}
 $$
 
-Case is significant in \sharpsign\backwhack\hyper{character}, but not in
-\sharpsign\backwhack{\rm$\langle$character name$\rangle$}.  % \hyper doesn't
-                                                            % allow a linebreak
+Case is significant in \sharpsign\backwhack\hyper{character}, and in
+\sharpsign\backwhack{\rm$\langle$character name$\rangle$},
+but not in {\cf\sharpsign\backwhack{}x}\meta{hex scalar value}.  
 If \hyper{character} in
 \sharpsign\backwhack\hyper{character} is alphabetic, then the character
 following \hyper{character} must be a delimiter character such as a
@@ -2271,16 +2264,24 @@ in strings.
 %they are immutable; other implementations provide destructive procedures
 %such as {\cf string-set!}\ that alter string objects.
 \vest Strings are written as sequences of characters enclosed within doublequotes
-({\cf "}).  A doublequote can be written inside a string only by escaping
-it with a backslash (\backwhack{}), as in
+({\cf "}).  Within a string literal, various escape
+sequences\mainindex{escape sequence} represent characters other than
+themselves.  Escape sequences always start with a backslash (\backwhack{}):
 
-\begin{scheme}
-"The word \backwhack{}"recursion\backwhack{}" has many meanings."%
-\end{scheme}
+\begin{itemize}
+\item{\cf\backwhack{}a} : alarm, U+0007
+\item{\cf\backwhack{}b} : backspace, U+0008 
+\item{\cf\backwhack{}t} : character tabulation, U+0009 
+\item{\cf\backwhack{}n} : linefeed, U+000A 
+\item{\cf\backwhack{}r} : return, U+000D 
+\item{\cf\backwhack{}}\verb|"| : doublequote, U+0022 
+\item{\cf\backwhack{}\backwhack{}} : backslash, U+005C 
+\item{\cf\backwhack{}x\meta{hex scalar value};} : specified character (note the
+  terminating semi-colon).
+\end{itemize}
 
-A backslash can be written inside a string only by escaping it with another
-backslash.  Scheme does not specify the effect of a backslash within a
-string that is not followed by a doublequote or backslash.
+The result is unspecified if any other character in a string occurs
+after a backslash.
 
 \vest A string constant may continue from one line to the next, which
 has the same effect as inserting a newline character into the string.
@@ -2288,6 +2289,12 @@ has the same effect as inserting a newline character into the string.
 %usually a bad idea because 
 %the exact effect may vary from one computer
 %system to another.
+
+Example:
+
+\begin{scheme}
+"The word \backwhack{}"recursion\backwhack{}" has many meanings."%
+\end{scheme}
 
 \vest The {\em length} of a string is the number of characters that it
 contains.  This number is an exact, non-negative integer that is fixed when the
