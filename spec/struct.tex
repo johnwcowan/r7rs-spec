@@ -15,13 +15,13 @@ semantics of Scheme.
 language.  Each use of a variable is associated with a lexically
 apparent binding of that variable.
 
-\vest Scheme has latent as opposed to manifest types.  Types
+\vest Scheme is a dynamically typed language.  Types
 are associated with values (also called objects\mainindex{object}) rather than
-with variables.  (Some authors refer to languages with latent types as
-weakly typed or dynamically typed languages.)  Other languages with
-latent types are APL, Snobol, and other dialects of Lisp.  Languages
-with manifest types (sometimes referred to as strongly typed or
-statically typed languages) include Algol 60, Pascal, and~C.
+with variables.  Other dynamically typed languages include
+APL, Common Lisp, JavaScript, Perl, Python, Ruby, and Smalltalk.
+Statically typed languages associate types with variables and expressions
+as well as values, and include
+Algol 60, C, C++, C#, Haskell, Java, ML, and Pascal.
 
 \vest All objects created in the course of a Scheme computation, including
 procedures and continuations, have unlimited extent.
@@ -30,7 +30,9 @@ implementations of Scheme do not (usually!)\ run out of storage is that
 they are permitted to reclaim the storage occupied by an object if
 they can prove that the object cannot possibly matter to any future
 computation.  Other languages in which most objects have unlimited
-extent include APL and other Lisp dialects.
+extent include 
+APL, C#, Common Lisp, Haskell, Java, JavaScript, ML, Perl,
+Python, Ruby, and Smalltalk.
 
 \vest Implementations of Scheme are required to be properly tail-recursive.
 This allows the execution of an iterative computation in constant space,
@@ -39,23 +41,28 @@ recursive procedure.  Thus with a properly tail-recursive implementation,
 iteration can be expressed using the ordinary procedure-call
 mechanics, so that special iteration constructs are useful only as
 syntactic sugar.  See section~\ref{proper tail recursion}.
+Other languages that are required to be properly tail recursive
+include Haskell and ML.
 
 \vest Scheme procedures are objects in their own right.  Procedures can be
 created dynamically, stored in data structures, returned as results of
 procedures, and so on.  Other languages with these properties include
-Common Lisp and ML. \todo{Rozas: Scheme had them first.}
+Common Lisp, Haskell, and ML.
 
 \vest One distinguishing feature of Scheme is that continuations, which
 in most other languages only operate behind the scenes, also have
 ``first-class'' status.  Continuations are useful for implementing a
 wide variety of advanced control constructs, including non-local exits,
 backtracking, and coroutines.  See section~\ref{continuations}.
+Some versions of ML also provide first-class continuations.
 
 \vest Arguments to Scheme procedures are always passed by value, which
 means that the actual argument expressions are evaluated before the
 procedure gains control, whether the procedure needs the result of the
-evaluation or not.  ML, C, and APL are three other languages that always
-pass arguments by value.
+evaluation or not.  Other languages that always
+pass arguments by value include
+APL, C#, Common Lisp, Java, JavaScript, ML, Pascal,
+Python, Ruby, and Smalltalk.
 This is distinct from the lazy-evaluation semantics of Haskell,
 or the call-by-name semantics of Algol 60, where an argument
 expression is not evaluated unless its value is needed by the
@@ -94,26 +101,27 @@ The formal syntax of Scheme is described in section~\ref{BNF}.
 \section{Notation and terminology}
 
 
-\subsection{Primitive, library, and optional features}
+\subsection{Base and optional features}
 \label{qualifiers}
 
-It is required that every implementation of Scheme support all
-features that are not marked as being \defining{optional}.  Implementations are
-free to omit optional features of Scheme or to add extensions,
-provided the extensions are not in conflict with the language reported
-here.  In particular, implementations must support portable code by
-providing a syntactic mode that preempts no lexical conventions of this
-report.
+Every identifier defined in this report appears in one of several
+\defining{modules}.  Identifiers defined in the {\cf base} module
+are not marked specially in the body of the report.  A summary of
+all the standard modules and the features they provide is given in
+Appendix~\ref{stdmodules}.
 
-To aid in understanding and implementing Scheme, some features are marked
-as \defining{library}. These can be easily implemented in terms of the other,
-primitive, features.  They are redundant in the strict sense of
-the word, but they capture common patterns of usage, and are therefore
-provided as convenient abbreviations.
+Implementations must provide the {\cf base} module and all the identifiers
+exported from it.  Implementations are free to provide or omit the other
+modules given in this report, but each module must either be provided
+in its entirety, exporting no additional identifiers, or else omitted
+altogether.
 
-In addition, some features or sections are marked as being provided by
-a specific \defining{module}.  A summary of all the standard modules
-and feature they provide is given in appendix~\ref{stdmodules}.
+Implementations may provide other modules not described in this report.
+Implementations may also extend the function of any identifier in this
+report, provided the extensions are not in conflict with the language
+reported here.  In particular, implementations must support portable
+code by providing a syntactic mode that preempts no lexical conventions
+of this report.
 
 \subsection{Error situations and unspecified behavior}
 
@@ -162,12 +170,12 @@ built-in procedure.  An entry begins with one or more header lines of the form
 
 \noindent\pproto{\var{template}}{\var{category}}\unpenalty
 
-for required, primitive features, or
+for identifiers in the {\cf base} module, or
 
-\noindent\pproto{\var{template}}{\var{qualifier} \var{category}}\unpenalty
+\noindent\pproto{\var{template}}{\var{module} \var{category}}\unpenalty
 
-where \var{qualifier} is either ``library'' or ``optional'' as defined
- in section~\ref{qualifiers}.
+where \var{module} is the short name of a module
+as defined in Appendix~\ref{stdmodules}.
 
 If \var{category} is ``\exprtype'', the entry describes an expression
 type, and the template gives the syntax of the expression type.

@@ -322,13 +322,16 @@ section~\ref{booleansection}).  When a \hyper{test} evaluates to a true
 value, then the remaining \hyper{expression}s in its \hyper{clause} are
 evaluated in order, and the result(s) of the last \hyper{expression} in the
 \hyper{clause} is(are) returned as the result(s) of the entire {\cf cond}
-expression.  If the selected \hyper{clause} contains only the
+expression.
+
+If the selected \hyper{clause} contains only the
 \hyper{test} and no \hyper{expression}s, then the value of the
 \hyper{test} is returned as the result.  If the selected \hyper{clause} uses the
 \ide{=>} alternate form, then the \hyper{expression} is evaluated.
 Its value must be a procedure that accepts one argument; this procedure is then
 called on the value of the \hyper{test} and the value(s) returned by this
 procedure is(are) returned by the {\cf cond} expression.
+
 If all \hyper{test}s evaluate
 to false values, and there is no else clause, then the result of
 the conditional expression is unspecified; if there is an else
@@ -384,11 +387,13 @@ result of evaluating \hyper{key} is equivalent (in the sense of
 expressions in the corresponding \hyper{clause} are evaluated from left
 to right and the result(s) of the last expression in the \hyper{clause} is(are)
 returned as the result(s) of the {\cf case} expression.
+
 If the result of
 evaluating \hyper{key} is different from every \hyper{datum}, then if
 there is an else clause its expressions are evaluated and the
 result(s) of the last is(are) the result(s) of the {\cf case} expression;
 otherwise the result of the {\cf case} expression is unspecified.
+
 If the selected \hyper{clause} or else clause uses the
 \ide{=>} alternate form, then the \hyper{expression} is evaluated.
 Its value must be a procedure that accepts one argument; this procedure is then
@@ -606,6 +611,9 @@ a \hyper{variable} has the entire {\cf letrec*} expression as its
 region\index{region}, making it possible to define mutually recursive
 procedures.
 
+In all four constructs, the continuation of each expression
+used to compute initial values must not be invoked more than once.
+
 \begin{scheme}
 (letrec* ((p
            (lambda (x)
@@ -625,8 +633,6 @@ It must be possible to evaluate each \hyper{init} without assigning or
 referring to the value of the corresponding \hyper{variable} or the
 \hyper{variable} of any of the bindings that follow it in
 \hyper{bindings}.
-Another restriction is that the continuation of each \hyper{init}
-should not be invoked more than once.
 
 \end{entry}
 
@@ -1070,7 +1076,7 @@ introduced by the {\cf letrec-syntax} expression.
 \subsection{Pattern language}
 \label{patternlanguage}
 
-A \hyper{transformer spec} has the following form:
+A \hyper{transformser spec} has one of the following form:
 
 \begin{entry}{%
 \pproto{(syntax-rules (\hyper{literal} \dotsfoo) \hyper{syntax rule} \dotsfoo)}{\exprtype}
@@ -1106,8 +1112,8 @@ and a template is either an identifier, a constant, or one of the following
 where an \hyper{element} is a \hyper{template} optionally
 followed by an \hyper{ellipsis}.
 An \hyper{ellipsis} is the identifier specified in the second form
-of {\cf syntax-rules}, or the default identifier ``{\cf ...}''
-otherwise.\schindex{...}
+of {\cf syntax-rules}, or the default identifier {\cf ...}
+(three consecutive periods) otherwise.\schindex{...}
 
 \semantics An instance of {\cf syntax-rules} produces a new macro
 transformer by specifying a sequence of hygienic rewrite rules.  A use

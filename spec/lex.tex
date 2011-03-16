@@ -19,8 +19,9 @@ Most identifiers\mainindex{identifier} allowed by other programming
 languages are also acceptable to Scheme.  The precise rules for forming
 identifiers vary among implementations of Scheme, but in all
 implementations a sequence of letters, digits, and ``extended alphabetic
-characters'' that does not have a prefix which is a valid number,
-other than the \ide{.} token used in the list syntax, is an identifier.
+characters'' that does not have a prefix which is a valid number
+is an identifier.  However, the  \ide{.} token used in the list syntax
+is not an identifier.
 Here are some examples of identifiers:
 
 \begin{scheme}
@@ -84,9 +85,12 @@ These directives may appear anywhere comments may appear and are
 treated as comments, except that they affect the reading of subsequent
 lexemes.
 The {\cf{}\#!fold-case} causes the reader to case-fold
+(as if by {\cf string-foldcase})
 each \meta{identifier} and \meta{character name}.
 The {\cf{}\#!no-fold-case} directive causes the reader to return
 to the default, non-folding behavior.
+The scope of these directives is until the next directive
+or the end of file; no other files are affected.
 \end{entry}
 
 %\label{keywordsection}
@@ -121,10 +125,8 @@ otherwise insignificant.  Whitespace may occur between any two tokens,
 but not within a token.  Whitespace may also occur inside a string,
 where it is significant.
 
-The lexical syntax includes several comment forms. In all cases,
-comments are invisible to Scheme, except that they act as delimiters,
-so, for example, a comment cannot appear in the middle of an
-identifier or representation of a number object.
+The lexical syntax includes several comment forms.  
+Comments are treated exactly like whitespace.
 
 A semicolon ({\tt;}) indicates the start of a line
 comment.\mainindex{comment}\mainschindex{;}  The comment continues to the
