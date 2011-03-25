@@ -292,7 +292,6 @@ circular data structures.
         (lambda (y) y))  \ev  \unspecified%
 \end{scheme}
 
-\end{note}
 
 \end{entry}
 
@@ -739,7 +738,7 @@ is true.
 
 \begin{scheme}
 (exact? 3.0)           \ev  \schfalse
-(exact? #e3.0)         \ev  \schtrue
+(exact? \#e3.0)         \ev  \schtrue
 (inexact? 3.)          \ev  \schtrue
 \end{scheme}
 
@@ -1207,7 +1206,7 @@ for some integer $n$.
 \begin{rationale}
 {\cf Magnitude} is the same as \ide{abs} for a real argument,
 but {\cf abs} is in the {\cf base} module, whereas
-{\cf magnitude} is in the optional \{complex} module.
+{\cf magnitude} is in the optional {\cf complex} module.
 \end{rationale}
 
 \end{entry}
@@ -3424,7 +3423,7 @@ the {\cf guard} expression itself is.
 \begin{entry}{%
 \proto{raise}{ \var{obj}}{procedure}}
 
-Raises a non-continuable exception by invoking the current exception
+Raises a exception by invoking the current exception
 handler on \var{obj}. The handler is called with a continuation whose
 dynamic extent is that of the call to {\cf raise}, except that
 the current exception handler is the one that was in place when the
@@ -3435,7 +3434,7 @@ exception is raised in the same dynamic extent as the handler.
 \begin{entry}{%
 \proto{raise-continuable}{ \var{obj}}{procedure}}
 
-Raises a \defining{continuable exception} by invoking the current
+Raises an exception by invoking the current
 exception handler on \var{obj}. The handler is called with a
 continuation that is equivalent to the continuation of the call to
 {\cf raise-continuable}, with these two exceptions: (1) the current
@@ -3450,8 +3449,9 @@ the call to {\cf raise-continuable}.
 \proto{error}{ \var{message} \var{obj} $\ldots$}{procedure}}
 
 A convenience procedure to raise an exception.  Equivalent to calling
-{\cf raise} on an implementation-defined object which encapsulates the
-information provided by \var{message} and any \var{obj}s.
+{\cf raise} on an implementation-defined object which encapsulates
+the information provided by \var{message} (which should be a string)
+and any \var{obj}s.
 \end{entry}
 
 \begin{scheme}
@@ -3483,7 +3483,7 @@ three procedures described below.
 Implementations may extend {\cf eval} to allow non-expression programs
 (definitions) as the first argument and to allow other
 values as environments, with the restriction that {\cf eval} is not
-allowed to create new bindings in the environments associated with
+allowed to create new bindings in the environments returned by
 {\cf null-environment} or {\cf scheme-report-environment}.
 
 \begin{scheme}
@@ -3548,7 +3548,7 @@ a Scheme object that can deliver data upon command, while an output
 port is a Scheme object that can accept data.\mainindex{port}
 Different {\em port types} operate on different data.  Scheme
 imple\-men\-ta\-tions are required to support {\em character ports}
-and {\em binary ports}, but may also provide other {\em port types}.
+and {\em binary ports}, but may also provide other port types.
 
 A character port supports reading or writing of character data, such
 as {\cf read-char} and {\cf write-char} below, as well as operations
@@ -3661,7 +3661,7 @@ performing input or output, and \schfalse{} otherwise.
 \proto{current-error-port}{}{procedure}}
  
 Returns the current default input port, output port, or error port (an
-output port), respectively.  All three ports are binary.
+output port), respectively.  All three ports are parameters.
 
 \end{entry}
 
@@ -3676,7 +3676,7 @@ the file named by \var{file-spec} should already exist; for
 {\cf with-output-to-file},
 the effect is unspecified if the file
 already exists.
-The file is opened for input or output, an input or output port
+The file is opened for input or output, a binary input or output port
 connected to it is made the default value returned by
 {\cf current-input-port} or {\cf current-output-port}
 (and is used by {\tt (read)}, {\tt (write \var{obj})}, and so forth),
@@ -3705,9 +3705,9 @@ instead of ``the value returned by \var{current-input-port}''.  (Same for
 \begin{entry}{%
 \proto{open-input-file}{ file-spec}{procedure}}
  
-Takes a \var{file-spec} for an existing file and returns an input port capable of
-delivering data from the file.  If the file cannot be opened, an error is
-signalled.
+Takes a \var{file-spec} for an existing file and returns a binary input
+port capable of delivering data from the file.  If the file cannot be
+opened, an error is signalled.
 
 \end{entry}
 
@@ -3715,10 +3715,10 @@ signalled.
 \begin{entry}{%
 \proto{open-output-file}{ file-spec}{procedure}}
 
-Takes a \var{file-spec} naming an output file to be created and returns an output
-port capable of writing characters to a new file by that name.  If the file
-cannot be opened, an error is signalled.  If a file with the given name
-already exists, the effect is unspecified.
+Takes a \var{file-spec} naming an output file to be created and returns
+a binary output port capable of writing characters to a new file by
+that name.  If the file cannot be opened, an error is signalled.  If a
+file with the given name already exists, the effect is unspecified.
 
 \end{entry}
 
@@ -3728,7 +3728,7 @@ already exists, the effect is unspecified.
 \proto{close-output-port}{ port}{procedure}}
 
 Closes the file associated with \var{port}, rendering the \var{port}
-incapable of delivering or accepting characters.  \todo{But maybe a no-op
+incapable of delivering or accepting characters or bytes.  \todo{But maybe a no-op
 on some ports, e.g. terminals or editor buffers.}
 These routines have no effect if the file has already been closed.
 The value returned is unspecified.
@@ -3945,7 +3945,8 @@ Writes a written representation of \var{obj} to the given character output
 \var{port}.  Strings
 that appear in the written representation are enclosed in doublequotes, and
 within those strings backslash and doublequote characters are
-escaped by backslashes.
+escaped by backslashes.  Symbols that contain non-ASCII characters
+are escaped either with inline hex escapes or with vertical bars.
 Character objects are written using the {\cf \#\backwhack} notation.
 {\cf Write} returns an unspecified value.  The
 \var{port} argument may be omitted, in which case it defaults to the value
@@ -3960,7 +3961,8 @@ returned by {\cf current-output-port}.
 
 Writes a representation of \var{obj} to the given character output \var{port}.
 Strings that appear in the written representation are not enclosed in
-doublequotes, and no characters are escaped within those strings.  Character
+doublequotes, and no characters are escaped within those strings.  
+Symbols are not escaped.  Character
 objects appear in the representation as if written by {\cf write-char}
 instead of by {\cf write}.  {\cf Display} returns an unspecified value.
 The \var{port} argument may be omitted, in which case it defaults to the
@@ -3969,9 +3971,7 @@ value returned by {\cf current-output-port}.
 \begin{rationale}
 {\cf Write} is intended
 for producing mach\-ine-readable output and {\cf display} is for producing
-human-readable output.  Implementations that allow ``slashification''
-within symbols will probably want {\cf write} but not {\cf display} to
-slashify funny characters in symbols.
+human-readable output.  
 \end{rationale}
 \end{entry}
 
@@ -4036,11 +4036,6 @@ are printed.  The {\cf load} procedure does not affect the values
 returned by {\cf current-input-port} and {\cf current-output-port}.
 {\cf Load} returns an unspecified value.
 
-{\cf Include} is similar to {\cf load} except that it is syntax which
-expands into the expressions and definitions from the file.  Thus it
-can be used to include internal definitions and otherwise interact
-with the current lexical scope.  In an {\cf include} form
-\var{filename} must be a string literal.
 
 \begin{rationale}
 For portability, {\cf load} must operate on source files.

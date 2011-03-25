@@ -393,7 +393,7 @@ un\-quo\-ta\-tion $D$} takes precedence.
 \meta{definition} \: (define \meta{variable} \meta{expression})
 \>   \| (define (\meta{variable} \meta{def formals}) \meta{body})
 \>   \| (define-record-type \meta{variable}
-\> \> \ \ \meta{constructor} \meta{variable} \arbno(\meta{field spec}))
+\> \> \ \ \meta{constructor} \meta{variable} \arbno\meta{field spec})
 \>   \| (begin \arbno{\meta{definition}})
 \meta{def formals} \: \arbno{\meta{variable}}
 \>   \| \arbno{\meta{variable}} .\ \meta{variable}
@@ -411,7 +411,7 @@ un\-quo\-ta\-tion $D$} takes precedence.
 \begin{grammar}%
 \meta{module} \:
 \> (module \meta{module name} \arbno{\meta{module declaration}})
-\meta{module name} \: (\atleastone{module name part})
+\meta{module name} \: (\atleastone{\meta{module name part}})
 \meta{module name part} \: \meta{identifier} \| \meta{uinteger 10}
 \meta{module declaration} \: (export \arbno{\meta{export spec}})
 \> \| (import \arbno{\meta{import set}})

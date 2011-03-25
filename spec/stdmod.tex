@@ -118,13 +118,22 @@ The \texttt{(scheme lazy)} module exports forms for lazy evaluation.
 
 \section{Eval Module}
 
-The \texttt{(scheme eval)} module exports forms for evaluating Scheme
+The \texttt{(scheme eval)} module exports procedures for evaluating Scheme
 data as programs.
 
 \begin{scheme}
 {\cf eval}
 {\cf null-environment}
 {\cf scheme-report-environment}
+\end{scheme}
+
+\section{Load Module}
+
+The \texttt{(scheme load)} module exports a procedure for loading
+Scheme code into a running environment.
+
+\begin{scheme}
+{\cf load}
 \end{scheme}
 
 \section{Repl Module}
@@ -163,27 +172,6 @@ generating and receiving multiple values.
 
 \begin{scheme}
 {\cf call-with-value}  {\cf values}
-\end{scheme}
-
-\section{Records Module}
-
-The \texttt{(scheme records)} module exports syntax for defining new
-record types.
-
-\begin{scheme}
-{\cf define-record-type}
-\end{scheme}
-
-\section{Blobs}
-
-The \texttt{(scheme blobs)} module provides an interface to the blob type.
-
-\begin{scheme}
-{\cf blob-length}         {\cf blob-u8-ref}
-{\cf blob-u8-set!}        {\cf blob?}
-{\cf copy-blob!}          {\cf copy-blob}
-{\cf copy-partial-blob!}  {\cf make-blob}
-{\cf partial-blob}
 \end{scheme}
 
 \section{I/O Module}
