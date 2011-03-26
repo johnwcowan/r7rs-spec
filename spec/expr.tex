@@ -774,6 +774,34 @@ more complete description of {\cf delay}.
 
 \end{entry}
 
+\subsection{Dynamic Bindings}\unsection
+
+\begin{entry}{%
+\pproto{(parameterize ((param value) \dotsfoo)}{library syntax}
+{\tt\obeyspaces%
+\hspace*{1em}\hyperi{expr} \hyperii{expr} \dotsfoo)}}
+
+\domain{The value of the \var{param} expressions must be parameter objects.}
+The {\cf parameterize} form is used to change the values returned by
+parameter objects for the dynamic extent of the body.
+The expressions \var{param} and \texttt{(\var{converter} \var{value})}
+are evaluated in an unspecified order.  The \hyper{expr}s are
+evaluated in order in a dynamic extent during which calls to the
+\var{param} parameter objects return the result of the corresponding
+\texttt{(\var{converter} \var{value})}.  The result(s) of the last
+\hyper{expr} is(are) returned as the result(s) of the entire {\cf
+  parameterize} form.
+
+If an implementation supports multiple threads of execution, then {\cf
+  parameterize} must not change the associated values of any
+parameters in any thread created before or after the call to {\cf
+  parameterize}.
+
+See the description of {\cf make-parameter}
+(section~\ref{make-parameter}) for a more complete description of {\cf
+  parameterize}.
+\end{entry}
+
 
 \subsection{Quasiquotation}\unsection
 \label{quasiquotesection}
