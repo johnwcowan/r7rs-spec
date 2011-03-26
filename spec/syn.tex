@@ -65,14 +65,12 @@ escape sequence.
 \meta{token} \: \meta{identifier} \| \meta{boolean} \| \meta{number}\index{identifier}
 \>  \| \meta{character} \| \meta{string}
 \>  \| ( \| ) \| \sharpsign( \| \singlequote{} \| \backquote{} \| , \| ,@ \| {\bf.}
-\>  \| \meta{label} \= \meta{token} \| \meta{label} \#
-\meta{label} \: \# \atleastone{\meta{digit $10$}}
 \meta{delimiter} \: \meta{whitespace} \| ( \| ) \| " \| ;
 \meta{whitespace} \: \meta{space or newline}
 \meta{comment} \: ; \= $\langle$\rm all subsequent characters up to a
 		    \>\ \rm line break$\rangle$\index{comment}
 \> \| \meta{nested comment}
-\> \| \#; \meta{whitespace} \meta{datum}
+\> \| \#; \meta{atmosphere} \meta{datum}
 \meta{nested comment} \: \#| \= \meta{comment text}
 \> \arbno{\meta{comment cont}} |\#
 \meta{comment text} \: \= $\langle$\rm character sequence not containing
@@ -117,7 +115,8 @@ escape sequence.
 \meta{non-digit} \: \meta{dot subsequent} \| \meta{explicit sign}
 \meta{dot subsequent} \: \meta{sign subsequent} \| .
 \meta{sign subsequent} \: \meta{initial} \| \meta{explicit sign} \| @
-\meta{symbol element} \: \meta{any character other than \meta{vertical bar} or \backwhack}
+\meta{symbol element} \:
+ \> \meta{any character other than \meta{vertical bar} or \backwhack}
 \meta{syntactic keyword} \: \meta{expression keyword}\index{keyword}\index{syntactic keyword}
  \>  \| else \| => \| define 
  \>  \| unquote \| unquote-splicing
@@ -146,10 +145,8 @@ escape sequence.
 \label{numbersyntax}
 
 \begin{grammar}%
-\meta{number} \: \meta{num $2$}%
-       \| \meta{num $8$}
-   \>  \| \meta{num $10$}%
-       \| \meta{num $16$}
+\meta{number} \: \meta{num $2$} \| \meta{num $8$}
+   \>  \| \meta{num $10$} \| \meta{num $16$}
 \end{grammar}
 
 The following rules for \meta{num $R$}, \meta{complex $R$}, \meta{real
@@ -173,7 +170,8 @@ decimal points or exponents must be in decimal radix.
       \| - \meta{ureal $R$} i %
       \| + i %
       \| - i
-\meta{real $R$} \: \meta{sign} \meta{ureal $R$} \| \meta{infinity} %
+\meta{real $R$} \: \meta{sign} \meta{ureal $R$}
+   \> \| \meta{infinity}
 \meta{ureal $R$} \: %
          \meta{uinteger $R$}
    \> \| \meta{uinteger $R$} / \meta{uinteger $R$}
@@ -218,6 +216,7 @@ successfully parses.  Note that any string that parses as an
 
 \begin{grammar}%
 \meta{datum} \: \meta{simple datum} \| \meta{compound datum}
+\>  \| \meta{label} \= \meta{datum} \| \meta{label} \#
 \meta{simple datum} \: \meta{boolean} \| \meta{number}
 \>  \| \meta{character} \| \meta{string} \|  \meta{symbol}
 \meta{symbol} \: \meta{identifier}
@@ -227,6 +226,7 @@ successfully parses.  Note that any string that parses as an
 \meta{abbreviation} \: \meta{abbrev prefix} \meta{datum}
 \meta{abbrev prefix} \: ' \| ` \| , \| ,@
 \meta{vector} \: \#(\arbno{\meta{datum}}) %
+\meta{label} \: \# \atleastone{\meta{digit $10$}}
 \end{grammar}
 
 
@@ -393,7 +393,7 @@ un\-quo\-ta\-tion $D$} takes precedence.
 \meta{definition} \: (define \meta{variable} \meta{expression})
 \>   \| (define (\meta{variable} \meta{def formals}) \meta{body})
 \>   \| (define-record-type \meta{variable}
-\> \> \ \ \meta{constructor} \meta{variable} \arbno(\meta{field spec}))
+\> \> \ \ \meta{constructor} \meta{variable} (\arbno{\meta{field spec}}))
 \>   \| (begin \arbno{\meta{definition}})
 \meta{def formals} \: \arbno{\meta{variable}}
 \>   \| \arbno{\meta{variable}} .\ \meta{variable}
@@ -411,7 +411,7 @@ un\-quo\-ta\-tion $D$} takes precedence.
 \begin{grammar}%
 \meta{module} \:
 \> (module \meta{module name} \arbno{\meta{module declaration}})
-\meta{module name} \: (\atleastone{module name part})
+\meta{module name} \: (\atleastone{\meta{module name part}})
 \meta{module name part} \: \meta{identifier} \| \meta{uinteger 10}
 \meta{module declaration} \: (export \arbno{\meta{export spec}})
 \> \| (import \arbno{\meta{import set}})

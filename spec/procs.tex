@@ -746,14 +746,6 @@ These numerical predicates provide tests for the exactness of a
 quantity.  For any Scheme number, precisely one of these predicates
 is true.
 
-\begin{scheme}
-(finite? 3+4i)         \ev  \schtrue
-(finite? +inf.0)       \ev  \schfalse
-(infinite? +inf.0)     \ev  \schtrue
-(infinite? -inf.0)     \ev  \schtrue
-(nan? +nan.0)          \ev  \schtrue
-\end{scheme}
-
 \end{entry}
 
 
@@ -774,6 +766,14 @@ iff \vr{z} is both \tupe{exact} and an \tupe{integer}.
 These numerical predicates provide tests for the infinite and NaN
 numbers.  For any Scheme number, precisely one of these predicates is
 true.
+
+\begin{scheme}
+(finite? 3+4i)         \ev  \schtrue
+(finite? +inf.0)       \ev  \schfalse
+(infinite? +inf.0)     \ev  \schtrue
+(infinite? -inf.0)     \ev  \schtrue
+(nan? +nan.0)          \ev  \schtrue
+\end{scheme}
 
 \end{entry}
 
@@ -945,7 +945,7 @@ For any of the operators, and for integers \vri{n} and \vrii{n}
 with \vrii{n} not equal to 0,
 \begin{scheme}
      (= \vri{n} (+ (* \vrii{n} (\hyper{operator}-quotient \vri{n} \vrii{n}))
-           (\hyper{operator}remainder \vri{n} \vrii{n})))
+           (\hyper{operator}-remainder \vri{n} \vrii{n})))
                                  \ev  \schtrue%
 \end{scheme}
 provided all numbers involved in that computation are exact.
@@ -2167,9 +2167,9 @@ These procedures return \schtrue{} if their arguments are alphabetic,
 numeric, whitespace, upper case, or lower case characters, respectively,
 otherwise they return \schfalse.  
 
-Specifically, they must return \schtrue when applied to characters with
+Specifically, they must return \schtrue{} when applied to characters with
 the Unicode properties Alphabetic, Numeric, White\_Space, Uppercase, and
-Lowercase respectively, and \schfalse when applied to any other Unicode
+Lowercase respectively, and \schfalse{} when applied to any other Unicode
 characters.  Note that many Unicode characters are alphabetic but neither
 upper nor lower case.
 
@@ -2283,8 +2283,8 @@ themselves.  Escape sequences always start with a backslash (\backwhack{}):
 The result is unspecified if any other character in a string occurs
 after a backslash.
 
-\vest A string constant may continue from one line to the next, which
-has the same effect as inserting a newline character into the string.
+\vest A string constant may continue from one line to the next, but
+the exact contents of such a string are unspecified.
 % this is
 %usually a bad idea because 
 %the exact effect may vary from one computer
@@ -2667,10 +2667,6 @@ in the elements of \var{vector}, which must be characters.
 {\cf String->vector} returns a newly
 created vector initialized to the elements of the string \var{string}.
 
-\begin{scheme}
-(vector->list '\#(dah dah didah))  \lev  (dah dah didah)
-(list->vector '(dididit dah))   \lev  \#(dididit dah)%
-\end{scheme}
 \end{entry}
 
 \begin{entry}{%
@@ -2734,8 +2730,8 @@ definitions:
   initial value.  The initial values of all other fields are
   unspecified.
 
-\item \hyper{pred} is a predicate that returns \schtrue when given a
-  value returned by \hyper{constructor name} and \schfalse for
+\item \hyper{pred} is a predicate that returns \schtrue{} when given a
+  value returned by \hyper{constructor name} and \schfalse{} for
   everything else.
 
 \item Each \hyper{accessor name} is a procedure that takes a record of
@@ -2956,12 +2952,17 @@ The dynamic order in which \var{proc} is applied to the elements of the
 (string-map char-foldcase "AbdEgH") \lev  "abdegh"
 
 (string-map
-  (lambda (c) (integer->char (+ 1 (char->integer c))))
-     "HAL")                \lev  "IBM"
+ (lambda (c)
+   (integer->char (+ 1 (char->integer c))))
+ "HAL")                \lev  "IBM"
 
-(string-map (lambda (c k)
-  (if (eqv? k \#\u) (char-upcase c) (char-downcase c)))
-    "studlycaps" "ululululul")   \lev   "StUdLyCaPs"
+(string-map
+ (lambda (c k)
+   (if (eqv? k \sharpsign\backwhack{}u)
+       (char-upcase c)
+       (char-downcase c)))
+ "studlycaps"
+ "ululululul")   \lev   "StUdLyCaPs"
 \end{scheme}
 
 \end{entry}
@@ -2983,15 +2984,16 @@ The dynamic order in which \var{proc} is applied to the elements of the
 (vector-map cadr '\#((a b) (d e) (g h)))   \lev  \#(b e h)
 
 (vector-map (lambda (n) (expt n n))
-     '\#(1 2 3 4 5))                \lev  \#(1 4 27 256 3125)
+            '\#(1 2 3 4 5))                \lev  \#(1 4 27 256 3125)
 
-(vector-map + '\#(1 2 3) '\#(4 5 6))         \ev  \#(5 7 9)
+(vector-map + '\#(1 2 3) '\#(4 5 6))       \ev  \#(5 7 9)
 
 (let ((count 0))
-  (vector-map (lambda (ignored)
-         (set! count (+ count 1))
-         count)
-       '\#(a b)))                 \ev  \#(1 2) \var{or} \#(2 1)
+  (vector-map
+   (lambda (ignored)
+     (set! count (+ count 1))
+     count)
+   '\#(a b)))                     \ev  \#(1 2) \var{or} \#(2 1)
 \end{scheme}
 
 \end{entry}
@@ -3006,7 +3008,7 @@ values.  Unlike {\cf map}, {\cf for-each} is guaranteed to call \var{proc} on
 the elements of the \var{list}s in order from the first element(s) to the
 last, and the value returned by {\cf for-each} is unspecified.
 If more than one \var{list} is given and not all lists have the same length,
-{\cf for-each terminates when the shortest list runs out.}
+{\cf for-each} terminates when the shortest list runs out.
 
 \begin{scheme}
 (let ((v (make-vector 5)))
@@ -3028,13 +3030,13 @@ string-for-each} is guaranteed to call \var{proc} on the elements of
 the \var{list}s in order from the first element(s) to the last, and the
 value returned by {\cf string-for-each} is unspecified.
 If more than one \var{string} is given and not all strings have the same length,
-{\cf string-for-each terminates when the shortest string runs out.}
+{\cf string-for-each} terminates when the shortest string runs out.
 
 \begin{scheme}
 (let ((v (make-vector 5)))
-  (string-for-each (lambda (c)
-              (vector-set! v c (char->integer c)))
-            "abcde")
+  (string-for-each
+   (lambda (c) (vector-set! v c (char->integer c)))
+   "abcde")
   v)                                \ev  \#(97 98 99 100 101)%
 \end{scheme}
 
@@ -3050,13 +3052,13 @@ vector-for-each} is guaranteed to call \var{proc} on the elements of
 the \var{vector}s in order from the first element(s) to the last, and
 the value returned by {\cf vector-for-each} is unspecified.
 If more than one \var{vector} is given and not all vectors have the same length,
-{\cf vector-for-each terminates when the shortest vector runs out.}
+{\cf vector-for-each} terminates when the shortest vector runs out.
 
 \begin{scheme}
 (let ((v (make-list 5)))
-  (vector-for-each (lambda (i)
-              (list-set! v i (* i i)))
-            '\#(0 1 2 3 4))
+  (vector-for-each
+   (lambda (i) (list-set! v i (* i i)))
+   '\#(0 1 2 3 4))
   v)                                \ev  (0 1 4 9 16)%
 \end{scheme}
 
@@ -3429,18 +3431,20 @@ returns its associated value.
 \end{entry}
 
 \begin{entry}{%
-\proto{parameterize}{ ((param value) \dotsfoo) \hyperi{expr} \hyperii{expr} \dotsfoo}{library syntax}}
+\pproto{(parameterize ((param value) \dotsfoo)}{library syntax}
+{\tt\obeyspaces%
+\hspace*{1em}\hyperi{expr} \hyperii{expr} \dotsfoo)}}
 
+\domain{The value of the \var{param} expressions must be parameter objects.}
 The {\cf parameterize} form is used to change the values returned by
 parameter objects for the dynamic extent of the body.  The expressions
 \var{param} and \texttt{(\var{converter} \var{value})} are evaluated
-in an unspecified order.  The value of the \var{param} expressions
-must be parameter objects.  The \hyper{expr}s are evaluated in order
-in a dynamic extent during which calls to the \var{param} parameter
+in an unspecified order.  The \hyper{expr}s are evaluated in order in
+a dynamic extent during which calls to the \var{param} parameter
 objects return the result of the corresponding
 \texttt{(\var{converter} \var{value})}.  The result(s) of the last
-\hyper{expr} is(are) returned as the result(s) of the entire
-{\cf parameterize} form.
+\hyper{expr} is(are) returned as the result(s) of the entire {\cf
+  parameterize} form.
 
 \todo{What to say about threads?  The dynamic extent of a parameterize
   form should not be visible to existing threads.  Child threads
@@ -3489,7 +3493,7 @@ exception handler for the dynamic extent (as determined by {\cf
 \begin{entry}{%
 \pproto{(guard (\hyper{variable}}{\exprtype}
 {\tt\obeyspaces%
-\hspace*{3em}\hyperi{cond clause} \hyperii{cond clause} \dotsfoo)\\
+\hspace*{4em}\hyperi{cond clause} \hyperii{cond clause} \dotsfoo)\\
 \hspace*{2em}\hyper{body})}\\
 }
 
@@ -3541,6 +3545,7 @@ the call to {\cf raise-continuable}.
 \begin{entry}{%
 \proto{error}{ \var{message} \var{obj} $\ldots$}{procedure}}
 
+\domain{\var{Message} should be a string.}
 A convenience procedure to raise an exception.  Equivalent to calling
 {\cf raise} on an implementation-defined object which encapsulates the
 information provided by \var{message} and any \var{obj}s.
@@ -3650,7 +3655,8 @@ A binary port supports reading or writing of binary data at the level
 of individual octets with {\cf read-u8} and {\cf write-u8}, below.
 Every binary port is also automatically a character port, by treating
 the sequence of octets as an implementation-determined character set
-encoding.  Conversely, not all character ports are binary ports.
+encoding.  Conversely, not all character ports are binary ports - for
+example, the {\em string ports} discussed below.
 
 Ports can be used to access objects called {\em files} on the host
 system in which the Scheme program is running.  In the procedures
@@ -3740,7 +3746,7 @@ respectively.
 \proto{port-open?}{ port}{procedure}}
 
 Returns \schtrue{} if \var{port} is still open and capable of
-performing input or output, and \schfalse otherwise.
+performing input or output, and \schfalse{} otherwise.
 
 \todo{If a port is no longer a port after being closed, this should return false in those cases and not raise a domain error.}
 
@@ -3753,7 +3759,10 @@ performing input or output, and \schfalse otherwise.
 \proto{current-error-port}{}{procedure}}
  
 Returns the current default input port, output port, or error port (an
-output port), respectively.  All three ports are binary.
+output port), respectively.  The initial bindings for each of these
+are bound to system defined binary ports.
+
+\todo{Shinn: Are these parameters?}
 
 \end{entry}
 
@@ -3820,7 +3829,7 @@ already exists, the effect is unspecified.
 \proto{close-output-port}{ port}{procedure}}
 
 Closes the file associated with \var{port}, rendering the \var{port}
-incapable of delivering or accepting characters.  \todo{But maybe a no-op
+incapable of delivering or accepting data.  \todo{But maybe a no-op
 on some ports, e.g. terminals or editor buffers.}
 These routines have no effect if the file has already been closed.
 The value returned is unspecified.
@@ -3838,8 +3847,8 @@ different close procedures.}
 \begin{entry}{%
 \proto{open-input-string}{ string}{procedure}}
 
-Takes a string and returns an input port that delivers characters from
-the string.
+Takes a string and returns a character input port that delivers
+characters from the string.
 
 %% \begin{scheme}
 %% (define p
@@ -3855,8 +3864,8 @@ the string.
 \begin{entry}{%
 \proto{open-output-string}{}{procedure}}
 
-Returns an output port that will accumulate characters for retrieval
-by {\cf get-output-string}.
+Returns a character output port that will accumulate characters for
+retrieval by {\cf get-output-string}.
 
 %% \begin{scheme}
 %% (let ((q (open-output-string))
@@ -4113,8 +4122,8 @@ deserve description here.
 
 
 \begin{entry}{%
-\proto{load}{ file-spec}{optional procedure}
-\proto{include}{ file-spec}{optional syntax}}
+\proto{load}{ filename}{optional procedure}
+\proto{include}{ filename}{optional syntax}}
 
 \todo{Fix}
 
@@ -4145,8 +4154,8 @@ implementations.
 \proto{file-exists?}{ filename}{optional procedure}}
 
 \var{Filename} must be a string. The {\cf file-exists?} procedure returns
-\schtrue if the named file exists at the time the procedure is called,
-\schfalse otherwise.
+\schtrue{} if the named file exists at the time the procedure is called,
+\schfalse{} otherwise.
 
 \end{entry}
 
@@ -4166,7 +4175,7 @@ is raised.
 \proto{get-environment-variable}{ name}{optional procedure}}
 
 \var{Name} must be a string.  Returns the value of the named
-environment variable as a string, or \schfalse if the named
+environment variable as a string, or \schfalse{} if the named
 environment variable is not found.  {\cf get-environment-variable} may
 use locale-setting information to encode the name and decode the value
 of the environment variable.  If {\cf get-environment-variable} can't

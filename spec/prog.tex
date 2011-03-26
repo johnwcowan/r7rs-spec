@@ -383,7 +383,8 @@ appendix~\ref{stdfeatures}.
   (import (scheme))
   (begin
    (define (make) (list กว()))
-   (define (push! s v) (set-car! s (cons v (car s))))
+   (define (push! s v)
+     (set-car! s (cons v (car s))))
    (define (pop! s) (let ((v (caar s)))
                       (set-car! s (cdar s))
                       v))
@@ -408,9 +409,10 @@ appendix~\ref{stdfeatures}.
           push!
           make-party
           (rename (party-pop! pop!)))
-  (import (scheme)
-          (only (stack) make push! pop!) ; not empty!
-          (prefix (balloons) balloon:))
+  (import
+   (scheme)
+   (only (stack) make push! pop!) ; not empty!
+   (prefix (balloons) balloon:))
   (begin
    ;; Creates a party as a stack of balloons,
    ;; starting with two balloons
