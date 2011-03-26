@@ -736,6 +736,27 @@ These numerical predicates provide tests for the exactness of a
 quantity.  For any Scheme number, precisely one of these predicates
 is true.
 
+\end{entry}
+
+
+\begin{entry}{%
+\proto{exact-integer?}{ \vr{z}}{procedure}}
+
+The conjunction of {\cf exact?} and {\cf integer?}, returns \schtrue{}
+iff \vr{z} is both \tupe{exact} and an \tupe{integer}.
+
+\end{entry}
+
+
+\begin{entry}{%
+\proto{finite?}{ \vr{z}}{procedure}
+\proto{infinite?}{ \vr{z}}{procedure}
+\proto{nan?}{ \vr{z}}{procedure}}
+
+These numerical predicates provide tests for the infinite and NaN
+numbers.  For any Scheme number, precisely one of these predicates is
+true.
+
 \begin{scheme}
 (exact? 3.0)           \ev  \schfalse
 (exact? \#e3.0)         \ev  \schtrue
@@ -2653,10 +2674,6 @@ in the elements of \var{vector}, which must be characters.
 {\cf String->vector} returns a newly
 created vector initialized to the elements of the string \var{string}.
 
-\begin{scheme}
-(vector->list '\#(dah dah didah))  \lev  (dah dah didah)
-(list->vector '(dididit dah))   \lev  \#(dididit dah)%
-\end{scheme}
 \end{entry}
 
 \begin{entry}{%
@@ -2675,6 +2692,93 @@ The value returned by {\cf vector-fill!}\ is unspecified.  % <!>
 
 \end{entry}
 
+
+\subsection{Record types}
+\label{usertypes}
+
+This section describes syntax for creating new data types, called
+record types.  A predicate, constructor, and field accessors and
+modifiers are defined for each record type.
+
+\begin{entry}{%
+\proto{define-record-type}{ name constructor pred field \dotsfoo}{syntax}}
+
+\syntax
+\hyper{name} and \hyper{pred} should be identifiers.
+The \hyper{constructor} should be of the form
+\begin{scheme}
+(\hyper{constructor name} \hyper{field name} \dotsfoo)%
+\end{scheme}
+and each \hyper{field} should be of the form
+\begin{scheme}
+(\hyper{field name} \hyper{accessor name})%
+\end{scheme}
+\begin{scheme}
+$|$ (\hyper{field name} \hyper{accessor name} \hyper{modifier name})%
+\end{scheme}
+
+{\cf define-record-type} is generative: each use creates a new record
+type that is distinct from all existing types, including other record
+types and Scheme's predefined types.
+
+An instance of {\cf define-record-type} is equivalent to the following
+definitions:
+
+\begin{itemize}
+
+\item \hyper{name} is bound to a representation of the record type
+  itself, possibly as a syntactic form.
+
+\item \hyper{constructor name} is bound to a procedure that takes as
+  many arguments as there are \hyper{field name}s in the
+  \texttt{(\hyper{constructor name} \dotsfoo)} subform and returns a
+  new record of type \hyper{name}.  Fields whose names are listed with
+  \hyper{constructor name} have the corresponding argument as their
+  initial value.  The initial values of all other fields are
+  unspecified.
+
+\item \hyper{pred} is a predicate that returns \schtrue{} when given a
+  value returned by \hyper{constructor name} and \schfalse{} for
+  everything else.
+
+\item Each \hyper{accessor name} is a procedure that takes a record of
+  type \hyper{name} and returns the current value of the corresponding
+  field.  It is an error to pass an accessor a value which is not a
+  record of the appropriate type.
+
+\item Each \hyper{modifier name} is a procedure that takes a record of
+  type \hyper{name} and a value which becomes the new value of the
+  corresponding field; an unspecified value is returned.  It is an
+  error to pass a modifier a first argument which is not a record of
+  the appropriate type.
+
+\end{itemize}
+
+The following
+
+\begin{scheme}
+(define-record-type <pare>
+  (kons x y)
+  pare?
+  (x kar set-kar!)
+  (y kdr))
+\end{scheme}
+
+defines \hyper{kons} to be a constructor, \hyper{kar} and \hyper{kdr}
+to be accessors, \hyper{set-kar!} to be a modifier, and \hyper{pare?}
+to be a predicate for \hyper{<pare>}s.
+
+\begin{scheme}
+  (pare? (kons 1 2))        \ev \schtrue
+  (pare? (cons 1 2))        \ev \schfalse
+  (kar (kons 1 2))          \ev 1
+  (kdr (kons 1 2))          \ev 2
+  (let ((k (kons 1 2)))
+    (set-kar! k 3)
+    (kar k))                \ev 3
+\end{scheme}
+
+\end{entry}
 
 \subsection{Blobs}
 \label{blobsection}
@@ -2862,13 +2966,17 @@ The dynamic order in which \var{proc} is applied to the elements of the
 (string-map char-foldcase "AbdEgH") \lev  "abdegh"
 
 (string-map
-  (lambda (c) (integer->char
-                (+ 1 (char->integer c))))
-     "HAL")                \ev  "IBM"
+ (lambda (c)
+   (integer->char (+ 1 (char->integer c))))
+ "HAL")                \lev  "IBM"
 
-(string-map (lambda (c k)
-  (if (eqv? k \#\u) (char-upcase c) (char-downcase c)))
-    "studlycaps" "ululululul")   \lev   "StUdLyCaPs"
+(string-map
+ (lambda (c k)
+   (if (eqv? k \sharpsign\backwhack{}u)
+       (char-upcase c)
+       (char-downcase c)))
+ "studlycaps"
+ "ululululul")   \lev   "StUdLyCaPs"
 \end{scheme}
 
 \end{entry}
@@ -2890,15 +2998,16 @@ The dynamic order in which \var{proc} is applied to the elements of the
 (vector-map cadr '\#((a b) (d e) (g h)))   \lev  \#(b e h)
 
 (vector-map (lambda (n) (expt n n))
-     '\#(1 2 3 4 5))                \lev  \#(1 4 27 256 3125)
+            '\#(1 2 3 4 5))                \lev  \#(1 4 27 256 3125)
 
-(vector-map + '\#(1 2 3) '\#(4 5 6))         \lev  \#(5 7 9)
+(vector-map + '\#(1 2 3) '\#(4 5 6))       \ev  \#(5 7 9)
 
 (let ((count 0))
-  (vector-map (lambda (ignored)
-         (set! count (+ count 1))
-         count)
-       '\#(a b)))                 \lev  \#(1 2) \var{or} \#(2 1)
+  (vector-map
+   (lambda (ignored)
+     (set! count (+ count 1))
+     count)
+   '\#(a b)))                     \ev  \#(1 2) \var{or} \#(2 1)
 \end{scheme}
 
 \end{entry}
@@ -2939,9 +3048,9 @@ If more than one \var{string} is given and not all strings have the same length,
 
 \begin{scheme}
 (let ((v '()))
-  (string-for-each (lambda (c)
-              (set! v (cons (char->integer c) v))
-            "abcde")
+  (string-for-each
+   (lambda (c) (set! v (cons (char->integer c) v))
+   "abcde")
   v)                                \ev  (101 100 99 98 97)%
 \end{scheme}
 
@@ -2960,11 +3069,11 @@ If more than one \var{vector} is given and not all vectors have the same length,
 {\cf vector-for-each} terminates when the shortest vector runs out.
 
 \begin{scheme}
-(let ((v '()))
-  (vector-for-each (lambda (i)
-              (set! v (cons i v))
-            '\#(0 1 2 3 4))
-  (reverse v))                                \ev  (0 1 4 9 16)%
+(let ((v (make-list 5)))
+  (vector-for-each
+   (lambda (i) (list-set! v i (* i i)))
+   '\#(0 1 2 3 4))
+  v)                                \ev  (0 1 4 9 16)%
 \end{scheme}
 
 \end{entry}
@@ -3336,18 +3445,20 @@ returns its associated value.
 \end{entry}
 
 \begin{entry}{%
-\proto{parameterize}{ ((param value) \dotsfoo) \hyperi{expr} \hyperii{expr} \dotsfoo}{library syntax}}
+\pproto{(parameterize ((param value) \dotsfoo)}{library syntax}
+{\tt\obeyspaces%
+\hspace*{1em}\hyperi{expr} \hyperii{expr} \dotsfoo)}}
 
+\domain{The value of the \var{param} expressions must be parameter objects.}
 The {\cf parameterize} form is used to change the values returned by
 parameter objects for the dynamic extent of the body.  The expressions
 \var{param} and \texttt{(\var{converter} \var{value})} are evaluated
-in an unspecified order.  The value of the \var{param} expressions
-must be parameter objects.  The \hyper{expr}s are evaluated in order
-in a dynamic extent during which calls to the \var{param} parameter
+in an unspecified order.  The \hyper{expr}s are evaluated in order in
+a dynamic extent during which calls to the \var{param} parameter
 objects return the result of the corresponding
 \texttt{(\var{converter} \var{value})}.  The result(s) of the last
-\hyper{expr} is(are) returned as the result(s) of the entire
-{\cf parameterize} form.
+\hyper{expr} is(are) returned as the result(s) of the entire {\cf
+  parameterize} form.
 
 \todo{What to say about threads?  The dynamic extent of a parameterize
   form should not be visible to existing threads.  Child threads
@@ -3396,7 +3507,7 @@ exception handler for the dynamic extent (as determined by {\cf
 \begin{entry}{%
 \pproto{(guard (\hyper{variable}}{\exprtype}
 {\tt\obeyspaces%
-\hspace*{3em}\hyperi{cond clause} \hyperii{cond clause} \dotsfoo)\\
+\hspace*{4em}\hyperi{cond clause} \hyperii{cond clause} \dotsfoo)\\
 \hspace*{2em}\hyper{body})}\\
 }
 
@@ -3448,6 +3559,7 @@ the call to {\cf raise-continuable}.
 \begin{entry}{%
 \proto{error}{ \var{message} \var{obj} $\ldots$}{procedure}}
 
+\domain{\var{Message} should be a string.}
 A convenience procedure to raise an exception.  Equivalent to calling
 {\cf raise} on an implementation-defined object which encapsulates
 the information provided by \var{message} (which should be a string)
@@ -3558,7 +3670,8 @@ A binary port supports reading or writing of binary data at the level
 of individual octets with {\cf read-u8} and {\cf write-u8}, below.
 Every binary port is also automatically a character port, by treating
 the sequence of octets as an implementation-determined character set
-encoding.  Conversely, not all character ports are binary ports.
+encoding.  Conversely, not all character ports are binary ports - for
+example, the {\em string ports} discussed below.
 
 Ports can be used to access objects called {\em files} on the host
 system in which the Scheme program is running.  In the procedures
@@ -3659,9 +3772,12 @@ performing input or output, and \schfalse{} otherwise.
 \proto{current-input-port}{}{procedure}
 \proto{current-output-port}{}{procedure}
 \proto{current-error-port}{}{procedure}}
- 
+
 Returns the current default input port, output port, or error port (an
-output port), respectively.  All three ports are parameters.
+output port), respectively.  The initial bindings for each of these
+are bound to system defined binary ports.
+
+\todo{Shinn: Are these parameters?}
 
 \end{entry}
 
@@ -3728,7 +3844,7 @@ file with the given name already exists, the effect is unspecified.
 \proto{close-output-port}{ port}{procedure}}
 
 Closes the file associated with \var{port}, rendering the \var{port}
-incapable of delivering or accepting characters or bytes.  \todo{But maybe a no-op
+incapable of delivering or accepting data.  \todo{But maybe a no-op
 on some ports, e.g. terminals or editor buffers.}
 These routines have no effect if the file has already been closed.
 The value returned is unspecified.
@@ -3746,8 +3862,8 @@ different close procedures.}
 \begin{entry}{%
 \proto{open-input-string}{ string}{procedure}}
 
-Takes a string and returns an input port that delivers characters from
-the string.
+Takes a string and returns a character input port that delivers
+characters from the string.
 
 %% \begin{scheme}
 %% (define p
@@ -3763,8 +3879,8 @@ the string.
 \begin{entry}{%
 \proto{open-output-string}{}{procedure}}
 
-Returns an output port that will accumulate characters for retrieval
-by {\cf get-output-string}.
+Returns a character output port that will accumulate characters for
+retrieval by {\cf get-output-string}.
 
 %% \begin{scheme}
 %% (let ((q (open-output-string))
@@ -4021,8 +4137,8 @@ deserve description here.
 
 
 \begin{entry}{%
-\proto{load}{ file-spec}{procedure}
-\proto{include}{ file-spec}{optional syntax}}
+\proto{load}{ filename}{optional procedure}
+\proto{include}{ filename}{optional syntax}}
 
 \todo{Fix}
 

@@ -582,6 +582,8 @@ to evaluate each \hyper{init} without assigning or referring to the value of any
 restriction is necessary because Scheme passes arguments by value rather than by
 name.  In the most common uses of {\cf letrec}, all the \hyper{init}s are
 \lambdaexp{}s and the restriction is satisfied automatically.
+Another restriction is that the continuation of each \hyper{init}
+should not be invoked more than once.
 
 % \todo{use or uses?  --- Jinx.}
 
@@ -1079,8 +1081,14 @@ introduced by the {\cf letrec-syntax} expression.
 A \hyper{transformser spec} has one of the following form:
 
 \begin{entry}{%
-\pproto{(syntax-rules (\hyper{literal} \dotsfoo) \hyper{syntax rule} \dotsfoo)}{\exprtype}
-\pproto{(syntax-rules \hyper{ellipsis} (\hyper{literal} \dotsfoo) \hyper{syntax rule} \dotsfoo)}{\exprtype}}
+\pproto{(syntax-rules (\hyper{literal} \dotsfoo)}{\exprtype}
+{\tt\obeyspaces%
+\hspace*{1em}\hyper{syntax rule} \dotsfoo)\\
+}
+\pproto{(syntax-rules \hyper{ellipsis} (\hyper{literal} \dotsfoo)}{\exprtype}
+{\tt\obeyspaces%
+\hspace*{1em}\hyper{syntax rule} \dotsfoo)}
+}
 
 \syntax
 Each \hyper{literal}, as well as the \hyper{ellipsis} in the second form must
@@ -1098,7 +1106,8 @@ following
 (\hyper{pattern} \ldots)
 (\hyper{pattern} \hyper{pattern} \ldots . \hyper{pattern})
 (\hyper{pattern} \ldots \hyper{pattern} \hyper{ellipsis} \hyper{pattern} \ldots)
-(\hyper{pattern} \ldots \hyper{pattern} \hyper{ellipsis} \hyper{pattern} \ldots . \hyper{pattern})
+(\hyper{pattern} \ldots \hyper{pattern} \hyper{ellipsis} \hyper{pattern} \ldots
+  . \hyper{pattern})
 \#(\hyper{pattern} \ldots)
 \#(\hyper{pattern} \ldots \hyper{pattern} \hyper{ellipsis} \hyper{pattern} \ldots)%
 \end{scheme}
@@ -1325,9 +1334,10 @@ arbitrary forms providing additional information.
 \begin{scheme}
 (define-syntax simple-let
   (syntax-rules ()
-    ((simple-let (head ... ((x . y) val) . tail) body1 body2 ...)
-     (syntax-error ``name should be an identifier, but got'' (x . y)))
-    ((simple-let ((name val) ...) body1 body2 ...)
+    ((\_ (head ... ((x . y) val) . tail) body1 body2 ...)
+     (syntax-error "expected an identifier but got"
+                   (x . y)))
+    ((\_ ((name val) ...) body1 body2 ...)
      ((lambda (name ...) body1 body2 ...) val ...))))
 \end{scheme}
 
