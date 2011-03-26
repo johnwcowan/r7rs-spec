@@ -4151,10 +4151,15 @@ are printed.  The {\cf load} procedure does not affect the values
 returned by {\cf current-input-port} and {\cf current-output-port}.
 {\cf Load} returns an unspecified value.
 
+{\cf Include} is similar to {\cf load} except that it is syntax which
+expands into the expressions and definitions from the file.  Thus it
+can be used to include internal definitions and otherwise interact
+with the current lexical scope.  In an {\cf include} form
+\var{filename} must be a string literal.
 
 \begin{rationale}
-For portability, {\cf load} must operate on source files.
-Its operation on other kinds of files necessarily varies among
+For portability, {\cf load} and {\cf include} must operate on source files.
+Their operation on other kinds of files necessarily varies among
 implementations.
 \end{rationale}
 \end{entry}
