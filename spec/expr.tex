@@ -803,6 +803,40 @@ See the description of {\cf make-parameter}
 \end{entry}
 
 
+\subsection{Exception Handling}\unsection
+\label{guard}
+
+\begin{entry}{%
+\pproto{(guard (\hyper{variable}}{\exprtype}
+{\tt\obeyspaces%
+\hspace*{4em}\hyperi{cond clause} \hyperii{cond clause} \dotsfoo)\\
+\hspace*{2em}\hyper{body})}\\
+}
+
+\syntax
+Each \hyper{cond clause} is as in the specification of {\cf cond}.
+%(See report section~\ref{derivedexps}.)
+
+\semantics
+Evaluating a {\cf guard} form evaluates \hyper{body} with an exception
+handler that binds the raised object to \hyper{variable} and within the scope of
+that binding evaluates the clauses as if they were the clauses of a
+{\cf cond} expression. That implicit {\cf cond} expression is evaluated with the
+continuation and dynamic extent of the {\cf guard} expression. If every
+\hyper{cond clause}'s \hyper{test} evaluates to \schfalse{} and there
+is no {\cf else} clause, then
+{\cf raise} is re-invoked on the raised object within the dynamic
+extent of the original call to {\cf raise} except that the current
+exception handler is that of the {\cf guard} expression.
+
+The final expression in a \hyper{cond} clause is in a tail context if
+the {\cf guard} expression itself is.
+
+See section~\ref{exceptionsection} for a more complete discussion of
+exceptions.
+\end{entry}
+
+
 \subsection{Quasiquotation}\unsection
 \label{quasiquotesection}
 
