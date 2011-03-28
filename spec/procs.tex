@@ -3446,9 +3446,9 @@ with {\cf parameterize}.
 
 Here is a possible implementation of {\cf make-parameter} and {\cf
   parameterize} suitable for an implementation with no threads.
-Parameter objects are implemented here as procedures, and use two
-hidden objects \texttt{<param-set!>} and \texttt{<param-convert>} to
-coordinate with {\cf parameterize}:
+Parameter objects are implemented here as procedures, using two
+arbitrary unique objects \texttt{<param-set!>} and
+\texttt{<param-convert>}:
 
 \begin{scheme}
 (define (make-parameter init . o)
@@ -3500,7 +3500,31 @@ the associated value:
                    body))))
 \end{scheme}
 
-\todo{Shinn: Examples}
+Parameter objects can be used to specify configurable settings for a
+computation without the need to explicitly pass the value to every
+procedure in the call chain.
+
+\begin{scheme}
+(define radix
+  (make-parameter
+   10
+   (lambda (x)
+     (if (and (integer? x) (<= 2 x 16))
+         x
+         (error "invalid radix")))))
+
+(define (f n) (number->string n (radix)))
+
+(f 12)                                       \ev "12"
+(parameterize ((radix 16))
+  (f 12))                                    \ev "C"
+(f 12)                                       \ev "12"
+
+(radix 16)                                   \ev \unspecified
+
+(parameterize ((radix 0))
+  (f 12))                                    \ev \scherror
+\end{scheme}
 \end{entry}
 
 \section{Exceptions}
@@ -3810,10 +3834,10 @@ performing input or output, and \schfalse{} otherwise.
 \proto{current-error-port}{}{procedure}}
 
 Returns the current default input port, output port, or error port (an
-output port), respectively.  The initial bindings for each of these
+output port), respectively.  These are parameter objects, which can be
+overridden with {\cf parameterize} (see
+section~\ref{make-parameter}). The initial bindings for each of these
 are bound to system defined binary ports.
-
-\todo{Shinn: Are these parameters?}
 
 \end{entry}
 
