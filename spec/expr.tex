@@ -1396,11 +1396,14 @@ arbitrary forms providing additional information.
 \begin{scheme}
 (define-syntax simple-let
   (syntax-rules ()
-    ((\_ (head ... ((x . y) val) . tail) body1 body2 ...)
-     (syntax-error "expected an identifier but got"
-                   (x . y)))
+    ((\_ (head ... ((x . y) val) . tail)
+        body1 body2 ...)
+     (syntax-error
+      "expected an identifier but got"
+      (x . y)))
     ((\_ ((name val) ...) body1 body2 ...)
-     ((lambda (name ...) body1 body2 ...) val ...))))
+     ((lambda (name ...) body1 body2 ...)
+       val ...))))
 \end{scheme}
 
 \end{entry}

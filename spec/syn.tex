@@ -353,14 +353,16 @@ un\-quo\-ta\-tion $D$} takes precedence.
 \begin{grammar}%
 \meta{transformer spec} \:
 \> (syntax-rules (\arbno{\meta{identifier}}) \arbno{\meta{syntax rule}})
-\> \| (syntax-rules \meta{identifier} (\arbno{\meta{identifier}}) \arbno{\meta{syntax rule}})
+\> \| (syntax-rules \meta{identifier} (\arbno{\meta{identifier}})
+\> \> \ \ \arbno{\meta{syntax rule}})
 \meta{syntax rule} \: (\meta{pattern} \meta{template})
 \meta{pattern} \: \meta{pattern identifier}
 \>  \| \meta{underscore}
 \>  \| (\arbno{\meta{pattern}})
 \>  \| (\atleastone{\meta{pattern}} . \meta{pattern})
 \>  \| (\arbno{\meta{pattern}} \meta{pattern} \meta{ellipsis} \arbno{\meta{pattern}})
-\>  \| (\arbno{\meta{pattern}} \meta{pattern} \meta{ellipsis} \arbno{\meta{pattern}} .\ \meta{pattern})
+\>  \| (\arbno{\meta{pattern}} \meta{pattern} \meta{ellipsis} \arbno{\meta{pattern}}
+\> \> \ \ . \meta{pattern})
 \>  \| \#(\arbno{\meta{pattern}})
 \>  \| \#(\arbno{\meta{pattern}} \meta{pattern} \meta{ellipsis} \arbno{\meta{pattern}})
 \>  \| \meta{pattern datum}
