@@ -736,27 +736,6 @@ These numerical predicates provide tests for the exactness of a
 quantity.  For any Scheme number, precisely one of these predicates
 is true.
 
-\end{entry}
-
-
-\begin{entry}{%
-\proto{exact-integer?}{ \vr{z}}{procedure}}
-
-The conjunction of {\cf exact?} and {\cf integer?}, returns \schtrue{}
-iff \vr{z} is both \tupe{exact} and an \tupe{integer}.
-
-\end{entry}
-
-
-\begin{entry}{%
-\proto{finite?}{ \vr{z}}{procedure}
-\proto{infinite?}{ \vr{z}}{procedure}
-\proto{nan?}{ \vr{z}}{procedure}}
-
-These numerical predicates provide tests for the infinite and NaN
-numbers.  For any Scheme number, precisely one of these predicates is
-true.
-
 \begin{scheme}
 (exact? 3.0)           \ev  \schfalse
 (exact? \#e3.0)         \ev  \schtrue
@@ -771,16 +750,17 @@ true.
 
 The conjunction of {\cf exact?} and {\cf integer?}, returns \schtrue{}
 iff \vr{z} is both \tupe{exact} and an \tupe{integer}.
-
 \end{entry}
 
 
 \begin{entry}{%
-\proto{finite?}{ \vr{x}}{procedure}
-\proto{nan?}{ \vr{x}}{procedure}}
+\proto{finite?}{ \vr{z}}{inexact module procedure}
+\proto{infinite?}{ \vr{z}}{inexact module procedure}
+\proto{nan?}{ \vr{z}}{inexact module procedure}}
 
 These numerical predicates provide tests for the infinite and NaN
-numbers.  
+numbers.  For any Scheme number, precisely one of these predicates is
+true.
 
 \begin{scheme}
 (finite? 3)         \ev  \schtrue
@@ -927,13 +907,12 @@ however, they return the additive or multiplicative inverse of their argument.
 \proto{euclidean-quotient}{ \vri{n} \vrii{n}}{procedure}
 \proto{euclidean-remainder}{ \vri{n} \vrii{n}}{procedure}}
 
-These procedures implement number-theoretic (integer) division.
-\vrii{n} should be non-zero.  All fifteen procedures return integers.
-The procedures compute a quotient \vr{n_q} and remainder \vr{n_r} such
-that $\vri{n} = \vrii{n} \vr{n_q} + \vr{n_r}$.  For each of the five
-division operators,
-there are three procedures defined as
-follows:
+These procedures, all in the division module, implement
+number-theoretic (integer) division.  \vrii{n} should be non-zero.
+All fifteen procedures return integers.  The procedures compute a
+quotient \vr{n_q} and remainder \vr{n_r} such that
+$\vri{n} = \vrii{n} \vr{n_q} + \vr{n_r}$.  For each of the five
+division operators, there are three procedures defined as follows:
 
 \begin{scheme}
 (\hyper{operator}/)             \ev ({\cf values} \vr{n_q} \vr{n_r})
@@ -1100,15 +1079,15 @@ all.
 \end{entry}
 
 \begin{entry}{%
-\proto{exp}{ \vr{z}}{procedure}
-\proto{log}{ \vr{z}}{procedure}
-\proto{sin}{ \vr{z}}{procedure}
-\proto{cos}{ \vr{z}}{procedure}
-\proto{tan}{ \vr{z}}{procedure}
-\proto{asin}{ \vr{z}}{procedure}
-\proto{acos}{ \vr{z}}{procedure}
-\proto{atan}{ \vr{z}}{procedure}
-\rproto{atan}{ \vr{y} \vr{x}}{procedure}}
+\proto{exp}{ \vr{z}}{inexact module procedure}
+\proto{log}{ \vr{z}}{inexact module procedure}
+\proto{sin}{ \vr{z}}{inexact module procedure}
+\proto{cos}{ \vr{z}}{inexact module procedure}
+\proto{tan}{ \vr{z}}{inexact module procedure}
+\proto{asin}{ \vr{z}}{inexact module procedure}
+\proto{acos}{ \vr{z}}{inexact module procedure}
+\proto{atan}{ \vr{z}}{inexact module procedure}
+\rproto{atan}{ \vr{y} \vr{x}}{inexact module procedure}}
 
 These procedures 
 compute the usual transcendental functions.  {\cf Log}
@@ -1149,7 +1128,7 @@ ones cited, so we're really on our own here.}
 
 
 \begin{entry}{%
-\proto{sqrt}{ \vr{z}}{procedure}}
+\proto{sqrt}{ \vr{z}}{inexact module procedure}}
 
 Returns the principal square root of \vr{z}.  The result will have
 either positive real part, or zero real part and non-negative imaginary
@@ -1201,12 +1180,12 @@ $0^z$ is 1 if $z = 0$ and 0 otherwise.
 
 
 \begin{entry}{%
-\proto{make-rectangular}{ \vri{x} \vrii{x}}{procedure}
-\proto{make-polar}{ \vriii{x} \vriv{x}}{procedure}
-\proto{real-part}{ \vr{z}}{procedure}
-\proto{imag-part}{ \vr{z}}{procedure}
-\proto{magnitude}{ \vr{z}}{procedure}
-\proto{angle}{ \vr{z}}{procedure}}
+\proto{make-rectangular}{ \vri{x} \vrii{x}}{complex module procedure}
+\proto{make-polar}{ \vriii{x} \vriv{x}}{complex module procedure}
+\proto{real-part}{ \vr{z}}{complex module procedure}
+\proto{imag-part}{ \vr{z}}{complex module procedure}
+\proto{magnitude}{ \vr{z}}{complex module procedure}
+\proto{angle}{ \vr{z}}{complex module procedure}}
 
 Suppose \vri{x}, \vrii{x}, \vriii{x}, and \vriv{x} are
 real numbers and \vr{z} is a complex number such that
@@ -3080,7 +3059,7 @@ If more than one \var{vector} is given and not all vectors have the same length,
 
 
 \begin{entry}{%
-\proto{force}{ promise}{procedure}}
+\proto{force}{ promise}{lazy module procedure}}
 
 Forces the value of \var{promise} (see \ide{delay},
 section~\ref{delay}).\index{promise}  If no value has been computed for
@@ -3329,7 +3308,7 @@ some people use the name \ide{call/cc} instead.
 \end{entry}
 
 \begin{entry}{%
-\proto{values}{ obj $\ldots$}{procedure}}
+\proto{values}{ obj $\ldots$}{multiple-values module procedure}}
 
 Delivers all of its arguments to its continuation.
 Except for continuations created by the \ide{call-with-values}
@@ -3344,7 +3323,7 @@ procedure, all continuations take exactly one value.
 \end{entry}
 
 \begin{entry}{%
-\proto{call-with-values}{ producer consumer}{procedure}}
+\proto{call-with-values}{ producer consumer}{multiple-values module procedure}}
 
 Calls its \var{producer} argument with no values and
 a continuation that, when passed some values, calls the
@@ -3673,7 +3652,7 @@ by {\cf scheme-report-environment} may be immutable.
 \end{entry}
 
 \begin{entry}{%
-\proto{interaction-environment}{}{procedure}}
+\proto{interaction-environment}{}{repl module procedure}}
 
 This procedure returns a specifier for the environment that
 contains imple\-men\-ta\-tion-defined bindings, typically a superset of
@@ -3736,8 +3715,8 @@ detect keys they do not understand or implement, and may signal an
 error in such cases.
 
 \begin{entry}{%
-\proto{call-with-input-file}{ file-spec proc}{procedure}
-\proto{call-with-output-file}{ file-spec proc}{procedure}}
+\proto{call-with-input-file}{ file-spec proc}{file module procedure}
+\proto{call-with-output-file}{ file-spec proc}{file module procedure}}
 
 \var{Proc} should be a procedure that accepts one argument.
 For {\cf call-with-input-file},
@@ -3770,9 +3749,9 @@ both {\cf call-with-current-continuation} and {\cf call-with-input-file} or
 
 
 \begin{entry}{%
-\proto{input-port?}{ obj}{procedure}
-\proto{output-port?}{ obj}{procedure}
-\proto{port?}{ obj}{procedure}}
+\proto{input-port?}{ obj}{io module procedure}
+\proto{output-port?}{ obj}{io module procedure}
+\proto{port?}{ obj}{io module procedure}}
 
 Returns \schtrue{} if \var{obj} is an input port, output port, or any
 kind of port, respectively, otherwise returns \schfalse.
@@ -3782,8 +3761,8 @@ kind of port, respectively, otherwise returns \schfalse.
 \end{entry}
 
 \begin{entry}{%
-\proto{character-port?}{ obj}{procedure}
-\proto{binary-port?}{ obj}{procedure}}
+\proto{character-port?}{ obj}{io module procedure}
+\proto{binary-port?}{ obj}{io module procedure}}
 
 Returns \schtrue{} if \var{obj} is a character port or binary port,
 respectively.
@@ -3791,7 +3770,7 @@ respectively.
 
 
 \begin{entry}{%
-\proto{port-open?}{ port}{procedure}}
+\proto{port-open?}{ port}{io module procedure}}
 
 Returns \schtrue{} if \var{port} is still open and capable of
 performing input or output, and \schfalse{} otherwise.
@@ -3802,9 +3781,9 @@ performing input or output, and \schfalse{} otherwise.
 
 
 \begin{entry}{%
-\proto{current-input-port}{}{procedure}
-\proto{current-output-port}{}{procedure}
-\proto{current-error-port}{}{procedure}}
+\proto{current-input-port}{}{io module procedure}
+\proto{current-output-port}{}{io module procedure}
+\proto{current-error-port}{}{io module procedure}}
 
 Returns the current default input port, output port, or error port (an
 output port), respectively.  These are parameter objects, which can be
@@ -3816,8 +3795,8 @@ are bound to system defined binary ports.
 
 
 \begin{entry}{%
-\proto{with-input-from-file}{ file-spec thunk}{procedure}
-\proto{with-output-to-file}{ file-spec thunk}{procedure}}
+\proto{with-input-from-file}{ file-spec thunk}{file module procedure}
+\proto{with-output-to-file}{ file-spec thunk}{file module procedure}}
 
 \var{Proc} should be a procedure of no arguments.
 For {\cf with-input-from-file},
@@ -3852,7 +3831,7 @@ instead of ``the value returned by \var{current-input-port}''.  (Same for
 
 
 \begin{entry}{%
-\proto{open-input-file}{ file-spec}{procedure}}
+\proto{open-input-file}{ file-spec}{file module procedure}}
  
 Takes a \var{file-spec} for an existing file and returns a binary input
 port capable of delivering data from the file.  If the file cannot be
@@ -3862,7 +3841,7 @@ opened, an error is signalled.
 
 
 \begin{entry}{%
-\proto{open-output-file}{ file-spec}{procedure}}
+\proto{open-output-file}{ file-spec}{file module procedure}}
 
 Takes a \var{file-spec} naming an output file to be created and returns
 a binary output port capable of writing characters to a new file by
@@ -3873,8 +3852,8 @@ file with the given name already exists, the effect is unspecified.
 
 
 \begin{entry}{%
-\proto{close-input-port}{ port}{procedure}
-\proto{close-output-port}{ port}{procedure}}
+\proto{close-input-port}{ port}{io module procedure}
+\proto{close-output-port}{ port}{io module procedure}}
 
 Closes the file associated with \var{port}, rendering the \var{port}
 incapable of delivering or accepting data.  \todo{But maybe a no-op
@@ -3893,7 +3872,7 @@ different close procedures.}
 %% \label{stringportsection}
 
 \begin{entry}{%
-\proto{open-input-string}{ string}{procedure}}
+\proto{open-input-string}{ string}{io module procedure}}
 
 Takes a string and returns a character input port that delivers
 characters from the string.
@@ -3910,7 +3889,7 @@ characters from the string.
 \end{entry}
 
 \begin{entry}{%
-\proto{open-output-string}{}{procedure}}
+\proto{open-output-string}{}{io module procedure}}
 
 Returns a character output port that will accumulate characters for
 retrieval by {\cf get-output-string}.
@@ -3925,7 +3904,7 @@ retrieval by {\cf get-output-string}.
 \end{entry}
 
 \begin{entry}{%
-\proto{get-output-string}{ port}{procedure}}
+\proto{get-output-string}{ port}{io module procedure}}
 
 Given an output port created by {\cf open-output-string}, returns a
 string consisting of the characters that have been output to the port
@@ -3941,8 +3920,8 @@ so far.
 \todo{The input routines have some things in common, maybe explain here.}
 
 \begin{entry}{%
-\proto{read}{}{procedure}
-\rproto{read}{ port}{procedure}}
+\proto{read}{}{read module procedure}
+\rproto{read}{ port}{read module procedure}}
 
 {\cf Read} converts external representations of Scheme objects into the
 objects themselves.  That is, it is a parser for the nonterminal
@@ -3966,8 +3945,8 @@ a closed port.
 \end{entry}
 
 \begin{entry}{%
-\proto{read-char}{}{procedure}
-\rproto{read-char}{ port}{procedure}}
+\proto{read-char}{}{io module procedure}
+\rproto{read-char}{ port}{io module procedure}}
 
 Returns the next character available from the character input \var{port},
 updating
@@ -3979,8 +3958,8 @@ omitted, in which case it defaults to the value returned by {\cf current-input-p
 
 
 \begin{entry}{%
-\proto{peek-char}{}{procedure}
-\rproto{peek-char}{ port}{procedure}}
+\proto{peek-char}{}{io module procedure}
+\rproto{peek-char}{ port}{io module procedure}}
 
 Returns the next character available from the character input \var{port},
 {\em without} updating
@@ -4002,7 +3981,7 @@ whenever a call to {\cf read-char} would have hung.
 
 
 \begin{entry}{%
-\proto{eof-object?}{ obj}{procedure}}
+\proto{eof-object?}{ obj}{io module procedure}}
 
 Returns \schtrue{} if \var{obj} is an end of file object, otherwise returns
 \schfalse.  The precise set of end of file objects will vary among
@@ -4013,8 +3992,8 @@ that can be read in using {\cf read}.
 
 
 \begin{entry}{%
-\proto{char-ready?}{}{procedure}
-\rproto{char-ready?}{ port}{procedure}}
+\proto{char-ready?}{}{io module procedure}
+\rproto{char-ready?}{ port}{io module procedure}}
 
 Returns \schtrue{} if a character is ready on the character input \var{port} and
 returns \schfalse{} otherwise.  If {\cf char-ready} returns \schtrue{} then
@@ -4035,8 +4014,8 @@ port that has no ready characters.
 \end{entry}
 
 \begin{entry}{%
-\proto{read-u8}{}{procedure}
-\rproto{read-u8}{ port}{procedure}}
+\proto{read-u8}{}{io module procedure}
+\rproto{read-u8}{ port}{io module procedure}}
 
 Returns the next octet available from the binary input \var{port},
 updating the \var{port} to point to the following octet.  The value is
@@ -4049,8 +4028,8 @@ omitted, in which case it defaults to the value returned by {\cf
 
 
 \begin{entry}{%
-\proto{peek-u8}{}{procedure}
-\rproto{peek-u8}{ port}{procedure}}
+\proto{peek-u8}{}{io module procedure}
+\rproto{peek-u8}{ port}{io module procedure}}
 
 Returns the next octet available from the binary input \var{port},
 {\em without} updating the \var{port} to point to the following
@@ -4062,8 +4041,8 @@ value returned by {\cf current-input-port}.
 
 
 \begin{entry}{%
-\proto{u8-ready?}{}{procedure}
-\rproto{u8-ready?}{ port}{procedure}}
+\proto{u8-ready?}{}{io module procedure}
+\rproto{u8-ready?}{ port}{io module procedure}}
 
 Returns \schtrue{} if an octet is ready on the binary input \var{port}
 and returns \schfalse{} otherwise.  If {\cf u8-ready?} returns
@@ -4087,8 +4066,8 @@ operation may still hang.
 \vspace{-5ex}
 
 \begin{entry}{%
-\proto{write}{ obj}{procedure}
-\rproto{write}{ obj port}{procedure}}
+\proto{write}{ obj}{write module procedure}
+\rproto{write}{ obj port}{write module procedure}}
 
 Writes a written representation of \var{obj} to the given character output
 \var{port}.  Strings
@@ -4105,8 +4084,8 @@ returned by {\cf current-output-port}.
 
 
 \begin{entry}{%
-\proto{display}{ obj}{procedure}
-\rproto{display}{ obj port}{procedure}}
+\proto{display}{ obj}{write module procedure}
+\rproto{display}{ obj port}{write module procedure}}
 
 Writes a representation of \var{obj} to the given character output \var{port}.
 Strings that appear in the written representation are not enclosed in
@@ -4126,8 +4105,8 @@ human-readable output.
 
 
 \begin{entry}{%
-\proto{newline}{}{procedure}
-\rproto{newline}{ port}{procedure}}
+\proto{newline}{}{io module procedure}
+\rproto{newline}{ port}{io module procedure}}
 
 Writes an end of line to character output \var{port}.  Exactly how this
 is done differs
@@ -4139,8 +4118,8 @@ value returned by {\cf current-output-port}.
 
 
 \begin{entry}{%
-\proto{write-char}{ char}{procedure}
-\rproto{write-char}{ char port}{procedure}}
+\proto{write-char}{ char}{io module procedure}
+\rproto{write-char}{ char port}{io module procedure}}
 
 Writes the character \var{char} (not an external representation of the
 character) to the given character output \var{port} and returns an unspecified
@@ -4151,8 +4130,8 @@ returned by {\cf current-output-port}.
 \end{entry}
 
 \begin{entry}{%
-\proto{write-u8}{ octet}{procedure}
-\rproto{write-u8}{ octet port}{procedure}}
+\proto{write-u8}{ octet}{io module procedure}
+\rproto{write-u8}{ octet port}{io module procedure}}
 
 Writes the \var{octet}, an exact integer in the range $[0..255]$, to
 the given binary output \var{port} and returns an unspecified value.
@@ -4170,8 +4149,8 @@ deserve description here.
 
 
 \begin{entry}{%
-\proto{load}{ filename}{optional procedure}
-\proto{include}{ filename}{optional syntax}}
+\proto{load}{ filename}{load module procedure}
+\proto{include}{ filename}{load module syntax}}
 
 \todo{Fix}
 
@@ -4199,7 +4178,7 @@ implementations.
 \end{entry}
 
 \begin{entry}{%
-\proto{file-exists?}{ filename}{procedure}}
+\proto{file-exists?}{ filename}{file module procedure}}
 
 \var{Filename} must be a string. The {\cf file-exists?} procedure returns
 \schtrue{} if the named file exists at the time the procedure is called,
@@ -4208,7 +4187,7 @@ implementations.
 \end{entry}
 
 \begin{entry}{%
-\proto{delete-file}{ filename}{procedure}}
+\proto{delete-file}{ filename}{file module procedure}}
 
 \var{Filename} must be a string. The {\cf delete-file} procedure deletes the
 named file if it exists and can be deleted, and returns an unspecified
@@ -4217,10 +4196,17 @@ is raised.
 
 \end{entry}
 
+\begin{entry}{%
+\proto{command-line}{}{process-context module procedure}}
+
+Returns the command line arguments passed to the process as a list of
+strings.
+\end{entry}
+
 \todo{Shinn: Do we need any description of what an environment variable is?}
 
 \begin{entry}{%
-\proto{get-environment-variable}{ name}{procedure}}
+\proto{get-environment-variable}{ name}{process-context module procedure}}
 
 \var{Name} must be a string.  Returns the value of the named
 environment variable as a string, or \schfalse{} if the named
@@ -4236,7 +4222,7 @@ decode the value it may raise an exception.
 \end{entry}
 
 \begin{entry}{%
-\proto{get-environment-variables}{}{procedure}}
+\proto{get-environment-variables}{}{process-context module procedure}}
 
 Returns the names and values of all the environment variables as an
 a-list, where the car of each entry is the name of an environment
@@ -4250,7 +4236,7 @@ variable and the cdr is the value as would be returned by
 \end{entry}
 
 \begin{entry}{%
-\proto{current-second}{}{procedure}}
+\proto{current-second}{}{time module procedure}}
 
 Returns an exact integer representing the current second of the Posix
 epoch, which began on 00:00:00 on 1 January 1970, Coordinated
@@ -4259,7 +4245,7 @@ implementation-defined.
 \end{entry}
 
 \begin{entry}{%
-\proto{current-jiffy}{}{procedure}}
+\proto{current-jiffy}{}{time module procedure}}
 
 Returns an exact integer representing the number of jiffies (arbitrary
 elapsed time units) since an arbitrary epoch which may vary between
@@ -4267,7 +4253,7 @@ runs of a program.
 \end{entry}
 
 \begin{entry}{%
-\proto{jiffies-per-second}{}{procedure}}
+\proto{jiffies-per-second}{}{time module procedure}}
 
 Returns an exact integer representing the number of jiffies per SI
 second. This value is an implementation-specified constant.
