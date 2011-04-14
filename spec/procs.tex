@@ -542,7 +542,7 @@ must be represented with at least as much precision as is used to express any of
 the inexact arguments to that operation.  It is desirable (but not required) for
 potentially inexact operations such as {\cf sqrt}, when applied to \tupe{exact}
 arguments, to produce \tupe{exact} answers whenever possible (for example the
-square root of an \tupe{exact} 4 ought to be an \tupe{exact} 2).
+square root of an \tupe{exact} 4 should be an \tupe{exact} 2).
 If, however, an
 \tupe{exact} number is operated upon so as to produce an \tupe{inexact} result
 (as by {\cf sqrt}), and if the result is represented as a \tupe{flonum}, then
@@ -566,7 +566,10 @@ so indeterminate that it might represent any real number, including
 positive or negative infinity, and might even be greater than positive
 infinity or less than negative infinity.
 It might even represent no number at all, as in the case of dividing
-0 by 0.
+1.0 by 0.0.
+
+Note that either the real or the imaginary part of a complex number
+can be an infinity or NaN.
 
 Although Scheme allows a variety of written
 %%R4%% representations of 
@@ -719,8 +722,7 @@ is unreliable, since any inaccuracy may affect the result.
 \end{note}
 
 \begin{note}
-In many implementations the \ide{rational?} procedure will be the same
-as \ide{real?}, and the \ide{complex?} procedure will be the same as
+In many implementations the \ide{complex?} procedure will be the same as
 \ide{number?}, but unusual implementations may be able to represent
 some irrational numbers exactly or may extend the number system to
 support some kind of non-complex numbers.
@@ -2434,7 +2436,7 @@ In all cases, a pair of strings must satisfy exactly one of
 {\cf string>=?} if and only if they do not satisfy {\cf string<?}.
 
 The \hbox{``{\tt -ci}''} procedures behave as if they applied
-{\cf string-fold} to their arguments before invoking the corresponding
+{\cf string-foldcase} to their arguments before invoking the corresponding
 procedures without  \hbox{``{\tt -ci}''}.
 
 The \hbox{``{\tt -ni}''} procedures behave as if they applied the
@@ -2672,93 +2674,6 @@ The value returned by {\cf vector-fill!}\ is unspecified.  % <!>
 \end{entry}
 
 
-\subsection{Record types}
-\label{usertypes}
-
-This section describes syntax for creating new data types, called
-record types.  A predicate, constructor, and field accessors and
-modifiers are defined for each record type.
-
-\begin{entry}{%
-\proto{define-record-type}{ name constructor pred field \dotsfoo}{syntax}}
-
-\syntax
-\hyper{name} and \hyper{pred} should be identifiers.
-The \hyper{constructor} should be of the form
-\begin{scheme}
-(\hyper{constructor name} \hyper{field name} \dotsfoo)%
-\end{scheme}
-and each \hyper{field} should be of the form
-\begin{scheme}
-(\hyper{field name} \hyper{accessor name})%
-\end{scheme}
-\begin{scheme}
-$|$ (\hyper{field name} \hyper{accessor name} \hyper{modifier name})%
-\end{scheme}
-
-{\cf define-record-type} is generative: each use creates a new record
-type that is distinct from all existing types, including other record
-types and Scheme's predefined types.
-
-An instance of {\cf define-record-type} is equivalent to the following
-definitions:
-
-\begin{itemize}
-
-\item \hyper{name} is bound to a representation of the record type
-  itself, possibly as a syntactic form.
-
-\item \hyper{constructor name} is bound to a procedure that takes as
-  many arguments as there are \hyper{field name}s in the
-  \texttt{(\hyper{constructor name} \dotsfoo)} subform and returns a
-  new record of type \hyper{name}.  Fields whose names are listed with
-  \hyper{constructor name} have the corresponding argument as their
-  initial value.  The initial values of all other fields are
-  unspecified.
-
-\item \hyper{pred} is a predicate that returns \schtrue{} when given a
-  value returned by \hyper{constructor name} and \schfalse{} for
-  everything else.
-
-\item Each \hyper{accessor name} is a procedure that takes a record of
-  type \hyper{name} and returns the current value of the corresponding
-  field.  It is an error to pass an accessor a value which is not a
-  record of the appropriate type.
-
-\item Each \hyper{modifier name} is a procedure that takes a record of
-  type \hyper{name} and a value which becomes the new value of the
-  corresponding field; an unspecified value is returned.  It is an
-  error to pass a modifier a first argument which is not a record of
-  the appropriate type.
-
-\end{itemize}
-
-The following
-
-\begin{scheme}
-(define-record-type <pare>
-  (kons x y)
-  pare?
-  (x kar set-kar!)
-  (y kdr))
-\end{scheme}
-
-defines \hyper{kons} to be a constructor, \hyper{kar} and \hyper{kdr}
-to be accessors, \hyper{set-kar!} to be a modifier, and \hyper{pare?}
-to be a predicate for \hyper{<pare>}s.
-
-\begin{scheme}
-  (pare? (kons 1 2))        \ev \schtrue
-  (pare? (cons 1 2))        \ev \schfalse
-  (kar (kons 1 2))          \ev 1
-  (kdr (kons 1 2))          \ev 2
-  (let ((k (kons 1 2)))
-    (set-kar! k 3)
-    (kar k))                \ev 3
-\end{scheme}
-
-\end{entry}
-
 \subsection{Blobs}
 \label{blobsection}
 
@@ -2807,14 +2722,14 @@ an exact integer in the range $[0..255]$.  The value returned by
 \end{entry}
 
 \begin{entry}{%
-\proto{copy-blob}{ blob}{procedure}}
+\proto{blob-copy}{ blob}{procedure}}
 
 Returns a newly allocated blob containing the same bytes as
 \var{blob}.
 \end{entry}
 
 \begin{entry}{%
-\proto{copy-blob!}{ from to}{procedure}}
+\proto{blob-copy!}{ from to}{procedure}}
 
 Copy the bytes of blob \var{from} to blob \var{to}, which must not be
 shorter.  The value returned by {\cf copy-blob!} is unspecified.
@@ -2829,7 +2744,7 @@ between \var{start} (inclusive) and \var{end}
 \end{entry}
 
 \begin{entry}{%
-\proto{copy-partial-blob!}{ from start end to at}{procedure}}
+\proto{partial-blob-copy!}{ from start end to at}{procedure}}
 
 Copy the bytes of blob \var{from} between \var{start} and \var{end}
 to blob \var{to}, starting at \var{at}.  The order in which bytes are
@@ -3551,7 +3466,7 @@ Raises a exception by invoking the current exception
 handler on \var{obj}. The handler is called with a continuation whose
 dynamic extent is that of the call to {\cf raise}, except that
 the current exception handler is the one that was in place when the
-handler being called was installed.  When the handler returns, an
+handler being called was installed.  If the handler returns, an
 exception is raised in the same dynamic extent as the handler.
 \end{entry}
 
@@ -3640,7 +3555,7 @@ supported by the implementation.
 
 Other values of \var{version} can be used to specify environments
 matching past revisions of this report, but their support is not
-required.  An implementation will signal an error if \var{version}
+required.  An implementation must signal an error if \var{version}
 is neither {\cf \integerversion} nor another value supported by
 the implementation.
 

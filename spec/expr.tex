@@ -14,8 +14,8 @@ Primitive expression types include variables and procedure calls.
 Derived expression types are not semantically primitive, but can instead
 be defined as macros.
 With the exception of {\cf quasiquote}, whose macro definition is complex,
-the derived expressions are classified as library features.
-Suitable definitions are given in section~\ref{derivedsection}.
+suitable definitions of the derived expressions are 
+given in section~\ref{derivedsection}.
 
 \section{Primitive expression types}
 \label{primitivexps}
@@ -777,7 +777,7 @@ more complete description of {\cf delay}.
 \subsection{Dynamic Bindings}\unsection
 
 \begin{entry}{%
-\pproto{(parameterize ((param value) \dotsfoo)}{library syntax}
+\pproto{(parameterize ((param value) \dotsfoo)}{syntax}
 {\tt\obeyspaces%
 \hspace*{1em}\hyperi{expr} \hyperii{expr} \dotsfoo)}}
 
@@ -913,6 +913,8 @@ positions within a \hyper{qq template} otherwise than as described above.
 
 \end{entry}
 
+\subsection{Case-lambda}\unsection
+\label{caselambdasection}
 \begin{entry}{%
 \proto{case-lambda}{ \hyperi{clause} \hyperii{clause} \dotsfoo}{library \exprtype}}
 
