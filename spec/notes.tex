@@ -42,7 +42,7 @@ to and read characters from strings.
 parameter objects, along with the newly introduced {\cf
 current-error-port}.
 
-\item {\cf Syntax-rules} now recognizes {\em _} as a wildcard, allows
+\item {\cf Syntax-rules} now recognizes {\em \_} as a wildcard, allows
 the ellipsis symbol to be specified explicitly instead of the default
 {\cf ...}, allows template escapes with an ellipsis-prefixed list, and
 allows tail patterns to follow an ellipsis pattern.
@@ -56,7 +56,7 @@ internal {\cf define}s.
 \item {\cf Letrec*} has been added, and internal define specified in
 terms of it.
 
-\item {\cf Case} now supports a {\em =>} syntax analagous to {\cf cond}.
+\item {\cf Case} now supports a {\tt =>} syntax analagous to {\cf cond}.
 
 \item {\cf Case-lambda} has been added to the base library as a way to
 dispatch on the number of arguments passed to a procedure.
@@ -92,8 +92,8 @@ normalization.
 controlled, with no folding as the default.
 
 \item The reader now recognizes the new comment syntax {\tt \#;} to
-skip the next datum, and allows nested block comments with {\tt \#\|
-... \|\#}.
+skip the next datum, and allows nested block comments with
+{\tt \#| ... |\#}.
 
 \item Data prefixed with reader labels {\tt \#<n>=} can be referenced
 with {\tt \#<n>\#} allowing for reading and writing of data with
