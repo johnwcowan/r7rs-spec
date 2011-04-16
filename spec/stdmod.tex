@@ -34,25 +34,24 @@ syntax bindings that are traditionally associated with Scheme.
 {\cf copy-blob!}       {\cf copy-partial-blob!}
 {\cf copy-list}        {\cf copy-vector}      {\cf define-syntax}
 {\cf define}           {\cf define-record-type}
-{\cf denominator}      {\cf display}          {\cf do}
-{\cf dynamic-wind}     {\cf eq?}              {\cf equal?}
-{\cf eqv?}             {\cf error}            {\cf even?}
-{\cf exact->inexact}   {\cf exact-integer-sqrt}
-{\cf exact-integer?}   {\cf exact?}           {\cf expt}
-{\cf floor}            {\cf for-each}         {\cf gcd}
-{\cf guard}            {\cf if}               {\cf import}
-{\cf include}          {\cf inexact->exact}   {\cf inexact?}
-{\cf integer->char}    {\cf integer?}         {\cf lambda}
-{\cf lcm}              {\cf length}           {\cf let*}
-{\cf let-syntax}       {\cf letrec*}          {\cf letrec-syntax}
-{\cf letrec}           {\cf let}              {\cf list->string}
-{\cf list->vector}     {\cf list-ref}         {\cf list-set!}
-{\cf list-tail}        {\cf list?}            {\cf list}
-{\cf make-blob}        {\cf make-list}        {\cf make-parameter}
-{\cf make-string}      {\cf make-vector}      {\cf map}
-{\cf max}              {\cf member}           {\cf memq}
-{\cf memv}             {\cf min}              {\cf modulo}
-{\cf negative?}        {\cf newline}          {\cf nil}
+{\cf denominator}      {\cf do}               {\cf dynamic-wind}
+{\cf eq?}              {\cf equal?}           {\cf eqv?}
+{\cf error}            {\cf even?}            {\cf exact->inexact}
+{\cf exact-integer-sqrt}                      {\cf exact-integer?}
+{\cf exact?}           {\cf expt}             {\cf floor}
+{\cf for-each}         {\cf gcd}              {\cf guard}
+{\cf if}               {\cf import}           {\cf include}
+{\cf inexact->exact}   {\cf inexact?}         {\cf integer->char}
+{\cf integer?}         {\cf lambda}           {\cf lcm}
+{\cf length}           {\cf let*}             {\cf let-syntax}
+{\cf letrec*}          {\cf letrec-syntax}    {\cf letrec}
+{\cf let}              {\cf list->string}     {\cf list->vector}
+{\cf list-ref}         {\cf list-set!}        {\cf list-tail}
+{\cf list?}            {\cf list}             {\cf make-blob}
+{\cf make-list}        {\cf make-parameter}   {\cf make-string}
+{\cf make-vector}      {\cf map}              {\cf max}
+{\cf member}           {\cf memq}             {\cf memv}
+{\cf min}              {\cf modulo}           {\cf negative?}
 {\cf not}              {\cf null?}            {\cf number->string}
 {\cf number?}          {\cf numerator}        {\cf odd?}
 {\cf or}               {\cf pair?}            {\cf parameterize}
@@ -239,7 +238,7 @@ with Unicode case conversions and normalization.
 The \texttt{(scheme time)} module provides access to the system time.
 
 \begin{scheme}
-{\cf current-posix-second}
+{\cf current-second}
 {\cf current-jiffy}
 {\cf jiffies-per-second}
 \end{scheme}
