@@ -3513,7 +3513,7 @@ the information provided by \var{message} and any \var{obj}s.
 \section{\tt{Eval}}
 
 \begin{entry}{%
-\proto{eval}{ expression environment-specifier}{procedure}}
+\proto{eval}{ expression environment-specifier}{eval module procedure}}
 
 Evaluates \var{expression} in the specified environment and returns its value.
 \var{Expression} must be a valid Scheme expression represented as data,
@@ -3538,8 +3538,8 @@ allowed to create new bindings in the environments returned by
 \end{entry}
 
 \begin{entry}{%
-\proto{scheme-report-environment}{ version}{procedure}
-\proto{null-environment}{ version}{procedure}}
+\proto{scheme-report-environment}{ version}{eval module procedure}
+\proto{null-environment}{ version}{eval module procedure}}
 
 \var{Version} must be the exact integer {\cf \integerversion},
 corresponding to this revision of the Scheme report (the
