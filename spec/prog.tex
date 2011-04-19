@@ -467,7 +467,7 @@ appendix~\ref{stdfeatures}.
 
 (module (stack)
   (export make push! pop! empty!)
-  (import (scheme))
+  (import (scheme base))
   (begin
    (define (make) (list กว()))
    (define (push! s v)
@@ -479,7 +479,7 @@ appendix~\ref{stdfeatures}.
 
 (module (balloons)
   (export make push pop)
-  (import (scheme))
+  (import (scheme base))
   (begin
    (define (make w h) (cons w h))
    (define (push b amt)
@@ -497,7 +497,7 @@ appendix~\ref{stdfeatures}.
           make-party
           (rename (party-pop! pop!)))
   (import
-   (scheme)
+   (scheme base)
    (only (stack) make push! pop!) ; not empty!
    (prefix (balloons) balloon:))
   (begin
@@ -513,7 +513,7 @@ appendix~\ref{stdfeatures}.
 
 (module (main)
   (export)
-  (import (scheme) (party))
+  (import (scheme base) (party))
   (begin
    (define p (make-party))
    (pop! p)        ; displays "Boom! 108"
