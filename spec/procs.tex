@@ -3586,6 +3586,8 @@ expressions dynamically typed by the user.
 Ports represent input and output devices.  To Scheme, an input port is
 a Scheme object that can deliver data upon command, while an output
 port is a Scheme object that can accept data.\mainindex{port}
+Whether the input and output port types are disjoint is implementation-dependent.
+
 Different {\em port types} operate on different data.  Scheme
 imple\-men\-ta\-tions are required to support {\em character ports}
 and {\em binary ports}, but may also provide other port types.
@@ -3601,7 +3603,7 @@ the sequence of octets as an implementation-determined character set
 encoding.  Conversely, not all character ports are binary ports - for
 example, the {\em string ports} discussed below.
 
-Ports can be used to access objects called {\em files} on the host
+Ports can be used to access files and devices on the host
 system in which the Scheme program is running.  In the procedures
 below files are referenced with \hyper{file-spec}s, which can either
 be a string or a {\em settings list}, which is a list of alternating
