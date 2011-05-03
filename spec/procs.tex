@@ -3592,18 +3592,19 @@ Different {\em port types} operate on different data.  Scheme
 imple\-men\-ta\-tions are required to support {\em character ports}
 and {\em binary ports}, but may also provide other port types.
 
-A character port supports reading or writing of character data, such
-as {\cf read-char} and {\cf write-char} below, as well as operations
+A character port supports reading or writing of individual characters
+from or to a backing store containing characters
+using {\cf read-char} and {\cf write-char} below, as well as operations
 defined in terms of characters such as {\cf read} and {\cf write}.
 
-A binary port supports reading or writing of binary data at the level
-of individual octets with {\cf read-u8} and {\cf write-u8}, below.
-Every binary port is also automatically a character port, by treating
-the sequence of octets as an implementation-determined character set
-encoding.  Conversely, not all character ports are binary ports - for
-example, the {\em string ports} discussed below.
+A binary port supports reading or writing of individual octets from
+or to a backing store containing octets using {\cf read-u8} and {\cf
+write-u8}, below. Every binary port is also automatically a character
+port, by treating the sequence of octets as an implementation-determined
+character set encoding. Conversely, not all character ports are binary
+ports - for example, the {\em string ports} discussed below.
 
-Ports can be used to access files and devices on the host
+Ports can be used to access files, devices, and similar things on the host
 system in which the Scheme program is running.  In the procedures
 below files are referenced with \hyper{file-spec}s, which can either
 be a string or a {\em settings list}, which is a list of alternating
@@ -4074,7 +4075,8 @@ deserve description here.
 
 %\domain{\var{Filename} should be a string naming an existing file
 %containing Scheme source code.} The {\cf load} procedure reads
-\var{Filename} should be a string naming an existing file
+An implementation-dependent operation is used to transform
+\var{filename} into the name of an existing file
 containing Scheme source code.  The {\cf load} procedure reads
 expressions and definitions from the file and evaluates them
 sequentially.  It is unspecified whether the results of the expressions
