@@ -1958,11 +1958,8 @@ Returns a newly allocated copy of the given \var{list}.
 
 Symbols are objects whose usefulness rests on the fact that two
 symbols are identical (in the sense of {\cf eqv?}) if and only if their
-names are spelled the same way.  This is exactly the property needed to
-represent identifiers\index{identifier} in programs, and so most
-implementations of Scheme use them internally for that purpose.  Symbols
-are useful for many other applications; for instance, they may be used
-the way enumerated values are used in Pascal.
+names are spelled the same way.  For instance, they may be used
+the way enumerated values are used in other languages.
 
 \vest The rules for writing a symbol are exactly the same as the rules for
 writing an identifier; see sections~\ref{syntaxsection}
@@ -2200,8 +2197,8 @@ non-Unicode character, it returns an exact integer greater than \#x10FFFF.
 This is true independent of whether the implementation uses the Unicode
 representation internally.
 
-Given an exact integer that is the image of
-a character under {\cf char\coerce{}integer}, {\cf integer\coerce{}char}
+Given an exact integer that is the value returned by
+a character when {\cf char\coerce{}integer} is applied to it, {\cf integer\coerce{}char}
 returns that character.
 %What follows is still true, but no longer necessary:
 %These procedures implement order-preserving isomorphism
@@ -2251,7 +2248,7 @@ case-folding algorithm to its argument and returns the result.  Note that
 Turkic-specific folding is not used.  If the argument is an uppercase
 letter, the result will be a lowercase letter.
 
-Note that many Unicode lowercase characters don't have uppercase
+Note that many Unicode lowercase characters do not have uppercase
 equivalents.
 
 \end{entry}

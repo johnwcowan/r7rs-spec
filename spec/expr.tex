@@ -294,7 +294,7 @@ into the primitive constructs described in the previous section.
 \subsection{Conditionals}\unsection
 
 \begin{entry}{%
-\proto{cond}{ \hyperi{clause} \hyperii{clause} \dotsfoo}{library \exprtype}}
+\proto{cond}{ \hyperi{clause} \hyperii{clause} \dotsfoo}{\exprtype}}
 
 \syntax
 Each \hyper{clause} should be of the form
@@ -355,7 +355,7 @@ the last one is(are) returned.
 
 
 \begin{entry}{%
-\proto{case}{ \hyper{key} \hyperi{clause} \hyperii{clause} \dotsfoo}{library \exprtype}}
+\proto{case}{ \hyper{key} \hyperi{clause} \hyperii{clause} \dotsfoo}{\exprtype}}
 
 \syntax
 \hyper{Key} may be any expression.  Each \hyper{clause} should have
@@ -417,11 +417,11 @@ procedure is(are) returned by the {\cf case} expression.
 
 
 \begin{entry}{%
-\proto{and}{ \hyperi{test} \dotsfoo}{library \exprtype}}
+\proto{and}{ \hyperi{test} \dotsfoo}{\exprtype}}
 
-The \hyper{test} expressions are evaluated from left to right, and the
-value of the first expression that evaluates to a false value (see
-section~\ref{booleansection}) is returned.  Any remaining expressions
+The \hyper{test} expressions are evaluated from left to right, and if
+any expression evaluates to a false value (see
+section~\ref{booleansection}), \schfalse{} is returned.  Any remaining expressions
 are not evaluated.  If all the expressions evaluate to true values, the
 value of the last expression is returned.  If there are no expressions
 then \schtrue{} is returned.
@@ -437,14 +437,13 @@ then \schtrue{} is returned.
 
 
 \begin{entry}{%
-\proto{or}{ \hyperi{test} \dotsfoo}{library \exprtype}}
+\proto{or}{ \hyperi{test} \dotsfoo}{\exprtype}}
 
 The \hyper{test} expressions are evaluated from left to right, and the value of the
 first expression that evaluates to a true value (see
 section~\ref{booleansection}) is returned.  Any remaining expressions
-are not evaluated.  If all expressions evaluate to false values, the
-value of the last expression is returned.  If there are no
-expressions then \schfalse{} is returned.
+are not evaluated.  If all expressions evaluate to false values, 
+or if there are no expressions, \schfalse{} is returned.  
 
 \begin{scheme}
 (or (= 2 2) (> 2 1))            \ev  \schtrue
@@ -471,7 +470,7 @@ effect while their initial values are being computed, thus allowing
 mutually recursive definitions.
 
 \begin{entry}{%
-\proto{let}{ \hyper{bindings} \hyper{body}}{library \exprtype}}
+\proto{let}{ \hyper{bindings} \hyper{body}}{\exprtype}}
 
 \syntax
 \hyper{Bindings} should have the form
@@ -479,6 +478,7 @@ mutually recursive definitions.
 ((\hyperi{variable} \hyperi{init}) \dotsfoo)\rm,%
 \end{scheme}
 where each \hyper{init} is an expression, and \hyper{body} should be a
+sequence of zero or more definitions followed by a
 sequence of one or more expressions.  It is
 an error for a \hyper{variable} to appear more than once in the list of variables
 being bound.
@@ -507,7 +507,7 @@ See also named {\cf let}, section \ref{namedlet}.
 
 
 \begin{entry}{%
-\proto{let*}{ \hyper{bindings} \hyper{body}}{library \exprtype}}\nobreak
+\proto{let*}{ \hyper{bindings} \hyper{body}}{\exprtype}}\nobreak
 
 \nobreak
 \syntax
@@ -516,6 +516,7 @@ See also named {\cf let}, section \ref{namedlet}.
 ((\hyperi{variable} \hyperi{init}) \dotsfoo)\rm,%
 \end{scheme}
 and \hyper{body} should be a sequence of
+sequence of zero or more definitions followed by a
 one or more expressions.
 
 \semantics
@@ -536,7 +537,7 @@ in an environment in which the first binding is visible, and so on.
 
 
 \begin{entry}{%
-\proto{letrec}{ \hyper{bindings} \hyper{body}}{library \exprtype}}
+\proto{letrec}{ \hyper{bindings} \hyper{body}}{\exprtype}}
 
 \syntax
 \hyper{Bindings} should have the form
@@ -544,6 +545,7 @@ in an environment in which the first binding is visible, and so on.
 ((\hyperi{variable} \hyperi{init}) \dotsfoo)\rm,%
 \end{scheme}
 and \hyper{body} should be a sequence of
+sequence of zero or more definitions followed by a
 one or more expressions. It is an error for a \hyper{variable} to appear more
 than once in the list of variables being bound.
 
@@ -591,7 +593,7 @@ should not be invoked more than once.
 
 
 \begin{entry}{%
-\proto{letrec*}{ \hyper{bindings} \hyper{body}}{library \exprtype}}
+\proto{letrec*}{ \hyper{bindings} \hyper{body}}{\exprtype}}
 
 \syntax
 \hyper{Bindings} should have the form
@@ -599,6 +601,7 @@ should not be invoked more than once.
 ((\hyperi{variable} \hyperi{init}) \dotsfoo)\rm,%
 \end{scheme}
 and \hyper{body} should be a sequence of
+sequence of zero or more definitions followed by a
 one or more expressions. It is an error for a \hyper{variable} to appear more
 than once in the list of variables being bound.
 
@@ -642,7 +645,7 @@ referring to the value of the corresponding \hyper{variable} or the
 \subsection{Sequencing}\unsection
 
 \begin{entry}{%
-\proto{begin}{ \hyperi{expression} \hyperii{expression} \dotsfoo}{library \exprtype}}
+\proto{begin}{ \hyperi{expression} \hyperii{expression} \dotsfoo}{\exprtype}}
 
 The \hyper{expression}s are evaluated sequentially from left to right,
 and the value(s) of the last \hyper{expression} is(are) returned.  This
@@ -666,7 +669,7 @@ output.
 \subsection{Iteration}%\unsection
 
 \noindent%
-\pproto{(do ((\hyperi{variable} \hyperi{init} \hyperi{step})}{library \exprtype}
+\pproto{(do ((\hyperi{variable} \hyperi{init} \hyperi{step})}{\exprtype}
 \mainschindex{do}{\tt\obeyspaces%
      \dotsfoo)\\
     (\hyper{test} \hyper{expression} \dotsfoo)\\
@@ -721,7 +724,7 @@ been written instead of {\cf(\hyper{variable} \hyper{init})}.
 
 
 \begin{entry}{%
-\rproto{let}{ \hyper{variable} \hyper{bindings} \hyper{body}}{library \exprtype}}
+\rproto{let}{ \hyper{variable} \hyper{bindings} \hyper{body}}{\exprtype}}
 
 \label{namedlet}
 ``Named {\cf let}'' is a variant on the syntax of \ide{let} which provides
@@ -779,7 +782,7 @@ more complete description of {\cf delay}.
 \begin{entry}{%
 \pproto{(parameterize ((param value) \dotsfoo)}{syntax}
 {\tt\obeyspaces%
-\hspace*{1em}\hyperi{expr} \hyperii{expr} \dotsfoo)}}
+\hspace*{1em}\hyperi{body}}}
 
 \domain{The value of the \var{param} expressions must be parameter objects.}
 The {\cf parameterize} form is used to change the values returned by
@@ -916,7 +919,7 @@ positions within a \hyper{qq template} otherwise than as described above.
 \subsection{Case-lambda}\unsection
 \label{caselambdasection}
 \begin{entry}{%
-\proto{case-lambda}{ \hyperi{clause} \hyperii{clause} \dotsfoo}{library \exprtype}}
+\proto{case-lambda}{ \hyperi{clause} \hyperii{clause} \dotsfoo}{\exprtype}}
 
 \syntax
 Each \hyper{clause} should be of the form
@@ -1162,7 +1165,7 @@ be an identifier, and each
 (\hyper{pattern} \hyper{template})%
 \end{scheme}
 The \hyper{pattern} in a \hyper{syntax rule} is a list \hyper{pattern}
-whose first subform is an identifier or an underscore {\cf \_}.
+whose first subform is an identifier.
 
 A \hyper{pattern} is either an identifier, a constant, or one of the
 following

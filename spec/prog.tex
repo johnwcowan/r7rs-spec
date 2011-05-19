@@ -353,9 +353,9 @@ may be made visible to other modules or programs.  An
 \end{itemize}
 
 In an \hyper{export spec}, an \hyper{identifier} names a single
-binding defined within or imported into the library, where the
+binding defined within or imported into the module, where the
 external name for the export is the same as the name of the binding
-within the library. A rename spec exports the binding named by
+within the module. A rename spec exports the binding named by
 \hyper{$identifier_1$} in each
 {\tt(\hyper{$identifier_1$} \hyper{$identifier_2$})} pairing,
 using \hyper{$identifier_2$} as the external name.
@@ -414,7 +414,8 @@ forms from the files and include the results into the module body as
 though wrapped in a \ide{begin}.  \ide{include-ci} uses a case-folding
 reader when reading the forms from the file.
 
-The forms from all \ide{begin}, \ide{include}, and \ide{include-ci}
+The forms from all \ide{begin}, \ide{include}, \ide{include-ci},
+and \ide{cond-expand}
 declarations are expanded in the order in which they occur in the
 module declaration.
 
