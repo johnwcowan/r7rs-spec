@@ -2193,12 +2193,15 @@ upper nor lower case.
 \proto{char->integer}{ char}{procedure}
 \proto{integer->char}{ \vr{n}}{procedure}}
 
-Given a Unicode character, {\cf char\coerce{}integer} returns an
-exact integer between 0 and \#xD7FF or between \#xE000 and \#x10FFFF
-which is equal to the Unicode code point of that character.  Given a
-non-Unicode character, it returns an exact integer greater than \#x10FFFF.
-This is true independent of whether the implementation uses the Unicode
-representation internally.
+Given a Unicode character, 
+{\cf char\coerce{}integer} returns an exact integer 
+between 0 and {\tt \#xD7FF} or 
+between {\tt \#xE000} and {\tt \#x10FFFF} 
+which is equal to the Unicode code point of that character.
+Given a non-Unicode character, 
+it returns an exact integer greater than {\tt \#x10FFFF}.  
+This is true independent of whether the implementation uses
+the Unicode representation internally.
 
 Given an exact integer that is the image of
 a character under {\cf char\coerce{}integer}, {\cf integer\coerce{}char}
