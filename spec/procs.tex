@@ -310,16 +310,17 @@ circular data structures.
 \newcommand{\type}[1]{{\it#1}}
 \newcommand{\tupe}[1]{{#1}}
 
-Numerical computation has traditionally been neglected by the Lisp
-community.  Until Common Lisp there was no carefully thought out
-strategy for organizing numerical computation, and with the exception of
-the MacLisp system \cite{Pitman83} little effort was made to
-execute numerical code efficiently.  This report recognizes the excellent work
-of the Common Lisp committee and accepts many of their recommendations.
-In some ways this report simplifies and generalizes their proposals in a manner
-consistent with the purposes of Scheme.
+%% This paragraph is stale.
+%% Numerical computation has traditionally been neglected by the Lisp
+%% community.  Until Common Lisp there was no carefully thought out
+%% strategy for organizing numerical computation, and with the exception of
+%% the MacLisp system \cite{Pitman83} little effort was made to
+%% execute numerical code efficiently.  This report recognizes the excellent work
+%% of the Common Lisp committee and accepts many of their recommendations.
+%% In some ways this report simplifies and generalizes their proposals in a manner
+%% consistent with the purposes of Scheme.
 
-It is important to distinguish between the mathematical numbers, the
+It is important to distinguish between mathematical numbers, the
 Scheme numbers that attempt to model them, the machine representations
 used to implement the Scheme numbers, and notations used to write numbers.
 This report uses the types \type{number}, \type{complex}, \type{real},
@@ -327,6 +328,9 @@ This report uses the types \type{number}, \type{complex}, \type{real},
 and Scheme numbers.  Machine representations such as fixed point and
 floating point are referred to by names such as \type{fixnum} and
 \type{flonum}.
+Fixnums are integers with a limited and machine-dependent range;
+flonums are real numbers with a limited and machine-dependent
+range and precision.
 
 %%R4%% I did some reorganizing here to move the discussion of mathematical
 % numbers before the discussion of the Scheme numbers, hoping that this
@@ -3355,7 +3359,7 @@ returns its associated value.  The associated value may be changed
 with {\cf parameterize}.
 
 Here is a possible implementation of {\cf make-parameter} and {\cf
-  parameterize} suitable for an implementation with no threads.
+parameterize} suitable for an implementation with no threads.
 Parameter objects are implemented here as procedures, using two
 arbitrary unique objects \texttt{<param-set!>} and
 \texttt{<param-convert>}:
@@ -3623,9 +3627,9 @@ ports - for example, the {\em string ports} discussed below.
 Ports can be used to access files, devices, and similar things on the host
 system in which the Scheme program is running.  In the procedures
 below files are referenced with \hyper{file-spec}s, which can either
-be a string or a {\em settings list}, which is a list of alternating
+be a string or a {\em file-spec}, which is a list of alternating
 \hyper{keys} and \hyper{values} where every \hyper{key} is a symbol.
-Specifying a string is equivalent to the settings list \texttt{({\cf
+Specifying a string is equivalent to the file-spec \texttt{({\cf
     path} \var{string})}. The following keys are defined:
 
 \begin{itemize}
