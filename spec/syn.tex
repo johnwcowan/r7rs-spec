@@ -218,7 +218,7 @@ successfully parses.  Note that any string that parses as an
 
 \begin{grammar}%
 \meta{datum} \: \meta{simple datum} \| \meta{compound datum}
-\>  \| \meta{label} \= \meta{datum} \| \meta{label} \#
+\>  \| \meta{label} = \meta{datum} \| \meta{label} \#
 \meta{simple datum} \: \meta{boolean} \| \meta{number}
 \>  \| \meta{character} \| \meta{string} \|  \meta{symbol}
 \meta{symbol} \: \meta{identifier}
@@ -227,8 +227,8 @@ successfully parses.  Note that any string that parses as an
 \>    \| \meta{abbreviation}
 \meta{abbreviation} \: \meta{abbrev prefix} \meta{datum}
 \meta{abbrev prefix} \: ' \| ` \| , \| ,@
-\meta{vector} \: \#(\arbno{\meta{datum}}) %
-\meta{label} \: \# \atleastone{\meta{digit $10$}}
+\meta{vector} \: \#(\arbno{\meta{datum}})
+\meta{label} \: \# \atleastone{\meta{digit $10$}} %
 \end{grammar}
 
 
