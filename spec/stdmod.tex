@@ -20,60 +20,59 @@ syntax bindings that are traditionally associated with Scheme.
 {\cf >}                {\cf abs}              {\cf and}
 {\cf append}           {\cf apply}            {\cf assoc}
 {\cf assq}             {\cf assv}             {\cf begin}
-{\cf boolean?}         {\cf blob-length}      {\cf blob-u8-ref}
-{\cf blob-u8-set!}     {\cf blob?}            {\cf caar}
-{\cf cadr}             {\cf call-with-current-continuation}
-{\cf call/cc}          {\cf car}              {\cf case-lambda}
-{\cf case}             {\cf cdddar}           {\cf cddddr}
-{\cf cdr}              {\cf ceiling}          {\cf char->integer}
-{\cf char-alphabetic?} {\cf char-lower-case?} {\cf char-numeric?}
-{\cf char-upper-case?} {\cf char-whitespace?} {\cf char<=?}
-{\cf char<?}           {\cf char=?}           {\cf char>=?}
-{\cf char>?}           {\cf char?}            {\cf complex?}
-{\cf cond}             {\cf cons}             {\cf copy-blob}
-{\cf copy-blob!}       {\cf copy-partial-blob!}
-{\cf copy-list}        {\cf copy-vector}      {\cf define-syntax}
-{\cf define}           {\cf define-record-type}
-{\cf denominator}      {\cf do}               {\cf dynamic-wind}
-{\cf eq?}              {\cf equal?}           {\cf eqv?}
-{\cf error}            {\cf even?}            {\cf exact->inexact}
-{\cf exact-integer-sqrt}                      {\cf exact-integer?}
-{\cf exact?}           {\cf expt}             {\cf floor}
-{\cf for-each}         {\cf gcd}              {\cf guard}
-{\cf if}               {\cf import}           {\cf include}
-{\cf inexact->exact}   {\cf inexact?}         {\cf integer->char}
-{\cf integer?}         {\cf lambda}           {\cf lcm}
-{\cf length}           {\cf let*}             {\cf let-syntax}
-{\cf letrec*}          {\cf letrec-syntax}    {\cf letrec}
-{\cf let}              {\cf list->string}     {\cf list->vector}
-{\cf list-ref}         {\cf list-set!}        {\cf list-tail}
-{\cf list?}            {\cf list}             {\cf make-blob}
-{\cf make-list}        {\cf make-parameter}   {\cf make-string}
-{\cf make-vector}      {\cf map}              {\cf max}
-{\cf member}           {\cf memq}             {\cf memv}
-{\cf min}              {\cf modulo}           {\cf negative?}
-{\cf not}              {\cf null?}            {\cf number->string}
-{\cf number?}          {\cf numerator}        {\cf odd?}
-{\cf or}               {\cf pair?}            {\cf parameterize}
-{\cf partial-blob}     {\cf positive?}        {\cf procedure?}
-{\cf quasiquote}       {\cf quote}            {\cf quotient}
-{\cf raise-continuable}                  {\cf raise}
-{\cf rational?}        {\cf rationalize}      {\cf real?}
-{\cf remainder}        {\cf reverse}          {\cf round}
-{\cf set!}             {\cf set-car!}         {\cf set-cdr!}
-{\cf string->list}     {\cf string->number}   {\cf string->symbol}
-{\cf string->vector}   {\cf string-append}    {\cf string-copy}
-{\cf string-fill!}     {\cf string-for-each}  {\cf string-length}
-{\cf string-map}       {\cf string-ref}       {\cf string-set!}
-{\cf string<=?}        {\cf string<?}         {\cf string=?}
-{\cf string>=?}        {\cf string>?}         {\cf string?}
-{\cf string}           {\cf substring}        {\cf symbol->string}
-{\cf symbol?}          {\cf syntax-error}     {\cf syntax-rules}
-{\cf truncate}         {\cf vector->list}     {\cf vector->string}
-{\cf vector-fill!}     {\cf vector-for-each}  {\cf vector-length}
-{\cf vector-map}       {\cf vector-ref}       {\cf vector-set!}
-{\cf vector?}          {\cf vector}           {\cf zero?}
-{\cf with-exception-handler}
+{\cf boolean?}         {\cf blob-copy}        {\cf blob-copy!}
+{\cf blob-length}      {\cf blob-u8-ref}      {\cf blob-u8-set!}
+{\cf blob?}            {\cf caar}             {\cf cadr}
+{\cf call-with-current-continuation}     {\cf call/cc}
+{\cf car}              {\cf case-lambda}      {\cf case}
+{\cf cdddar}           {\cf cddddr}           {\cf cdr}
+{\cf ceiling}          {\cf char->integer}    {\cf char-alphabetic?}
+{\cf char-lower-case?} {\cf char-numeric?}    {\cf char-upper-case?}
+{\cf char-whitespace?} {\cf char<=?}          {\cf char<?}
+{\cf char=?}           {\cf char>=?}          {\cf char>?}
+{\cf char?}            {\cf complex?}         {\cf cond}
+{\cf cons}             {\cf define-syntax}    {\cf define}
+{\cf define-record-type}                 {\cf denominator}
+{\cf do}               {\cf dynamic-wind}     {\cf eq?}
+{\cf equal?}           {\cf eqv?}             {\cf error}
+{\cf even?}            {\cf exact->inexact}   {\cf exact-integer-sqrt}
+{\cf exact-integer?}   {\cf exact?}           {\cf expt}
+{\cf floor}            {\cf for-each}         {\cf gcd}
+{\cf guard}            {\cf if}               {\cf import}
+{\cf include}          {\cf inexact->exact}   {\cf inexact?}
+{\cf integer->char}    {\cf integer?}         {\cf lambda}
+{\cf lcm}              {\cf length}           {\cf let*}
+{\cf let-syntax}       {\cf letrec*}          {\cf letrec-syntax}
+{\cf letrec}           {\cf let}              {\cf list-copy}
+{\cf list->string}     {\cf list->vector}     {\cf list-ref}
+{\cf list-set!}        {\cf list-tail}        {\cf list?}
+{\cf list}             {\cf make-blob}        {\cf make-list}
+{\cf make-parameter}   {\cf make-string}      {\cf make-vector}
+{\cf map}              {\cf max}              {\cf member}
+{\cf memq}             {\cf memv}             {\cf min}
+{\cf modulo}           {\cf negative?}        {\cf not}
+{\cf null?}            {\cf number->string}   {\cf number?}
+{\cf numerator}        {\cf odd?}             {\cf or}
+{\cf pair?}            {\cf parameterize}     {\cf partial-blob}
+{\cf partial-blob-copy!}                 {\cf positive?}
+{\cf procedure?}       {\cf quasiquote}       {\cf quote}
+{\cf quotient}         {\cf raise-continuable}
+{\cf raise}            {\cf rational?}        {\cf rationalize}
+{\cf real?}            {\cf remainder}        {\cf reverse}
+{\cf round}            {\cf set!}             {\cf set-car!}
+{\cf set-cdr!}         {\cf string->list}     {\cf string->number}
+{\cf string->symbol}   {\cf string->vector}   {\cf string-append}
+{\cf string-copy}      {\cf string-fill!}     {\cf string-for-each}
+{\cf string-length}    {\cf string-map}       {\cf string-ref}
+{\cf string-set!}      {\cf string<=?}        {\cf string<?}
+{\cf string=?}         {\cf string>=?}        {\cf string>?}
+{\cf string?}          {\cf string}           {\cf substring}
+{\cf symbol->string}   {\cf symbol?}          {\cf syntax-error}
+{\cf syntax-rules}     {\cf truncate}         {\cf vector-copy}
+{\cf vector->list}     {\cf vector->string}   {\cf vector-fill!}
+{\cf vector-for-each}  {\cf vector-length}    {\cf vector-map}
+{\cf vector-ref}       {\cf vector-set!}      {\cf vector?}
+{\cf vector}           {\cf zero?}            {\cf with-exception-handler}
 \end{scheme}
 
 \textbf{Inexact Module}
@@ -183,9 +182,9 @@ and output on ports.
 {\cf open-input-string}        {\cf open-output-string}
 {\cf output-port?}             {\cf peek-char}
 {\cf peek-u8?}                 {\cf port?}
-{\cf read-char}                {\cf read-u8}
-{\cf u8-ready?}                {\cf write-char}
-{\cf write-u8}
+{\cf port-open?}               {\cf read-char}
+{\cf read-u8}                  {\cf u8-ready?}
+{\cf write-char}               {\cf write-u8}
 \end{scheme}
 
 \textbf{File Module}
