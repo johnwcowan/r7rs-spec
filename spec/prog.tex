@@ -424,11 +424,6 @@ forms from the files and include the results into the module body as
 though wrapped in a \ide{begin}.  \ide{include-ci} uses a case-folding
 reader when reading the forms from the file.
 
-The forms from all \ide{begin}, \ide{include}, \ide{include-ci},
-and \ide{cond-expand}
-declarations are expanded in the order in which they occur in the
-module declaration.
-
 The \ide{cond-expand} module declaration provides a way to statically
 expand different module declarations depending on the platform
 or implementation under which the module is being loaded.  A
@@ -471,6 +466,15 @@ included, otherwise the \ide{cond-expand} has no effect.
 The exact features provided are implementation-defined, but for
 portability a set of recommended features is given in
 appendix~\ref{stdfeatures}.
+
+\todo{Shinn: Perhaps make this a separate subsection describing a
+  module ``resolution'' phase which runs prior to module expansion.}
+
+After all \ide{cond-expand} forms are expanded, a new environment is
+constructed for the module consisting of all imported bindings.  The
+forms from all \ide{begin}, \ide{include} and \ide{include-ci}
+declarations are expanded in that environment in the order in which
+they occur in the module declaration.
 
 \subsection{Module Examples}
 
