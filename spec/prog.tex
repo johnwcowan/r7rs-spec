@@ -121,9 +121,10 @@ and the region of the binding is the entire \hyper{body}.  For example,
   (foo (+ x 3)))                \ev  45%
 \end{scheme}
 
-A \hyper{body} containing internal definitions can always be converted
-into a completely equivalent {\cf letrec*} expression.  For example, the
-{\cf let} expression in the above example is equivalent to
+An expanded \hyper{body} containing internal definitions can always be
+converted into a completely equivalent {\cf letrec*} expression.  For
+example, the {\cf let} expression in the above example is equivalent
+to
 
 \begin{scheme}
 (let ((x 5))
@@ -137,6 +138,9 @@ possible to evaluate each \hyper{expression} of every internal
 definition in a \hyper{body} without assigning or referring to
 the value of the corresponding \hyper{variable} or the \hyper{variable}
 of any of the definitions that follow it in \hyper{body}.
+
+It is an error to define the same identifier more than once in the
+same \hyper{body}.
 
 Wherever an internal definition may occur
 {\tt(begin \hyperi{definition} \dotsfoo)}
@@ -158,8 +162,8 @@ syntactic environment is extended by binding the
 \hyper{keyword} to the specified transformer.  Otherwise, it is an
 {\em internal syntax definition}, and is local to the \hyper{body} in which
 it is defined.
-Any {\em internal syntax definitions} in a body must come before any
-{\em internal definitions}.
+%% Any {\em internal syntax definitions} in a body must come before any
+%% {\em internal definitions}.
 
 \begin{scheme}
 (let ((x 1) (y 2))
@@ -194,13 +198,17 @@ Any {\em internal syntax definitions} in a body must come before any
 % and I didn't want to introduce any gratuitous incompatibilities
 % with the existing Scheme language. -- Will]
 
+\todo{Shinn: This description is hideous.}
+
 Although macros may expand into definitions and syntax definitions in
-any context that permits them, it is an error for a definition or syntax
-definition to shadow a syntactic keyword whose meaning is needed to
-determine whether some form in the group of forms that contains the
-shadowing definition is in fact a definition, or, for internal definitions,
-is needed to determine the boundary between the group and the expressions
-that follow the group.  For example, the following are errors:
+any context that permits them, it is an error for a definition or
+syntax definition to define an identifier whose binding is needed to
+determine the meaning of the definition itself, or any preceeding
+definition in a group of internal definitions.  Similarly in a group
+of internal definitions, it is an error for a definition to define an
+identifier whose binding is needed to determine the boundary between
+the group and the expressions that follow the group.  For example, the
+following are errors:
 
 \begin{scheme}
 (define define 3)
@@ -218,6 +226,8 @@ that follow the group.  For example, the following are errors:
     (define foo x)
     (plus foo x)))
 \end{scheme}
+
+\todo{Shinn: Example using internal define-syntax.}
 
 \section{Record-type definitions}
 \label{usertypes}
