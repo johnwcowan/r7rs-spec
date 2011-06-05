@@ -476,6 +476,15 @@ forms from all \ide{begin}, \ide{include} and \ide{include-ci}
 declarations are expanded in that environment in the order in which
 they occur in the module declaration.
 
+The top-level forms in a module are executed in the order in which
+they occur when the module is loaded.  A module is loaded zero or more
+times when it is imported by a program or by another module which is
+about to be loaded, but must be loaded at least once per program in
+which it is so imported.
+
+\todo{Shinn: Mention it may also be loaded (or not in some cases, if
+  the compiler is clever) during batch compilation?}
+
 \subsection{Module Examples}
 
 \begin{scheme}
