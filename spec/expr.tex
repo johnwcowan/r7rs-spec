@@ -455,6 +455,21 @@ or if there are no expressions, \schfalse{} is returned.
 
 \end{entry}
 
+\begin{entry}{%
+\proto{when}{ \hyper{test} \hyperi{expression} \hyperii{expression} \dotsfoo}{\exprtype}}
+
+The \hyper{test} expression is evaluated, and if it is a true value
+the expressions are evaluated in order.  The result of the {\cf when}
+expression is unspecified.
+\end{entry}
+
+\begin{entry}{%
+\proto{unless}{ \hyper{test} \hyperi{expression} \hyperii{expression} \dotsfoo}{\exprtype}}
+
+The \hyper{test} expression is evaluated, and if it is \schfalse{}
+the expressions are evaluated in order.  The result of the {\cf unless}
+expression is unspecified.
+\end{entry}
 
 \subsection{Binding constructs}
 
