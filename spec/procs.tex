@@ -2694,89 +2694,89 @@ The value returned by {\cf vector-fill!}\ is unspecified.  % <!>
 \end{entry}
 
 
-\subsection{Blobs}
-\label{blobsection}
+\subsection{Bytevectors}
+\label{bytevectorsection}
 
-Blobs are a disjoint type for representing blocks of binary data.
-Conceptually, blobs can be thought of as homogenous vectors of 8-bit
+Bytevectors are a disjoint type for representing blocks of binary data.
+Conceptually, bytevectors can be thought of as homogenous vectors of 8-bit
 bytes, but they typically occupy less space than a vector.
 
-\vest The {\em length} of a blob is the number of elements that it
+\vest The {\em length} of a bytevector is the number of elements that it
 contains.  This number is a non-negative integer that is fixed when
-the blob is created.  The {\em valid indexes}\index{valid indexes} of
-a blob are the exact non-negative integers less than the length of the
-blob, starting at index zero as with vectors.
+the bytevector is created.  The {\em valid indexes}\index{valid indexes} of
+a bytevector are the exact non-negative integers less than the length of the
+bytevector, starting at index zero as with vectors.
 
 \begin{entry}{%
-\proto{blob?}{ obj}{procedure}}
+\proto{bytevector?}{ obj}{procedure}}
 
-Returns \schtrue{} iff \var{obj} is a blob.
+Returns \schtrue{} iff \var{obj} is a bytevector.
 \end{entry}
 
 \begin{entry}{%
-\proto{make-blob}{ k}{procedure}}
+\proto{make-bytevector}{ k}{procedure}}
 
-Returns a newly allocated blob of \var{k} bytes.  The initial contents
+Returns a newly allocated bytevector of \var{k} bytes.  The initial contents
 of each element is unspecified.
 \end{entry}
 
 \begin{entry}{%
-\proto{blob-length}{ blob}{procedure}}
+\proto{bytevector-length}{ bytevector}{procedure}}
 
-Returns the length of \var{blob} in bytes as an exact integer.
+Returns the length of \var{bytevector} in bytes as an exact integer.
 \end{entry}
 
 \begin{entry}{%
-\proto{blob-u8-ref}{ blob k}{procedure}}
+\proto{bytevector-u8-ref}{ bytevector k}{procedure}}
 
-Returns the \var{k}th byte of \var{blob} as an exact integer in the
+Returns the \var{k}th byte of \var{bytevector} as an exact integer in the
 range $[0..255]$.
 \end{entry}
 
 \begin{entry}{%
-\proto{blob-u8-set!}{ blob k u8}{procedure}}
+\proto{bytevector-u8-set!}{ bytevector k u8}{procedure}}
 
-Stores \var{u8} as the \var{k}th byte of \var{blob}.  \var{u8} must be
+Stores \var{u8} as the \var{k}th byte of \var{bytevector}.  \var{u8} must be
 an exact integer in the range $[0..255]$.  The value returned by
-{\cf blob-u8-set!} is unspecified.
+{\cf bytevector-u8-set!} is unspecified.
 \end{entry}
 
 \begin{entry}{%
-\proto{blob-copy}{ blob}{procedure}}
+\proto{bytevector-copy}{ bytevector}{procedure}}
 
-Returns a newly allocated blob containing the same bytes as
-\var{blob}.
+Returns a newly allocated bytevector containing the same bytes as
+\var{bytevector}.
 \end{entry}
 
 \begin{entry}{%
-\proto{blob-copy!}{ from to}{procedure}}
+\proto{bytevector-copy!}{ from to}{procedure}}
 
-Copy the bytes of blob \var{from} to blob \var{to}, which must not be
-shorter.  The value returned by {\cf blob-copy!} is unspecified.
+Copy the bytes of bytevector \var{from} to bytevector \var{to}, which must not be
+shorter.  The value returned by {\cf bytevector-copy!} is unspecified.
 \end{entry}
 
 \begin{entry}{%
-\proto{partial-blob}{ blob start end}{procedure}}
+\proto{partial-bytevector}{ bytevector start end}{procedure}}
 
-Returns a newly allocated blob containing the bytes in \var{blob}
+Returns a newly allocated bytevector containing the bytes in \var{bytevector}
 between \var{start} (inclusive) and \var{end}
 (exclusive).
 \end{entry}
 
 \begin{entry}{%
-\proto{partial-blob-copy!}{ from start end to at}{procedure}}
+\proto{partial-bytevector-copy!}{ from start end to at}{procedure}}
 
-Copy the bytes of blob \var{from} between \var{start} and \var{end}
-to blob \var{to}, starting at \var{at}.  The order in which bytes are
+Copy the bytes of bytevector \var{from} between \var{start} and \var{end}
+to bytevector \var{to}, starting at \var{at}.  The order in which bytes are
 copied is unspecified, except that if the source and destination overlap,
 copying takes place as if the source is first copied into a temporary
-blob and then into the destination.  This can be achieved without
+bytevector and then into the destination.  This can be achieved without
 allocating storage by making sure to copy in the correct direction in
 such circumstances.
 
 The inequality
-\texttt{({\cf >=} ({\cf -} ({\cf blob-length} \var{to}) \var{at}) ({\cf -} \var{end} \var{start}))}
-must be true.  The value returned by {\cf partial-blob-copy!} is unspecified.
+\texttt{({\cf >=} ({\cf -} ({\cf bytevector-length} \var{to}) \var{at}) ({\cf -} \var{end} \var{start}))}
+must be true.  The value returned by {\cf partial-bytevector-copy!} is unspecified.
 \end{entry}
 
 
