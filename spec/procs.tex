@@ -3962,6 +3962,26 @@ omitted, in which case it defaults to the value returned by {\cf current-input-p
 
 \end{entry}
 
+\begin{entry}{%
+\proto{read-line}{}{io module procedure}
+\rproto{read-line}{ port}{io module procedure}}
+
+Returns the next line of text available from the character input
+\var{port}, updating the \var{port} to point to the following character.
+If an end of line is read, a string containing all of the text up to
+(but not including) the end of line is returned, and the port is updated
+to point just past the end of line. If an end of file is encountered
+before any linefeed character is read, but some characters have been
+read, a string containing those characters is returned. If an end of
+file is encountered before any characters are read, an end-of-file
+object is returned.  For the purpose of this procedure, an end of line
+consists of either a linefeed character, a carriage return character, or a
+sequence of a carriage return character followed by a linefeed character.
+\var{Port} may be omitted, in which case it defaults to the value returned
+by {\cf current-input-port}.
+
+\end{entry}
+
 
 \begin{entry}{%
 \proto{peek-char}{}{io module procedure}
