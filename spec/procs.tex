@@ -2844,9 +2844,11 @@ and returning a single value.  If more
 than one \var{list} is given and not all lists have the same length,
 {\cf map} terminates when the shortest list runs out.}
 {\cf Map} applies \var{proc} element-wise to the elements of the
-\var{list}s and returns a list of the results, in order.
+\var{list}s and returns a list of the results, in order.  It is an
+error for \var{proc} to mutate any of the lists.
 The dynamic order in which \var{proc} is applied to the elements of the
-\var{list}s is unspecified.
+\var{list}s is unspecified.  If multiple returns occur from {\cf map},
+the values returned by earlier returns are not mutated.
 
 \begin{scheme}
 (map cadr '((a b) (d e) (g h)))   \lev  (b e h)
@@ -2877,6 +2879,8 @@ than one \var{string} is given and not all strings have the same length,
 \var{string}s and returns a string of the results, in order.
 The dynamic order in which \var{proc} is applied to the elements of the
 \var{string}s is unspecified.
+If multiple returns occur from {\cf string-map},
+the values returned by earlier returns are not mutated.
 
 \begin{scheme}
 (string-map char-foldcase "AbdEgH") \lev  "abdegh"
@@ -2909,6 +2913,8 @@ than one \var{vector} is given and not all vectors have the same length,
 \var{vector}s and returns a vector of the results, in order.
 The dynamic order in which \var{proc} is applied to the elements of the
 \var{vector}s is unspecified.
+If multiple returns occur from {\cf vector-map},
+the values returned by earlier returns are not mutated.
 
 \begin{scheme}
 (vector-map cadr '\#((a b) (d e) (g h)))   \lev  \#(b e h)
@@ -2937,6 +2943,7 @@ The arguments to {\cf for-each} are like the arguments to {\cf map}, but
 values.  Unlike {\cf map}, {\cf for-each} is guaranteed to call \var{proc} on
 the elements of the \var{list}s in order from the first element(s) to the
 last, and the value returned by {\cf for-each} is unspecified.
+It is an error for \var{proc} to mutate any of the lists.
 If more than one \var{list} is given and not all lists have the same length,
 {\cf for-each} terminates when the shortest list runs out.
 
