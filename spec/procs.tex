@@ -3296,7 +3296,8 @@ called once each, in order).  \var{Before} is called whenever execution
 enters the dynamic extent of the call to \var{thunk} and \var{after} is called
 whenever it exits that dynamic extent.  The dynamic extent of a procedure
 call is the period between when the call is initiated and when it
-returns.  In Scheme, because of {\cf call-with-current-continuation}, the
+returns.  \var{Before} and \var{after} are excluded from the dynamic extent.
+In Scheme, because of {\cf call-with-current-continuation}, the
 dynamic extent of a call may not be a single, connected time period.
 It is defined as follows:
 \begin{itemize}
