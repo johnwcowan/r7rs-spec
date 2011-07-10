@@ -480,18 +480,25 @@ index.  Furthermore any integer constant within the index range, if
 expressed by an exact integer syntax, will indeed be read as an exact
 integer, regardless of any implementation restrictions that may apply
 outside this range.  Finally, the procedures listed below will always
-return an exact integer result provided all their arguments are exact integers
-and the mathematically expected result is representable as an exact integer
+return exact integer results provided all their arguments are exact integers
+and the mathematically expected results are representable as exact integers
 within the implementation:
 
 \begin{scheme}
-+            -             *
-quotient     remainder     modulo
-max          min           abs
-numerator    denominator   gcd
-lcm          floor         ceiling
-truncate     round         rationalize
-expt%
++                  -                   *
+quotient           remainder           modulo
+max                min                 abs
+numerator          denominator         gcd
+lcm                floor               ceiling
+truncate           round               rationalize
+expt               exact-integer-sqrt
+floor/             ceiling/            truncate/
+round/             euclidean/
+floor-quotient     floor-remainder
+ceiling-quotient   ceiling-remainder
+truncate-quotient  truncate-remainder
+round-quotient     round-remainder
+euclidean-quotient euclidean-remainder
 \end{scheme}
 
 \vest Implementations are encouraged, but not required, to support
