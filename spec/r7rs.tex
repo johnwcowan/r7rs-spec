@@ -1,6 +1,8 @@
 \documentclass[twoside,twocolumn]{algol60}
 %\documentclass[twoside]{algol60}
 
+\usepackage{amsmath}
+
 \pagestyle{headings}
 \showboxdepth=0
 \makeindex
@@ -33,11 +35,13 @@
 
 %% End of sizes and dimensions
 
+\usepackage{hyperref}
+
 \begin{document}
 
 \parindent 0pt %!! 15pt                    % Width of paragraph indentation.
 
-\hfil {\bf 20 February 1998}
+\hfil {\bf 9 March 2011}
 %\hfil \today{}
 
 \input{first}   \par
@@ -53,7 +57,9 @@
 \input{syn}	\par
 \input{sem}	\par
 \input{derive}	\par  \vfill\eject
-\input{stdmod}	\par  \vfill\eject
+\appendix
+\input{stdmod}	\par \vfill\eject
+\input{features} \par \vfill\eject
 \input{notes}	\par
 \input{repository} \par \vfill\eject
 \input{example}	\par  \vfill\eject

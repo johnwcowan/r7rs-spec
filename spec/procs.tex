@@ -7,7 +7,7 @@
 
 \mainindex{initial environment}
 \mainindex{top level environment}
-\mainindex{library procedure}
+\mainindex{procedure}
 
 This chapter describes Scheme's built-in procedures.  The initial (or
 ``top level'') Scheme environment starts out with a number of variables
@@ -15,9 +15,7 @@ bound to locations containing useful values, most of which are primitive
 procedures that manipulate data.  For example, the variable {\cf abs} is
 bound to (a location initially containing) a procedure of one argument
 that computes the absolute value of a number, and the variable {\cf +}
-is bound to a procedure that computes sums.  Built-in procedures that
-can easily be written in terms of other built-in procedures are identified as
-``library procedures''.
+is bound to a procedure that computes sums.  
 
 A program may use a top-level definition to bind any variable.  It may
 subsequently alter any such binding by an assignment (see \ref{assignment}).
@@ -273,12 +271,12 @@ it obeys the same constraints as {\cf eqv?}.
 
 
 \begin{entry}{%
-\proto{equal?}{ \vari{obj} \varii{obj}}{library procedure}}
+\proto{equal?}{ \vari{obj} \varii{obj}}{procedure}}
 
 {\cf Equal?} recursively compares the contents of pairs, vectors, and
 strings, applying {\cf eqv?} on other objects such as numbers and symbols.
 A rule of thumb is that objects are generally {\cf equal?} if they print
-the same.  {\cf Equal?}\ may fail to terminate if its arguments are
+the same.  {\cf Equal?}\ must always terminate, even if its arguments are
 circular data structures.
 
 \begin{scheme}
@@ -293,6 +291,7 @@ circular data structures.
 (equal? (lambda (x) x)
         (lambda (y) y))  \ev  \unspecified%
 \end{scheme}
+
 
 \end{entry}
 
@@ -311,16 +310,17 @@ circular data structures.
 \newcommand{\type}[1]{{\it#1}}
 \newcommand{\tupe}[1]{{#1}}
 
-Numerical computation has traditionally been neglected by the Lisp
-community.  Until Common Lisp there was no carefully thought out
-strategy for organizing numerical computation, and with the exception of
-the MacLisp system \cite{Pitman83} little effort was made to
-execute numerical code efficiently.  This report recognizes the excellent work
-of the Common Lisp committee and accepts many of their recommendations.
-In some ways this report simplifies and generalizes their proposals in a manner
-consistent with the purposes of Scheme.
+%% This paragraph is stale.
+%% Numerical computation has traditionally been neglected by the Lisp
+%% community.  Until Common Lisp there was no carefully thought out
+%% strategy for organizing numerical computation, and with the exception of
+%% the MacLisp system \cite{Pitman83} little effort was made to
+%% execute numerical code efficiently.  This report recognizes the excellent work
+%% of the Common Lisp committee and accepts many of their recommendations.
+%% In some ways this report simplifies and generalizes their proposals in a manner
+%% consistent with the purposes of Scheme.
 
-It is important to distinguish between the mathematical numbers, the
+It is important to distinguish between mathematical numbers, the
 Scheme numbers that attempt to model them, the machine representations
 used to implement the Scheme numbers, and notations used to write numbers.
 This report uses the types \type{number}, \type{complex}, \type{real},
@@ -328,6 +328,9 @@ This report uses the types \type{number}, \type{complex}, \type{real},
 and Scheme numbers.  Machine representations such as fixed point and
 floating point are referred to by names such as \type{fixnum} and
 \type{flonum}.
+Fixnums are integers with a limited and machine-dependent range;
+flonums are real numbers with a limited and machine-dependent
+range and precision.
 
 %%R4%% I did some reorganizing here to move the discussion of mathematical
 % numbers before the discussion of the Scheme numbers, hoping that this
@@ -531,8 +534,8 @@ representation strategies for \tupe{inexact} numbers.
 %\tupe{inexact} computations---only that approximate methods of high
 %quality are allowed.
 %
-This report recommends, but does not require, that the IEEE 32-bit
-and 64-bit floating point standards be followed by implementations that use
+This report recommends, but does not require, that the IEEE 754
+standard be followed by implementations that use
 flonum representations, and that implementations using
 other representations should match or exceed the precision achievable
 using these floating point standards~\cite{IEEE}.
@@ -543,13 +546,34 @@ must be represented with at least as much precision as is used to express any of
 the inexact arguments to that operation.  It is desirable (but not required) for
 potentially inexact operations such as {\cf sqrt}, when applied to \tupe{exact}
 arguments, to produce \tupe{exact} answers whenever possible (for example the
-square root of an \tupe{exact} 4 ought to be an \tupe{exact} 2).
+square root of an \tupe{exact} 4 should be an \tupe{exact} 2).
 If, however, an
 \tupe{exact} number is operated upon so as to produce an \tupe{inexact} result
 (as by {\cf sqrt}), and if the result is represented as a \tupe{flonum}, then
 the most precise \tupe{flonum} format available must be used; but if the result
 is represented in some other way then the representation must have at least as
 much precision as the most precise \tupe{flonum} format available.
+
+In addition, implementations that use flonum representations may
+distinguish special number objects called \tupe{positive infinity},
+\tupe{negative infinity}, and \tupe{NaN}.
+
+Positive infinity is regarded as an inexact real (but not rational)
+number object that represents an indeterminate number greater than the
+numbers represented by all rational number objects. Negative infinity
+is regarded as an inexact real (but not rational) number object that
+represents an indeterminate number less than the numbers represented
+by all rational numbers.
+
+A NaN is regarded as an inexact real (but not rational) number object
+so indeterminate that it might represent any real number, including
+positive or negative infinity, and might even be greater than positive
+infinity or less than negative infinity.
+It might even represent no number at all, as in the case of 
+{\cf (asin 2.0)}.
+
+%Note that either the real or the imaginary part of a complex number
+%can be an infinity or NaN.
 
 Although Scheme allows a variety of written
 %%R4%% representations of 
@@ -614,21 +638,15 @@ otherwise it is \tupe{exact}.
 
 In systems with \tupe{inexact} numbers
 of varying precisions it may be useful to specify
-the precision of a constant.  For this purpose, numerical constants
-may be written with an exponent marker that indicates the
+the precision of a constant.  For this purpose,
+implementations may accept numerical constants
+written with an exponent marker that indicates the
 desired precision of the \tupe{inexact}
 representation.  The letters {\cf s}, {\cf f},
-{\cf d}, and {\cf l} specify the use of \var{short}, \var{single},
-\var{double}, and \var{long} precision, respectively.  (When fewer
-than four internal
-%%R4%%\tupe{flonum}
-\tupe{inexact}
-representations exist, the four size
-specifications are mapped onto those available.  For example, an
-implementation with two internal representations may map short and
-single together and long and double together.)  In addition, the
-exponent marker {\cf e} specifies the default precision for the
-implementation.  The default precision has at least as much precision
+{\cf d}, and {\cf l}, meaning \var{short}, \var{single},
+\var{double}, and \var{long} precision respectively,
+are acceptable in place of {\cf e}.
+The default precision has at least as much precision
 as \var{double}, but
 implementations may wish to allow this default to be set by the user.
 
@@ -639,6 +657,8 @@ implementations may wish to allow this default to be set by the user.
        {\rm Extend to long ---} .600000000000000%
 \end{scheme}
 
+The numbers positive infinity, negative infinity and NaN are written
+{\cf +inf.0}, {\cf -inf.0} and {\cf +nan.0} respectively.
 
 \subsection{Numerical operations}
 
@@ -706,8 +726,7 @@ is unreliable, since any inaccuracy may affect the result.
 \end{note}
 
 \begin{note}
-In many implementations the \ide{rational?} procedure will be the same
-as \ide{real?}, and the \ide{complex?} procedure will be the same as
+In many implementations the \ide{complex?} procedure will be the same as
 \ide{number?}, but unusual implementations may be able to represent
 some irrational numbers exactly or may extend the number system to
 support some kind of non-complex numbers.
@@ -723,6 +742,37 @@ These numerical predicates provide tests for the exactness of a
 quantity.  For any Scheme number, precisely one of these predicates
 is true.
 
+\begin{scheme}
+(exact? 3.0)           \ev  \schfalse
+(exact? \#e3.0)         \ev  \schtrue
+(inexact? 3.)          \ev  \schtrue
+\end{scheme}
+
+\end{entry}
+
+
+\begin{entry}{%
+\proto{exact-integer?}{ \vr{z}}{procedure}}
+
+The conjunction of {\cf exact?} and {\cf integer?}, returns \schtrue{}
+iff \vr{z} is both \tupe{exact} and an \tupe{integer}.
+\end{entry}
+
+
+\begin{entry}{%
+\proto{finite?}{ \vr{z}}{inexact module procedure}
+\proto{infinite?}{ \vr{z}}{inexact module procedure}
+\proto{nan?}{ \vr{z}}{inexact module procedure}}
+
+These numerical predicates provide tests for the infinite and NaN
+numbers.  For any Scheme number, precisely one of these predicates is
+true.
+
+\begin{scheme}
+(finite? 3)         \ev  \schtrue
+(finite? +inf.0)       \ev  \schfalse
+(nan? +nan.0)          \ev  \schtrue
+\end{scheme}
 \end{entry}
 
 
@@ -756,11 +806,11 @@ When in doubt, consult a numerical analyst.
 \end{entry}
 
 \begin{entry}{%
-\proto{zero?}{ \vr{z}}{library procedure}
-\proto{positive?}{ \vr{x}}{library procedure}
-\proto{negative?}{ \vr{x}}{library procedure}
-\proto{odd?}{ \vr{n}}{library procedure}
-\proto{even?}{ \vr{n}}{library procedure}}
+\proto{zero?}{ \vr{z}}{procedure}
+\proto{positive?}{ \vr{x}}{procedure}
+\proto{negative?}{ \vr{x}}{procedure}
+\proto{odd?}{ \vr{n}}{procedure}
+\proto{even?}{ \vr{n}}{procedure}}
 
 These numerical predicates test a number for a particular property,
 returning \schtrue{} or \schfalse.  See note above.
@@ -768,8 +818,8 @@ returning \schtrue{} or \schfalse.  See note above.
 \end{entry}
 
 \begin{entry}{%
-\proto{max}{ \vri{x} \vrii{x} \dotsfoo}{library procedure}
-\proto{min}{ \vri{x} \vrii{x} \dotsfoo}{library procedure}}
+\proto{max}{ \vri{x} \vrii{x} \dotsfoo}{procedure}
+\proto{min}{ \vri{x} \vrii{x} \dotsfoo}{procedure}}
 
 These procedures return the maximum or minimum of their arguments.
 
@@ -812,10 +862,10 @@ These procedures return the sum or product of their arguments.
 \begin{entry}{%
 \proto{-}{ \vri{z} \vrii{z}}{procedure}
 \rproto{-}{ \vr{z}}{procedure}
-\rproto{-}{ \vri{z} \vrii{z} \dotsfoo}{optional procedure}
+\rproto{-}{ \vri{z} \vrii{z} \dotsfoo}{procedure}
 \proto{/}{ \vri{z} \vrii{z}}{procedure}
 \rproto{/}{ \vr{z}}{procedure}
-\rproto{/}{ \vri{z} \vrii{z} \dotsfoo}{optional procedure}}
+\rproto{/}{ \vri{z} \vrii{z} \dotsfoo}{procedure}}
 
 With two or more arguments, these procedures return the difference or
 quotient of their arguments, associating to the left.  With one argument,
@@ -836,7 +886,7 @@ however, they return the additive or multiplicative inverse of their argument.
 
 
 \begin{entry}{%
-\proto{abs}{ x}{library procedure}}
+\proto{abs}{ x}{procedure}}
 
 {\cf Abs} returns the absolute value of its argument.  
 %- {\cf Abs} is exactness preserving when its argument is real.
@@ -847,38 +897,67 @@ however, they return the additive or multiplicative inverse of their argument.
 
 
 \begin{entry}{%
+\proto{floor/}{ \vri{n} \vrii{n}}{procedure}
+\proto{floor-quotient}{ \vri{n} \vrii{n}}{procedure}
+\proto{floor-remainder}{ \vri{n} \vrii{n}}{procedure}
+\proto{ceiling/}{ \vri{n} \vrii{n}}{procedure}
+\proto{ceiling-quotient}{ \vri{n} \vrii{n}}{procedure}
+\proto{ceiling-remainder}{ \vri{n} \vrii{n}}{procedure}
+\proto{truncate/}{ \vri{n} \vrii{n}}{procedure}
+\proto{truncate-quotient}{ \vri{n} \vrii{n}}{procedure}
+\proto{truncate-remainder}{ \vri{n} \vrii{n}}{procedure}
+\proto{round/}{ \vri{n} \vrii{n}}{procedure}
+\proto{round-quotient}{ \vri{n} \vrii{n}}{procedure}
+\proto{round-remainder}{ \vri{n} \vrii{n}}{procedure}
+\proto{euclidean/}{ \vri{n} \vrii{n}}{procedure}
+\proto{euclidean-quotient}{ \vri{n} \vrii{n}}{procedure}
+\proto{euclidean-remainder}{ \vri{n} \vrii{n}}{procedure}}
+
+These procedures, all in the division module, implement
+number-theoretic (integer) division.  \vrii{n} should be non-zero.
+All fifteen procedures return integers.  The procedures compute a
+quotient \vr{n_q} and remainder \vr{n_r} such that
+$\vri{n} = \vrii{n} \vr{n_q} + \vr{n_r}$.  For each of the five
+division operators, there are three procedures defined as follows:
+
+\begin{scheme}
+(\hyper{operator}/ \vri{n} \vrii{n})             \ev \vr{n_q} \vr{n_r}
+(\hyper{operator}-quotient \vri{n} \vrii{n})     \ev \vr{n_q}
+(\hyper{operator}-remainder \vri{n} \vrii{n})    \ev \vr{n_r}
+\end{scheme}
+
+The remainder \vr{n_r} is determined by the choice of integer
+\vr{n_q}: $\vr{n_r} = \vri{n} - \vrii{n} \vr{n_q}$.  Each set of
+operators uses a different choice of \vr{n_q}:
+
+\begin{tabular}{l l}
+\textbf{ceiling}   & $\vr{n_q} = \lceil\vri{n} / \vrii{n}\rceil$ \\
+\textbf{floor}     & $\vr{n_q} = \lfloor\vri{n} / \vrii{n}\rfloor$ \\
+\textbf{truncate}  & $\vr{n_q} = \text{truncate}(\vri{n} / \vrii{n})$ \\
+\textbf{round}     & $\vr{n_q} = [\vri{n} / \vrii{n}]$ \\
+\textbf{euclidean} & $\text{if } \vrii{n} > 0, \vr{n_q} = \lfloor\vri{n} / \vrii{n}\rfloor; \text{ if } \vrii{n} < 0, \vr{n_q} = \lceil\vri{n} / \vrii{n}\rceil$ \\
+\end{tabular}
+
+For any of the operators, and for integers \vri{n} and \vrii{n}
+with \vrii{n} not equal to 0,
+\begin{scheme}
+     (= \vri{n} (+ (* \vrii{n} (\hyper{operator}-quotient \vri{n} \vrii{n}))
+           (\hyper{operator}-remainder \vri{n} \vrii{n})))
+                                 \ev  \schtrue%
+\end{scheme}
+provided all numbers involved in that computation are exact.
+
+\end{entry}
+
+
+\begin{entry}{%
 \proto{quotient}{ \vri{n} \vrii{n}}{procedure}
 \proto{remainder}{ \vri{n} \vrii{n}}{procedure}
 \proto{modulo}{ \vri{n} \vrii{n}}{procedure}}
 
-These procedures implement number-theoretic (integer)
-division.  \vrii{n} should be non-zero.  All three procedures
-return integers.  If \vri{n}/\vrii{n} is an integer:
-\begin{scheme}
-    (quotient \vri{n} \vrii{n})   \ev \vri{n}/\vrii{n}
-    (remainder \vri{n} \vrii{n})  \ev 0
-    (modulo \vri{n} \vrii{n})     \ev 0
-\end{scheme}
-If \vri{n}/\vrii{n} is not an integer:
-\begin{scheme}
-    (quotient \vri{n} \vrii{n})   \ev \vr{n_q}
-    (remainder \vri{n} \vrii{n})  \ev \vr{n_r}
-    (modulo \vri{n} \vrii{n})     \ev \vr{n_m}
-\end{scheme}
-where \vr{n_q} is $\vri{n}/\vrii{n}$ rounded towards zero,
-$0 < |\vr{n_r}| < |\vrii{n}|$, $0 < |\vr{n_m}| < |\vrii{n}|$,
-\vr{n_r} and \vr{n_m} differ from \vri{n} by a multiple of \vrii{n},
-\vr{n_r} has the same sign as \vri{n}, and
-\vr{n_m} has the same sign as \vrii{n}.
-
-From this we can conclude that for integers \vri{n} and \vrii{n} with
-\vrii{n} not equal to 0,
-\begin{scheme}
-     (= \vri{n} (+ (* \vrii{n} (quotient \vri{n} \vrii{n}))
-           (remainder \vri{n} \vrii{n})))
-                                 \ev  \schtrue%
-\end{scheme}
-provided all numbers involved in that computation are exact.
+{\cf Quotient} and {\cf remainder} are equivalent to {\cf
+  truncate-quotient} and {\cf truncate-remainder} respectively.  {\cf
+  Modulo} is equivalent to {\cf floor-remainder}.
 
 \begin{scheme}
 (modulo 13 4)           \ev  1
@@ -898,8 +977,8 @@ provided all numbers involved in that computation are exact.
 \end{entry}
 
 \begin{entry}{%
-\proto{gcd}{ \vri{n} \dotsfoo}{library procedure}
-\proto{lcm}{ \vri{n} \dotsfoo}{library procedure}}
+\proto{gcd}{ \vri{n} \dotsfoo}{procedure}
+\proto{lcm}{ \vri{n} \dotsfoo}{procedure}}
 
 These procedures return the greatest common divisor or least common
 multiple of their arguments.  The result is always non-negative.
@@ -982,7 +1061,7 @@ result should be passed to the {\cf inexact->exact} procedure.
 \end{entry}
 
 \begin{entry}{%
-\proto{rationalize}{ x y}{library procedure}
+\proto{rationalize}{ x y}{procedure}
 %- \proto{rationalize}{ x}{procedure}
 }
 
@@ -1006,20 +1085,18 @@ all.
 \end{entry}
 
 \begin{entry}{%
-\proto{exp}{ \vr{z}}{procedure}
-\proto{log}{ \vr{z}}{procedure}
-\proto{sin}{ \vr{z}}{procedure}
-\proto{cos}{ \vr{z}}{procedure}
-\proto{tan}{ \vr{z}}{procedure}
-\proto{asin}{ \vr{z}}{procedure}
-\proto{acos}{ \vr{z}}{procedure}
-\proto{atan}{ \vr{z}}{procedure}
-\rproto{atan}{ \vr{y} \vr{x}}{procedure}}
+\proto{exp}{ \vr{z}}{inexact module procedure}
+\proto{log}{ \vr{z}}{inexact module procedure}
+\proto{sin}{ \vr{z}}{inexact module procedure}
+\proto{cos}{ \vr{z}}{inexact module procedure}
+\proto{tan}{ \vr{z}}{inexact module procedure}
+\proto{asin}{ \vr{z}}{inexact module procedure}
+\proto{acos}{ \vr{z}}{inexact module procedure}
+\proto{atan}{ \vr{z}}{inexact module procedure}
+\rproto{atan}{ \vr{y} \vr{x}}{inexact module procedure}}
 
-These procedures are part of every implementation that supports
-%%R4%%
-general
-real numbers; they compute the usual transcendental functions.  {\cf Log}
+These procedures 
+compute the usual transcendental functions.  {\cf Log}
 computes the natural logarithm of \vr{z} (not the base ten logarithm).
 {\cf Asin}, {\cf acos}, and {\cf atan} compute arcsine ($\sin^{-1}$),
 arccosine ($\cos^{-1}$), and arctangent ($\tan^{-1}$), respectively.
@@ -1057,11 +1134,24 @@ ones cited, so we're really on our own here.}
 
 
 \begin{entry}{%
-\proto{sqrt}{ \vr{z}}{procedure}}
+\proto{sqrt}{ \vr{z}}{inexact module procedure}}
 
 Returns the principal square root of \vr{z}.  The result will have
 either positive real part, or zero real part and non-negative imaginary
 part.
+\end{entry}
+
+
+\begin{entry}{%
+\proto{exact-integer-sqrt}{ k}{procedure}}
+
+Returns two non-negative exact integer objects $s$ and $r$ where
+$\var{k} = s^2 + r$ and $\var{k} < (s+1)^2$.
+
+\begin{scheme}
+(exact-integer-sqrt 4) \ev 2 0
+(exact-integer-sqrt 5) \ev 2 1
+\end{scheme}
 \end{entry}
 
 
@@ -1096,17 +1186,14 @@ $0^z$ is 1 if $z = 0$ and 0 otherwise.
 
 
 \begin{entry}{%
-\proto{make-rectangular}{ \vri{x} \vrii{x}}{procedure}
-\proto{make-polar}{ \vriii{x} \vriv{x}}{procedure}
-\proto{real-part}{ \vr{z}}{procedure}
-\proto{imag-part}{ \vr{z}}{procedure}
-\proto{magnitude}{ \vr{z}}{procedure}
-\proto{angle}{ \vr{z}}{procedure}}
+\proto{make-rectangular}{ \vri{x} \vrii{x}}{complex module procedure}
+\proto{make-polar}{ \vriii{x} \vriv{x}}{complex module procedure}
+\proto{real-part}{ \vr{z}}{complex module procedure}
+\proto{imag-part}{ \vr{z}}{complex module procedure}
+\proto{magnitude}{ \vr{z}}{complex module procedure}
+\proto{angle}{ \vr{z}}{complex module procedure}}
 
-These procedures are part of every implementation that supports
-%%R4%%
-general
-complex numbers.  Suppose \vri{x}, \vrii{x}, \vriii{x}, and \vriv{x} are
+Suppose \vri{x}, \vrii{x}, \vriii{x}, and \vriv{x} are
 real numbers and \vr{z} is a complex number such that
  $$ \vr{z} = \vri{x} + \vrii{x}\hbox{$i$}
  = \vriii{x} \cdot e^{{\displaystyle{\hbox{$i$}} \vriv{x}}}$$
@@ -1124,9 +1211,8 @@ for some integer $n$.
 
 \begin{rationale}
 {\cf Magnitude} is the same as \ide{abs} for a real argument,
-but {\cf abs} must be present in all implementations, whereas
-{\cf magnitude} need only be present in implementations that support
-general complex numbers.
+but {\cf abs} is in the {\cf base} module, whereas
+{\cf magnitude} is in the optional {\cf complex} module.
 \end{rationale}
 
 \end{entry}
@@ -1142,6 +1228,10 @@ The value returned is the
 %%R4%%For
 %\tupe{exact} arguments which have no reasonably close \tupe{inexact} equivalent,
 %it is permissible to signal an error.
+For inexact arguments, the result is the same as the argument. For exact
+complex numbers, the result is a complex number whose real and imaginary
+parts are the result of applying {\cf exact\coerce{}inexact} to the real
+and imaginary parts of the argument, respectively.
 If an \tupe{exact} argument has no reasonably close \tupe{inexact} equivalent,
 then a violation of an implementation restriction may be reported.
 
@@ -1151,6 +1241,12 @@ closest to the argument.
 %%R4%%  For \tupe{inexact} arguments which have no
 %reasonably close \tupe{exact} equivalent, it is permissible to signal
 %an error.
+For exact arguments, the result is the same as the argument. For inexact
+non-integral real arguments, the implementation may return a rational
+approximation, or may report an implementation violation. For inexact
+complex arguments, the result is a complex number whose real and
+imaginary parts are result of applying {\cf inexact\coerce{}exact} to the
+real and imaginary parts of the argument, respectively.
 If an \tupe{inexact} argument has no reasonably close \tupe{exact} equivalent,
 then a violation of an implementation restriction may be reported.
 
@@ -1167,6 +1263,12 @@ then a violation of an implementation restriction may be reported.
 These procedures implement the natural one-to-one correspondence between
 \tupe{exact} and \tupe{inexact} integers throughout an
 implementation-dependent range.  See section~\ref{restrictions}.
+
+\begin{note}
+The names {\cf exact\coerce{}inexact} and {\cf
+inexact\coerce{}exact} are historical anomalies; the argument to each of
+these procedures may be either exact or inexact.
+\end{note}
 
 \end{entry}
 
@@ -1321,7 +1423,7 @@ in programs.
 
 
 \begin{entry}{%
-\proto{not}{ obj}{library procedure}}
+\proto{not}{ obj}{procedure}}
 
 {\cf Not} returns \schtrue{} if \var{obj} is false, and returns
 \schfalse{} otherwise.
@@ -1340,7 +1442,7 @@ in programs.
 
 
 \begin{entry}{%
-\proto{boolean?}{ obj}{library procedure}}
+\proto{boolean?}{ obj}{procedure}}
 
 {\cf Boolean?} returns \schtrue{} if \var{obj} is either \schtrue{} or
 \schfalse{} and returns \schfalse{} otherwise.
@@ -1567,15 +1669,15 @@ The value returned by {\cf set-cdr!}\ is unspecified.  % <!>
 \end{entry}
 
 \setbox0\hbox{\tt(cadr \var{pair})}
-\setbox1\hbox{library procedure}
+\setbox1\hbox{procedure}
 
 
 \begin{entry}{%
-\proto{caar}{ pair}{library procedure}
-\proto{cadr}{ pair}{library procedure}
+\proto{caar}{ pair}{procedure}
+\proto{cadr}{ pair}{procedure}
 \pproto{\hbox to 1\wd0 {\hfil$\vdots$\hfil}}{\hbox to 1\wd1 {\hfil$\vdots$\hfil}}
-\proto{cdddar}{ pair}{library procedure}
-\proto{cddddr}{ pair}{library procedure}}
+\proto{cdddar}{ pair}{procedure}
+\proto{cddddr}{ pair}{procedure}}
 
 These procedures are compositions of {\cf car} and {\cf cdr}, where
 for example {\cf caddr} could be defined by
@@ -1591,7 +1693,7 @@ twenty-eight of these procedures in all.
 
 
 \begin{entry}{%
-\proto{null?}{ obj}{library procedure}}
+\proto{null?}{ obj}{procedure}}
 
 Returns \schtrue{} if \var{obj} is the empty list\index{empty list},
 otherwise returns \schfalse.
@@ -1605,7 +1707,7 @@ otherwise returns \schfalse.
 \end{entry}
 
 \begin{entry}{%
-\proto{list?}{ obj}{library procedure}}
+\proto{list?}{ obj}{procedure}}
 
 Returns \schtrue{} if \var{obj} is a list, otherwise returns \schfalse{}.
 By definition, all lists have finite length and are terminated by
@@ -1619,11 +1721,29 @@ the empty list.
           (set-cdr! x x)
           (list? x))         \ev  \schfalse%
 \end{scheme}
+
+\todo{Do we need to emphasize the following note?}
+
+%% \begin{note}
+%%   The {\cf list?} procedure must terminate and return \schfalse{} if \var{obj}
+%%   contains cycles.
+%% \end{note}
+\end{entry}
+
+\begin{entry}{%
+\proto{make-list}{ k}{procedure}
+\rproto{make-list}{ k fill}{procedure}}
+
+Returns a newly allocated list of \var{k} elements.  If a second
+argument is given, then each element is initialized to \var{fill}.
+Otherwise the initial contents of each element is unspecified.
+
 \end{entry}
 
 
+
 \begin{entry}{%
-\proto{list}{ \var{obj} \dotsfoo}{library procedure}}
+\proto{list}{ \var{obj} \dotsfoo}{procedure}}
 
 Returns a newly allocated list of its arguments.
 
@@ -1635,7 +1755,7 @@ Returns a newly allocated list of its arguments.
 
 
 \begin{entry}{%
-\proto{length}{ list}{library procedure}}
+\proto{length}{ list}{procedure}}
 
 \nodomain{\var{List} must be a list.}
 Returns the length of \var{list}.
@@ -1645,11 +1765,18 @@ Returns the length of \var{list}.
 (length '(a (b) (c d e)))       \ev  3
 (length '())                    \ev  0%
 \end{scheme}
+
+\todo{Do we need to emphasize the following note?}
+
+%% \begin{note}
+%%   The {\cf length} procedure must detect and signal an error if its
+%%   argument contains cycles.
+%% \end{note}
 \end{entry}
 
 
 \begin{entry}{%
-\proto{append}{ list \dotsfoo}{library procedure}}
+\proto{append}{ list \dotsfoo}{procedure}}
 
 \nodomain{All \var{list}s should be lists.}
 Returns a list consisting of the elements of the first \var{list}
@@ -1674,7 +1801,7 @@ proper list.  \todo{This is pretty awkward.  I should get Bartley to fix this.}
 
 
 \begin{entry}{%
-\proto{reverse}{ list}{library procedure}}
+\proto{reverse}{ list}{procedure}}
 
 \nodomain{\var{List} must be a list.}
 Returns a newly allocated list consisting of the elements of \var{list}
@@ -1688,7 +1815,7 @@ in reverse order.
 
 
 \begin{entry}{%
-\proto{list-tail}{ list \vr{k}}{library procedure}}
+\proto{list-tail}{ list \vr{k}}{procedure}}
 
 Returns the sublist of \var{list} obtained by omitting the first \vr{k}
 elements.  It is an error if \var{list} has fewer than \vr{k} elements.
@@ -1705,7 +1832,7 @@ elements.  It is an error if \var{list} has fewer than \vr{k} elements.
 
 
 \begin{entry}{%
-\proto{list-ref}{ list \vr{k}}{library procedure}}
+\proto{list-ref}{ list \vr{k}}{procedure}}
 
 Returns the \vr{k}th element of \var{list}.  (This is the same
 as the car of {\tt(list-tail \var{list} \vr{k})}.)
@@ -1718,9 +1845,25 @@ It is an error if \var{list} has fewer than \vr{k} elements.
 \end{scheme}
 \end{entry}
 
+\begin{entry}{%
+\proto{list-set!}{ list k obj}{procedure}}
+
+\domain{\vr{k} must be a valid index of \var{list}.}
+{\cf List-set!} stores \var{obj} in element \vr{k} of \var{list}.
+The value returned by {\cf list-set!}\ is unspecified.  % <!>
+
+\begin{scheme}
+(let ((lst (list 0 '(2 2 2 2) "Anna")))
+  (list-set! lst 1 '("Sue" "Sue"))
+  vec)      \lev  (0 ("Sue" "Sue") "Anna")
+
+(list-set! '(0 1 2) 1 "doe")  \lev  \scherror  ; constant list%
+\end{scheme}
+\end{entry}
+
 
 %\begin{entry}{%
-%\proto{last-pair}{ list}{library procedure}}
+%\proto{last-pair}{ list}{procedure}}
 %
 %Returns the last pair in the nonempty, possibly improper, list \var{list}.
 %{\cf Last-pair} could be defined by
@@ -1737,9 +1880,10 @@ It is an error if \var{list} has fewer than \vr{k} elements.
 
 
 \begin{entry}{%
-\proto{memq}{ obj list}{library procedure}
-\proto{memv}{ obj list}{library procedure}
-\proto{member}{ obj list}{library procedure}}
+\proto{memq}{ obj list}{procedure}
+\proto{memv}{ obj list}{procedure}
+\proto{member}{ obj list}{procedure}
+\proto{member}{ obj list compare}{procedure}}
 
 These procedures return the first sublist of \var{list} whose car is
 \var{obj}, where the sublists of \var{list} are the non-empty lists
@@ -1747,7 +1891,8 @@ returned by {\tt (list-tail \var{list} \var{k})} for \var{k} less
 than the length of \var{list}.  If
 \var{obj} does not occur in \var{list}, then \schfalse{} (not the empty list) is
 returned.  {\cf Memq} uses {\cf eq?}\ to compare \var{obj} with the elements of
-\var{list}, while {\cf memv} uses {\cf eqv?}\ and {\cf member} uses {\cf equal?}.
+\var{list}, while {\cf memv} uses {\cf eqv?} and 
+{\cf member} uses \var{compare} if given and {\cf equal?} otherwise.
 
 \begin{scheme}
 (memq 'a '(a b c))              \ev  (a b c)
@@ -1756,6 +1901,9 @@ returned.  {\cf Memq} uses {\cf eq?}\ to compare \var{obj} with the elements of
 (memq (list 'a) '(b (a) c))     \ev  \schfalse
 (member (list 'a)
         '(b (a) c))             \ev  ((a) c)
+(member "B"
+        '("a" "b" "c")
+        string-ci=?)            \ev  ("b" "c")
 (memq 101 '(100 101 102))       \ev  \unspecified
 (memv 101 '(100 101 102))       \ev  (101 102)%
 \end{scheme} 
@@ -1764,16 +1912,18 @@ returned.  {\cf Memq} uses {\cf eq?}\ to compare \var{obj} with the elements of
 
 
 \begin{entry}{%
-\proto{assq}{ obj alist}{library procedure}
-\proto{assv}{ obj alist}{library procedure}
-\proto{assoc}{ obj alist}{library procedure}}
+\proto{assq}{ obj alist}{procedure}
+\proto{assv}{ obj alist}{procedure}
+\proto{assoc}{ obj alist}{procedure}
+\proto{assoc}{ obj alist compare}{procedure}}
 
 \domain{\var{Alist} (for ``association list'') must be a list of
 pairs.}  These procedures find the first pair in \var{alist} whose car field is \var{obj},
 and returns that pair.  If no pair in \var{alist} has \var{obj} as its
 car, then \schfalse{} (not the empty list) is returned.  {\cf Assq} uses
 {\cf eq?}\ to compare \var{obj} with the car fields of the pairs in \var{alist},
-while {\cf assv} uses {\cf eqv?}\ and {\cf assoc} uses {\cf equal?}.
+while {\cf assv} uses {\cf eqv?}\ and {\cf assoc} uses \var{compare} if given
+and {\cf equal?} otherwise.
 
 \begin{scheme}
 (define e '((a 1) (b 2) (c 3)))
@@ -1799,17 +1949,21 @@ than just \schtrue{} or \schfalse{}.
 \end{rationale}
 \end{entry}
 
+\begin{entry}{%
+\proto{list-copy}{ list}{procedure}}
+
+Returns a newly allocated copy of the given \var{list}.
+
+\end{entry}
+
 
 \subsection{Symbols}
 \label{symbolsection}
 
 Symbols are objects whose usefulness rests on the fact that two
 symbols are identical (in the sense of {\cf eqv?}) if and only if their
-names are spelled the same way.  This is exactly the property needed to
-represent identifiers\index{identifier} in programs, and so most
-implementations of Scheme use them internally for that purpose.  Symbols
-are useful for many other applications; for instance, they may be used
-the way enumerated values are used in Pascal.
+names are spelled the same way.  For instance, they may be used
+the way enumerated values are used in other languages.
 
 \vest The rules for writing a symbol are exactly the same as the rules for
 writing an identifier; see sections~\ref{syntaxsection}
@@ -1818,19 +1972,19 @@ and~\ref{identifiersyntax}.
 \vest It is guaranteed that any symbol that has been returned as part of
 a literal expression, or read using the {\cf read} procedure, and
 subsequently written out using the {\cf write} procedure, will read back
-in as the identical symbol (in the sense of {\cf eqv?}).  The
-{\cf string\coerce{}symbol} procedure, however, can create symbols for
-which this write/read invariance may not hold because their names
-contain special characters or letters in the non-standard case.
+in as the identical symbol (in the sense of {\cf eqv?}).
+%% The {\cf string\coerce{}symbol} procedure, however, can create symbols for
+%% which this write/read invariance may not hold because their names
+%% contain special characters or letters in the non-standard case.
 
 \begin{note}
-Some implementations of Scheme have a feature known as ``slashification''
-in order to guarantee write/read invariance for all symbols, but
-historically the most important use of this feature has been to
-compensate for the lack of a string data type.
-
-\vest Some implementations also have ``uninterned symbols'', which
-defeat write/read invariance even in implementations with slashification,
+%% Some implementations of Scheme have a feature known as ``slashification''
+%% in order to guarantee write/read invariance for all symbols, but
+%% historically the most important use of this feature has been to
+%% compensate for the lack of a string data type.
+%\vest
+Some implementations have values known as ``uninterned symbols'', which
+defeat write/read invariance,
 and also generate exceptions to the rule that two symbols are the same
 if and only if their names are spelled the same.
 \end{note}
@@ -1855,25 +2009,14 @@ Returns \schtrue{} if \var{obj} is a symbol, otherwise returns \schfalse.
 \begin{entry}{%
 \proto{symbol->string}{ symbol}{procedure}}
 
-Returns the name of \var{symbol} as a string.  If the symbol was part of
-an object returned as the value of a literal expression
-(section~\ref{literalsection}) or by a call to the {\cf read} procedure,
-and its name contains alphabetic characters, then the string returned
-will contain characters in the implementation's preferred standard
-case---some implementations will prefer upper case, others lower case.
-If the symbol was returned by {\cf string\coerce{}symbol}, the case of
-characters in the string returned will be the same as the case in the
-string that was passed to {\cf string\coerce{}symbol}.  It is an error
+Returns the name of \var{symbol} as a string.  It is an error
 to apply mutation procedures like \ide{string-set!} to strings returned
 by this procedure.
-
-The following examples assume that the implementation's standard case is
-lower case:
 
 \begin{scheme}
 (symbol->string 'flying-fish)     
                                   \ev  "flying-fish"
-(symbol->string 'Martin)          \ev  "martin"
+(symbol->string 'Martin)          \ev  "Martin"
 (symbol->string
    (string->symbol "Malvina"))     
                                   \ev  "Malvina"%
@@ -1885,19 +2028,14 @@ lower case:
 \proto{string->symbol}{ string}{procedure}}
 
 Returns the symbol whose name is \var{string}.  This procedure can
-create symbols with names containing special characters or letters in
-the non-standard case, but it is usually a bad idea to create such
-symbols because in some implementations of Scheme they cannot be read as
-themselves.  See {\cf symbol\coerce{}string}.
-
-The following examples assume that the implementation's standard case is
-lower case:
+create symbols with names containing special characters that would
+require escaping when written.
 
 \begin{scheme}
-(eq? 'mISSISSIppi 'mississippi)  \lev  \schtrue
+%(eq? 'mISSISSIppi 'mississippi)  \lev  \schtrue
 (string->symbol "mISSISSIppi")  \lev%
-  {\rm{}the symbol with name} "mISSISSIppi"
-(eq? 'bitBlt (string->symbol "bitBlt"))     \lev  \schfalse
+  'mISSISSIppi
+(eq? 'bitBlt (string->symbol "bitBlt"))     \lev  \schtrue
 (eq? 'JollyWog
      (string->symbol
        (symbol->string 'JollyWog)))  \lev  \schtrue
@@ -1914,12 +2052,19 @@ lower case:
 
 Characters are objects that represent printed characters such as
 letters and digits.  
+All Scheme implementations must support at least the ASCII character
+repertoire: that is, Unicode characters U+0000 through U+007F.
+Implementations may support any other Unicode characters they see fit,
+and may also support non-Unicode characters as well.
+Except as otherwise specified, the result of applying any of the
+following procedures to a non-Unicode character is implementation-dependent.
 %There is no requirement that the data type of
 %characters be disjoint from other data types; implementations are
 %encouraged to have a separate character data type, but may choose to
 %represent characters as integers, strings, or some other type.
 Characters are written using the notation \sharpsign\backwhack\hyper{character}
-or \sharpsign\backwhack\hyper{character name}.
+or \sharpsign\backwhack\hyper{character name} or
+\sharpsign\backwhack{}x\meta{hex scalar value}.
 For example:
 
 $$
@@ -1929,13 +2074,21 @@ $$
 {\tt \#\backwhack{}(}&; left parenthesis\\
 {\tt \#\backwhack{} }&; the space character\\
 {\tt \#\backwhack{}space}&; the preferred way to write a space\\
-{\tt \#\backwhack{}newline}&; the newline character\\
+{\tt \#\backwhack{}tab}&; the tab character, \textrm{U+0009}\\
+{\tt \#\backwhack{}newline}&; the linefeed character, \textrm{U+000A}\\
+{\tt \#\backwhack{}return}&; the return character, \textrm{U+000D}\\
+{\tt \#\backwhack{}null}&; the null character, \textrm{U+0000}\\
+{\tt \#\backwhack{}alarm}&; \textrm{U+0007}\\
+{\tt \#\backwhack{}backspace}&; \textrm{U+0008}\\
+{\tt \#\backwhack{}escape}&; \textrm{U+001B}\\
+{\tt \#\backwhack{}delete}&; \textrm{U+007F}\\
+{\tt \#\backwhack{}x03BB}&; $\lambda$ (if supported)\\
 \end{tabular}
 $$
 
-Case is significant in \sharpsign\backwhack\hyper{character}, but not in
-\sharpsign\backwhack{\rm$\langle$character name$\rangle$}.  % \hyper doesn't
-                                                            % allow a linebreak
+Case is significant in \sharpsign\backwhack\hyper{character}, and in
+\sharpsign\backwhack{\rm$\langle$character name$\rangle$},
+but not in {\cf\sharpsign\backwhack{}x}\meta{hex scalar value}.  
 If \hyper{character} in
 \sharpsign\backwhack\hyper{character} is alphabetic, then the character
 following \hyper{character} must be a delimiter character such as a
@@ -1976,19 +2129,9 @@ Returns \schtrue{} if \var{obj} is a character, otherwise returns \schfalse.
 
 \label{characterequality}
 \nodomain{Both \vari{char} and \varii{char} must be characters.}
-These procedures impose a total ordering on the set of characters.  It
-is guaranteed that under this ordering:
-
-\begin{itemize}
-\item The upper case characters are in order.  For example, {\cf 
-   (char<?\ \#\backwhack{}A \#\backwhack{}B)} returns \schtrue.
-\item The lower case characters are in order.  For example, {\cf 
-   (char<?\ \#\backwhack{}a \#\backwhack{}b)} returns \schtrue.
-\item The digits are in order.  For example, {\cf 
-   (char<?\ \#\backwhack{}0 \#\backwhack{}9)} returns \schtrue.
-\item Either all the digits precede all the upper case letters, or vice versa.
-\item Either all the digits precede all the lower case letters, or vice versa.
-\end{itemize}
+These procedures impose a total ordering on the set of characters which
+is the same as the Unicode code point ordering.  This is true independent
+of whether the implementation uses the Unicode representation internally.
 
 Some implementations may generalize these procedures to take more than
 two arguments, as with the corresponding numerical predicates.
@@ -1997,36 +2140,43 @@ two arguments, as with the corresponding numerical predicates.
 
 
 \begin{entry}{%
-\proto{char-ci=?}{ \vari{char} \varii{char}}{library procedure}
-\proto{char-ci<?}{ \vari{char} \varii{char}}{library procedure}
-\proto{char-ci>?}{ \vari{char} \varii{char}}{library procedure}
-\proto{char-ci<=?}{ \vari{char} \varii{char}}{library procedure}
-\proto{char-ci>=?}{ \vari{char} \varii{char}}{library procedure}}
+\proto{char-ci=?}{ \vari{char} \varii{char}}{unicode module procedure}
+\proto{char-ci<?}{ \vari{char} \varii{char}}{unicode module procedure}
+\proto{char-ci>?}{ \vari{char} \varii{char}}{unicode module procedure}
+\proto{char-ci<=?}{ \vari{char} \varii{char}}{unicode module procedure}
+\proto{char-ci>=?}{ \vari{char} \varii{char}}{unicode module procedure}}
 
 \nodomain{Both \vari{char} and \varii{char} must be characters.}
 These procedures are similar to {\cf char=?}\ et cetera, but they treat
 upper case and lower case letters as the same.  For example, {\cf
-(char-ci=?\ \#\backwhack{}A \#\backwhack{}a)} returns \schtrue.  Some
-implementations may generalize these procedures to take more than two
-arguments, as with the corresponding numerical predicates.
+(char-ci=?\ \#\backwhack{}A \#\backwhack{}a)} returns \schtrue.
+
+Specifically, these procedures behave as if {\cf char-foldcase} were
+applied to their arguments before comparing them.
+
+Some implementations may generalize these procedures to take more than
+two arguments, as with the corresponding numerical predicates.
 
 \end{entry}
 
 
 \begin{entry}{%
-\proto{char-alphabetic?}{ char}{library procedure}
-\proto{char-numeric?}{ char}{library procedure}
-\proto{char-whitespace?}{ char}{library procedure}
-\proto{char-upper-case?}{ letter}{library procedure}
-\proto{char-lower-case?}{ letter}{library procedure}}
+\proto{char-alphabetic?}{ char}{procedure}
+\proto{char-numeric?}{ char}{procedure}
+\proto{char-whitespace?}{ char}{procedure}
+\proto{char-upper-case?}{ letter}{procedure}
+\proto{char-lower-case?}{ letter}{procedure}}
 
 These procedures return \schtrue{} if their arguments are alphabetic,
 numeric, whitespace, upper case, or lower case characters, respectively,
-otherwise they return \schfalse.  The following remarks, which are specific to
-the ASCII character set, are intended only as a guide:  The alphabetic characters
-are the 52 upper and lower case letters.  The numeric characters are the
-ten decimal digits.  The whitespace characters are space, tab, line
-feed, form feed, and carriage return.
+otherwise they return \schfalse.  
+
+Specifically, they must return \schtrue{} when applied to characters with
+the Unicode properties Alphabetic, Numeric, White\_Space, Uppercase, and
+Lowercase respectively, and \schfalse{} when applied to any other Unicode
+characters.  Note that many Unicode characters are alphabetic but neither
+upper nor lower case.
+
 \end{entry}
 
 
@@ -2044,41 +2194,69 @@ feed, form feed, and carriage return.
 \proto{char->integer}{ char}{procedure}
 \proto{integer->char}{ \vr{n}}{procedure}}
 
-Given a character, {\cf char\coerce{}integer} returns an exact integer
-representation of the character.  Given an exact integer that is the image of
-a character under {\cf char\coerce{}integer}, {\cf integer\coerce{}char}
-returns that character.  These procedures implement order-preserving isomorphisms
-between the set of characters under the \ide{char<=?}\ ordering and some
-subset of the integers under the {\cf <=}\ ordering.  That is, if
+Given a Unicode character, 
+{\cf char\coerce{}integer} returns an exact integer 
+between 0 and {\tt \#xD7FF} or 
+between {\tt \#xE000} and {\tt \#x10FFFF} 
+which is equal to the Unicode code point of that character.
+Given a non-Unicode character, 
+it returns an exact integer greater than {\tt \#x10FFFF}.  
+This is true independent of whether the implementation uses
+the Unicode representation internally.
 
-\begin{scheme}
-(char<=? \vr{a} \vr{b}) \evalsto \schtrue  {\rm{}and}  %
-(<= \vr{x} \vr{y}) \evalsto \schtrue%
-\end{scheme}
-
-\noindent and \vr{x} and \vr{y} are in the domain of
-{\cf integer\coerce{}char}, then
-
-\begin{scheme}
-(<= (char\coerce{}integer \vr{a})
-    (char\coerce{}integer \vr{b}))         \ev  \schtrue
-
-(char<=? (integer\coerce{}char \vr{x})
-         (integer\coerce{}char \vr{y}))     \ev  \schtrue%
-\end{scheme}
-
+Given an exact integer that is the value returned by
+a character when {\cf char\coerce{}integer} is applied to it, {\cf integer\coerce{}char}
+returns that character.
+%What follows is still true, but no longer necessary:
+%These procedures implement order-preserving isomorphism
+%between the set of characters under the \ide{char<=?}\ ordering and some
+%subset of the integers under the {\cf <=}\ ordering.  That is, if
+%
+%\begin{scheme}
+%(char<=? \vr{a} \vr{b}) \evalsto \schtrue  {\rm{}and}  %
+%(<= \vr{x} \vr{y}) \evalsto \schtrue%
+%\end{scheme}
+%
+%\noindent and \vr{x} and \vr{y} are in the domain of
+%{\cf integer\coerce{}char}, then
+%
+%\begin{scheme}
+%(<= (char\coerce{}integer \vr{a})
+%    (char\coerce{}integer \vr{b}))         \ev  \schtrue
+%
+%(char<=? (integer\coerce{}char \vr{x})
+%         (integer\coerce{}char \vr{y}))     \ev  \schtrue%
+%\end{scheme}
+%
 \end{entry}
 
 
 \begin{entry}{%
-\proto{char-upcase}{ char}{library procedure}
-\proto{char-downcase}{ char}{library procedure}}
+\proto{char-upcase}{ char}{unicode module procedure}
+\proto{char-downcase}{ char}{unicode module procedure}
+\proto{char-foldcase}{ char}{unicode module procedure}}
 
 \nodomain{\var{Char} must be a character.}
-These procedures return a character \varii{char} such that {\cf
-(char-ci=? \var{char} \varii{char})}.  In addition, if \var{char} is
-alphabetic, then the result of {\cf char-upcase} is upper case and the
-result of {\cf char-downcase} is lower case.
+
+The {\cf char-upcase} procedure, given an argument that forms the
+lowercase part of a Unicode casing pair, returns the uppercase member
+of the pair, provided that both characters are supported by the Scheme
+implementation.  Note that Turkic casing pairs are not used.  If the
+argument is not the lowercase part of such a pair, it is returned.
+
+The {\cf char-downcase} procedure, given an argument that forms the
+uppercase part of a Unicode casing pair, returns the lowercase member
+of the pair, provided that both characters are supported by the Scheme
+implementation.  Note that Turkic casing pairs are not used.  If the
+argument is not the uppercase part of such a pair, it is returned.
+
+The {\cf char-foldcase} procedure applies the Unicode simple
+case-folding algorithm to its argument and returns the result.  Note that
+Turkic-specific folding is not used.  If the argument is an uppercase
+letter, the result will be a lowercase letter.
+
+Note that many Unicode lowercase characters do not have uppercase
+equivalents.
 
 \end{entry}
 
@@ -2087,27 +2265,43 @@ result of {\cf char-downcase} is lower case.
 \label{stringsection}
 
 Strings are sequences of characters.  
+Implementations may support characters that they do not allow to appear
+in strings.
 %In some implementations of Scheme
 %they are immutable; other implementations provide destructive procedures
 %such as {\cf string-set!}\ that alter string objects.
 \vest Strings are written as sequences of characters enclosed within doublequotes
-({\cf "}).  A doublequote can be written inside a string only by escaping
-it with a backslash (\backwhack{}), as in
+({\cf "}).  Within a string literal, various escape
+sequences\mainindex{escape sequence} represent characters other than
+themselves.  Escape sequences always start with a backslash (\backwhack{}):
 
-\begin{scheme}
-"The word \backwhack{}"recursion\backwhack{}" has many meanings."%
-\end{scheme}
+\begin{itemize}
+\item{\cf\backwhack{}a} : alarm, U+0007
+\item{\cf\backwhack{}b} : backspace, U+0008 
+\item{\cf\backwhack{}t} : character tabulation, U+0009 
+\item{\cf\backwhack{}n} : linefeed, U+000A 
+\item{\cf\backwhack{}r} : return, U+000D 
+\item{\cf\backwhack{}}\verb|"| : doublequote, U+0022 
+\item{\cf\backwhack{}\backwhack{}} : backslash, U+005C 
+\item{\cf\backwhack{}x\meta{hex scalar value};} : specified character (note the
+  terminating semi-colon).
+\end{itemize}
 
-A backslash can be written inside a string only by escaping it with another
-backslash.  Scheme does not specify the effect of a backslash within a
-string that is not followed by a doublequote or backslash.
+The result is unspecified if any other character in a string occurs
+after a backslash.
 
-\vest A string constant may continue from one line to the next, but
-the exact contents of such a string are unspecified.
+\vest A string constant may continue from one line to the next, which
+has the same effect as inserting a {\cf\backwhack{}n} character into the string.
 % this is
 %usually a bad idea because 
 %the exact effect may vary from one computer
 %system to another.
+
+Example:
+
+\begin{scheme}
+"The word \backwhack{}"recursion\backwhack{}" has many meanings."%
+\end{scheme}
 
 \vest The {\em length} of a string is the number of characters that it
 contains.  This number is an exact, non-negative integer that is fixed when the
@@ -2149,7 +2343,7 @@ are initialized to \var{char}, otherwise the contents of the
 \end{entry}
 
 \begin{entry}{%
-\proto{string}{ char \dotsfoo}{library procedure}}
+\proto{string}{ char \dotsfoo}{procedure}}
 
 Returns a newly allocated string composed of the arguments.
 
@@ -2193,44 +2387,109 @@ and returns an unspecified value.  % <!>
 
 
 \begin{entry}{%
-\proto{string=?}{ \vari{string} \varii{string}}{library procedure}
-\proto{string-ci=?}{ \vari{string} \varii{string}}{library procedure}}
+\proto{string=?}{ \vari{string} \varii{string}}{procedure}}
 
-Returns \schtrue{} if the two strings are the same length and contain the same
-characters in the same positions, otherwise returns \schfalse.
-{\cf String-ci=?}\ treats
-upper and lower case letters as though they were the same character, but
-{\cf string=?}\ treats upper and lower case as distinct characters.
+Returns \schtrue{} if the two strings are the same length and contain
+exactly the same characters in the same positions, otherwise returns
+\schfalse.
+
+\end{entry}
+
+\begin{entry}{%
+\proto{string-ci=?}{ \vari{string} \varii{string}}{unicode module procedure}}
+
+Returns \schtrue{} if, after case-folding, the two strings are the same
+length and contain the same characters in the same positions, otherwise
+returns \schfalse.  Specifically, these procedures behave as if 
+{\cf string-foldcase} were applied to their arguments before comparing them.
 
 \end{entry}
 
 
 \begin{entry}{%
-\proto{string<?}{ \vari{string} \varii{string}}{library procedure}
-\proto{string>?}{ \vari{string} \varii{string}}{library procedure}
-\proto{string<=?}{ \vari{string} \varii{string}}{library procedure}
-\proto{string>=?}{ \vari{string} \varii{string}}{library procedure}
-\proto{string-ci<?}{ \vari{string} \varii{string}}{library procedure}
-\proto{string-ci>?}{ \vari{string} \varii{string}}{library procedure}
-\proto{string-ci<=?}{ \vari{string} \varii{string}}{library procedure}
-\proto{string-ci>=?}{ \vari{string} \varii{string}}{library procedure}}
+\proto{string-ni=?}{ \vari{string} \varii{string}}{unicode module procedure}}
 
-These procedures are the lexicographic extensions to strings of the
-corresponding orderings on characters.  For example, {\cf string<?}\ is
-the lexicographic ordering on strings induced by the ordering
-{\cf char<?}\ on characters.  If two strings differ in length but
+Returns \schtrue{} if, after an implementation-defined normalization,
+the two strings are the same length and contain the same characters in
+the same positions, otherwise returns \schfalse.  The intent is to
+provide a means of comparing strings that should be considered
+equivalent in some situations but may be represented by a different
+sequence of characters.  Specifically, an implementation which
+supports Unicode should consider using Unicode normalization NFC or
+NFD as specified by Unicode TR\#15.  Implementations which only
+support ASCII or some other character set which provides no ambiguous
+representations of character sequences may define the normalization to
+be the identity operation, in which case {\cf string-ni=?}\ is
+equivalent to {\cf string=?}.
+
+\end{entry}
+
+
+\begin{entry}{%
+\proto{string<?}{ \vari{string} \varii{string}}{procedure}
+\proto{string>?}{ \vari{string} \varii{string}}{procedure}
+\proto{string<=?}{ \vari{string} \varii{string}}{procedure}
+\proto{string>=?}{ \vari{string} \varii{string}}{procedure}
+\proto{string-ci<?}{ \vari{string} \varii{string}}{unicode module procedure}
+\proto{string-ci>?}{ \vari{string} \varii{string}}{unicode module procedure}
+\proto{string-ci<=?}{ \vari{string} \varii{string}}{unicode module procedure}
+\proto{string-ci>=?}{ \vari{string} \varii{string}}{unicode module procedure}
+\proto{string-ni<?}{ \vari{string} \varii{string}}{unicode module procedure}
+\proto{string-ni>?}{ \vari{string} \varii{string}}{unicode module procedure}
+\proto{string-ni<=?}{ \vari{string} \varii{string}}{unicode module procedure}
+\proto{string-ni>=?}{ \vari{string} \varii{string}}{unicode module procedure}}
+
+These procedures compare strings in an implementation-defined way.
+One approach is to make them the lexicographic extensions to strings of
+the corresponding orderings on characters.  In that case, {\cf string<?}\
+would be the lexicographic ordering on strings induced by the ordering
+{\cf char<?}\ on characters, and if the two strings differ in length but
 are the same up to the length of the shorter string, the shorter string
-is considered to be lexicographically less than the longer string.
+would be considered to be lexicographically less than the longer string.
+However, it is also permitted to use the natural ordering imposed by the
+internal representation of strings, or a more complex locale-specific
+ordering.
 
-Implementations may generalize these and the {\cf string=?}\ and
-{\cf string-ci=?} procedures to take more than two arguments, as with
-the corresponding numerical predicates.
+In all cases, a pair of strings must satisfy exactly one of
+{\cf string<?}, {\cf string=?}, and {\cf string>?}, and must satisfy
+{\cf string<=?} if and only if they do not satisfy {\cf string>?} and
+{\cf string>=?} if and only if they do not satisfy {\cf string<?}.
+
+The \hbox{``{\tt -ci}''} procedures behave as if they applied
+{\cf string-foldcase} to their arguments before invoking the corresponding
+procedures without  \hbox{``{\tt -ci}''}.
+
+The \hbox{``{\tt -ni}''} procedures behave as if they applied the
+implementation-defined normalization used by {\cf string-ni=?}
+to their arguments before
+invoking the corresponding procedures without \hbox{``{\tt -ni}''}.
+
+Implementations may generalize these and the {\cf string=?},\ {\cf
+  string-ci=?}, and {\cf string-ni=?}\ procedures to take more than
+two arguments, as with the corresponding numerical predicates.
+
+\end{entry}
+
+\begin{entry}{%
+\proto{string-upcase}{ string}{unicode module procedure}
+\proto{string-downcase}{ string}{unicode module procedure}
+\proto{string-foldcase}{ string}{unicode module procedure}}
+
+\nodomain{\var{String} must be a string.}
+
+These procedures apply the Unicode full string uppercasing, lowercasing,
+and case-folding algorithms to their arguments and return the result.
+Note that Turkic-specific mappings and foldings are not used.  
+The result may differ in length from the argument.  What is more, a
+few characters have case-mappings that depend on the surrounding context.
+For example, Greek capital sigma normally lowercases to Greek small sigma,
+but at the end of a word it downcases to Greek small final sigma instead.
 
 \end{entry}
 
 
 \begin{entry}{%
-\proto{substring}{ string start end}{library procedure}}
+\proto{substring}{ string start end}{procedure}}
 
 \domain{\var{String} must be a string, and \var{start} and \var{end}
 must be exact integers satisfying
@@ -2242,7 +2501,7 @@ $$0 \leq \var{start} \leq \var{end} \leq \hbox{\tt(string-length \var{string})\r
 
 
 \begin{entry}{%
-\proto{string-append}{ \var{string} \dotsfoo}{library procedure}}
+\proto{string-append}{ \var{string} \dotsfoo}{procedure}}
 
 Returns a newly allocated string whose characters form the concatenation of the
 given strings.
@@ -2251,8 +2510,8 @@ given strings.
 
 
 \begin{entry}{%
-\proto{string->list}{ string}{library procedure}
-\proto{list->string}{ list}{library procedure}}
+\proto{string->list}{ string}{procedure}
+\proto{list->string}{ list}{procedure}}
 
 {\cf String\coerce{}list} returns a newly allocated list of the
 characters that make up the given string.  {\cf List\coerce{}string}
@@ -2268,7 +2527,7 @@ inverses so far as {\cf equal?}\ is concerned.
 
 
 \begin{entry}{%
-\proto{string-copy}{ string}{library procedure}}
+\proto{string-copy}{ string}{procedure}}
 
 Returns a newly allocated copy of the given \var{string}.
 
@@ -2276,7 +2535,7 @@ Returns a newly allocated copy of the given \var{string}.
 
 
 \begin{entry}{%
-\proto{string-fill!}{ string char}{library procedure}}
+\proto{string-fill!}{ string char}{procedure}}
 
 Stores \var{char} in every element of the given \var{string} and returns an
 unspecified value.  % <!>
@@ -2339,7 +2598,7 @@ Otherwise the initial contents of each element is unspecified.
 
 
 \begin{entry}{%
-\proto{vector}{ obj \dotsfoo}{library procedure}}
+\proto{vector}{ obj \dotsfoo}{procedure}}
 
 Returns a newly allocated vector whose elements contain the given
 arguments.  Analogous to {\cf list}.
@@ -2394,8 +2653,8 @@ The value returned by {\cf vector-set!}\ is unspecified.  % <!>
 
 
 \begin{entry}{%
-\proto{vector->list}{ vector}{library procedure}
-\proto{list->vector}{ list}{library procedure}}
+\proto{vector->list}{ vector}{procedure}
+\proto{list->vector}{ list}{procedure}}
 
 {\cf Vector->list} returns a newly allocated list of the objects contained
 in the elements of \var{vector}.  {\cf List->vector} returns a newly
@@ -2407,13 +2666,117 @@ created vector initialized to the elements of the list \var{list}.
 \end{scheme}
 \end{entry}
 
+\begin{entry}{%
+\proto{vector->string}{ string}{procedure}
+\proto{string->vector}{ vector}{procedure}}
+
+{\cf Vector->string} returns a newly allocated string of the objects contained
+in the elements of \var{vector}, which must be characters.
+{\cf String->vector} returns a newly
+created vector initialized to the elements of the string \var{string}.
+
+\end{entry}
 
 \begin{entry}{%
-\proto{vector-fill!}{ vector fill}{library procedure}}
+\proto{vector-copy}{ vector}{procedure}}
+
+Returns a newly allocated copy of the given \var{vector}.
+
+\end{entry}
+
+
+\begin{entry}{%
+\proto{vector-fill!}{ vector fill}{procedure}}
 
 Stores \var{fill} in every element of \var{vector}.
 The value returned by {\cf vector-fill!}\ is unspecified.  % <!>
 
+\end{entry}
+
+
+\subsection{Blobs}
+\label{blobsection}
+
+Blobs are a disjoint type for representing blocks of binary data.
+Conceptually, blobs can be thought of as homogenous vectors of 8-bit
+bytes, but they typically occupy less space than a vector.
+
+\vest The {\em length} of a blob is the number of elements that it
+contains.  This number is a non-negative integer that is fixed when
+the blob is created.  The {\em valid indexes}\index{valid indexes} of
+a blob are the exact non-negative integers less than the length of the
+blob, starting at index zero as with vectors.
+
+\begin{entry}{%
+\proto{blob?}{ obj}{procedure}}
+
+Returns \schtrue{} iff \var{obj} is a blob.
+\end{entry}
+
+\begin{entry}{%
+\proto{make-blob}{ k}{procedure}}
+
+Returns a newly allocated blob of \var{k} bytes.  The initial contents
+of each element is unspecified.
+\end{entry}
+
+\begin{entry}{%
+\proto{blob-length}{ blob}{procedure}}
+
+Returns the length of \var{blob} in bytes as an exact integer.
+\end{entry}
+
+\begin{entry}{%
+\proto{blob-u8-ref}{ blob k}{procedure}}
+
+Returns the \var{k}th byte of \var{blob} as an exact integer in the
+range $[0..255]$.
+\end{entry}
+
+\begin{entry}{%
+\proto{blob-u8-set!}{ blob k u8}{procedure}}
+
+Stores \var{u8} as the \var{k}th byte of \var{blob}.  \var{u8} must be
+an exact integer in the range $[0..255]$.  The value returned by
+{\cf blob-u8-set!} is unspecified.
+\end{entry}
+
+\begin{entry}{%
+\proto{blob-copy}{ blob}{procedure}}
+
+Returns a newly allocated blob containing the same bytes as
+\var{blob}.
+\end{entry}
+
+\begin{entry}{%
+\proto{blob-copy!}{ from to}{procedure}}
+
+Copy the bytes of blob \var{from} to blob \var{to}, which must not be
+shorter.  The value returned by {\cf blob-copy!} is unspecified.
+\end{entry}
+
+\begin{entry}{%
+\proto{partial-blob}{ blob start end}{procedure}}
+
+Returns a newly allocated blob containing the bytes in \var{blob}
+between \var{start} (inclusive) and \var{end}
+(exclusive).
+\end{entry}
+
+\begin{entry}{%
+\proto{partial-blob-copy!}{ from start end to at}{procedure}}
+
+Copy the bytes of blob \var{from} between \var{start} and \var{end}
+to blob \var{to}, starting at \var{at}.  The order in which bytes are
+copied is unspecified, except that if the source and destination overlap,
+copying takes place as if the source is first copied into a temporary
+blob and then into the destination.  This can be achieved without
+allocating storage by making sure to copy in the correct direction in
+such circumstances.
+
+The inequality
+\texttt{({\cf >=} ({\cf -} ({\cf blob-length} \var{to}) \var{at}) ({\cf -} \var{end} \var{start}))}
+must be true.  The value returned by {\cf partial-blob-copy!} is unspecified.
 \end{entry}
 
 
@@ -2471,12 +2834,13 @@ arguments.
 
 
 \begin{entry}{%
-\proto{map}{ proc \vari{list} \varii{list} \dotsfoo}{library procedure}}
+\proto{map}{ proc \vari{list} \varii{list} \dotsfoo}{procedure}}
 
 \domain{The \var{list}s must be lists, and \var{proc} must be a
 procedure taking as many arguments as there are {\it list}s
 and returning a single value.  If more
-than one \var{list} is given, then they must all be the same length.}
+than one \var{list} is given and not all lists have the same length,
+{\cf map} terminates when the shortest list runs out.}
 {\cf Map} applies \var{proc} element-wise to the elements of the
 \var{list}s and returns a list of the results, in order.
 The dynamic order in which \var{proc} is applied to the elements of the
@@ -2499,15 +2863,80 @@ The dynamic order in which \var{proc} is applied to the elements of the
 
 \end{entry}
 
+\begin{entry}{%
+\proto{string-map}{ proc \vari{string} \varii{string} \dotsfoo}{procedure}}
+
+\domain{The \var{string}s must be strings, and \var{proc} must be a
+procedure taking as many arguments as there are {\it string}s
+and returning a single value.  If more
+than one \var{string} is given and not all strings have the same length,
+{\cf string-map} terminates when the shortest list runs out.}
+{\cf String-map} applies \var{proc} element-wise to the elements of the
+\var{string}s and returns a string of the results, in order.
+The dynamic order in which \var{proc} is applied to the elements of the
+\var{string}s is unspecified.
+
+\begin{scheme}
+(string-map char-foldcase "AbdEgH") \lev  "abdegh"
+
+(string-map
+ (lambda (c)
+   (integer->char (+ 1 (char->integer c))))
+ "HAL")                \lev  "IBM"
+
+(string-map
+ (lambda (c k)
+   (if (eqv? k \sharpsign\backwhack{}u)
+       (char-upcase c)
+       (char-downcase c)))
+ "studlycaps"
+ "ululululul")   \lev   "StUdLyCaPs"
+\end{scheme}
+
+\end{entry}
 
 \begin{entry}{%
-\proto{for-each}{ proc \vari{list} \varii{list} \dotsfoo}{library procedure}}
+\proto{vector-map}{ proc \vari{vector} \varii{vector} \dotsfoo}{procedure}}
+
+\domain{The \var{vector}s must be vectors, and \var{proc} must be a
+procedure taking as many arguments as there are {\it vector}s
+and returning a single value.  If more
+than one \var{vector} is given and not all vectors have the same length,
+{\cf vector-map} terminates when the shortest list runs out.}
+{\cf Vector-map} applies \var{proc} element-wise to the elements of the
+\var{vector}s and returns a vector of the results, in order.
+The dynamic order in which \var{proc} is applied to the elements of the
+\var{vector}s is unspecified.
+
+\begin{scheme}
+(vector-map cadr '\#((a b) (d e) (g h)))   \lev  \#(b e h)
+
+(vector-map (lambda (n) (expt n n))
+            '\#(1 2 3 4 5))                \lev  \#(1 4 27 256 3125)
+
+(vector-map + '\#(1 2 3) '\#(4 5 6))       \ev  \#(5 7 9)
+
+(let ((count 0))
+  (vector-map
+   (lambda (ignored)
+     (set! count (+ count 1))
+     count)
+   '\#(a b)))                     \ev  \#(1 2) \var{or} \#(2 1)
+\end{scheme}
+
+\end{entry}
+
+
+\begin{entry}{%
+\proto{for-each}{ proc \vari{list} \varii{list} \dotsfoo}{procedure}}
 
 The arguments to {\cf for-each} are like the arguments to {\cf map}, but
 {\cf for-each} calls \var{proc} for its side effects rather than for its
 values.  Unlike {\cf map}, {\cf for-each} is guaranteed to call \var{proc} on
 the elements of the \var{list}s in order from the first element(s) to the
 last, and the value returned by {\cf for-each} is unspecified.
+If more than one \var{list} is given and not all lists have the same length,
+{\cf for-each} terminates when the shortest list runs out.
 
 \begin{scheme}
 (let ((v (make-vector 5)))
@@ -2519,9 +2948,53 @@ last, and the value returned by {\cf for-each} is unspecified.
 
 \end{entry}
 
+\begin{entry}{%
+\proto{string-for-each}{ proc \vari{string} \varii{string} \dotsfoo}{procedure}}
+
+The arguments to {\cf string-for-each} are like the arguments to {\cf
+string-map}, but {\cf string-for-each} calls \var{proc} for its side
+effects rather than for its values.  Unlike {\cf string-map}, {\cf
+string-for-each} is guaranteed to call \var{proc} on the elements of
+the \var{list}s in order from the first element(s) to the last, and the
+value returned by {\cf string-for-each} is unspecified.
+If more than one \var{string} is given and not all strings have the same length,
+{\cf string-for-each} terminates when the shortest string runs out.
+
+\begin{scheme}
+(let ((v '()))
+  (string-for-each
+   (lambda (c) (set! v (cons (char->integer c) v))
+   "abcde")
+  v)                                \ev  (101 100 99 98 97)%
+\end{scheme}
+
+\end{entry}
 
 \begin{entry}{%
-\proto{force}{ promise}{library procedure}}
+\proto{vector-for-each}{ proc \vari{vector} \varii{vector} \dotsfoo}{procedure}}
+
+The arguments to {\cf vector-for-each} are like the arguments to {\cf
+vector-map}, but {\cf vector-for-each} calls \var{proc} for its side
+effects rather than for its values.  Unlike {\cf vector-map}, {\cf
+vector-for-each} is guaranteed to call \var{proc} on the elements of
+the \var{vector}s in order from the first element(s) to the last, and
+the value returned by {\cf vector-for-each} is unspecified.
+If more than one \var{vector} is given and not all vectors have the same length,
+{\cf vector-for-each} terminates when the shortest vector runs out.
+
+\begin{scheme}
+(let ((v (make-list 5)))
+  (vector-for-each
+   (lambda (i) (list-set! v i (* i i)))
+   '\#(0 1 2 3 4))
+  v)                                \ev  (0 1 4 9 16)%
+\end{scheme}
+
+\end{entry}
+
+
+\begin{entry}{%
+\proto{force}{ promise}{lazy module procedure}}
 
 Forces the value of \var{promise} (see \ide{delay},
 section~\ref{delay}).\index{promise}  If no value has been computed for
@@ -2671,10 +3144,12 @@ and \cf{+}:
 \end{entry}
 
 \begin{entry}{%
-\proto{call-with-current-continuation}{ proc}{procedure}}
+\proto{call-with-current-continuation}{ proc}{procedure}
+\proto{call/cc}{ proc}{procedure}}
 
 \label{continuations} \domain{\var{Proc} must be a procedure of one
-argument.} The procedure {\cf call-with-current-continuation} packages
+argument.} The procedure {\cf call-with-current-continuation} (or its
+equivalent abbreviation {\cf call/cc}) packages
 up the current continuation (see the rationale below) as an ``escape
 procedure''\mainindex{escape procedure} and passes it as an argument to
 \var{proc}.  The escape procedure is a Scheme procedure that, if it is
@@ -2768,7 +3243,7 @@ some people use the name \ide{call/cc} instead.
 \end{entry}
 
 \begin{entry}{%
-\proto{values}{ obj $\ldots$}{procedure}}
+\proto{values}{ obj $\ldots$}{multiple-values module procedure}}
 
 Delivers all of its arguments to its continuation.
 Except for continuations created by the \ide{call-with-values}
@@ -2783,7 +3258,7 @@ procedure, all continuations take exactly one value.
 \end{entry}
 
 \begin{entry}{%
-\proto{call-with-values}{ producer consumer}{procedure}}
+\proto{call-with-values}{ producer consumer}{multiple-values module procedure}}
 
 Calls its \var{producer} argument with no values and
 a continuation that, when passed some values, calls the
@@ -2870,10 +3345,196 @@ extent of a call to \var{before} or \var{after} is undefined.
 \end{scheme}
 \end{entry}
 
+\begin{entry}{%
+\proto{make-parameter}{ init}{procedure}
+\proto{make-parameter}{ init converter}{procedure}}
+
+Returns a new parameter object which is associated with the value
+returned by the call \texttt{(\var{converter} \var{init})}.\index{parameterize}
+If the conversion procedure \var{converter} is not specified the identity
+function is used instead.
+
+A parameter object is a procedure which accepts zero arguments and
+returns its associated value.  The associated value may be changed
+with {\cf parameterize}.
+
+Here is a possible implementation of {\cf make-parameter} and {\cf
+parameterize} suitable for an implementation with no threads.
+Parameter objects are implemented here as procedures, using two
+arbitrary unique objects \texttt{<param-set!>} and
+\texttt{<param-convert>}:
+
+\begin{scheme}
+(define (make-parameter init . o)
+  (let* ((converter (if (pair? o)
+                        (car o)
+                        (lambda (x) x)))
+         (value (converter init)))
+    (lambda args
+      (if (pair? args)
+          (cond
+           ((eq? (car args) <param-set!>)
+            (set! value (cadr args)))
+           ((eq? (car args) <param-convert>)
+            converter)
+           (else
+            (error "bad parameter syntax")))
+          value))))%
+\end{scheme}
+
+{\cf Parameterize} then uses {\cf dynamic-wind} to dynamically rebind
+the associated value:
+
+\begin{scheme}
+(define-syntax parameterize
+  (syntax-rules ()
+    ((parameterize ("step")
+                   ((param value p old new) ...)
+                   ()
+                   body)
+     (let ((p param) ...)
+       (let ((old (p)) ...
+             (new ((p <param-convert>) value)) ...)
+         (dynamic-wind
+          (lambda () (p <param-set!> new) ...)
+          (lambda () . body)
+          (lambda () (p <param-set!> old) ...)))))
+    ((parameterize ("step")
+                   args
+                   ((param value) . rest)
+                   body)
+     (parameterize ("step")
+                   ((param value p old new) . args)
+                   rest
+                   body))
+    ((parameterize ((param value) ...) . body)
+     (parameterize ("step")
+                   ()
+                   ((param value) ...)
+                   body))))
+\end{scheme}
+
+Parameter objects can be used to specify configurable settings for a
+computation without the need to explicitly pass the value to every
+procedure in the call chain.
+
+\begin{scheme}
+(define radix
+  (make-parameter
+   10
+   (lambda (x)
+     (if (and (integer? x) (<= 2 x 16))
+         x
+         (error "invalid radix")))))
+
+(define (f n) (number->string n (radix)))
+
+(f 12)                                       \ev "12"
+(parameterize ((radix 16))
+  (f 12))                                    \ev "C"
+(f 12)                                       \ev "12"
+
+(radix 16)                                   \ev \unspecified
+
+(parameterize ((radix 0))
+  (f 12))                                    \ev \scherror
+\end{scheme}
+\end{entry}
+
+\section{Exceptions}
+\label{exceptionsection}
+
+This section describes Scheme's exception-handling and
+exception-raising procedures.
+See also \ref{guard} for the {\cf guard} syntax.
+
+Exception handlers are one-argument procedures that determine the
+action the program takes when an exceptional situation is signalled.
+The system implicitly maintains a current exception handler.
+
+\index{current exception handler}The program raises an exception by
+invoking the current exception handler, passing it an object
+encapsulating information about the exception.  Any procedure
+accepting one argument may serve as an exception handler and any
+object may be used to represent an exception.
+
+\begin{entry}{%
+\proto{with-exception-handler}{ \var{handler} \var{thunk}}{procedure}}
+
+\domain{\var{Handler} must be a procedure and should accept one argument.
+\var{Thunk} must be a procedure that accepts zero arguments.}  The {\cf
+with-exception-handler} procedure returns the results of invoking
+\var{thunk}.  \var{Handler} is installed as the current
+exception handler for the dynamic extent (as determined by {\cf
+  dynamic-wind}) of the invocation of \var{thunk}.
+
+%% \implresp The implementation must check the restrictions on
+%% \var{handler} to the extent performed by applying it as described
+%% when it is called as a result of a call to {\cf raise} or {\cf
+%%   raise-continuable}.
+%% An implementation may check whether \var{handler} is an appropriate argument
+%% before applying it.
+
+\todo{The above seems to just be saying that we shouldn't check if
+  handler is applicable unless an exception actually reaches it.  Is
+  this worth stating?}
+\end{entry}
+
+\begin{entry}{%
+\proto{raise}{ \var{obj}}{procedure}}
+
+Raises a exception by invoking the current exception
+handler on \var{obj}. The handler is called with a continuation whose
+dynamic extent is that of the call to {\cf raise}, except that
+the current exception handler is the one that was in place when the
+handler being called was installed.  If the handler returns, an
+exception is raised in the same dynamic extent as the handler.
+\end{entry}
+
+\begin{entry}{%
+\proto{raise-continuable}{ \var{obj}}{procedure}}
+
+Raises an exception by invoking the current
+exception handler on \var{obj}. The handler is called with a
+continuation that is equivalent to the continuation of the call to
+{\cf raise-continuable}, with these two exceptions: (1) the current
+exception handler is the one that was in place when the handler being
+called was installed, and (2) if the handler being called returns,
+then it will again become the current exception handler.  If the
+handler returns, the values it returns become the values returned by
+the call to {\cf raise-continuable}.
+\end{entry}
+
+\begin{entry}{%
+\proto{error}{ \var{message} \var{obj} $\ldots$}{procedure}}
+
+\domain{\var{Message} should be a string.}
+A convenience procedure to raise an exception.  Equivalent to calling
+{\cf raise} on an implementation-defined object which encapsulates
+the information provided by \var{message} and any \var{obj}s.
+\end{entry}
+
+\begin{scheme}
+(with-exception-handler
+  (lambda (con)
+    (cond
+      ((string? con)
+       (display con))
+      (else
+       (display "a warning has been issued")))
+    42)
+  (lambda ()
+    (+ (raise-continuable "should be a number")
+       23)))
+   {\it prints:} should be a number
+   \ev 65
+\end{scheme}
+
+
 \section{\tt{Eval}}
 
 \begin{entry}{%
-\proto{eval}{ expression environment-specifier}{procedure}}
+\proto{eval}{ expression environment-specifier}{eval module procedure}}
 
 Evaluates \var{expression} in the specified environment and returns its value.
 \var{Expression} must be a valid Scheme expression represented as data,
@@ -2882,7 +3543,7 @@ three procedures described below.
 Implementations may extend {\cf eval} to allow non-expression programs
 (definitions) as the first argument and to allow other
 values as environments, with the restriction that {\cf eval} is not
-allowed to create new bindings in the environments associated with
+allowed to create new bindings in the environments returned by
 {\cf null-environment} or {\cf scheme-report-environment}.
 
 \begin{scheme}
@@ -2898,8 +3559,8 @@ allowed to create new bindings in the environments associated with
 \end{entry}
 
 \begin{entry}{%
-\proto{scheme-report-environment}{ version}{procedure}
-\proto{null-environment}{ version}{procedure}}
+\proto{scheme-report-environment}{ version}{eval module procedure}
+\proto{null-environment}{ version}{eval module procedure}}
 
 \var{Version} must be the exact integer {\cf \integerversion},
 corresponding to this revision of the Scheme report (the
@@ -2915,7 +3576,7 @@ supported by the implementation.
 
 Other values of \var{version} can be used to specify environments
 matching past revisions of this report, but their support is not
-required.  An implementation will signal an error if \var{version}
+required.  An implementation must signal an error if \var{version}
 is neither {\cf \integerversion} nor another value supported by
 the implementation.
 
@@ -2927,7 +3588,7 @@ by {\cf scheme-report-environment} may be immutable.
 \end{entry}
 
 \begin{entry}{%
-\proto{interaction-environment}{}{optional procedure}}
+\proto{interaction-environment}{}{repl module procedure}}
 
 This procedure returns a specifier for the environment that
 contains imple\-men\-ta\-tion-defined bindings, typically a superset of
@@ -2942,20 +3603,63 @@ expressions dynamically typed by the user.
 \subsection{Ports}
 \label{portsection}
 
-Ports represent input and output devices.  To Scheme, an input port is a
-Scheme object that can deliver characters upon command, while an output port
-is a Scheme object that can accept characters. \mainindex{port}
+Ports represent input and output devices.  To Scheme, an input port is
+a Scheme object that can deliver data upon command, while an output
+port is a Scheme object that can accept data.\mainindex{port}
+Whether the input and output port types are disjoint is implementation-dependent.
 
-\todo{Haase: Mention that there are alternatives to files?}
+Different {\em port types} operate on different data.  Scheme
+imple\-men\-ta\-tions are required to support {\em character ports}
+and {\em binary ports}, but may also provide other port types.
+
+A character port supports reading or writing of individual characters
+from or to a backing store containing characters
+using {\cf read-char} and {\cf write-char} below, as well as operations
+defined in terms of characters such as {\cf read} and {\cf write}.
+
+A binary port supports reading or writing of individual octets from
+or to a backing store containing octets using {\cf read-u8} and {\cf
+write-u8}, below. Every binary port is also automatically a character
+port, by treating the sequence of octets as an implementation-determined
+character set encoding. Conversely, not all character ports are binary
+ports - for example, the {\em string ports} discussed below.
+
+Ports can be used to access files, devices, and similar things on the host
+system in which the Scheme program is running.  In the procedures
+below files are referenced with \hyper{file-spec}s, which can either
+be a string or a {\em file-spec}, which is a list of alternating
+\hyper{keys} and \hyper{values} where every \hyper{key} is a symbol.
+Specifying a string is equivalent to the file-spec \texttt{({\cf
+    path} \var{string})}. The following keys are defined:
+
+\begin{itemize}
+
+\item {\cf path} - A string naming the file.  The interpretation of
+  filenames is implementation-dependent.  There is no default value,
+  but implementations may accept other keys in lieu of this for
+  opening file objects that don't have string names.
+
+\item {\cf buffer} - Specifies what kind of buffering is present.  The
+  value \schfalse{} means no buffering is employed; the symbol
+  \texttt{binary} means that there is a binary buffer but no character
+  buffer; \schtrue{} means there are both character and binary
+  buffering.  Other values may be specified by an implementation.
+  Buffer sizes are implementation-dependent.  The default value is
+  implementation-dependent.
+
+\end{itemize}
+
+Implementations may support other \var{key}s, should warn if they
+detect keys they do not understand or implement, and may signal an
+error in such cases.
 
 \begin{entry}{%
-\proto{call-with-input-file}{ string proc}{library procedure}
-\proto{call-with-output-file}{ string proc}{library procedure}}
+\proto{call-with-input-file}{ file-spec proc}{file module procedure}
+\proto{call-with-output-file}{ file-spec proc}{file module procedure}}
 
-\var{String} should be a string naming a file, and
-\var{proc} should be a procedure that accepts one argument.
+\var{Proc} should be a procedure that accepts one argument.
 For {\cf call-with-input-file},
-the file should already exist; for
+the file named by \var{file-spec} should already exist; for
 {\cf call-with-output-file},
 the effect is unspecified if the file
 already exists. These procedures call \var{proc} with one argument: the
@@ -2984,38 +3688,62 @@ both {\cf call-with-current-continuation} and {\cf call-with-input-file} or
 
 
 \begin{entry}{%
-\proto{input-port?}{ obj}{procedure}
-\proto{output-port?}{ obj}{procedure}}
+\proto{input-port?}{ obj}{io module procedure}
+\proto{output-port?}{ obj}{io module procedure}
+\proto{port?}{ obj}{io module procedure}}
 
-Returns \schtrue{} if \var{obj} is an input port or output port
-respectively, otherwise returns \schfalse.
+Returns \schtrue{} if \var{obj} is an input port, output port, or any
+kind of port, respectively, otherwise returns \schfalse.
 
 \todo{Won't necessarily return true after port is closed.}
 
 \end{entry}
 
+\begin{entry}{%
+\proto{character-port?}{ obj}{io module procedure}
+\proto{binary-port?}{ obj}{io module procedure}}
+
+Returns \schtrue{} if \var{obj} is a character port or binary port,
+respectively.
+\end{entry}
+
 
 \begin{entry}{%
-\proto{current-input-port}{}{procedure}
-\proto{current-output-port}{}{procedure}}
- 
-Returns the current default input or output port.
+\proto{port-open?}{ port}{io module procedure}}
+
+Returns \schtrue{} if \var{port} is still open and capable of
+performing input or output, and \schfalse{} otherwise.
+
+\todo{If a port is no longer a port after being closed, this should return false in those cases and not raise a domain error.}
 
 \end{entry}
 
 
 \begin{entry}{%
-\proto{with-input-from-file}{ string thunk}{optional procedure}
-\proto{with-output-to-file}{ string thunk}{optional procedure}}
+\proto{current-input-port}{}{io module procedure}
+\proto{current-output-port}{}{io module procedure}
+\proto{current-error-port}{}{io module procedure}}
 
-\var{String} should be a string naming a file, and
-\var{proc} should be a procedure of no arguments.
+Returns the current default input port, output port, or error port (an
+output port), respectively.  These are parameter objects, which can be
+overridden with {\cf parameterize} (see
+section~\ref{make-parameter}). The initial bindings for each of these
+are bound to system defined binary ports.
+
+\end{entry}
+
+
+\begin{entry}{%
+\proto{with-input-from-file}{ file-spec thunk}{file module procedure}
+\proto{with-output-to-file}{ file-spec thunk}{file module procedure}}
+
+\var{Proc} should be a procedure of no arguments.
 For {\cf with-input-from-file},
-the file should already exist; for
+the file named by \var{file-spec} should already exist; for
 {\cf with-output-to-file},
 the effect is unspecified if the file
 already exists.
-The file is opened for input or output, an input or output port
+The file is opened for input or output, a binary input or output port
 connected to it is made the default value returned by
 {\cf current-input-port} or {\cf current-output-port}
 (and is used by {\tt (read)}, {\tt (write \var{obj})}, and so forth),
@@ -3042,32 +3770,32 @@ instead of ``the value returned by \var{current-input-port}''.  (Same for
 
 
 \begin{entry}{%
-\proto{open-input-file}{ filename}{procedure}}
+\proto{open-input-file}{ file-spec}{file module procedure}}
  
-Takes a string naming an existing file and returns an input port capable of
-delivering characters from the file.  If the file cannot be opened, an error is
-signalled.
+Takes a \var{file-spec} for an existing file and returns a binary input
+port capable of delivering data from the file.  If the file cannot be
+opened, an error is signalled.
 
 \end{entry}
 
 
 \begin{entry}{%
-\proto{open-output-file}{ filename}{procedure}}
+\proto{open-output-file}{ file-spec}{file module procedure}}
 
-Takes a string naming an output file to be created and returns an output
-port capable of writing characters to a new file by that name.  If the file
-cannot be opened, an error is signalled.  If a file with the given name
-already exists, the effect is unspecified.
+Takes a \var{file-spec} naming an output file to be created and returns
+a binary output port capable of writing characters to a new file by
+that name.  If the file cannot be opened, an error is signalled.  If a
+file with the given name already exists, the effect is unspecified.
 
 \end{entry}
 
 
 \begin{entry}{%
-\proto{close-input-port}{ port}{procedure}
-\proto{close-output-port}{ port}{procedure}}
+\proto{close-input-port}{ port}{io module procedure}
+\proto{close-output-port}{ port}{io module procedure}}
 
 Closes the file associated with \var{port}, rendering the \var{port}
-incapable of delivering or accepting characters.  \todo{But maybe a no-op
+incapable of delivering or accepting data.  \todo{But maybe a no-op
 on some ports, e.g. terminals or editor buffers.}
 These routines have no effect if the file has already been closed.
 The value returned is unspecified.
@@ -3079,6 +3807,49 @@ different close procedures.}
 
 \end{entry}
 
+%% \subsection{String Ports}
+%% \label{stringportsection}
+
+\begin{entry}{%
+\proto{open-input-string}{ string}{io module procedure}}
+
+Takes a string and returns a character input port that delivers
+characters from the string.
+
+%% \begin{scheme}
+%% (define p
+%%   (open-input-string "(a . (b . (c . ()))) 34"))
+
+%% (input-port? p)                 \ev  \schtrue
+%% (read p)                        \ev  (a b c)
+%% (read p)                        \ev  34
+%% (eof-object? (peek-char p))     \ev  \schtrue
+%% \end{scheme}
+\end{entry}
+
+\begin{entry}{%
+\proto{open-output-string}{}{io module procedure}}
+
+Returns a character output port that will accumulate characters for
+retrieval by {\cf get-output-string}.
+
+%% \begin{scheme}
+%% (let ((q (open-output-string))
+%%       (x '(a b c)))
+%%   (write (car x) q)
+%%   (write (cdr x) q)
+%%   (get-output-string q))        \ev  "a(b c)"
+%% \end{scheme}
+\end{entry}
+
+\begin{entry}{%
+\proto{get-output-string}{ port}{io module procedure}}
+
+Given an output port created by {\cf open-output-string}, returns a
+string consisting of the characters that have been output to the port
+so far.
+\end{entry}
+
 
 \subsection{Input}
 \label{inputsection}
@@ -3088,14 +3859,15 @@ different close procedures.}
 \todo{The input routines have some things in common, maybe explain here.}
 
 \begin{entry}{%
-\proto{read}{}{library procedure}
-\rproto{read}{ port}{library procedure}}
+\proto{read}{}{read module procedure}
+\rproto{read}{ port}{read module procedure}}
 
 {\cf Read} converts external representations of Scheme objects into the
 objects themselves.  That is, it is a parser for the nonterminal
 \meta{datum} (see sections~\ref{datum} and
 \ref{listsection}).  {\cf Read} returns the next
-object parsable from the given input \var{port}, updating \var{port} to point to
+object parsable from the given character input \var{port}, updating
+\var{port} to point to
 the first character past the end of the external representation of the object.
 
 \vest If an end of file is encountered in the input before any
@@ -3112,10 +3884,11 @@ a closed port.
 \end{entry}
 
 \begin{entry}{%
-\proto{read-char}{}{procedure}
-\rproto{read-char}{ port}{procedure}}
+\proto{read-char}{}{io module procedure}
+\rproto{read-char}{ port}{io module procedure}}
 
-Returns the next character available from the input \var{port}, updating
+Returns the next character available from the character input \var{port},
+updating
 the \var{port} to point to the following character.  If no more characters
 are available, an end of file object is returned.  \var{Port} may be
 omitted, in which case it defaults to the value returned by {\cf current-input-port}.
@@ -3124,10 +3897,10 @@ omitted, in which case it defaults to the value returned by {\cf current-input-p
 
 
 \begin{entry}{%
-\proto{peek-char}{}{procedure}
-\rproto{peek-char}{ port}{procedure}}
+\proto{peek-char}{}{io module procedure}
+\rproto{peek-char}{ port}{io module procedure}}
 
-Returns the next character available from the input \var{port},
+Returns the next character available from the character input \var{port},
 {\em without} updating
 the \var{port} to point to the following character.  If no more characters
 are available, an end of file object is returned.  \var{Port} may be
@@ -3147,7 +3920,7 @@ whenever a call to {\cf read-char} would have hung.
 
 
 \begin{entry}{%
-\proto{eof-object?}{ obj}{procedure}}
+\proto{eof-object?}{ obj}{io module procedure}}
 
 Returns \schtrue{} if \var{obj} is an end of file object, otherwise returns
 \schfalse.  The precise set of end of file objects will vary among
@@ -3158,10 +3931,10 @@ that can be read in using {\cf read}.
 
 
 \begin{entry}{%
-\proto{char-ready?}{}{procedure}
-\rproto{char-ready?}{ port}{procedure}}
+\proto{char-ready?}{}{io module procedure}
+\rproto{char-ready?}{ port}{io module procedure}}
 
-Returns \schtrue{} if a character is ready on the input \var{port} and
+Returns \schtrue{} if a character is ready on the character input \var{port} and
 returns \schfalse{} otherwise.  If {\cf char-ready} returns \schtrue{} then
 the next {\cf read-char} operation on the given \var{port} is guaranteed
 not to hang.  If the \var{port} is at end of file then {\cf char-ready?}\
@@ -3179,6 +3952,50 @@ port that has no ready characters.
 \end{rationale}
 \end{entry}
 
+\begin{entry}{%
+\proto{read-u8}{}{io module procedure}
+\rproto{read-u8}{ port}{io module procedure}}
+
+Returns the next octet available from the binary input \var{port},
+updating the \var{port} to point to the following octet.  The value is
+an exact integer in the range $[0..255]$.  If no more octets are
+available, an end of file object is returned.  \var{Port} may be
+omitted, in which case it defaults to the value returned by {\cf
+  current-input-port}.
+
+\end{entry}
+
+
+\begin{entry}{%
+\proto{peek-u8}{}{io module procedure}
+\rproto{peek-u8}{ port}{io module procedure}}
+
+Returns the next octet available from the binary input \var{port},
+{\em without} updating the \var{port} to point to the following
+character.  If no more octets are available, an end of file object is
+returned.  \var{Port} may be omitted, in which case it defaults to the
+value returned by {\cf current-input-port}.
+
+\end{entry}
+
+
+\begin{entry}{%
+\proto{u8-ready?}{}{io module procedure}
+\rproto{u8-ready?}{ port}{io module procedure}}
+
+Returns \schtrue{} if an octet is ready on the binary input \var{port}
+and returns \schfalse{} otherwise.  If {\cf u8-ready?} returns
+\schtrue{} then the next {\cf read-u8} operation on the given
+\var{port} is guaranteed not to hang.  If the \var{port} is at end of
+file then {\cf u8-ready?}\ returns \schtrue.  \var{Port} may be
+omitted, in which case it defaults to the value returned by {\cf
+  current-input-port}.
+
+\begin{note}
+If {\cf u8-ready?} returns \schtrue{}, a subsequent {\cf read-char}
+operation may still hang.
+\end{note}
+\end{entry}
 
 \subsection{Output}
 \label{outputsection}
@@ -3188,13 +4005,15 @@ port that has no ready characters.
 \vspace{-5ex}
 
 \begin{entry}{%
-\proto{write}{ obj}{library procedure}
-\rproto{write}{ obj port}{library procedure}}
+\proto{write}{ obj}{write module procedure}
+\rproto{write}{ obj port}{write module procedure}}
 
-Writes a written representation of \var{obj} to the given \var{port}.  Strings
+Writes a written representation of \var{obj} to the given character output
+\var{port}.  Strings
 that appear in the written representation are enclosed in doublequotes, and
 within those strings backslash and doublequote characters are
-escaped by backslashes.
+escaped by backslashes.  Symbols that contain non-ASCII characters
+are escaped either with inline hex escapes or with vertical bars.
 Character objects are written using the {\cf \#\backwhack} notation.
 {\cf Write} returns an unspecified value.  The
 \var{port} argument may be omitted, in which case it defaults to the value
@@ -3204,12 +4023,13 @@ returned by {\cf current-output-port}.
 
 
 \begin{entry}{%
-\proto{display}{ obj}{library procedure}
-\rproto{display}{ obj port}{library procedure}}
+\proto{display}{ obj}{write module procedure}
+\rproto{display}{ obj port}{write module procedure}}
 
-Writes a representation of \var{obj} to the given \var{port}.  Strings
-that appear in the written representation are not enclosed in
-doublequotes, and no characters are escaped within those strings.  Character
+Writes a representation of \var{obj} to the given character output \var{port}.
+Strings that appear in the written representation are not enclosed in
+doublequotes, and no characters are escaped within those strings.  
+Symbols are not escaped.  Character
 objects appear in the representation as if written by {\cf write-char}
 instead of by {\cf write}.  {\cf Display} returns an unspecified value.
 The \var{port} argument may be omitted, in which case it defaults to the
@@ -3218,18 +4038,17 @@ value returned by {\cf current-output-port}.
 \begin{rationale}
 {\cf Write} is intended
 for producing mach\-ine-readable output and {\cf display} is for producing
-human-readable output.  Implementations that allow ``slashification''
-within symbols will probably want {\cf write} but not {\cf display} to
-slashify funny characters in symbols.
+human-readable output.  
 \end{rationale}
 \end{entry}
 
 
 \begin{entry}{%
-\proto{newline}{}{library procedure}
-\rproto{newline}{ port}{library procedure}}
+\proto{newline}{}{io module procedure}
+\rproto{newline}{ port}{io module procedure}}
 
-Writes an end of line to \var{port}.  Exactly how this is done differs
+Writes an end of line to character output \var{port}.  Exactly how this
+is done differs
 from one operating system to another.  Returns an unspecified value.
 The \var{port} argument may be omitted, in which case it defaults to the
 value returned by {\cf current-output-port}.
@@ -3238,13 +4057,25 @@ value returned by {\cf current-output-port}.
 
 
 \begin{entry}{%
-\proto{write-char}{ char}{procedure}
-\rproto{write-char}{ char port}{procedure}}
+\proto{write-char}{ char}{io module procedure}
+\rproto{write-char}{ char port}{io module procedure}}
 
 Writes the character \var{char} (not an external representation of the
-character) to the given \var{port} and returns an unspecified value.  The
+character) to the given character output \var{port} and returns an unspecified
+value.  The
 \var{port} argument may be omitted, in which case it defaults to the value
 returned by {\cf current-output-port}.
+
+\end{entry}
+
+\begin{entry}{%
+\proto{write-u8}{ octet}{io module procedure}
+\rproto{write-u8}{ octet port}{io module procedure}}
+
+Writes the \var{octet}, an exact integer in the range $[0..255]$, to
+the given binary output \var{port} and returns an unspecified value.
+The \var{port} argument may be omitted, in which case it defaults to
+the value returned by {\cf current-output-port}.
 
 \end{entry}
 
@@ -3257,13 +4088,15 @@ deserve description here.
 
 
 \begin{entry}{%
-\proto{load}{ filename}{optional procedure}}
+\proto{load}{ filename}{load module procedure}
+\proto{include}{ filename}{load module syntax}}
 
 \todo{Fix}
 
 %\domain{\var{Filename} should be a string naming an existing file
 %containing Scheme source code.} The {\cf load} procedure reads
-\var{Filename} should be a string naming an existing file
+An implementation-dependent operation is used to transform
+\var{filename} into the name of an existing file
 containing Scheme source code.  The {\cf load} procedure reads
 expressions and definitions from the file and evaluates them
 sequentially.  It is unspecified whether the results of the expressions
@@ -3271,29 +4104,116 @@ are printed.  The {\cf load} procedure does not affect the values
 returned by {\cf current-input-port} and {\cf current-output-port}.
 {\cf Load} returns an unspecified value.
 
+{\cf Include} is similar to {\cf load} except that it is syntax which
+expands into the expressions and definitions from the file.  Thus it
+can be used to include internal definitions and otherwise interact
+with the current lexical scope.  In an {\cf include} form
+\var{filename} must be a string literal.
+
 \begin{rationale}
-For portability, {\cf load} must operate on source files.
-Its operation on other kinds of files necessarily varies among
+For portability, {\cf load} and {\cf include} must operate on source files.
+Their operation on other kinds of files necessarily varies among
 implementations.
 \end{rationale}
 \end{entry}
 
+\begin{entry}{%
+\proto{file-exists?}{ filename}{file module procedure}}
+
+\var{Filename} must be a string. The {\cf file-exists?} procedure returns
+\schtrue{} if the named file exists at the time the procedure is called,
+\schfalse{} otherwise.
+
+\end{entry}
 
 \begin{entry}{%
-\proto{transcript-on}{ filename}{optional procedure}\nopagebreak{}
-\proto{transcript-off}{}{optional procedure}}
+\proto{delete-file}{ filename}{file module procedure}}
 
-\domain{\var{Filename} must be a string naming an output file to be
-created.} The effect of {\cf transcript-on} is to open the named file
-for output, and to cause a transcript of subsequent interaction between
-the user and the Scheme system to be written to the file.  The
-transcript is ended by a call to {\cf transcript-off}, which closes the
-transcript file.  Only one transcript may be in progress at any time,
-though some implementations may relax this restriction.  The values
-returned by these procedures are unspecified.
+\var{Filename} must be a string. The {\cf delete-file} procedure deletes the
+named file if it exists and can be deleted, and returns an unspecified
+value.  If the file does not exist or cannot be deleted, an exception
+is raised.
 
-%\begin{note}
-%These procedures are redundant in some systems, but
-%systems that need them should provide them.
-%\end{note}
 \end{entry}
+
+\begin{entry}{%
+\proto{command-line}{}{process-context module procedure}}
+
+Returns the command line arguments passed to the process as a list of
+strings.
+\end{entry}
+
+\todo{Shinn: Do we need any description of what an environment variable is?}
+
+\begin{entry}{%
+\proto{get-environment-variable}{ name}{process-context module procedure}}
+
+\var{Name} must be a string.  Returns the value of the named
+environment variable as a string, or \schfalse{} if the named
+environment variable is not found.  {\cf get-environment-variable} may
+use locale-setting information to encode the name and decode the value
+of the environment variable.  If {\cf get-environment-variable} can't
+decode the value it may raise an exception.
+
+\begin{scheme}
+(get-environment-variable "PATH") \lev "/usr/local/bin:/usr/bin:/bin"
+\end{scheme}
+
+\end{entry}
+
+\begin{entry}{%
+\proto{get-environment-variables}{}{process-context module procedure}}
+
+Returns the names and values of all the environment variables as an
+a-list, where the car of each entry is the name of an environment
+variable and the cdr is the value as would be returned by
+{\cf get-environment-variable}.  The order of the list is unspecified.
+
+\begin{scheme}
+(get-environment-variables) \lev (("USER" . "root") ("HOME" . "/"))
+\end{scheme}
+
+\end{entry}
+
+\begin{entry}{%
+\proto{current-second}{}{time module procedure}}
+
+Returns an exact integer representing the current second of the Posix
+epoch, which began on 00:00:00 on 1 January 1970, Coordinated
+Universal Time.  Whether leap seconds are included is
+implementation-defined.
+\end{entry}
+
+\begin{entry}{%
+\proto{current-jiffy}{}{time module procedure}}
+
+Returns an exact integer representing the number of jiffies (arbitrary
+elapsed time units) since an arbitrary epoch which may vary between
+runs of a program.
+\end{entry}
+
+\begin{entry}{%
+\proto{jiffies-per-second}{}{time module procedure}}
+
+Returns an exact integer representing the number of jiffies per SI
+second. This value is an implementation-specified constant.
+\end{entry}
+
+%% \begin{entry}{%
+%% \proto{transcript-on}{ filename}{procedure}\nopagebreak{}
+%% \proto{transcript-off}{}{procedure}}
+
+%% \domain{\var{Filename} must be a string naming an output file to be
+%% created.} The effect of {\cf transcript-on} is to open the named file
+%% for output, and to cause a transcript of subsequent interaction between
+%% the user and the Scheme system to be written to the file.  The
+%% transcript is ended by a call to {\cf transcript-off}, which closes the
+%% transcript file.  Only one transcript may be in progress at any time,
+%% though some implementations may relax this restriction.  The values
+%% returned by these procedures are unspecified.
+
+%% %\begin{note}
+%% %These procedures are redundant in some systems, but
+%% %systems that need them should provide them.
+%% %\end{note}
+%% \end{entry}

@@ -10,6 +10,114 @@ Can these remarks be moved somewhere else?}
 This section enumerates the changes that have been made to Scheme since
 the ``Revised$^5$ report''~\cite{R5RS} was published.
 
+{\em While this report is in draft status the list should be considered incomplete and subject to change.}
+
+\begin{itemize}
+
+\item Modules have been added as a new program structure to improve
+encapsulation and sharing of code.  Some existing and new identifiers
+have been factored out into separate modules.
+
+\item Exceptions can now be signalled explicitly with {\cf raise},
+{\cf raise-continuable} or {\cf error}, and can be handled with {\cf
+with-exception-handler} and the {\cf guard} syntax.
+
+\item New disjoint types supporting access to multiple fields can be
+generated with {\cf define-record-type}.
+
+\item Parameter objects can be created with {\cf make-parameter}, and
+dynamically rebound with {\cf parameterize}.
+
+\item {\em Blobs}, homogeneous vectors of integers in the range
+$[0..255]$, have been added as a new disjoint type.
+
+\item {\em Ports} can now be designated as {\em binary} or {\em
+character} ports, with new procedures for reading and writing binary
+data.
+
+\item {\em String ports} have been added as a way to write characters
+to and read characters from strings.
+
+\item {\cf Current-input-port} and {\cf current-output-port} are now
+parameter objects, along with the newly introduced {\cf
+current-error-port}.
+
+\item {\cf Syntax-rules} now recognizes {\em \_} as a wildcard, allows
+the ellipsis symbol to be specified explicitly instead of the default
+{\cf ...}, allows template escapes with an ellipsis-prefixed list, and
+allows tail patterns to follow an ellipsis pattern.
+
+\item {\cf Syntax-error} has been added as a way to signal immediate
+and more informative errors when a form is expanded.
+
+\item Internal {\cf define-syntax} forms are now allowed preceding any
+internal {\cf define}s.
+
+\item {\cf Letrec*} has been added, and internal define specified in
+terms of it.
+
+\item {\cf Case} now supports a {\tt =>} syntax analagous to {\cf cond}.
+
+\item {\cf Case-lambda} has been added to the base module as a way to
+dispatch on the number of arguments passed to a procedure.
+
+\item Positive and negative infinity and a NaN object have been added
+to the numeric tower as inexact values with the written
+representations {\tt +inf.0}, {\tt -inf.0} and {\tt +nan.0},
+respectively.
+
+\item {\cf Map} and {\cf for-each} are now required to terminate on
+the shortest list when inputs have different length.
+
+\item {\cf Member} and {\cf assoc} now take an optional third argument
+for the equality predicate to use.
+
+\item {\cf Exact-integer?}\  and {\cf exact-integer-sqrt} have been added.
+
+\item {\cf Make-list}, {\cf list-copy}, {\cf list-set!}, {\cf
+string-map}, {\cf string-for-each}, {\cf string->vector}, {\cf
+vector-copy}, {\cf vector-map}, {\cf vector-for-each}, and {\cf
+vector->string} have been added to round out the sequence operations.
+
+\item The set of characters used is required to be consistent with the
+latest Unicode standard only in so far as the implementation supports
+Unicode.
+
+\item {\cf string-ni=?} and related procedures have been added to
+compare strings as though they had gone through an
+implementation-defined normalization, without exposing the
+normalization.
+
+\item The case-folding behavior of the reader can now be explicitly
+controlled, with no folding as the default.
+
+\item The reader now recognizes the new comment syntax {\tt \#;} to
+skip the next datum, and allows nested block comments with
+{\tt \#| ... |\#}.
+
+\item Data prefixed with reader labels {\tt \#<n>=} can be referenced
+with {\tt \#<n>\#} allowing for reading and writing of data with
+shared structure.
+
+\item Strings and symbols now allow mnemonic and numeric escape
+sequences, and the list of named characters has been extended.
+
+\item {\cf File-exists?}\ and {\cf delete-file} are available in the
+{\tt (scheme file)} module.
+
+\item An interface to the system environment and command line is
+available in the {\tt (scheme process-context)} module.
+
+\item Procedures for accessing the current time are available in the
+{\tt (scheme time)} module.
+
+\item A complete set of integer division operators is available in the
+{\tt (scheme division)} module.
+
+\item {\cf Transcript-on} and {\cf transcript-off} have been removed.
+
+\end{itemize}
+
 %% \begin{itemize}
 
 %% \item The report is now a superset of the IEEE standard for Scheme

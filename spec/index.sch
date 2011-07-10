@@ -1,10 +1,9 @@
-; Program to process r4rs.idx entries.
+; Program to process r7rs.idx entries.
 
-; Script for running this in Chez (delete the old index.tex first):
+; Script for running this in Chicken:
 ;
-;  (define (sort-list list pred) (sort pred list))
 ;  (load "index.sch")
-;  (call-with-input-file "r5rs.idx" read-entries)
+;  (call-with-input-file "r7rs.idx" read-entries)
 ;  (call-with-output-file "index.tex" create-index)
 
 (define main 0)
@@ -60,10 +59,10 @@
         (begin (process-key (collect-entries) p)
                (loop))))
   (set! *database*
-        (sort-list *database*
-		   (lambda (x y)
-		     (string<? (entry-key x)
-			       (entry-key y)))))
+        (sort *database*
+              (lambda (x y)
+                (string<? (entry-key x)
+                          (entry-key y)))))
   (loop))
 
 (define (collect-entries)
@@ -77,7 +76,7 @@
   (loop (caar *database*) '()))
 
 (define (process-key entries p)
-  (let ((entries (sort-list entries entry<?)))
+  (let ((entries (sort entries entry<?)))
     (if (not (consistent? entries))
         (begin (display "Inconsistent entries:")
                (newline)
@@ -133,7 +132,7 @@
 (define *s1* (string-append "\\item{" (list->string '(#\\))))
 (define *s2* "{")
 (define *s3* "}}{\\hskip .75em}")
-(define *semi* "\; ")
+(define *semi* "; ")
 (define *comma* ", ")
 
 (define (write-entries key font main pages p)

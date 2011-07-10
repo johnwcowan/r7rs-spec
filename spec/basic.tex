@@ -36,13 +36,14 @@ The most fundamental of the variable binding constructs is the
 {\cf lambda} expression, because all other variable binding constructs
 can be explained in terms of {\cf lambda} expressions.  The other
 variable binding constructs are {\cf let}, {\cf let*}, {\cf letrec},
+{\cf letrec*},
 and {\cf do} expressions (see sections~\ref{lambda}, \ref{letrec}, and
 \ref{do}).
 
 %Note: internal definitions not mentioned here.
 
-\vest Like Algol and Pascal, and unlike most other dialects of Lisp
-except for Common Lisp, Scheme is a statically scoped language with
+\vest Like Algol 60, Common Lisp, Pascal, Python, Ruby, and Smalltalk,
+Scheme is a statically scoped language with
 block structure.  To each place where an identifier is bound in a program
 there corresponds a \defining{region} of the program text within which
 the binding is visible.  The region is determined by the particular
@@ -80,17 +81,17 @@ No object satisfies more than one of the following predicates:
 boolean?          pair?
 symbol?           number?
 char?             string?
-vector?           port?
-procedure?%
+vector?           blob?
+port?             procedure?%
 \end{scheme}
 
 These predicates define the types {\em boolean}, {\em pair}, {\em
 symbol}, {\em number}, {\em char} (or {\em character}), {\em string}, {\em
-vector}, {\em port}, and {\em procedure}.  The empty list is a special
+vector}, {\em blob}, {\em port}, and {\em procedure}.  The empty list is a special
 object of its own type; it satisfies none of the above predicates.
 \mainindex{type}\schindex{boolean?}\schindex{pair?}\schindex{symbol?}
 \schindex{number?}\schindex{char?}\schindex{string?}\schindex{vector?}
-\schindex{port?}\schindex{procedure?}\index{empty list}
+\schindex{blob?}\schindex{port?}\schindex{procedure?}\index{empty list}
 
 Although there is a separate boolean type,
 any Scheme value can be used as a boolean value for the purpose of a
@@ -230,6 +231,7 @@ expression.
 \begin{itemize}
 \item The last expression within the body of a lambda expression,
   shown as \hyper{tail expression} below, occurs in a tail context.
+  The same is true of the bodies of a {\cf case-lambda} expression.
 \begin{grammar}%
 (l\=ambda \meta{formals}
   \>\arbno{\meta{definition}} \arbno{\meta{expression}} \meta{tail expression})
@@ -262,6 +264,7 @@ are shown here.
 (let \meta{variable} (\arbno{\meta{binding spec}}) \meta{tail body})
 (let* (\arbno{\meta{binding spec}}) \meta{tail body})
 (letrec (\arbno{\meta{binding spec}}) \meta{tail body})
+(letrec* (\arbno{\meta{binding spec}}) \meta{tail body})
 
 (let-syntax (\arbno{\meta{syntax spec}}) \meta{tail body})
 (letrec-syntax (\arbno{\meta{syntax spec}}) \meta{tail body})
@@ -294,7 +297,7 @@ Certain built-in procedures are also required to perform tail calls.
 The first argument passed to \ide{apply} and to
 \ide{call-with-current-continuation}, and the second argument passed to
 \ide{call-with-values}, must be called via a tail call.
-Similarly, \ide{eval} must evaluate its argument as if it
+Similarly, \ide{eval} must evaluate its first argument as if it
 were in tail position within the \ide{eval} procedure.
 
 In the following example the only tail call is the call to {\cf f}.
