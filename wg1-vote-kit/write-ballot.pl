@@ -1,7 +1,14 @@
 #! /usr/bin/env perl
 
+# http://xkcd.com/224/
+
+# Usage: write-ballot.pl < WG1Ballot > WG1BallotResults
+# (must have extracted Wg1BallotName files with extract_ballots.sh)
+
 use strict;
 use warnings;
+
+use constant MAX_RATIONALE_LENGTH => 768;
 
 # Per-ticket aliases found on the fly.
 my %aliases;
@@ -134,8 +141,10 @@ sub get_index {
 sub get_voters {
   my $votes = shift;
   my @voters = grep {ref $votes->{$_} and @{$votes->{$_}}} sort keys %$votes;
-  return scalar(@voters) . ": "
-    . join(", ", map {"[wiki:WG1Ballot$_ $_\]"} @voters);
+  return join("\n", map {"    * [wiki:WG1Ballot$_ $_]: "
+                           . join(", ", @{$votes->{$_}})}
+              @voters)
+    . "\n";
 }
 
 sub get_result {
@@ -191,7 +200,14 @@ sub format_rationale {
   $str =~ s/[\t\n]/ /g;
   $str =~ s/  +/ /g;
   $str =~ s/ +$//;
-  $str =~ s/^ */ /;
+  $str =~ s/^\s*//;
+  $str =~ s/^('{2,3})?Rationale:\s*('{2,3})?\s*//;
+  if (length($str) > MAX_RATIONALE_LENGTH) {
+    my $voter = shift;
+    warn "truncating long rational for $voter";
+    $str = substr($str, 0, MAX_RATIONALE_LENGTH) .
+      "[wiki:WG1Ballot$voter ...]";
+  }
   return $str;
 }
 
@@ -202,13 +218,13 @@ while (<>) {
   if (/^\s*\*\s*'*Preferences:\s*'*/i) {
     my $votes = $votes{$ticket};
     if (ref $votes) {
-      print "  * '''Voters:''' ".get_voters($votes)."\n";
+      print "  * '''Voters:''' \n".get_voters($votes);
       print get_result($votes, $defaults{$ticket});
       if (ref $rationales{$ticket}) {
         print "  * '''Rationales:'''\n\n";
-        for my $user (sort keys %{$rationales{$ticket}}) {
-          print " `${user}`::\n  "
-            . format_rationale($rationales{$ticket}{$user})
+        for my $voter (sort keys %{$rationales{$ticket}}) {
+          print " `${voter}`::\n  "
+            . format_rationale($rationales{$ticket}{$voter}, $voter)
             . "\n";
         }
       }
