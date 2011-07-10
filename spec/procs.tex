@@ -4084,6 +4084,17 @@ the value returned by {\cf current-output-port}.
 
 \end{entry}
 
+\begin{entry}{%
+\proto{flush-output-port}{}{io module procedure}
+\rproto{flush-output-port}{ port}{io module procedure}}
+
+Flushes any buffered output from the buffer of output-port to the
+underlying file or device and returns an unspecified value.
+The \var{port} argument may be omitted, in which case it defaults to
+the value returned by {\cf current-output-port}.
+
+\end{entry}
+
 
 \subsection{System interface}
 
