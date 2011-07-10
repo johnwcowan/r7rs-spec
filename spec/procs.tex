@@ -702,10 +702,10 @@ also false of that number.
 %Scheme system that has only \tupe{integer}s.  Nonetheless every implementation
 %of Scheme must have all of these predicates.
 
-If \vr{z} is an inexact complex number, then {\cf (real? \vr{z})} is true if
-and only if {\cf (zero? (imag-part \vr{z}))} is true.  If \vr{x} is an inexact
-real number, then {\cf (integer? \vr{x})} is true if and only if
-{\cf (= \vr{x} (round \vr{x}))}.
+If \vr{z} is a complex number, then {\cf (real? \vr{z})} is true if
+and only if {\cf (zero? (imag-part z))} and {\cf (exact? (imag-part
+z))} are both true.  If \vr{x} is an inexact real number, then {\cf
+(integer? \vr{x})} is true if and only if {\cf (= \vr{x} (round \vr{x}))}.
 
 \begin{scheme}
 (complex? 3+4i)         \ev  \schtrue
@@ -3686,7 +3686,7 @@ returned by \var{proc} are returned.
 \proto{input-port?}{ obj}{io module procedure}
 \proto{output-port?}{ obj}{io module procedure}
 \proto{character-port?}{ obj}{io module procedure}
-\proto{binary-port?}{ obj}{io module procedure}}
+\proto{binary-port?}{ obj}{io module procedure}
 \proto{port?}{ obj}{io module procedure}}
 
 Returns \schtrue{} if \var{obj} is an input port, output port, 
