@@ -2338,7 +2338,7 @@ Returns \schtrue{} if \var{obj} is a string, otherwise returns \schfalse.
 {\cf Make-string} returns a newly allocated string of
 length \vr{k}.  If \var{char} is given, then all elements of the string
 are initialized to \var{char}, otherwise the contents of the
-\var{string} are unspecified.
+string are unspecified.
 
 \end{entry}
 
@@ -2700,6 +2700,7 @@ The value returned by {\cf vector-fill!}\ is unspecified.  % <!>
 Bytevectors are a disjoint type for representing blocks of binary data.
 Conceptually, bytevectors can be thought of as homogenous vectors of 8-bit
 bytes, but they typically occupy less space than a vector.
+A byte is an exact integer in the range $[0..255]$.
 
 \vest The {\em length} of a bytevector is the number of elements that it
 contains.  This number is a non-negative integer that is fixed when
@@ -2714,10 +2715,13 @@ Returns \schtrue{} iff \var{obj} is a bytevector.
 \end{entry}
 
 \begin{entry}{%
-\proto{make-bytevector}{ k}{procedure}}
+\proto{make-bytevector}{ k}{procedure}
+\rproto{make-bytevector}{ k byte}{procedure}}
 
-Returns a newly allocated bytevector of \var{k} bytes.  The initial contents
-of each element is unspecified.
+{\cf Make-bytevector} returns a newly allocated bytevector of
+length \vr{k}.  If \var{byte} is given, then all elements of the bytevector
+are initialized to \var{byte}, otherwise the contents of each
+element are unspecified.
 \end{entry}
 
 \begin{entry}{%
@@ -2729,8 +2733,7 @@ Returns the length of \var{bytevector} in bytes as an exact integer.
 \begin{entry}{%
 \proto{bytevector-u8-ref}{ bytevector k}{procedure}}
 
-Returns the \var{k}th byte of \var{bytevector} as an exact integer in the
-range $[0..255]$.
+Returns the \var{k}th byte of \var{bytevector}.
 \end{entry}
 
 \begin{entry}{%
@@ -3844,6 +3847,50 @@ retrieval by {\cf get-output-string}.
 
 Given an output port created by {\cf open-output-string}, returns a
 string consisting of the characters that have been output to the port
+so far.
+\end{entry}
+
+
+%% \subsection{Bytevector Ports}
+%% \label{bytevectorportsection}
+
+\begin{entry}{%
+\proto{open-input-bytevector}{ bytevector}{io module procedure}}
+
+Takes a bytevector and returns a binary input port that delivers
+bytes from the bytevector.
+
+%% \begin{scheme}
+%% (define p
+%%   (open-input-bytevector "(a . (b . (c . ()))) 34"))
+
+%% (input-port? p)                 \ev  \schtrue
+%% (read p)                        \ev  (a b c)
+%% (read p)                        \ev  34
+%% (eof-object? (peek-char p))     \ev  \schtrue
+%% \end{scheme}
+\end{entry}
+
+\begin{entry}{%
+\proto{open-output-bytevector}{}{io module procedure}}
+
+Returns a binary output port that will accumulate bytes for
+retrieval by {\cf get-output-bytevector}.
+
+%% \begin{scheme}
+%% (let ((q (open-output-string))
+%%       (x '(a b c)))
+%%   (write (car x) q)
+%%   (write (cdr x) q)
+%%   (get-output-string q))        \ev  "a(b c)"
+%% \end{scheme}
+\end{entry}
+
+\begin{entry}{%
+\proto{get-output-bytevector}{ port}{io module procedure}}
+
+Given an output port created by {\cf open-output-bytevector}, returns a
+bytevector consisting of the bytes that have been output to the port
 so far.
 \end{entry}
 
