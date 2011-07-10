@@ -4088,8 +4088,7 @@ deserve description here.
 
 
 \begin{entry}{%
-\proto{load}{ filename}{load module procedure}
-\proto{include}{ filename}{load module syntax}}
+\proto{load}{ filename}{load module procedure}}
 
 \todo{Fix}
 
@@ -4104,10 +4103,15 @@ are printed.  The {\cf load} procedure does not affect the values
 returned by {\cf current-input-port} and {\cf current-output-port}.
 {\cf Load} returns an unspecified value.
 
-{\cf Include} is similar to {\cf load} except that it is syntax which
-expands into the expressions and definitions from the file.  Thus it
-can be used to include internal definitions and otherwise interact
-with the current lexical scope.  In an {\cf include} form
+\begin{entry}{%
+\proto{include}{ filename}{load module syntax}
+\proto{include-ci}{ filename}{load module syntax}}
+
+{\cf Include} and {\cf include-ci} are similar to {\cf load} except
+that they are syntax which expands into the expressions and
+definitions from the file as though wrapped in a {\cf begin} form.
+Thus it can be used to include internal definitions and otherwise
+interact with the current lexical scope.  In these forms the
 \var{filename} must be a string literal.
 
 \begin{rationale}
