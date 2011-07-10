@@ -3648,7 +3648,8 @@ the file named by \var{string} should already exist; for
 {\cf call-with-output-file},
 the effect is unspecified if the file
 already exists. These procedures call \var{proc} with one argument: the
-port obtained by opening the named file for input or output.  If the
+character port obtained by opening the named file for input or output
+as if by {\cf open-input-file} or {\cf open-output-file}.  If the
 file cannot be opened, an error is signalled.  If \var{proc} returns,
 then the port is closed automatically and the value(s) yielded by the
 \var{proc} is(are) returned.  If \var{proc} does not return, then 
@@ -3684,21 +3685,16 @@ returned by \var{proc} are returned.
 \begin{entry}{%
 \proto{input-port?}{ obj}{io module procedure}
 \proto{output-port?}{ obj}{io module procedure}
+\proto{character-port?}{ obj}{io module procedure}
+\proto{binary-port?}{ obj}{io module procedure}}
 \proto{port?}{ obj}{io module procedure}}
 
-Returns \schtrue{} if \var{obj} is an input port, output port, or any
+Returns \schtrue{} if \var{obj} is an input port, output port, 
+character port, binary port, or any
 kind of port, respectively, otherwise returns \schfalse.
 
 \todo{Won't necessarily return true after port is closed.}
 
-\end{entry}
-
-\begin{entry}{%
-\proto{character-port?}{ obj}{io module procedure}
-\proto{binary-port?}{ obj}{io module procedure}}
-
-Returns \schtrue{} if \var{obj} is a character port or binary port,
-respectively.
 \end{entry}
 
 
@@ -3731,14 +3727,15 @@ are bound to system defined binary ports.
 \proto{with-input-from-file}{ string thunk}{file module procedure}
 \proto{with-output-to-file}{ string thunk}{file module procedure}}
 
-\var{Proc} should be a procedure of no arguments.
+\var{Thunk} should be a procedure of no arguments.
 For {\cf with-input-from-file},
 the file named by \var{string} should already exist; for
 {\cf with-output-to-file},
 the effect is unspecified if the file
 already exists.
-The file is opened for input or output, a binary input or output port
-connected to it is made the default value returned by
+The file is opened for input or output
+as if by {\cf open-input-file} or {\cf open-output-file}, 
+and the return port is made the default value returned by
 {\cf current-input-port} or {\cf current-output-port}
 (and is used by {\tt (read)}, {\tt (write \var{obj})}, and so forth),
 and the
@@ -3780,7 +3777,7 @@ file.  If the file cannot be opened, an error is signalled.
 
 Takes a \var{string} naming an output file to be created and returns a
 character output port or binary output port capable of writing
-characters to a new file by that name.  If the file cannot be opened,
+data to a new file by that name.  If the file cannot be opened,
 an error is signalled.  If a file with the given name already exists,
 the effect is unspecified.
 
