@@ -253,6 +253,9 @@ and each \hyper{field} should be of the form
 $|$ (\hyper{field name} \hyper{accessor name} \hyper{modifier name})%
 \end{scheme}
 
+It is an error for the same identifier to occur more than once as a
+field name.
+
 {\cf define-record-type} is generative: each use creates a new record
 type that is distinct from all existing types, including other record
 types and Scheme's predefined types.
