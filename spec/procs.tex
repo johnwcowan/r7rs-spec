@@ -760,18 +760,30 @@ iff \vr{z} is both \tupe{exact} and an \tupe{integer}.
 
 
 \begin{entry}{%
-\proto{finite?}{ \vr{z}}{inexact module procedure}
-\proto{infinite?}{ \vr{z}}{inexact module procedure}
-\proto{nan?}{ \vr{z}}{inexact module procedure}}
+\proto{finite?}{ \vr{z}}{inexact module procedure}}
 
-These numerical predicates provide tests for the infinite and NaN
-numbers.  For any Scheme number, precisely one of these predicates is
-true.
+{\cf Finite} returns \schtrue{} on all real numbers except
+{\cf +inf.0}, {\cf -inf.0}, and {\cf +nan.0}, and on complex
+numbers if and only if their real and imaginary parts are both finite.
+Otherwise it returns \schfalse{}.
 
 \begin{scheme}
 (finite? 3)         \ev  \schtrue
 (finite? +inf.0)       \ev  \schfalse
+(finite? 3.0+inf.0i)   \ev  \schfalse
+\end{scheme}
+\end{entry}
+
+\begin{entry}{%
+\proto{nan?}{ \vr{z}}{inexact module procedure}}
+
+{\cf Nan} returns \schtrue{} on {\cf +nan.0}, and on any complex number
+if and only if either its real part or its imaginary part is {\cf +nan.0}.
+Otherwise it returns \schfalse{}.
+
+\begin{scheme}
 (nan? +nan.0)          \ev  \schtrue
+(nan? +nan.0+5.0i)     \ev  \schtrue
 \end{scheme}
 \end{entry}
 
