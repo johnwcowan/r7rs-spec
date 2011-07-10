@@ -2140,30 +2140,33 @@ Returns \schtrue{} if \var{obj} is a character, otherwise returns \schfalse.
 
 
 \begin{entry}{%
-\proto{char=?}{ \vari{char} \varii{char}}{procedure}
-\proto{char<?}{ \vari{char} \varii{char}}{procedure}
-\proto{char>?}{ \vari{char} \varii{char}}{procedure}
-\proto{char<=?}{ \vari{char} \varii{char}}{procedure}
-\proto{char>=?}{ \vari{char} \varii{char}}{procedure}}
+\proto{char=?}{ \vri{char} \vrii{char} \vriii{char} \dotsfoo}{procedure}
+\proto{char<?}{ \vri{char} \vrii{char} \vriii{char} \dotsfoo}{procedure}
+\proto{char>?}{ \vri{char} \vrii{char} \vriii{char} \dotsfoo}{procedure}
+\proto{char<=?}{ \vri{char} \vrii{char} \vriii{char} \dotsfoo}{procedure}
+\proto{char>=?}{ \vri{char} \vrii{char} \vriii{char} \dotsfoo}{procedure}}
 
 \label{characterequality}
-\nodomain{Both \vari{char} and \varii{char} must be characters.}
+
+These procedures return \schtrue{} if their arguments are (respectively):
+equal, monotonically increasing, monotonically decreasing,
+monotonically nondecreasing, or monotonically nonincreasing.
+
+These predicates are required to be transitive.
+
 These procedures impose a total ordering on the set of characters which
 is the same as the Unicode code point ordering.  This is true independent
 of whether the implementation uses the Unicode representation internally.
-
-Some implementations may generalize these procedures to take more than
-two arguments, as with the corresponding numerical predicates.
 
 \end{entry}
 
 
 \begin{entry}{%
-\proto{char-ci=?}{ \vari{char} \varii{char}}{unicode module procedure}
-\proto{char-ci<?}{ \vari{char} \varii{char}}{unicode module procedure}
-\proto{char-ci>?}{ \vari{char} \varii{char}}{unicode module procedure}
-\proto{char-ci<=?}{ \vari{char} \varii{char}}{unicode module procedure}
-\proto{char-ci>=?}{ \vari{char} \varii{char}}{unicode module procedure}}
+\proto{char-ci=?}{ \vri{char} \vrii{char} \vriii{char} \dotsfoo}{procedure}
+\proto{char-ci<?}{ \vri{char} \vrii{char} \vriii{char} \dotsfoo}{procedure}
+\proto{char-ci>?}{ \vri{char} \vrii{char} \vriii{char} \dotsfoo}{procedure}
+\proto{char-ci<=?}{ \vri{char} \vrii{char} \vriii{char} \dotsfoo}{procedure}
+\proto{char-ci>=?}{ \vri{char} \vrii{char} \vriii{char} \dotsfoo}{procedure}}
 
 \nodomain{Both \vari{char} and \varii{char} must be characters.}
 These procedures are similar to {\cf char=?}\ et cetera, but they treat
@@ -2406,18 +2409,18 @@ and returns an unspecified value.  % <!>
 
 
 \begin{entry}{%
-\proto{string=?}{ \vari{string} \varii{string}}{procedure}}
+\proto{string=?}{ \vri{char} \vrii{char} \vriii{char} \dotsfoo}{procedure}}
 
-Returns \schtrue{} if the two strings are the same length and contain
+Returns \schtrue{} if all the strings are the same length and contain
 exactly the same characters in the same positions, otherwise returns
 \schfalse.
 
 \end{entry}
 
 \begin{entry}{%
-\proto{string-ci=?}{ \vari{string} \varii{string}}{unicode module procedure}}
+\proto{string-ci=?}{ \vri{char} \vrii{char} \vriii{char} \dotsfoo}{procedure}}
 
-Returns \schtrue{} if, after case-folding, the two strings are the same
+Returns \schtrue{} if, after case-folding, all the strings are the same
 length and contain the same characters in the same positions, otherwise
 returns \schfalse.  Specifically, these procedures behave as if 
 {\cf string-foldcase} were applied to their arguments before comparing them.
@@ -2426,14 +2429,16 @@ returns \schfalse.  Specifically, these procedures behave as if
 
 
 \begin{entry}{%
-\proto{string-ni=?}{ \vari{string} \varii{string}}{unicode module procedure}}
+\proto{string-ni=?}{ \vri{char} \vrii{char} \vriii{char} \dotsfoo}{procedure}}
 
 Returns \schtrue{} if, after an implementation-defined normalization,
-the two strings are the same length and contain the same characters in
+all the strings are the same length and contain the same characters in
 the same positions, otherwise returns \schfalse.  The intent is to
 provide a means of comparing strings that should be considered
 equivalent in some situations but may be represented by a different
-sequence of characters.  Specifically, an implementation which
+sequence of characters.
+
+Specifically, an implementation which
 supports Unicode should consider using Unicode normalization NFC or
 NFD as specified by Unicode TR\#15.  Implementations which only
 support ASCII or some other character set which provides no ambiguous
@@ -2445,18 +2450,24 @@ equivalent to {\cf string=?}.
 
 
 \begin{entry}{%
-\proto{string<?}{ \vari{string} \varii{string}}{procedure}
-\proto{string>?}{ \vari{string} \varii{string}}{procedure}
-\proto{string<=?}{ \vari{string} \varii{string}}{procedure}
-\proto{string>=?}{ \vari{string} \varii{string}}{procedure}
-\proto{string-ci<?}{ \vari{string} \varii{string}}{unicode module procedure}
-\proto{string-ci>?}{ \vari{string} \varii{string}}{unicode module procedure}
-\proto{string-ci<=?}{ \vari{string} \varii{string}}{unicode module procedure}
-\proto{string-ci>=?}{ \vari{string} \varii{string}}{unicode module procedure}
-\proto{string-ni<?}{ \vari{string} \varii{string}}{unicode module procedure}
-\proto{string-ni>?}{ \vari{string} \varii{string}}{unicode module procedure}
-\proto{string-ni<=?}{ \vari{string} \varii{string}}{unicode module procedure}
-\proto{string-ni>=?}{ \vari{string} \varii{string}}{unicode module procedure}}
+\proto{string<?}{ \vri{string} \vrii{string} \vriii{string} \dotsfoo}{procedure}
+\proto{string-ci<?}{ \vri{string} \vrii{string} \vriii{string} \dotsfoo}{procedure}
+\proto{string-ni<?}{ \vri{string} \vrii{string} \vriii{string} \dotsfoo}{procedure}
+\proto{string>?}{ \vri{string} \vrii{string} \vriii{string} \dotsfoo}{procedure}
+\proto{string-ci>?}{ \vri{string} \vrii{string} \vriii{string} \dotsfoo}{procedure}
+\proto{string-ni>?}{ \vri{string} \vrii{string} \vriii{string} \dotsfoo}{procedure}
+\proto{string<=?}{ \vri{string} \vrii{string} \vriii{string} \dotsfoo}{procedure}
+\proto{string-ci<=?}{ \vri{string} \vrii{string} \vriii{string} \dotsfoo}{procedure}
+\proto{string-ni<=?}{ \vri{string} \vrii{string} \vriii{string} \dotsfoo}{procedure}
+\proto{string>=?}{ \vri{string} \vrii{string} \vriii{string} \dotsfoo}{procedure}
+\proto{string-ci>=?}{ \vri{string} \vrii{string} \vriii{string} \dotsfoo}{procedure}
+\proto{string-ni>=?}{ \vri{string} \vrii{string} \vriii{string} \dotsfoo}{procedure}}
+
+These procedures return \schtrue{} if their arguments are (respectively):
+equal, monotonically increasing, monotonically decreasing,
+monotonically nondecreasing, or monotonically nonincreasing.
+
+These predicates are required to be transitive.
 
 These procedures compare strings in an implementation-defined way.
 One approach is to make them the lexicographic extensions to strings of
@@ -2482,10 +2493,6 @@ The \hbox{``{\tt -ni}''} procedures behave as if they applied the
 implementation-defined normalization used by {\cf string-ni=?}
 to their arguments before
 invoking the corresponding procedures without \hbox{``{\tt -ni}''}.
-
-Implementations may generalize these and the {\cf string=?},\ {\cf
-  string-ci=?}, and {\cf string-ni=?}\ procedures to take more than
-two arguments, as with the corresponding numerical predicates.
 
 \end{entry}
 
