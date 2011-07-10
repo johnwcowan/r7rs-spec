@@ -3201,6 +3201,11 @@ Except for continuations created by the {\cf call-with-values}
 procedure, all continuations take exactly one value.  The
 effect of passing no value or more than one value to continuations
 that were not created by {\tt call-with-values} is unspecified.
+However, the continuations of all non-final expressions within a sequence
+of expressions, such as in {\cf lambda}, {\cf case-lambda}, {\cf begin},
+{\cf let}, {\cf let*}, {\cf letrec}, {\cf letrec}, {\cf  case}, 
+and {\cf cond} forms,  take an arbitrary number of values, because they
+discard the values passed to them in any event.
 
 \vest The escape procedure that is passed to \var{proc} has
 unlimited extent just like any other procedure in Scheme.  It may be stored
