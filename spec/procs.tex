@@ -78,11 +78,9 @@ character according to the {\cf char=?} procedure
 
 \item both \vari{obj} and \varii{obj} are the empty list.
 
-\item \vari{obj} and \varii{obj} are pairs, vectors, or strings that denote the
-same locations in the store (section~\ref{storagemodel}).
-
-\item \vari{obj} and \varii{obj} are procedures whose location tags are
-equal (section~\ref{lambda}).
+\item \vari{obj} and \varii{obj} are pairs, vectors, bytevectors, records,
+or strings that denote the same locations in the store
+(section~\ref{storagemodel}).
 \end{itemize}
 
 The {\cf eqv?} procedure returns \schfalse{} if:
@@ -114,8 +112,8 @@ procedure returns \schfalse{}.
 \item one of \vari{obj} and \varii{obj} is the empty list but the other
 is not.
 
-\item \vari{obj} and \varii{obj} are pairs, vectors, or strings that denote
-distinct locations.
+\item \vari{obj} and \varii{obj} are pairs, vectors, bytevectors, records,
+or strings that denote distinct locations.
 
 \item \vari{obj} and \varii{obj} are procedures that would behave differently
 (return different value(s) or have different side effects) for some arguments.
@@ -132,8 +130,6 @@ distinct locations.
 (eqv? (lambda () 1)
       (lambda () 2))             \ev  \schfalse
 (eqv? \#f 'nil)                  \ev  \schfalse
-(let ((p (lambda (x) x)))
-  (eqv? p p))		         \ev  \schtrue%
 \end{scheme}
 
 The following examples illustrate cases in which the above rules do
@@ -146,6 +142,8 @@ boolean.
 (eqv? '\#() '\#())         \ev  \unspecified
 (eqv? (lambda (x) x)
       (lambda (x) x))    \ev  \unspecified
+(let ((p (lambda (x) x)))
+  (eqv? p p))                    \ev  \unspecified
 (eqv? (lambda (x) x)
       (lambda (y) y))    \ev  \unspecified%
 \end{scheme}
@@ -155,7 +153,7 @@ that have local state.  {\cf Gen-counter} must return a distinct
 procedure every time, since each procedure has its own internal counter.
 {\cf Gen-loser}, however, returns equivalent procedures each time, since
 the local state does not affect the value or side effects of the
-procedures.
+procedures.  However, {\cf eqv?} may or may not detect this equivalence.
 
 \begin{scheme}
 (define gen-counter
