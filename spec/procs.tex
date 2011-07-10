@@ -9,6 +9,8 @@
 \mainindex{top level environment}
 \mainindex{procedure}
 
+\todo{Shinn: #112 repl definitions and #159 base environments}
+
 This chapter describes Scheme's built-in procedures.  The initial (or
 ``top level'') Scheme environment starts out with a number of variables
 bound to locations containing useful values, most of which are primitive
@@ -3792,11 +3794,14 @@ file with the given name already exists, the effect is unspecified.
 
 \begin{entry}{%
 \proto{close-input-port}{ port}{io module procedure}
-\proto{close-output-port}{ port}{io module procedure}}
+\proto{close-output-port}{ port}{io module procedure}
+\proto{close-port}{ port}{io module procedure}}
 
 Closes the file associated with \var{port}, rendering the \var{port}
 incapable of delivering or accepting data.  \todo{But maybe a no-op
-on some ports, e.g. terminals or editor buffers.}
+on some ports, e.g. terminals or editor buffers.}  It is an error
+to apply the first two procedures to a port which is not an input
+or output port, respectively.
 These routines have no effect if the file has already been closed.
 The value returned is unspecified.
 
