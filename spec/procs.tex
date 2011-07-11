@@ -3634,6 +3634,16 @@ by {\cf scheme-report-environment} may be immutable.
 \end{entry}
 
 \begin{entry}{%
+\proto{environment}{ \vri{list} \dotsfoo}{eval module procedure}}
+
+This procedure returns a specifier for the environment that results by
+starting with an empty environment and then importing each \var{list},
+considered as an import set, into it.  The bindings of the environment
+represented by the specifier are immutable.
+
+\end{entry}
+
+\begin{entry}{%
 \proto{interaction-environment}{}{repl module procedure}}
 
 This procedure returns a specifier for the environment that
