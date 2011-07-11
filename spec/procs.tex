@@ -4326,10 +4326,12 @@ variable and the cdr is the value as would be returned by
 \begin{entry}{%
 \proto{current-second}{}{time module procedure}}
 
-Returns an exact integer representing the current second of the Posix
-epoch, which began on 00:00:00 on 1 January 1970, Coordinated
-Universal Time.  Whether leap seconds are included is
-implementation-defined.
+Returns an inexact number representing time on the International Atomic
+Time (TAI) scale.  The value 0.0 represents midnight on January 1, 1958,
+Universal Time (specifically UT2), and the value 1.0 represents one
+second later.  High-accuracy values are not required; in particular,
+returning Coordinated Universal Time plus a suitable constant may be
+the best an implementation can do.
 \end{entry}
 
 \begin{entry}{%
