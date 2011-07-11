@@ -49,11 +49,14 @@ Unicode character the identifier \verb|\x3BB;| is the same as the
 identifier $\lambda$.
 
 As a convenience, identifiers may also be written as a sequence of
+zero or more
 characters enclosed within vertical bars ({\cf $|$}), analogous to
 string literals.  Vertical bars and other characters can be included
 in the identifier with an \meta{inline hex escape}.  Thus the
 identifier \verb+|foo bar|+ is the same as the identifier
 \verb+foo\x20;bar+.
+Note that \verb+||+ is a valid identifier that is not equal to any other
+identifier.
 
 See section~\ref{extendedalphas} for a formal syntax of identifiers.
 
