@@ -1177,9 +1177,11 @@ $\var{k} = s^2 + r$ and $\var{k} < (s+1)^2$.
 \begin{entry}{%
 \proto{expt}{ \vri{z} \vrii{z}}{procedure}}
 
-Returns \vri{z} raised to the power \vrii{z}.  For $z_1 \neq 0$
+Returns \vri{z} raised to the power \vrii{z}.  For nonzero z1, this is
 $${z_1}^{z_2} = e^{z_2 \log {z_1}}$$
-$0^z$ is 1 if $z = 0$ and 0 otherwise.
+$0.0^z$ is $1.0$ if $z = 0.0$, and $0.0$ if {\cf (real-part z)} is positive.
+For other cases in which the first argument is zero, either an error is
+signalled or an unspecified number is returned.
 \end{entry}
 
 %- \begin{entry}{%- 
