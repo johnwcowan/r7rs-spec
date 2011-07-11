@@ -180,8 +180,10 @@ of the {\cf begin} contains no definitions.
     ((begin exp)
      exp)
     ((begin exp1 exp2 ...)
-     (let ((x exp1))
-       (begin exp2 ...)))))
+     (call-with-values
+         (lambda () exp1)
+       (lambda args
+         (begin exp2 ...))))))
 \end{scheme}
 
 The following definition
