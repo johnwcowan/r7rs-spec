@@ -3555,9 +3555,9 @@ the call to {\cf raise-continuable}.
 \proto{error}{ \var{message} \var{obj} $\ldots$}{procedure}}
 
 \domain{\var{Message} should be a string.}
-A convenience procedure to raise an exception.  Equivalent to calling
-{\cf raise} on an implementation-defined object which encapsulates
-the information provided by \var{message} and any \var{obj}s.
+{\cf raise} on a newly created  implementation-defined object which encapsulates
+the information provided by \var{message} and any \var{obj}s, known as the irritants.
+The procedure {\cf error-object?} must return \schtrue{} on such objects.
 \end{entry}
 
 \begin{scheme}
@@ -3576,6 +3576,27 @@ the information provided by \var{message} and any \var{obj}s.
    \ev 65
 \end{scheme}
 
+\begin{entry}{%
+\proto{error-object?}{ obj}{procedure}}
+
+Returns \schtrue{} if \var{obj} is an object created by {\cf error}, otherwise returns
+\schfalse.  
+
+\end{entry}
+
+\begin{entry}{%
+\proto{error-object-message}{ error-object}{procedure}}
+
+Returns the message encapsulated by \var{error-object}.
+
+\end{entry}
+
+\begin{entry}{%
+\proto{error-object-irritants}{ error-object}{procedure}}
+
+Returns a list of the irritants encapsulated by \var{error-object}.
+
+\end{entry}
 
 \section{\tt{Eval}}
 
