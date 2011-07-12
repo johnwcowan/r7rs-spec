@@ -539,6 +539,7 @@ sequentially from left to right, and the region\index{region} of a binding indic
 by {\cf(\hyper{variable} \hyper{init})} is that part of the {\cf let*}
 expression to the right of the binding.  Thus the second binding is done
 in an environment in which the first binding is visible, and so on.
+The \hyper{variable}s need not be distinct.
 
 \begin{scheme}
 (let ((x 2) (y 3))
@@ -686,6 +687,10 @@ by {\cf((\hyper{variable} \dotsfoo) \hyper{init}))}
 is that part of the {\cf let*-values}
 expression to the right of the binding.  Thus the second set of bindings are done
 in an environment in which the first set of bindings is visible, and so on.
+
+\hyper{Variable}s in one \hyper{binding} may be the same as those in other
+\hyper{binding}s, though it is an error for two \hyper{variable}s in the
+same \hyper{binding} to be the same.
 
 %\begin{scheme}
 %\end{scheme}
