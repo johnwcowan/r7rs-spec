@@ -468,8 +468,9 @@ expression is unspecified.
 
 \subsection{Binding constructs}
 
-The four binding constructs {\cf let}, {\cf let*}, {\cf letrec}, and {\cf letrec*}
-give Scheme a block structure, like Algol 60.  The syntax of the three
+The binding constructs {\cf let}, {\cf let*}, {\cf letrec}, {\cf letrec*},
+{\cf let-values}, and {\cf let*-values}
+give Scheme a block structure, like Algol 60.  The syntax of the first four
 constructs is identical, but they differ in the regions\index{region} they establish
 for their variable bindings.  In a {\cf let} expression, the initial
 values are computed before any of the variables become bound; in a
@@ -478,6 +479,9 @@ sequentially; while in {\cf letrec} and {\cf letrec*} expressions,
 all the bindings are in
 effect while their initial values are being computed, thus allowing
 mutually recursive definitions.
+{\cf Let-values} and {\cf let*-values} are analogous to {\cf let} and {\cf let*}
+respectively, but are designed to handle multiple-valued expressions, binding
+different identifiers to each returned value.
 
 \begin{entry}{%
 \proto{let}{ \hyper{bindings} \hyper{body}}{\exprtype}}
@@ -626,7 +630,70 @@ a \hyper{variable} has the entire {\cf letrec*} expression as its
 region\index{region}, making it possible to define mutually recursive
 procedures.
 
-In all four constructs, the continuation of each expression
+\begin{entry}{%
+\proto{let-values}{ \hyper{mvbindings} \hyper{body}}{\exprtype}}
+
+\syntax
+\hyper{Mvbindings} should have the form
+\begin{scheme}
+(((\hyperi{variable} \hyperii{variable} \dotsfoo) \hyper{init}) \dotsfoo)\rm,%
+\end{scheme}
+where each \hyper{init} is an expression, and \hyper{body} should be a
+sequence of zero or more definitions followed by a
+sequence of one or more expressions.  It is
+an error for a \hyper{variable} to appear more than once in the list of variables
+being bound.
+
+\semantics
+The \hyper{init}s are evaluated in the current environment (in some
+unspecified order) as if by invoking {\cf call-with-values}, the
+\hyper{variable}s are bound to fresh locations holding the values returned
+by the \hyper{init}s, the \hyper{body} is evaluated in the extended
+environment, and the value(s) of the last expression of \hyper{body}
+is(are) returned.  Each binding of a \hyper{variable} has \hyper{body}
+as its region.\index{region}
+
+It is an error if an \hyper{init} returns more or fewer values than the
+number of \hyper{variable}s associated with it.
+
+\begin{scheme}
+(let-values (((root rem) (exact-integer-sqrt 32)))
+  (* root rem)                \ev  35
+
+\end{scheme}
+
+
+\end{entry}
+
+
+\begin{entry}{%
+\proto{let*-values}{ \hyper{mvbindings} \hyper{body}}{\exprtype}}\nobreak
+
+\nobreak
+\syntax
+\hyper{Mvbindings} should have the form
+\begin{scheme}
+(((\hyperi{variable} \hyperii{variable} \dotsfoo) \hyper{init}) \dotsfoo)\rm,%
+\end{scheme}
+and \hyper{body} should be a sequence of
+sequence of zero or more definitions followed by a
+one or more expressions.
+
+\semantics
+{\cf Let-values*} is similar to {\cf let-values}, but the bindings are performed
+sequentially from left to right, and the region\index{region} of a binding indicated
+by {\cf((\hyper{variable} \dotsfoo) \hyper{init}))}
+is that part of the {\cf let*-values}
+expression to the right of the binding.  Thus the second set of bindings are done
+in an environment in which the first set of bindings is visible, and so on.
+
+%\begin{scheme}
+%\end{scheme}
+
+\end{entry}
+
+
+In all six constructs, the continuation of each expression
 used to compute initial values must not be invoked more than once.
 
 \begin{scheme}
