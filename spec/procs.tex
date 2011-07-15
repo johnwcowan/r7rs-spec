@@ -666,6 +666,10 @@ implementations may wish to allow this default to be set by the user.
 
 The numbers positive infinity, negative infinity and NaN are written
 {\cf +inf.0}, {\cf -inf.0} and {\cf +nan.0} respectively.
+Implementations are not required to support them, but if they do,
+they must be in conformance with IEEE 754.  However, implementations
+are not required to support signaling NaNs, or provide a way to distinguish
+between different NaNs.
 
 \subsection{Numerical operations}
 
