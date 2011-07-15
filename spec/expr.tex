@@ -854,8 +854,22 @@ the {\cf force} procedure) \todo{Bartley's white lie; OK?} to evaluate
 The effect of \hyper{expression} returning multiple values
 is unspecified.
 
+\end{entry}
+
+\begin{entry}{%
+\proto{lazy}{ \hyper{expression}}{lazy module syntax}}
+
+\todo{Fix.}
+
+The {\cf lazy} construct 
+is similar to {\cf delay}, but its argument must evaluate to a promise.
+The returned promise, when forced, will evaluate to whatever the original
+promise would evaluate to if it had been forced.
+The effect of \hyper{expression} returning multiple values
+is unspecified.
+
 See the description of {\cf force} (section~\ref{force}) for a
-more complete description of {\cf delay}.
+more complete description of {\cf lazy} and {\cf delay}.
 
 \end{entry}
 

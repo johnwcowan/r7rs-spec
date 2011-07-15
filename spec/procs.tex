@@ -3038,11 +3038,12 @@ If more than one \var{vector} is given and not all vectors have the same length,
 \begin{entry}{%
 \proto{force}{ promise}{lazy module procedure}}
 
-Forces the value of \var{promise} (see \ide{delay},
-section~\ref{delay}).\index{promise}  If no value has been computed for
-the promise, then a value is computed and returned.  The value of the
-promise is cached (or ``memoized'') so that if it is forced a second
-time, the previously computed value is returned.
+Forces the value of \var{promise} (see \ide{delay} and \ide{lazy},
+section~\ref{delay}).\index{promise}  
+If a value which is not a promise has already been computed, this value is
+returned.  Otherwise, the promise is first evaluated, then overwritten
+by the obtained promise or value, and then {\cf force} is again applied
+(iteratively) to the promise.
 % without any recomputation.
 % [As pointed out by Marc Feeley, the "without any recomputation"
 % isn't necessarily true. --Will]
@@ -3066,7 +3067,27 @@ time, the previously computed value is returned.
                                \ev  2%
 \end{scheme}
 
-{\cf Force} and {\cf delay} are mainly intended for programs written in
+The following example is a mechanical transformation of a lazy
+stream-filtering algorithm into Scheme.  Each call to a constructor is
+wrapped in {\cf delay}, and each argument passed to a deconstructor is
+wrapped in {\cf force}.  The use of {\cf (lazy ...)} instead of {\cf
+(delay (force ...))} around the body of the procedure ensures that an
+ever-growing sequence of pending promises does not build up until the
+heap is exhausted.
+
+\begin{scheme}
+
+(define (stream-filter p? s)
+  (lazy
+     (if (null? (force s)) (delay '())
+         (let ((h (car (force s)))
+               (t (cdr (force s))))
+           (if (p? h)
+               (delay (cons h (stream-filter p? t)))
+               (stream-filter p? t))))))
+\end{scheme}
+
+{\cf Delay}, {\cf lazy}, and {\cf force} are mainly intended for programs written in
 functional style.  The following examples should not be considered to
 illustrate good programming style, but they illustrate the property that
 only one value is computed for a promise, no matter how many times it is
@@ -3091,73 +3112,73 @@ p                     \ev  {\it{}a promise, still}
        (force p))     \ev  6%
 \end{scheme}
 
-Here is a possible implementation of {\cf delay} and {\cf force}.
-Promises are implemented here as procedures of no arguments,
-and {\cf force} simply calls its argument:
-
-\begin{scheme}
-(define force
-  (lambda (object)
-    (object)))%
-\end{scheme}
-
-We define the expression
-
-\begin{scheme}
-(delay \hyper{expression})%
-\end{scheme}
-
-to have the same meaning as the procedure call
-
-\begin{scheme}
-(make-promise (lambda () \hyper{expression}))\rm
-\end{scheme}
-
-as follows
-
-\begin{scheme}
-(define-syntax delay
-  (syntax-rules ()
-    ((delay expression)
-     (make-promise (lambda () expression))))),%
-\end{scheme}
-
-where {\cf make-promise} is defined as follows:
-
-% \begin{scheme}
-% (define make-promise
-%   (lambda (proc)
-%     (let ((already-run? \schfalse) (result \schfalse))
-%       (lambda ()
-%         (cond ((not already-run?)
-%                (set! result (proc))
-%                (set! already-run? \schtrue)))
-%         result))))%
-% \end{scheme}
-
-\begin{scheme}
-(define make-promise
-  (lambda (proc)
-    (let ((result-ready? \schfalse)
-          (result \schfalse))
-      (lambda ()
-        (if result-ready?
-            result
-            (let ((x (proc)))
-              (if result-ready?
-                  result
-                  (begin (set! result-ready? \schtrue)
-                         (set! result x)
-                         result))))))))%
-\end{scheme}
-
-\begin{rationale}
-A promise may refer to its own value, as in the last example above.
-Forcing such a promise may cause the promise to be forced a second time
-before the value of the first force has been computed.
-This complicates the definition of {\cf make-promise}.
-\end{rationale}
-
+%Here is a possible implementation of {\cf delay} and {\cf force}.
+%Promises are implemented here as procedures of no arguments,
+%and {\cf force} simply calls its argument:
+%
+%\begin{scheme}
+%(define force
+%  (lambda (object)
+%    (object)))%
+%\end{scheme}
+%
+%We define the expression
+%
+%\begin{scheme}
+%(delay \hyper{expression})%
+%\end{scheme}
+%
+%to have the same meaning as the procedure call
+%
+%\begin{scheme}
+%(make-promise (lambda () \hyper{expression}))\rm
+%\end{scheme}
+%
+%as follows
+%
+%\begin{scheme}
+%(define-syntax delay
+%  (syntax-rules ()
+%    ((delay expression)
+%     (make-promise (lambda () expression))))),%
+%\end{scheme}
+%
+%where {\cf make-promise} is defined as follows:
+%
+%% \begin{scheme}
+%% (define make-promise
+%%   (lambda (proc)
+%%     (let ((already-run? \schfalse) (result \schfalse))
+%%       (lambda ()
+%%         (cond ((not already-run?)
+%%                (set! result (proc))
+%%                (set! already-run? \schtrue)))
+%%         result))))%
+%% \end{scheme}
+%
+%\begin{scheme}
+%(define make-promise
+%  (lambda (proc)
+%    (let ((result-ready? \schfalse)
+%          (result \schfalse))
+%      (lambda ()
+%        (if result-ready?
+%            result
+%            (let ((x (proc)))
+%              (if result-ready?
+%                  result
+%                  (begin (set! result-ready? \schtrue)
+%                         (set! result x)
+%                         result))))))))%
+%\end{scheme}
+%
+%\begin{rationale}
+%A promise may refer to its own value, as in the last example above.
+%Forcing such a promise may cause the promise to be forced a second time
+%before the value of the first force has been computed.
+%This complicates the definition of {\cf make-promise}.
+%\end{rationale}
+%
 Various extensions to this semantics of {\cf delay} and {\cf force}
 are supported in some implementations:
 
@@ -3165,16 +3186,17 @@ are supported in some implementations:
 \item Calling {\cf force} on an object that is not a promise may simply
 return the object.
 
-\item It may be the case that there is no means by which a promise can be
-operationally distinguished from its forced value.  That is, expressions
-like the following may evaluate to either \schtrue{} or to \schfalse{},
-depending on the implementation:
-
-\begin{scheme}
-(eqv? (delay 1) 1)          \ev  \unspecified
-(pair? (delay (cons 1 2)))  \ev  \unspecified%
-\end{scheme}
-
+%This no longer is true: force needs to know the difference.
+%\item It may be the case that there is no means by which a promise can be
+%operationally distinguished from its forced value.  That is, expressions
+%like the following may evaluate to either \schtrue{} or to \schfalse{},
+%depending on the implementation:
+%
+%\begin{scheme}
+%(eqv? (delay 1) 1)          \ev  \unspecified
+%(pair? (delay (cons 1 2)))  \ev  \unspecified%
+%\end{scheme}
+%
 \item Some implementations may implement ``implicit forcing,'' where
 the value of a promise is forced by primitive procedures like \cf{cdr}
 and \cf{+}:
