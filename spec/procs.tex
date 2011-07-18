@@ -3068,16 +3068,17 @@ by the obtained promise or value, and then {\cf force} is again applied
   (list (force p) (force p)))  
                                \ev  (3 3)
 
-(define a-stream
+(define integers
   (letrec ((next
             (lambda (n)
-              (cons n (delay (next (+ n 1)))))))
+              (delay (cons n (next (+ n 1)))))))
     (next 0)))
-(define head car)
+(define head
+  (lambda (stream) (car (force stream))))
 (define tail
-  (lambda (stream) (force (cdr stream))))
+  (lambda (stream) (cdr (force stream))))
 
-(head (tail (tail a-stream)))  
+(head (tail (tail integers)))  
                                \ev  2%
 \end{scheme}
 
@@ -3090,15 +3091,17 @@ ever-growing sequence of pending promises does not build up until the
 heap is exhausted.
 
 \begin{scheme}
-
 (define (stream-filter p? s)
   (lazy
-     (if (null? (force s)) (delay '())
-         (let ((h (car (force s)))
-               (t (cdr (force s))))
-           (if (p? h)
-               (delay (cons h (stream-filter p? t)))
-               (stream-filter p? t))))))
+   (if (null? (force s)) (delay '())
+       (let ((h (car (force s)))
+             (t (cdr (force s))))
+         (if (p? h)
+             (delay (cons h (stream-filter p? t)))
+             (stream-filter p? t))))))
+
+(head (tail (tail (stream-filter? odd? integers))))
+                               \ev 5
 \end{scheme}
 
 {\cf Delay}, {\cf lazy}, and {\cf force} are mainly intended for programs written in
@@ -3126,66 +3129,86 @@ p                     \ev  {\it{}a promise, still}
        (force p))     \ev  6%
 \end{scheme}
 
-%Here is a possible implementation of {\cf delay} and {\cf force}.
-%Promises are implemented here as procedures of no arguments,
-%and {\cf force} simply calls its argument:
-%
-%\begin{scheme}
-%(define force
-%  (lambda (object)
-%    (object)))%
-%\end{scheme}
-%
-%We define the expression
-%
-%\begin{scheme}
-%(delay \hyper{expression})%
-%\end{scheme}
-%
-%to have the same meaning as the procedure call
-%
-%\begin{scheme}
-%(make-promise (lambda () \hyper{expression}))\rm
-%\end{scheme}
-%
-%as follows
-%
-%\begin{scheme}
-%(define-syntax delay
-%  (syntax-rules ()
-%    ((delay expression)
-%     (make-promise (lambda () expression))))),%
-%\end{scheme}
-%
-%where {\cf make-promise} is defined as follows:
-%
-%% \begin{scheme}
-%% (define make-promise
-%%   (lambda (proc)
-%%     (let ((already-run? \schfalse) (result \schfalse))
-%%       (lambda ()
-%%         (cond ((not already-run?)
-%%                (set! result (proc))
-%%                (set! already-run? \schtrue)))
-%%         result))))%
-%% \end{scheme}
-%
-%\begin{scheme}
-%(define make-promise
-%  (lambda (proc)
-%    (let ((result-ready? \schfalse)
-%          (result \schfalse))
-%      (lambda ()
-%        (if result-ready?
-%            result
-%            (let ((x (proc)))
-%              (if result-ready?
-%                  result
-%                  (begin (set! result-ready? \schtrue)
-%                         (set! result x)
-%                         result))))))))%
-%\end{scheme}
-%
+Here is a possible implementation of {\cf delay}, {\cf force} and {\cf
+  lazy}.  We define the expression
+
+\begin{scheme}
+(lazy \hyper{expression})%
+\end{scheme}
+
+to have the same meaning as the procedure call
+
+\begin{scheme}
+(make-promise \schfalse{} (lambda () \hyper{expression}))%
+\end{scheme}
+
+as follows
+
+\begin{scheme}
+(define-syntax lazy
+  (syntax-rules ()
+    ((lazy expression) 
+     (make-promise \schfalse{} (lambda () expression)))))%
+\end{scheme}
+
+and we define the expression
+
+\begin{scheme}
+(delay \hyper{expression})%
+\end{scheme}
+
+to have the same meaning as the following {\cf lazy} form:
+
+\begin{scheme}
+(lazy (make-promise \schtrue{} \hyper{expression}))%
+\end{scheme}
+
+as follows
+
+\begin{scheme}
+(define-syntax delay
+  (syntax-rules ()
+    ((delay expression)
+     (lazy (make-promise \schtrue{} expression)))))%
+\end{scheme}
+
+where {\cf make-promise} is defined as follows:
+
+\begin{scheme}
+(define make-promise
+  (lambda (done? proc)
+    (list (cons done? proc))))%
+\end{scheme}
+
+Finally, we define {\cf force} to iteratively call the procedure
+expressions in promises using a trampoline technique until a non-lazy
+result (i.e. a value created by {\cf delay} instead of {\cf lazy}) is
+returned, as follows:
+
+\begin{scheme}
+(define (force promise)
+  (if (promise-done? promise)
+      (promise-value promise)
+      (let ((promise* ((promise-value promise))))
+        (unless (promise-done? promise)
+          (promise-update! promise* promise))
+        (force promise))))%
+\end{scheme}
+
+with the following promise accessors:
+
+\begin{scheme}
+(define promise-done?
+  (lambda (x) (car (car x))))
+(define promise-value
+  (lambda (x) (cdr (car x))))
+(define promise-update!
+  (lambda (new old)
+    (set-car! (car old) (promise-done? new))
+    (set-cdr! (car old) (promise-value new))
+    (set-car! new (car old))))%
+\end{scheme}
+
 %\begin{rationale}
 %A promise may refer to its own value, as in the last example above.
 %Forcing such a promise may cause the promise to be forced a second time
@@ -3193,8 +3216,8 @@ p                     \ev  {\it{}a promise, still}
 %This complicates the definition of {\cf make-promise}.
 %\end{rationale}
 %
-Various extensions to this semantics of {\cf delay} and {\cf force}
-are supported in some implementations:
+Various extensions to this semantics of {\cf delay}, {\cf force} and
+{\cf lazy} are supported in some implementations:
 
 \begin{itemize}
 \item Calling {\cf force} on an object that is not a promise may simply
