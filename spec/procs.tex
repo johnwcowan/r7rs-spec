@@ -3240,9 +3240,10 @@ that were not created by {\tt call-with-values} is unspecified.
 However, the continuations of all non-final expressions within a sequence
 of expressions, such as in {\cf lambda}, {\cf case-lambda}, {\cf begin},
 {\cf let}, {\cf let*}, {\cf letrec}, {\cf letrec*}, {\cf let-values}, 
-{\cf let*-values}, {\cf case},
-and {\cf cond} forms, take an arbitrary number of values, because they
-discard the values passed to them in any event.
+{\cf let*-values}, {\cf let-syntax}, {\cf letrec-syntax}, {\cf parameterize},
+{\cf guard}, {\cf case}, {\cf cond}, {\cf when} and {\cf unless} forms,
+take an arbitrary number of values, because they discard the values passed
+to them in any event.
 
 \vest The escape procedure that is passed to \var{proc} has
 unlimited extent just like any other procedure in Scheme.  It may be stored
