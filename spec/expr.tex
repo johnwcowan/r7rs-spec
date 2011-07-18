@@ -1104,6 +1104,13 @@ addition, the reference may not appear as the labelled object itself
 because the object labelled by \texttt{\#\hyper{n}=} is not well
 defined in this case.
 
+It is an error for a \hyper{program} or \hyper{module} to include
+literal circular references:
+
+\begin{scheme}
+\#1=(begin (display \#\backwhack{}x) . \#1\#)
+                       \ev \scherror%
+\end{scheme}
 \end{entry}
 
 \section{Macros}
