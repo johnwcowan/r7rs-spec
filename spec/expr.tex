@@ -289,7 +289,9 @@ into the primitive constructs described in the previous section.
 \subsection{Conditionals}\unsection
 
 \begin{entry}{%
-\proto{cond}{ \hyperi{clause} \hyperii{clause} \dotsfoo}{\exprtype}}
+\proto{cond}{ \hyperi{clause} \hyperii{clause} \dotsfoo}{\exprtype}
+\pproto{else}{\auxiliarytype}
+\pproto{=>}{\auxiliarytype}}
 
 \syntax
 Each \hyper{clause} should be of the form
@@ -956,7 +958,9 @@ exceptions.
 
 \begin{entry}{%
 \proto{quasiquote}{ \hyper{qq template}}{\exprtype} \nopagebreak
-\pproto{\backquote\hyper{qq template}}{\exprtype}}
+\pproto{\backquote\hyper{qq template}}{\exprtype}
+\pproto{unquote}{\auxiliarytype}
+\pproto{unquote-splicing}{\auxiliarytype}}
 
 ``Backquote'' or ``quasiquote''\index{backquote} expressions are useful
 for constructing a list or vector structure when most but not all of the
@@ -1265,8 +1269,9 @@ A \hyper{transformer spec} has one of the following form:
 }
 \pproto{(syntax-rules \hyper{ellipsis} (\hyper{literal} \dotsfoo)}{\exprtype}
 {\tt\obeyspaces%
-\hspace*{1em}\hyper{syntax rule} \dotsfoo)}
-}
+\hspace*{1em}\hyper{syntax rule} \dotsfoo)}\\
+\pproto{\_}{\auxiliarytype}
+\pproto{\dotsfoo}{\auxiliarytype}}
 
 \syntax
 Each \hyper{literal}, as well as the \hyper{ellipsis} in the second form must

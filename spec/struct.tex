@@ -205,6 +205,11 @@ indicates zero or more occurrences of a \hyper{thing}, and
 \end{tabbing}
 indicates one or more occurrences of a \hyper{thing}.
 
+If \var{category} is ``auxiliary syntax'', then the entry describes a
+syntax binding that may occur only as part of specific surrounding
+expressions. Any use as an independent syntactic construct or
+identifier is an error.
+
 If \var{category} is ``procedure'', then the entry describes a procedure, and
 the header line gives a template for a call to the procedure.  Argument
 names in the template are \var{italicized}.  Thus the header line
