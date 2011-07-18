@@ -1007,6 +1007,31 @@ unquotation.
           \lev  (a `(b ,x ,'y d) e)%
 \end{scheme}
 
+A quasiquote expression may return either fresh, mutable objects or
+literal structure for any structure that is constructed at run time
+during the evaluation of the expression. Portions that do not need to
+be rebuilt are always literal. Thus,
+
+\begin{scheme}
+(let ((a 3)) ¡Æ((1 2) ,a ,4 ,¡Çfive 6))
+\end{scheme}
+
+may be equivalent to either of the following expressions:
+
+\begin{scheme}
+`((1 2) 3 4 five 6)
+
+(let ((a 3)) 
+  (cons ¡Ç(1 2)
+        (cons a (cons 4 (cons ¡Çfive ¡Ç(6))))))
+\end{scheme}
+
+However, it is not equivalent to this expression:
+
+\begin{scheme}
+(let ((a 3)) (list (list 1 2) a 4 ¡Çfive 6))
+\end{scheme}
+
 The two notations
  \backquote\hyper{qq template} and {\tt (quasiquote \hyper{qq template})}
  are identical in all respects.
@@ -1025,9 +1050,13 @@ car is one of these symbols may vary between implementations.
      {\em{}i.e.,} (quasiquote (list (unquote (+ 1 2)) 4))%
 \end{scheme}
 
-Unpredictable behavior can result if any of the symbols
-\ide{quasiquote}, \ide{unquote}, or \ide{unquote-splicing} appear in
-positions within a \hyper{qq template} otherwise than as described above.
+%% Unpredictable behavior can result if any of the symbols
+%% \ide{quasiquote}, \ide{unquote}, or \ide{unquote-splicing} appear in
+%% positions within a \hyper{qq template} otherwise than as described above.
+
+It is a syntax violation if any of the identifiers quasiquote,
+unquote, or unquote-splicing appear in positions within a \hyper{qq
+  template} otherwise than as described above.
 
 \end{entry}
 
