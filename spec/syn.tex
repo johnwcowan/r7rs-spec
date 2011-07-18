@@ -140,7 +140,9 @@ escape sequence.
  \> \| \backwhack{}a \| \backwhack{}b \| \backwhack{}t \| \backwhack{}n \| \backwhack{}r \| \backwhack\doublequote{} \| \backwhack\backwhack 
  \>  \| \backwhack{}\meta{intraline whitespace}\meta{line ending}
  \>  \> \meta{intraline whitespace}
- \>  \| \meta{inline hex escape}%
+ \>  \| \meta{inline hex escape}
+\meta{bytevector} \: \#u8(\arbno{\meta{byte}})
+\meta{byte} \: \meta{any exact integer between 0 and 255}%
 \end{grammar}
 
 
@@ -222,7 +224,7 @@ successfully parses.  Note that any string that parses as an
 \meta{datum} \: \meta{simple datum} \| \meta{compound datum}
 \>  \| \meta{label} = \meta{datum} \| \meta{label} \#
 \meta{simple datum} \: \meta{boolean} \| \meta{number}
-\>  \| \meta{character} \| \meta{string} \|  \meta{symbol}
+\>  \| \meta{character} \| \meta{string} \|  \meta{symbol} \| \meta{bytevector}
 \meta{symbol} \: \meta{identifier}
 \meta{compound datum} \: \meta{list} \| \meta{vector}
 \meta{list} \: (\arbno{\meta{datum}}) \| (\atleastone{\meta{datum}} .\ \meta{datum})
