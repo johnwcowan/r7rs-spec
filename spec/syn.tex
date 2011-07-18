@@ -280,11 +280,16 @@ successfully parses.  Note that any string that parses as an
 \>       \>(else => \meta{recipient}))
 \>  \| (and \arbno{\meta{test}})
 \>  \| (or \arbno{\meta{test}})
+\>  \| (when \meta{expression} \meta{body})
+\>  \| (unless \meta{expression} \meta{body})
 \>  \| (let (\arbno{\meta{binding spec}}) \meta{body})
 \>  \| (let \meta{variable} (\arbno{\meta{binding spec}}) \meta{body})
 \>  \| (let* (\arbno{\meta{binding spec}}) \meta{body})
 \>  \| (letrec (\arbno{\meta{binding spec}}) \meta{body})
 \>  \| (letrec* (\arbno{\meta{binding spec}}) \meta{body})
+\>  \| (let-values (\arbno{\meta{formals}}) \meta{body})
+\>  \| (let*-values (\arbno{\meta{formals}}) \meta{body})
+\>  \| (c\=ase-lambda \arbno{\meta{case-lambda clause}})
 \>  \| (begin \meta{sequence})
 \>  \| (d\=o \=(\arbno{\meta{iteration spec}})
 \>       \>  \>(\meta{test} \meta{do result})
@@ -301,6 +306,7 @@ successfully parses.  Note that any string that parses as an
 \meta{binding spec} \: (\meta{variable} \meta{expression})
 \meta{iteration spec} \: (\meta{variable} \meta{init} \meta{step})
 \> \| (\meta{variable} \meta{init})
+\meta{case-lambda clause} \: (\meta{formals} \meta{body})
 \meta{init} \: \meta{expression}
 \meta{step} \: \meta{expression}
 \meta{do result} \: \meta{sequence} \| \meta{empty}

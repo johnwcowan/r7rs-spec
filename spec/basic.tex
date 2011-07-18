@@ -260,11 +260,16 @@ are shown here.
 (and \arbno{\meta{expression}} \meta{tail expression})
 (or \arbno{\meta{expression}} \meta{tail expression})
 
+(when \meta{test} \meta{tail sequence})
+(unless \meta{test} \meta{tail sequence})
+
 (let (\arbno{\meta{binding spec}}) \meta{tail body})
 (let \meta{variable} (\arbno{\meta{binding spec}}) \meta{tail body})
 (let* (\arbno{\meta{binding spec}}) \meta{tail body})
 (letrec (\arbno{\meta{binding spec}}) \meta{tail body})
 (letrec* (\arbno{\meta{binding spec}}) \meta{tail body})
+(let-values (\arbno{\meta{formals}}) \meta{tail body})
+(let*-values (\arbno{\meta{formals}}) \meta{tail body})
 
 (let-syntax (\arbno{\meta{syntax spec}}) \meta{tail body})
 (letrec-syntax (\arbno{\meta{syntax spec}}) \meta{tail body})
