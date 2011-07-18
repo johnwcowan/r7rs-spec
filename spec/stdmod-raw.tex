@@ -1,0 +1,255 @@
+\chapter{Standard Modules}
+\label{stdmodules}
+
+%% Note, this is used to generate stdmod.tex.  The bindings could be
+%% extracted automatically from the document, but this lets us choose
+%% the ordering and optionally format manually where needed.
+
+This section lists the exports provided by the standard modules.  The
+modules are factored so as to separate features which may not be
+supported by all implementations, or which may be expensive to load.
+
+The {\cf scheme} module prefix is used for all standard modules, and
+is reserved for use by future standards.
+
+\textbf{Base Module}
+
+The \texttt{(scheme base)} module exports many of the procedures and
+syntax bindings that are traditionally associated with Scheme.
+
+\begin{scheme}
+._               ...
+.*                +                -
+./                <=               <
+.=>               =                >=
+.>                abs              and
+.append           apply            assoc
+.assq             assv             begin
+.boolean?         bytevector-copy  bytevector-copy!
+.bytevector-length bytevector-u8-ref bytevector-u8-set!
+.bytevector?            caar             cadr
+.call-with-current-continuation     call-with-values
+.call/cc
+.car              case-lambda      case
+.cdddar           cddddr           cdr
+.ceiling          char->integer    char<=?
+.char<?
+.char=?           char>=?          char>?
+.char?            complex?         cond
+.cons             define-syntax    define
+.define-record-type                 denominator
+.do               dynamic-wind     else
+.eq?
+.equal?           eqv?             error
+.even?            exact->inexact   exact-integer-sqrt
+.exact-integer?   exact?           expt
+.floor            for-each         gcd
+.guard            if               import
+.include          inexact->exact   inexact?
+.integer->char    integer?         lambda
+.lcm              length           let*
+.let-syntax       letrec*          letrec-syntax
+.letrec           let              list-copy
+.list->string     list->vector     list-ref
+.list-set!        list-tail        list?
+.list             make-bytevector  make-list
+.make-parameter   make-string      make-vector
+.map              max              member
+.memq             memv             min
+.modulo           negative?        not
+.null?            number->string   number?
+.numerator        odd?             or
+.pair?            parameterize     partial-bytevector
+.partial-bytevector-copy!           positive?
+.procedure?       quasiquote       quote
+.quotient         raise-continuable
+.raise            rational?        rationalize
+.real?            remainder        reverse
+.round            set!             set-car!
+.set-cdr!         string->list     string->number
+.string->symbol   string->vector   string-append
+.string-copy      string-fill!     string-for-each
+.string-length    string-map       string-ref
+.string-set!      string<=?        string<?
+.string=?         string>=?        string>?
+.string?          string           substring
+.symbol->string   symbol?          syntax-error
+.syntax-rules     truncate         values
+.unquote          unquote-splicing
+.vector-copy
+.vector->list     vector->string   vector-fill!
+.vector-for-each  vector-length    vector-map
+.vector-ref       vector-set!      vector?
+.vector           zero?
+.with-exception-handler
+\end{scheme}
+
+\textbf{Inexact Module}
+
+The \texttt{(scheme inexact)} module exports procedures which are
+typically only useful with inexact values.
+
+\begin{scheme}
+.exp     log      sqrt
+.sin     cos      tan
+.asin    acos     atan
+.finite? infinite? nan?
+\end{scheme}
+
+\textbf{Complex Module}
+
+The \texttt{(scheme complex)} module exports procedures which are
+typically only useful with complex values.
+
+\begin{scheme}
+.angle   magnitude   imag-part   real-part
+.make-polar           make-rectangular
+\end{scheme}
+
+\textbf{Division Module}
+
+The \texttt{(scheme division)} module exports procedures for integer
+division.
+
+\begin{scheme}
+.floor/     floor-quotient     floor-remainder
+.ceiling/   ceiling-quotient   ceiling-remainder
+.truncate/  truncate-quotient  truncate-remainder
+.round/     round-quotient     round-remainder
+.euclidean/ euclidean-quotient euclidean-remainder
+\end{scheme}
+
+\textbf{Lazy Module}
+
+The \texttt{(scheme lazy)} module exports forms for lazy evaluation.
+
+\begin{scheme}
+.delay   force
+\end{scheme}
+
+\textbf{Eval Module}
+
+The \texttt{(scheme eval)} module exports procedures for evaluating Scheme
+data as programs.
+
+\begin{scheme}
+.eval
+.null-environment
+.scheme-report-environment
+\end{scheme}
+
+\textbf{Repl Module}
+
+The \texttt{(scheme repl)} module exports the {\cf
+  interaction-environment} procedure.
+
+\begin{scheme}
+.interaction-environment
+\end{scheme}
+
+\textbf{Process Context Module}
+
+The \texttt{(scheme process-context)} module exports procedures for
+accessing with the program's calling context.
+
+\begin{scheme}
+.environment-variable
+.environment-variables
+.command-line
+\end{scheme}
+
+\textbf{Load Module}
+
+The \texttt{(scheme load)} module exports forms for loading and
+including Scheme expressions from files.
+
+\begin{scheme}
+.load   include
+\end{scheme}
+
+\textbf{I/O Module}
+
+The \texttt{(scheme io)} module exports procedures for general input
+and output on ports.
+
+\begin{scheme}
+.binary-port?             char-ready?
+.character-port?          close-input-port
+.close-output-port        current-error-port
+.current-input-port       current-output-port
+.eof-object?              get-output-string
+.input-port?              newline
+.open-input-string        open-output-string
+.output-port?             peek-char
+.peek-u8?                 port?
+.port-open?               read-char
+.read-u8                  u8-ready?
+.write-char               write-u8
+\end{scheme}
+
+\textbf{File Module}
+
+The \texttt{(scheme file)} module provides procedures for accessing
+files.
+
+\begin{scheme}
+.call-with-input-file    call-with-output-file
+.delete-file             file-exists?
+.open-input-file         open-output-file
+.with-input-from-file    with-output-to-file
+\end{scheme}
+
+\textbf{Read Module}
+
+The \texttt{(scheme read)} module provides procedures for reading
+Scheme objects.
+
+\begin{scheme}
+.read
+\end{scheme}
+
+\textbf{Write Module}
+
+The \texttt{(scheme write)} module provides procedures for writing
+Scheme objects.
+
+\begin{scheme}
+.write  display
+\end{scheme}
+
+\textbf{Char Module}
+
+The \texttt{(scheme char)} module provides procedures for dealing
+with Unicode character operations.
+
+\begin{scheme}
+.char-alphabetic?
+.char-ci=?       char-ci<?       char-ci>?
+.char-ci<=?      char-ci>=?      char-upcase
+.char-downcase   char-foldcase   char-lower-case?
+.char-numeric?   char-upper-case?
+.char-whitespace?                 string-ci=?
+.string-ci<?     string-ci>?     string-ci<=?
+.string-ci>=?    string-upcase   string-downcase
+.string-foldcase
+\end{scheme}
+
+\textbf{Char Normalization Module}
+
+The \texttt{(scheme char normalization)} module provides procedures
+for dealing with Unicode normalization operations.
+
+\begin{scheme}
+.string-ni=?     string-ni<?     string-ni>?
+.string-ni<=?    string-ni>=?
+\end{scheme}
+
+\textbf{Time}
+
+The \texttt{(scheme time)} module provides access to the system time.
+
+\begin{scheme}
+.current-second
+.current-jiffy
+.jiffies-per-second
+\end{scheme}

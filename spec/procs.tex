@@ -2182,11 +2182,11 @@ of whether the implementation uses the Unicode representation internally.
 
 
 \begin{entry}{%
-\proto{char-ci=?}{ \vri{char} \vrii{char} \vriii{char} \dotsfoo}{procedure}
-\proto{char-ci<?}{ \vri{char} \vrii{char} \vriii{char} \dotsfoo}{procedure}
-\proto{char-ci>?}{ \vri{char} \vrii{char} \vriii{char} \dotsfoo}{procedure}
-\proto{char-ci<=?}{ \vri{char} \vrii{char} \vriii{char} \dotsfoo}{procedure}
-\proto{char-ci>=?}{ \vri{char} \vrii{char} \vriii{char} \dotsfoo}{procedure}}
+\proto{char-ci=?}{ \vri{char} \vrii{char} \vriii{char} \dotsfoo}{char module procedure}
+\proto{char-ci<?}{ \vri{char} \vrii{char} \vriii{char} \dotsfoo}{char module procedure}
+\proto{char-ci>?}{ \vri{char} \vrii{char} \vriii{char} \dotsfoo}{char module procedure}
+\proto{char-ci<=?}{ \vri{char} \vrii{char} \vriii{char} \dotsfoo}{char module procedure}
+\proto{char-ci>=?}{ \vri{char} \vrii{char} \vriii{char} \dotsfoo}{char module procedure}}
 
 \nodomain{Both \vari{char} and \varii{char} must be characters.}
 These procedures are similar to {\cf char=?}\ et cetera, but they treat
@@ -2203,11 +2203,11 @@ two arguments, as with the corresponding numerical predicates.
 
 
 \begin{entry}{%
-\proto{char-alphabetic?}{ char}{procedure}
-\proto{char-numeric?}{ char}{procedure}
-\proto{char-whitespace?}{ char}{procedure}
-\proto{char-upper-case?}{ letter}{procedure}
-\proto{char-lower-case?}{ letter}{procedure}}
+\proto{char-alphabetic?}{ char}{char module procedure}
+\proto{char-numeric?}{ char}{char module procedure}
+\proto{char-whitespace?}{ char}{char module procedure}
+\proto{char-upper-case?}{ letter}{char module procedure}
+\proto{char-lower-case?}{ letter}{char module procedure}}
 
 These procedures return \schtrue{} if their arguments are alphabetic,
 numeric, whitespace, upper case, or lower case characters, respectively,
@@ -2274,9 +2274,9 @@ returns that character.
 
 
 \begin{entry}{%
-\proto{char-upcase}{ char}{unicode module procedure}
-\proto{char-downcase}{ char}{unicode module procedure}
-\proto{char-foldcase}{ char}{unicode module procedure}}
+\proto{char-upcase}{ char}{char module procedure}
+\proto{char-downcase}{ char}{char module procedure}
+\proto{char-foldcase}{ char}{char module procedure}}
 
 \nodomain{\var{Char} must be a character.}
 
@@ -2524,9 +2524,9 @@ invoking the corresponding procedures without \hbox{``{\tt -ni}''}.
 \end{entry}
 
 \begin{entry}{%
-\proto{string-upcase}{ string}{unicode module procedure}
-\proto{string-downcase}{ string}{unicode module procedure}
-\proto{string-foldcase}{ string}{unicode module procedure}}
+\proto{string-upcase}{ string}{char module procedure}
+\proto{string-downcase}{ string}{char module procedure}
+\proto{string-foldcase}{ string}{char module procedure}}
 
 \nodomain{\var{String} must be a string.}
 
@@ -3362,7 +3362,7 @@ some people use the name \ide{call/cc} instead.
 \end{entry}
 
 \begin{entry}{%
-\proto{values}{ obj $\ldots$}{multiple-values module procedure}}
+\proto{values}{ obj $\ldots$}{procedure}}
 
 Delivers all of its arguments to its continuation.
 Except for continuations created by the \ide{call-with-values}
@@ -3377,7 +3377,7 @@ procedure, all continuations take exactly one value.
 \end{entry}
 
 \begin{entry}{%
-\proto{call-with-values}{ producer consumer}{multiple-values module procedure}}
+\proto{call-with-values}{ producer consumer}{procedure}}
 
 Calls its \var{producer} argument with no values and
 a continuation that, when passed some values, calls the
