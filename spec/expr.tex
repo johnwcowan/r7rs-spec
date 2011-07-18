@@ -727,12 +727,27 @@ referring to the value of the corresponding \hyper{variable} or the
 \subsection{Sequencing}\unsection
 
 \begin{entry}{%
+\proto{begin}{ \hyper{form} \dotsfoo}{\exprtype}
 \proto{begin}{ \hyperi{expression} \hyperii{expression} \dotsfoo}{\exprtype}}
 
-The \hyper{expression}s are evaluated sequentially from left to right,
-and the value(s) of the last \hyper{expression} is(are) returned.  This
-expression type is used to sequence side effects such as input and
-output.
+The {\cf begin} keyword has two different roles, depending on its
+context:
+
+\begin{itemize}
+\item It may appear as a form in a \hyper{body}, or at the
+  \hyper{top-level}, or directly nested in a {\cf begin} form that
+  appears in a \hyper{body}. In this case, the begin form must have
+  the shape specified in the first header line. This use of begin acts
+  as a splicing form - the forms inside the \hyper{body} are spliced
+  into the surrounding body, as if the begin wrapper were not actually
+  present.
+\item It may appear as an ordinary expression and must have the shape
+  specified in the second header line. In this case, the
+  \hyper{expression}s are evaluated sequentially from left to right,
+  and the value(s) of the last \hyper{expression} is(are) returned. This
+  expression type is used to sequence side effects such as assignments
+  or input and output.
+\end{itemize}
 
 \begin{scheme}
 (define x 0)
