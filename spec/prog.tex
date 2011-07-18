@@ -12,12 +12,18 @@ Expressions are described in chapter~\ref{expressionchapter};
 the other program parts, as well as modules, are the subject of the
 rest of the present chapter.
 
-Programs are typically stored in files or entered interactively to a
-running Scheme system, although other paradigms are possible;
-questions of user interface lie outside the scope of this report.
-(Indeed, Scheme would still be useful as a notation for expressing
-computational methods even in the absence of a mechanical
-implementation.)
+Programs and modules are typically stored in files, although programs
+may be entered interactively to a running Scheme system, and other
+paradigms are possible.
+
+\todo{Shinn: If not in this report, then in a ``standard practice''
+  ammendment or SRFI we need to say something about the directory
+  structure and file extensions used for modules and programs.}
+
+%% ; questions of user interface lie outside the scope of this report.
+%% (Indeed, Scheme would still be useful as a notation for expressing
+%% computational methods even in the absence of a mechanical
+%% implementation.)
 
 Program parts other than expressions that are present
 at the top level of a program can be interpreted declaratively.
@@ -26,6 +32,13 @@ environment or modify the value of existing top-level bindings.
 Expressions occurring at the top level of a program are
 interpreted imperatively; they are executed in order when the program is
 invoked or loaded, and typically perform some kind of initialization.
+
+\todo{Shinn: The sections below seem to cover this - do we want to
+  summarize it here?}
+%% If a top-level binding is redefined or modified, existing references
+%% to the binding must reflect the change, however if an existing
+%% non-syntax binding is redefined as syntax previous references may
+%% remain unchanged.
 
 At the top level of a program {\tt(begin \hyperi{form} \dotsfoo)} is
 equivalent to the sequence of expressions, definitions, and syntax definitions
@@ -79,10 +92,12 @@ has essentially the same effect as the assignment expression
 \begin{scheme}
 (\ide{set!}\ \hyper{variable} \hyper{expression})%
 \end{scheme}
-if \hyper{variable} is bound.  If \hyper{variable} is not bound,
-however, then the definition will bind \hyper{variable} to a new
-location before performing the assignment, whereas it would be an error
-to perform a {\cf set!}\ on an unbound\index{unbound} variable.
+if \hyper{variable} is bound to non-syntax.  However, if
+\hyper{variable} is not bound, or is bound to a {\em syntax
+  definition} (see below), then the definition will bind
+\hyper{variable} to a new location before performing the assignment,
+whereas it would be an error to perform a {\cf set!}\ on an
+unbound\index{unbound} variable.
 
 \begin{scheme}
 (define add3
@@ -159,9 +174,10 @@ They have the following form:\mainschindex{define-syntax}
 the \hyper{transformer spec} should be an instance of \ide{syntax-rules}.
 If the {\cf define-syntax} occurs at the top-level, then the top-level
 syntactic environment is extended by binding the
-\hyper{keyword} to the specified transformer.  Otherwise, it is an
-{\em internal syntax definition}, and is local to the \hyper{body} in which
-it is defined.
+\hyper{keyword} to the specified transformer, and existing references
+to any non-syntax top-level binding for \hyper{keyword} remain unchanged.
+Otherwise, it is an {\em internal syntax definition}, and is local to the
+\hyper{body} in which it is defined.
 %% Any {\em internal syntax definitions} in a body must come before any
 %% {\em internal definitions}.
 
@@ -321,6 +337,7 @@ to be a predicate for instances of {\cf <pare>}.
 
 
 \section{Modules}
+\label{modules}
 
 Modules provide a way to encapsulate programs and manage the top-level
 namespace.  This section defines the notation and semantics for modules.

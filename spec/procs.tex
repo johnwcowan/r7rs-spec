@@ -9,21 +9,31 @@
 \mainindex{top level environment}
 \mainindex{procedure}
 
-\todo{Shinn: #112 repl definitions and #159 base environments}
-
 This chapter describes Scheme's built-in procedures.  The initial (or
-``top level'') Scheme environment starts out with a number of variables
-bound to locations containing useful values, most of which are primitive
-procedures that manipulate data.  For example, the variable {\cf abs} is
-bound to (a location initially containing) a procedure of one argument
-that computes the absolute value of a number, and the variable {\cf +}
-is bound to a procedure that computes sums.  
+``top level'') Scheme environment is empty, and bindings must be
+introduced with {\cf import}.
+
+Implementations may provide an interactive session called a
+\defining{REPL} (Read-Eval-Print-Loop), where Scheme expressions are
+entered and evaluated one at a time.  For convenience and ease of use
+for beginners the ``top-level'' Scheme environment in an interactive
+session is not empty, but must start out with a number of variables
+bound to locations containing at least the bindings provided by the
+{\cf(scheme base)} module.  This module includes mostly core syntax
+and primitive procedures that manipulate data.  For example, the
+variable {\cf abs} is bound to (a location initially containing) a
+procedure of one argument that computes the absolute value of a
+number, and the variable {\cf +} is bound to a procedure that computes
+sums.  The full list of {\cf(scheme base)} bindings can be found in
+chapter~\ref{stdmodules}.
 
 A program may use a top-level definition to bind any variable.  It may
-subsequently alter any such binding by an assignment (see \ref{assignment}).
-These operations do not modify the behavior of Scheme's built-in
-procedures.  Altering any top-level binding that has not been introduced by a
-definition has an unspecified effect on the behavior of the built-in procedures.
+subsequently alter any such binding by an assignment (see
+\ref{assignment}).  These operations do not modify the behavior of
+Scheme's built-in procedures, or any procedure defined in a module
+(see section~\ref{modules}).  Altering any top-level binding that has
+not been introduced by a definition has an unspecified effect on the
+behavior of the built-in procedures.
 
 \section{Equivalence predicates}
 \label{equivalencesection}
