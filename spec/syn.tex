@@ -65,7 +65,8 @@ escape sequence.
 \>  \| \meta{character} \| \meta{string}
 \>  \| ( \| ) \| \sharpsign( \| \singlequote{} \| \backquote{} \| , \| ,@ \| {\bf.}
 \meta{delimiter} \: \meta{whitespace} \| ( \| ) \| " \| ;
-\meta{whitespace} \: \meta{space or newline}
+\meta{intraline whitespace} \: \meta{space or tab}
+\meta{whitespace} \: \meta{intraline whitespace or newline or return}
 \meta{comment} \: ; \= $\langle$\rm all subsequent characters up to a
 		    \>\ \rm line break$\rangle$\index{comment}
 \> \| \meta{nested comment}
@@ -137,6 +138,8 @@ escape sequence.
 \meta{string} \: " \arbno{\meta{string element}} "
 \meta{string element} \: \meta{any character other than \doublequote{} or \backwhack}
  \> \| \backwhack{}a \| \backwhack{}b \| \backwhack{}t \| \backwhack{}n \| \backwhack{}r \| \backwhack\doublequote{} \| \backwhack\backwhack 
+ \>  \| \backwhack{}\meta{intraline whitespace}\meta{line ending}
+ \>  \> \meta{intraline whitespace}
  \>  \| \meta{inline hex escape}%
 \end{grammar}
 

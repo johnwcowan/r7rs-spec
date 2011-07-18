@@ -2325,6 +2325,8 @@ themselves.  Escape sequences always start with a backslash (\backwhack{}):
 \item{\cf\backwhack{}r} : return, U+000D 
 \item{\cf\backwhack{}}\verb|"| : doublequote, U+0022 
 \item{\cf\backwhack{}\backwhack{}} : backslash, U+005C 
+\item{\cf\backwhack{}\hyper{intraline whitespace}\hyper{line ending}
+      \hyper{intraline whitespace}} : nothing
 \item{\cf\backwhack{}x\meta{hex scalar value};} : specified character (note the
   terminating semi-colon).
 \end{itemize}
@@ -2332,8 +2334,13 @@ themselves.  Escape sequences always start with a backslash (\backwhack{}):
 The result is unspecified if any other character in a string occurs
 after a backslash.
 
-\vest A string constant may continue from one line to the next, which
-has the same effect as inserting a {\cf\backwhack{}n} character into the string.
+\vest Except for a line ending, any character outside of an escape
+sequence stands for itself in the string literal.  A line ending which
+is preceded by {\cf\backwhack{}\hyper{intraline whitespace}} expands
+to nothing (along with any trailing intraline whitespace), and can be
+used to indent strings for improved legibility. Any other line ending
+has the same effect as inserting a {\cf\backwhack{}n} character into
+the string.
 % this is
 %usually a bad idea because 
 %the exact effect may vary from one computer
