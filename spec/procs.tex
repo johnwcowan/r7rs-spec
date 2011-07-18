@@ -3190,17 +3190,18 @@ are supported in some implementations:
 \item Calling {\cf force} on an object that is not a promise may simply
 return the object.
 
-%This no longer is true: force needs to know the difference.
-%\item It may be the case that there is no means by which a promise can be
-%operationally distinguished from its forced value.  That is, expressions
-%like the following may evaluate to either \schtrue{} or to \schfalse{},
-%depending on the implementation:
-%
-%\begin{scheme}
-%(eqv? (delay 1) 1)          \ev  \unspecified
-%(pair? (delay (cons 1 2)))  \ev  \unspecified%
-%\end{scheme}
-%
+% There is some debate on whether we should continue to allow these
+% optimizations.
+\item It may be the case that there is no means by which a promise can be
+operationally distinguished from its forced value.  That is, expressions
+like the following may evaluate to either \schtrue{} or to \schfalse{},
+depending on the implementation:
+
+\begin{scheme}
+(eqv? (delay 1) 1)          \ev  \unspecified
+(pair? (delay (cons 1 2)))  \ev  \unspecified%
+\end{scheme}
+
 \item Some implementations may implement ``implicit forcing,'' where
 the value of a promise is forced by primitive procedures like \cf{cdr}
 and \cf{+}:
