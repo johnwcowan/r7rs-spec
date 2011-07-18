@@ -93,8 +93,9 @@ has essentially the same effect as the assignment expression
 (\ide{set!}\ \hyper{variable} \hyper{expression})%
 \end{scheme}
 if \hyper{variable} is bound to non-syntax.  However, if
-\hyper{variable} is not bound, or is bound to a {\em syntax
-  definition} (see below), then the definition will bind
+\hyper{variable} is not bound, 
+%or is bound to a {\em syntax definition} (see below),
+then the definition will bind
 \hyper{variable} to a new location before performing the assignment,
 whereas it would be an error to perform a {\cf set!}\ on an
 unbound\index{unbound} variable.
@@ -174,8 +175,8 @@ They have the following form:\mainschindex{define-syntax}
 the \hyper{transformer spec} should be an instance of \ide{syntax-rules}.
 If the {\cf define-syntax} occurs at the top-level, then the top-level
 syntactic environment is extended by binding the
-\hyper{keyword} to the specified transformer, and existing references
-to any non-syntax top-level binding for \hyper{keyword} remain unchanged.
+\hyper{keyword} to the specified transformer, but existing references
+to any top-level binding for \hyper{keyword} remain unchanged.
 Otherwise, it is an {\em internal syntax definition}, and is local to the
 \hyper{body} in which it is defined.
 %% Any {\em internal syntax definitions} in a body must come before any

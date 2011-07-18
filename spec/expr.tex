@@ -738,7 +738,7 @@ context:
 \begin{itemize}
 \item It may appear as a form in a \hyper{body}, or at the
   \hyper{top-level}, or directly nested in a {\cf begin} form that
-  appears in a \hyper{body}. In this case, the begin form must have
+  is one of these three types.  In this case, the {\cf begin} form must have
   the shape specified in the first header line. This use of begin acts
   as a splicing form - the forms inside the \hyper{body} are spliced
   into the surrounding body, as if the begin wrapper were not actually
@@ -1013,7 +1013,7 @@ during the evaluation of the expression. Portions that do not need to
 be rebuilt are always literal. Thus,
 
 \begin{scheme}
-(let ((a 3)) ¡Æ((1 2) ,a ,4 ,¡Çfive 6))
+(let ((a 3)) `((1 2) ,a ,4 ,'five 6))
 \end{scheme}
 
 may be equivalent to either of the following expressions:
@@ -1022,14 +1022,14 @@ may be equivalent to either of the following expressions:
 `((1 2) 3 4 five 6)
 
 (let ((a 3)) 
-  (cons ¡Ç(1 2)
-        (cons a (cons 4 (cons ¡Çfive ¡Ç(6))))))
+  (cons '(1 2)
+        (cons a (cons 4 (cons 'five '(6))))))
 \end{scheme}
 
 However, it is not equivalent to this expression:
 
 \begin{scheme}
-(let ((a 3)) (list (list 1 2) a 4 ¡Çfive 6))
+(let ((a 3)) (list (list 1 2) a 4 'five 6))
 \end{scheme}
 
 The two notations
@@ -1054,9 +1054,9 @@ car is one of these symbols may vary between implementations.
 %% \ide{quasiquote}, \ide{unquote}, or \ide{unquote-splicing} appear in
 %% positions within a \hyper{qq template} otherwise than as described above.
 
-It is a syntax violation if any of the identifiers quasiquote,
-unquote, or unquote-splicing appear in positions within a \hyper{qq
-  template} otherwise than as described above.
+It is a error if any of the identifiers {\cf quasiquote}, {\cf unquote},
+or {\cf unquote-splicing} appear in positions within a \hyper{qq template}
+otherwise than as described above.
 
 \end{entry}
 
