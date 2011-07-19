@@ -13,8 +13,8 @@ Expression types are categorized as {\em primitive} or {\em derived}.
 Primitive expression types include variables and procedure calls.
 Derived expression types are not semantically primitive, but can instead
 be defined as macros.
-With the exception of {\cf quasiquote}, whose macro definition is complex,
-suitable definitions of the derived expressions are 
+%With the exception of {\cf quasiquote}, whose macro definition is complex,
+Suitable definitions of some of the derived expressions are 
 given in section~\ref{derivedsection}.
 
 \section{Primitive expression types}
@@ -112,10 +112,11 @@ and {\cf *}.  New procedures are created by evaluating \lambdaexp{}s
 % or definitions (see section~\ref{define}).
 
 Procedure calls may return any number of values (see \ide{values} in
-section~\ref{proceduresection}).  With the exception of {\cf values}
-the procedures available in the initial environment return one
+section~\ref{proceduresection}).  
+Most of the procedures defined in this report return one
 value or, for procedures such as {\cf apply}, pass on the values returned
 by a call to one of their arguments.
+Exceptions are noted in the individual descriptions.
 
 Procedure calls are also called {\em combinations}.
 \mainindex{combination}
@@ -605,6 +606,11 @@ Another restriction is that the continuation of each \hyper{init}
 should not be invoked more than once.
 
 % \todo{use or uses?  --- Jinx.}
+It must be possible to evaluate each \hyper{init} without assigning or
+referring to the value of the corresponding \hyper{variable} or the
+\hyper{variable} of any of the bindings that follow it in
+\hyper{bindings}.
+
 
 \end{entry}
 
@@ -717,11 +723,6 @@ used to compute initial values must not be invoked more than once.
   y)
                 \ev  5%
 \end{scheme}
-
-It must be possible to evaluate each \hyper{init} without assigning or
-referring to the value of the corresponding \hyper{variable} or the
-\hyper{variable} of any of the bindings that follow it in
-\hyper{bindings}.
 
 \end{entry}
 

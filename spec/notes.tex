@@ -28,7 +28,7 @@ generated with {\cf define-record-type}.
 \item Parameter objects can be created with {\cf make-parameter}, and
 dynamically rebound with {\cf parameterize}.
 
-\item {\em Blobs}, homogeneous vectors of integers in the range
+\item {\em Bytevectors}, homogeneous vectors of integers in the range
 $[0..255]$, have been added as a new disjoint type.
 
 \item {\em Ports} can now be designated as {\em binary} or {\em
@@ -50,8 +50,8 @@ allows tail patterns to follow an ellipsis pattern.
 \item {\cf Syntax-error} has been added as a way to signal immediate
 and more informative errors when a form is expanded.
 
-\item Internal {\cf define-syntax} forms are now allowed preceding any
-internal {\cf define}s.
+\item Internal {\cf define-syntax} forms are now allowed wherever
+internal {\cf define}s are.
 
 \item {\cf Letrec*} has been added, and internal define specified in
 terms of it.
@@ -80,7 +80,7 @@ vector-copy}, {\cf vector-map}, {\cf vector-for-each}, and {\cf
 vector->string} have been added to round out the sequence operations.
 
 \item The set of characters used is required to be consistent with the
-latest Unicode standard only in so far as the implementation supports
+Unicode Standard, but only in so far as the implementation supports
 Unicode.
 
 \item {\cf string-ni=?} and related procedures have been added to

@@ -94,7 +94,7 @@ has essentially the same effect as the assignment expression
 \end{scheme}
 if \hyper{variable} is bound to non-syntax.  However, if
 \hyper{variable} is not bound, 
-%or is bound to a {\em syntax definition} (see below),
+or is bound to a {\em syntax definition} (see below),
 then the definition will bind
 \hyper{variable} to a new location before performing the assignment,
 whereas it would be an error to perform a {\cf set!}\ on an
@@ -252,6 +252,7 @@ following are errors:
 This section describes syntax for creating new data types, called
 record types.  A predicate, constructor, and field accessors and
 modifiers are defined for each record type.
+Record-type definitions are valid wherever definitions are.
 
 \begin{entry}{%
 \proto{define-record-type}{ name constructor pred field \dotsfoo}{syntax}}
@@ -310,7 +311,7 @@ definitions:
 
 \end{itemize}
 
-The following
+The following definition
 
 \begin{scheme}
 (define-record-type <pare>

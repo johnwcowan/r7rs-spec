@@ -184,7 +184,7 @@ Parentheses are used for grouping and to notate lists
 The single quote character is used to indicate literal data (section~\ref{quote}).
 
 \item[\backquote]
-The backquote character is used to indicate almost-constant
+The backquote character is used to indicate partly-constant
 data (section~\ref{quasiquote}).
 
 \item[\tt, ,@]
@@ -201,7 +201,7 @@ constants (section~\ref{stringsection}) and identifiers
 (section~\ref{extendedalphas}).
 
 % A box used because \verb is not allowed in command arguments.
-\setbox0\hbox{\tt \verb"[" \verb"]" \verb"{" \verb"}" \verb"|"}
+\setbox0\hbox{\tt \verb"[" \verb"]" \verb"{" \verb"}"}
 \item[\copy0]
 Left and right square brackets and curly braces
 are reserved for possible future extensions to the language.
@@ -217,6 +217,10 @@ This introduces a character constant (section~\ref{charactersection}).
 
 \item[\sharpsign\tt(]
 This introduces a vector constant (section~\ref{vectorsection}).  Vector constants
+are terminated by~{\tt)}~.
+
+\item[\sharpsign\tt u8(]
+This introduces a bytevector constant (section~\ref{bytevectorsection}).  Bytevector constants
 are terminated by~{\tt)}~.
 
 \item[{\tt\#e \#i \#b \#o \#d \#x}]

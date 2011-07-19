@@ -776,7 +776,8 @@ is true.
 \proto{exact-integer?}{ \vr{z}}{procedure}}
 
 The conjunction of {\cf exact?} and {\cf integer?}, returns \schtrue{}
-iff \vr{z} is both \tupe{exact} and an \tupe{integer}.
+if \vr{z} is both \tupe{exact} and an \tupe{integer}.
+Otherwise, \schfalse{} is returned.
 \end{entry}
 
 
@@ -785,7 +786,7 @@ iff \vr{z} is both \tupe{exact} and an \tupe{integer}.
 
 {\cf Finite} returns \schtrue{} on all real numbers except
 {\cf +inf.0}, {\cf -inf.0}, and {\cf +nan.0}, and on complex
-numbers if and only if their real and imaginary parts are both finite.
+numbers if their real and imaginary parts are both finite.
 Otherwise it returns \schfalse{}.
 
 \begin{scheme}
@@ -799,7 +800,7 @@ Otherwise it returns \schfalse{}.
 \proto{nan?}{ \vr{z}}{inexact module procedure}}
 
 {\cf Nan} returns \schtrue{} on {\cf +nan.0}, and on any complex number
-if and only if either its real part or its imaginary part is {\cf +nan.0}.
+if its real part or its imaginary part or both are {\cf +nan.0}.
 Otherwise it returns \schfalse{}.
 
 \begin{scheme}
@@ -948,7 +949,8 @@ however, they return the additive or multiplicative inverse of their argument.
 
 These procedures, all in the division module, implement
 number-theoretic (integer) division.  \vrii{n} should be non-zero.
-All fifteen procedures return integers.  The procedures compute a
+The procedures ending in {\cf /} return two integers; the other
+procedures return an integer.  All the procedures compute a
 quotient \vr{n_q} and remainder \vr{n_r} such that
 $\vri{n} = \vrii{n} \vr{n_q} + \vr{n_r}$.  For each of the five
 division operators, there are three procedures defined as follows:
@@ -1007,6 +1009,11 @@ provided all numbers involved in that computation are exact.
 
 (remainder -13 -4.0)    \ev  -1.0  ; inexact%
 \end{scheme}
+
+\begin{note}
+These procedures are provided for backward compatibility with earlier
+versions of this report.
+\end{note}
 \end{entry}
 
 \begin{entry}{%
@@ -1178,7 +1185,7 @@ part.
 \begin{entry}{%
 \proto{exact-integer-sqrt}{ k}{procedure}}
 
-Returns two non-negative exact integer objects $s$ and $r$ where
+Returns two non-negative exact integers $s$ and $r$ where
 $\var{k} = s^2 + r$ and $\var{k} < (s+1)^2$.
 
 \begin{scheme}
@@ -1429,8 +1436,8 @@ counts as false in conditional expressions.
 Except for \schfalse{},
 % and possibly the empty list,
 all standard Scheme values, including \schtrue,
-pairs, the empty list, symbols, numbers, strings, vectors, and procedures,
-count as true.
+pairs, the empty list, symbols, numbers, strings, vectors,
+bytevectors, records, and procedures, count as true.
 
 %\begin{note}
 %In some implementations the empty list counts as false, contrary
@@ -1505,7 +1512,7 @@ The car and cdr fields are accessed by the procedures {\cf car} and
 {\cf cdr}.  The car and cdr fields are assigned by the procedures
 {\cf set-car!}\ and {\cf set-cdr!}.
 
-Pairs are used primarily to represent lists.  A list can
+Pairs are used primarily to represent lists.  A \defining{list} can
 be defined recursively as either the empty list\index{empty list} or a pair whose
 cdr is a list.  More precisely, the set of lists is defined as the smallest
 set \var{X} such that
@@ -1983,8 +1990,8 @@ and {\cf equal?} otherwise.
 \begin{rationale}
 Although they are ordinarily used as predicates,
 {\cf memq}, {\cf memv}, {\cf member}, {\cf assq}, {\cf assv}, and {\cf assoc} do not
-have question marks in their names because they return useful values rather
-than just \schtrue{} or \schfalse{}.
+have question marks in their names because they return 
+values that may be useful rather than just \schtrue{} or \schfalse{}.
 \end{rationale}
 \end{entry}
 
@@ -2195,9 +2202,6 @@ upper case and lower case letters as the same.  For example, {\cf
 
 Specifically, these procedures behave as if {\cf char-foldcase} were
 applied to their arguments before comparing them.
-
-Some implementations may generalize these procedures to take more than
-two arguments, as with the corresponding numerical predicates.
 
 \end{entry}
 
@@ -2764,7 +2768,8 @@ bytevector, starting at index zero as with vectors.
 \begin{entry}{%
 \proto{bytevector?}{ obj}{procedure}}
 
-Returns \schtrue{} iff \var{obj} is a bytevector.
+Returns \schtrue{} if \var{obj} is a bytevector.
+Otherwise, \schfalse{} is returned.
 \end{entry}
 
 \begin{entry}{%
@@ -2812,7 +2817,7 @@ shorter.  The value returned by {\cf bytevector-copy!} is unspecified.
 \end{entry}
 
 \begin{entry}{%
-\proto{partial-bytevector}{ bytevector start end}{procedure}}
+\proto{bytevector-copy-partial}{ bytevector start end}{procedure}}
 
 Returns a newly allocated bytevector containing the bytes in \var{bytevector}
 between \var{start} (inclusive) and \var{end}
@@ -2820,7 +2825,7 @@ between \var{start} (inclusive) and \var{end}
 \end{entry}
 
 \begin{entry}{%
-\proto{partial-bytevector-copy!}{ from start end to at}{procedure}}
+\proto{bytevector-copy-partial!}{ from start end to at}{procedure}}
 
 Copy the bytes of bytevector \var{from} between \var{start} and \var{end}
 to bytevector \var{to}, starting at \var{at}.  The order in which bytes are
