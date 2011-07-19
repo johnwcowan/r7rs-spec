@@ -3482,6 +3482,8 @@ function is used instead.
 A parameter object is a procedure which accepts zero arguments and
 returns its associated value.  The associated value may be changed
 with {\cf parameterize}.
+The effect of passing arguments to a parameter object is explicitly
+implementation-dependent.
 
 Here is a possible implementation of {\cf make-parameter} and {\cf
 parameterize} suitable for an implementation with no threads.
@@ -3635,7 +3637,8 @@ the call to {\cf raise-continuable}.
 
 \domain{\var{Message} should be a string.}
 {\cf raise} on a newly created  implementation-defined object which encapsulates
-the information provided by \var{message} and any \var{obj}s, known as the irritants.
+the information provided by \var{message},
+as well as any \var{obj}s, known as the irritants.
 The procedure {\cf error-object?} must return \schtrue{} on such objects.
 \end{entry}
 
@@ -3685,7 +3688,7 @@ Returns a list of the irritants encapsulated by \var{error-object}.
 Evaluates \var{expression} in the specified environment and returns its value.
 \var{Expression} must be a valid Scheme expression represented as data,
 and \var{environment-specifier} must be a value returned by one of the
-three procedures described below.
+four procedures described below.
 Implementations may extend {\cf eval} to allow non-expression programs
 (definitions) as the first argument and to allow other
 values as environments, with the restriction that {\cf eval} is not
@@ -3722,9 +3725,10 @@ supported by the implementation.
 
 Other values of \var{version} can be used to specify environments
 matching past revisions of this report, but their support is not
-required.  An implementation must signal an error if \var{version}
+required.  
+If \var{version}
 is neither {\cf \integerversion} nor another value supported by
-the implementation.
+the implementation, an error is signalled.
 
 The effect of assigning (through the use of {\cf eval}) a variable
 bound in a {\cf scheme-report-environment}
@@ -3882,15 +3886,14 @@ The file is opened for input or output
 as if by {\cf open-input-file} or {\cf open-output-file}, 
 and the return port is made the default value returned by
 {\cf current-input-port} or {\cf current-output-port}
-(and is used by {\tt (read)}, {\tt (write \var{obj})}, and so forth),
-and the
-\var{thunk} is called with no arguments.  When the \var{thunk} returns,
+(and is used by {\tt (read)}, {\tt (write \var{obj})}, and so forth).
+The \var{thunk} is then called with no arguments.  When the \var{thunk} returns,
 the port is closed and the previous default is restored.
 {\cf With-input-from-file} and {\cf with-output-to-file} return(s) the
 value(s) yielded by \var{thunk}.
 If an escape procedure
 is used to escape from the continuation of these procedures, their
-behavior is implementation dependent.
+behavior is implementation-dependent.
 
 \todo{OK this with authors??}
 %current continuation changes in such a way
@@ -4081,26 +4084,6 @@ omitted, in which case it defaults to the value returned by {\cf current-input-p
 
 \end{entry}
 
-\begin{entry}{%
-\proto{read-line}{}{io module procedure}
-\rproto{read-line}{ port}{io module procedure}}
-
-Returns the next line of text available from the character input
-\var{port}, updating the \var{port} to point to the following character.
-If an end of line is read, a string containing all of the text up to
-(but not including) the end of line is returned, and the port is updated
-to point just past the end of line. If an end of file is encountered
-before any linefeed character is read, but some characters have been
-read, a string containing those characters is returned. If an end of
-file is encountered before any characters are read, an end-of-file
-object is returned.  For the purpose of this procedure, an end of line
-consists of either a linefeed character, a carriage return character, or a
-sequence of a carriage return character followed by a linefeed character.
-\var{Port} may be omitted, in which case it defaults to the value returned
-by {\cf current-input-port}.
-
-\end{entry}
-
 
 \begin{entry}{%
 \proto{peek-char}{}{io module procedure}
@@ -4121,6 +4104,26 @@ value returned by the preceding call to {\cf peek-char}.  In particular, a call
 to {\cf peek-char} on an interactive port will hang waiting for input
 whenever a call to {\cf read-char} would have hung.
 \end{note}
+
+\end{entry}
+
+\begin{entry}{%
+\proto{read-line}{}{io module procedure}
+\rproto{read-line}{ port}{io module procedure}}
+
+Returns the next line of text available from the character input
+\var{port}, updating the \var{port} to point to the following character.
+If an end of line is read, a string containing all of the text up to
+(but not including) the end of line is returned, and the port is updated
+to point just past the end of line. If an end of file is encountered
+before any linefeed character is read, but some characters have been
+read, a string containing those characters is returned. If an end of
+file is encountered before any characters are read, an end-of-file
+object is returned.  For the purpose of this procedure, an end of line
+consists of either a linefeed character, a carriage return character, or a
+sequence of a carriage return character followed by a linefeed character.
+\var{Port} may be omitted, in which case it defaults to the value returned
+by {\cf current-input-port}.
 
 \end{entry}
 
@@ -4365,8 +4368,8 @@ implementations.
 
 \var{Filename} must be a string. The {\cf delete-file} procedure deletes the
 named file if it exists and can be deleted, and returns an unspecified
-value.  If the file does not exist or cannot be deleted, an exception
-is raised.
+value.  If the file does not exist or cannot be deleted, an error
+is signalled.
 
 \end{entry}
 
@@ -4400,8 +4403,8 @@ abnormal.
 environment variable as a string, or \schfalse{} if the named
 environment variable is not found.  {\cf get-environment-variable} may
 use locale-setting information to encode the name and decode the value
-of the environment variable.  If {\cf get-environment-variable} can't
-decode the value it may raise an exception.
+of the environment variable.  It is an error if
+{\cf get-environment-variable} can't decode the value.
 
 \begin{scheme}
 (get-environment-variable "PATH") \lev "/usr/local/bin:/usr/bin:/bin"
@@ -4414,7 +4417,7 @@ decode the value it may raise an exception.
 
 Returns the names and values of all the environment variables as an
 a-list, where the car of each entry is the name of an environment
-variable and the cdr is the value as would be returned by
+variable and the cdr is the value that would be returned by
 {\cf get-environment-variable}.  The order of the list is unspecified.
 
 \begin{scheme}
