@@ -19,8 +19,8 @@ apparent binding of that variable.
 are associated with values (also called objects\mainindex{object}) rather than
 with variables.  Other dynamically typed languages include
 APL, Common Lisp, JavaScript, Perl, Python, Ruby, and Smalltalk.
-Statically typed languages associate types with variables and expressions
-as well as values, and include
+Statically typed languages, by contrast, associate types with
+variables and expressions as well as with values, and include
 Algol 60, C, C++, C\sharpsign, Haskell, Java, ML, and Pascal.
 
 \vest All objects created in the course of a Scheme computation, including
@@ -41,7 +41,7 @@ recursive procedure.  Thus with a properly tail-recursive implementation,
 iteration can be expressed using the ordinary procedure-call
 mechanics, so that special iteration constructs are useful only as
 syntactic sugar.  See section~\ref{proper tail recursion}.
-Other languages that are required to be properly tail recursive
+Other languages that are required to be properly tail-recursive
 include Haskell and ML.
 
 \vest Scheme procedures are objects in their own right.  Procedures can be
@@ -58,8 +58,8 @@ Some versions of ML also provide first-class continuations.
 
 \vest Arguments to Scheme procedures are always passed by value, which
 means that the actual argument expressions are evaluated before the
-procedure gains control, whether the procedure needs the result of the
-evaluation or not.  Other languages that always
+procedure gains control, regardless of whether the procedure needs the
+result of the evaluation.  Other languages that always
 pass arguments by value include
 APL, C\sharpsign, Common Lisp, Java, JavaScript, ML, Pascal,
 Python, Ruby, and Smalltalk.
@@ -185,7 +185,7 @@ for identifiers in the {\cf base} module, or
 where \var{module} is the short name of a module
 as defined in Appendix~\ref{stdmodules}.
 
-If \var{category} is ``\exprtype'', the entry describes an expression
+If \var{category} is ``\exprtype,'' the entry describes an expression
 type, and the template gives the syntax of the expression type.
 Components of expressions are designated by syntactic variables, which
 are written using angle brackets, for example, \hyper{expression},
@@ -201,12 +201,12 @@ indicates zero or more occurrences of a \hyper{thing}, and
 \end{tabbing}
 indicates one or more occurrences of a \hyper{thing}.
 
-If \var{category} is ``auxiliary syntax'', then the entry describes a
+If \var{category} is ``auxiliary syntax,'' then the entry describes a
 syntax binding that may occur only as part of specific surrounding
 expressions. Any use as an independent syntactic construct or
 identifier is an error.
 
-If \var{category} is ``procedure'', then the entry describes a procedure, and
+If \var{category} is ``procedure,'' then the entry describes a procedure, and
 the header line gives a template for a call to the procedure.  Argument
 names in the template are \var{italicized}.  Thus the header line
 

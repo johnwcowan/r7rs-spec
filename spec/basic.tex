@@ -27,7 +27,7 @@ In programs without \ide{set!}, one can safely pretend that the
 variable is bound directly to the value. }
 
 \vest Certain expression types are used to create new kinds of syntax
-and bind syntactic keywords to those new syntaxes, while other
+and to bind syntactic keywords to those new syntaxes, while other
 expression types create new locations and bind variables to those
 locations.  These expression types are called {\em binding constructs}.
 \mainindex{binding construct}
@@ -188,7 +188,7 @@ immutable object.
 Implementations of Scheme are required to be
 {\em properly tail-recursive}\mainindex{proper tail recursion}.
 Procedure calls that occur in certain syntactic
-contexts defined below are `tail calls'.  A Scheme implementation is
+contexts defined below are {\em tail calls}.  A Scheme implementation is
 properly tail-recursive if it supports an unbounded number of active
 tail calls.  A call is {\em active} if the called procedure may still
 return.  Note that this includes calls that may be returned from either

@@ -18,7 +18,7 @@ Scheme, see section~\ref{BNF}.
 Most identifiers\mainindex{identifier} allowed by other programming
 languages are also acceptable to Scheme.  The precise rules for forming
 identifiers vary among implementations of Scheme, but in all
-implementations a sequence of letters, digits, and ``extended alphabetic
+implementations, a sequence of letters, digits, and ``extended alphabetic
 characters'' that does not have a prefix which is a valid number
 is an identifier.  However, the  \ide{.} token used in the list syntax
 is not an identifier.
@@ -72,12 +72,12 @@ See section~\ref{extendedalphas} for a formal syntax of identifiers.
 \end{itemize}
 
 In contrast with earlier revisions of the report~\cite{R5RS}, the
-syntax of data distinguishes upper and lower case in identifiers and in
-characters specified via their names.
+syntax of data distinguishes between upper and lower case in
+identifiers and in characters specified via their names.
 
-Implementors may wish to support case-insensitive syntax for backward
-compatibility or other reasons.
-If they do so, they should adopt the following optional directives
+Implementations may support case-insensitive syntax for backward
+compatibility or for other reasons.
+If they do so, they must support the following optional directives
 to control case folding.
 
 \begin{entry}{%
@@ -87,13 +87,14 @@ to control case folding.
 These directives may appear anywhere comments may appear and are
 treated as comments, except that they affect the reading of subsequent
 lexemes.
-The {\cf{}\#!fold-case} causes the reader to case-fold
+The {\cf{}\#!fold-case} directive causes the reader to case-fold
 (as if by {\cf string-foldcase})
 each \meta{identifier} and \meta{character name}.
 The {\cf{}\#!no-fold-case} directive causes the reader to return
 to the default, non-folding behavior.
 The scope of these directives is all subsequent {\cf read} operations
-for the port from which they are read; no other ports are affected.
+for the port from which they are read, until another such directive
+is encountered.  No other ports are affected.
 \end{entry}
 
 %\label{keywordsection}
@@ -138,7 +139,7 @@ end of the line on which the semicolon appears.
 Another way to indicate a comment is to prefix a \hyper{datum}
 (cf.\ section~\ref{datumsyntax}) with {\tt \#;}\sharpindex{;}, possibly with
 \meta{interlexeme space} before the \hyper{datum}.  The comment consists of
-the comment prefix {\tt \#;} and the \hyper{datum} together.  This
+the comment prefix {\tt \#;}, the space, and the \hyper{datum} together.  This
 notation is useful for ``commenting out'' sections of code.
 
 Block comments may be indicated with properly nested {\tt
