@@ -1,19 +1,13 @@
-%\vfill\eject
 \chapter{Expressions}
 \label{expressionchapter}
 
 \newcommand{\syntax}{{\em Syntax: }}
 \newcommand{\semantics}{{\em Semantics: }}
 
-%[Deleted for R5RS because of multiple-value returns. -RK]
-%A Scheme expression is a construct that returns a value, such as a
-%variable reference, literal, procedure call, or conditional.
-
 Expression types are categorized as {\em primitive} or {\em derived}.
 Primitive expression types include variables and procedure calls.
 Derived expression types are not semantically primitive, but can instead
 be defined as macros.
-%With the exception of {\cf quasiquote}, whose macro definition is complex,
 Suitable definitions of some of the derived expressions are 
 given in section~\ref{derivedsection}.
 
@@ -108,8 +102,6 @@ initial environment; for example, the addition and multiplication
 procedures in the above examples are the values of the variables {\cf +}
 and {\cf *}.  New procedures are created by evaluating \lambdaexp{}s
 (see section~\ref{lambda}).
-\todo{At Friedman's request, flushed mention of other ways.}
-% or definitions (see section~\ref{define}).
 
 Procedure calls may return any number of values (see \ide{values} in
 section~\ref{proceduresection}).  
@@ -136,16 +128,8 @@ The order of evaluation may be chosen differently for each procedure call.
 \begin{note} In many dialects of Lisp, the empty combination, {\tt
 ()}, is a legitimate expression.  In Scheme, combinations must have at
 least one subexpression, so {\tt ()} is not a syntactically valid
-expression.  \todo{Dybvig: ``it should be obvious from the syntax.''}
+expression.  
 \end{note}
-
-\todo{Freeman:
-I think an explanation as to why evaluation order is not specified
-should be included.  It should not include any reference to parallel
-evaluation.  Does any existing compiler generate better code because
-the evaluation order is unspecified?  Clinger: yes: T3, MacScheme v2,
-probably MIT Scheme and Chez Scheme.  But that's not the main reason
-for leaving the order unspecified.}
 
 \end{entry}
 
@@ -285,7 +269,6 @@ For reference purposes, section~\ref{derivedsection} gives macro definitions
 that will convert most of the constructs described in this section 
 into the primitive constructs described in the previous section.
 
-\todo{Mention that no definition of backquote is provided?}
 
 \subsection{Conditionals}\unsection
 
@@ -578,10 +561,6 @@ entire {\cf letrec} expression as its region\index{region}, making it possible t
 define mutually recursive procedures.
 
 \begin{scheme}
-%(letrec ((x 2) (y 3))
-%  (letrec ((foo (lambda (z) (+ x y z))) (x 7))
-%    (foo 4)))                   \ev  14
-%
 (letrec ((even?
           (lambda (n)
             (if (zero? n)
@@ -605,7 +584,6 @@ name.  In the most common uses of {\cf letrec}, all the \hyper{init}s are
 Another restriction is that the continuation of each \hyper{init}
 should not be invoked more than once.
 
-% \todo{use or uses?  --- Jinx.}
 It must be possible to evaluate each \hyper{init} without assigning or
 referring to the value of the corresponding \hyper{variable} or the
 \hyper{variable} of any of the bindings that follow it in
@@ -699,9 +677,6 @@ in an environment in which the first set of bindings is visible, and so on.
 \hyper{Variable}s in one \hyper{binding} may be the same as those in other
 \hyper{binding}s, though it is an error for two \hyper{variable}s in the
 same \hyper{binding} to be the same.
-
-%\begin{scheme}
-%\end{scheme}
 
 \end{entry}
 
@@ -820,7 +795,6 @@ been written instead of {\cf(\hyper{variable} \hyper{init})}.
       ((null? x) sum)))             \ev  25%
 \end{scheme}
 
-%\end{entry}
 
 
 \begin{entry}{%
@@ -867,7 +841,7 @@ The {\cf delay} construct is used together with the procedure \ide{force} to
 implement \defining{lazy evaluation} or \defining{call by need}.
 {\tt(delay~\hyper{expression})} returns an object called a
 \defining{promise} which at some point in the future may be asked (by
-the {\cf force} procedure) \todo{Bartley's white lie; OK?} to evaluate
+the {\cf force} procedure) to evaluate
 \hyper{expression}, and deliver the resulting value.
 The effect of \hyper{expression} returning multiple values
 is unspecified.
@@ -932,7 +906,6 @@ See the description of {\cf make-parameter}
 
 \syntax
 Each \hyper{cond clause} is as in the specification of {\cf cond}.
-%(See report section~\ref{derivedexps}.)
 
 \semantics
 Evaluating a {\cf guard} form evaluates \hyper{body} with an exception
@@ -978,8 +951,6 @@ expression must evaluate to a list; the opening and closing parentheses
 of the list are then ``stripped away'' and the elements of the list are
 inserted in place of the comma at-sign expression sequence.  A comma
 at-sign should only appear within a list or vector \hyper{qq template}.
-
-% struck: "(in the sense of {\cf equal?})" after "equivalent"
 
 \begin{scheme}
 `(list ,(+ 1 2) 4)  \ev  (list 3 4)
@@ -1051,9 +1022,6 @@ car is one of these symbols may vary between implementations.
      {\em{}i.e.,} (quasiquote (list (unquote (+ 1 2)) 4))%
 \end{scheme}
 
-%% Unpredictable behavior can result if any of the symbols
-%% \ide{quasiquote}, \ide{unquote}, or \ide{unquote-splicing} appear in
-%% positions within a \hyper{qq template} otherwise than as described above.
 
 It is a error if any of the identifiers {\cf quasiquote}, {\cf unquote},
 or {\cf unquote-splicing} appear in positions within a \hyper{qq template}
@@ -1199,12 +1167,6 @@ where the transformer was specified, regardless of any local
 bindings that may surround the use of the macro.
 
 \end{itemize}
-
-%The low-level facility permits non-hygienic macros to be written,
-%and may be used to implement the high-level pattern language.
-
-% The fourth section describes some features that would make the
-% low-level macro facility easier to use directly.
 
 \subsection{Binding constructs for syntactic keywords}
 \label{bindsyntax}
@@ -1362,16 +1324,6 @@ The keyword at the beginning of the pattern in a
 \hyper{syntax rule} is not involved in the matching and
 is not considered a pattern variable or literal identifier.
 
-%% \begin{rationale}
-%% The scope of the keyword is determined by the expression or syntax
-%% definition that binds it to the associated macro transformer.
-%% If the keyword were a pattern variable or literal
-%% identifier, then
-%% the template that follows the pattern would be within its scope
-%% regardless of whether the keyword were bound by {\cf let-syntax}
-%% or by {\cf letrec-syntax}.
-%% \end{rationale}
-
 Pattern variables match arbitrary input elements and
 are used to refer to elements of the input in the template.  
 It is an error for the same pattern variable to appear more than once in a
@@ -1390,10 +1342,6 @@ A subform in the input matches a literal identifier if and only if it is an
 identifier and either both its occurrence in the macro expression and its
 occurrence in the macro definition have the same lexical binding, or
 the two identifiers are equal and both have no lexical binding.
-
-% [Bill Rozas suggested the term "noise word" for these literal
-% identifiers, but in their most interesting uses, such as a setf
-% macro, they aren't noise words at all. -- Will]
 
 A subpattern followed by \hyper{ellipsis} can match zero or more elements of
 the input, unless \hyper{ellipsis} appears in the \hyper{literal}s in which
@@ -1536,7 +1484,6 @@ which would result in an invalid procedure call.
 \subsection{Signalling errors in macros}
 \label{syntax-error}
 
-% Is it better to describe this as part of the template language?
 
 \begin{entry}{%
 \pproto{(syntax-error \hyper{message} \hyper{args} \dotsfoo)}{\exprtype}}

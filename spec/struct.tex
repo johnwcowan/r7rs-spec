@@ -68,9 +68,6 @@ or the call-by-name semantics of Algol 60, where an argument
 expression is not evaluated unless its value is needed by the
 procedure.
 
-\todo{Lisp's call by value should be explained more
-accurately.  What's funny is that all values are references.}
-
 \vest Scheme's model of arithmetic is designed to remain as independent as
 possible of the particular ways in which numbers are represented within a
 computer. In Scheme, every integer is a rational number, every rational is a
@@ -120,8 +117,8 @@ Implementations may provide other modules not described in this report.
 Implementations may also extend the function of any identifier in this
 report, provided the extensions are not in conflict with the language
 reported here.  In particular, implementations must support portable
-code by providing a syntactic mode that preempts no lexical conventions
-of this report.
+code by providing a mode of operation in which the lexical syntax does
+not conflict with the lexical syntax described in this report.
 
 \subsection{Error situations and unspecified behavior}
 
@@ -164,9 +161,6 @@ not say what value should be returned. \mainindex{unspecified}
 report, programmers may signal their own errors and handle signalled
 errors as described in section~\ref{exceptionsection}.
 
-\todo{Talk about unspecified behavior vs. unspecified values.}
-
-\todo{Look at KMP's situations paper.}
 
 
 \subsection{Entry format}
@@ -245,7 +239,6 @@ $$
 \end{tabular}
 $$
 
-\todo{Provide an example entry??}
 
 
 \subsection{Evaluation examples}
@@ -261,18 +254,18 @@ means that the expression {\tt(* 5 8)} evaluates to the object {\tt 40}.
 Or, more precisely:  the expression given by the sequence of characters
 ``{\tt(* 5 8)}'' evaluates, in the initial environment, to an object
 that may be represented externally by the sequence of characters ``{\tt
-40}''.  See section~\ref{externalreps} for a discussion of external
+40}.''  See section~\ref{externalreps} for a discussion of external
 representations of objects.
 
 \subsection{Naming conventions}
 
 By convention, the names of procedures that always return a boolean
 value usually end
-in ``\ide{?}''.  Such procedures are called predicates.
+in ``\ide{?}.''  Such procedures are called predicates.
 
 By convention, the names of procedures that store values into previously
 allocated locations (see section~\ref{storagemodel}) usually end in
-``\ide{!}''.
+``\ide{!}.''
 Such procedures are called mutation procedures.
 By convention, the value returned by a mutation procedure is unspecified.
 

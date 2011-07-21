@@ -50,7 +50,6 @@ produces a new system state.
                                (*2 k1)
                                (*2 k2)
                                k3))))))))
-%|--------------------------------------------------|
 
 (define elementwise
   (lambda (f)
@@ -62,7 +61,6 @@ produces a new system state.
                  (map (lambda (v) (vector-ref  v i))
                       vectors)))))))
 
-%|--------------------------------------------------|
 (define generate-vector
   (lambda (size proc)
     (let ((ans (make-vector size)))
@@ -125,21 +123,3 @@ which models a damped oscillator.
      .01))%
 \end{schemenoindent}
 
-\todo{Show some output?}
-
-% (letrec ((loop (lambda (s)
-%                (newline)
-%                (write (head s))
-%                (loop (tail s)))))
-%   (loop the-states))
-
-% #(1 0)
-% #(0.99895054 9.994835e-6)
-% #(0.99780226 1.9978681e-5)
-% #(0.9965554 2.9950552e-5)
-% #(0.9952102 3.990946e-5)
-% #(0.99376684 4.985443e-5)
-% #(0.99222565 5.9784474e-5)
-% #(0.9905868 6.969862e-5)
-% #(0.9888506 7.9595884e-5)
-% #(0.9870173 8.94753e-5)

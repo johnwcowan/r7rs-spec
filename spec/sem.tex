@@ -29,8 +29,6 @@
 
 \newcommand\elt{\downarrow}
 \newcommand\drop{\dagger}
-%\newcommand\injekt{\hbox{ \rm in }}
-%\newcommand\projekt{\,\vert\,}
 
 This section provides a formal denotational semantics for the primitive
 expressions of Scheme and selected built-in procedures.  The concepts
@@ -86,12 +84,6 @@ in \P{} by an assignment, \hyper{undefined} is an expression that evaluates
 to \fun{undefined}, and
 $\Esem$ is the semantic function that assigns meaning to expressions.
 
-%The semantics in this section was translated by machine from an
-%executable version of the semantics written in Scheme itself.
-%[This was once true, but then I modified the semantics without
-%going back to the executable version.  -- Will]
-
-
 \subsection{Abstract syntax}
 
 \def\K{\hbox{\rm K}}
@@ -141,7 +133,6 @@ $\phi$     & \elem & \FUN &=& $\LOC\times(\arbno{\EXP} \to \EC \to \CC)$
                                        & procedure values \\
 $\epsilon$ & \elem & \EXP &=& \makebox[0pt][l]{$\SYM+\CHR+\NUM+\PAI+\VEC+\STR+\MSC+\FUN$}\\
 	   &	   &	  & &          & expressed values \\
-%          &       & \STV &=& \EXP     & stored values \\
 $\sigma$   & \elem & \STO &=& $\LOC\to(\STV\times\TRU)$ & stores \\
 $\rho$	   & \elem & \ENV &=& $\Ide\to\LOC$  & environments \\
 $\theta$   & \elem & \CC  &=& $\STO\to\ANS$  & command continuations \\
@@ -164,7 +155,6 @@ $\arbno{\Esem}:$ & $\arbno{\Exp}\to\ENV\to\EC\to\CC$ \\
 \end{tabular}
 
 
-% thin \,  medium \> [or \:]   thick \;
 
 \renewcommand{\:}{\mskip\medmuskip}
 \newcommand{\wrong}[1]{\fun{wrong }\hbox{\rm``#1''}}
@@ -414,7 +404,6 @@ be used in place of {\it unspecified}.
 \fun{truish}        :  \EXP \to \TRU$\\$
 \fun{truish} =
   \lambda\epsilon\:.\:
-%    (\epsilon = \fun{false}\vee\epsilon = \fun{null})\rightarrow
      \epsilon = \fun{false}\rightarrow
           \fun{false},
           \fun{true}
@@ -573,26 +562,8 @@ be used in place of {\it unspecified}.
     \>  \>   \>$(\epsilon_2\:\vert\:\PAI))$\\
     \>  \>$\kappa,$\\
     \>$(\epsilon_1\:\elem\:\VEC\wedge\epsilon_2\:\elem\:\VEC)\rightarrow
-%\fun{send}\,
-%       $\=$((\#(\epsilon_1\:\vert\:\VEC)=\#(\epsilon_2\:\vert\:\VEC)
-%         \wedge\hbox{\rm Y}(\lambda\fun{loop}\:.\:\lambda\fun{v1}\fun{v2}\:.\:
-%       $\=$\#\fun{v1}=0\rightarrow\fun{true},$\\
-%    \>  \>  \>$(\fun{v1}\elt 1) = (\fun{v2}\elt 1)\rightarrow
-%       \fun{loop}(\fun{v1}\drop 1)(\fun{v2}\drop 1),$\\
-%    \>  \>  \>$\go{1}\fun{false})(\epsilon_1\:\vert\:\VEC)(\epsilon_2\:\vert\:\VEC))
-%          \rightarrow\fun{true},$\\
-%    \>  \>$\go{1}\fun{false})\kappa
 \ldots,$\\
     \>$(\epsilon_1\:\elem\:\STR\wedge\epsilon_2\:\elem\:\STR)\rightarrow
-%\fun{send}\,
-%       $\=$((\#(\epsilon_1\:\vert\:\STR)=\#(\epsilon_2\:\vert\:\STR)\wedge
-%    \hbox{\rm Y}(\lambda\fun{loop}\:.\:\lambda\fun{v1}\fun{v2}\:.\:
-%       $\=$\#\fun{v1}=0\rightarrow\fun{true},$\\
-%    \>  \>  \>$(\fun{v1}\elt 1) = (\fun{v2}\elt 1)\rightarrow
-%     \fun{loop}(\fun{v1}\drop 1)(\fun{v2}\drop 1),$\\
-%    \>  \>  \>$\go{1}\fun{false})(\epsilon_1\:\vert\:\STR)(\epsilon_2\:\vert\:\STR))
-%      \rightarrow\fun{true},$\\
-%    \>  \>$\go{1}\fun{false})\kappa
 \ldots,$\\
     \>$(\epsilon_1\:\elem\:\FUN\wedge\epsilon_2\:\elem\:\FUN)\rightarrow$\\
     \>$\go{1}\fun{send}\,

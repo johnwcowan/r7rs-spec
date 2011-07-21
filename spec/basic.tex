@@ -19,13 +19,6 @@ variable's value.  By abuse of terminology, the variable is sometimes
 said to name the value or to be bound to the value.  This is not quite
 accurate, but confusion rarely results from this practice.
 
-\todo{Define ``assigned'' and ``unassigned'' perhaps?}
-
-\todo{In programs without side effects, one can safely pretend that the
-variables are bound directly to the arguments.  Or:
-In programs without \ide{set!}, one can safely pretend that the
-variable is bound directly to the value. }
-
 \vest Certain expression types are used to create new kinds of syntax
 and to bind syntactic keywords to those new syntaxes, while other
 expression types create new locations and bind variables to those
@@ -59,19 +52,6 @@ binding for the identifier,
 it is said to be \defining{unbound}.\mainindex{bound}\index{top level
 environment}
 
-\todo{Mention that some implementations have multiple top level environments?}
-
-\todo{Pitman sez: needs elaboration in case of {\tt(let ...)}}
-
-\todo{Pitman asks: say something about vars created after scheme starts?
-{\tt (define x 3) (define (f) x) (define (g) y) (define y 4)}
-Clinger replies: The language was explicitly
-designed to permit a view in which no variables are created after
-Scheme starts.  In files, you can scan out the definitions beforehand.
-I think we're agreed on the principle that interactive use should
-approximate that behavior as closely as possible, though we don't yet
-agree on which programming environment provides the best approximation.}
-
 \section{Disjointness of types}
 \label{disjointness}
 
@@ -97,10 +77,6 @@ Although there is a separate boolean type,
 any Scheme value can be used as a boolean value for the purpose of a
 conditional test.  As explained in section~\ref{booleansection}, all
 values count as true in such a test except for \schfalse{}.
-% and possibly the empty list.
-% The only value that is guaranteed to count as
-% false is \schfalse{}.  It is explicitly unspecified whether the empty list
-% counts as true or as false.
 This report uses the word ``true'' to refer to any
 Scheme value except \schfalse{}, and the word ``false'' to refer to
 \schfalse{}. \mainindex{true} \mainindex{false}
@@ -111,11 +87,11 @@ Scheme value except \schfalse{}, and the word ``false'' to refer to
 An important concept in Scheme (and Lisp) is that of the {\em external
 representation} of an object as a sequence of characters.  For example,
 an external representation of the integer 28 is the sequence of
-characters ``{\tt 28}'', and an external representation of a list consisting
-of the integers 8 and 13 is the sequence of characters ``{\tt(8 13)}''.
+characters ``{\tt 28},'' and an external representation of a list consisting
+of the integers 8 and 13 is the sequence of characters ``{\tt(8 13)}.''
 
 The external representation of an object is not necessarily unique.  The
-integer 28 also has representations ``{\tt \#e28.000}'' and ``{\tt\#x1c}'', and the
+integer 28 also has representations ``{\tt \#e28.000}'' and ``{\tt\#x1c},'' and the
 list in the previous paragraph also has the representations ``{\tt( 08 13
 )}'' and ``{\tt(8 .\ (13 .\ ()))}'' (see section~\ref{listsection}).
 

@@ -20,10 +20,6 @@ paradigms are possible.
   ammendment or SRFI we need to say something about the directory
   structure and file extensions used for modules and programs.}
 
-%% ; questions of user interface lie outside the scope of this report.
-%% (Indeed, Scheme would still be useful as a notation for expressing
-%% computational methods even in the absence of a mechanical
-%% implementation.)
 
 Program parts other than expressions that are present
 at the top level of a program can be interpreted declaratively.
@@ -35,16 +31,11 @@ invoked or loaded, and typically perform some kind of initialization.
 
 \todo{Shinn: The sections below seem to cover this - do we want to
   summarize it here?}
-%% If a top-level binding is redefined or modified, existing references
-%% to the binding must reflect the change, however if an existing
-%% non-syntax binding is redefined as syntax previous references may
-%% remain unchanged.
 
 At the top level of a program {\tt(begin \hyperi{form} \dotsfoo)} is
 equivalent to the sequence of expressions, definitions, and syntax definitions
 that form the body of the \ide{begin}.
 
-\todo{Cromarty, etc.: disclaimer about top level?}
 
 \section{Definitions}
 \label{defines}
@@ -113,7 +104,6 @@ which all possible variables are bound to locations, most of
 which contain undefined values.  Top level definitions in
 such an implementation are truly equivalent to assignments.
 
-\todo{Rozas: equal time for opposition semantics?}
 
 
 \subsection{Internal definitions}
@@ -179,8 +169,6 @@ syntactic environment is extended by binding the
 to any top-level binding for \hyper{keyword} remain unchanged.
 Otherwise, it is an {\em internal syntax definition}, and is local to the
 \hyper{body} in which it is defined.
-%% Any {\em internal syntax definitions} in a body must come before any
-%% {\em internal definitions}.
 
 \begin{scheme}
 (let ((x 1) (y 2))
@@ -193,27 +181,6 @@ Otherwise, it is an {\em internal syntax definition}, and is local to the
   (swap! x y)
   (list x y))                \ev (2 1)%
 \end{scheme}
-
-%There is no {\cf define-syntax} analogue of internal definitions.
-
-%[Rationale flushed because it may or may not be true and isn't the
-% real rationale anyway. -RK]
-%\begin{rationale}
-%As discussed below, the syntax and scope rules for syntax definitions
-%can give rise to syntactic ambiguities when syntactic keywords are
-%shadowed.
-%Further ambiguities would arise if {\cf define-syntax}
-%were permitted at the beginning of a \meta{body}, with scope
-%rules analogous to those for internal definitions.
-%\end{rationale}
-
-% It is an error for a program to contain more than one top-level
-% \meta{definition} or \meta{syntax definition} of any identifier.
-%
-% [I flushed this because it isn't an error for a program to
-% contain more than one top-level definition of an identifier,
-% and I didn't want to introduce any gratuitous incompatibilities
-% with the existing Scheme language. -- Will]
 
 \todo{Shinn: This description is hideous.}
 

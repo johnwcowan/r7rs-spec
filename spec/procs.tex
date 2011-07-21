@@ -44,9 +44,7 @@ the computational analogue of a mathematical equivalence relation (it is
 symmetric, reflexive, and transitive).  Of the equivalence predicates
 described in this section, {\cf eq?}\ is the finest or most
 discriminating, and {\cf equal?}\ is the coarsest.  {\cf Eqv?}\ is
-slightly less discriminating than {\cf eq?}.  \todo{Pitman doesn't like
-this paragraph.  Lift the discussion from the Maclisp manual.  Explain
-why there's more than one predicate.}
+slightly less discriminating than {\cf eq?}.  
 
 
 \begin{entry}{%
@@ -194,14 +192,6 @@ procedures.  However, {\cf eqv?} may or may not detect this equivalence.
                         \ev  \schfalse%
 \end{scheme}
 
-% Objects of distinct types must never be regarded as the same object,
-% except that \schfalse{} and the empty list\index{empty list} are permitted to
-% be identical.
-%
-% \begin{scheme}
-% (eqv? '() \schfalse)    \ev  \unspecified%
-% \end{scheme}
-
 Since it is an error to modify constant objects (those returned by
 literal expressions), implementations are permitted, though not
 required, to share structure between constants where appropriate.  Thus
@@ -264,8 +254,6 @@ vectors and empty strings.
   (eq? p p))      \ev  \schtrue%
 \end{scheme}
 
-\todo{Needs to be explained better above.  How can this be made to be
-not confusing?  A table maybe?}
 
 \begin{rationale} It will usually be possible to implement {\cf eq?}\ much
 more efficiently than {\cf eqv?}, for example, as a simple pointer
@@ -310,25 +298,8 @@ circular data structures.
 \label{numbersection}
 \index{number}
 
-%%R4%% The excessive use of the code font in this section was
-% confusing, somewhat obnoxious, and inconsistent with the rest
-% of the report and with parts of the section itself.  I added
-% a \tupe no-op, and changed most old uses of \type to \tupe,
-% to make it easier to change the fonts back if people object
-% to the change.
-
 \newcommand{\type}[1]{{\it#1}}
 \newcommand{\tupe}[1]{{#1}}
-
-%% This paragraph is stale.
-%% Numerical computation has traditionally been neglected by the Lisp
-%% community.  Until Common Lisp there was no carefully thought out
-%% strategy for organizing numerical computation, and with the exception of
-%% the MacLisp system \cite{Pitman83} little effort was made to
-%% execute numerical code efficiently.  This report recognizes the excellent work
-%% of the Common Lisp committee and accepts many of their recommendations.
-%% In some ways this report simplifies and generalizes their proposals in a manner
-%% consistent with the purposes of Scheme.
 
 It is important to distinguish between mathematical numbers, the
 Scheme numbers that attempt to model them, the machine representations
@@ -342,31 +313,11 @@ Fixnums are integers with a limited and machine-dependent range;
 flonums are real numbers with a limited and machine-dependent
 range and precision.
 
-%%R4%% I did some reorganizing here to move the discussion of mathematical
-% numbers before the discussion of the Scheme numbers, hoping that this
-% would help to motivate the discussion of representation independence.
-
 \subsection{Numerical types}
 \label{numericaltypes}
 \index{numerical types}
 
-%%R4%% A Scheme system provides data of type \type{number}, which is the most
-%general numerical type supported by that system.
-%\type{Number} is
-%likely to be a complicated union type implemented in terms of
-%\type{fixnum}s, \type{bignum}s, \type{flonum}s, and so forth, but this
-%should not be apparent to a naive user.  What the user should see is
-%that the usual operations on numbers produce the mathematically
-%expected results, within the limits of the implementation.
-
-%%R4%%  I rewrote the following paragraph to make the various levels of
-% the tower into subsets of each other, instead of relating them by
-% injections.  I think the injections tended to put people in the frame
-% of mind of thinking about coercions between non-overlapping numeric
-% types in mainstream programming languages.
-
 \vest Mathematically, numbers may be arranged into a tower of subtypes
-%%R4%% with injections relating adjacent levels of the tower:
 in which each level is a subset of the level above it:
 \begin{tabbing}
 \ \ \ \ \ \ \ \ \ \=\tupe{number} \\
@@ -387,9 +338,6 @@ representation inside a computer.  Although most implementations of
 Scheme will offer at least two different representations of 3, these
 different representations denote the same integer.
 
-%%R4%% I moved "Implementations of Scheme are not required to implement
-% the whole tower..." to the subsection on implementation restrictions.
-
 Scheme's numerical operations treat numbers as abstract data, as
 independent of their representation as possible.  Although an implementation
 of Scheme may use fixnum, flonum, and perhaps other representations for
@@ -408,21 +356,15 @@ This distinction is orthogonal to the dimension of type.
 
 \subsection{Exactness}
 
-%%R4%% I tried to direct the following paragraph away from philosophizing
-% about the exactness of mathematical numbers, and toward philosophizing
-% about the exactness of Scheme numbers.
-
 \mainindex{exactness} \label{exactly}
 Scheme numbers are either \type{exact} or \type{inexact}.  A number is
 \tupe{exact} if it was written as an exact constant or was derived from
 \tupe{exact} numbers using only \tupe{exact} operations.  A number is
 \tupe{inexact} if it was written as an inexact constant,
-%%R4%% models a quantity (e.g., a measurement) known only approximately,
 if it was
 derived using \tupe{inexact} ingredients, or if it was derived using
 \tupe{inexact} operations. Thus \tupe{inexact}ness is a contagious
 property of a number.
-%%R4%% The rest of this paragraph (from R3RS) has been dropped.
 
 \vest If two implementations produce \tupe{exact} results for a
 computation that did not involve \tupe{inexact} intermediate results,
@@ -434,14 +376,10 @@ practical to the mathematically ideal result.
 
 \vest Rational operations such as {\cf +} should always produce
 \tupe{exact} results when given \tupe{exact} arguments.
-%%R4%%If an implementation is
-%unable to represent an \tupe{exact} result (for example, if it does not
-%support infinite precision integers and rationals)
 If the operation is unable to produce an \tupe{exact} result,
 then it may either report the violation of an implementation restriction
 or it may silently coerce its
 result to an \tupe{inexact} value.
-%%R4%%Such a coercion may cause an error later.
 See section~\ref{restrictions}.
 
 \vest With the exception of \ide{inexact->exact}, the operations described in
@@ -522,35 +460,9 @@ violation of an
 implementation restriction or it may silently coerce its result to an
 \tupe{inexact} number.  Such a coercion may cause an error later.
 
-%%R4%% I moved this stuff here.
-% It seems to me that the only thing that this requires is that
-% implementations that support inexact numbers have to have both
-% exact and inexact representations for the integers 0 through 15.
-% If that's what it's saying, I'd rather say it that way.
-% On the other hand, letting the limit be as small as 15 sounds a
-% tad silly, though I think I understand how that number was arrived at.
-% (Or is 35 the number?)
-%
-%Implementations are encouraged, but not required, to support \tupe{inexact}
-%numbers.  For any implementation that supports \tupe{inexact} numbers,
-%there is a subset of the integers for which there are both \tupe{exact} and
-%\tupe{inexact} representations.  This subset must include all non-negative
-%integers up to some limit specified by the implementation.  This limit
-%must be 16 or greater.  The
-%\ide{exact\coerce{}inexact} and \ide{inexact\coerce{}exact}
-%procedures implement the natural one-to-one correspondence between
-%the \tupe{inexact} and \tupe{exact} integers within this range.
 
 \vest An implementation may use floating point and other approximate 
 representation strategies for \tupe{inexact} numbers.
-%%R4%% The following sentence seemed a bit condescending as well as
-% awkward.  It didn't seem to be very enforceable, so I flushed it.
-%
-%This is not to
-%say that implementors need not use the best known algorithms for
-%\tupe{inexact} computations---only that approximate methods of high
-%quality are allowed.
-%
 This report recommends, but does not require, that the IEEE 754
 standard be followed by implementations that use
 flonum representations, and that implementations using
@@ -596,10 +508,8 @@ Note that either the real or the imaginary part of a complex number
 can be an infinity or NaN.
 
 Although Scheme allows a variety of written
-%%R4%% representations of 
 notations for
 numbers, any particular implementation may support only some of them.
-%%R4%%
 For example, an implementation in which all numbers are \tupe{real}
 need not support the rectangular and polar notations for complex
 numbers.  If an implementation encounters an \tupe{exact} numerical constant that
@@ -611,26 +521,10 @@ constant by an \tupe{inexact} number.
 \subsection{Syntax of numerical constants}
 \label{numbernotations}
 
-%@@@@LOSE@@@@
-
-%%R4%%  I removed the following paragraph in an attempt to tighten up
-% this subsection.  Except for its first sentence, which I moved to
-% the subsection on implementation restrictions, I think its content
-% is implied by the rest of the section.
-%
-%Although Scheme allows a variety of written representations of numbers,
-%any particular implementation may support only some of them.
-%These syntaxes are intended to be purely notational; any kind of number
-%may be written in any form that the user deems convenient.  Of course,
-%writing 1/7 as a limited-precision decimal fraction will not express the
-%number exactly, but this approximate form of expression may be just what
-%the user wants to see.
-
 The syntax of the written representations for numbers is described formally in
 section~\ref{numbersyntax}.  Note that case is not significant in numerical
 constants.
 
-%%R4%%  See section~\ref{numberformats} for many examples.
 
 A number may be written in binary, octal, decimal, or
 hexadecimal by the use of a radix prefix.  The radix prefixes are {\cf
@@ -639,8 +533,6 @@ hexadecimal by the use of a radix prefix.  The radix prefixes are {\cf
 no radix prefix, a number is assumed to be expressed in decimal.
 
 A
-%%R4%%
-% simple
 numerical constant may be specified to be either \tupe{exact} or
 \tupe{inexact} by a prefix.  The prefixes are {\cf \#e}\sharpindex{e}
 for \tupe{exact}, and {\cf \#i}\sharpindex{i} for \tupe{inexact}.  An exactness
@@ -650,11 +542,6 @@ constant may be either \tupe{inexact} or \tupe{exact}.  It is
 \tupe{inexact} if it contains a decimal point, an
 exponent, or a ``\sharpsign'' character in the place of a digit,
 otherwise it is \tupe{exact}.
-%%R4%%  With our new syntax, the following sentence is redundant:
-%
-%The written representation of a
-%compound number, such as a ratio or a complex, is exact if and only if
-%all of its constituents are exact.
 
 In systems with \tupe{inexact} numbers
 of varying precisions it may be useful to specify
@@ -689,12 +576,6 @@ between different NaNs.
 The reader is referred to section~\ref{typeconventions} for a summary
 of the naming conventions used to specify restrictions on the types of
 arguments to numerical routines.
-%%R4%% The following sentence has already been said twice, and the
-% term "exactness-preserving" is no longer defined by the Report.
-%
-%  Remember that
-%an exactness-preserving operation may coerce its result to inexact if the
-%implementation is unable to represent it exactly.
 The examples used in this section assume that any numerical constant written
 using an \tupe{exact} notation is indeed represented as an \tupe{exact}
 number.  Some examples also assume that certain numerical constants written
@@ -720,11 +601,6 @@ In general, if a type predicate is true of a number then all higher
 type predicates are also true of that number.  Consequently, if a type
 predicate is false of a number, then all lower type predicates are
 also false of that number.
-%%R4%% The new section on implementation restrictions subsumes: 
-% Not every system
-%supports all of these types; for example, it is entirely possible to have a
-%Scheme system that has only \tupe{integer}s.  Nonetheless every implementation
-%of Scheme must have all of these predicates.
 
 If \vr{z} is a complex number, then {\cf (real? \vr{z})} is true if
 and only if {\cf (zero? (imag-part z))} and {\cf (exact? (imag-part
@@ -820,8 +696,6 @@ Otherwise it returns \schfalse{}.
 \proto{<=}{ \vri{x} \vrii{x} \vriii{x} \dotsfoo}{procedure}
 \proto{>=}{ \vri{x} \vrii{x} \vriii{x} \dotsfoo}{procedure}}
 
-%- Some implementations allow these procedures to take many arguments, to 
-%- facilitate range checks.  
 These procedures return \schtrue{} if their arguments are (respectively):
 equal, monotonically increasing, monotonically decreasing,
 monotonically nondecreasing, or monotonically nonincreasing.
@@ -883,7 +757,6 @@ restriction.
 \proto{*}{ \vri{z} \dotsfoo}{procedure}}
 
 These procedures return the sum or product of their arguments.
-%- These procedures are exactness preserving.
 
 \begin{scheme}
 (+ 3 4)                 \ev  7
@@ -907,9 +780,6 @@ These procedures return the sum or product of their arguments.
 With two or more arguments, these procedures return the difference or
 quotient of their arguments, associating to the left.  With one argument,
 however, they return the additive or multiplicative inverse of their argument.
-%- These procedures are exactness preserving, except that division may
-%- coerce its result to inexact in implementations that do not support
-%- \tupe{ratnum}s. 
 
 \begin{scheme}
 (- 3 4)                 \ev  -1
@@ -926,7 +796,6 @@ however, they return the additive or multiplicative inverse of their argument.
 \proto{abs}{ x}{procedure}}
 
 {\cf Abs} returns the absolute value of its argument.  
-%- {\cf Abs} is exactness preserving when its argument is real.
 \begin{scheme}
 (abs -7)                \ev  7
 \end{scheme}
@@ -1025,9 +894,7 @@ versions of this report.
 
 These procedures return the greatest common divisor or least common
 multiple of their arguments.  The result is always non-negative.
-%- These procedures are exactness preserving.
 
-%%R4%% I added the inexact example.
 \begin{scheme}
 (gcd 32 -36)            \ev  4
 (gcd)                   \ev  0
@@ -1047,8 +914,6 @@ These procedures return the numerator or denominator of their
 argument; the result is computed as if the argument was represented as
 a fraction in lowest terms.  The denominator is always positive.  The
 denominator of 0 is defined to be 1.
-%- The remarks about denominators are new.
-%- Clearly, they are exactness-preserving procedures.
 \todo{More description and examples needed.}
 \begin{scheme}
 (numerator (/ 6 4))  \ev  3
@@ -1105,7 +970,6 @@ result should be passed to the {\cf inexact->exact} procedure.
 
 \begin{entry}{%
 \proto{rationalize}{ x y}{procedure}
-%- \proto{rationalize}{ x}{procedure}
 }
 
 {\cf Rationalize} returns the {\em simplest} rational number
@@ -1164,14 +1028,6 @@ discussion of branch cuts, boundary conditions, and implementation of
 these functions.  When it is possible these procedures produce a real
 result from a real argument.
 
-%%R4%%
-\todo{The cited references are likely to change their branch cuts
-soon to allow for the possibility of distinct positive and negative
-zeroes, as in IEEE floating point.  We may not want to follow those
-changes, since we may want a complex number with zero imaginary part
-(whether positive or negative zero) to be treated as a real.  I don't
-think there are any better standards for complex arithmetic than the
-ones cited, so we're really on our own here.}
 
 \end{entry}
 
@@ -1208,25 +1064,6 @@ For other cases in which the first argument is zero, either an error is
 signalled or an unspecified number is returned.
 \end{entry}
 
-%- \begin{entry}{%- 
-%- \proto{approximate}{ z x}{procedure}}
-%- 
-%- Returns an approximation to \vr{z} in a representation whose precision is
-%- the same as that 
-%- of the representation of \vr{x}, which must be an inexact number.  The
-%- result is always inexact.
-%- 
-%- \begin{scheme}
-%- (approximate 3.1415926535 1F10)
-%-         \ev  3.14159F0
-%- (approximate 3.1415926535 \#I65535)
-%-         \ev \#I3
-%- (approximate 3.14F0 1L8)
-%-         \ev  3.14L0
-%- (approximate 3.1415926535F0 1L8)
-%-         \ev  3.14159L0
-%- \end{scheme}
-%- \end{entry}
 
 
 
@@ -1274,9 +1111,6 @@ but {\cf abs} is in the {\cf base} module, whereas
 {\cf Exact\coerce{}inexact} returns an \tupe{inexact} representation of \vr{z}.
 The value returned is the
 \tupe{inexact} number that is numerically closest to the argument.  
-%%R4%%For
-%\tupe{exact} arguments which have no reasonably close \tupe{inexact} equivalent,
-%it is permissible to signal an error.
 For inexact arguments, the result is the same as the argument. For exact
 complex numbers, the result is a complex number whose real and imaginary
 parts are the result of applying {\cf exact\coerce{}inexact} to the real
@@ -1287,9 +1121,6 @@ then a violation of an implementation restriction may be reported.
 {\cf Inexact\coerce{}exact} returns an \tupe{exact} representation of
 \vr{z}.  The value returned is the \tupe{exact} number that is numerically
 closest to the argument.
-%%R4%%  For \tupe{inexact} arguments which have no
-%reasonably close \tupe{exact} equivalent, it is permissible to signal
-%an error.
 For exact arguments, the result is the same as the argument. For inexact
 non-integral real arguments, the implementation may return a rational
 approximation, or may report an implementation violation. For inexact
@@ -1299,15 +1130,6 @@ real and imaginary parts of the argument, respectively.
 If an \tupe{inexact} argument has no reasonably close \tupe{exact} equivalent,
 then a violation of an implementation restriction may be reported.
 
-%%R%% I moved this to the section on implementation restrictions.
-%For any implementation that supports \tupe{inexact} quantities,
-%there is a subset of the integers for which there are both \tupe{exact} and
-%\tupe{inexact} representations.  This subset must include the non-negative
-%integers up to a limit specified by the implementation.  The limit
-%must be big enough to represent all digits in reasonable radices, and
-%may correspond to some natural word size for the implementation.  For
-%such integers, these procedures implement the natural one-to-one
-%correspondence between the representations.
 
 These procedures implement the natural one-to-one correspondence between
 \tupe{exact} and \tupe{inexact} integers throughout an
@@ -1374,9 +1196,6 @@ allows for infinities, NaNs, and non-flonum representations.
 \proto{string->number}{ string}{procedure}
 \rproto{string->number}{ string radix}{procedure}}
 
-%%R4%% I didn't include the (string->number string radix exactness)
-% case, since I haven't heard any resolution of the coding to be used
-% for the third argument.
 
 Returns a number of the maximally precise representation expressed by the
 given \vr{string}.  \vr{Radix} must be an exact integer, either 2, 8, 10,
@@ -1431,29 +1250,11 @@ conditional expressions, and the phrase ``a false value''\index{false} (or
 ``false'') means any object treated as false by the conditional expressions.
 
 \vest Of all the standard Scheme values, only \schfalse{}
-% is guaranteed to count
 counts as false in conditional expressions.
-%  It is not
-% specified whether the empty list\index{empty list} counts as false
-% or as true in conditional expressions.
 Except for \schfalse{},
-% and possibly the empty list,
 all standard Scheme values, including \schtrue,
 pairs, the empty list, symbols, numbers, strings, vectors,
 bytevectors, records, and procedures, count as true.
-
-%\begin{note}
-%In some implementations the empty list counts as false, contrary
-%to the above.
-%Nonetheless a few examples in this report assume that the
-%empty list counts as true, as in \cite{IEEEScheme}.
-%\end{note}
-
-% \begin{rationale}
-% For historical reasons some implementations regard \schfalse{} and the
-% empty list as the same object.  These implementations therefore cannot
-% make the empty list count as true in conditional expressions.
-% \end{rationale}
 
 \begin{note}
 Programmers accustomed to other dialects of Lisp should be aware that
@@ -1596,20 +1397,6 @@ y                       \ev  (a . 4)
 (list? x)               \ev  \schfalse%
 \end{scheme}
 
-%It is often convenient to speak of a homogeneous list of objects
-%of some particular data type, as for example \hbox{\cf (1 2 3)} is a list of
-%integers.  To be more precise, suppose \var{D} is some data type.  (Any
-%predicate defines a data type consisting of those objects of which the
-%predicate is true.)  Then
-%
-%\begin{itemize}
-%\item The empty list is a list of \var{D}.
-%\item If \var{list} is a list of \var{D}, then any pair whose cdr is
-%      \var{list} and whose car is an element of the data type \var{D} is also a
-%      list of \var{D}.
-%\item There are no other lists of \var{D}.
-%\end{itemize}
-
 Within literal expressions and representations of objects read by the
 \ide{read} procedure, the forms \singlequote\hyper{datum}\schindex{'},
 \backquote\hyper{datum}, {\tt,}\hyper{datum}\schindex{,}, and
@@ -1617,8 +1404,8 @@ Within literal expressions and representations of objects read by the
 the symbols \ide{quote}, \ide{quasiquote}, \hbox{\ide{unquote}}, and
 \ide{unquote-splicing}, respectively.  The second element in each case
 is \hyper{datum}.  This convention is supported so that arbitrary Scheme
-programs may be represented as lists.  \todo{Can or need this be stated
-more carefully?} That is, according to Scheme's grammar, every
+programs may be represented as lists.  
+That is, according to Scheme's grammar, every
 \meta{expression} is also a \meta{datum} (see section~\ref{datum}).
 Among other things, this permits the use of the {\cf read} procedure to
 parse Scheme programs.  See section~\ref{externalreps}. 
@@ -1695,7 +1482,6 @@ Note that it is an error to take the cdr of the empty list.
 \nodomain{\var{Pair} must be a pair.}  
 Stores \var{obj} in the car field of \var{pair}.
 The value returned by {\cf set-car!}\ is unspecified.  % <!>
-%This procedure can be very confusing if used indiscriminately.
 
 \begin{scheme}
 (define (f) (list 'not-a-constant-list))
@@ -1713,7 +1499,6 @@ The value returned by {\cf set-car!}\ is unspecified.  % <!>
 \nodomain{\var{Pair} must be a pair.}
 Stores \var{obj} in the cdr field of \var{pair}.
 The value returned by {\cf set-cdr!}\ is unspecified.  % <!>
-%This procedure can be very confusing if used indiscriminately.
 
 \end{entry}
 
@@ -1747,12 +1532,6 @@ twenty-eight of these procedures in all.
 Returns \schtrue{} if \var{obj} is the empty list\index{empty list},
 otherwise returns \schfalse.
 
-% \begin{note}
-% In implementations in which the empty
-% list is the same as \schfalse{}, {\cf null?} will return \schtrue{}
-% if \var{obj} is \schfalse{}.
-% \end{note}
- 
 \end{entry}
 
 \begin{entry}{%
@@ -1771,12 +1550,7 @@ the empty list.
           (list? x))         \ev  \schfalse%
 \end{scheme}
 
-\todo{Do we need to emphasize the following note?}
 
-%% \begin{note}
-%%   The {\cf list?} procedure must terminate and return \schfalse{} if \var{obj}
-%%   contains cycles.
-%% \end{note}
 \end{entry}
 
 \begin{entry}{%
@@ -1815,12 +1589,7 @@ Returns the length of \var{list}.
 (length '())                    \ev  0%
 \end{scheme}
 
-\todo{Do we need to emphasize the following note?}
 
-%% \begin{note}
-%%   The {\cf length} procedure must detect and signal an error if its
-%%   argument contains cycles.
-%% \end{note}
 \end{entry}
 
 
@@ -1840,7 +1609,7 @@ followed by the elements of the other \var{list}s.
 The resulting list is always newly allocated, except that it shares
 structure with the last \var{list} argument.  The last argument may
 actually be any object; an improper list results if the last argument is not a
-proper list.  \todo{This is pretty awkward.  I should get Bartley to fix this.}
+proper list.  
 
 \begin{scheme}
 (append '(a b) '(c . d))        \ev  (a b c . d)
@@ -1911,21 +1680,6 @@ The value returned by {\cf list-set!}\ is unspecified.  % <!>
 \end{entry}
 
 
-%\begin{entry}{%
-%\proto{last-pair}{ list}{procedure}}
-%
-%Returns the last pair in the nonempty, possibly improper, list \var{list}.
-%{\cf Last-pair} could be defined by
-%
-%\begin{scheme}
-%(define last-pair
-%  (lambda (x)
-%    (if (pair? (cdr x))
-%        (last-pair (cdr x))
-%        x)))%
-%\end{scheme} 
-% 
-%\end{entry}
 
 
 \begin{entry}{%
@@ -2022,16 +1776,8 @@ and~\ref{identifiersyntax}.
 a literal expression, or read using the {\cf read} procedure, and
 subsequently written out using the {\cf write} procedure, will read back
 in as the identical symbol (in the sense of {\cf eqv?}).
-%% The {\cf string\coerce{}symbol} procedure, however, can create symbols for
-%% which this write/read invariance may not hold because their names
-%% contain special characters or letters in the non-standard case.
 
 \begin{note}
-%% Some implementations of Scheme have a feature known as ``slashification''
-%% in order to guarantee write/read invariance for all symbols, but
-%% historically the most important use of this feature has been to
-%% compensate for the lack of a string data type.
-%\vest
 Some implementations have values known as ``uninterned symbols,'' which
 defeat write/read invariance,
 and also generate exceptions to the rule that two symbols are the same
@@ -2081,7 +1827,6 @@ create symbols with names containing special characters that would
 require escaping when written.
 
 \begin{scheme}
-%(eq? 'mISSISSIppi 'mississippi)  \lev  \schtrue
 (string->symbol "mISSISSIppi")  \lev%
   'mISSISSIppi
 (eq? 'bitBlt (string->symbol "bitBlt"))     \lev  \schtrue
@@ -2107,10 +1852,6 @@ Implementations may support any other Unicode characters they see fit,
 and may also support non-Unicode characters as well.
 Except as otherwise specified, the result of applying any of the
 following procedures to a non-Unicode character is implementation-dependent.
-%There is no requirement that the data type of
-%characters be disjoint from other data types; implementations are
-%encouraged to have a separate character data type, but may choose to
-%represent characters as integers, strings, or some other type.
 Characters are written using the notation \sharpsign\backwhack\hyper{character}
 or \sharpsign\backwhack\hyper{character name} or
 \sharpsign\backwhack{}x\meta{hex scalar value}.
@@ -2150,10 +1891,6 @@ by a representation of the symbol ``{\tt pace}.''
 \todo{Fix}
 Characters written in the \sharpsign\backwhack{} notation are self-evaluating.
 That is, they do not have to be quoted in programs.  
-%The \sharpsign\backwhack{}
-%notation is not an essential part of Scheme, however.  Even implementations
-%that support the \sharpsign\backwhack{} notation for input do not have to
-%support it for output.
 
 \vest Some of the procedures that operate on characters ignore the
 difference between upper case and lower case.  The procedures that
@@ -2229,15 +1966,6 @@ upper nor lower case.
 \end{entry}
 
 
-%%R4%%\begin{entry}{%
-%\proto{char-upper-case?}{ letter}{procedure}
-%\proto{char-lower-case?}{ letter}{procedure}}
-%
-%\domain{\var{Letter} must be an alphabetic character.}
-%These procedures return \schtrue{} if their arguments are upper case or
-%lower case characters, respectively, otherwise they return \schfalse.
-%\end{entry}
-
 
 \begin{entry}{%
 \proto{char->integer}{ char}{procedure}
@@ -2256,27 +1984,6 @@ the Unicode representation internally.
 Given an exact integer that is the value returned by
 a character when {\cf char\coerce{}integer} is applied to it, {\cf integer\coerce{}char}
 returns that character.
-%What follows is still true, but no longer necessary:
-%These procedures implement order-preserving isomorphism
-%between the set of characters under the \ide{char<=?}\ ordering and some
-%subset of the integers under the {\cf <=}\ ordering.  That is, if
-%
-%\begin{scheme}
-%(char<=? \vr{a} \vr{b}) \evalsto \schtrue  {\rm{}and}  %
-%(<= \vr{x} \vr{y}) \evalsto \schtrue%
-%\end{scheme}
-%
-%\noindent and \vr{x} and \vr{y} are in the domain of
-%{\cf integer\coerce{}char}, then
-%
-%\begin{scheme}
-%(<= (char\coerce{}integer \vr{a})
-%    (char\coerce{}integer \vr{b}))         \ev  \schtrue
-%
-%(char<=? (integer\coerce{}char \vr{x})
-%         (integer\coerce{}char \vr{y}))     \ev  \schtrue%
-%\end{scheme}
-%
 \end{entry}
 
 
@@ -2316,9 +2023,6 @@ equivalents.
 Strings are sequences of characters.  
 Implementations may support characters that they do not allow to appear
 in strings.
-%In some implementations of Scheme
-%they are immutable; other implementations provide destructive procedures
-%such as {\cf string-set!}\ that alter string objects.
 \vest Strings are written as sequences of characters enclosed within doublequotes
 ({\cf "}).  Within a string literal, various escape
 sequences\mainindex{escape sequence} represent characters other than
@@ -2348,10 +2052,6 @@ to nothing (along with any trailing intraline whitespace), and can be
 used to indent strings for improved legibility. Any other line ending
 has the same effect as inserting a {\cf\backwhack{}n} character into
 the string.
-% this is
-%usually a bad idea because 
-%the exact effect may vary from one computer
-%system to another.
 
 Example:
 
@@ -2389,8 +2089,6 @@ Returns \schtrue{} if \var{obj} is a string, otherwise returns \schfalse.
 \proto{make-string}{ \vr{k}}{procedure}
 \rproto{make-string}{ \vr{k} char}{procedure}}
 
-%\domain{\vr{k} must be a non-negative integer, and \var{char} must be
-%a character.}  
 {\cf Make-string} returns a newly allocated string of
 length \vr{k}.  If \var{char} is given, then all elements of the string
 are initialized to \var{char}, otherwise the contents of the
@@ -2579,9 +2277,6 @@ returns a newly allocated string formed from the characters in the list
 \var{list}, which must be a list of characters. {\cf String\coerce{}list}
 and {\cf list\coerce{}string} are
 inverses so far as {\cf equal?}\ is concerned.  
-%Implementations that provide
-%destructive operations on strings should ensure that the result of
-%{\cf list\coerce{}string} is newly allocated.
 
 \end{entry}
 
@@ -2634,9 +2329,6 @@ constants must be quoted:
 \begin{scheme}
 '\#(0 (2 2 2 2) "Anna")  \lev  \#(0 (2 2 2 2) "Anna")%
 \end{scheme}
-
-\todo{Pitman sez: The visual similarity to lists is bound to be confusing
-to some.  Elaborate on the distinction.}
 
 
 \begin{entry}{%
@@ -2847,15 +2539,9 @@ must be true.  The value returned by {\cf partial-bytevector-copy!} is unspecifi
 \section{Control features}
 \label{proceduresection}
  
-% Intro flushed; not very a propos any more.
-% Procedures should be discussed somewhere, however.
-
 This chapter describes various primitive procedures which control the
 flow of program execution in special ways.
 The {\cf procedure?}\ predicate is also described here.
-
-\todo{{\tt Procedure?} doesn't belong in a section with the name
-``control features.''  What to do?}
 
 \begin{entry}{%
 \proto{procedure?}{ obj}{procedure}}
@@ -3073,9 +2759,6 @@ If a value which is not a promise has already been computed, this value is
 returned.  Otherwise, the promise is first evaluated, then overwritten
 by the obtained promise or value, and then {\cf force} is again applied
 (iteratively) to the promise.
-% without any recomputation.
-% [As pointed out by Marc Feeley, the "without any recomputation"
-% isn't necessarily true. --Will]
 
 \begin{scheme}
 (force (delay (+ 1 2)))   \ev  3
@@ -3124,10 +2807,6 @@ functional style.  The following examples should not be considered to
 illustrate good programming style, but they illustrate the property that
 only one value is computed for a promise, no matter how many times it is
 forced.
-% the value of a promise is computed at most once.
-% [As pointed out by Marc Feeley, it may be computed more than once,
-% but as I observed we can at least insist that only one value be
-% used! -- Will]
 
 \begin{scheme}
 (define count 0)
@@ -3224,13 +2903,6 @@ with the following promise accessors:
     (set-car! new (car old))))%
 \end{scheme}
 
-%\begin{rationale}
-%A promise may refer to its own value, as in the last example above.
-%Forcing such a promise may cause the promise to be forced a second time
-%before the value of the first force has been computed.
-%This complicates the definition of {\cf make-promise}.
-%\end{rationale}
-%
 Various extensions to this semantics of {\cf delay}, {\cf force} and
 {\cf lazy} are supported in some implementations:
 
@@ -3238,8 +2910,6 @@ Various extensions to this semantics of {\cf delay}, {\cf force} and
 \item Calling {\cf force} on an object that is not a promise may simply
 return the object.
 
-% There is some debate on whether we should continue to allow these
-% optimizations.
 \item It may be the case that there is no means by which a promise can be
 operationally distinguished from its forced value.  That is, expressions
 like the following may evaluate to either \schtrue{} or to \schfalse{},
@@ -3598,16 +3268,7 @@ with-exception-handler} procedure returns the results of invoking
 exception handler for the dynamic extent (as determined by {\cf
   dynamic-wind}) of the invocation of \var{thunk}.
 
-%% \implresp The implementation must check the restrictions on
-%% \var{handler} to the extent performed by applying it as described
-%% when it is called as a result of a call to {\cf raise} or {\cf
-%%   raise-continuable}.
-%% An implementation may check whether \var{handler} is an appropriate argument
-%% before applying it.
 
-\todo{The above seems to just be saying that we shouldn't check if
-  handler is applicable unless an exception actually reaches it.  Is
-  this worth stating?}
 \end{entry}
 
 \begin{entry}{%
@@ -3808,10 +3469,6 @@ then the port is closed automatically and the value(s) yielded by the
 the port will not be closed automatically unless it is possible to
 prove that the port will never again be used for a read or write
 operation.
-%Scheme
-%will not close the port unless it can prove that the port will never
-%again be used for a read or write operation.
-
 \begin{rationale}
 Because Scheme's escape procedures have unlimited extent, it  is
 possible to escape from the current continuation but later to escape back in. 
@@ -3819,8 +3476,6 @@ If implementations were permitted to close the port on any escape from the
 current continuation, then it would be impossible to write portable code using
 both {\cf call-with-current-continuation} and {\cf call-with-input-file} or
 {\cf call-with-output-file}.
-\todo{Pitman wants more said here; maybe encourage users to call
-\var{close-foo-port}; maybe talk about process switches (?).}
 \end{rationale} 
 \end{entry}
 
@@ -3845,8 +3500,6 @@ Returns \schtrue{} if \var{obj} is an input port, output port,
 character port, binary port, or any
 kind of port, respectively, otherwise returns \schfalse.
 
-\todo{Won't necessarily return true after port is closed.}
-
 \end{entry}
 
 
@@ -3856,7 +3509,6 @@ kind of port, respectively, otherwise returns \schfalse.
 Returns \schtrue{} if \var{port} is still open and capable of
 performing input or output, and \schfalse{} otherwise.
 
-\todo{If a port is no longer a port after being closed, this should return false in those cases and not raise a domain error.}
 
 \end{entry}
 
@@ -3898,15 +3550,6 @@ If an escape procedure
 is used to escape from the continuation of these procedures, their
 behavior is implementation-dependent.
 
-\todo{OK this with authors??}
-%current continuation changes in such a way
-%as to make it doubtful that the \var{thunk} will ever return.
-
-\todo{Freeman:
-Throughout this section I wanted to see ``the value of {\tt(current-input-port)}''
-instead of ``the value returned by \var{current-input-port}''.  (Same for
-\var{current-output-port}.)}
-
 
 \end{entry}
 
@@ -3936,27 +3579,25 @@ the effect is unspecified.
 
 
 \begin{entry}{%
+\proto{close-port}{ port}{io module procedure}}
 \proto{close-input-port}{ port}{io module procedure}
 \proto{close-output-port}{ port}{io module procedure}
-\proto{close-port}{ port}{io module procedure}}
 
 Closes the file associated with \var{port}, rendering the \var{port}
-incapable of delivering or accepting data.  \todo{But maybe a no-op
-on some ports, e.g. terminals or editor buffers.}  It is an error
+incapable of delivering or accepting data.  
+It is an error
 to apply the first two procedures to a port which is not an input
 or output port, respectively.
+Scheme implementations may provide ports which are simultaneously
+input and output ports, such as sockets; the {\cf close-input-port}
+and {\cf close-output-port} procedures may be used to close the
+input and output sides of the port independently.
+
 These routines have no effect if the file has already been closed.
 The value returned is unspecified.
 
-\todo{Ramsdell:  Some note is needed explaining why there are two
-different close procedures.}
-
-\todo{A port isn't necessarily still a port after it has been closed?}
 
 \end{entry}
-
-%% \subsection{String Ports}
-%% \label{stringportsection}
 
 \begin{entry}{%
 \proto{open-input-string}{ string}{io module procedure}}
@@ -3964,15 +3605,6 @@ different close procedures.}
 Takes a string and returns a character input port that delivers
 characters from the string.
 
-%% \begin{scheme}
-%% (define p
-%%   (open-input-string "(a . (b . (c . ()))) 34"))
-
-%% (input-port? p)                 \ev  \schtrue
-%% (read p)                        \ev  (a b c)
-%% (read p)                        \ev  34
-%% (eof-object? (peek-char p))     \ev  \schtrue
-%% \end{scheme}
 \end{entry}
 
 \begin{entry}{%
@@ -3981,13 +3613,6 @@ characters from the string.
 Returns a character output port that will accumulate characters for
 retrieval by {\cf get-output-string}.
 
-%% \begin{scheme}
-%% (let ((q (open-output-string))
-%%       (x '(a b c)))
-%%   (write (car x) q)
-%%   (write (cdr x) q)
-%%   (get-output-string q))        \ev  "a(b c)"
-%% \end{scheme}
 \end{entry}
 
 \begin{entry}{%
@@ -3999,8 +3624,6 @@ so far.
 \end{entry}
 
 
-%% \subsection{Bytevector Ports}
-%% \label{bytevectorportsection}
 
 \begin{entry}{%
 \proto{open-input-bytevector}{ bytevector}{io module procedure}}
@@ -4008,15 +3631,6 @@ so far.
 Takes a bytevector and returns a binary input port that delivers
 bytes from the bytevector.
 
-%% \begin{scheme}
-%% (define p
-%%   (open-input-bytevector "(a . (b . (c . ()))) 34"))
-
-%% (input-port? p)                 \ev  \schtrue
-%% (read p)                        \ev  (a b c)
-%% (read p)                        \ev  34
-%% (eof-object? (peek-char p))     \ev  \schtrue
-%% \end{scheme}
 \end{entry}
 
 \begin{entry}{%
@@ -4025,13 +3639,6 @@ bytes from the bytevector.
 Returns a binary output port that will accumulate bytes for
 retrieval by {\cf get-output-bytevector}.
 
-%% \begin{scheme}
-%% (let ((q (open-output-string))
-%%       (x '(a b c)))
-%%   (write (car x) q)
-%%   (write (cdr x) q)
-%%   (get-output-string q))        \ev  "a(b c)"
-%% \end{scheme}
 \end{entry}
 
 \begin{entry}{%
@@ -4064,7 +3671,7 @@ the first character past the end of the external representation of the object.
 
 \vest If an end of file is encountered in the input before any
 characters are found that can begin an object, then an end of file
-object is returned.  \todo{} The port remains open, and further attempts
+object is returned.  The port remains open, and further attempts
 to read will also return an end of file object.  If an end of file is
 encountered after the beginning of an object's external representation,
 but the external representation is incomplete and therefore not parsable,
@@ -4326,8 +3933,6 @@ deserve description here.
 
 \todo{Fix}
 
-%\domain{\var{Filename} should be a string naming an existing file
-%containing Scheme source code.} The {\cf load} procedure reads
 An implementation-dependent operation is used to transform
 \var{filename} into the name of an existing file
 containing Scheme source code.  The {\cf load} procedure reads
@@ -4402,9 +4007,13 @@ abnormal.
 \begin{entry}{%
 \proto{get-environment-variable}{ name}{process-context module procedure}}
 
-\var{Name} must be a string.  Returns the value of the named
-environment variable as a string, or \schfalse{} if the named
-environment variable is not found.  {\cf get-environment-variable} may
+Most operating systems provide each running process with an
+\defining{environment} consisting of \definining{environment variables}.
+Both the name and value of an environment variable are strings.
+{\cf Get-environment-variable} returns the value 
+of the environment variable \var{name},
+or \schfalse{} if the named
+environment variable is not found.  {\cf Get-environment-variable} may
 use locale-setting information to encode the name and decode the value
 of the environment variable.  It is an error if
 {\cf get-environment-variable} can't decode the value.
@@ -4420,8 +4029,7 @@ of the environment variable.  It is an error if
 
 Returns the names and values of all the environment variables as an
 a-list, where the car of each entry is the name of an environment
-variable and the cdr is the value that would be returned by
-{\cf get-environment-variable}.  The order of the list is unspecified.
+variable and the cdr is its value.  The order of the list is unspecified.
 
 \begin{scheme}
 (get-environment-variables) \lev (("USER" . "root") ("HOME" . "/"))
@@ -4456,21 +4064,3 @@ Returns an exact integer representing the number of jiffies per SI
 second. This value is an implementation-specified constant.
 \end{entry}
 
-%% \begin{entry}{%
-%% \proto{transcript-on}{ filename}{procedure}\nopagebreak{}
-%% \proto{transcript-off}{}{procedure}}
-
-%% \domain{\var{Filename} must be a string naming an output file to be
-%% created.} The effect of {\cf transcript-on} is to open the named file
-%% for output, and to cause a transcript of subsequent interaction between
-%% the user and the Scheme system to be written to the file.  The
-%% transcript is ended by a call to {\cf transcript-off}, which closes the
-%% transcript file.  Only one transcript may be in progress at any time,
-%% though some implementations may relax this restriction.  The values
-%% returned by these procedures are unspecified.
-
-%% %\begin{note}
-%% %These procedures are redundant in some systems, but
-%% %systems that need them should provide them.
-%% %\end{note}
-%% \end{entry}

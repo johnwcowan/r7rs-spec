@@ -93,7 +93,6 @@
 
 \newcommand{\domain}[1]{#1}
 \newcommand{\nodomain}[1]{}
-%\newcommand{\todo}[1]{{\rm$[\![$!!~#1$]\!]$}}
 \newcommand{\todo}[1]{}
 
 % \frobq will make quote and backquote look nicer.
@@ -106,7 +105,7 @@
 
 % \cf = code font
 % Unfortunately, \cf \cf won't work at all, so don't even attempt to
-% next constructions which use them...
+% nest constructions which use them...
 \newcommand{\cf}{\frenchspacing\frobq\tt}
 
 % Same as \obeycr, but doesn't do a \@gobblecr.
@@ -137,7 +136,6 @@
 \qquad\=\hspace*{5em}\=\hspace*{9em}\=\kill%   was 16em
 \gobblecr}{\unskip\end{tabbing}}
 
-%\newenvironment{scheme}{\begin{schemenoindent}\+\kill}{\end{schemenoindent}}
 \newenvironment{scheme}{
   % Commands for scheme examples
   \newcommand{\ev}{\>\>\evalsto}
@@ -200,7 +198,6 @@
     \qquad \= $\vert$ \= \kill
   }{\unskip\end{tabbing}}
 
-%\newcommand{\unsection}{\unskip}
 \newcommand{\unsection}{{\vskip -2ex}}
 
 % Commands for grammars
@@ -212,8 +209,6 @@
 % The index
 
 \def\theindex{%\@restonecoltrue\if@twocolumn\@restonecolfalse\fi
-%\columnseprule \z@
-%!! \columnsep 35pt
 \clearpage
 \@topnewpage[
     \centerline{\large\bf\uppercase{Alphabetic index of definitions of concepts,}}

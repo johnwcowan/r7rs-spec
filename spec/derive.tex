@@ -295,13 +295,3 @@ value.
            (cl (params body0 body1 ...) ...)))))))
 \end{scheme}
 
-% `a                =  Q_1[a]
-% `(a b c ... . z)  =  `(a . (b c ...))
-% `(a . b)          =  (append Q*_0[a] `b)
-% `(a)              =  Q*_0[a]
-% Q*_0[a]           =  (list 'a)
-% Q*_0[,a]          =  (list a)
-% Q*_0[,@a]         =  a
-% Q*_0[`a]          =  (list 'quasiquote Q*_1[a])
-% `#(a b ...)       =  (list->vector `(a b ...))
-%  ugh.

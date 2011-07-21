@@ -4,7 +4,6 @@
 This chapter provides formal descriptions of what has already been
 described informally in previous chapters of this report.
 
-\todo{Allow grammar to say that else clause needn't be last?}
 
 
 \section{Formal syntax}
@@ -159,8 +158,6 @@ should be replicated for \hbox{$R = 2, 8, 10,$}
 and $16$.  There are no rules for \meta{decimal $2$}, \meta{decimal
 $8$}, and \meta{decimal $16$}, which means that numbers containing
 decimal points or exponents must be in decimal radix.
-\todo{Mark Meyer and David Bartley want to fix this.  (What? -- Will)}
-
 \begin{grammar}%
 \meta{num $R$} \: \meta{prefix $R$} \meta{complex $R$}
 \meta{complex $R$} \: %
@@ -168,8 +165,6 @@ decimal points or exponents must be in decimal radix.
       \| \meta{real $R$} @ \meta{real $R$}
    \> \| \meta{real $R$} + \meta{ureal $R$} i %
       \| \meta{real $R$} - \meta{ureal $R$} i
-%   \> \| \meta{real $R$} \meta{infinity} i %
-%      \| \meta{infinity} i
    \> \| \meta{real $R$} + i %
       \| \meta{real $R$} - i
    \> \| + \meta{ureal $R$} i %
@@ -209,8 +204,6 @@ decimal points or exponents must be in decimal radix.
 \meta{digit 10} \: \meta{digit}
 \meta{digit 16} \: \meta{digit $10$} \| a \| b \| c \| d \| e \| f %
 \end{grammar}
-
-\todo{Mark Meyer of TI sez, shouldn't we allow {\tt 1e3/2}?}
 
 
 \subsection{External representations}
