@@ -20,7 +20,7 @@ have been factored out into separate modules.
 with-exception-handler} and the {\cf guard} syntax.
 
 \item New disjoint types supporting access to multiple fields can be
-generated with {\cf define-record-type}.
+generated with SRFI-1 {\cf define-record-type}.
 
 \item Parameter objects can be created with {\cf make-parameter}, and
 dynamically rebound with {\cf parameterize}.
@@ -32,8 +32,9 @@ $[0..255]$, have been added as a new disjoint type.
 character} ports, with new procedures for reading and writing binary
 data.
 
-\item {\em String ports} have been added as a way to write characters
-to and read characters from strings.
+\item {\em String ports} have been added as a way to read and write
+characters to and from strings, and {\em bytevector ports} to read
+and write bytes to and from bytevectors.
 
 \item {\cf Current-input-port} and {\cf current-output-port} are now
 parameter objects, along with the newly introduced {\cf
@@ -57,6 +58,9 @@ terms of it.
 
 \item {\cf Case-lambda} has been added to the base module as a way to
 dispatch on the number of arguments passed to a procedure.
+
+\item {\cf When} and {\cf unless} have been added as convenience
+conditionals.
 
 \item Positive and negative infinity and a NaN object have been added
 to the numeric tower as inexact values with the written
