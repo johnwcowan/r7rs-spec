@@ -36,19 +36,22 @@ syntax bindings that are traditionally associated with Scheme.
 .char<?
 .char=?           char>=?          char>?
 .char?            complex?         cond
+.cond-expand
 .cons             define-syntax    define
 .define-record-type                 denominator
 .do               dynamic-wind     else
 .eq?
 .equal?           eqv?             error
+.error-object?    error-object-message  error-object-irritants
 .even?            exact->inexact   exact-integer-sqrt
 .exact-integer?   exact?           expt
 .floor            for-each         gcd
 .guard            if               import
-.include          inexact->exact   inexact?
+.inexact->exact   inexact?
 .integer->char    integer?         lambda
 .lcm              length           let*
 .let-syntax       letrec*          letrec-syntax
+.let-values       let*-values
 .letrec           let              list-copy
 .list->string     list->vector     list-ref
 .list-set!        list-tail        list?
@@ -80,8 +83,8 @@ syntax bindings that are traditionally associated with Scheme.
 .vector->list     vector->string   vector-fill!
 .vector-for-each  vector-length    vector-map
 .vector-ref       vector-set!      vector?
-.vector           zero?
-.with-exception-handler
+.vector           zero?            when
+.with-exception-handler            unless
 \end{scheme}
 
 \textbf{Inexact Module}
@@ -93,7 +96,7 @@ typically only useful with inexact values.
 .exp     log      sqrt
 .sin     cos      tan
 .asin    acos     atan
-.finite? infinite? nan?
+.finite? nan?
 \end{scheme}
 
 \textbf{Complex Module}
@@ -124,7 +127,7 @@ division.
 The \texttt{(scheme lazy)} module exports forms for lazy evaluation.
 
 \begin{scheme}
-.delay   force
+.delay   force   lazy
 \end{scheme}
 
 \textbf{Eval Module}
@@ -134,6 +137,7 @@ data as programs.
 
 \begin{scheme}
 .eval
+.environment
 .null-environment
 .scheme-report-environment
 \end{scheme}
@@ -156,6 +160,7 @@ accessing with the program's calling context.
 .environment-variable
 .environment-variables
 .command-line
+.exit
 \end{scheme}
 
 \textbf{Load Module}
@@ -164,7 +169,7 @@ The \texttt{(scheme load)} module exports forms for loading and
 including Scheme expressions from files.
 
 \begin{scheme}
-.load   include
+.load   include   include-ci
 \end{scheme}
 
 \textbf{I/O Module}
@@ -174,15 +179,18 @@ and output on ports.
 
 \begin{scheme}
 .binary-port?             char-ready?
-.character-port?          close-input-port
+.character-port?          close-port
+.close-input-port
 .close-output-port        current-error-port
 .current-input-port       current-output-port
-.eof-object?              get-output-string
+.eof-object?              flush-output-port
+.get-output-string
 .input-port?              newline
 .open-input-string        open-output-string
 .output-port?             peek-char
 .peek-u8?                 port?
 .port-open?               read-char
+.read-line
 .read-u8                  u8-ready?
 .write-char               write-u8
 \end{scheme}
@@ -196,6 +204,7 @@ files.
 .call-with-input-file    call-with-output-file
 .delete-file             file-exists?
 .open-input-file         open-output-file
+.open-binary-input-file  open-binary-output-file
 .with-input-from-file    with-output-to-file
 \end{scheme}
 
