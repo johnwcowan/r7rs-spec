@@ -79,22 +79,20 @@ to control case folding.
 {\cf{}\#!fold-case}\sharpbangindex{fold-case}\\
 {\cf{}\#!no-fold-case}\sharpbangindex{no-fold-case}}
 
-These directives may appear anywhere comments may appear and are
-treated as comments, except that they affect the reading of subsequent
-tokens.
-The {\cf{}\#!fold-case} directive causes the reader to case-fold
-(as if by {\cf string-foldcase})
-each \meta{identifier} and \meta{character name}.
-The {\cf{}\#!no-fold-case} directive causes the reader to return
-to the default, non-folding behavior.
-The scope of these directives is all subsequent {\cf read} operations
-for the port from which they are read, until another such directive
-is encountered.  No other ports are affected.
+These directives may appear anywhere comments may appear (see
+section~\ref{wscommentsection})
+and are treated as comments, except that they affect the reading
+of subsequent data. The {\cf{}\#!fold-case} directive causes
+the {\cf read} procedure to case-fold (as if by {\cf string-foldcase};
+see section~\ref{stringsection}) each identifier and character name
+subsequently read from the same port. The {\cf{}\#!no-fold-case} directive
+causes the {\cf read} procedure to return to the default, non-folding behavior.
 \end{entry}
 
 
 
 \section{Whitespace and comments}
+\label{wscommentsection}
 
 \defining{Whitespace} characters are spaces and newlines.
 (Implementations typically provide additional whitespace characters such
