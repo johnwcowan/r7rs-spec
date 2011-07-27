@@ -83,7 +83,7 @@ escape sequence.
 \label{identifiersyntax}
 
 % This is a kludge, but \multicolumn doesn't work in tabbing environments.
-\setbox0\hbox{\cf\meta{variable} \goesto{} $\langle$}
+\setbox0\hbox{\cf\meta{identifier} \goesto{} $\langle$}
 
 \todo{Disambiguate +/-i +/-inf.0 and +nan.0 with identifier syntax.}
 
@@ -222,7 +222,7 @@ successfully parses.  Note that any string that parses as an
 \subsection{Expressions}
 
 \begin{grammar}%
-\meta{expression} \: \meta{variable}
+\meta{expression} \: \meta{identifier}
 \>  \| \meta{literal}
 \>  \| \meta{procedure call}
 \>  \| \meta{lambda expression}
@@ -241,8 +241,8 @@ successfully parses.  Note that any string that parses as an
 \meta{operand} \: \meta{expression}
 
 \meta{lambda expression} \: (lambda \meta{formals} \meta{body})
-\meta{formals} \: (\arbno{\meta{variable}}) \| \meta{variable}
-\>  \| (\atleastone{\meta{variable}} .\ \meta{variable})
+\meta{formals} \: (\arbno{\meta{identifier}}) \| \meta{identifier}
+\>  \| (\atleastone{\meta{identifier}} .\ \meta{identifier})
 \meta{body} \:  \arbno{\meta{syntax definition}} \arbno{\meta{definition}} \meta{sequence}
 \meta{sequence} \: \arbno{\meta{command}} \meta{expression}
 \meta{command} \: \meta{expression}
@@ -252,7 +252,7 @@ successfully parses.  Note that any string that parses as an
 \meta{consequent} \: \meta{expression}
 \meta{alternate} \: \meta{expression} \| \meta{empty}
 
-\meta{assignment} \: (set! \meta{variable} \meta{expression})
+\meta{assignment} \: (set! \meta{identifier} \meta{expression})
 
 \meta{derived expression} \:
 \>  \> (cond \atleastone{\meta{cond clause}})
@@ -270,7 +270,7 @@ successfully parses.  Note that any string that parses as an
 \>  \| (when \meta{expression} \meta{body})
 \>  \| (unless \meta{expression} \meta{body})
 \>  \| (let (\arbno{\meta{binding spec}}) \meta{body})
-\>  \| (let \meta{variable} (\arbno{\meta{binding spec}}) \meta{body})
+\>  \| (let \meta{identifier} (\arbno{\meta{binding spec}}) \meta{body})
 \>  \| (let* (\arbno{\meta{binding spec}}) \meta{body})
 \>  \| (letrec (\arbno{\meta{binding spec}}) \meta{body})
 \>  \| (letrec* (\arbno{\meta{binding spec}}) \meta{body})
@@ -291,9 +291,9 @@ successfully parses.  Note that any string that parses as an
 \meta{recipient} \: \meta{expression}
 \meta{case clause} \: ((\arbno{\meta{datum}}) \meta{sequence})
 \>   \| ((\arbno{\meta{datum}}) => \meta{recipient})
-\meta{binding spec} \: (\meta{variable} \meta{expression})
-\meta{iteration spec} \: (\meta{variable} \meta{init} \meta{step})
-\> \| (\meta{variable} \meta{init})
+\meta{binding spec} \: (\meta{identifier} \meta{expression})
+\meta{iteration spec} \: (\meta{identifier} \meta{init} \meta{step})
+\> \| (\meta{identifier} \meta{init})
 \meta{case-lambda clause} \: (\meta{formals} \meta{body})
 \meta{init} \: \meta{expression}
 \meta{step} \: \meta{expression}
@@ -388,16 +388,16 @@ un\-quo\-ta\-tion $D$} takes precedence.
 \> \| \meta{syntax definition}
 \> \| (import \atleastone{\meta{import set}})
 \> \| (begin \atleastone{\meta{command or definition}})
-\meta{definition} \: (define \meta{variable} \meta{expression})
-\>   \| (define (\meta{variable} \meta{def formals}) \meta{body})
-\>   \| (define-record-type \meta{variable}
-\> \> \ \ \meta{constructor} \meta{variable} \arbno{\meta{field spec}})
+\meta{definition} \: (define \meta{identifier} \meta{expression})
+\>   \| (define (\meta{identifier} \meta{def formals}) \meta{body})
+\>   \| (define-record-type \meta{identifier}
+\> \> \ \ \meta{constructor} \meta{identifier} \arbno{\meta{field spec}})
 \>   \| (begin \arbno{\meta{definition}})
-\meta{def formals} \: \arbno{\meta{variable}}
-\>   \| \arbno{\meta{variable}} .\ \meta{variable}
-\meta{constructor} \: (\meta{variable} \arbno{\meta{field name}})
-\meta{field spec} \: (\meta{field name} \meta{variable})
-\>   \| (\meta{field name} \meta{variable} \meta{variable})
+\meta{def formals} \: \arbno{\meta{identifier}}
+\>   \| \arbno{\meta{identifier}} .\ \meta{identifier}
+\meta{constructor} \: (\meta{identifier} \arbno{\meta{field name}})
+\meta{field spec} \: (\meta{field name} \meta{identifier})
+\>   \| (\meta{field name} \meta{identifier} \meta{identifier})
 \meta{field name} \: \meta{identifier}
 \meta{syntax definition} \:
 \>  (define-syntax \meta{keyword} \meta{transformer spec})
