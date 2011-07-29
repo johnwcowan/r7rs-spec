@@ -3165,21 +3165,21 @@ arbitrary unique objects \texttt{<param-set!>} and
 \texttt{<param-convert>}:
 
 \begin{scheme}
-(define (make-parameter init . o)
-  (let* ((converter (if (pair? o)
-                        (car o)
-                        (lambda (x) x)))
-         (value (converter init)))
-    (lambda args
-      (if (pair? args)
-          (cond
-           ((eq? (car args) <param-set!>)
-            (set! value (cadr args)))
-           ((eq? (car args) <param-convert>)
-            converter)
-           (else
-            (error "bad parameter syntax")))
-          value))))%
+(define make-parameter (case-lambda
+  ((init)
+    (make-parameter init (lambda (x) x)))
+  ((init converter)
+    (let ((value (converter init)))
+      (lambda args
+        (if (pair? args)
+            (cond
+             ((eq? (car args) <param-set!>)
+              (set! value (cadr args)))
+             ((eq? (car args) <param-convert>)
+              converter)
+             (else
+              (error "bad parameter syntax")))
+            value))))))%
 \end{scheme}
 
 {\cf Parameterize} then uses {\cf dynamic-wind} to dynamically rebind
