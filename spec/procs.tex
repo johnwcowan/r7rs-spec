@@ -124,7 +124,7 @@ is not.
 or strings that denote distinct locations.
 
 \item \vari{obj} and \varii{obj} are procedures that would behave differently
-(return different value(s) or have different side effects) for some arguments.
+(return different values or have different side effects) for some arguments.
 
 \end{itemize}
 
@@ -504,8 +504,8 @@ infinity or less than negative infinity.
 It might even represent no number at all, as in the case of 
 {\cf (asin 2.0)}.
 
-Note that either the real or the imaginary part of a complex number
-can be an infinity or NaN.
+Note that the real and the imaginary parts of a complex number
+can be infinities or NaNs.
 
 Although Scheme allows a variety of written
 notations for
@@ -1745,7 +1745,7 @@ and {\cf equal?} otherwise.
 
 
 \begin{rationale}
-Although they are ordinarily used as predicates,
+Although they are often used as predicates,
 {\cf memq}, {\cf memv}, {\cf member}, {\cf assq}, {\cf assv}, and {\cf assoc} do not
 have question marks in their names because they return 
 values that may be useful rather than just \schtrue{} or \schfalse{}.
@@ -2009,7 +2009,9 @@ argument is not the uppercase part of such a pair, it is returned.
 The {\cf char-foldcase} procedure applies the Unicode simple
 case-folding algorithm to its argument and returns the result.  Note that
 Turkic-specific folding is not used.  If the argument is an uppercase
-letter, the result will be a lowercase letter.
+letter, the result will be either a lowercase letter
+or the same as the argument if the lowercase letter does not exist or
+is not supported by the implementation.
 
 Note that many Unicode lowercase characters do not have uppercase
 equivalents.
@@ -2076,6 +2078,12 @@ the length of \var{string}, then the entire string is referred to.
 difference between upper and lower case.  The versions that ignore case
 have \hbox{``{\cf -ci}''} (for ``case insensitive'') embedded in their
 names.
+
+Implementations may forbid certain characters from appearing in strings.
+For example, an implementation might support the entire Unicode repertoire,
+but only allow characters U+0000 to U+00FF (the Latin-1 repertoire) in
+strings.  It is an error to pass such a forbidden character to
+{\cf string}, {\cf string-set!}, or {\cf string-fill}.
 
 
 \begin{entry}{%
@@ -2150,7 +2158,7 @@ exactly the same characters in the same positions, otherwise returns
 \end{entry}
 
 \begin{entry}{%
-\proto{string-ci=?}{ \vri{char} \vrii{char} \vriii{char} \dotsfoo}{procedure}}
+\proto{string-ci=?}{ \vri{char} \vrii{char} \vriii{char} \dotsfoo}{char module procedure}}
 
 Returns \schtrue{} if, after case-folding, all the strings are the same
 length and contain the same characters in the same positions, otherwise
@@ -2183,17 +2191,17 @@ equivalent to {\cf string=?}.
 
 \begin{entry}{%
 \proto{string<?}{ \vri{string} \vrii{string} \vriii{string} \dotsfoo}{procedure}
-\proto{string-ci<?}{ \vri{string} \vrii{string} \vriii{string} \dotsfoo}{procedure}
-\proto{string-ni<?}{ \vri{string} \vrii{string} \vriii{string} \dotsfoo}{procedure}
+\proto{string-ci<?}{ \vri{string} \vrii{string} \vriii{string} \dotsfoo}{char module procedure}
+\proto{string-ni<?}{ \vri{string} \vrii{string} \vriii{string} \dotsfoo}{char module procedure}
 \proto{string>?}{ \vri{string} \vrii{string} \vriii{string} \dotsfoo}{procedure}
-\proto{string-ci>?}{ \vri{string} \vrii{string} \vriii{string} \dotsfoo}{procedure}
-\proto{string-ni>?}{ \vri{string} \vrii{string} \vriii{string} \dotsfoo}{procedure}
+\proto{string-ci>?}{ \vri{string} \vrii{string} \vriii{string} \dotsfoo}{char module procedure}
+\proto{string-ni>?}{ \vri{string} \vrii{string} \vriii{string} \dotsfoo}{char module procedure}
 \proto{string<=?}{ \vri{string} \vrii{string} \vriii{string} \dotsfoo}{procedure}
-\proto{string-ci<=?}{ \vri{string} \vrii{string} \vriii{string} \dotsfoo}{procedure}
-\proto{string-ni<=?}{ \vri{string} \vrii{string} \vriii{string} \dotsfoo}{procedure}
+\proto{string-ci<=?}{ \vri{string} \vrii{string} \vriii{string} \dotsfoo}{char module procedure}
+\proto{string-ni<=?}{ \vri{string} \vrii{string} \vriii{string} \dotsfoo}{char module procedure}
 \proto{string>=?}{ \vri{string} \vrii{string} \vriii{string} \dotsfoo}{procedure}
-\proto{string-ci>=?}{ \vri{string} \vrii{string} \vriii{string} \dotsfoo}{procedure}
-\proto{string-ni>=?}{ \vri{string} \vrii{string} \vriii{string} \dotsfoo}{procedure}}
+\proto{string-ci>=?}{ \vri{string} \vrii{string} \vriii{string} \dotsfoo}{char module procedure}
+\proto{string-ni>=?}{ \vri{string} \vrii{string} \vriii{string} \dotsfoo}{char module procedure}}
 
 These procedures return \schtrue{} if their arguments are (respectively):
 equal, monotonically increasing, monotonically decreasing,
@@ -2423,7 +2431,7 @@ created vector initialized to the elements of the list \var{list}.
 \proto{string->vector}{ vector}{procedure}}
 
 {\cf Vector->string} returns a newly allocated string of the objects contained
-in the elements of \var{vector}, which must be characters.
+in the elements of \var{vector}, which must be characters allowed in a string.
 {\cf String->vector} returns a newly
 created vector initialized to the elements of the string \var{string}.
 
@@ -2449,10 +2457,10 @@ The value returned by {\cf vector-fill!}\ is unspecified.  % <!>
 \subsection{Bytevectors}
 \label{bytevectorsection}
 
-Bytevectors are a disjoint type for representing blocks of binary data.
-Conceptually, bytevectors can be thought of as homogenous vectors of 8-bit
+\defining{Bytevectors} are a disjoint type for representing blocks of binary data.
+Conceptually, bytevectors can be thought of as homogeneous vectors of 8-bit
 bytes, but they typically occupy less space than a vector.
-A byte is an exact integer in the range $[0..255]$.
+A \defining{byte} is an exact integer in the range $[0..255]$.
 
 \vest The {\em length} of a bytevector is the number of elements that it
 contains.  This number is a non-negative integer that is fixed when
@@ -2851,7 +2859,7 @@ and we define the expression
 (delay \hyper{expression})%
 \end{scheme}
 
-to have the same meaning as the following {\cf lazy} form:
+to have the same meaning as:
 
 \begin{scheme}
 (lazy (make-promise \schtrue{} \hyper{expression}))%
@@ -2959,7 +2967,7 @@ However, the continuations of all non-final expressions within a sequence
 of expressions, such as in {\cf lambda}, {\cf case-lambda}, {\cf begin},
 {\cf let}, {\cf let*}, {\cf letrec}, {\cf letrec*}, {\cf let-values}, 
 {\cf let*-values}, {\cf let-syntax}, {\cf letrec-syntax}, {\cf parameterize},
-{\cf guard}, {\cf case}, {\cf cond}, {\cf when} and {\cf unless} forms,
+{\cf guard}, {\cf case}, {\cf cond}, {\cf when}, and {\cf unless} forms,
 take an arbitrary number of values, because they discard the values passed
 to them in any event.
 
@@ -3043,8 +3051,6 @@ some people use the name \ide{call/cc} instead.
 \proto{values}{ obj $\ldots$}{procedure}}
 
 Delivers all of its arguments to its continuation.
-Except for continuations created by the \ide{call-with-values}
-procedure, all continuations take exactly one value.
 {\tt Values} might be defined as follows:
 \begin{scheme}
 (define (values . things)
@@ -3325,7 +3331,8 @@ The procedure {\cf error-object?} must return \schtrue{} on such objects.
 \begin{entry}{%
 \proto{error-object?}{ obj}{procedure}}
 
-Returns \schtrue{} if \var{obj} is an object created by {\cf error}, otherwise returns
+Returns \schtrue{} if \var{obj} is an object created by {\cf error} 
+or one of an implementation-defined set of objects; otherwise returns
 \schfalse.  
 
 \end{entry}
@@ -3379,13 +3386,14 @@ allowed to create new bindings in the environments returned by
 corresponding to this revision of the Scheme report (the
 Revised$^\integerversion$ Report on Scheme).
 {\cf Scheme-report-environment} returns a specifier for an
-environment that is empty except for all bindings defined in
-this report that are either required or both optional and
-supported by the implementation. {\cf Null-environment} returns
+environment that is empty except for all bindings 
+defined either in the {\cf base} module or in the other modules
+of this report that the implementation supports.
+{\cf Null-environment} returns
 a specifier for an environment that is empty except for the
-(syntactic) bindings for all syntactic keywords defined in
-this report that are either required or both optional and
-supported by the implementation.
+bindings for all syntactic keywords
+defined either in the {\cf base} module or in the other modules
+of this report that the implementation supports.
 
 Other values of \var{version} can be used to specify environments
 matching past revisions of this report, but their support is not
@@ -3414,8 +3422,8 @@ represented by the specifier are immutable.
 \begin{entry}{%
 \proto{interaction-environment}{}{repl module procedure}}
 
-This procedure returns a specifier for the environment that
-contains imple\-men\-ta\-tion-defined bindings, typically a superset of
+This procedure returns a specifier for an environment that
+contains an imple\-men\-ta\-tion-defined set of bindings, typically a superset of
 those listed in the report.  The intent is that this procedure
 will return the environment in which the implementation would evaluate
 expressions dynamically typed by the user.
@@ -3464,11 +3472,12 @@ already exists. These procedures call \var{proc} with one argument: the
 character port obtained by opening the named file for input or output
 as if by {\cf open-input-file} or {\cf open-output-file}.  If the
 file cannot be opened, an error is signalled.  If \var{proc} returns,
-then the port is closed automatically and the value(s) yielded by the
-\var{proc} is(are) returned.  If \var{proc} does not return, then 
+then the port is closed automatically and the values yielded by the
+\var{proc} are returned.  If \var{proc} does not return, then 
 the port will not be closed automatically unless it is possible to
 prove that the port will never again be used for a read or write
 operation.
+
 \begin{rationale}
 Because Scheme's escape procedures have unlimited extent, it  is
 possible to escape from the current continuation but later to escape back in. 
@@ -3519,10 +3528,10 @@ performing input or output, and \schfalse{} otherwise.
 \proto{current-error-port}{}{io module procedure}}
 
 Returns the current default input port, output port, or error port (an
-output port), respectively.  These are parameter objects, which can be
+output port), respectively.  These procedures are parameter objects, which can be
 overridden with {\cf parameterize} (see
 section~\ref{make-parameter}). The initial bindings for each of these
-are bound to system defined binary ports.
+are bound to system defined character ports.
 
 \end{entry}
 
@@ -3544,8 +3553,8 @@ and the return port is made the default value returned by
 (and is used by {\tt (read)}, {\tt (write \var{obj})}, and so forth).
 The \var{thunk} is then called with no arguments.  When the \var{thunk} returns,
 the port is closed and the previous default is restored.
-{\cf With-input-from-file} and {\cf with-output-to-file} return(s) the
-value(s) yielded by \var{thunk}.
+{\cf With-input-from-file} and {\cf with-output-to-file} return the
+values yielded by \var{thunk}.
 If an escape procedure
 is used to escape from the continuation of these procedures, their
 behavior is implementation-dependent.
@@ -3579,9 +3588,9 @@ the effect is unspecified.
 
 
 \begin{entry}{%
-\proto{close-port}{ port}{io module procedure}}
+\proto{close-port}{ port}{io module procedure}
 \proto{close-input-port}{ port}{io module procedure}
-\proto{close-output-port}{ port}{io module procedure}
+\proto{close-output-port}{ port}{io module procedure}}
 
 Closes the file associated with \var{port}, rendering the \var{port}
 incapable of delivering or accepting data.  
@@ -3950,7 +3959,7 @@ returned by {\cf current-input-port} and {\cf current-output-port}.
 
 {\cf Include} and {\cf include-ci} are similar to {\cf load} except
 that they are syntax which expands into the expressions and
-definitions from the file as though wrapped in a {\cf begin} form.
+definitions from the file as though wrapped in {\cf begin}.
 Thus it can be used to include internal definitions and otherwise
 interact with the current lexical scope.  In these forms the
 \var{filename} must be a string literal.
@@ -4044,7 +4053,7 @@ Returns an inexact number representing time on the International Atomic
 Time (TAI) scale.  The value 0.0 represents ten seconds after midnight
 on January 1, 1970 TAI (equivalent to midnight Universal Time)
 and the value 1.0 represents one TAI
-second later.  High-accuracy values are not required; in particular,
+second later.  Neither high-accuracy nor high-precision values are required; in particular,
 returning Coordinated Universal Time plus a suitable constant may be
 the best an implementation can do.
 \end{entry}

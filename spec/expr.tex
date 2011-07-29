@@ -153,8 +153,8 @@ be extended by binding the variables in the formal argument list to
 fresh locations, the corresponding actual argument values will be stored
 in those locations, and the expressions in the body of the \lambdaexp{}
 will be evaluated sequentially in the extended environment.
-The result(s) of the last expression in the body will be returned as
-the result(s) of the procedure call.
+The results of the last expression in the body will be returned as
+the results of the procedure call.
 
 \begin{scheme}
 (lambda (x) (+ x x))      \ev  {\em{}a procedure}
@@ -222,8 +222,8 @@ expressions.
 An {\cf if} expression is evaluated as follows: first,
 \hyper{test} is evaluated.  If it yields a true value\index{true} (see
 section~\ref{booleansection}), then \hyper{consequent} is evaluated and
-its value(s) is(are) returned.  Otherwise \hyper{alternate} is evaluated and its
-value(s) is(are) returned.  If \hyper{test} yields \schfalse{} and no
+its values are returned.  Otherwise \hyper{alternate} is evaluated and its
+values are returned.  If \hyper{test} yields \schfalse{} and no
 \hyper{alternate} is specified, then the result of the expression is
 unspecified.
 
@@ -301,8 +301,8 @@ expressions of successive \hyper{clause}s in order until one of them
 evaluates to a true value\index{true} (see
 section~\ref{booleansection}).  When a \hyper{test} evaluates to a true
 value, then the remaining \hyper{expression}s in its \hyper{clause} are
-evaluated in order, and the result(s) of the last \hyper{expression} in the
-\hyper{clause} is(are) returned as the result(s) of the entire {\cf cond}
+evaluated in order, and the results of the last \hyper{expression} in the
+\hyper{clause} are returned as the results of the entire {\cf cond}
 expression.
 
 If the selected \hyper{clause} contains only the
@@ -310,14 +310,14 @@ If the selected \hyper{clause} contains only the
 \hyper{test} is returned as the result.  If the selected \hyper{clause} uses the
 \ide{=>} alternate form, then the \hyper{expression} is evaluated.
 Its value must be a procedure that accepts one argument; this procedure is then
-called on the value of the \hyper{test} and the value(s) returned by this
-procedure is(are) returned by the {\cf cond} expression.
+called on the value of the \hyper{test} and the values returned by this
+procedure are returned by the {\cf cond} expression.
 
 If all \hyper{test}s evaluate
 to \schfalse{}, and there is no else clause, then the result of
 the conditional expression is unspecified; if there is an else
-clause, then its \hyper{expression}s are evaluated, and the value(s) of
-the last one is(are) returned.
+clause, then its \hyper{expression}s are evaluated, and the values of
+the last one are returned.
 
 \begin{scheme}
 (cond ((> 3 2) 'greater)
@@ -366,20 +366,20 @@ evaluated and its result is compared against each \hyper{datum}.  If the
 result of evaluating \hyper{key} is equivalent (in the sense of
 {\cf eqv?}; see section~\ref{eqv?}) to a \hyper{datum}, then the
 expressions in the corresponding \hyper{clause} are evaluated from left
-to right and the result(s) of the last expression in the \hyper{clause} is(are)
-returned as the result(s) of the {\cf case} expression.
+to right and the results of the last expression in the \hyper{clause} are
+returned as the results of the {\cf case} expression.
 
 If the result of
 evaluating \hyper{key} is different from every \hyper{datum}, then if
 there is an else clause its expressions are evaluated and the
-result(s) of the last is(are) the result(s) of the {\cf case} expression;
+results of the last are the results of the {\cf case} expression;
 otherwise the result of the {\cf case} expression is unspecified.
 
 If the selected \hyper{clause} or else clause uses the
 \ide{=>} alternate form, then the \hyper{expression} is evaluated.
 Its value must be a procedure that accepts one argument; this procedure is then
-called on the value of the \hyper{key} and the value(s) returned by this
-procedure is(are) returned by the {\cf case} expression.
+called on the value of the \hyper{key} and the values returned by this
+procedure are returned by the {\cf case} expression.
 
 \begin{scheme}
 (case (* 2 3)
@@ -487,8 +487,8 @@ being bound.
 The \hyper{init}s are evaluated in the current environment (in some
 unspecified order), the \hyper{variable}s are bound to fresh locations
 holding the results, the \hyper{body} is evaluated in the extended
-environment, and the value(s) of the last expression of \hyper{body}
-is(are) returned.  Each binding of a \hyper{variable} has \hyper{body} as its
+environment, and the values of the last expression of \hyper{body}
+are returned.  Each binding of a \hyper{variable} has \hyper{body} as its
 region.\index{region}
 
 \begin{scheme}
@@ -555,8 +555,8 @@ The \hyper{variable}s are bound to fresh locations holding undefined
 values, the \hyper{init}s are evaluated in the resulting environment (in
 some unspecified order), each \hyper{variable} is assigned to the result
 of the corresponding \hyper{init}, the \hyper{body} is evaluated in the
-resulting environment, and the value(s) of the last expression in
-\hyper{body} is(are) returned.  Each binding of a \hyper{variable} has the
+resulting environment, and the values of the last expression in
+\hyper{body} are returned.  Each binding of a \hyper{variable} has the
 entire {\cf letrec} expression as its region\index{region}, making it possible to
 define mutually recursive procedures.
 
@@ -636,8 +636,8 @@ The \hyper{init}s are evaluated in the current environment (in some
 unspecified order) as if by invoking {\cf call-with-values}, the
 \hyper{variable}s are bound to fresh locations holding the values returned
 by the \hyper{init}s, the \hyper{body} is evaluated in the extended
-environment, and the value(s) of the last expression of \hyper{body}
-is(are) returned.  Each binding of a \hyper{variable} has \hyper{body}
+environment, and the values of the last expression of \hyper{body}
+are returned.  Each binding of a \hyper{variable} has \hyper{body}
 as its region.\index{region}
 
 It is an error if an \hyper{init} returns more or fewer values than the
@@ -705,24 +705,24 @@ used to compute initial values must not be invoked more than once.
 \subsection{Sequencing}\unsection
 
 \begin{entry}{%
-\proto{begin}{ \hyper{form} \dotsfoo}{\exprtype}
+\proto{begin}{ \hyper{expression or definition} \dotsfoo}{\exprtype}
 \proto{begin}{ \hyperi{expression} \hyperii{expression} \dotsfoo}{\exprtype}}
 
 The {\cf begin} keyword has two different roles, depending on its
 context:
 
 \begin{itemize}
-\item It may appear as a form in a \hyper{body}, or at the
-  \hyper{top-level}, or directly nested in a {\cf begin} form that
+\item It may appear as part of a \hyper{body}, or at the
+  \hyper{top-level}, or directly nested in a {\cf begin} that
   is one of these three types.  In this case, the {\cf begin} form must have
   the shape specified in the first header line. This use of begin acts
   as a splicing form - the forms inside the \hyper{body} are spliced
   into the surrounding body, as if the begin wrapper were not actually
   present.
-\item It may appear as an ordinary expression and must have the shape
+\item It may appear as an ordinary expression.  In this case, it must have the shape
   specified in the second header line. In this case, the
   \hyper{expression}s are evaluated sequentially from left to right,
-  and the value(s) of the last \hyper{expression} is(are) returned. This
+  and the values of the last \hyper{expression} are returned. This
   expression type is used to sequence side effects such as assignments
   or input and output.
 \end{itemize}
@@ -770,8 +770,8 @@ expressions are evaluated in some unspecified order, the
 \hyper{variable}s, and the next iteration begins.
 
 \vest If \hyper{test} evaluates to a true value, then the
-\hyper{expression}s are evaluated from left to right and the value(s) of
-the last \hyper{expression} is(are) returned.  If no \hyper{expression}s
+\hyper{expression}s are evaluated from left to right and the values of
+the last \hyper{expression} are returned.  If no \hyper{expression}s
 are present, then the value of the {\cf do} expression is unspecified.
 
 \vest The region\index{region} of the binding of a \hyper{variable}
@@ -873,20 +873,20 @@ more complete description of {\cf lazy} and {\cf delay}.
 \hspace*{1em}\hyperi{body}}}
 
 \domain{The value of the \var{param} expressions must be parameter objects.}
-The {\cf parameterize} form is used to change the values returned by
+{\cf Parameterize} is used to change the values returned by
 parameter objects for the dynamic extent of the body.
 The expressions \var{param} and \texttt{(\var{converter} \var{value})}
 are evaluated in an unspecified order.  The \hyper{expr}s are
 evaluated in order in a dynamic extent during which calls to the
 \var{param} parameter objects return the result of the corresponding
-\texttt{(\var{converter} \var{value})}.  The result(s) of the last
-\hyper{expr} is(are) returned as the result(s) of the entire {\cf
-  parameterize} form.
+\texttt{(\var{converter} \var{value})}.  The results of the last
+\hyper{expr} are returned as the results of the entire {\cf
+  parameterize}.
 
 If an implementation supports multiple threads of execution, then {\cf
   parameterize} must not change the associated values of any
 parameters in any thread created before or after the {\cf
-  parameterize} form.
+  parameterize}.
 
 See the description of {\cf make-parameter}
 (section~\ref{make-parameter}) for a more complete description of {\cf
@@ -908,7 +908,7 @@ See the description of {\cf make-parameter}
 Each \hyper{cond clause} is as in the specification of {\cf cond}.
 
 \semantics
-Evaluating a {\cf guard} form evaluates \hyper{body} with an exception
+Evaluating a {\cf guard} evaluates \hyper{body} with an exception
 handler that binds the raised object to \hyper{variable} and within the scope of
 that binding evaluates the clauses as if they were the clauses of a
 {\cf cond} expression. That implicit {\cf cond} expression is evaluated with the
@@ -937,7 +937,7 @@ exceptions.
 \pproto{unquote-splicing}{\auxiliarytype}}
 
 ``Backquote'' or ``quasiquote''\index{backquote} expressions are useful
-for constructing a list or vector structure when most but not all of the
+for constructing a list or vector structure when some but not all of the
 desired structure is known in advance.  If no
 commas\index{comma} appear within the \hyper{qq template}, the result of
 evaluating
@@ -1259,7 +1259,7 @@ introduced by the {\cf letrec-syntax} expression.
 \subsection{Pattern language}
 \label{patternlanguage}
 
-A \hyper{transformer spec} has one of the following form:
+A \hyper{transformer spec} has one of the following forms:
 
 \begin{entry}{%
 \pproto{(syntax-rules (\hyper{literal} \dotsfoo)}{\exprtype}
@@ -1322,7 +1322,7 @@ All other identifiers appearing within a \hyper{pattern} are
 
 The keyword at the beginning of the pattern in a
 \hyper{syntax rule} is not involved in the matching and
-is not considered a pattern variable or literal identifier.
+is considered neither a pattern variable nor a literal identifier.
 
 Pattern variables match arbitrary input elements and
 are used to refer to elements of the input in the template.  
@@ -1488,13 +1488,13 @@ which would result in an invalid procedure call.
 \begin{entry}{%
 \pproto{(syntax-error \hyper{message} \hyper{args} \dotsfoo)}{\exprtype}}
 
-{\cf syntax-error} is similar to {\cf error} except that implementations
+{\cf syntax-error} behaves similarly to {\cf error} except that implementations
 with an expansion pass separate from evaluation should signal an error
-as soon as the {\cf syntax-error} form is expanded.  This can be used as
+as soon as {\cf syntax-error} is expanded.  This can be used as
 a {\cf syntax-rules} \hyper{template} for a \hyper{pattern} that is
 an invalid use of the macro, which can provide more descriptive error
 messages.  \hyper{message} should be a string literal, and \hyper{args}
-arbitrary forms providing additional information.
+arbitrary expressions providing additional information.
 
 \todo{Shinn: This doesn't check all non-identifier cases, think of a better example.}
 

@@ -46,9 +46,9 @@ the ellipsis symbol to be specified explicitly instead of the default
 allows tail patterns to follow an ellipsis pattern.
 
 \item {\cf Syntax-error} has been added as a way to signal immediate
-and more informative errors when a form is expanded.
+and more informative errors when a macro is expanded.
 
-\item Internal {\cf define-syntax} forms are now allowed wherever
+\item Internal {\cf define-syntax} definitionss are now allowed wherever
 internal {\cf define}s are.
 
 \item {\cf Letrec*} has been added, and internal define specified in
@@ -81,8 +81,8 @@ vector-copy}, {\cf vector-map}, {\cf vector-for-each}, and {\cf
 vector->string} have been added to round out the sequence operations.
 
 \item The set of characters used is required to be consistent with the
-Unicode Standard, but only in so far as the implementation supports
-Unicode.
+Unicode Standard, 
+but are not required to support the whole character repertoire.
 
 \item {\cf string-ni=?} and related procedures have been added to
 compare strings as though they had gone through an
@@ -92,9 +92,9 @@ normalization.
 \item The case-folding behavior of the reader can now be explicitly
 controlled, with no folding as the default.
 
-\item The reader now recognizes the new comment syntax {\tt \#;} to
-skip the next datum, and allows nested block comments with
-{\tt \#| ... |\#}.
+\item The reader now recognizes the comment syntaxes {\tt \#;} to
+skip the next datum, and {\tt \#| ... |\#}
+for nestable block comments.
 
 \item Data prefixed with reader labels {\tt \#<n>=} can be referenced
 with {\tt \#<n>\#} allowing for reading and writing of data with

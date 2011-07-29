@@ -5,15 +5,15 @@ An implementation may provide any or all of the feature identifiers
 listed in table~\ref{standard_features}, as well as any others that it
 chooses, but must not provide a feature identifier if it does not
 provide the corresponding feature.  These features are used by {\cf
-  cond-expand} to conditionally include module declarations in a
-module.
+  cond-expand} to conditionally include or exclude
+portions of a module.
 
 \begin{table*}
 \begin{tabular}{|l|l|}
 \hline
 \textbf{Feature identifier} & \textbf{Feature description} \\ \hline
 r7rs & All R7RS Scheme implementations have this feature. \\ \hline
-exact-closed & All rational operations except {\cf /} produce exact values given exact inputs. \\ \hline
+exact-closed & All algebraic operations except {\cf /} produce exact values given exact inputs. \\ \hline
 ratios & {\cf /} with exact arguments produces an exact result when the divisor is nonzero. \\ \hline
 ieee-float & Inexact numbers are IEEE 754 floating point values. \\ \hline
 full-unicode & All Unicode characters are supported. \\ \hline
