@@ -3360,11 +3360,11 @@ allowed to create new bindings in the environments returned by
 {\cf null-environment} or {\cf scheme-report-environment}.
 
 \begin{scheme}
-(eval '(* 7 3) (scheme-report-environment 5))
+(eval '(* 7 3) (scheme-report-environment 7))
                                                    \ev  21
 
 (let ((f (eval '(lambda (f x) (f x x))
-               (null-environment 5))))
+               (null-environment 7))))
   (f + 10))
                                                    \ev  20
 \end{scheme}
