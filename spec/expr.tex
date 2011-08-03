@@ -868,14 +868,14 @@ more complete description of {\cf lazy} and {\cf delay}.
 \subsection{Dynamic Bindings}\unsection
 
 \begin{entry}{%
-\pproto{(parameterize ((param value) \dotsfoo)}{syntax}
+\pproto{(parameterize ((\hyperi{param} \hyperi{value}) \dotsfoo)}{syntax}
 {\tt\obeyspaces%
-\hspace*{1em}\hyperi{body}}}
+\hspace*{1em}\hyper{body})}}
 
 \domain{The value of the \var{param} expressions must be parameter objects.}
 {\cf Parameterize} is used to change the values returned by
 parameter objects for the dynamic extent of the body.
-The expressions \var{param} and \texttt{(\var{converter} \var{value})}
+The \var{param} expressions and \texttt{(\var{converter} \var{value})}
 are evaluated in an unspecified order.  The \hyper{expr}s are
 evaluated in order in a dynamic extent during which calls to the
 \var{param} parameter objects return the result of the corresponding
@@ -909,8 +909,8 @@ Each \hyper{cond clause} is as in the specification of {\cf cond}.
 
 \semantics
 Evaluating a {\cf guard} evaluates \hyper{body} with an exception
-handler that binds the raised object to \hyper{variable} and within the scope of
-that binding evaluates the clauses as if they were the clauses of a
+handler that binds the raised object to \hyper{variable} and, within the scope of
+that binding, evaluates the clauses as if they were the clauses of a
 {\cf cond} expression. That implicit {\cf cond} expression is evaluated with the
 continuation and dynamic extent of the {\cf guard} expression. If every
 \hyper{cond clause}'s \hyper{test} evaluates to \schfalse{} and there
@@ -998,7 +998,7 @@ may be equivalent to either of the following expressions:
         (cons a (cons 4 (cons 'five '(6))))))
 \end{scheme}
 
-However, it is not equivalent to this expression:
+However, it must not be equivalent to this expression:
 
 \begin{scheme}
 (let ((a 3)) (list (list 1 2) a 4 'five 6))
@@ -1023,7 +1023,7 @@ car is one of these symbols may vary between implementations.
 \end{scheme}
 
 
-It is a error if any of the identifiers {\cf quasiquote}, {\cf unquote},
+It is an error if any of the identifiers {\cf quasiquote}, {\cf unquote},
 or {\cf unquote-splicing} appear in positions within a \hyper{qq template}
 otherwise than as described above.
 
@@ -1036,15 +1036,15 @@ otherwise than as described above.
 
 \syntax
 Each \hyper{clause} should be of the form
-(\hyper{formals} \hyper{body})%
+(\hyper{formals} \hyper{body}),
 where \hyper{formals} and \hyper{body} have the same syntax
 as in a \lambdaexp.
 
 \semantics
 A {\cf case-lambda} expression evaluates to a procedure that accepts
 a variable number of arguments and is lexically scoped in the same
-manner as procedures resulting from a \lambdaexp. When the procedure
-is called, then the first \hyper{clause} for which the arguments agree
+manner as a procedure resulting from a \lambdaexp. When the procedure
+is called, the first \hyper{clause} for which the arguments agree
 with \hyper{formals} is selected, where agreement is specified as for
 the \hyper{formals} of a \lambdaexp. The variables of \hyper{formals} are
 bound to fresh locations, the values of the arguments are stored in those
@@ -1079,9 +1079,8 @@ the \hyper{formals} of any \hyper{clause}.
 \pproto{\#\hyper{n}\#}{\exprtype}}
 
 \hyper{N} must be an exact unsigned decimal integer.  The syntax
-\texttt{\#\hyper{n}=\hyper{datum}} reads as \hyper{datum}, except
-that within the syntax of \hyper{datum} the \hyper{datum} is labelled
-by \hyper{n}.
+\texttt{\#\hyper{n}=\hyper{datum}} reads as \hyper{datum}, but also
+results in \hyper{datum} being labelled by \hyper{n}.
 
 The syntax \texttt{\#\hyper{n}\#} serves as a reference to some
 object labelled by \texttt{\#\hyper{n}=}; the result is the same
