@@ -1997,18 +1997,18 @@ returns that character.
 The {\cf char-upcase} procedure, given an argument that forms the
 lowercase part of a Unicode casing pair, returns the uppercase member
 of the pair, provided that both characters are supported by the Scheme
-implementation.  Note that Turkic casing pairs are not used.  If the
+implementation.  Note that language-sensitive casing pairs are not used.  If the
 argument is not the lowercase part of such a pair, it is returned.
 
 The {\cf char-downcase} procedure, given an argument that forms the
 uppercase part of a Unicode casing pair, returns the lowercase member
 of the pair, provided that both characters are supported by the Scheme
-implementation.  Note that Turkic casing pairs are not used.  If the
+implementation.  Note that language-sensitive casing pairs are not used.  If the
 argument is not the uppercase part of such a pair, it is returned.
 
 The {\cf char-foldcase} procedure applies the Unicode simple
 case-folding algorithm to its argument and returns the result.  Note that
-Turkic-specific folding is not used.  If the argument is an uppercase
+language-sensitive folding is not used.  If the argument is an uppercase
 letter, the result will be either a lowercase letter
 or the same as the argument if the lowercase letter does not exist or
 is not supported by the implementation.
@@ -2245,7 +2245,7 @@ invoking the corresponding procedures without \hbox{``{\tt -ni}''}.
 
 These procedures apply the Unicode full string uppercasing, lowercasing,
 and case-folding algorithms to their arguments and return the result.
-Note that Turkic-specific mappings and foldings are not used.  
+Note that language-sensitive mappings and foldings are not used.  
 The result may differ in length from the argument.  What is more, a
 few characters have case-mappings that depend on the surrounding context.
 For example, Greek capital sigma normally lowercases to Greek small sigma,
@@ -3993,8 +3993,9 @@ is signalled.
 \begin{entry}{%
 \proto{command-line}{}{process-context module procedure}}
 
-Returns the command line arguments passed to the process as a list of
-strings.
+Returns the command line passed to the process as a list of
+strings.  The first string corresponds to the command name, and is
+implementation-dependent.  It is an error to mutate any of these strings.
 \end{entry}
 
 \begin{entry}{%
@@ -4026,6 +4027,7 @@ environment variable is not found.  {\cf Get-environment-variable} may
 use locale-setting information to encode the name and decode the value
 of the environment variable.  It is an error if
 {\cf get-environment-variable} can't decode the value.
+It is also an error to mutate the resulting string.
 
 \begin{scheme}
 (get-environment-variable "PATH") \lev "/usr/local/bin:/usr/bin:/bin"
@@ -4038,7 +4040,8 @@ of the environment variable.  It is an error if
 
 Returns the names and values of all the environment variables as an
 a-list, where the car of each entry is the name of an environment
-variable and the cdr is its value.  The order of the list is unspecified.
+variable and the cdr is its value, both as strings.  The order of the list is unspecified.
+It is an error to mutate any of these strings.
 
 \begin{scheme}
 (get-environment-variables) \lev (("USER" . "root") ("HOME" . "/"))
