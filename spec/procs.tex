@@ -1756,6 +1756,7 @@ values that may be useful rather than just \schtrue{} or \schfalse{}.
 \proto{list-copy}{ list}{procedure}}
 
 Returns a newly allocated copy of the given \var{list}.
+Only the spine is copied: the cars of \var{list} are not.
 
 \end{entry}
 
@@ -1852,6 +1853,7 @@ Implementations may support any other Unicode characters they see fit,
 and may also support non-Unicode characters as well.
 Except as otherwise specified, the result of applying any of the
 following procedures to a non-Unicode character is implementation-dependent.
+
 Characters are written using the notation \sharpsign\backwhack\hyper{character}
 or \sharpsign\backwhack\hyper{character name} or
 \sharpsign\backwhack{}x\meta{hex scalar value}.
@@ -2098,7 +2100,7 @@ Returns \schtrue{} if \var{obj} is a string, otherwise returns \schfalse.
 \rproto{make-string}{ \vr{k} char}{procedure}}
 
 {\cf Make-string} returns a newly allocated string of
-length \vr{k}.  If \var{char} is given, then all elements of the string
+length \vr{k}.  If \var{char} is given, then all the characters of the string
 are initialized to \var{char}, otherwise the contents of the
 string are unspecified.
 
@@ -2300,7 +2302,7 @@ Returns a newly allocated copy of the given \var{string}.
 \begin{entry}{%
 \proto{string-fill!}{ string char}{procedure}}
 
-Stores \var{char} in every element of the given \var{string} and returns an
+Stores \var{char} in every character location of the given \var{string} and returns an
 unspecified value.  % <!>
 
 \end{entry}
@@ -2441,6 +2443,8 @@ created vector initialized to the elements of the string \var{string}.
 \proto{vector-copy}{ vector}{procedure}}
 
 Returns a newly allocated copy of the given \var{vector}.
+The elements of the new vector are the same (in the sense of
+{\cf eqv?} as the elements of the old.
 
 \end{entry}
 
@@ -2458,9 +2462,9 @@ The value returned by {\cf vector-fill!}\ is unspecified.  % <!>
 \label{bytevectorsection}
 
 \defining{Bytevectors} are a disjoint type for representing blocks of binary data.
-Conceptually, bytevectors can be thought of as homogeneous vectors of 8-bit
-bytes, but they typically occupy less space than a vector.
 A \defining{byte} is an exact integer in the range $[0..255]$.
+Conceptually, bytevectors can be thought of as homogeneous vectors of
+bytes, but they typically occupy less space than a vector.
 
 \vest The {\em length} of a bytevector is the number of elements that it
 contains.  This number is a non-negative integer that is fixed when
@@ -2574,7 +2578,7 @@ Returns \schtrue{} if \var{obj} is a procedure, otherwise returns \schfalse.
 \proto{apply}{ proc \vari{arg} $\ldots$ args}{procedure}}
 
 \domain{\var{Proc} must be a procedure and \var{args} must be a list.}
-Calls \var{proc} with the elements of the list
+{cf Apply} calls \var{proc} with the elements of the list
 {\cf(append (list \vari{arg} \dotsfoo) \var{args})} as the actual
 arguments.
 
@@ -2612,7 +2616,7 @@ the values returned by earlier returns are not mutated.
 (map (lambda (n) (expt n n))
      '(1 2 3 4 5))                \lev  (1 4 27 256 3125)
 
-(map + '(1 2 3) '(4 5 6))         \ev  (5 7 9)
+(map + '(1 2 3) '(4 5 6 7))         \ev  (5 7 9)
 
 (let ((count 0))
   (map (lambda (ignored)
@@ -2761,7 +2765,7 @@ If more than one \var{vector} is given and not all vectors have the same length,
 \begin{entry}{%
 \proto{force}{ promise}{lazy module procedure}}
 
-Forces the value of \var{promise} (see \ide{delay} and \ide{lazy},
+Forces the value of a \var{promise} created by \ide{delay} or \ide{lazy},
 section~\ref{delay}).\index{promise}  
 If a value which is not a promise has already been computed, this value is
 returned.  Otherwise, the promise is first evaluated, then overwritten
@@ -3073,14 +3077,15 @@ extent of a call to \var{before} or \var{after} is undefined.
 \proto{make-parameter}{ init}{procedure}
 \proto{make-parameter}{ init converter}{procedure}}
 
-Returns a new parameter object which is associated with the value
-returned by the call \texttt{(\var{converter} \var{init})}.\index{parameterize}
-If the conversion procedure \var{converter} is not specified the identity
-function is used instead.
+Returns a newly allocated \defining{parameter object}\index{parameterize},
+which is a procedure which accepts zero arguments and
+returns its associated value.  Initially, this value is the value of
+{\cf (converter \var{init})}.
+(If the conversion procedure \var{converter} is not specified the identity
+function is used instead.)
+However, the associated value may be temporarily changed
+using {\cf parameterize}.
 
-A parameter object is a procedure which accepts zero arguments and
-returns its associated value.  The associated value may be changed
-with {\cf parameterize}.
 The effect of passing arguments to a parameter object is explicitly
 implementation-dependent.
 
@@ -3173,7 +3178,7 @@ the call to {\cf raise-continuable}.
 Raises an exception as if by calling
 {\cf raise} on a newly allocated implementation-defined object which encapsulates
 the information provided by \var{message},
-as well as any \var{obj}s, known as the irritants.
+as well as any \var{obj}s, known as the \defining{irritants}.
 The procedure {\cf error-object?} must return \schtrue{} on such objects.
 \end{entry}
 
@@ -3457,7 +3462,7 @@ the effect is unspecified.
 \proto{close-input-port}{ port}{io module procedure}
 \proto{close-output-port}{ port}{io module procedure}}
 
-Closes the file associated with \var{port}, rendering the \var{port}
+Closes the resource associated with \var{port}, rendering the \var{port}
 incapable of delivering or accepting data.  
 It is an error
 to apply the last two procedures to a port which is not an input
@@ -3494,7 +3499,7 @@ retrieval by {\cf get-output-string}.
 
 Given an output port created by {\cf open-output-string}, returns a
 string consisting of the characters that have been output to the port
-so far.
+so far in the order they were output.
 \end{entry}
 
 
@@ -3520,7 +3525,7 @@ retrieval by {\cf get-output-bytevector}.
 
 Given an output port created by {\cf open-output-bytevector}, returns a
 bytevector consisting of the bytes that have been output to the port
-so far.
+so far in the order they were output.
 \end{entry}
 
 
@@ -3684,10 +3689,6 @@ file then {\cf u8-ready?}\ returns \schtrue.  \var{Port} may be
 omitted, in which case it defaults to the value returned by {\cf
   current-input-port}.
 
-\begin{note}
-If {\cf u8-ready?} returns \schtrue{}, a subsequent {\cf read-char}
-operation may still hang.
-\end{note}
 \end{entry}
 
 \subsection{Output}
@@ -3929,9 +3930,11 @@ the best an implementation can do.
 \begin{entry}{%
 \proto{current-jiffy}{}{time module procedure}}
 
-Returns an exact integer representing the number of jiffies (arbitrary
-elapsed time units) since an arbitrary epoch which may vary between
-runs of a program.
+Returns the number of \defining{jiffies} that have elapsed since an arbitrary,
+implementation-defined epoch. A jiffy is an implementation-defined
+fraction of a second which is defined by the return value of the
+{\cf jiffies-per-second} procedure. The starting epoch is guaranteed to be
+constant during a run of the program, but may vary between different runs.
 \end{entry}
 
 \begin{entry}{%
