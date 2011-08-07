@@ -5,7 +5,7 @@
 
 A Scheme program consists of a sequence of 
 \defining{program parts}: expressions, definitions, syntax definitions,
-record-type definitions, imports, and includes.  A collection of program
+record type definitions, imports, and includes.  A collection of program
 parts may be encapsulated in a module to be reused by multiple
 programs.
 Expressions are described in chapter~\ref{expressionchapter};
@@ -182,17 +182,18 @@ Otherwise, it is an {\em internal syntax definition}, and is local to the
   (list x y))                \ev (2 1)%
 \end{scheme}
 
-\todo{Shinn: This description is hideous.}
+\todo{Shinn: This description is hideous.
+Cowan: But now less hideous than before.}
 
-Although macros may expand into definitions and syntax definitions in
-any context that permits them, it is an error for a definition or
-syntax definition to define an identifier whose binding is needed to
-determine the meaning of the definition itself, or any preceeding
-definition in a group of internal definitions.  Similarly in a group
-of internal definitions, it is an error for a definition to define an
-identifier whose binding is needed to determine the boundary between
-the group and the expressions that follow the group.  For example, the
-following are errors:
+Macros may expand into definitions in any context that permits
+them. However, it is an error for a definition to define an
+identifier whose binding must be known to determine the meaning of the
+definition itself, or of any preceding definition that belongs to the
+same group of internal definitions. Similarly, it is an error for an
+internal definition to define an identifier whose binding must be known
+to determine the boundary between the internal definitions and the
+expressions of the body it belongs to. For example, the following are
+errors:
 
 \begin{scheme}
 (define define 3)
@@ -213,13 +214,16 @@ following are errors:
 
 \todo{Shinn: Example using internal define-syntax.}
 
-\section{Record-type definitions}
+\section{Record type definitions}
 \label{usertypes}
 
-This section describes syntax for creating new data types, called
-record types.  A predicate, constructor, and field accessors and
+\defining{Record type definitions} are used to introduce new data types, called
+\defining{record types}.
+The values of a record type are called \defining{records} and are
+aggregations of zero or more \defining{fields}, each of which holds a single location.
+A predicate, constructor, and field accessors and
 modifiers are defined for each record type.
-Record-type definitions are valid wherever definitions are.
+Record type definitions are valid wherever definitions are.
 
 \begin{entry}{%
 \proto{define-record-type}{ name constructor pred field \dotsfoo}{syntax}}
@@ -261,16 +265,16 @@ definitions:
   initial value.  The initial values of all other fields are
   unspecified.
 
-\item \hyper{pred} is a predicate that returns \schtrue{} when given a
+\item \hyper{pred} is bound to a predicate that returns \schtrue{} when given a
   value returned by \hyper{constructor name} and \schfalse{} for
   everything else.
 
-\item Each \hyper{accessor name} is a procedure that takes a record of
+\item Each \hyper{accessor name} is bound to a procedure that takes a record of
   type \hyper{name} and returns the current value of the corresponding
   field.  It is an error to pass an accessor a value which is not a
   record of the appropriate type.
 
-\item Each \hyper{modifier name} is a procedure that takes a record of
+\item Each \hyper{modifier name} is bound to a procedure that takes a record of
   type \hyper{name} and a value which becomes the new value of the
   corresponding field; an unspecified value is returned.  It is an
   error to pass a modifier a first argument which is not a record of
@@ -278,7 +282,7 @@ definitions:
 
 \end{itemize}
 
-The following definition
+For instance, the following definition
 
 \begin{scheme}
 (define-record-type <pare>
@@ -308,8 +312,9 @@ to be a predicate for instances of {\cf <pare>}.
 \section{Modules}
 \label{modules}
 
-Modules provide a way to encapsulate programs and manage the top-level
-namespace.  This section defines the notation and semantics for modules.
+Modules provide a way to organize Scheme programs into reusable parts
+with explicitly defined interfaces to the rest of the program. This
+This section defines the notation and semantics for modules.
 
 \subsection{Module Syntax}
 
@@ -412,12 +417,14 @@ the module.  \ide{begin} takes a list of forms to be spliced
 literally, analogous to the top-level \ide{begin}.  \ide{include} and
 \ide{include-ci} both take one or more filenames, read all top-level
 forms from the files and include the results into the module body as
-though wrapped in a \ide{begin}.  \ide{include-ci} uses a case-folding
-reader when reading the forms from the file.
+though wrapped in a \ide{begin}.
+The difference between the two is that \ide{include-ci} reads each file
+as if it began with the {\cf{}\#!fold-case} directive, while \ide{include}
+does not.
 
 The \ide{cond-expand} module declaration provides a way to statically
-expand different module declarations depending on the platform
-or implementation under which the module is being loaded.  A
+expand different module declarations depending on the 
+implementation under which the module is being loaded.  A
 \hyper{cond-expand clause} must be of the following form:
 
 {\tt(\hyper{feature requirement} \hyper{module declaration} \dotsfoo)}
