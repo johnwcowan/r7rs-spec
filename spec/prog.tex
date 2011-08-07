@@ -99,7 +99,7 @@ unbound\index{unbound} variable.
 (first '(1 2))                      \ev  1%
 \end{scheme}
 
-Some implementations of Scheme use an initial environment in
+Implementations are permitted to provide an initial environment in
 which all possible variables are bound to locations, most of
 which contain undefined values.  Top level definitions in
 such an implementation are truly equivalent to assignments.
@@ -491,13 +491,13 @@ which it is so imported.
   (export make push! pop! empty!)
   (import (scheme base))
   (begin
-   (define (make) (list กว()))
+   (define (make) (list '()))
    (define (push! s v)
      (set-car! s (cons v (car s))))
    (define (pop! s) (let ((v (caar s)))
                       (set-car! s (cdar s))
                       v))
-   (define (empty! s) (set-car! s กว()))))
+   (define (empty! s) (set-car! s '()))))
 
 (module (balloons)
   (export make push pop)
