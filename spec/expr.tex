@@ -715,7 +715,7 @@ context:
 \item It may appear as part of a \hyper{body}, or at the
   \hyper{top-level}, or directly nested in a {\cf begin} that
   is one of these three types.  In this case, the {\cf begin} form must have
-  the shape specified in the first header line. This use of begin acts
+  the format specified in the first header line. This use of begin acts
   as a splicing form - the forms inside the \hyper{body} are spliced
   into the surrounding body, as if the begin wrapper were not actually
   present.
@@ -875,22 +875,21 @@ more complete description of {\cf delay} and {\cf lazy}.
 \domain{The value of the \var{param} expressions must be parameter objects.}
 {\cf Parameterize} is used to change the values returned by
 parameter objects for the dynamic extent of the body.
-The \var{param} expressions and \texttt{(\var{converter} \var{value})}
+The \var{param} and \var{value} expressions
 are evaluated in an unspecified order.  The \hyper{expr}s are
 evaluated in order in a dynamic extent during which calls to the
-\var{param} parameter objects return the result of the corresponding
-\texttt{(\var{converter} \var{value})}.  The results of the last
-\hyper{expr} are returned as the results of the entire {\cf
-  parameterize}.
+\var{param} parameter objects return the corresponding \var{value}s.
+The results of the last
+expression in the \hyper{body} are returned as the results of the entire
+{\cf parameterize}.
 
-If an implementation supports multiple threads of execution, then {\cf
-  parameterize} must not change the associated values of any
-parameters in any thread created before or after the {\cf
-  parameterize}.
+If an implementation supports multiple threads of execution, then
+{\cf parameterize} must not change the associated values of any parameters
+in any thread other than the current thread or threads created
+inside \var{body}.
 
 See the description of {\cf make-parameter}
-(section~\ref{make-parameter}) for a more complete description of {\cf
-  parameterize}.
+(section~\ref{make-parameter}) for more information.
 \end{entry}
 
 
