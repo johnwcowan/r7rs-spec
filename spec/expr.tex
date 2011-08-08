@@ -584,11 +584,6 @@ name.  In the most common uses of {\cf letrec}, all the \hyper{init}s are
 Another restriction is that the continuation of each \hyper{init}
 should not be invoked more than once.
 
-It must be possible to evaluate each \hyper{init} without assigning or
-referring to the value of the corresponding \hyper{variable} or the
-\hyper{variable} of any of the bindings that follow it in
-\hyper{bindings}.
-
 
 \end{entry}
 
@@ -616,6 +611,11 @@ Despite the left-to-right evaluation and assignment order, each binding of
 a \hyper{variable} has the entire {\cf letrec*} expression as its
 region\index{region}, making it possible to define mutually recursive
 procedures.
+
+It must be possible to evaluate each \hyper{init} without assigning or
+referring to the value of the corresponding \hyper{variable} or the
+\hyper{variable} of any of the bindings that follow it in
+\hyper{bindings}.
 
 \begin{entry}{%
 \proto{let-values}{ \hyper{mvbindings} \hyper{body}}{\exprtype}}
