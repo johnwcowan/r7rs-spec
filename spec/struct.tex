@@ -28,10 +28,10 @@ they are permitted to reclaim the storage occupied by an object if
 they can prove that the object cannot possibly matter to any future
 computation.  
 
-\vest Implementations of Scheme are required to be properly tail-recursive.
+\vest Implementations of Scheme are required to be properly tail recursive.
 This allows the execution of an iterative computation in constant space,
 even if the iterative computation is described by a syntactically
-recursive procedure.  Thus with a properly tail-recursive implementation,
+recursive procedure.  Thus with a properly tail recursive implementation,
 iteration can be expressed using the ordinary procedure-call
 mechanics, so that special iteration constructs are useful only as
 syntactic sugar.  See section~\ref{proper tail recursion}.
