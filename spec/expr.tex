@@ -8,7 +8,7 @@ Expression types are categorized as {\em primitive} or {\em derived}.
 Primitive expression types include variables and procedure calls.
 Derived expression types are not semantically primitive, but can instead
 be defined as macros.
-Suitable definitions of some of the derived expressions are 
+Suitable definitions of some of the derived expressions are
 given in section~\ref{derivedsection}.
 
 \section{Primitive expression types}
@@ -104,7 +104,7 @@ and {\cf *}.  New procedures are created by evaluating \lambdaexp{}s
 (see section~\ref{lambda}).
 
 Procedure calls may return any number of values (see \ide{values} in
-section~\ref{proceduresection}).  
+section~\ref{proceduresection}).
 Most of the procedures defined in this report return one
 value or, for procedures such as {\cf apply}, pass on the values returned
 by a call to one of their arguments.
@@ -128,7 +128,7 @@ The order of evaluation may be chosen differently for each procedure call.
 \begin{note} In many dialects of Lisp, the empty combination, {\tt
 ()}, is a legitimate expression.  In Scheme, combinations must have at
 least one subexpression, so {\tt ()} is not a syntactically valid
-expression.  
+expression.
 \end{note}
 
 \end{entry}
@@ -266,7 +266,7 @@ unspecified.
 The constructs in this section are hygienic, as discussed in
 section~\ref{macrosection}.
 For reference purposes, section~\ref{derivedsection} gives macro definitions
-that will convert most of the constructs described in this section 
+that will convert most of the constructs described in this section
 into the primitive constructs described in the previous section.
 
 
@@ -424,13 +424,13 @@ The \hyper{test} expressions are evaluated from left to right, and the value of 
 first expression that evaluates to a true value (see
 section~\ref{booleansection}) is returned.  Any remaining expressions
 are not evaluated.  If all expressions evaluate to \schfalse{}
-or if there are no expressions, \schfalse{} is returned.  
+or if there are no expressions, \schfalse{} is returned.
 
 \begin{scheme}
 (or (= 2 2) (> 2 1))            \ev  \schtrue
 (or (= 2 2) (< 2 1))            \ev  \schtrue
 (or \schfalse \schfalse \schfalse) \ev  \schfalse
-(or (memq 'b '(a b c)) 
+(or (memq 'b '(a b c))
     (/ 3 0))                    \ev  (b c)%
 \end{scheme}
 
@@ -571,7 +571,7 @@ define mutually recursive procedures.
             (if (zero? n)
                 \schfalse
                 (even? (- n 1))))))
-  (even? 88))   
+  (even? 88))
 		\ev  \schtrue%
 \end{scheme}
 
@@ -611,7 +611,7 @@ The \hyper{variable}s are bound to fresh locations,
 each \hyper{variable} is assigned in left-to-right order to the
 result of evaluating the corresponding \hyper{init}, the \hyper{body} is
 evaluated in the resulting environment, and the values of the last
-expression in \hyper{body} are returned. 
+expression in \hyper{body} are returned.
 Despite the left-to-right evaluation and assignment order, each binding of
 a \hyper{variable} has the entire {\cf letrec*} expression as its
 region\index{region}, making it possible to define mutually recursive
@@ -704,28 +704,31 @@ used to compute initial values must not be invoked more than once.
 
 \subsection{Sequencing}\unsection
 
-\begin{entry}{%
-\proto{begin}{ \hyper{expression or definition} \dotsfoo}{\exprtype}
-\proto{begin}{ \hyperi{expression} \hyperii{expression} \dotsfoo}{\exprtype}}
-
 The {\cf begin} keyword has two different roles, depending on its
 context:
 
-\begin{itemize}
-\item It may appear as part of a \hyper{body}, or at the
-  \hyper{top-level}, or directly nested in a {\cf begin} that
-  is one of these three types.  In this case, the {\cf begin} form must have
-  the format specified in the first header line. This use of begin acts
-  as a splicing form - the forms inside the \hyper{body} are spliced
-  into the surrounding body, as if the begin wrapper were not actually
-  present.
-\item It may appear as an ordinary expression.  In this case, it must have the shape
-  specified in the second header line. In this case, the
-  \hyper{expression}s are evaluated sequentially from left to right,
-  and the values of the last \hyper{expression} are returned. This
-  expression type is used to sequence side effects such as assignments
-  or input and output.
-\end{itemize}
+\begin{entry}{%
+\proto{begin}{ \hyper{expression or definition} \dotsfoo}{\exprtype}}
+
+It may appear as part of a \hyper{body}, or at the
+\hyper{top-level}, or directly nested in a {\cf begin} that
+is one of these three types.  In this case, the {\cf begin} form must have
+the format specified in the first header line. This use of begin acts
+as a splicing form --- the forms inside the \hyper{body} are spliced
+into the surrounding body, as if the begin wrapper were not actually
+present.
+
+\end{entry}
+
+\begin{entry}{%
+\proto{begin}{ \hyperi{expression} \hyperii{expression} \dotsfoo}{\exprtype}}
+
+It may appear as an ordinary expression.  In this case, it must have the shape
+specified in the second header line. In this case, the
+\hyper{expression}s are evaluated sequentially from left to right,
+and the values of the last \hyper{expression} are returned. This
+expression type is used to sequence side effects such as assignments
+or input and output.
 
 \begin{scheme}
 (define x 0)
@@ -739,7 +742,6 @@ context:
 \end{scheme}
 
 \end{entry}
-
 
 \subsection{Iteration}%\unsection
 
@@ -853,7 +855,7 @@ is unspecified.
 
 \todo{Fix.}
 
-The {\cf lazy} construct 
+The {\cf lazy} construct
 is similar to {\cf delay}, but its argument must evaluate to a promise.
 The returned promise, when forced, will evaluate to whatever the original
 promise would evaluate to if it had been forced.
@@ -992,7 +994,7 @@ may be equivalent to either of the following expressions:
 \begin{scheme}
 `((1 2) 3 4 five 6)
 
-(let ((a 3)) 
+(let ((a 3))
   (cons '(1 2)
         (cons a (cons 4 (cons 'five '(6))))))
 \end{scheme}
@@ -1056,7 +1058,7 @@ the \hyper{formals} of any \hyper{clause}.
 
 \begin{scheme}
 (define plus
-  (case-lambda 
+  (case-lambda
     (() 0)
     ((x) x)
     ((x y) (+ x y))
@@ -1323,7 +1325,7 @@ The keyword at the beginning of the pattern in a
 is considered neither a pattern variable nor a literal identifier.
 
 Pattern variables match arbitrary input elements and
-are used to refer to elements of the input in the template.  
+are used to refer to elements of the input in the template.
 It is an error for the same pattern variable to appear more than once in a
 \hyper{pattern}.
 
