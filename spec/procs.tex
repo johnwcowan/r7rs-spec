@@ -607,12 +607,17 @@ and only if {\cf (zero? (imag-part z))} and {\cf (exact? (imag-part
 z))} are both true.  If \vr{x} is an inexact real number, then {\cf
 (integer? \vr{x})} is true if and only if {\cf (= \vr{x} (round \vr{x}))}.
 
+The numbers {\cf +inf.0}, {\cf -inf.0}, and {\cf +nan.0} are real but
+not rational.
+
 \begin{scheme}
 (complex? 3+4i)         \ev  \schtrue
 (complex? 3)            \ev  \schtrue
 (real? 3)               \ev  \schtrue
 (real? -2.5+0.0i)       \ev  \schtrue
 (real? \#e1e10)          \ev  \schtrue
+(real? +inf.0)           \ev  \schtrue
+(rational? -inf.0)       \ev  \schfalse
 (rational? 6/10)        \ev  \schtrue
 (rational? 6/3)         \ev  \schtrue
 (integer? 3+0i)         \ev  \schtrue
@@ -663,7 +668,7 @@ Otherwise, \schfalse{} is returned.
 \begin{entry}{%
 \proto{finite?}{ \vr{z}}{inexact module procedure}}
 
-{\cf Finite} returns \schtrue{} on all real numbers except
+{\cf Finite?} returns \schtrue{} on all real numbers except
 {\cf +inf.0}, {\cf -inf.0}, and {\cf +nan.0}, and on complex
 numbers if their real and imaginary parts are both finite.
 Otherwise it returns \schfalse{}.
