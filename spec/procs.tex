@@ -306,12 +306,7 @@ Scheme numbers that attempt to model them, the machine representations
 used to implement the Scheme numbers, and notations used to write numbers.
 This report uses the types \type{number}, \type{complex}, \type{real},
 \type{rational}, and \type{integer} to refer to both mathematical numbers
-and Scheme numbers.  Machine representations such as fixed point and
-floating point are referred to by names such as \type{fixnum} and
-\type{flonum}.
-Fixnums are integers with a limited and machine-dependent range;
-flonums are real numbers with a limited and machine-dependent
-range and precision.
+and Scheme numbers.  
 
 \subsection{Numerical types}
 \label{numericaltypes}
@@ -340,7 +335,7 @@ different representations denote the same integer.
 
 Scheme's numerical operations treat numbers as abstract data, as
 independent of their representation as possible.  Although an implementation
-of Scheme may use fixnum, flonum, and perhaps other representations for
+of Scheme may use multiple internal representations of
 numbers, this should not be apparent to a casual programmer writing
 simple programs.
 
@@ -405,13 +400,13 @@ may still be quite useful.
 any type, subject to the requirements of this section.  The supported
 range for \tupe{exact} numbers of any type may be different from the
 supported range for \tupe{inexact} numbers of that type.  For example,
-an implementation that uses flonums to represent all its
+an implementation that uses IEEE double-precision floating-point numbers to represent all its
 \tupe{inexact} \tupe{real} numbers may
 support a practically unbounded range of \tupe{exact} \tupe{integer}s
 and \tupe{rational}s
 while limiting the range of \tupe{inexact} \tupe{real}s (and therefore
 the range of \tupe{inexact} \tupe{integer}s and \tupe{rational}s)
-to the dynamic range of the flonum format.
+to the dynamic range of the IEEE double format.
 Furthermore
 the gaps between the representable \tupe{inexact} \tupe{integer}s and
 \tupe{rational}s are
@@ -465,15 +460,16 @@ implementation restriction or it may silently coerce its result to an
 representation strategies for \tupe{inexact} numbers.
 This report recommends, but does not require, that the IEEE 754
 standard be followed by implementations that use
-flonum representations, and that implementations using
+floating-point representations, and that implementations using
 other representations should match or exceed the precision achievable
 using these floating point standards~\cite{IEEE}.
 In particular, the description of transcendental functions in IEEE 754:2008
 should be followed by such implementations, particularly with respect
 to infinities and NaNs.
 
-\vest In particular, implementations that use flonum representations
-must follow these rules: A \tupe{flonum} result
+\vest In particular, implementations that provide more than one representation
+of floating-point numbers with differing precisions
+must follow these rules: An inexact result
 must be represented with at least as much precision as is used to express any of
 the inexact arguments to that operation.  It is desirable (but not required) for
 potentially inexact operations such as {\cf sqrt}, when applied to \tupe{exact}
@@ -481,12 +477,12 @@ arguments, to produce \tupe{exact} answers whenever possible (for example the
 square root of an \tupe{exact} 4 should be an \tupe{exact} 2).
 If, however, an
 \tupe{exact} number is operated upon so as to produce an \tupe{inexact} result
-(as by {\cf sqrt}), and if the result is represented as a \tupe{flonum}, then
-the most precise \tupe{flonum} format available must be used; but if the result
+(as by {\cf sqrt}), then
+the most precise representation available must be used; but if the result
 is represented in some other way then the representation must have at least as
-much precision as the most precise \tupe{flonum} format available.
+much precision as the most precise representation available.
 
-In addition, implementations that use flonum representations may
+In addition, implementations may
 distinguish special number objects called \tupe{positive infinity},
 \tupe{negative infinity}, and \tupe{NaN}.
 
@@ -581,7 +577,7 @@ using an \tupe{exact} notation is indeed represented as an \tupe{exact}
 number.  Some examples also assume that certain numerical constants written
 using an \tupe{inexact} notation can be represented without loss of
 accuracy; the \tupe{inexact} constants were chosen so that this is
-likely to be true in implementations that use flonums to represent
+likely to be true in implementations that use IEEE doubles to represent
 inexact numbers.
 
 \todo{Scheme provides the usual set of operations for manipulating
@@ -1188,10 +1184,10 @@ or is a complex number with a non-rational real or imaginary part.
 \end{note}
 
 \begin{rationale}
-If \vr{z} is an inexact number represented using flonums, and
+If \vr{z} is an inexact number and
 the radix is 10, then the above expression is normally satisfied by
 a result containing a decimal point.  The unspecified case
-allows for infinities, NaNs, and non-flonum representations.
+allows for infinities, NaNs, and unusual representations.
 \end{rationale}
 
 \end{entry}
