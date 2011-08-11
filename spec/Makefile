@@ -19,3 +19,12 @@ stdmod.tex: stdmod-raw.tex
 r7rs.pdf: $(SOURCES)
 	pdflatex $<
 	pdflatex $<
+
+r5diff/%.tex: %.tex
+	hg cat -r 1 $< > r5diff/old-$<
+	latexdiff --type=UNDERLINE --subtype=SAFE r5diff/old-$< $< > $@
+	rm -f r5diff/old-$<
+
+r5diff/r7rs.pdf: $(SOURCES:%=r5diff/%)
+	pdflatex -output-directory r5diff $<
+	pdflatex -output-directory r5diff $<
