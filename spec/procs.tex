@@ -365,7 +365,7 @@ property of a number.
 computation that did not involve \tupe{inexact} intermediate results,
 the two ultimate results will be mathematically equivalent.  This is
 generally not true of computations involving \tupe{inexact} numbers
-since approximate methods such as floating point arithmetic may be used,
+since approximate methods such as floating-point arithmetic may be used,
 but it is the duty of each implementation to make the result as close as
 practical to the mathematically ideal result.
 
@@ -393,7 +393,8 @@ may produce an \tupe{exact} zero result, even if the other argument is
 tower of subtypes given in section~\ref{numericaltypes},
 but they must implement a coherent subset consistent with both the
 purposes of the implementation and the spirit of the Scheme language.
-For example, an implementation in which all numbers are \tupe{real}
+For example, an implementation in which all numbers are \tupe{real},
+or in which general complex numbers are always \tupe{inexact},
 may still be quite useful.
 
 \vest Implementations may also support only a limited range of numbers of
@@ -401,7 +402,7 @@ any type, subject to the requirements of this section.  The supported
 range for \tupe{exact} numbers of any type may be different from the
 supported range for \tupe{inexact} numbers of that type.  For example,
 an implementation that uses IEEE double-precision floating-point numbers to represent all its
-\tupe{inexact} \tupe{real} numbers may
+\tupe{inexact} \tupe{real} numbers may also
 support a practically unbounded range of \tupe{exact} \tupe{integer}s
 and \tupe{rational}s
 while limiting the range of \tupe{inexact} \tupe{real}s (and therefore
@@ -453,21 +454,23 @@ arguments.  If one of these procedures is unable to deliver an \tupe{exact}
 result when given \tupe{exact} arguments, then it may either report a
 violation of an
 implementation restriction or it may silently coerce its result to an
-\tupe{inexact} number.  Such a coercion may cause an error later.
+\tupe{inexact} number; such a coercion may cause an error later.
+Nevertheless, implementations that do not provide \tupe{exact} rational
+numbers should return \tupe{inexact} rational numbers rather than
+reporting an implementation restriction.
 
-
-\vest An implementation may use floating point and other approximate 
+\vest An implementation may use floating-point and other approximate 
 representation strategies for \tupe{inexact} numbers.
 This report recommends, but does not require, that the IEEE 754
 standard be followed by implementations that use
 floating-point representations, and that implementations using
 other representations should match or exceed the precision achievable
-using these floating point standards~\cite{IEEE}.
+using these floating-point standards~\cite{IEEE}.
 In particular, the description of transcendental functions in IEEE 754:2008
 should be followed by such implementations, particularly with respect
 to infinities and NaNs.
 
-\vest In particular, implementations that provide more than one representation
+\vest Implementations that provide more than one representation
 of floating-point numbers with differing precisions
 must follow these rules: An inexact result
 must be represented with at least as much precision as is used to express any of
@@ -478,9 +481,7 @@ square root of an \tupe{exact} 4 should be an \tupe{exact} 2).
 If, however, an
 \tupe{exact} number is operated upon so as to produce an \tupe{inexact} result
 (as by {\cf sqrt}), then
-the most precise representation available must be used; but if the result
-is represented in some other way then the representation must have at least as
-much precision as the most precise representation available.
+the most precise representation available must be used.
 
 In addition, implementations may
 distinguish special number objects called \tupe{positive infinity},
@@ -520,7 +521,6 @@ constant by an \tupe{inexact} number.
 The syntax of the written representations for numbers is described formally in
 section~\ref{numbersyntax}.  Note that case is not significant in numerical
 constants.
-
 
 A number may be written in binary, octal, decimal, or
 hexadecimal by the use of a radix prefix.  The radix prefixes are {\cf
@@ -943,7 +943,7 @@ integers.
 
 \begin{rationale}
 {\cf Round} rounds to even for consistency with the default rounding
-mode specified by the IEEE floating point standard.
+mode specified by the IEEE floating-point standard.
 \end{rationale}
 
 \begin{note}
