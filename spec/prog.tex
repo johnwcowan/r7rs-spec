@@ -83,7 +83,7 @@ has essentially the same effect as the assignment expression
 \begin{scheme}
 (\ide{set!}\ \hyper{variable} \hyper{expression})%
 \end{scheme}
-if \hyper{variable} is bound to non-syntax.  However, if
+if \hyper{variable} is bound to a non-syntax value.  However, if
 \hyper{variable} is not bound, 
 or is bound to a {\em syntax definition} (see below),
 then the definition will bind
@@ -148,7 +148,7 @@ of any of the definitions that follow it in \hyper{body}.
 It is an error to define the same identifier more than once in the
 same \hyper{body}.
 
-Wherever an internal definition may occur
+Wherever an internal definition may occur,
 {\tt(begin \hyperi{definition} \dotsfoo)}
 is equivalent to the sequence of definitions
 that form the body of the \ide{begin}.
@@ -163,7 +163,7 @@ They have the following form:\mainschindex{define-syntax}
 
 \hyper{Keyword} is an identifier, and
 the \hyper{transformer spec} should be an instance of \ide{syntax-rules}.
-If the {\cf define-syntax} occurs at the top-level, then the top-level
+If the {\cf define-syntax} occurs at the top level, then the top-level
 syntactic environment is extended by binding the
 \hyper{keyword} to the specified transformer, but existing references
 to any top-level binding for \hyper{keyword} remain unchanged.
@@ -221,7 +221,7 @@ errors:
 \defining{record types}.
 The values of a record type are called \defining{records} and are
 aggregations of zero or more \defining{fields}, each of which holds a single location.
-A predicate, constructor, and field accessors and
+A predicate, a constructor, and field accessors and
 modifiers are defined for each record type.
 Record type definitions are valid wherever definitions are.
 
@@ -246,8 +246,9 @@ It is an error for the same identifier to occur more than once as a
 field name.
 
 {\cf define-record-type} is generative: each use creates a new record
-type that is distinct from all existing types, including other record
-types and Scheme's predefined types.
+type that is distinct from all existing types, including Scheme's
+predefined types and other record types --- including record types of
+the same name.
 
 An instance of {\cf define-record-type} is equivalent to the following
 definitions:
@@ -313,8 +314,8 @@ to be a predicate for instances of {\cf <pare>}.
 \label{modules}
 
 Modules provide a way to organize Scheme programs into reusable parts
-with explicitly defined interfaces to the rest of the program. This
-This section defines the notation and semantics for modules.
+with explicitly defined interfaces to the rest of the program.  This
+section defines the notation and semantics for modules.
 
 \subsection{Module Syntax}
 
@@ -384,31 +385,31 @@ forms modify this set as follows:
 
 \begin{itemize}
 
-\item \ide{Only} produces a subset of the given
+\item \ide{only} produces a subset of the given
   \hyper{import set}, including only the listed identifiers (after any
   renaming).  It is an error if any of the listed identifiers are
   not found in the original set.
 
-\item \ide{Except} produces a subset of the given
+\item \ide{except} produces a subset of the given
   \hyper{import set}, excluding the listed identifiers (after any
   renaming). It is an error if any of the listed identifiers are not
   found in the original set.
 
-\item \ide{Rename} modifies the given \hyper{import set},
+\item \ide{rename} modifies the given \hyper{import set},
   replacing each instance of \hyper{$identifier_1$} with
   \hyper{$identifier_2$}. It is an error if any of the listed
-  \hyper{$identifier_1$}s are not found in the original set.
+  identifiers are not found in the original set.
 
-\item \ide{Prefix} automatically renames all identifiers in
+\item \ide{prefix} automatically renames all identifiers in
   the given \hyper{import set}, prefixing each with the specified
   \hyper{identifier}.
 
 \end{itemize}
 
-\ide{Import} declarations may also be made at the top-level of a
+\ide{import} declarations may also be made at the top level of a
 program.  In a module declaration, it is an error to import the same
-identifier more than once with different bindings, to redefine or
-mutate and imported binding with {\cf define}, {\cf define-syntax}
+identifier more than once with different bindings, or to redefine or
+mutate an imported binding with {\cf define}, {\cf define-syntax}
 or {\cf set!}.
 
 The \ide{begin}, \ide{include}, and \ide{include-ci} declarations are
@@ -466,8 +467,8 @@ in order, until one of them returns \schtrue.  When a true clause is
 found, the corresponding \hyper{module declaration}s are spliced into
 the current module definition and the remaining clauses are ignored.
 If none of the \hyper{feature requirement}s evaluate to \schtrue, then
-if there is an \ide{else} clause its \hyper{module declaration}s are
-included, otherwise the \ide{cond-expand} has no effect.
+if there is an \ide{else} clause, its \hyper{module declaration}s are
+included.  Otherwise, the \ide{cond-expand} has no effect.
 
 The exact features provided are implementation-defined, but for
 portability a set of recommended features is given in
