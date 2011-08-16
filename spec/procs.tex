@@ -394,7 +394,7 @@ tower of subtypes given in section~\ref{numericaltypes},
 but they must implement a coherent subset consistent with both the
 purposes of the implementation and the spirit of the Scheme language.
 For example, an implementation in which all numbers are \tupe{real},
-or in which general complex numbers are always \tupe{inexact},
+or in which non-\tupe{real} numbers are always \tupe{inexact},
 may still be quite useful.
 
 \vest Implementations may also support only a limited range of numbers of
@@ -1011,7 +1011,7 @@ computes the natural logarithm of \vr{z} (not the base ten logarithm).
 arccosine ($\cos^{-1}$), and arctangent ($\tan^{-1}$), respectively.
 The two-argument variant of {\cf atan} computes {\tt (angle
 (make-rectangular \vr{x} \vr{y}))} (see below), even in implementations
-that don't support general complex numbers.
+that don't support the complex module.
 
 In general, the mathematical functions log, arcsine, arccosine, and
 arctangent are multiply defined.
