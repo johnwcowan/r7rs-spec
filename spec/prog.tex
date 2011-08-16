@@ -5,7 +5,7 @@
 
 A Scheme program consists of a sequence of 
 \defining{program parts}: expressions, definitions, syntax definitions,
-record type definitions, and imports.  A collection of program
+record type definitions, imports, and includes.  A collection of program
 parts may be encapsulated in a module to be reused by multiple
 programs.
 Expressions are described in chapter~\ref{expressionchapter};
@@ -415,12 +415,13 @@ or {\cf set!}.
 
 The \ide{begin}, \ide{include}, and \ide{include-ci} declarations are
 used to specify the commands and definitions that make up the body of
-the module.  \ide{begin} takes a list of forms to be spliced
-literally, analogous to the top-level \ide{begin}.  \ide{include} and
-\ide{include-ci} both take one or more filenames,
+the module.  \ide{Begin} takes a list of forms to be spliced
+literally, analogous to the top-level \ide{begin}.  
+\ide{Include} and
+\ide{include-ci} both take one or more filenames expressed as string literals,
 apply an implementation-specific algorithm to find corresponding files,
 read all top-level
-forms from the files, and include the results into the module body as
+forms from the files, and include the results into the module body or program as
 though wrapped in a \ide{begin}.
 The difference between the two is that \ide{include-ci} reads each file
 as if it began with the {\cf{}\#!fold-case} directive, while \ide{include}
@@ -432,7 +433,15 @@ which contains the including file, and to provide a way for users to
 specify other directories to search.
 \end{note}
 
-The \ide{cond-expand} module declaration provides a way to statically
+\begin{note}
+For portability, \ide{include} and \ide{include-ci} must operate on source files.
+Their operation on other kinds of files necessarily varies among
+implementations.
+\end{note}
+
+The \ide{cond-expand} module declaration,
+which may also appear at the top level of a program,
+provides a way to statically
 expand different module declarations depending on the 
 implementation under which the module is being loaded.  A
 \hyper{cond-expand clause} must be of the following form:

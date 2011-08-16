@@ -3814,22 +3814,9 @@ are printed.  The {\cf load} procedure does not affect the values
 returned by {\cf current-input-port} and {\cf current-output-port}.
 {\cf Load} returns an unspecified value.
 
-\end{entry}
-
-\begin{entry}{%
-\proto{include}{ filename}{load module syntax}
-\proto{include-ci}{ filename}{load module syntax}}
-
-{\cf Include} and {\cf include-ci} are similar to {\cf load} except
-that they are syntax which expands into the expressions and
-definitions from the file as though wrapped in {\cf begin}.
-Thus it can be used to include internal definitions and otherwise
-interact with the current lexical scope.  In these forms the
-\var{filename} must be a string literal.
-
 \begin{rationale}
-For portability, {\cf load} and {\cf include} must operate on source files.
-Their operation on other kinds of files necessarily varies among
+For portability, {\cf load} must operate on source files.
+Its operation on other kinds of files necessarily varies among
 implementations.
 \end{rationale}
 \end{entry}
