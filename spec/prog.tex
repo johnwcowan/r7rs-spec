@@ -325,7 +325,7 @@ A module definition takes the following form:
   \hyper{module declaration} \dotsfoo)
 \end{scheme}
 
-\hyper{module name} is a list whose members are identifiers or exact integers that is used to
+\hyper{module name} is a list whose members are identifiers or unsigned exact integers that is used to
 identify the module uniquely when importing from other programs or
 modules.
 
@@ -408,7 +408,7 @@ forms modify this set as follows:
 \ide{Import} declarations may also be made at the top-level of a
 program.  In a module declaration, it is an error to import the same
 identifier more than once with different bindings, to redefine or
-mutate and imported binding with {\cf define}, {\cf define-syntax}
+mutate an imported binding with {\cf define}, {\cf define-syntax}
 or {\cf set!}.
 
 The \ide{begin}, \ide{include}, and \ide{include-ci} declarations are
