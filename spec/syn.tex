@@ -269,8 +269,8 @@ successfully parses.  Note that any string that parses as an
 \>       \>(else => \meta{recipient}))
 \>  \| (and \arbno{\meta{test}})
 \>  \| (or \arbno{\meta{test}})
-\>  \| (when \meta{expression} \meta{body})
-\>  \| (unless \meta{expression} \meta{body})
+\>  \| (when \meta{expression} \meta{test} \meta{sequence})
+\>  \| (unless \meta{expression} \meta{test} \meta{sequence})
 \>  \| (let (\arbno{\meta{binding spec}}) \meta{body})
 \>  \| (let \meta{identifier} (\arbno{\meta{binding spec}}) \meta{body})
 \>  \| (let* (\arbno{\meta{binding spec}}) \meta{body})
@@ -284,6 +284,8 @@ successfully parses.  Note that any string that parses as an
 \>       \>\arbno{\meta{command}})
 \>  \| (delay \meta{expression})
 \>  \| (lazy \meta{expression})
+\>  \| (parameterize \arbno{(\meta{expression} \meta{expression})} \meta{body})
+\>  \| (guard (\meta{identifier} \arbno{\meta{cond clause}}) \meta{body})
 \>  \| \meta{quasiquotation}
 \>  \| (c\=ase-lambda \arbno{\meta{case-lambda clause}})
 
