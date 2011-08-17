@@ -10,18 +10,22 @@
 \mainindex{procedure}
 
 This chapter describes Scheme's built-in procedures.  The initial (or
-``top level'') Scheme environment is empty, and bindings must be
-introduced with {\cf import}.
+``top level'') Scheme environment is empty except for {\cf import},
+so bindings must be introduced with {\cf import}.
+
+\todo{Gleckler: We need to make it clearer what ``top level'' really
+  means here.  For example, how we shoudl explain how it differs from
+  the REPL.}
 
 Implementations may provide an interactive session called a
-\defining{REPL} (Read-Eval-Print-Loop), where Scheme expressions are
+\defining{REPL} (Read-Eval-Print Loop), where Scheme expressions are
 entered and evaluated one at a time.  For convenience and ease of use,
 the ``top-level'' Scheme environment in an interactive
 session is not empty, but must start out with a number of variables
 bound to locations containing at least the bindings provided by the
 {\cf(scheme base)} module.  This module includes mostly core syntax
 and primitive procedures that manipulate data.  For example, the
-variable {\cf abs} is bound to (a location initially containing) a
+variable {\cf abs} is bound to a
 procedure of one argument that computes the absolute value of a
 number, and the variable {\cf +} is bound to a procedure that computes
 sums.  The full list of {\cf(scheme base)} bindings can be found in
@@ -72,7 +76,7 @@ The {\cf eqv?} procedure returns \schtrue{} if:
 \begin{note} 
 This assumes that neither \vari{obj} nor \varii{obj} is an ``uninterned
 symbol'' as alluded to in section~\ref{symbolsection}.  This report does
-not presume to specify the behavior of {\cf eqv?} on implementation-dependent
+not specify the behavior of {\cf eqv?} on implementation-dependent
 extensions.
 \end{note}
 
@@ -84,10 +88,10 @@ exact\index{exact} or both inexact\index{inexact}.
 character according to the {\cf char=?} procedure
 (section~\ref{charactersection}).
 
-\item both \vari{obj} and \varii{obj} are the empty list.
+\item \vari{obj} and \varii{obj} are both the empty list.
 
 \item \vari{obj} and \varii{obj} are pairs, vectors, bytevectors, records,
-or strings that denote the same locations in the store
+or strings that denote the same location in the store
 (section~\ref{storagemodel}).
 \end{itemize}
 
@@ -228,7 +232,8 @@ capable of discerning distinctions finer than those detectable by
 \vest {\cf Eq?}\ and {\cf eqv?}\ are guaranteed to have the same
 behavior on symbols, booleans, the empty list, pairs, procedures,
 and non-empty
-strings and vectors.  {\cf Eq?}'s behavior on numbers and characters is
+strings, vectors, bytevectors, and records.  {\cf Eq?}'s behavior
+on numbers and characters is
 implementation-dependent, but it will always return either true or
 false, and will return true only when {\cf eqv?}\ would also return
 true.  {\cf Eq?} may also behave differently from {\cf eqv?} on empty
@@ -271,8 +276,9 @@ it obeys the same constraints as {\cf eqv?}.
 \begin{entry}{%
 \proto{equal?}{ \vari{obj} \varii{obj}}{procedure}}
 
-{\cf Equal?} recursively compares the contents of pairs, vectors, and
-strings, applying {\cf eqv?} on other objects such as numbers and symbols.
+{\cf Equal?} recursively compares the contents of pairs, vectors, 
+strings, bytevectors, and records,
+applying {\cf eqv?} on other objects such as numbers and symbols.
 A rule of thumb is that objects are generally {\cf equal?} if they print
 the same.  {\cf Equal?}\ must always terminate, even if its arguments are
 circular data structures.
