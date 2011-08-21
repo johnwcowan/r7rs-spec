@@ -62,25 +62,28 @@
 (define (write-item row)
   (let ((component (column-ref "component" row))
         (ticket (column-ref "ticket" row))
+        (status (column-ref "status" row))
         (summary (column-ref "summary" row))
         (description (column-ref "_description" row)))
     (cond
-     ((not (equal? component section))
-      (print "== " component " ==")
+     ((member status '("new" "assigned" "open" "reopened"))
+      (cond
+       ((not (equal? component section))
+        (print "== " component " ==")
+        (newline)
+        (set! section component)))
+      (print "=== #" ticket " " summary " ===")
       (newline)
-      (set! section component)))
-    (print "=== #" ticket " " summary " ===")
-    (newline)
-    (cond
-     ((and (string? description) (> (string-length description) 0))
-      (print description)
-      (if (not (eqv? (string-ref description (- (string-length description) 1))
-                     #\newline))
-          (newline))))
-    (print "  * '''Options:''' ")
-    (print "  * '''Default:''' ")
-    (print "  * '''Preferences:''' ")
-    (newline)))
+      (cond
+       ((and (string? description) (> (string-length description) 0))
+        (print description)
+        (if (not (eqv? (string-ref description (- (string-length description) 1))
+                       #\newline))
+            (newline))))
+      (print "  * '''Options:''' ")
+      (print "  * '''Default:''' ")
+      (print "  * '''Preferences:''' ")
+      (newline)))))
 
 (display "= Instructions =
 
