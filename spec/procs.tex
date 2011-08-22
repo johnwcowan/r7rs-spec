@@ -414,7 +414,7 @@ and \tupe{rational}s
 while limiting the range of \tupe{inexact} \tupe{real}s (and therefore
 the range of \tupe{inexact} \tupe{integer}s and \tupe{rational}s)
 to the dynamic range of the IEEE double format.
-Furthermore
+Furthermore,
 the gaps between the representable \tupe{inexact} \tupe{integer}s and
 \tupe{rational}s are
 likely to be very large in such an implementation as the limits of this
@@ -424,9 +424,9 @@ range are approached.
 throughout the range of numbers that may be used for indexes of
 lists, vectors, and strings or that may result from computing the length of a
 list, vector, or string.  The \ide{length}, \ide{vector-length},
-and \ide{string-length} procedures must return an exact
+\ide{bytevector-length}, and \ide{string-length} procedures must return an exact
 integer, and it is an error to use anything but an exact integer as an
-index.  Furthermore any integer constant within the index range, if
+index.  Furthermore, any integer constant within the index range, if
 expressed by an exact integer syntax, will indeed be read as an exact
 integer, regardless of any implementation restrictions that may apply
 outside this range.  Finally, the procedures listed below will always
@@ -472,7 +472,7 @@ standard be followed by implementations that use
 floating-point representations, and that implementations using
 other representations should match or exceed the precision achievable
 using these floating-point standards~\cite{IEEE}.
-In particular, the description of transcendental functions in IEEE 754:2008
+In particular, the description of transcendental functions in IEEE 754-2008
 should be followed by such implementations, particularly with respect
 to infinities and NaNs.
 
@@ -529,9 +529,9 @@ section~\ref{numbersyntax}.  Note that case is not significant in numerical
 constants.
 
 A number may be written in binary, octal, decimal, or
-hexadecimal by the use of a radix prefix.  The radix prefixes are {\cf
+hexa\-decimal by the use of a radix prefix.  The radix prefixes are {\cf
 \#b}\sharpindex{b} (binary), {\cf \#o}\sharpindex{o} (octal), {\cf
-\#d}\sharpindex{d} (decimal), and {\cf \#x}\sharpindex{x} (hexadecimal).  With
+\#d}\sharpindex{d} (decimal), and {\cf \#x}\sharpindex{x} (hexa\-decimal).  With
 no radix prefix, a number is assumed to be expressed in decimal.
 
 A
@@ -541,9 +541,9 @@ for \tupe{exact}, and {\cf \#i}\sharpindex{i} for \tupe{inexact}.  An exactness
 prefix may appear before or after any radix prefix that is used.  If
 the written representation of a number has no exactness prefix, the
 constant may be either \tupe{inexact} or \tupe{exact}.  It is
-\tupe{inexact} if it contains a decimal point, an
-exponent, or a ``\sharpsign'' character in the place of a digit,
-otherwise it is \tupe{exact}.
+\tupe{inexact} if it contains a decimal point or an
+exponent or if it contains a ``\sharpsign'' character in the place of a digit.
+Otherwise, it is \tupe{exact}.
 
 In systems with \tupe{inexact} numbers
 of varying precisions it may be useful to specify
@@ -662,9 +662,9 @@ is true.
 \begin{entry}{%
 \proto{exact-integer?}{ \vr{z}}{procedure}}
 
-The conjunction of {\cf exact?} and {\cf integer?}, returns \schtrue{}
+The conjunction of {\cf exact?} and {\cf integer?}, it returns \schtrue{}
 if \vr{z} is both \tupe{exact} and an \tupe{integer}.
-Otherwise, \schfalse{} is returned.
+Otherwise, it returns \schfalse{}.
 \end{entry}
 
 
@@ -846,11 +846,11 @@ The remainder \vr{n_r} is determined by the choice of integer
 operators uses a different choice of \vr{n_q}:
 
 \begin{tabular}{l l}
-\textbf{ceiling}   & $\vr{n_q} = \lceil\vri{n} / \vrii{n}\rceil$ \\
-\textbf{floor}     & $\vr{n_q} = \lfloor\vri{n} / \vrii{n}\rfloor$ \\
-\textbf{truncate}  & $\vr{n_q} = \text{truncate}(\vri{n} / \vrii{n})$ \\
-\textbf{round}     & $\vr{n_q} = [\vri{n} / \vrii{n}]$ \\
-\textbf{euclidean} & $\text{if } \vrii{n} > 0, \vr{n_q} = \lfloor\vri{n} / \vrii{n}\rfloor; \text{ if } \vrii{n} < 0, \vr{n_q} = \lceil\vri{n} / \vrii{n}\rceil$ \\
+\texttt{ceiling}   & $\vr{n_q} = \lceil\vri{n} / \vrii{n}\rceil$ \\
+\texttt{floor}     & $\vr{n_q} = \lfloor\vri{n} / \vrii{n}\rfloor$ \\
+\texttt{truncate}  & $\vr{n_q} = \text{truncate}(\vri{n} / \vrii{n})$ \\
+\texttt{round}     & $\vr{n_q} = [\vri{n} / \vrii{n}]$ \\
+\texttt{euclidean} & $\text{if } \vrii{n} > 0, \vr{n_q} = \lfloor\vri{n} / \vrii{n}\rfloor; \text{ if } \vrii{n} < 0, \vr{n_q} = \lceil\vri{n} / \vrii{n}\rceil$ \\
 \end{tabular}
 
 For any of the operators, and for integers \vri{n} and \vrii{n}
@@ -871,7 +871,7 @@ provided all numbers involved in that computation are exact.
 \proto{modulo}{ \vri{n} \vrii{n}}{procedure}}
 
 {\cf Quotient} and {\cf remainder} are equivalent to {\cf
-  truncate-quotient} and {\cf truncate-remainder} respectively.  {\cf
+  truncate-quotient} and {\cf truncate-remainder}, respectively.  {\cf
   Modulo} is equivalent to {\cf floor-remainder}.
 
 \begin{scheme}
@@ -1116,7 +1116,7 @@ but {\cf abs} is in the {\cf base} module, whereas
 \proto{exact->inexact}{ \vr{z}}{procedure}
 \proto{inexact->exact}{ \vr{z}}{procedure}}
 
-{\cf Exact\coerce{}inexact} returns an \tupe{inexact} representation of \vr{z}.
+The procedure {\cf exact\coerce{}inexact} returns an \tupe{inexact} representation of \vr{z}.
 The value returned is the
 \tupe{inexact} number that is numerically closest to the argument.  
 For inexact arguments, the result is the same as the argument. For exact
@@ -1126,7 +1126,7 @@ and imaginary parts of the argument, respectively.
 If an \tupe{exact} argument has no reasonably close \tupe{inexact} equivalent,
 then a violation of an implementation restriction may be reported.
 
-{\cf Inexact\coerce{}exact} returns an \tupe{exact} representation of
+The procedure {\cf inexact\coerce{}exact} returns an \tupe{exact} representation of
 \vr{z}.  The value returned is the \tupe{exact} number that is numerically
 closest to the argument.
 For exact arguments, the result is the same as the argument. For inexact
@@ -1256,13 +1256,13 @@ conditional expressions, and the phrase ``a false value''\index{false} (or
 counts as false in conditional expressions.
 Except for \schfalse{},
 all standard Scheme values, including \schtrue,
-pairs, the empty list, symbols, numbers, strings, vectors,
+the empty list, and all pairs, symbols, numbers, strings, vectors,
 bytevectors, records, and procedures, count as true.
 
 \begin{note}
 Programmers accustomed to other dialects of Lisp should be aware that
-Scheme distinguishes both \schfalse{} and the empty list \index{empty list}
-from the symbol \ide{nil}.
+Scheme distinguishes \schfalse{} and the empty list \index{empty list}
+from each other and from the symbol \ide{nil}.
 \end{note}
 
 \vest Boolean constants evaluate to themselves, so they do not need to be quoted
@@ -1337,7 +1337,7 @@ and whose cdr is the empty list.  The length of a list is the number of
 elements, which is the same as the number of pairs.
 
 The empty list\mainindex{empty list} is a special object of its own type
-(it is not a pair); it has no elements and its length is zero.
+It is not a pair, it has no elements, and its length is zero.
 
 \begin{note}
 The above definitions imply that all lists have finite length and are
@@ -1540,7 +1540,7 @@ otherwise returns \schfalse.
 \begin{entry}{%
 \proto{list?}{ obj}{procedure}}
 
-Returns \schtrue{} if \var{obj} is a list, otherwise returns \schfalse{}.
+Returns \schtrue{} if \var{obj} is a list.  Otherwise, it returns \schfalse{}.
 By definition, all lists have finite length and are terminated by
 the empty list.
 
@@ -1698,7 +1698,7 @@ than the length of \var{list}.  If
 \var{obj} does not occur in \var{list}, then \schfalse{} (not the empty list) is
 returned.  {\cf Memq} uses {\cf eq?}\ to compare \var{obj} with the elements of
 \var{list}, while {\cf memv} uses {\cf eqv?} and 
-{\cf member} uses \var{compare} if given and {\cf equal?} otherwise.
+{\cf member} uses \var{compare}, if given, and {\cf equal?} otherwise.
 
 \begin{scheme}
 (memq 'a '(a b c))              \ev  (a b c)
@@ -1759,7 +1759,7 @@ values that may be useful rather than just \schtrue{} or \schfalse{}.
 \proto{list-copy}{ list}{procedure}}
 
 Returns a newly allocated copy of the given \var{list}.
-Only the spine is copied: the cars of \var{list} are not.
+Only the spine is copied; the cars of \var{list} are not.
 
 \end{entry}
 
@@ -1832,7 +1832,7 @@ require escaping when written.
 
 \begin{scheme}
 (string->symbol "mISSISSIppi")  \lev%
-  'mISSISSIppi
+  mISSISSIppi
 (eq? 'bitBlt (string->symbol "bitBlt"))     \lev  \schtrue
 (eq? 'JollyWog
      (string->symbol
