@@ -1860,8 +1860,7 @@ following procedures to a non-Unicode character is implementation-dependent.
 Characters are written using the notation \sharpsign\backwhack\hyper{character}
 or \sharpsign\backwhack\hyper{character name} or
 \sharpsign\backwhack{}x\meta{hex scalar value}.
-The list of character names which must be supported
-by all implementations is given in section~\ref{charactersyntax}.
+
 Here are some examples:
 
 $$
@@ -1870,6 +1869,16 @@ $$
 {\tt \#\backwhack{}A}&; upper case letter\\
 {\tt \#\backwhack{}(}&; left parenthesis\\
 {\tt \#\backwhack{} }&; the space character\\
+{\tt \#\backwhack{}iota}&; $\iota$ (if supported)\\
+{\tt \#\backwhack{}x03BB}&; $\lambda$ (if supported)\\
+\end{tabular}
+$$
+
+The following character names must be supported
+by all implementations:
+
+$$
+\begin{tabular}{ll}
 {\tt \#\backwhack{}space}&; the preferred way to write a space\\
 {\tt \#\backwhack{}tab}&; the tab character, \textrm{U+0009}\\
 {\tt \#\backwhack{}newline}&; the linefeed character, \textrm{U+000A}\\
@@ -1879,7 +1888,6 @@ $$
 {\tt \#\backwhack{}backspace}&; \textrm{U+0008}\\
 {\tt \#\backwhack{}escape}&; \textrm{U+001B}\\
 {\tt \#\backwhack{}delete}&; \textrm{U+007F}\\
-{\tt \#\backwhack{}x03BB}&; $\lambda$ (if supported)\\
 \end{tabular}
 $$
 
