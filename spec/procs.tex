@@ -31,6 +31,7 @@ number, and the variable {\cf +} is bound to a procedure that computes
 sums.  The full list of {\cf(scheme base)} bindings can be found in
 chapter~\ref{stdmodules}.
 
+\todo{consider removing unspecified effect}
 A program may use a top-level definition to bind any variable.  It may
 subsequently alter any such binding by an assignment (see
 \ref{assignment}).  These operations do not modify the behavior of
@@ -2897,6 +2898,7 @@ Except for continuations created by the {\cf call-with-values}
 procedure (including the initialization expressions of
 {\cf let-values} and {\cf let*-values} syntax forms),
 all continuations take exactly one value.  
+\todo{consider removing unspecified effect}
 The effect of passing no value or more than one value to continuations
 that were not created by {\tt call-with-values} is unspecified.
 
@@ -3285,6 +3287,7 @@ If \var{version}
 is neither {\cf \integerversion} nor another value supported by
 the implementation, an error is signalled.
 
+\todo{consider removing unspecified effect}
 The effect of assigning (through the use of {\cf eval}) a variable
 bound in a {\cf scheme-report-environment}
 (for example {\cf car}) is unspecified.  Thus the environments specified
@@ -3347,6 +3350,7 @@ system in which the Scheme program is running.
 \proto{call-with-output-file}{ string proc}{file module procedure}}
 
 \var{Proc} should be a procedure that accepts one argument.
+\todo{consider removing unspecified effect}
 For {\cf call-with-input-file},
 the file named by \var{string} should already exist; for
 {\cf call-with-output-file},
@@ -3424,6 +3428,7 @@ are bound to system defined character ports.
 \proto{with-output-to-file}{ string thunk}{file module procedure}}
 
 \var{Thunk} should be a procedure of no arguments.
+\todo{consider removing unspecified effect}
 For {\cf with-input-from-file},
 the file named by \var{string} should already exist; for
 {\cf with-output-to-file},
@@ -3464,7 +3469,9 @@ file.  If the file cannot be opened, an error is signalled.
 Takes a \var{string} naming an output file to be created and returns a
 character output port or binary output port capable of writing
 data to a new file by that name.  If the file cannot be opened,
-an error is signalled.  If a file with the given name already exists,
+an error is signalled.
+\todo{consider removing unspecified effect}
+If a file with the given name already exists,
 the effect is unspecified.
 
 \end{entry}
