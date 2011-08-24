@@ -1024,7 +1024,7 @@ In general, the mathematical functions log, arcsine, arccosine, and
 arctangent are multiply defined.
 The value of $\log z$ is defined to be the one whose imaginary
 part lies in the range from $-\pi$ (exclusive) to $\pi$ (inclusive).
-$\log 0$ is undefined.
+The value of $\log 0$ is undefined.
 With $\log$ defined this way, the values of $\sin^{-1} z$, $\cos^{-1} z$,
 and $\tan^{-1} z$ are according to the following formul\ae:
 $$\sin^{-1} z = -i \log (i z + \sqrt{1 - z^2})$$
@@ -3064,8 +3064,9 @@ If invoking a continuation requires calling the \var{before} from one call
 to {\cf dynamic-wind} and the \var{after} from another, then the \var{after}
 is called first.
 
+\todo{consider removing unspecified effect}
 The effect of using a captured continuation to enter or exit the dynamic
-extent of a call to \var{before} or \var{after} is undefined.
+extent of a call to \var{before} or \var{after} is unspecified.
 
 \begin{scheme}
 (let ((path '())
