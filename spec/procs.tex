@@ -1957,7 +1957,7 @@ upper case and lower case letters as the same.  For example, {\cf
 (char-ci=?\ \#\backwhack{}A \#\backwhack{}a)} returns \schtrue.
 
 Specifically, these procedures behave as if {\cf char-foldcase} were
-applied to their arguments before comparing them.
+applied to their arguments before they were compared.
 
 \end{entry}
 
@@ -2276,7 +2276,7 @@ but at the end of a word it downcases to Greek small final sigma instead.
 \domain{\var{String} must be a string, and \var{start} and \var{end}
 must be exact integers satisfying
 $$0 \leq \var{start} \leq \var{end} \leq \hbox{\tt(string-length \var{string})\rm.}$$}
-{\cf Substring} returns a newly allocated string formed from the characters of
+{\cf substring} returns a newly allocated string formed from the characters of
 \var{string} beginning with index \var{start} (inclusive) and ending with index
 \var{end} (exclusive).
 \end{entry}
@@ -2295,10 +2295,10 @@ given strings.
 \proto{string->list}{ string}{procedure}
 \proto{list->string}{ list}{procedure}}
 
-{\cf String\coerce{}list} returns a newly allocated list of the
-characters that make up the given string.  {\cf List\coerce{}string}
+{\cf string\coerce{}list} returns a newly allocated list of the
+characters that make up the given string.  {\cf list\coerce{}string}
 returns a newly allocated string formed from the characters in the list
-\var{list}, which must be a list of characters. {\cf String\coerce{}list}
+\var{list}, which must be a list of characters. {\cf string\coerce{}list}
 and {\cf list\coerce{}string} are
 inverses so far as {\cf equal?}\ is concerned.  
 
@@ -2396,7 +2396,7 @@ Returns the number of elements in \var{vector} as an exact integer.
 \proto{vector-ref}{ vector k}{procedure}}
 
 \domain{\vr{k} must be a valid index of \var{vector}.}
-{\cf Vector-ref} returns the contents of element \vr{k} of
+{\cf vector-ref} returns the contents of element \vr{k} of
 \var{vector}.
 
 \begin{scheme}
@@ -2415,7 +2415,7 @@ Returns the number of elements in \var{vector} as an exact integer.
 \proto{vector-set!}{ vector k obj}{procedure}}
 
 \domain{\vr{k} must be a valid index of \var{vector}.}
-{\cf Vector-set!} stores \var{obj} in element \vr{k} of \var{vector}.
+{\cf vector-set!} stores \var{obj} in element \vr{k} of \var{vector}.
 The value returned by {\cf vector-set!}\ is unspecified.  % <!>
 
 \begin{scheme}
@@ -2432,8 +2432,8 @@ The value returned by {\cf vector-set!}\ is unspecified.  % <!>
 \proto{vector->list}{ vector}{procedure}
 \proto{list->vector}{ list}{procedure}}
 
-{\cf Vector->list} returns a newly allocated list of the objects contained
-in the elements of \var{vector}.  {\cf List->vector} returns a newly
+{\cf vector->list} returns a newly allocated list of the objects contained
+in the elements of \var{vector}.  {\cf list->vector} returns a newly
 created vector initialized to the elements of the list \var{list}.
 
 \begin{scheme}
@@ -2446,9 +2446,9 @@ created vector initialized to the elements of the list \var{list}.
 \proto{vector->string}{ string}{procedure}
 \proto{string->vector}{ vector}{procedure}}
 
-{\cf Vector->string} returns a newly allocated string of the objects contained
+{\cf vector->string} returns a newly allocated string of the objects contained
 in the elements of \var{vector}, which must be characters allowed in a string.
-{\cf String->vector} returns a newly
+{\cf string->vector} returns a newly
 created vector initialized to the elements of the string \var{string}.
 
 \end{entry}
@@ -2478,7 +2478,7 @@ The value returned by {\cf vector-fill!}\ is unspecified.  % <!>
 \defining{Bytevectors} are a disjoint type for representing blocks of binary data.
 A \defining{byte} is an exact integer in the range $[0..255]$.
 Conceptually, bytevectors can be thought of as homogeneous vectors of
-bytes, but they typically occupy less space than a vector.
+bytes, but they typically occupy less space than a vector of the same bytes.
 
 \vest The {\em length} of a bytevector is the number of elements that it
 contains.  This number is a non-negative integer that is fixed when
@@ -2497,7 +2497,7 @@ Otherwise, \schfalse{} is returned.
 \proto{make-bytevector}{ k}{procedure}
 \rproto{make-bytevector}{ k byte}{procedure}}
 
-{\cf Make-bytevector} returns a newly allocated bytevector of
+{\cf make-bytevector} returns a newly allocated bytevector of
 length \vr{k}.  If \var{byte} is given, then all elements of the bytevector
 are initialized to \var{byte}, otherwise the contents of each
 element are unspecified.
@@ -2533,7 +2533,7 @@ Returns a newly allocated bytevector containing the same bytes as
 \begin{entry}{%
 \proto{bytevector-copy!}{ from to}{procedure}}
 
-Copy the bytes of bytevector \var{from} to bytevector \var{to}, which must not be
+Copies the bytes of bytevector \var{from} to bytevector \var{to}, which must not be
 shorter.  The value returned by {\cf bytevector-copy!} is unspecified.
 \end{entry}
 
@@ -2548,7 +2548,7 @@ between \var{start} (inclusive) and \var{end}
 \begin{entry}{%
 \proto{bytevector-copy-partial!}{ from start end to at}{procedure}}
 
-Copy the bytes of bytevector \var{from} between \var{start} and \var{end}
+Copies the bytes of bytevector \var{from} between \var{start} and \var{end}
 to bytevector \var{to}, starting at \var{at}.  The order in which bytes are
 copied is unspecified, except that if the source and destination overlap,
 copying takes place as if the source is first copied into a temporary
@@ -2592,7 +2592,7 @@ Returns \schtrue{} if \var{obj} is a procedure, otherwise returns \schfalse.
 \proto{apply}{ proc \vari{arg} $\ldots$ args}{procedure}}
 
 \domain{\var{Proc} must be a procedure and \var{args} must be a list.}
-{cf Apply} calls \var{proc} with the elements of the list
+{\cf apply} calls \var{proc} with the elements of the list
 {\cf(append (list \vari{arg} \dotsfoo) \var{args})} as the actual
 arguments.
 
@@ -2613,11 +2613,11 @@ arguments.
 \proto{map}{ proc \vari{list} \varii{list} \dotsfoo}{procedure}}
 
 \domain{The \var{list}s must be lists, and \var{proc} must be a
-procedure taking as many arguments as there are {\it list}s
-and returning a single value.  If more
+procedure that accepts as many arguments as there are {\it list}s
+and that returns a single value.  If more
 than one \var{list} is given and not all lists have the same length,
 {\cf map} terminates when the shortest list runs out.}
-{\cf Map} applies \var{proc} element-wise to the elements of the
+{\cf map} applies \var{proc} element-wise to the elements of the
 \var{list}s and returns a list of the results, in order.  It is an
 error for \var{proc} to mutate any of the lists.
 The dynamic order in which \var{proc} is applied to the elements of the
@@ -2649,7 +2649,7 @@ procedure taking as many arguments as there are {\it string}s
 and returning a single value.  If more
 than one \var{string} is given and not all strings have the same length,
 {\cf string-map} terminates when the shortest string runs out.}
-{\cf String-map} applies \var{proc} element-wise to the elements of the
+{\cf string-map} applies \var{proc} element-wise to the elements of the
 \var{string}s and returns a string of the results, in order.
 The dynamic order in which \var{proc} is applied to the elements of the
 \var{string}s is unspecified.
@@ -2683,7 +2683,7 @@ procedure taking as many arguments as there are {\it vector}s
 and returning a single value.  If more
 than one \var{vector} is given and not all vectors have the same length,
 {\cf vector-map} terminates when the shortest vector runs out.}
-{\cf Vector-map} applies \var{proc} element-wise to the elements of the
+{\cf vector-map} applies \var{proc} element-wise to the elements of the
 \var{vector}s and returns a vector of the results, in order.
 The dynamic order in which \var{proc} is applied to the elements of the
 \var{vector}s is unspecified.
@@ -2696,7 +2696,7 @@ the values returned by earlier returns are not mutated.
 (vector-map (lambda (n) (expt n n))
             '\#(1 2 3 4 5))                \lev  \#(1 4 27 256 3125)
 
-(vector-map + '\#(1 2 3) '\#(4 5 6))       \ev  \#(5 7 9)
+(vector-map + '\#(1 2 3) '\#(4 5 6))       \lev  \#(5 7 9)
 
 (let ((count 0))
   (vector-map
@@ -2781,7 +2781,7 @@ If more than one \var{vector} is given and not all vectors have the same length,
 
 Forces the value of a \var{promise} created by \ide{delay} or \ide{lazy},
 section~\ref{delay}).\index{promise}  
-If a value which is not a promise has already been computed, this value is
+If a value which is not a promise has already been computed, that value is
 returned.  Otherwise, the promise is first evaluated, then overwritten
 by the obtained promise or value, and then {\cf force} is again applied
 (iteratively) to the promise.
@@ -2817,7 +2817,8 @@ heap is exhausted.
 \begin{scheme}
 (define (stream-filter p? s)
   (lazy
-   (if (null? (force s)) (delay '())
+   (if (null? (force s)) 
+       (delay '())
        (let ((h (car (force s)))
              (t (cdr (force s))))
          (if (p? h)
@@ -2828,7 +2829,7 @@ heap is exhausted.
                                \ev 5
 \end{scheme}
 
-{\cf Delay}, {\cf lazy}, and {\cf force} are mainly intended for programs written in
+{\cf delay}, {\cf lazy}, and {\cf force} are mainly intended for programs written in
 functional style.  The following examples should not be considered to
 illustrate good programming style, but they illustrate the property that
 only one value is computed for a promise, no matter how many times it is
@@ -3023,9 +3024,9 @@ continuation of the call to {\tt call-with-values}.
 
 Calls \var{thunk} without arguments, returning the result(s) of this call.
 \var{Before} and \var{after} are called, also without arguments, as required
-by the following rules (note that in the absence of calls to continuations
-captured using \ide{call-with-current-continuation} the three arguments are
-called once each, in order).  \var{Before} is called whenever execution
+by the following rules.  Note that, in the absence of calls to continuations
+captured using \ide{call-with-current-continuation}, the three arguments are
+called once each, in order.  \var{Before} is called whenever execution
 enters the dynamic extent of the call to \var{thunk} and \var{after} is called
 whenever it exits that dynamic extent.  The dynamic extent of a procedure
 call is the period between when the call is initiated and when it
@@ -3096,18 +3097,19 @@ extent of a call to \var{before} or \var{after} is unspecified.
 Returns a newly allocated \defining{parameter object}\index{parameterize},
 which is a procedure which accepts zero arguments and
 returns its associated value.  Initially, this value is the value of
-{\cf (converter \var{init})}.
-(If the conversion procedure \var{converter} is not specified the identity
-function is used instead.)
-However, the associated value may be temporarily changed
-using {\cf parameterize}.
+{\cf (converter \var{init})}, or of \var{init}
+if the conversion procedure \var{converter} is not specified.
+The associated value may be temporarily changed
+using {\cf parameterize}, which is described in
+section~\ref{dynamicbindingssection}.
+
 
 The effect of passing arguments to a parameter object is explicitly
 implementation-dependent.
 
 Parameter objects can be used to specify configurable settings for a
-computation without the need to explicitly pass the value to every
-procedure in the call chain.
+computation without the need to pass the value to every
+procedure in the call chain explicitly.
 
 \begin{scheme}
 (define radix
@@ -3218,7 +3220,7 @@ The procedure {\cf error-object?} must return \schtrue{} on such objects.
 \proto{error-object?}{ obj}{procedure}}
 
 Returns \schtrue{} if \var{obj} is an object created by {\cf error} 
-or one of an implementation-defined set of objects; otherwise returns
+or one of an implementation-defined set of objects, otherwise returns
 \schfalse.  
 
 \end{entry}

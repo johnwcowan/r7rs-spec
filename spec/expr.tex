@@ -859,7 +859,7 @@ is unspecified.
 The {\cf lazy} construct
 is similar to {\cf delay}, but its argument must evaluate to a promise.
 The returned promise, when forced, will evaluate to whatever the original
-promise would evaluate to if it had been forced.
+promise would have evaluated to if it had been forced.
 \todo{consider removing unspecified effect}
 The effect of \hyper{expression} returning multiple values
 is unspecified.
@@ -870,6 +870,7 @@ more complete description of {\cf delay} and {\cf lazy}.
 \end{entry}
 
 \subsection{Dynamic Bindings}\unsection
+\label{dynamicbindingssection}
 
 \begin{entry}{%
 \pproto{(parameterize ((\hyperi{param} \hyperi{value}) \dotsfoo)}{syntax}
