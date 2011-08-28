@@ -3090,50 +3090,6 @@ extent of a call to \var{before} or \var{after} is unspecified.
 \end{scheme}
 \end{entry}
 
-\begin{entry}{%
-\proto{make-parameter}{ init}{procedure}
-\proto{make-parameter}{ init converter}{procedure}}
-
-Returns a newly allocated \defining{parameter object}\index{parameterize},
-which is a procedure which accepts zero arguments and
-returns its associated value.  Initially, this value is the value of
-{\cf (converter \var{init})}, or of \var{init}
-if the conversion procedure \var{converter} is not specified.
-The associated value may be temporarily changed
-using {\cf parameterize}, which is described in
-section~\ref{dynamicbindingssection}.
-
-
-The effect of passing arguments to a parameter object is explicitly
-implementation-dependent.
-
-Parameter objects can be used to specify configurable settings for a
-computation without the need to pass the value to every
-procedure in the call chain explicitly.
-
-\begin{scheme}
-(define radix
-  (make-parameter
-   10
-   (lambda (x)
-     (if (and (integer? x) (<= 2 x 16))
-         x
-         (error "invalid radix")))))
-
-(define (f n) (number->string n (radix)))
-
-(f 12)                                       \ev "12"
-(parameterize ((radix 16))
-  (f 12))                                    \ev "C"
-(f 12)                                       \ev "12"
-
-(radix 16)                                   \ev \unspecified
-
-(parameterize ((radix 0))
-  (f 12))                                    \ev \scherror
-\end{scheme}
-\end{entry}
-
 \section{Exceptions}
 \label{exceptionsection}
 

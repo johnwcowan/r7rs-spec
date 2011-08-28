@@ -870,31 +870,70 @@ more complete description of {\cf delay} and {\cf lazy}.
 \end{entry}
 
 \subsection{Dynamic Bindings}\unsection
-\label{dynamicbindingssection}
+
+\begin{entry}{%
+\proto{make-parameter}{ init}{procedure}
+\proto{make-parameter}{ init converter}{procedure}}
+
+Returns a newly allocated \defining{parameter object}\index{parameterize},
+which is a procedure that accepts zero arguments and
+returns the value associated with the parameter object.
+Initially, this value is the value of
+{\cf (converter \var{init})}, or of \var{init}
+if the conversion procedure \var{converter} is not specified.
+The associated value may be temporarily changed
+using {\cf parameterize}, which is described below.
+
+The effect of passing arguments to a parameter object is
+implementation-dependent.
+\end{entry}
 
 \begin{entry}{%
 \pproto{(parameterize ((\hyperi{param} \hyperi{value}) \dotsfoo)}{syntax}
 {\tt\obeyspaces%
 \hspace*{1em}\hyper{body})}}
 
-\domain{The value of the \var{param} expressions must be parameter objects.}
-{\cf Parameterize} is used to change the values returned by
+{\cf parameterize} is used to change the values returned by
 parameter objects for the dynamic extent of the body.
-The \var{param} and \var{value} expressions
-are evaluated in an unspecified order.  The \hyper{expr}s are
-evaluated in order in a dynamic extent during which calls to the
-\var{param} parameter objects return the corresponding \var{value}s.
+\domain{The value of each \hyper{param} expression must be a parameter object.}
+The \hyper{param} and \hyper{value} expressions
+are evaluated in an unspecified order.  The \hyper{body} is
+evaluated in a dynamic extent in which calls to the
+\hyper{param}s return the corresponding \hyper{value}s.
 The results of the last
 expression in the \hyper{body} are returned as the results of the entire
-{\cf parameterize}.
+{\cf parameterize} expression.
 
 If an implementation supports multiple threads of execution, then
 {\cf parameterize} must not change the associated values of any parameters
 in any thread other than the current thread or threads created
-inside \var{body}.
+inside \hyper{body}.
 
-See the description of {\cf make-parameter}
-(section~\ref{make-parameter}) for more information.
+Parameter objects can be used to specify configurable settings for a
+computation without the need to pass the value to every
+procedure in the call chain explicitly.
+
+\begin{scheme}
+(define radix
+  (make-parameter
+   10
+   (lambda (x)
+     (if (and (integer? x) (<= 2 x 16))
+         x
+         (error "invalid radix")))))
+
+(define (f n) (number->string n (radix)))
+
+(f 12)                                       \ev "12"
+(parameterize ((radix 16))
+  (f 12))                                    \ev "C"
+(f 12)                                       \ev "12"
+
+(radix 16)                                   \ev \unspecified
+
+(parameterize ((radix 0))
+  (f 12))                                    \ev \scherror
+\end{scheme}
 \end{entry}
 
 
