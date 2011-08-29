@@ -3229,11 +3229,11 @@ allowed to create new bindings in the environments returned by
 \var{Version} must be the exact integer {\cf \integerversion},
 corresponding to this revision of the Scheme report (the
 Revised$^\integerversion$ Report on Scheme).
-{\cf Scheme-report-environment} returns a specifier for an
+{\cf scheme-report-environment} returns a specifier for an
 environment that is empty except for all bindings 
 defined either in the {\cf base} module or in the other modules
 of this report that the implementation supports.
-{\cf Null-environment} returns
+{\cf null-environment} returns
 a specifier for an environment that is empty except for the
 bindings for all syntactic keywords
 defined either in the {\cf base} module or in the other modules
@@ -3259,7 +3259,8 @@ by {\cf scheme-report-environment} may be immutable.
 
 This procedure returns a specifier for the environment that results by
 starting with an empty environment and then importing each \var{list},
-considered as an import set, into it.  The bindings of the environment
+considered as an import set, into it.  (See section~\ref{modules} for
+a description of import sets.)  The bindings of the environment
 represented by the specifier are immutable.
 
 \end{entry}
