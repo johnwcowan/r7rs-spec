@@ -3303,7 +3303,7 @@ Whether the character and binary port types are disjoint is
 implementation-dependent.
 
 Ports can be used to access files, devices, and similar things on the host
-system in which the Scheme program is running.
+system on which the Scheme program is running.
 
 \begin{entry}{%
 \proto{call-with-input-file}{ string proc}{file module procedure}
@@ -3377,8 +3377,8 @@ performing input or output, and \schfalse{} otherwise.
 Returns the current default input port, output port, or error port (an
 output port), respectively.  These procedures are parameter objects, which can be
 overridden with {\cf parameterize} (see
-section~\ref{make-parameter}). The initial bindings for each of these
-are bound to system defined character ports.
+section~\ref{make-parameter}). The initial bindings for these
+are system-defined character ports.
 
 \end{entry}
 
@@ -3396,12 +3396,12 @@ the effect is unspecified if the file
 already exists.
 The file is opened for input or output
 as if by {\cf open-input-file} or {\cf open-output-file}, 
-and the return port is made the default value returned by
+and the new port is made the default value returned by
 {\cf current-input-port} or {\cf current-output-port}
 (and is used by {\tt (read)}, {\tt (write \var{obj})}, and so forth).
 The \var{thunk} is then called with no arguments.  When the \var{thunk} returns,
 the port is closed and the previous default is restored.
-{\cf With-input-from-file} and {\cf with-output-to-file} return the
+{\cf with-input-from-file} and {\cf with-output-to-file} return the
 values yielded by \var{thunk}.
 If an escape procedure
 is used to escape from the continuation of these procedures, their
@@ -3520,10 +3520,10 @@ so far in the order they were output.
 \proto{read}{}{read module procedure}
 \rproto{read}{ port}{read module procedure}}
 
-{\cf Read} converts external representations of Scheme objects into the
+{\cf read} converts external representations of Scheme objects into the
 objects themselves.  That is, it is a parser for the nonterminal
 \meta{datum} (see sections~\ref{datum} and
-\ref{listsection}).  {\cf Read} returns the next
+\ref{listsection}).  {\cf read} returns the next
 object parsable from the given character input \var{port}, updating
 \var{port} to point to
 the first character past the end of the external representation of the object.
@@ -3620,7 +3620,7 @@ returns \schtrue.  \var{Port} may be omitted, in which case it defaults to
 the value returned by {\cf current-input-port}.
 
 \begin{rationale}
-{\cf Char-ready?}\ exists to make it possible for a program to
+{\cf char-ready?}\ exists to make it possible for a program to
 accept characters from interactive ports without getting stuck waiting for
 input.  Any input editors associated with such ports must ensure that
 characters whose existence has been asserted by {\cf char-ready?}\ cannot
@@ -3689,8 +3689,8 @@ within those strings backslash and doublequote characters are
 escaped by backslashes.  Symbols that contain non-ASCII characters
 are escaped either with inline hex escapes or with vertical bars.
 Character objects are written using the {\cf \#\backwhack} notation.
-Shared list structure is represented using labels.
-{\cf Write} returns an unspecified value.  The
+Shared list structure is represented using reader labels.
+{\cf write} returns an unspecified value.  The
 \var{port} argument may be omitted, in which case it defaults to the value
 returned by {\cf current-output-port}.
 
@@ -3700,8 +3700,8 @@ returned by {\cf current-output-port}.
 \proto{write-simple}{ obj}{write module procedure}
 \rproto{write-simple}{ obj port}{write module procedure}}
 
-{\cf Write-simple} is the same as {\cf write}, except that shared structure is
-not represented using labels.  This may cause {\cf write-simple} not to
+{\cf write-simple} is the same as {\cf write}, except that shared structure is
+not represented using reader labels.  This may cause {\cf write-simple} not to
 terminate if \var{obj} contains circular structure.
 
 \end{entry}
@@ -3716,12 +3716,12 @@ Strings that appear in the written representation are not enclosed in
 doublequotes, and no characters are escaped within those strings.  
 Symbols are not escaped.  Character
 objects appear in the representation as if written by {\cf write-char}
-instead of by {\cf write}.  {\cf Display} returns an unspecified value.
+instead of by {\cf write}.  {\cf display} returns an unspecified value.
 The \var{port} argument may be omitted, in which case it defaults to the
 value returned by {\cf current-output-port}.
 
 \begin{rationale}
-{\cf Write} is intended
+{\cf write} is intended
 for producing mach\-ine-readable output and {\cf display} for producing
 human-readable output.  
 \end{rationale}
@@ -3795,7 +3795,7 @@ expressions and definitions from the file and evaluates them
 sequentially.  It is unspecified whether the results of the expressions
 are printed.  The {\cf load} procedure does not affect the values
 returned by {\cf current-input-port} and {\cf current-output-port}.
-{\cf Load} returns an unspecified value.
+{\cf load} returns an unspecified value.
 
 \begin{rationale}
 For portability, {\cf load} must operate on source files.
@@ -3853,10 +3853,10 @@ abnormal.
 Most operating systems provide each running process with an
 \defining{environment} consisting of \defining{environment variables}.
 Both the name and value of an environment variable are strings.
-{\cf Get-environment-variable} returns the value 
+{\cf get-environment-variable} returns the value 
 of the environment variable \var{name},
 or \schfalse{} if the named
-environment variable is not found.  {\cf Get-environment-variable} may
+environment variable is not found.  {\cf get-environment-variable} may
 use locale-setting information to encode the name and decode the value
 of the environment variable.  It is an error if
 {\cf get-environment-variable} can't decode the value.
@@ -3872,7 +3872,7 @@ It is also an error to mutate the resulting string.
 \proto{get-environment-variables}{}{process-context module procedure}}
 
 Returns the names and values of all the environment variables as an
-a-list, where the car of each entry is the name of an environment
+alist, where the car of each entry is the name of an environment
 variable and the cdr is its value, both as strings.  The order of the list is unspecified.
 It is an error to mutate any of these strings.
 
