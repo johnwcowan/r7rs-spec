@@ -62,7 +62,7 @@ containing the corresponding character.
 \>  \| ( \| ) \| \sharpsign( \| \singlequote{} \| \backquote{} \| , \| ,@ \| {\bf.}
 \meta{delimiter} \: \meta{whitespace} \| ( \| ) \| " \| ;
 \meta{intraline whitespace} \: \meta{space or tab}
-\meta{whitespace} \: \meta{intraline whitespace or newline or return}
+\meta{whitespace} \: \meta{intraline whitespace} \| \meta{newline} \| \meta{return}
 \meta{comment} \: ; \= $\langle$\rm all subsequent characters up to a
 		    \>\ \rm line break$\rangle$\index{comment}
 \> \| \meta{nested comment}
@@ -157,8 +157,8 @@ decimal points or exponents must be in decimal radix.
       \| \meta{real $R$} - i %
       \| \meta{real $R$} \meta{infinity} i 
    \> \| + \meta{ureal $R$} i %
-      \| - \meta{ureal $R$} i %
-      \| \meta{infinity} i %
+      \| - \meta{ureal $R$} i
+   \> \| \meta{infinity} i %
       \| + i %
       \| - i
 \meta{real $R$} \: \meta{sign} \meta{ureal $R$}
@@ -403,9 +403,11 @@ un\-quo\-ta\-tion $D$} takes precedence.
 \meta{def formals} \: \arbno{\meta{identifier}}
 \>   \| \arbno{\meta{identifier}} .\ \meta{identifier}
 \meta{constructor} \: (\meta{identifier} \arbno{\meta{field name}})
-\meta{field spec} \: (\meta{field name} \meta{identifier})
-\>   \| (\meta{field name} \meta{identifier} \meta{identifier})
+\meta{field spec} \: (\meta{field name} \meta{accessor})
+\>   \| (\meta{field name} \meta{accessor} \meta{mutator})
 \meta{field name} \: \meta{identifier}
+\meta{accessor} \: \meta{identifier}
+\meta{mutator} \: \meta{identifier}
 \meta{syntax definition} \:
 \>  (define-syntax \meta{keyword} \meta{transformer spec})
 \>   \| (begin \arbno{\meta{syntax definition}})

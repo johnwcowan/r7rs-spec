@@ -36,30 +36,30 @@ data.
 characters to and from strings, and {\em bytevector ports} to read
 and write bytes to and from bytevectors.
 
-\item {\cf Current-input-port} and {\cf current-output-port} are now
+\item {\cf current-input-port} and {\cf current-output-port} are now
 parameter objects, along with the newly introduced {\cf
 current-error-port}.
 
-\item {\cf Syntax-rules} now recognizes {\em \_} as a wildcard, allows
+\item {\cf syntax-rules} now recognizes {\em \_} as a wildcard, allows
 the ellipsis symbol to be specified explicitly instead of the default
 {\cf ...}, allows template escapes with an ellipsis-prefixed list, and
 allows tail patterns to follow an ellipsis pattern.
 
-\item {\cf Syntax-error} has been added as a way to signal immediate
+\item {\cf syntax-error} has been added as a way to signal immediate
 and more informative errors when a macro is expanded.
 
 \item Internal {\cf define-syntax} definitionss are now allowed wherever
 internal {\cf define}s are.
 
-\item {\cf Letrec*} has been added, and internal define specified in
+\item {\cf letrec*} has been added, and internal define specified in
 terms of it.
 
-\item {\cf Case} now supports a {\tt =>} syntax analogous to {\cf cond}.
+\item {\cf case} now supports a {\tt =>} syntax analogous to {\cf cond}.
 
-\item {\cf Case-lambda} has been added to the base module as a way to
+\item {\cf case-lambda} has been added to the base module as a way to
 dispatch on the number of arguments passed to a procedure.
 
-\item {\cf When} and {\cf unless} have been added as convenience
+\item {\cf when} and {\cf unless} have been added as convenience
 conditionals.
 
 \item Positive and negative infinity and a NaN object have been added
@@ -67,15 +67,15 @@ to the numeric tower as inexact values with the written
 representations {\tt +inf.0}, {\tt -inf.0} and {\tt +nan.0},
 respectively.
 
-\item {\cf Map} and {\cf for-each} are now required to terminate on
+\item {\cf map} and {\cf for-each} are now required to terminate on
 the shortest list when inputs have different length.
 
-\item {\cf Member} and {\cf assoc} now take an optional third argument
+\item {\cf member} and {\cf assoc} now take an optional third argument
 for the equality predicate to use.
 
-\item {\cf Exact-integer?}\  and {\cf exact-integer-sqrt} have been added.
+\item {\cf exact-integer?}\  and {\cf exact-integer-sqrt} have been added.
 
-\item {\cf Make-list}, {\cf list-copy}, {\cf list-set!}, {\cf
+\item {\cf make-list}, {\cf list-copy}, {\cf list-set!}, {\cf
 string-map}, {\cf string-for-each}, {\cf string->vector}, {\cf
 vector-copy}, {\cf vector-map}, {\cf vector-for-each}, and {\cf
 vector->string} have been added to round out the sequence operations.
@@ -103,7 +103,7 @@ shared structure.
 \item Strings and symbols now allow mnemonic and numeric escape
 sequences, and the list of named characters has been extended.
 
-\item {\cf File-exists?}\ and {\cf delete-file} are available in the
+\item {\cf file-exists?}\ and {\cf delete-file} are available in the
 {\tt (scheme file)} module.
 
 \item An interface to the system environment and command line is
@@ -115,7 +115,7 @@ available in the {\tt (scheme process-context)} module.
 \item A complete set of integer division operators is available in the
 {\tt (scheme division)} module.
 
-\item {\cf Transcript-on} and {\cf transcript-off} have been removed.
+\item {\cf transcript-on} and {\cf transcript-off} have been removed.
 
 \end{itemize}
 

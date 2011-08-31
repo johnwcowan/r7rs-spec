@@ -3,7 +3,7 @@
 
 This section gives macro definitions for the derived expression types in
 terms of the primitive expression types (literal, variable, call, {\cf lambda},
-{\cf if}, {\cf set!}), with the exception of {\cf quasiquote}.
+{\cf if}, and {\cf set!}), with the exception of {\cf quasiquote}.
 
 \begin{scheme}
 (define-syntax \ide{cond}
@@ -317,8 +317,8 @@ where {\cf make-promise} is defined as follows:
     (list (cons done? proc))))%
 \end{scheme}
 
-Finally, we define {\cf force} to iteratively call the procedure
-expressions in promises using a trampoline technique until a non-lazy
+Finally, we define {\cf force} to call the procedure
+expressions in promises iteratively using a trampoline technique until a non-lazy
 result (i.e. a value created by {\cf delay} instead of {\cf lazy}) is
 returned, as follows:
 
