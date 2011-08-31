@@ -2,29 +2,29 @@
 \label{stdfeatures}
 
 An implementation may provide any or all of the feature identifiers
-listed in table~\ref{standard_features}, as well as any others that it
+listed below, as well as any others that it
 chooses, but must not provide a feature identifier if it does not
 provide the corresponding feature.  These features are used by {\cf
   cond-expand}.
 
-\begin{table*}
-\begin{tabular}{|l|l|}
-\hline
-\textbf{Feature identifier} & \textbf{Feature description} \\ \hline
-r7rs & All R7RS Scheme implementations have this feature. \\ \hline
-exact-closed & All algebraic operations except {\cf /} produce exact values given exact inputs. \\ \hline
-ratios & {\cf /} with exact arguments produces an exact result when the divisor is nonzero. \\ \hline
-ieee-float & Inexact numbers are IEEE 754 floating point values. \\ \hline
-full-unicode & All Unicode characters are supported. \\ \hline
-windows & This Scheme implementation is running on Windows. \\ \hline
-posix & This Scheme implementation is running on a Posix system. \\ \hline
-unix, darwin, linux, bsd, freebsd, solaris, ... & Operating system flags (more than one may apply). \\ \hline
-i386, x86-64, ppc, sparc, jvm, clr, llvm, ... & CPU architecture flags. \\ \hline
-ilp32, lp64, ilp64, ... & C memory model flags. \\ \hline
-big-endian, little-endian & Byte order flags. \\ \hline
-\hyper{name} & The name of this implementation. \\ \hline
-\hyper{name-version} & The name and version of this implementation. \\ \hline
-\end{tabular}
-\caption{Standard Feature Identifiers}
 \label{standard_features}
-\end{table*}
+
+\feature{r7rs}{All R7RS Scheme implementations have this feature.}
+\feature{exact-closed}{All algebraic operations except {\cf /} produce
+  exact values given exact inputs.}
+\feature{ratios}{{\cf /} with exact arguments produces an exact result
+  when the divisor is nonzero.}
+\feature{ieee-float}{Inexact numbers are IEEE 754 floating point
+  values.}
+\feature{full-unicode}{All Unicode characters are supported.}
+\feature{windows}{This Scheme implementation is running on Windows.}
+\feature{posix}{This Scheme implementation is running on a Posix
+  system.}
+\feature{unix, darwin, linux, bsd, freebsd, solaris, ...}{Operating
+  system flags (more than one may apply).}
+\feature{i386, x86-64, ppc, sparc, jvm, clr, llvm, ...}{CPU architecture flags.}
+\feature{ilp32, lp64, ilp64, ...}{C memory model flags.}
+\feature{big-endian, little-endian}{Byte order flags.}
+\feature{\hyper{name}}{The name of this implementation.}
+\feature{\hyper{name-version}}{The name and version of this
+  implementation.}
