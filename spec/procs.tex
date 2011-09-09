@@ -384,7 +384,7 @@ or it may silently coerce its
 result to an \tupe{inexact} value.
 See section~\ref{restrictions}.
 
-\vest With the exception of \ide{inexact->exact}, the operations described in
+\vest Except for \ide{inexact->exact}, the operations described in
 this section must generally return inexact results when given any inexact
 arguments.  An operation may, however, return an \tupe{exact} result if it can
 prove that the value of the result is unaffected by the inexactness of its
@@ -1785,7 +1785,7 @@ in as the identical symbol (in the sense of {\cf eqv?}).
 \begin{note}
 Some implementations have values known as ``uninterned symbols,'' which
 defeat write/read invariance,
-and also generate exceptions to the rule that two symbols are the same
+and also violate the rule that two symbols are the same
 if and only if their names are spelled the same.
 \end{note}
 
@@ -3123,7 +3123,7 @@ exception handler for the dynamic extent (as determined by {\cf
 \begin{entry}{%
 \proto{raise}{ \var{obj}}{procedure}}
 
-Raises a exception by invoking the current exception
+Raises an exception by invoking the current exception
 handler on \var{obj}. The handler is called with a continuation whose
 dynamic extent is that of the call to {\cf raise}, except that
 the current exception handler is the one that was in place when the
@@ -3137,7 +3137,7 @@ exception is raised in the same dynamic extent as the handler.
 Raises an exception by invoking the current
 exception handler on \var{obj}. The handler is called with a
 continuation that is equivalent to the continuation of the call to
-{\cf raise-continuable}, with these two exceptions: (1) the current
+{\cf raise-continuable}, except that: (1) the current
 exception handler is the one that was in place when the handler being
 called was installed, and (2) if the handler being called returns,
 then it will again become the current exception handler.  If the
