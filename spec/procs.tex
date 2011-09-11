@@ -81,6 +81,9 @@ not specify the behavior of {\cf eqv?} on implementation-dependent
 extensions.
 \end{note}
 
+\item \vari{obj} and \varii{obj} are both numbers, and {\cf nan?}
+returns true on both of them.
+
 \item \vari{obj} and \varii{obj} are both numbers, are numerically
 equal (see {\cf =}, section~\ref{numbersection}), and are either both
 exact\index{exact} or both inexact\index{inexact}.
@@ -112,6 +115,9 @@ The {\cf eqv?} procedure returns \schfalse{} if:
           (symbol->string \varii{obj}))
     \ev  \schfalse%
 \end{scheme}
+
+\item \vari{obj} and \varii{obj} are numbers, and {\cf nan?} returns true
+on one of them but not the other.
 
 \item one of \vari{obj} and \varii{obj} is an exact number but the other
 is an inexact number.
