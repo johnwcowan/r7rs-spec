@@ -3344,7 +3344,7 @@ both {\cf call-with-current-continuation} and {\cf call-with-input-file} or
 \end{entry}
 
 \begin{entry}{%
-\proto{call-with-port}{ port proc}{io module procedure}}
+\proto{call-with-port}{ port proc}{procedure}}
 
 \var{Proc} must accept one argument.  The {\cf call-with-port}
 procedure calls \var{proc} with \var{port} as an argument.  If
@@ -3354,11 +3354,11 @@ returned by \var{proc} are returned.
 \end{entry}
 
 \begin{entry}{%
-\proto{input-port?}{ obj}{io module procedure}
-\proto{output-port?}{ obj}{io module procedure}
-\proto{textual-port?}{ obj}{io module procedure}
-\proto{binary-port?}{ obj}{io module procedure}
-\proto{port?}{ obj}{io module procedure}}
+\proto{input-port?}{ obj}{procedure}
+\proto{output-port?}{ obj}{procedure}
+\proto{textual-port?}{ obj}{procedure}
+\proto{binary-port?}{ obj}{procedure}
+\proto{port?}{ obj}{procedure}}
 
 Returns \schtrue{} if \var{obj} is an input port, output port, 
 textual port, binary port, or any
@@ -3368,7 +3368,7 @@ kind of port, respectively, otherwise returns \schfalse.
 
 
 \begin{entry}{%
-\proto{port-open?}{ port}{io module procedure}}
+\proto{port-open?}{ port}{procedure}}
 
 Returns \schtrue{} if \var{port} is still open and capable of
 performing input or output, and \schfalse{} otherwise.
@@ -3378,9 +3378,9 @@ performing input or output, and \schfalse{} otherwise.
 
 
 \begin{entry}{%
-\proto{current-input-port}{}{io module procedure}
-\proto{current-output-port}{}{io module procedure}
-\proto{current-error-port}{}{io module procedure}}
+\proto{current-input-port}{}{procedure}
+\proto{current-output-port}{}{procedure}
+\proto{current-error-port}{}{procedure}}
 
 Returns the current default input port, output port, or error port (an
 output port), respectively.  These procedures are parameter objects, which can be
@@ -3446,9 +3446,9 @@ the effect is unspecified.
 
 
 \begin{entry}{%
-\proto{close-port}{ port}{io module procedure}
-\proto{close-input-port}{ port}{io module procedure}
-\proto{close-output-port}{ port}{io module procedure}}
+\proto{close-port}{ port}{procedure}
+\proto{close-input-port}{ port}{procedure}
+\proto{close-output-port}{ port}{procedure}}
 
 Closes the resource associated with \var{port}, rendering the \var{port}
 incapable of delivering or accepting data.  
@@ -3467,7 +3467,7 @@ The value returned is unspecified.
 \end{entry}
 
 \begin{entry}{%
-\proto{open-input-string}{ string}{io module procedure}}
+\proto{open-input-string}{ string}{procedure}}
 
 Takes a string and returns a textual input port that delivers
 characters from the string.
@@ -3475,7 +3475,7 @@ characters from the string.
 \end{entry}
 
 \begin{entry}{%
-\proto{open-output-string}{}{io module procedure}}
+\proto{open-output-string}{}{procedure}}
 
 Returns a textual output port that will accumulate characters for
 retrieval by {\cf get-output-string}.
@@ -3483,7 +3483,7 @@ retrieval by {\cf get-output-string}.
 \end{entry}
 
 \begin{entry}{%
-\proto{get-output-string}{ port}{io module procedure}}
+\proto{get-output-string}{ port}{procedure}}
 
 Given an output port created by {\cf open-output-string}, returns a
 string consisting of the characters that have been output to the port
@@ -3493,7 +3493,7 @@ so far in the order they were output.
 
 
 \begin{entry}{%
-\proto{open-input-bytevector}{ bytevector}{io module procedure}}
+\proto{open-input-bytevector}{ bytevector}{procedure}}
 
 Takes a bytevector and returns a binary input port that delivers
 bytes from the bytevector.
@@ -3501,7 +3501,7 @@ bytes from the bytevector.
 \end{entry}
 
 \begin{entry}{%
-\proto{open-output-bytevector}{}{io module procedure}}
+\proto{open-output-bytevector}{}{procedure}}
 
 Returns a binary output port that will accumulate bytes for
 retrieval by {\cf get-output-bytevector}.
@@ -3509,7 +3509,7 @@ retrieval by {\cf get-output-bytevector}.
 \end{entry}
 
 \begin{entry}{%
-\proto{get-output-bytevector}{ port}{io module procedure}}
+\proto{get-output-bytevector}{ port}{procedure}}
 
 Given an output port created by {\cf open-output-bytevector}, returns a
 bytevector consisting of the bytes that have been output to the port
@@ -3550,8 +3550,8 @@ a closed port.
 \end{entry}
 
 \begin{entry}{%
-\proto{read-char}{}{io module procedure}
-\rproto{read-char}{ port}{io module procedure}}
+\proto{read-char}{}{procedure}
+\rproto{read-char}{ port}{procedure}}
 
 Returns the next character available from the textual input \var{port},
 updating
@@ -3563,8 +3563,8 @@ omitted, in which case it defaults to the value returned by {\cf current-input-p
 
 
 \begin{entry}{%
-\proto{peek-char}{}{io module procedure}
-\rproto{peek-char}{ port}{io module procedure}}
+\proto{peek-char}{}{procedure}
+\rproto{peek-char}{ port}{procedure}}
 
 Returns the next character available from the textual input \var{port},
 {\em without} updating
@@ -3585,8 +3585,8 @@ whenever a call to {\cf read-char} would have hung.
 \end{entry}
 
 \begin{entry}{%
-\proto{read-line}{}{io module procedure}
-\rproto{read-line}{ port}{io module procedure}}
+\proto{read-line}{}{procedure}
+\rproto{read-line}{ port}{procedure}}
 
 Returns the next line of text available from the textual input
 \var{port}, updating the \var{port} to point to the following character.
@@ -3606,7 +3606,7 @@ by {\cf current-input-port}.
 
 
 \begin{entry}{%
-\proto{eof-object?}{ obj}{io module procedure}}
+\proto{eof-object?}{ obj}{procedure}}
 
 Returns \schtrue{} if \var{obj} is an end of file object, otherwise returns
 \schfalse.  The precise set of end of file objects will vary among
@@ -3617,8 +3617,8 @@ that can be read in using {\cf read}.
 
 
 \begin{entry}{%
-\proto{char-ready?}{}{io module procedure}
-\rproto{char-ready?}{ port}{io module procedure}}
+\proto{char-ready?}{}{procedure}
+\rproto{char-ready?}{ port}{procedure}}
 
 Returns \schtrue{} if a textual is ready on the character input \var{port} and
 returns \schfalse{} otherwise.  If {\cf char-ready} returns \schtrue{} then
@@ -3639,8 +3639,8 @@ port that has no ready characters.
 \end{entry}
 
 \begin{entry}{%
-\proto{read-u8}{}{io module procedure}
-\rproto{read-u8}{ port}{io module procedure}}
+\proto{read-u8}{}{procedure}
+\rproto{read-u8}{ port}{procedure}}
 
 Returns the next byte available from the binary input \var{port},
 updating the \var{port} to point to the following byte.  
@@ -3653,8 +3653,8 @@ omitted, in which case it defaults to the value returned by {\cf
 
 
 \begin{entry}{%
-\proto{peek-u8}{}{io module procedure}
-\rproto{peek-u8}{ port}{io module procedure}}
+\proto{peek-u8}{}{procedure}
+\rproto{peek-u8}{ port}{procedure}}
 
 Returns the next byte available from the binary input \var{port},
 {\em without} updating the \var{port} to point to the following
@@ -3666,8 +3666,8 @@ value returned by {\cf current-input-port}.
 
 
 \begin{entry}{%
-\proto{u8-ready?}{}{io module procedure}
-\rproto{u8-ready?}{ port}{io module procedure}}
+\proto{u8-ready?}{}{procedure}
+\rproto{u8-ready?}{ port}{procedure}}
 
 Returns \schtrue{} if a byte is ready on the binary input \var{port}
 and returns \schfalse{} otherwise.  If {\cf u8-ready?} returns
@@ -3737,8 +3737,8 @@ human-readable output.
 
 
 \begin{entry}{%
-\proto{newline}{}{io module procedure}
-\rproto{newline}{ port}{io module procedure}}
+\proto{newline}{}{procedure}
+\rproto{newline}{ port}{procedure}}
 
 Writes an end of line to textual output \var{port}.  Exactly how this
 is done differs
@@ -3750,8 +3750,8 @@ value returned by {\cf current-output-port}.
 
 
 \begin{entry}{%
-\proto{write-char}{ char}{io module procedure}
-\rproto{write-char}{ char port}{io module procedure}}
+\proto{write-char}{ char}{procedure}
+\rproto{write-char}{ char port}{procedure}}
 
 Writes the character \var{char} (not an external representation of the
 character) to the given textual output \var{port} and returns an unspecified
@@ -3762,8 +3762,8 @@ returned by {\cf current-output-port}.
 \end{entry}
 
 \begin{entry}{%
-\proto{write-u8}{ byte}{io module procedure}
-\rproto{write-u8}{ byte port}{io module procedure}}
+\proto{write-u8}{ byte}{procedure}
+\rproto{write-u8}{ byte port}{procedure}}
 
 Writes the \var{byte} to
 the given binary output \var{port} and returns an unspecified value.
@@ -3773,8 +3773,8 @@ the value returned by {\cf current-output-port}.
 \end{entry}
 
 \begin{entry}{%
-\proto{flush-output-port}{}{io module procedure}
-\rproto{flush-output-port}{ port}{io module procedure}}
+\proto{flush-output-port}{}{procedure}
+\rproto{flush-output-port}{ port}{procedure}}
 
 Flushes any buffered output from the buffer of output-port to the
 underlying file or device and returns an unspecified value.
