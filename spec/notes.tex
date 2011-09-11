@@ -11,9 +11,9 @@ the ``Revised$^5$ report''~\cite{R5RS} was published.
 
 \begin{itemize}
 
-\item Modules have been added as a new program structure to improve
+\item Libraries have been added as a new program structure to improve
 encapsulation and sharing of code.  Some existing and new identifiers
-have been factored out into separate modules.
+have been factored out into separate libraries.
 
 \item Exceptions can now be signalled explicitly with {\cf raise},
 {\cf raise-continuable} or {\cf error}, and can be handled with {\cf
@@ -56,7 +56,7 @@ terms of it.
 
 \item {\cf case} now supports a {\tt =>} syntax analogous to {\cf cond}.
 
-\item {\cf case-lambda} has been added to the base module as a way to
+\item {\cf case-lambda} has been added to the base library as a way to
 dispatch on the number of arguments passed to a procedure.
 
 \item {\cf when} and {\cf unless} have been added as convenience
@@ -104,16 +104,16 @@ shared structure.
 sequences, and the list of named characters has been extended.
 
 \item {\cf file-exists?}\ and {\cf delete-file} are available in the
-{\tt (scheme file)} module.
+{\tt (scheme file)} library.
 
 \item An interface to the system environment and command line is
-available in the {\tt (scheme process-context)} module.
+available in the {\tt (scheme process-context)} library.
 
 \item Procedures for accessing the current time are available in the
-{\tt (scheme time)} module.
+{\tt (scheme time)} library.
 
 \item A complete set of integer division operators is available in the
-{\tt (scheme division)} module.
+{\tt (scheme division)} library.
 
 \item {\cf transcript-on} and {\cf transcript-off} have been removed.
 

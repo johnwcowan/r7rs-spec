@@ -23,20 +23,20 @@ entered and evaluated one at a time.  For convenience and ease of use,
 the ``top-level'' Scheme environment in an interactive
 session is not empty, but must start out with a number of variables
 bound to locations containing at least the bindings provided by the
-{\cf(scheme base)} module.  This module includes mostly core syntax
+{\cf(scheme base)} library.  This library includes mostly core syntax
 and primitive procedures that manipulate data.  For example, the
 variable {\cf abs} is bound to a
 procedure of one argument that computes the absolute value of a
 number, and the variable {\cf +} is bound to a procedure that computes
 sums.  The full list of {\cf(scheme base)} bindings can be found in
-chapter~\ref{stdmodules}.
+chapter~\ref{stdlibraries}.
 
 \todo{consider removing unspecified effect}
 A program may use a top-level definition to bind any variable.  It may
 subsequently alter any such binding by an assignment (see
 \ref{assignment}).  These operations do not modify the behavior of
-Scheme's built-in procedures, or any procedure defined in a module
-(see section~\ref{modules}).  Altering any top-level binding that has
+Scheme's built-in procedures, or any procedure defined in a library
+(see section~\ref{libraries}).  Altering any top-level binding that has
 not been introduced by a definition has an unspecified effect on the
 behavior of the built-in procedures.
 
@@ -676,7 +676,7 @@ Otherwise, it returns \schfalse{}.
 
 
 \begin{entry}{%
-\proto{finite?}{ \vr{z}}{inexact module procedure}}
+\proto{finite?}{ \vr{z}}{inexact library procedure}}
 
 {\cf Finite?} returns \schtrue{} on all real numbers except
 {\cf +inf.0}, {\cf -inf.0}, and {\cf +nan.0}, and on complex
@@ -691,7 +691,7 @@ Otherwise it returns \schfalse{}.
 \end{entry}
 
 \begin{entry}{%
-\proto{nan?}{ \vr{z}}{inexact module procedure}}
+\proto{nan?}{ \vr{z}}{inexact library procedure}}
 
 {\cf Nan} returns \schtrue{} on {\cf +nan.0}, and on any complex number
 if its real part or its imaginary part or both are {\cf +nan.0}.
@@ -834,7 +834,7 @@ however, they return the additive or multiplicative inverse of their argument.
 \proto{euclidean-quotient}{ \vri{n} \vrii{n}}{procedure}
 \proto{euclidean-remainder}{ \vri{n} \vrii{n}}{procedure}}
 
-These procedures, all in the division module, implement
+These procedures, all in the division library, implement
 number-theoretic (integer) division.  \vrii{n} should be non-zero.
 The procedures ending in {\cf /} return two integers; the other
 procedures return an integer.  All the procedures compute a
@@ -1007,15 +1007,15 @@ all.
 \end{entry}
 
 \begin{entry}{%
-\proto{exp}{ \vr{z}}{inexact module procedure}
-\proto{log}{ \vr{z}}{inexact module procedure}
-\proto{sin}{ \vr{z}}{inexact module procedure}
-\proto{cos}{ \vr{z}}{inexact module procedure}
-\proto{tan}{ \vr{z}}{inexact module procedure}
-\proto{asin}{ \vr{z}}{inexact module procedure}
-\proto{acos}{ \vr{z}}{inexact module procedure}
-\proto{atan}{ \vr{z}}{inexact module procedure}
-\rproto{atan}{ \vr{y} \vr{x}}{inexact module procedure}}
+\proto{exp}{ \vr{z}}{inexact library procedure}
+\proto{log}{ \vr{z}}{inexact library procedure}
+\proto{sin}{ \vr{z}}{inexact library procedure}
+\proto{cos}{ \vr{z}}{inexact library procedure}
+\proto{tan}{ \vr{z}}{inexact library procedure}
+\proto{asin}{ \vr{z}}{inexact library procedure}
+\proto{acos}{ \vr{z}}{inexact library procedure}
+\proto{atan}{ \vr{z}}{inexact library procedure}
+\rproto{atan}{ \vr{y} \vr{x}}{inexact library procedure}}
 
 These procedures 
 compute the usual transcendental functions.  {\cf Log}
@@ -1024,7 +1024,7 @@ computes the natural logarithm of \vr{z} (not the base ten logarithm).
 arccosine ($\cos^{-1}$), and arctangent ($\tan^{-1}$), respectively.
 The two-argument variant of {\cf atan} computes {\tt (angle
 (make-rectangular \vr{x} \vr{y}))} (see below), even in implementations
-that don't support the complex module.
+that don't support the {\cf complex} library.
 
 In general, the mathematical functions log, arcsine, arccosine, and
 arctangent are multiply defined.
@@ -1048,7 +1048,7 @@ result from a real argument.
 
 
 \begin{entry}{%
-\proto{sqrt}{ \vr{z}}{inexact module procedure}}
+\proto{sqrt}{ \vr{z}}{inexact library procedure}}
 
 Returns the principal square root of \vr{z}.  The result will have
 either positive real part, or zero real part and non-negative imaginary
@@ -1083,12 +1083,12 @@ signalled or an unspecified number is returned.
 
 
 \begin{entry}{%
-\proto{make-rectangular}{ \vri{x} \vrii{x}}{complex module procedure}
-\proto{make-polar}{ \vriii{x} \vriv{x}}{complex module procedure}
-\proto{real-part}{ \vr{z}}{complex module procedure}
-\proto{imag-part}{ \vr{z}}{complex module procedure}
-\proto{magnitude}{ \vr{z}}{complex module procedure}
-\proto{angle}{ \vr{z}}{complex module procedure}}
+\proto{make-rectangular}{ \vri{x} \vrii{x}}{complex library procedure}
+\proto{make-polar}{ \vriii{x} \vriv{x}}{complex library procedure}
+\proto{real-part}{ \vr{z}}{complex library procedure}
+\proto{imag-part}{ \vr{z}}{complex library procedure}
+\proto{magnitude}{ \vr{z}}{complex library procedure}
+\proto{angle}{ \vr{z}}{complex library procedure}}
 
 Suppose \vri{x}, \vrii{x}, \vriii{x}, and \vriv{x} are
 real numbers and \vr{z} is a complex number such that
@@ -1112,8 +1112,8 @@ arguments are exact.
 
 \begin{rationale}
 {\cf Magnitude} is the same as \ide{abs} for a real argument,
-but {\cf abs} is in the {\cf base} module, whereas
-{\cf magnitude} is in the optional {\cf complex} module.
+but {\cf abs} is in the {\cf base} library, whereas
+{\cf magnitude} is in the optional {\cf complex} library.
 \end{rationale}
 
 \end{entry}
@@ -1953,11 +1953,11 @@ of whether the implementation uses the Unicode representation internally.
 
 
 \begin{entry}{%
-\proto{char-ci=?}{ \vri{char} \vrii{char} \vriii{char} \dotsfoo}{char module procedure}
-\proto{char-ci<?}{ \vri{char} \vrii{char} \vriii{char} \dotsfoo}{char module procedure}
-\proto{char-ci>?}{ \vri{char} \vrii{char} \vriii{char} \dotsfoo}{char module procedure}
-\proto{char-ci<=?}{ \vri{char} \vrii{char} \vriii{char} \dotsfoo}{char module procedure}
-\proto{char-ci>=?}{ \vri{char} \vrii{char} \vriii{char} \dotsfoo}{char module procedure}}
+\proto{char-ci=?}{ \vri{char} \vrii{char} \vriii{char} \dotsfoo}{char library procedure}
+\proto{char-ci<?}{ \vri{char} \vrii{char} \vriii{char} \dotsfoo}{char library procedure}
+\proto{char-ci>?}{ \vri{char} \vrii{char} \vriii{char} \dotsfoo}{char library procedure}
+\proto{char-ci<=?}{ \vri{char} \vrii{char} \vriii{char} \dotsfoo}{char library procedure}
+\proto{char-ci>=?}{ \vri{char} \vrii{char} \vriii{char} \dotsfoo}{char library procedure}}
 
 \nodomain{Both \vari{char} and \varii{char} must be characters.}
 These procedures are similar to {\cf char=?}\ et cetera, but they treat
@@ -1971,11 +1971,11 @@ applied to their arguments before they were compared.
 
 
 \begin{entry}{%
-\proto{char-alphabetic?}{ char}{char module procedure}
-\proto{char-numeric?}{ char}{char module procedure}
-\proto{char-whitespace?}{ char}{char module procedure}
-\proto{char-upper-case?}{ letter}{char module procedure}
-\proto{char-lower-case?}{ letter}{char module procedure}}
+\proto{char-alphabetic?}{ char}{char library procedure}
+\proto{char-numeric?}{ char}{char library procedure}
+\proto{char-whitespace?}{ char}{char library procedure}
+\proto{char-upper-case?}{ letter}{char library procedure}
+\proto{char-lower-case?}{ letter}{char library procedure}}
 
 These procedures return \schtrue{} if their arguments are alphabetic,
 numeric, whitespace, upper case, or lower case characters, respectively,
@@ -2012,9 +2012,9 @@ returns that character.
 
 
 \begin{entry}{%
-\proto{char-upcase}{ char}{char module procedure}
-\proto{char-downcase}{ char}{char module procedure}
-\proto{char-foldcase}{ char}{char module procedure}}
+\proto{char-upcase}{ char}{char library procedure}
+\proto{char-downcase}{ char}{char library procedure}
+\proto{char-foldcase}{ char}{char library procedure}}
 
 \nodomain{\var{Char} must be a character.}
 
@@ -2182,7 +2182,7 @@ exactly the same characters in the same positions, otherwise returns
 \end{entry}
 
 \begin{entry}{%
-\proto{string-ci=?}{ \vri{char} \vrii{char} \vriii{char} \dotsfoo}{char module procedure}}
+\proto{string-ci=?}{ \vri{char} \vrii{char} \vriii{char} \dotsfoo}{char library procedure}}
 
 Returns \schtrue{} if, after case-folding, all the strings are the same
 length and contain the same characters in the same positions, otherwise
@@ -2215,17 +2215,17 @@ equivalent to {\cf string=?}.
 
 \begin{entry}{%
 \proto{string<?}{ \vri{string} \vrii{string} \vriii{string} \dotsfoo}{procedure}
-\proto{string-ci<?}{ \vri{string} \vrii{string} \vriii{string} \dotsfoo}{char module procedure}
-\proto{string-ni<?}{ \vri{string} \vrii{string} \vriii{string} \dotsfoo}{char module procedure}
+\proto{string-ci<?}{ \vri{string} \vrii{string} \vriii{string} \dotsfoo}{char library procedure}
+\proto{string-ni<?}{ \vri{string} \vrii{string} \vriii{string} \dotsfoo}{char library procedure}
 \proto{string>?}{ \vri{string} \vrii{string} \vriii{string} \dotsfoo}{procedure}
-\proto{string-ci>?}{ \vri{string} \vrii{string} \vriii{string} \dotsfoo}{char module procedure}
-\proto{string-ni>?}{ \vri{string} \vrii{string} \vriii{string} \dotsfoo}{char module procedure}
+\proto{string-ci>?}{ \vri{string} \vrii{string} \vriii{string} \dotsfoo}{char library procedure}
+\proto{string-ni>?}{ \vri{string} \vrii{string} \vriii{string} \dotsfoo}{char library procedure}
 \proto{string<=?}{ \vri{string} \vrii{string} \vriii{string} \dotsfoo}{procedure}
-\proto{string-ci<=?}{ \vri{string} \vrii{string} \vriii{string} \dotsfoo}{char module procedure}
-\proto{string-ni<=?}{ \vri{string} \vrii{string} \vriii{string} \dotsfoo}{char module procedure}
+\proto{string-ci<=?}{ \vri{string} \vrii{string} \vriii{string} \dotsfoo}{char library procedure}
+\proto{string-ni<=?}{ \vri{string} \vrii{string} \vriii{string} \dotsfoo}{char library procedure}
 \proto{string>=?}{ \vri{string} \vrii{string} \vriii{string} \dotsfoo}{procedure}
-\proto{string-ci>=?}{ \vri{string} \vrii{string} \vriii{string} \dotsfoo}{char module procedure}
-\proto{string-ni>=?}{ \vri{string} \vrii{string} \vriii{string} \dotsfoo}{char module procedure}}
+\proto{string-ci>=?}{ \vri{string} \vrii{string} \vriii{string} \dotsfoo}{char library procedure}
+\proto{string-ni>=?}{ \vri{string} \vrii{string} \vriii{string} \dotsfoo}{char library procedure}}
 
 These procedures return \schtrue{} if their arguments are (respectively):
 equal, monotonically increasing, monotonically decreasing,
@@ -2261,9 +2261,9 @@ invoking the corresponding procedures without \hbox{``{\tt -ni}''}.
 \end{entry}
 
 \begin{entry}{%
-\proto{string-upcase}{ string}{char module procedure}
-\proto{string-downcase}{ string}{char module procedure}
-\proto{string-foldcase}{ string}{char module procedure}}
+\proto{string-upcase}{ string}{char library procedure}
+\proto{string-downcase}{ string}{char library procedure}
+\proto{string-foldcase}{ string}{char library procedure}}
 
 \nodomain{\var{String} must be a string.}
 
@@ -2785,7 +2785,7 @@ If more than one \var{vector} is given and not all vectors have the same length,
 
 
 \begin{entry}{%
-\proto{force}{ promise}{lazy module procedure}}
+\proto{force}{ promise}{lazy library procedure}}
 
 Forces the value of a \var{promise} created by \ide{delay} or \ide{lazy},
 section~\ref{delay}).\index{promise}  
@@ -3206,7 +3206,7 @@ Returns a list of the irritants encapsulated by \var{error-object}.
 \section{\tt{Eval}}
 
 \begin{entry}{%
-\proto{eval}{ expression environment-specifier}{eval module procedure}}
+\proto{eval}{ expression environment-specifier}{eval library procedure}}
 
 Evaluates \var{expression} in the specified environment and returns its value.
 \var{Expression} must be a valid Scheme expression represented as data,
@@ -3231,20 +3231,20 @@ allowed to create new bindings in the environments returned by
 \end{entry}
 
 \begin{entry}{%
-\proto{scheme-report-environment}{ version}{eval module procedure}
-\proto{null-environment}{ version}{eval module procedure}}
+\proto{scheme-report-environment}{ version}{eval library procedure}
+\proto{null-environment}{ version}{eval library procedure}}
 
 \var{Version} must be the exact integer {\cf \integerversion},
 corresponding to this revision of the Scheme report (the
 Revised$^\integerversion$ Report on Scheme).
 {\cf scheme-report-environment} returns a specifier for an
 environment that is empty except for all bindings 
-defined either in the {\cf base} module or in the other modules
+defined either in the {\cf base} library or in the other libraries
 of this report that the implementation supports.
 {\cf null-environment} returns
 a specifier for an environment that is empty except for the
 bindings for all syntactic keywords
-defined either in the {\cf base} module or in the other modules
+defined either in the {\cf base} library or in the other libraries
 of this report that the implementation supports.
 
 Other values of \var{version} can be used to specify environments
@@ -3263,18 +3263,18 @@ by {\cf scheme-report-environment} may be immutable.
 \end{entry}
 
 \begin{entry}{%
-\proto{environment}{ \vri{list} \dotsfoo}{eval module procedure}}
+\proto{environment}{ \vri{list} \dotsfoo}{eval library procedure}}
 
 This procedure returns a specifier for the environment that results by
 starting with an empty environment and then importing each \var{list},
-considered as an import set, into it.  (See section~\ref{modules} for
+considered as an import set, into it.  (See section~\ref{libraries} for
 a description of import sets.)  The bindings of the environment
 represented by the specifier are immutable.
 
 \end{entry}
 
 \begin{entry}{%
-\proto{interaction-environment}{}{repl module procedure}}
+\proto{interaction-environment}{}{repl library procedure}}
 
 This procedure returns a specifier for an environment that
 contains an imple\-men\-ta\-tion-defined set of bindings, typically a superset of
@@ -3314,8 +3314,8 @@ Ports can be used to access files, devices, and similar things on the host
 system on which the Scheme program is running.
 
 \begin{entry}{%
-\proto{call-with-input-file}{ string proc}{file module procedure}
-\proto{call-with-output-file}{ string proc}{file module procedure}}
+\proto{call-with-input-file}{ string proc}{file library procedure}
+\proto{call-with-output-file}{ string proc}{file library procedure}}
 
 \var{Proc} should be a procedure that accepts one argument.
 \todo{consider removing unspecified effect}
@@ -3392,8 +3392,8 @@ are system-defined textual ports.
 
 
 \begin{entry}{%
-\proto{with-input-from-file}{ string thunk}{file module procedure}
-\proto{with-output-to-file}{ string thunk}{file module procedure}}
+\proto{with-input-from-file}{ string thunk}{file library procedure}
+\proto{with-output-to-file}{ string thunk}{file library procedure}}
 
 \var{Thunk} should be a procedure of no arguments.
 \todo{consider removing unspecified effect}
@@ -3420,8 +3420,8 @@ behavior is implementation-dependent.
 
 
 \begin{entry}{%
-\proto{open-input-file}{ string}{file module procedure}
-\proto{open-binary-input-file}{ string}{file module procedure}}
+\proto{open-input-file}{ string}{file library procedure}
+\proto{open-binary-input-file}{ string}{file library procedure}}
  
 Takes a \var{string} for an existing file and returns a textual
 input port or binary input port capable of delivering data from the
@@ -3431,8 +3431,8 @@ file.  If the file cannot be opened, an error is signalled.
 
 
 \begin{entry}{%
-\proto{open-output-file}{ string}{file module procedure}
-\proto{open-binary-output-file}{ string}{file module procedure}}
+\proto{open-output-file}{ string}{file library procedure}
+\proto{open-binary-output-file}{ string}{file library procedure}}
 
 Takes a \var{string} naming an output file to be created and returns a
 textual output port or binary output port capable of writing
@@ -3525,8 +3525,8 @@ so far in the order they were output.
 \todo{The input routines have some things in common, maybe explain here.}
 
 \begin{entry}{%
-\proto{read}{}{read module procedure}
-\rproto{read}{ port}{read module procedure}}
+\proto{read}{}{read library procedure}
+\rproto{read}{ port}{read library procedure}}
 
 {\cf read} converts external representations of Scheme objects into the
 objects themselves.  That is, it is a parser for the nonterminal
@@ -3687,8 +3687,8 @@ omitted, in which case it defaults to the value returned by {\cf
 \vspace{-5ex}
 
 \begin{entry}{%
-\proto{write}{ obj}{write module procedure}
-\rproto{write}{ obj port}{write module procedure}}
+\proto{write}{ obj}{write library procedure}
+\rproto{write}{ obj port}{write library procedure}}
 
 Writes a written representation of \var{obj} to the given textual output
 \var{port}.  Strings
@@ -3705,8 +3705,8 @@ returned by {\cf current-output-port}.
 \end{entry}
 
 \begin{entry}{%
-\proto{write-simple}{ obj}{write module procedure}
-\rproto{write-simple}{ obj port}{write module procedure}}
+\proto{write-simple}{ obj}{write library procedure}
+\rproto{write-simple}{ obj port}{write library procedure}}
 
 {\cf write-simple} is the same as {\cf write}, except that shared structure is
 not represented using reader labels.  This may cause {\cf write-simple} not to
@@ -3716,8 +3716,8 @@ terminate if \var{obj} contains circular structure.
 
 
 \begin{entry}{%
-\proto{display}{ obj}{write module procedure}
-\rproto{display}{ obj port}{write module procedure}}
+\proto{display}{ obj}{write library procedure}
+\rproto{display}{ obj port}{write library procedure}}
 
 Writes a representation of \var{obj} to the given textual output \var{port}.
 Strings that appear in the written representation are not enclosed in
@@ -3792,7 +3792,7 @@ deserve description here.
 
 
 \begin{entry}{%
-\proto{load}{ filename}{load module procedure}}
+\proto{load}{ filename}{load library procedure}}
 
 \todo{Fix}
 
@@ -3813,7 +3813,7 @@ implementations.
 \end{entry}
 
 \begin{entry}{%
-\proto{file-exists?}{ filename}{file module procedure}}
+\proto{file-exists?}{ filename}{file library procedure}}
 
 \var{Filename} must be a string. The {\cf file-exists?} procedure returns
 \schtrue{} if the named file exists at the time the procedure is called,
@@ -3822,7 +3822,7 @@ implementations.
 \end{entry}
 
 \begin{entry}{%
-\proto{delete-file}{ filename}{file module procedure}}
+\proto{delete-file}{ filename}{file library procedure}}
 
 \var{Filename} must be a string. The {\cf delete-file} procedure deletes the
 named file if it exists and can be deleted, and returns an unspecified
@@ -3832,7 +3832,7 @@ is signalled.
 \end{entry}
 
 \begin{entry}{%
-\proto{command-line}{}{process-context module procedure}}
+\proto{command-line}{}{process-context library procedure}}
 
 Returns the command line passed to the process as a list of
 strings.  The first string corresponds to the command name, and is
@@ -3840,8 +3840,8 @@ implementation-dependent.  It is an error to mutate any of these strings.
 \end{entry}
 
 \begin{entry}{%
-\proto{exit}{}{process-context module procedure}
-\rproto{exit}{ obj}{process-context module procedure}}
+\proto{exit}{}{process-context library procedure}
+\rproto{exit}{ obj}{process-context library procedure}}
 
 Exits the running program and communicates an exit value to the
 operating system.  If no argument is supplied, the {\cf exit}
@@ -3856,7 +3856,7 @@ abnormal.
 \todo{Shinn: Do we need any description of what an environment variable is?}
 
 \begin{entry}{%
-\proto{get-environment-variable}{ name}{process-context module procedure}}
+\proto{get-environment-variable}{ name}{process-context library procedure}}
 
 Most operating systems provide each running process with an
 \defining{environment} consisting of \defining{environment variables}.
@@ -3877,7 +3877,7 @@ It is also an error to mutate the resulting string.
 \end{entry}
 
 \begin{entry}{%
-\proto{get-environment-variables}{}{process-context module procedure}}
+\proto{get-environment-variables}{}{process-context library procedure}}
 
 Returns the names and values of all the environment variables as an
 alist, where the car of each entry is the name of an environment
@@ -3891,7 +3891,7 @@ It is an error to mutate any of these strings.
 \end{entry}
 
 \begin{entry}{%
-\proto{current-second}{}{time module procedure}}
+\proto{current-second}{}{time library procedure}}
 
 Returns an inexact number representing time on the International Atomic
 Time (TAI) scale.  The value 0.0 represents ten seconds after midnight
@@ -3903,7 +3903,7 @@ the best an implementation can do.
 \end{entry}
 
 \begin{entry}{%
-\proto{current-jiffy}{}{time module procedure}}
+\proto{current-jiffy}{}{time library procedure}}
 
 Returns the number of \defining{jiffies} that have elapsed since an arbitrary,
 implementation-defined epoch. A jiffy is an implementation-defined
@@ -3913,7 +3913,7 @@ constant during a run of the program, but may vary between different runs.
 \end{entry}
 
 \begin{entry}{%
-\proto{jiffies-per-second}{}{time module procedure}}
+\proto{jiffies-per-second}{}{time library procedure}}
 
 Returns an exact integer representing the number of jiffies per SI
 second. This value is an implementation-specified constant.

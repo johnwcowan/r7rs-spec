@@ -1,20 +1,20 @@
-\chapter{Standard Modules}
-\label{stdmodules}
+\chapter{Standard Libraries}
+\label{stdlibraries}
 
 %% Note, this is used to generate stdmod.tex.  The bindings could be
 %% extracted automatically from the document, but this lets us choose
 %% the ordering and optionally format manually where needed.
 
-This section lists the exports provided by the standard modules.  The
-modules are factored so as to separate features which may not be
+This section lists the exports provided by the standard libraries.  The
+libraries are factored so as to separate features which may not be
 supported by all implementations, or which may be expensive to load.
 
-The {\cf scheme} module prefix is used for all standard modules, and
+The {\cf scheme} library prefix is used for all standard libraries, and
 is reserved for use by future standards.
 
-\textbf{Base Module}
+\textbf{Base Library}
 
-The \texttt{(scheme base)} module exports many of the procedures and
+The \texttt{(scheme base)} library exports many of the procedures and
 syntax bindings that are traditionally associated with Scheme.
 
 \begin{scheme}
@@ -87,9 +87,9 @@ syntax bindings that are traditionally associated with Scheme.
 .with-exception-handler            unless
 \end{scheme}
 
-\textbf{Inexact Module}
+\textbf{Inexact Library}
 
-The \texttt{(scheme inexact)} module exports procedures which are
+The \texttt{(scheme inexact)} library exports procedures which are
 typically only useful with inexact values.
 
 \begin{scheme}
@@ -99,9 +99,9 @@ typically only useful with inexact values.
 .finite? nan?
 \end{scheme}
 
-\textbf{Complex Module}
+\textbf{Complex Library}
 
-The \texttt{(scheme complex)} module exports procedures which are
+The \texttt{(scheme complex)} library exports procedures which are
 typically only useful with complex values.
 
 \begin{scheme}
@@ -109,9 +109,9 @@ typically only useful with complex values.
 .make-polar           make-rectangular
 \end{scheme}
 
-\textbf{Division Module}
+\textbf{Division Library}
 
-The \texttt{(scheme division)} module exports procedures for integer
+The \texttt{(scheme division)} library exports procedures for integer
 division.
 
 \begin{scheme}
@@ -122,17 +122,17 @@ division.
 .euclidean/ euclidean-quotient euclidean-remainder
 \end{scheme}
 
-\textbf{Lazy Module}
+\textbf{Lazy Library}
 
-The \texttt{(scheme lazy)} module exports forms for lazy evaluation.
+The \texttt{(scheme lazy)} library exports forms for lazy evaluation.
 
 \begin{scheme}
 .delay   force   lazy
 \end{scheme}
 
-\textbf{Eval Module}
+\textbf{Eval Library}
 
-The \texttt{(scheme eval)} module exports procedures for evaluating Scheme
+The \texttt{(scheme eval)} library exports procedures for evaluating Scheme
 data as programs.
 
 \begin{scheme}
@@ -142,18 +142,18 @@ data as programs.
 .scheme-report-environment
 \end{scheme}
 
-\textbf{Repl Module}
+\textbf{Repl Library}
 
-The \texttt{(scheme repl)} module exports the {\cf
+The \texttt{(scheme repl)} library exports the {\cf
   interaction-environment} procedure.
 
 \begin{scheme}
 .interaction-environment
 \end{scheme}
 
-\textbf{Process Context Module}
+\textbf{Process Context Library}
 
-The \texttt{(scheme process-context)} module exports procedures for
+The \texttt{(scheme process-context)} library exports procedures for
 accessing with the program's calling context.
 
 \begin{scheme}
@@ -163,18 +163,18 @@ accessing with the program's calling context.
 .exit
 \end{scheme}
 
-\textbf{Load Module}
+\textbf{Load Library}
 
-The \texttt{(scheme load)} module exports forms for loading and
+The \texttt{(scheme load)} library exports forms for loading and
 including Scheme expressions from files.
 
 \begin{scheme}
 .load
 \end{scheme}
 
-\textbf{I/O Module}
+\textbf{I/O Library}
 
-The \texttt{(scheme io)} module exports procedures for general input
+The \texttt{(scheme io)} library exports procedures for general input
 and output on ports.
 
 \begin{scheme}
@@ -196,9 +196,9 @@ and output on ports.
 .write-char               write-u8
 \end{scheme}
 
-\textbf{File Module}
+\textbf{File Library}
 
-The \texttt{(scheme file)} module provides procedures for accessing
+The \texttt{(scheme file)} library provides procedures for accessing
 files.
 
 \begin{scheme}
@@ -209,27 +209,27 @@ files.
 .with-input-from-file    with-output-to-file
 \end{scheme}
 
-\textbf{Read Module}
+\textbf{Read Library}
 
-The \texttt{(scheme read)} module provides procedures for reading
+The \texttt{(scheme read)} library provides procedures for reading
 Scheme objects.
 
 \begin{scheme}
 .read
 \end{scheme}
 
-\textbf{Write Module}
+\textbf{Write Library}
 
-The \texttt{(scheme write)} module provides procedures for writing
+The \texttt{(scheme write)} library provides procedures for writing
 Scheme objects.
 
 \begin{scheme}
 .write  display
 \end{scheme}
 
-\textbf{Char Module}
+\textbf{Char Library}
 
-The \texttt{(scheme char)} module provides procedures for dealing
+The \texttt{(scheme char)} library provides procedures for dealing
 with Unicode character operations.
 
 \begin{scheme}
@@ -244,9 +244,9 @@ with Unicode character operations.
 .string-foldcase
 \end{scheme}
 
-\textbf{Char Normalization Module}
+\textbf{Char Normalization Library}
 
-The \texttt{(scheme char normalization)} module provides procedures
+The \texttt{(scheme char normalization)} library provides procedures
 for dealing with Unicode normalization operations.
 
 \begin{scheme}
@@ -256,7 +256,7 @@ for dealing with Unicode normalization operations.
 
 \textbf{Time}
 
-The \texttt{(scheme time)} module provides access to the system time.
+The \texttt{(scheme time)} library provides access to the system time.
 
 \begin{scheme}
 .current-second

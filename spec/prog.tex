@@ -6,19 +6,19 @@
 A Scheme program consists of a sequence of 
 \defining{program parts}: expressions, definitions, syntax definitions,
 record type definitions, imports, cond-expands, and includes.  A collection of program
-parts may be encapsulated in a module to be reused by multiple
+parts may be encapsulated in a library to be reused by multiple
 programs.
 Expressions are described in chapter~\ref{expressionchapter};
-the other program parts, as well as modules, are the subject of the
+the other program parts, as well as libraries, are the subject of the
 rest of the present chapter.
 
-Programs and modules are typically stored in files, although programs
+Programs and libraries are typically stored in files, although programs
 may be entered interactively to a running Scheme system, and other
 paradigms are possible.
 
 \todo{Shinn: If not in this report, then in a ``standard practice''
   ammendment or SRFI we need to say something about the directory
-  structure and file extensions used for modules and programs.}
+  structure and file extensions used for libraries and programs.}
 
 
 Program parts other than expressions that are present
@@ -310,31 +310,31 @@ to be a predicate for instances of {\cf <pare>}.
 \end{entry}
 
 
-\section{Modules}
-\label{modules}
+\section{Libraries}
+\label{libraries}
 
-Modules provide a way to organize Scheme programs into reusable parts
+Libraries provide a way to organize Scheme programs into reusable parts
 with explicitly defined interfaces to the rest of the program.  This
-section defines the notation and semantics for modules.
+section defines the notation and semantics for libraries.
 
-\subsection{Module Syntax}
+\subsection{Library Syntax}
 
-A module definition takes the following form:
+A library definition takes the following form:
 
 \begin{scheme}
-(module \hyper{module name}
-  \hyper{module declaration} \dotsfoo)
+(define-library \hyper{library name}
+  \hyper{library declaration} \dotsfoo)
 \end{scheme}
 
-\hyper{module name} is a list whose members are identifiers or unsigned exact integers that is used to
-identify the module uniquely when importing from other programs or
-modules.
-Modules whose first identifier is {\cf scheme} are reserved for use by this
+\hyper{library name} is a list whose members are identifiers or unsigned exact integers that is used to
+identify the library uniquely when importing from other programs or
+libraries.
+Libraries whose first identifier is {\cf scheme} are reserved for use by this
 report and future versions of this report.
-Modules whose first identifier is {\cf srfi} are reserved for modules
+Libraries whose first identifier is {\cf srfi} are reserved for libraries
 implementing Scheme Requests for Implementation.
 
-A \hyper{module declaration} can be any of:
+A \hyper{library declaration} can be any of:
 
 \begin{itemize}
 
@@ -353,7 +353,7 @@ A \hyper{module declaration} can be any of:
 \end{itemize}
 
 An \ide{export} declaration specifies a list of identifiers which
-may be made visible to other modules or programs.  An
+may be made visible to other libraries or programs.  An
 \hyper{export spec} must have one of the following forms:
 
 \begin{itemize}
@@ -362,27 +362,27 @@ may be made visible to other modules or programs.  An
 \end{itemize}
 
 In an \hyper{export spec}, an \hyper{identifier} names a single
-binding defined within or imported into the module, where the
+binding defined within or imported into the library, where the
 external name for the export is the same as the name of the binding
-within the module. A rename spec exports the binding named by
+within the library. A rename spec exports the binding named by
 \hyper{$identifier_1$} in each
 {\tt(\hyper{$identifier_1$} \hyper{$identifier_2$})} pairing,
 using \hyper{$identifier_2$} as the external name.
 
 An \ide{import} declaration provides a way to import the identifiers
-exported by a module.  Each \hyper{import set} names a set of bindings
-from another module and possibly specifies local names for the
+exported by a library.  Each \hyper{import set} names a set of bindings
+from another library and possibly specifies local names for the
 imported bindings. It must be one of the following:
 
 \begin{itemize}
-\item {\tt\hyper{module name}}
+\item {\tt\hyper{library name}}
 \item {\tt(only \hyper{import set} \hyper{identifier} \dotsfoo)}
 \item {\tt(except \hyper{import set} \hyper{identifier} \dotsfoo)}
 \item {\tt(prefix \hyper{import set} \hyper{identifier})}
 \item {\tt(rename \hyper{import set} (\hyper{$identifier_1$} \hyper{$identifier_2$}) \dotsfoo)}
 \end{itemize}
 
-In the first form, all of the identifiers in the named module's export
+In the first form, all of the identifiers in the named library's export
 clauses are imported with the same names (or the exported names if
 exported with \ide{rename}).  The additional \hyper{import set}
 forms modify this set as follows:
@@ -411,7 +411,7 @@ forms modify this set as follows:
 \end{itemize}
 
 \ide{import} declarations may also be made at the top level of a
-program.  In a module declaration, it is an error to import the same
+program.  In a library declaration, it is an error to import the same
 identifier more than once with different bindings, to redefine or
 identifier more than once with different bindings, or to redefine or
 mutate an imported binding with {\cf define}, {\cf define-syntax}
@@ -419,13 +419,13 @@ or {\cf set!}.
 
 The \ide{begin}, \ide{include}, and \ide{include-ci} declarations are
 used to specify the commands and definitions that make up the body of
-the module.  \ide{Begin} takes a list of forms to be spliced
+the library.  \ide{Begin} takes a list of forms to be spliced
 literally, analogous to the top-level \ide{begin}.  
 \ide{Include} and
 \ide{include-ci} both take one or more filenames expressed as string literals,
 apply an implementation-specific algorithm to find corresponding files,
 read all top-level
-forms from the files, and include the results into the module body or program as
+forms from the files, and include the results into the library body or program as
 though wrapped in a \ide{begin}.
 The difference between the two is that \ide{include-ci} reads each file
 as if it began with the {\cf{}\#!fold-case} directive, while \ide{include}
@@ -443,45 +443,45 @@ Their operation on other kinds of files necessarily varies among
 implementations.
 \end{note}
 
-The \ide{cond-expand} module declaration,
+The \ide{cond-expand} library declaration,
 which may also appear at the top level of a program,
 provides a way to statically
-expand different module declarations depending on the 
-implementation under which the module is being loaded.  A
+expand different library declarations depending on the 
+implementation under which the library is being loaded.  A
 \hyper{cond-expand clause} must be of the following form:
 
-{\tt(\hyper{feature requirement} \hyper{module declaration} \dotsfoo)}
+{\tt(\hyper{feature requirement} \hyper{library declaration} \dotsfoo)}
 
 The last clause may be an ``else clause,'' which has the form
 
-{\tt(else \hyper{module declaration} \dotsfoo)}
+{\tt(else \hyper{library declaration} \dotsfoo)}
 
 A \hyper{feature requirement} must be one of the following forms:
 
 \begin{itemize}
 \item {\tt\hyper{feature identifier}}
-\item {\tt(module \hyper{module name})}
+\item {\tt(define-library \hyper{library name})}
 \item {\tt(and \hyper{feature requirement} \dotsfoo)}
 \item {\tt(or \hyper{feature requirement} \dotsfoo)}
 \item {\tt(not \hyper{feature requirement})}
 \end{itemize}
 
 Each implementation maintains a list of feature identifiers which are
-present, as well as a list of modules which can be imported.  The
+present, as well as a list of libraries which can be imported.  The
 value of a \hyper{feature requirement} can be determined by replacing
-each \hyper{feature identifier} and {\tt(module \hyper{module name})}
+each \hyper{feature identifier} and {\tt(define-library \hyper{library name})}
 on the implementation's lists with \schtrue, and all other feature
-identifiers and module names with \schfalse, then evaluating the
+identifiers and library names with \schfalse, then evaluating the
 resulting expression as a Scheme boolean expression under the normal
 interpretation of {\cf and}, {\cf or}, and {\cf not}.
 
 A \ide{cond-expand} is then expanded by evaluating the
 \hyper{feature requirement}s of successive \hyper{cond-expand clause}s
 in order, until one of them returns \schtrue.  When a true clause is
-found, the corresponding \hyper{module declaration}s are spliced into
-the current module definition and the remaining clauses are ignored.
+found, the corresponding \hyper{library declaration}s are spliced into
+the current library definition and the remaining clauses are ignored.
 If none of the \hyper{feature requirement}s evaluate to \schtrue, then
-if there is an \ide{else} clause, its \hyper{module declaration}s are
+if there is an \ide{else} clause, its \hyper{library declaration}s are
 included.  Otherwise, the \ide{cond-expand} has no effect.
 
 The exact features provided are implementation-defined, but for
@@ -489,28 +489,28 @@ portability a set of recommended features is given in
 appendix~\ref{stdfeatures}.
 
 \todo{Shinn: Perhaps make this a separate subsection describing a
-  module ``resolution'' phase which runs prior to module expansion.}
+  library ``resolution'' phase which runs prior to library expansion.}
 
 After all \ide{cond-expand} forms are expanded, a new environment is
-constructed for the module consisting of all imported bindings.  The
+constructed for the library consisting of all imported bindings.  The
 forms from all \ide{begin}, \ide{include} and \ide{include-ci}
 declarations are expanded in that environment in the order in which
-they occur in the module declaration.
+they occur in the library declaration.
 
-The top-level forms in a module are executed in the order in which
-they occur when the module is loaded.  A module is loaded zero or more
-times when it is imported by a program or by another module which is
+The top-level forms in a library are executed in the order in which
+they occur when the library is loaded.  A library is loaded zero or more
+times when it is imported by a program or by another library which is
 about to be loaded, but must be loaded at least once per program in
 which it is so imported.
 
 \todo{Shinn: Mention it may also be loaded (or not in some cases, if
   the compiler is clever) during batch compilation?}
 
-\subsection{Module Examples}
+\subsection{Library Examples}
 
 \begin{scheme}
 
-(module (stack)
+(define-library (stack)
   (export make push! pop! empty!)
   (import (scheme base))
   (begin
@@ -522,7 +522,7 @@ which it is so imported.
                       v))
    (define (empty! s) (set-car! s '()))))
 
-(module (balloons)
+(define-library (balloons)
   (export make push pop)
   (import (scheme))
   (begin
@@ -533,7 +533,7 @@ which it is so imported.
                    (display (* (car b) (cdr b))) 
                    (newline))))
 
-(module (party)
+(define-library (party)
   ;; Total exports:
   ;; make, push, push!, make-party, pop!
   (export (rename (balloon:make make)
@@ -556,7 +556,7 @@ which it is so imported.
    (define (party-pop! p)
      (balloon:pop (pop! p)))))
 
-(module (main)
+(define-library (main)
   (import (scheme base) (party))
   (begin
    (define p (make-party))

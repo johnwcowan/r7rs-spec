@@ -85,18 +85,18 @@ The formal syntax of Scheme is described in section~\ref{BNF}.
 \label{qualifiers}
 
 Every identifier defined in this report appears in one of several
-\defining{modules}.  Identifiers defined in the {\cf base} module
+\defining{libraries}.  Identifiers defined in the {\cf base} library
 are not marked specially in the body of the report.  A summary of
-all the standard modules and the features they provide is given in
-Appendix~\ref{stdmodules}.
+all the standard libraries and the features they provide is given in
+Appendix~\ref{stdlibraries}.
 
-Implementations must provide the {\cf base} module and all the identifiers
+Implementations must provide the {\cf base} library and all the identifiers
 exported from it.  Implementations are free to provide or omit the other
-modules given in this report, but each module must either be provided
+libraries given in this report, but each library must either be provided
 in its entirety, exporting no additional identifiers, or else omitted
 altogether.
 
-Implementations may provide other modules not described in this report.
+Implementations may provide other libraries not described in this report.
 Implementations may also extend the function of any identifier in this
 report, provided the extensions are not in conflict with the language
 reported here.  In particular, implementations must support portable
@@ -156,12 +156,12 @@ built-in procedure.  An entry begins with one or more header lines of the form
 
 \noindent\pproto{\var{template}}{\var{category}}\unpenalty
 
-for identifiers in the {\cf base} module, or
+for identifiers in the {\cf base} library, or
 
-\noindent\pproto{\var{template}}{\var{module} \var{category}}\unpenalty
+\noindent\pproto{\var{template}}{\var{library} \var{category}}\unpenalty
 
-where \var{module} is the short name of a module
-as defined in Appendix~\ref{stdmodules}.
+where \var{library} is the short name of a library
+as defined in Appendix~\ref{stdlibraries}.
 
 If \var{category} is ``\exprtype,'' the entry describes an expression
 type, and the template gives the syntax of the expression type.
