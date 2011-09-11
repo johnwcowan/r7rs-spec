@@ -543,7 +543,7 @@ prefix may appear before or after any radix prefix that is used.  If
 the written representation of a number has no exactness prefix, the
 constant may be either \tupe{inexact} or \tupe{exact}.  It is
 \tupe{inexact} if it contains a decimal point or an
-exponent or if it contains a ``\sharpsign'' character in the place of a digit.
+exponent.
 Otherwise, it is \tupe{exact}.
 
 In systems with \tupe{inexact} numbers
@@ -1232,8 +1232,8 @@ numbers.  If all numbers are integers, then
 {\cf string->number} may return \schfalse{} whenever
 the fractional notation is used.  If all numbers are exact, then
 {\cf string->number} may return \schfalse{} whenever
-an exponent marker or explicit exactness prefix is used, or if
-a {\tt \#} appears in place of a digit.  If all inexact
+an exponent marker or explicit exactness prefix is used.
+If all inexact
 numbers are integers, then
 {\cf string->number} may return \schfalse{} whenever
 a decimal point is used.
