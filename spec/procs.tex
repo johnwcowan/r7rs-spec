@@ -3288,10 +3288,10 @@ Whether the input and output port types are disjoint is
 implementation-dependent.
 
 Different {\em port types} operate on different data.  Scheme
-imple\-men\-ta\-tions are required to support {\em character ports}
+imple\-men\-ta\-tions are required to support {\em textual ports}
 and {\em binary ports}, but may also provide other port types.
 
-A character port supports reading or writing of individual characters
+A textual port supports reading or writing of individual characters
 from or to a backing store containing characters
 using {\cf read-char} and {\cf write-char} below, as well as operations
 defined in terms of characters such as {\cf read} and {\cf write}.
@@ -3299,7 +3299,7 @@ defined in terms of characters such as {\cf read} and {\cf write}.
 A binary port supports reading or writing of individual bytes from
 or to a backing store containing bytes using {\cf read-u8} and {\cf
 write-u8}, below.
-Whether the character and binary port types are disjoint is
+Whether the textual and binary port types are disjoint is
 implementation-dependent.
 
 Ports can be used to access files, devices, and similar things on the host
@@ -3316,7 +3316,7 @@ the file named by \var{string} should already exist; for
 {\cf call-with-output-file},
 the effect is unspecified if the file
 already exists. These procedures call \var{proc} with one argument: the
-character port obtained by opening the named file for input or output
+textual port obtained by opening the named file for input or output
 as if by {\cf open-input-file} or {\cf open-output-file}.  If the
 file cannot be opened, an error is signalled.  If \var{proc} returns,
 then the port is closed automatically and the values yielded by the
@@ -3348,12 +3348,12 @@ returned by \var{proc} are returned.
 \begin{entry}{%
 \proto{input-port?}{ obj}{io module procedure}
 \proto{output-port?}{ obj}{io module procedure}
-\proto{character-port?}{ obj}{io module procedure}
+\proto{textual-port?}{ obj}{io module procedure}
 \proto{binary-port?}{ obj}{io module procedure}
 \proto{port?}{ obj}{io module procedure}}
 
 Returns \schtrue{} if \var{obj} is an input port, output port, 
-character port, binary port, or any
+textual port, binary port, or any
 kind of port, respectively, otherwise returns \schfalse.
 
 \end{entry}
@@ -3378,7 +3378,7 @@ Returns the current default input port, output port, or error port (an
 output port), respectively.  These procedures are parameter objects, which can be
 overridden with {\cf parameterize} (see
 section~\ref{make-parameter}). The initial bindings for these
-are system-defined character ports.
+are system-defined textual ports.
 
 \end{entry}
 
@@ -3415,7 +3415,7 @@ behavior is implementation-dependent.
 \proto{open-input-file}{ string}{file module procedure}
 \proto{open-binary-input-file}{ string}{file module procedure}}
  
-Takes a \var{string} for an existing file and returns a character
+Takes a \var{string} for an existing file and returns a textual
 input port or binary input port capable of delivering data from the
 file.  If the file cannot be opened, an error is signalled.
 
@@ -3427,7 +3427,7 @@ file.  If the file cannot be opened, an error is signalled.
 \proto{open-binary-output-file}{ string}{file module procedure}}
 
 Takes a \var{string} naming an output file to be created and returns a
-character output port or binary output port capable of writing
+textual output port or binary output port capable of writing
 data to a new file by that name.  If the file cannot be opened,
 an error is signalled.
 \todo{consider removing unspecified effect}
@@ -3461,7 +3461,7 @@ The value returned is unspecified.
 \begin{entry}{%
 \proto{open-input-string}{ string}{io module procedure}}
 
-Takes a string and returns a character input port that delivers
+Takes a string and returns a textual input port that delivers
 characters from the string.
 
 \end{entry}
@@ -3469,7 +3469,7 @@ characters from the string.
 \begin{entry}{%
 \proto{open-output-string}{}{io module procedure}}
 
-Returns a character output port that will accumulate characters for
+Returns a textual output port that will accumulate characters for
 retrieval by {\cf get-output-string}.
 
 \end{entry}
@@ -3524,7 +3524,7 @@ so far in the order they were output.
 objects themselves.  That is, it is a parser for the nonterminal
 \meta{datum} (see sections~\ref{datum} and
 \ref{listsection}).  {\cf read} returns the next
-object parsable from the given character input \var{port}, updating
+object parsable from the given textual input \var{port}, updating
 \var{port} to point to
 the first character past the end of the external representation of the object.
 
@@ -3545,7 +3545,7 @@ a closed port.
 \proto{read-char}{}{io module procedure}
 \rproto{read-char}{ port}{io module procedure}}
 
-Returns the next character available from the character input \var{port},
+Returns the next character available from the textual input \var{port},
 updating
 the \var{port} to point to the following character.  If no more characters
 are available, an end of file object is returned.  \var{Port} may be
@@ -3558,7 +3558,7 @@ omitted, in which case it defaults to the value returned by {\cf current-input-p
 \proto{peek-char}{}{io module procedure}
 \rproto{peek-char}{ port}{io module procedure}}
 
-Returns the next character available from the character input \var{port},
+Returns the next character available from the textual input \var{port},
 {\em without} updating
 the \var{port} to point to the following character.  If no more characters
 are available, an end of file object is returned.  \var{Port} may be
@@ -3580,7 +3580,7 @@ whenever a call to {\cf read-char} would have hung.
 \proto{read-line}{}{io module procedure}
 \rproto{read-line}{ port}{io module procedure}}
 
-Returns the next line of text available from the character input
+Returns the next line of text available from the textual input
 \var{port}, updating the \var{port} to point to the following character.
 If an end of line is read, a string containing all of the text up to
 (but not including) the end of line is returned, and the port is updated
@@ -3612,7 +3612,7 @@ that can be read in using {\cf read}.
 \proto{char-ready?}{}{io module procedure}
 \rproto{char-ready?}{ port}{io module procedure}}
 
-Returns \schtrue{} if a character is ready on the character input \var{port} and
+Returns \schtrue{} if a textual is ready on the character input \var{port} and
 returns \schfalse{} otherwise.  If {\cf char-ready} returns \schtrue{} then
 the next {\cf read-char} operation on the given \var{port} is guaranteed
 not to hang.  If the \var{port} is at end of file then {\cf char-ready?}\
@@ -3682,7 +3682,7 @@ omitted, in which case it defaults to the value returned by {\cf
 \proto{write}{ obj}{write module procedure}
 \rproto{write}{ obj port}{write module procedure}}
 
-Writes a written representation of \var{obj} to the given character output
+Writes a written representation of \var{obj} to the given textual output
 \var{port}.  Strings
 that appear in the written representation are enclosed in doublequotes, and
 within those strings backslash and doublequote characters are
@@ -3711,7 +3711,7 @@ terminate if \var{obj} contains circular structure.
 \proto{display}{ obj}{write module procedure}
 \rproto{display}{ obj port}{write module procedure}}
 
-Writes a representation of \var{obj} to the given character output \var{port}.
+Writes a representation of \var{obj} to the given textual output \var{port}.
 Strings that appear in the written representation are not enclosed in
 doublequotes, and no characters are escaped within those strings.  
 Symbols are not escaped.  Character
@@ -3732,7 +3732,7 @@ human-readable output.
 \proto{newline}{}{io module procedure}
 \rproto{newline}{ port}{io module procedure}}
 
-Writes an end of line to character output \var{port}.  Exactly how this
+Writes an end of line to textual output \var{port}.  Exactly how this
 is done differs
 from one operating system to another.  Returns an unspecified value.
 The \var{port} argument may be omitted, in which case it defaults to the
@@ -3746,7 +3746,7 @@ value returned by {\cf current-output-port}.
 \rproto{write-char}{ char port}{io module procedure}}
 
 Writes the character \var{char} (not an external representation of the
-character) to the given character output \var{port} and returns an unspecified
+character) to the given textual output \var{port} and returns an unspecified
 value.  The
 \var{port} argument may be omitted, in which case it defaults to the value
 returned by {\cf current-output-port}.
