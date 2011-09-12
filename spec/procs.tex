@@ -1990,6 +1990,15 @@ upper nor lower case.
 \end{entry}
 
 
+\begin{entry}{%
+\proto{numeric-digit}{ char}{char library procedure}}
+
+This procedure returns the numeric value (0 to 9) of its argument
+if it is a numeric digit (that is, if {\cf char-numeric?} returns \schtrue{}),
+or \schfalse{} on any other character.
+
+\end{entry}
+
 
 \begin{entry}{%
 \proto{char->integer}{ char}{procedure}
@@ -2883,6 +2892,15 @@ and \cf{+}:
 (+ (delay (* 3 7)) 13)  \ev  34%
 \end{scheme}
 \end{itemize}
+\end{entry}
+
+\begin{entry}{%
+\proto{eager} { \var{obj}}{lazy library procedure}}
+
+{\cf Eager} returns a promise which when forced will return
+\var{obj}.  It is similar to {\cf lazy}, but does not delay
+its argument: it is a procedure rather than syntax.
+
 \end{entry}
 
 \begin{entry}{%
