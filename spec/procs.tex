@@ -2057,8 +2057,6 @@ equivalents.
 \label{stringsection}
 
 Strings are sequences of characters.  
-Implementations may support characters that they do not allow to appear
-in strings.
 \vest Strings are written as sequences of characters enclosed within doublequotes
 ({\cf "}).  Within a string literal, various escape
 sequences\mainindex{escape sequence} represent characters other than
@@ -2117,7 +2115,7 @@ Implementations may forbid certain characters from appearing in strings.
 For example, an implementation might support the entire Unicode repertoire,
 but only allow characters U+0000 to U+00FF (the Latin-1 repertoire) in
 strings.  It is an error to pass such a forbidden character to
-{\cf string}, {\cf string-set!}, or {\cf string-fill}.
+{\cf make-string}, {\cf string}, {\cf string-set!}, or {\cf string-fill!}.
 
 
 \begin{entry}{%
@@ -2333,10 +2331,16 @@ Returns a newly allocated copy of the given \var{string}.
 
 
 \begin{entry}{%
-\proto{string-fill!}{ string char}{procedure}}
+\proto{string-fill!}{ string char}{procedure}
+\proto{string-fill!}{ string char start end}{procedure}}
 
-Stores \var{char} in every character location of the given \var{string} and returns an
+If two arguments are given,
+stores \var{char} in every character location of the given \var{string} and returns an
 unspecified value.  % <!>
+If four arguments are given,
+stores \var{char} in every character location of the given \var{string}
+between \var{start} (inclusive) and \var{end} exclusive and returns an
+unspecified value.
 
 \end{entry}
 
@@ -2483,10 +2487,16 @@ The elements of the new vector are the same (in the sense of
 
 
 \begin{entry}{%
-\proto{vector-fill!}{ vector fill}{procedure}}
+\proto{vector-fill!}{ vector fill}{procedure}
+\proto{vector-fill!}{ vector fill start end}{procedure}}
 
-Stores \var{fill} in every element of \var{vector}.
-The value returned by {\cf vector-fill!}\ is unspecified.  % <!>
+If two arguments are passed,
+stores \var{fill} in every element of \var{vector}
+and returns an unspecified value.
+If four arguments are given,
+stores \var{fill} in every element of the given \var{vector}
+between \var{start} (inclusive) and \var{end} exclusive and returns an
+unspecified value.
 
 \end{entry}
 
