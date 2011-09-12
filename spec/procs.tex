@@ -2590,6 +2590,23 @@ The inequality
 must be true.  The value returned by {\cf bytevector-copy-partial!} is unspecified.
 \end{entry}
 
+\begin{entry}{%
+\proto{utf8->string}{ bytevector} {procedure}
+\proto{string->utf8}{ string} {procedure}}
+
+These procedures translate between strings and bytevectors
+that encode those strings using the UTF-8 encoding.
+The {\cf utf8\coerce{}string} procedure decodes a bytevector
+and returns the corresponding string;
+the {\cf string\coerce{}utf8} procedure
+encodes a string and returns the corresponding bytevector.
+
+\begin{scheme}
+(utf8->string \#u8(\#x41)) \ev "A"
+(string->utf8 "$\lambda$") \ev \#u8(\#xCE \#xBB)
+\end{scheme}
+
+\end{entry}
 
 \section{Control features}
 \label{proceduresection}
