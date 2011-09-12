@@ -3812,18 +3812,22 @@ deserve description here.
 
 
 \begin{entry}{%
-\proto{load}{ filename}{load library procedure}}
-
-\todo{Fix}
+\proto{load}{ filename}{load library procedure}
+\proto{load}{ filename environment-specifier}{load library procedure}}
 
 An implementation-dependent operation is used to transform
 \var{filename} into the name of an existing file
 containing Scheme source code.  The {\cf load} procedure reads
 expressions and definitions from the file and evaluates them
-sequentially.  It is unspecified whether the results of the expressions
+sequentially in the environment specified by \var{environment-specifier}.
+If \var{environment-specifier} is omitted, {\cf (interaction-environment)}
+is assumed.
+
+It is unspecified whether the results of the expressions
 are printed.  The {\cf load} procedure does not affect the values
 returned by {\cf current-input-port} and {\cf current-output-port}.
-{\cf load} returns an unspecified value.
+It returns an unspecified value.
+
 
 \begin{rationale}
 For portability, {\cf load} must operate on source files.
