@@ -2600,6 +2600,9 @@ The {\cf utf8\coerce{}string} procedure decodes a bytevector
 and returns the corresponding string;
 the {\cf string\coerce{}utf8} procedure
 encodes a string and returns the corresponding bytevector.
+It is an error to pass invalid byte sequences
+or byte sequences representing characters which are forbidden in strings,
+to {\cf utf8\coerce{}string}.
 
 \begin{scheme}
 (utf8->string \#u8(\#x41)) \ev "A"
@@ -3353,7 +3356,7 @@ defined in terms of characters such as {\cf read} and {\cf write}.
 
 A binary port supports reading or writing of individual bytes from
 or to a backing store containing bytes using {\cf read-u8} and {\cf
-write-u8}, below.
+write-u8} below, as well as operations defined in terms of bytes.
 Whether the textual and binary port types are disjoint is
 implementation-dependent.
 
@@ -3698,7 +3701,6 @@ omitted, in which case it defaults to the value returned by {\cf
 
 \end{entry}
 
-
 \begin{entry}{%
 \proto{peek-u8}{}{procedure}
 \rproto{peek-u8}{ port}{procedure}}
@@ -3710,7 +3712,6 @@ returned.  \var{Port} may be omitted, in which case it defaults to the
 value returned by {\cf current-input-port}.
 
 \end{entry}
-
 
 \begin{entry}{%
 \proto{u8-ready?}{}{procedure}
@@ -3725,6 +3726,41 @@ omitted, in which case it defaults to the value returned by {\cf
   current-input-port}.
 
 \end{entry}
+
+\begin{entry}{%
+\proto{read-bytevector}{ length}{procedure}
+\rproto{read-bytevector}{ length port}{procedure}}
+
+Reads the next \var{length} bytes, or as many as are available before the end of file,
+from the binary
+input \var{port} into a newly allocated bytevector in left-to-right order
+and returns the bytevector.
+If no bytes are available,
+an end of file object is returned.
+\var{Port} may be
+omitted, in which case it defaults to the value returned by {\cf
+  current-input-port}.
+
+\end{entry}
+
+\begin{entry}{%
+\proto{read-bytevector!}{ bytevector start end}{procedure}
+\rproto{read-bytevector!}{ bytevector start end port}{procedure}}
+
+Places the next $end-start$ bytes, or as many as are available
+before the end of file,
+from the binary
+input \var{port} into \var{bytevector} in left-to-right order
+beginning at the \var{start} position.
+Returns the number of bytes read.
+If no bytes are available,
+an end of file object is returned.
+\var{Port} may be
+omitted, in which case it defaults to the value returned by {\cf
+  current-input-port}.
+
+\end{entry}
+
 
 \subsection{Output}
 \label{outputsection}
@@ -3820,6 +3856,32 @@ the value returned by {\cf current-output-port}.
 \end{entry}
 
 \begin{entry}{%
+\proto{write-bytevector}{ bytevector}{procedure}
+\rproto{write-bytevector}{ bytevector port}{procedure}}
+
+Writes the bytes of \var{bytevector} in left-to-right order to the
+binary output \var{port}.
+\var{Port} may be
+omitted, in which case it defaults to the value returned by {\cf
+  current-output-port}.
+
+\end{entry}
+
+\begin{entry}{%
+\proto{write-partial-bytevector}{ bytevector start end}{procedure}
+\rproto{write-partial-bytevector}{ bytevector start end port}{procedure}}
+
+Writes the bytes of \var{bytevector}
+from \var{start} (inclusive) to \var{end} (exclusive)
+in left-to-right order to the
+binary output \var{port}.
+\var{Port} may be
+omitted, in which case it defaults to the value returned by {\cf
+  current-output-port}.
+
+\end{entry}
+
+\begin{entry}{%
 \proto{flush-output-port}{}{procedure}
 \rproto{flush-output-port}{ port}{procedure}}
 
@@ -3840,7 +3902,7 @@ deserve description here.
 
 \begin{entry}{%
 \proto{load}{ filename}{load library procedure}
-\proto{load}{ filename environment-specifier}{load library procedure}}
+\rproto{load}{ filename environment-specifier}{load library procedure}}
 
 An implementation-dependent operation is used to transform
 \var{filename} into the name of an existing file
