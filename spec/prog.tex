@@ -460,7 +460,7 @@ A \hyper{feature requirement} must be one of the following forms:
 
 \begin{itemize}
 \item {\tt\hyper{feature identifier}}
-\item {\tt(define-library \hyper{library name})}
+\item {\tt(library \hyper{library name})}
 \item {\tt(and \hyper{feature requirement} \dotsfoo)}
 \item {\tt(or \hyper{feature requirement} \dotsfoo)}
 \item {\tt(not \hyper{feature requirement})}
@@ -469,7 +469,7 @@ A \hyper{feature requirement} must be one of the following forms:
 Each implementation maintains a list of feature identifiers which are
 present, as well as a list of libraries which can be imported.  The
 value of a \hyper{feature requirement} can be determined by replacing
-each \hyper{feature identifier} and {\tt(define-library \hyper{library name})}
+each \hyper{feature identifier} and {\tt(library \hyper{library name})}
 on the implementation's lists with \schtrue, and all other feature
 identifiers and library names with \schfalse, then evaluating the
 resulting expression as a Scheme boolean expression under the normal
