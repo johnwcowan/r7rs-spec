@@ -713,7 +713,8 @@ Otherwise it returns \schfalse{}.
 
 These procedures return \schtrue{} if their arguments are (respectively):
 equal, monotonically increasing, monotonically decreasing,
-monotonically nondecreasing, or monotonically nonincreasing.
+monotonically nondecreasing, or monotonically nonincreasing,
+and \schfalse{} otherwise.
 
 These predicates are required to be transitive.
 
@@ -2140,6 +2141,7 @@ string are unspecified.
 \proto{string}{ char \dotsfoo}{procedure}}
 
 Returns a newly allocated string composed of the arguments.
+It is analogous to {\cf list}.
 
 \end{entry}
 
@@ -2277,6 +2279,7 @@ invoking the corresponding procedures without \hbox{``{\tt -ni}''}.
 
 These procedures apply the Unicode full string uppercasing, lowercasing,
 and case-folding algorithms to their arguments and return the result.
+If the result is equal to the argument, a new string need not be allocated.
 Note that language-sensitive mappings and foldings are not used.  
 The result may differ in length from the argument.  What is more, a
 few characters have case-mappings that depend on the surrounding context.
@@ -2381,7 +2384,7 @@ constants must be quoted:
 \begin{entry}{%
 \proto{vector?}{ obj}{procedure}}
  
-Returns \schtrue{} if \var{obj} is a vector, otherwise returns \schfalse.
+Returns \schtrue{} if \var{obj} is a vector; otherwise returns \schfalse.
 \end{entry}
 
 
@@ -2400,7 +2403,7 @@ Otherwise the initial contents of each element is unspecified.
 \proto{vector}{ obj \dotsfoo}{procedure}}
 
 Returns a newly allocated vector whose elements contain the given
-arguments.  Analogous to {\cf list}.
+arguments.  It is analogous to {\cf list}.
 
 \begin{scheme}
 (vector 'a 'b 'c)               \ev  \#(a b c)%
@@ -2942,7 +2945,7 @@ its argument: it is a procedure rather than syntax.
 \label{continuations} \domain{\var{Proc} must be a procedure of one
 argument.} The procedure {\cf call-with-current-continuation} (or its
 equivalent abbreviation {\cf call/cc}) packages
-up the current continuation (see the rationale below) as an ``escape
+the current continuation (see the rationale below) as an ``escape
 procedure''\mainindex{escape procedure} and passes it as an argument to
 \var{proc}.  The escape procedure is a Scheme procedure that, if it is
 later called, will abandon whatever continuation is in effect at that later
@@ -3008,7 +3011,7 @@ the power of {\cf call-with-current-continuation}.
 
 \vest A common use of {\cf call-with-current-continuation} is for
 structured, non-local exits from loops or procedure bodies, but in fact
-{\cf call-with-current-continuation} is extremely useful for implementing a
+{\cf call-with-current-continuation} is useful for implementing a
 wide variety of advanced control structures.
 
 \vest Whenever a Scheme expression is evaluated there is a
@@ -3379,7 +3382,7 @@ as if by {\cf open-input-file} or {\cf open-output-file}.  If the
 file cannot be opened, an error is signalled.  If \var{proc} returns,
 then the port is closed automatically and the values yielded by the
 \var{proc} are returned.  If \var{proc} does not return, then 
-the port will not be closed automatically unless it is possible to
+the port must not be closed automatically unless it is possible to
 prove that the port will never again be used for a read or write
 operation.
 
