@@ -959,7 +959,7 @@ that binding, evaluates the clauses as if they were the clauses of a
 continuation and dynamic extent of the {\cf guard} expression. If every
 \hyper{cond clause}'s \hyper{test} evaluates to \schfalse{} and there
 is no {\cf else} clause, then
-{\cf raise} is re-invoked on the raised object within the dynamic
+{\cf raise-continuable} is re-invoked on the raised object within the dynamic
 extent of the original call to {\cf raise} except that the current
 exception handler is that of the {\cf guard} expression.
 
