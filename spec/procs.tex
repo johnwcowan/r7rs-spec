@@ -3234,10 +3234,12 @@ The procedure {\cf error-object?} must return \schtrue{} on such objects.
 
 \begin{scheme}
 (define (null-list? l)
-  (cond ((pair? l) #f)
-	((null? l) #t)
+  (cond ((pair? l) \#f)
+        ((null? l) \#t)
         (else
-          (error "null-list?: argument out of domain" l))))
+          (error
+            "null-list?: argument out of domain"
+            l))))
 \end{scheme}
 
 \end{entry}
@@ -4042,5 +4044,14 @@ constant during a run of the program, but may vary between different runs.
 
 Returns an exact integer representing the number of jiffies per SI
 second. This value is an implementation-specified constant.
+
+\begin{scheme}
+(define (time-length)
+  (let ((list (make-list 100000))
+        (start (current-jiffy)))
+    (length list)
+    (/ (- (current-jiffy) start)
+       (jiffies-per-second))))
+\end{scheme}
 \end{entry}
 
