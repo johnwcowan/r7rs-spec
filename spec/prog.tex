@@ -15,11 +15,8 @@ rest of the present chapter.
 Programs and libraries are typically stored in files, although programs
 may be entered interactively to a running Scheme system, and other
 paradigms are possible.
-
-\todo{Shinn: If not in this report, then in a ``standard practice''
-  ammendment or SRFI we need to say something about the directory
-  structure and file extensions used for libraries and programs.}
-
+Implementations which store libraries in files should document the
+mapping from the name of a library to its location in the file system.
 
 Program parts other than expressions that are present
 at the top level of a program can be interpreted declaratively.
@@ -316,6 +313,7 @@ to be a predicate for instances of {\cf <pare>}.
 Libraries provide a way to organize Scheme programs into reusable parts
 with explicitly defined interfaces to the rest of the program.  This
 section defines the notation and semantics for libraries.
+
 
 \subsection{Library Syntax}
 
