@@ -68,6 +68,12 @@ variable.  This form is equivalent to
   (lambda \hyper{formal} \hyper{body}))\rm.%
 \end{scheme}
 
+\item{\tt(define-values (\hyper{formals}) \hyper{expression})}
+
+This form assigns the values returned by \hyper{expression}
+to the variables of \hyper{formals} in sequence.
+If there is a final variable preceded by a space-delimited period,
+it will be assigned to a list of any remaining values.
 \end{itemize}
 
 \subsection{Top level definitions}
