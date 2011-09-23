@@ -289,6 +289,7 @@ applying {\cf eqv?} on other objects such as numbers and symbols.
 A rule of thumb is that objects are generally {\cf equal?} if they print
 the same.  {\cf Equal?}\ must always terminate, even if its arguments are
 circular data structures.
+If two objects are {cf eqv?}, they must be {cf equal} as well.
 
 \begin{scheme}
 (equal? 'a 'a)                  \ev  \schtrue
