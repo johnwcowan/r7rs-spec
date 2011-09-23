@@ -483,40 +483,6 @@ In particular, the description of transcendental functions in IEEE 754-2008
 should be followed by such implementations, particularly with respect
 to infinities and NaNs.
 
-\vest Implementations that provide more than one representation
-of floating-point numbers with differing precisions
-must follow these rules: An inexact result
-must be represented with at least as much precision as is used to express any of
-the inexact arguments to that operation.  It is desirable (but not required) for
-potentially inexact operations such as {\cf sqrt}, when applied to \tupe{exact}
-arguments, to produce \tupe{exact} answers whenever possible (for example the
-square root of an \tupe{exact} 4 should be an \tupe{exact} 2).
-If, however, an
-\tupe{exact} number is operated upon so as to produce an \tupe{inexact} result
-(as by {\cf sqrt}), then
-the most precise representation available must be used.
-
-In addition, implementations may
-distinguish special number objects called \tupe{positive infinity},
-\tupe{negative infinity}, and \tupe{NaN}.
-
-Positive infinity is regarded as an inexact real (but not rational)
-number object that represents an indeterminate number greater than the
-numbers represented by all rational number objects. Negative infinity
-is regarded as an inexact real (but not rational) number object that
-represents an indeterminate number less than the numbers represented
-by all rational numbers.
-
-A NaN is regarded as an inexact real (but not rational) number object
-so indeterminate that it might represent any real number, including
-positive or negative infinity, and might even be greater than positive
-infinity or less than negative infinity.
-It might even represent no number at all, as in the case of 
-{\cf (asin 2.0)}.
-
-Note that the real and the imaginary parts of a complex number
-can be infinities or NaNs.
-
 Although Scheme allows a variety of written
 notations for
 numbers, any particular implementation may support only some of them.
@@ -527,6 +493,54 @@ it cannot represent as an \tupe{exact} number, then it may either report a
 violation of an implementation restriction or it may silently represent the
 constant by an \tupe{inexact} number.
 
+\subsection{Implementation extensions}
+\index{implementation extension}
+
+\vest Implementations may provide more than one representation of
+floating-point numbers with differing precisions.  In an implementation
+which does so, an inexact result must be represented with at least
+as much precision as is used to express any of the inexact arguments
+to that operation.  Although it is desirable for potentially inexact
+operations such as {\cf sqrt} to produce \tupe{exact} answers when
+applied to \tupe{exact} arguments, if an \tupe{exact} number is operated
+upon so as to produce an \tupe{inexact} result, then the most precise
+representation available must be used.  For example, the value of {\cf
+(sqrt 4)} should be {\cf 2}, but in an implementation that provides both
+single and double precision floating point numbers it may be {\cf 2.0d0}
+but must not be {\cf 2.0s0}.
+
+In addition, implementations may
+distinguish special numbers called \tupe{positive infinity},
+\tupe{negative infinity}, \tupe{NaN}, and \tupe{negative zero}.
+
+Positive infinity is regarded as an inexact real (but not rational)
+number that represents an indeterminate value greater than the
+numbers represented by all rational numbers. Negative infinity
+is regarded as an inexact real (but not rational) number that
+represents an indeterminate value less than the numbers represented
+by all rational numbers.
+
+A NaN is regarded as an inexact real (but not rational) number
+so indeterminate that it might represent any real value, including
+positive or negative infinity, and might even be greater than positive
+infinity or less than negative infinity.
+It might even represent no number at all, as in the case of 
+{\cf (asin 2.0)}.
+
+Note that the real and the imaginary parts of a complex number
+can be infinities or NaNs.
+
+Negative zero is an inexact real value written {\cf -0.0} which is distinct
+(in the sense of {\cf eqv?}) from {\cf 0.0}.  A Scheme implementation
+is not required to distinguish negative zero.  If it does, however, the
+behavior of the transcendental functions is sensitive to the distinction
+in accordance with IEEE 754.
+
+Furthermore, the negation of negative zero is ordinary zero and vice
+versa.  This implies that the sum of two negative zeros is negative,
+and the result of subtracting (positive) zero from a negative zero is
+likewise negative.  However, numerical comparisons treat negative zero
+as equal to zero.
 
 \subsection{Syntax of numerical constants}
 \label{numbernotations}
@@ -579,6 +593,7 @@ Implementations are not required to support them, but if they do,
 they must be in conformance with IEEE 754.  However, implementations
 are not required to support signaling NaNs, or provide a way to distinguish
 between different NaNs.
+
 
 \subsection{Numerical operations}
 
