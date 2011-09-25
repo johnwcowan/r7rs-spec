@@ -1,10 +1,13 @@
-; Program to process r7rs.idx entries.
+;; Program to process r7rs.idx entries.
 
-; Script for running this in Chicken:
-;
-;  (load "index.sch")
-;  (call-with-input-file "r7rs.idx" read-entries)
-;  (call-with-output-file "index.tex" create-index)
+;; Script for running this in Chicken:
+;; $ csi index.sch -e '(run)'
+
+(define (run)
+  (call-with-input-file "r7rs.idx" read-entries)
+  (call-with-output-file "index.tex" create-index))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (define main 0)
 (define aux 1)
@@ -18,27 +21,42 @@
 
 (define *database* '())
 
+;; The TeX index entries for these values confuse the reader so we
+;; skip them.
+(define *bad-entries* '("" "##"))
+
 (define (read-entries in)
   (let ((next (read-char in)))
     (cond ((eof-object? next))
 	  ((char=? next #\")
-	   (let* ((key (read-rest-of-string in))
-		  (font (read in))
-		  (main/aux (if (eq? 'main (read in)) 0 1))
-		  (page (read in)))
-	     (index-entry key font main/aux page)
-	     (read-entries in)))
+	   (let ((key (read-rest-of-string in)))
+             (cond
+              ((member key *bad-entries*)
+               (read-rest-of-line in)
+               (read-entries in))
+              (else
+               (let* ((font (read in))
+                      (main/aux (if (eq? 'main (read in)) 0 1))
+                      (page (read in)))
+                 (index-entry key font main/aux page)
+                 (read-entries in))))))
 	  (else
 	   (read-entries in)))))
 
 ; For reading in strings that contain \.
 
-(define (read-rest-of-string in)
+(define (read-to-delimiter in delimiter)
   (let loop ((chars '()))
     (let ((next (read-char in)))
-      (if (char=? next #\")
+      (if (char=? next delimiter)
 	  (list->string (reverse chars))
 	  (loop (cons next chars))))))
+
+(define (read-rest-of-string in)
+  (read-to-delimiter in #\"))
+
+(define (read-rest-of-line in)
+  (read-to-delimiter in #\newline))
 
 (define (index-entry key font main/aux page)
   (set! *database*
@@ -81,10 +99,12 @@
         (begin (display "Inconsistent entries:")
                (newline)
                (pretty-print entries)
-               (newline)
                (newline)))
     (let ((key (entry-key (car entries)))
-          (font (entry-font (car entries)))
+          (font (if (any? (lambda (e) (equal? "tt" (entry-font e)))
+                         entries)
+                    "tt"
+                    (entry-font (car entries))))
           (main? (entry-main/aux (car entries)))
           (pages (remove-duplicates (map entry-page entries))))
       (if main?
@@ -121,6 +141,12 @@
 	    (else
 	     #f))))
 
+(define (any? pred list)
+  (let loop ((list list))
+    (cond ((null? list) #f)
+          ((pred (car list)) #t)
+          (else (loop (cdr list))))))
+
 (define (remove-duplicates x)
   (define (loop x y)
     (cond ((null? x) (reverse y))
@@ -135,6 +161,11 @@
 (define *semi* "; ")
 (define *comma* ", ")
 
+(define (escape str)
+  (if (equal? str "_")
+      "\\_"
+      str))
+
 (define (write-entries key font main pages p)
   (if (and (char-alphabetic? (string-ref key 0))
            (not (char=? (string-ref *last-key* 0)
@@ -142,7 +173,7 @@
       (begin (display "\\indexspace" p)
              (newline p)))
   (set! *last-key* key)
-  (display (string-append *s1* font *s2* key *s3*) p)
+  (display (string-append *s1* font *s2* (escape key) *s3*) p)
   (if main
       (begin (write main p)
              (if (not (null? pages))
