@@ -1,5 +1,5 @@
 
-.PHONY: all clean
+.PHONY: all clean cleaner checkindex
 
 all: r7rs.pdf
 
@@ -14,8 +14,14 @@ SOURCES=r7rs.tex basic.tex example.tex intro.tex prog.tex struct.tex \
 	repository.tex derive.tex index.tex procs.tex sem.tex stdmod-raw.tex \
 	features.tex
 
+# index.tex: r7rs.idx
+# 	csi index.sch -e '(run)'
+
 stdmod.tex: stdmod-raw.tex
 	./genstdmod.pl < $< > $@
+
+checkindex: stdmod-raw.tex index.tex
+	./checkindex.sh
 
 r7rs.pdf: $(SOURCES)
 	pdflatex $<
