@@ -450,10 +450,11 @@ numerator          denominator         gcd
 lcm                floor               ceiling
 truncate           round               rationalize
 expt               exact-integer-sqrt
-floor/             ceiling/            truncate/
-round/             euclidean/
+floor/             ceiling/            centered/
+truncate/          round/              euclidean/
 floor-quotient     floor-remainder
 ceiling-quotient   ceiling-remainder
+centered-quotient  centered-remainder
 truncate-quotient  truncate-remainder
 round-quotient     round-remainder
 euclidean-quotient euclidean-remainder
@@ -841,6 +842,9 @@ however, they return the additive or multiplicative inverse of their argument.
 \proto{ceiling/}{ \vri{n} \vrii{n}}{procedure}
 \proto{ceiling-quotient}{ \vri{n} \vrii{n}}{procedure}
 \proto{ceiling-remainder}{ \vri{n} \vrii{n}}{procedure}
+\proto{centered/}{ \vri{n} \vrii{n}}{procedure}
+\proto{centered-quotient}{ \vri{n} \vrii{n}}{procedure}
+\proto{centered-remainder}{ \vri{n} \vrii{n}}{procedure}
 \proto{truncate/}{ \vri{n} \vrii{n}}{procedure}
 \proto{truncate-quotient}{ \vri{n} \vrii{n}}{procedure}
 \proto{truncate-remainder}{ \vri{n} \vrii{n}}{procedure}
@@ -856,7 +860,7 @@ number-theoretic (integer) division.  \vrii{n} should be non-zero.
 The procedures ending in {\cf /} return two integers; the other
 procedures return an integer.  All the procedures compute a
 quotient \vr{n_q} and remainder \vr{n_r} such that
-$\vri{n} = \vrii{n} \vr{n_q} + \vr{n_r}$.  For each of the five
+$\vri{n} = \vrii{n} \vr{n_q} + \vr{n_r}$.  For each of the six
 division operators, there are three procedures defined as follows:
 
 \begin{scheme}
