@@ -893,6 +893,7 @@ implementation-dependent.
 \pproto{(parameterize ((\hyperi{param} \hyperi{value}) \dotsfoo)}{syntax}
 {\tt\obeyspaces%
 \hspace*{1em}\hyper{body})}}
+\mainschindex{parameterize}
 
 {\cf parameterize} is used to change the values returned by
 parameter objects for the dynamic extent of the body.
@@ -947,6 +948,7 @@ procedure in the call chain explicitly.
 \hspace*{4em}\hyperi{cond clause} \hyperii{cond clause} \dotsfoo)\\
 \hspace*{2em}\hyper{body})}\\
 }
+\mainschindex{guard}
 
 \syntax
 Each \hyper{cond clause} is as in the specification of {\cf cond}.
@@ -1315,6 +1317,7 @@ A \hyper{transformer spec} has one of the following forms:
 \hspace*{1em}\hyper{syntax rule} \dotsfoo)}\\
 \pproto{\_}{\auxiliarytype}
 \pproto{\dotsfoo}{\auxiliarytype}}
+\mainschindex{_}
 
 \syntax
 Each \hyper{literal}, as well as the \hyper{ellipsis} in the second form must
@@ -1531,6 +1534,7 @@ which would result in an invalid procedure call.
 
 \begin{entry}{%
 \pproto{(syntax-error \hyper{message} \hyper{args} \dotsfoo)}{\exprtype}}
+\mainschindex{syntax-error}
 
 {\cf syntax-error} behaves similarly to {\cf error} except that implementations
 with an expansion pass separate from evaluation should signal an error
