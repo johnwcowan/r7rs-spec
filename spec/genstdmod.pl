@@ -16,7 +16,7 @@ while (<>) {
       my $columnated;
       my $column = 0;
       my $space = "";
-      for my $id (split(/\s+/, $list)) {
+      for my $id (sort split(/\s+/, $list)) {
         my $new_column = $column + 1 + int(length($id) / COLUMN_WIDTH);
         if ($new_column > COLUMNS) {
           $columnated .= "\n";
