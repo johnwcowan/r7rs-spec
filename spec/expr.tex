@@ -585,7 +585,6 @@ name.  In the most common uses of {\cf letrec}, all the \hyper{init}s are
 Another restriction is that the continuation of each \hyper{init}
 should not be invoked more than once.
 
-
 \end{entry}
 
 
@@ -618,73 +617,6 @@ referring to the value of the corresponding \hyper{variable} or the
 \hyper{variable} of any of the bindings that follow it in
 \hyper{bindings}.
 
-\begin{entry}{%
-\proto{let-values}{ \hyper{mvbindings} \hyper{body}}{\exprtype}}
-
-\syntax
-\hyper{Mvbindings} should have the form
-\begin{scheme}
-(((\hyperi{variable} \hyperii{variable} \dotsfoo) \hyper{init}) \dotsfoo)\rm,%
-\end{scheme}
-where each \hyper{init} is an expression, and \hyper{body} should be a
-sequence of zero or more definitions followed by a
-sequence of one or more expressions.  It is
-an error for a \hyper{variable} to appear more than once in the list of variables
-being bound.
-
-\semantics
-The \hyper{init}s are evaluated in the current environment (in some
-unspecified order) as if by invoking {\cf call-with-values}, the
-\hyper{variable}s are bound to fresh locations holding the values returned
-by the \hyper{init}s, the \hyper{body} is evaluated in the extended
-environment, and the values of the last expression of \hyper{body}
-are returned.  Each binding of a \hyper{variable} has \hyper{body}
-as its region.\index{region}
-
-It is an error if an \hyper{init} returns more or fewer values than the
-number of \hyper{variable}s associated with it.
-
-\begin{scheme}
-(let-values (((root rem) (exact-integer-sqrt 32)))
-  (* root rem)                \ev  35
-
-\end{scheme}
-
-
-\end{entry}
-
-
-\begin{entry}{%
-\proto{let*-values}{ \hyper{mvbindings} \hyper{body}}{\exprtype}}\nobreak
-
-\nobreak
-\syntax
-\hyper{Mvbindings} should have the form
-\begin{scheme}
-(((\hyperi{variable} \hyperii{variable} \dotsfoo) \hyper{init}) \dotsfoo)\rm,%
-\end{scheme}
-and \hyper{body} should be a sequence of
-sequence of zero or more definitions followed by
-one or more expressions.
-
-\semantics
-{\cf let-values*} is similar to {\cf let-values}, but the bindings are performed
-sequentially from left to right, and the region\index{region} of a binding indicated
-by {\cf((\hyper{variable} \dotsfoo) \hyper{init}))}
-is that part of the {\cf let*-values}
-expression to the right of the binding.  Thus the second set of bindings are done
-in an environment in which the first set of bindings is visible, and so on.
-
-\hyper{Variable}s in one \hyper{binding} may be the same as those in other
-\hyper{binding}s, though it is an error for two \hyper{variable}s in the
-same \hyper{binding} to be the same.
-
-\end{entry}
-
-
-In all six constructs, the continuation of each expression
-used to compute initial values must not be invoked more than once.
-
 \begin{scheme}
 (letrec* ((p
            (lambda (x)
@@ -700,8 +632,103 @@ used to compute initial values must not be invoked more than once.
                 \ev  5%
 \end{scheme}
 
+\begin{entry}{%
+\proto{let-values}{ \hyper{mvbindings} \hyper{body}}{\exprtype}}
+
+\syntax
+\hyper{Mvbindings} should have the form
+\begin{scheme}
+((\hyper{formals} \hyper{init}) \dotsfoo)\rm,%
+\end{scheme}
+
+where each \hyper{init} is an expression, and \hyper{body} should be a
+sequence of zero or more definitions followed by a sequence of one or
+more expressions.  It is an error for a variable to appear more than
+once in the set of \hyper{formals}.
+
+\semantics
+The \hyper{init}s are evaluated in the current environment (in some
+unspecified order) as if by invoking {\cf call-with-values}, the
+variables occuring in the \hyper{formals} are bound to fresh locations
+holding the values returned by the \hyper{init}s, where the
+\hyper{formals} are matched to the return values in the same way that
+the \hyper{formals} in a {\cf lambda} expression are matched to the
+arguments in a procedure call.  Then, the \hyper{body} is evaluated in
+the extended environment, and the values of the last expression of
+\hyper{body} are returned.  Each binding of a \hyper{variable} has
+\hyper{body} as its region.\index{region}
+
+It is an error if the \hyper{formals} do not match the number of
+values returned by the corresponding \hyper{init}.
+
+\begin{scheme}
+(let-values (((root rem) (exact-integer-sqrt 32)))
+  (* root rem)                \ev  35%
+\end{scheme}
+
 \end{entry}
 
+
+\begin{entry}{%
+\proto{let*-values}{ \hyper{mvbindings} \hyper{body}}{\exprtype}}\nobreak
+
+\nobreak
+\syntax
+\hyper{Mvbindings} should have the form
+\begin{scheme}
+((\hyper{formals} \hyper{init}) \dotsfoo)\rm,%
+\end{scheme}
+and \hyper{body} should be a sequence of sequence of zero or more
+definitions followed by one or more expressions.  In each \hyper{formals},
+any variable must not appear more than once.
+
+\semantics
+{\cf let-values*} is similar to {\cf let-values}, but the
+\hyper{init}s are evaluated and bindings created sequentially from
+left to right, with the region of the bindings of each \hyper{formals}
+including the bindings to its right as well as \hyper{body}.  Thus the
+second \hyper{init} is evaluated in an environment in which the first
+set of bindings is visible and initialized, and so on.
+
+\begin{scheme}
+(let ((a 'a) (b 'b) (x 'x) (y 'y))
+  (let*-values (((a b) (values x y))
+                ((x y) (values a b)))
+    (list a b x y)))     \ev (x y x y)%
+\end{scheme}
+
+\end{entry}
+
+In all six constructs, the continuation of each expression
+used to compute initial values must not be invoked more than once.
+
+\end{entry}
+
+
+\subsection{Multiple-value definitions}
+
+The construct {\cf define-values} introduces new definitions like
+{\cf define}, but can create multiple definitions from a single
+expression returning multiple values.
+
+\begin{entry}{%
+\proto{define-values}{ \hyper{formals} \hyper{expression}}{\exprtype}}\nobreak
+
+A variable must not appear more than once in the set of \hyper{formals}.
+
+\semantics
+\hyper{Expression} is evaluated, and the \hyper{formals} are bound
+to the return values in the same way that the \hyper{formals} in a
+{\cf lambda} expression are matched to the arguments in a procedure
+call.
+
+\begin{scheme}
+(let ()
+  (define-values (x y) (values 1 2))
+  (+ x y))     \ev 3%
+\end{scheme}
+
+\end{entry}
 
 \subsection{Sequencing}\unsection
 
