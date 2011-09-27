@@ -358,10 +358,10 @@ where {\cf make-promise} is defined as follows:
     (list (cons done? proc))))%
 \end{scheme}
 
-Finally, we define {\cf force} to call the procedure
-expressions in promises iteratively using a trampoline technique until a non-lazy
-result (i.e. a value created by {\cf delay} instead of {\cf lazy}) is
-returned, as follows:
+Finally, we define {\cf force} to call the procedure expressions in
+promises iteratively using a trampoline technique following
+\cite{srfi45}, until a non-lazy result (i.e. a value created by {\cf
+  delay} instead of {\cf lazy}) is returned, as follows:
 
 \begin{scheme}
 (define (force promise)

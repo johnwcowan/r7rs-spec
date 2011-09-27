@@ -2901,11 +2901,11 @@ heap is exhausted.
                                \ev 5
 \end{scheme}
 
-{\cf delay}, {\cf lazy}, and {\cf force} are mainly intended for programs written in
-functional style.  The following examples should not be considered to
-illustrate good programming style, but they illustrate the property that
-only one value is computed for a promise, no matter how many times it is
-forced.
+{\cf delay}, {\cf lazy}, and {\cf force} are mainly intended for
+programs written in functional style.  The following examples should
+not be considered to illustrate good programming style, but they
+illustrate the property that only one value is computed for a promise,
+no matter how many times it is forced.
 
 \begin{scheme}
 (define count 0)
@@ -2953,7 +2953,7 @@ and \cf{+}:
 \proto{eager} { \var{obj}}{lazy library procedure}}
 
 {\cf Eager} returns a promise which when forced will return
-\var{obj}.  It is similar to {\cf lazy}, but does not delay
+\var{obj}.  It is similar to {\cf delay}, but does not delay
 its argument: it is a procedure rather than syntax.
 
 \end{entry}
