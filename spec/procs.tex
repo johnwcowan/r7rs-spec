@@ -732,6 +732,7 @@ These procedures return \schtrue{} if their arguments are (respectively):
 equal, monotonically increasing, monotonically decreasing,
 monotonically nondecreasing, or monotonically nonincreasing,
 and \schfalse{} otherwise.
+If any of the arguments are +nan.0, all the predicates return \schfalse{}.
 
 These predicates are required to be transitive.
 
