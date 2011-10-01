@@ -13,7 +13,7 @@ the other program parts, as well as libraries, are the subject of the
 rest of the present chapter.
 
 Programs and libraries are typically stored in files, although programs
-may be entered interactively to a running Scheme system, and other
+can be entered interactively to a running Scheme system, and other
 paradigms are possible.
 Implementations which store libraries in files should document the
 mapping from the name of a library to its location in the file system.
@@ -42,7 +42,7 @@ are allowed.  They are valid only at the top level of a \hyper{program}
 and at the beginning of a \hyper{body}.
 \mainindex{definition}
 
-A definition should have one of the following forms:\mainschindex{define}
+A definition takes one of the following forms:\mainschindex{define}
 
 \begin{itemize}
 
@@ -136,7 +136,7 @@ to
     (foo (+ x 3))))%
 \end{scheme}
 
-Just as for the equivalent {\cf letrec*} expression, it must be
+Just as for the equivalent {\cf letrec*} expression, it is an error if it is not
 possible to evaluate each \hyper{expression} of every internal
 definition in a \hyper{body} without assigning or referring to
 the value of the corresponding \hyper{variable} or the \hyper{variable}
@@ -182,12 +182,13 @@ Otherwise, it is an {\em internal syntax definition}, and is local to the
 \todo{Shinn: This description is hideous.
 Cowan: But now less hideous than before.}
 
-Macros may expand into definitions in any context that permits
+Macros can expand into definitions in any context that permits
 them. However, it is an error for a definition to define an
-identifier whose binding must be known to determine the meaning of the
+identifier whose binding has to be known in order to determine the meaning of the
 definition itself, or of any preceding definition that belongs to the
 same group of internal definitions. Similarly, it is an error for an
-internal definition to define an identifier whose binding must be known
+internal definition to define an identifier whose binding has to be known
+in order
 to determine the boundary between the internal definitions and the
 expressions of the body it belongs to. For example, the following are
 errors:
@@ -332,7 +333,7 @@ report and future versions of this report.
 Libraries whose first identifier is {\cf srfi} are reserved for libraries
 implementing Scheme Requests for Implementation.
 
-A \hyper{library declaration} can be any of:
+A \hyper{library declaration} may be any of:
 
 \begin{itemize}
 
@@ -351,8 +352,8 @@ A \hyper{library declaration} can be any of:
 \end{itemize}
 
 An \ide{export} declaration specifies a list of identifiers which
-may be made visible to other libraries or programs.  An
-\hyper{export spec} must have one of the following forms:
+can be made visible to other libraries or programs.  An
+\hyper{Export spec} takes one of the following forms:
 
 \begin{itemize}
 \item{\hyper{identifier}}
@@ -370,7 +371,7 @@ using \hyper{$identifier_2$} as the external name.
 An \ide{import} declaration provides a way to import the identifiers
 exported by a library.  Each \hyper{import set} names a set of bindings
 from another library and possibly specifies local names for the
-imported bindings. It must be one of the following:
+imported bindings. It takes one of the following forms:
 
 \begin{itemize}
 \item {\tt\hyper{library name}}
@@ -446,7 +447,7 @@ which may also appear at the top level of a program,
 provides a way to statically
 expand different library declarations depending on the 
 implementation under which the library is being loaded.  A
-\hyper{cond-expand clause} must be of the following form:
+\hyper{cond-expand clause} takes the following form:
 
 {\tt(\hyper{feature requirement} \hyper{library declaration} \dotsfoo)}
 
@@ -454,7 +455,7 @@ The last clause may be an ``else clause,'' which has the form
 
 {\tt(else \hyper{library declaration} \dotsfoo)}
 
-A \hyper{feature requirement} must be one of the following forms:
+A \hyper{feature requirement} takes one of the following forms:
 
 \begin{itemize}
 \item {\tt\hyper{feature identifier}}
@@ -466,7 +467,7 @@ A \hyper{feature requirement} must be one of the following forms:
 
 Each implementation maintains a list of feature identifiers which are
 present, as well as a list of libraries which can be imported.  The
-value of a \hyper{feature requirement} can be determined by replacing
+value of a \hyper{feature requirement} is determined by replacing
 each \hyper{feature identifier} and {\tt(library \hyper{library name})}
 on the implementation's lists with \schtrue, and all other feature
 identifiers and library names with \schfalse, then evaluating the
@@ -483,7 +484,7 @@ if there is an \ide{else} clause, its \hyper{library declaration}s are
 included.  Otherwise, the \ide{cond-expand} has no effect.
 
 The exact features provided are implementation-defined, but for
-portability a set of recommended features is given in
+portability a core set of features is given in
 appendix~\ref{stdfeatures}.
 
 \todo{Shinn: Perhaps make this a separate subsection describing a

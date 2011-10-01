@@ -6,7 +6,7 @@
 \label{specialformsection}
 \label{variablesection}
 
-An identifier\index{identifier} may name a type of syntax, or it may name
+An identifier\index{identifier} names either a type of syntax or
 a location where a value can be stored.  An identifier that names a type
 of syntax is called a {\em syntactic keyword}\mainindex{syntactic keyword}
 and is said to be {\em bound} to that syntax.  An identifier that names a
@@ -98,7 +98,7 @@ Many objects have standard external representations, but some, such as
 procedures, do not have standard representations (although particular
 implementations may define representations for them).
 
-An external representation may be written in a program to obtain the
+An external representation can be written in a program to obtain the
 corresponding object (see {\cf quote}, section~\ref{quote}).
 
 External representations can also be used for input and output.  The
@@ -113,8 +113,8 @@ expression evaluating to the integer 8; rather, it is an external
 representation of a three-element list, the elements of which are the symbol
 {\tt +} and the integers 2 and 6.  Scheme's syntax has the property that
 any sequence of characters that is an expression is also the external
-representation of some object.  This can lead to confusion, since it may
-not be obvious out of context whether a given sequence of characters is
+representation of some object.  This can lead to confusion, since it is not always
+obvious out of context whether a given sequence of characters is
 intended to denote data or program, but it is also a source of power,
 since it facilitates writing programs such as interpreters and
 compilers that treat programs as data (or vice versa).
@@ -129,7 +129,7 @@ objects in the appropriate sections of chapter~\ref{initialenv}.
 Variables and objects such as pairs, vectors, and strings implicitly
 denote locations\mainindex{location} or sequences of locations.  A string, for
 example, denotes as many locations as there are characters in the string. 
-(These locations need not correspond to a full machine word.) A new value may be
+(These locations need not correspond to a full machine word.) A new value can be
 stored into one of these locations using the {\tt string-set!} procedure, but
 the string continues to denote the same locations as before.
 
@@ -165,8 +165,8 @@ Implementations of Scheme are required to be
 Procedure calls that occur in certain syntactic
 contexts defined below are {\em tail calls}.  A Scheme implementation is
 properly tail recursive if it supports an unbounded number of active
-tail calls.  A call is {\em active} if the called procedure may still
-return.  Note that this includes calls that may be returned from either
+tail calls.  A call is {\em active} if the called procedure might still
+return.  Note that this includes calls that might be returned from either
 by the current continuation or by continuations captured earlier by
 {\cf call-with-current-continuation} that are later invoked.
 In the absence of captured continuations, calls could

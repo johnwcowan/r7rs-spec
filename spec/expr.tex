@@ -127,8 +127,8 @@ The order of evaluation may be chosen differently for each procedure call.
 \end{note}
 
 \begin{note} In many dialects of Lisp, the empty combination, {\tt
-()}, is a legitimate expression.  In Scheme, combinations must have at
-least one subexpression, so {\tt ()} is not a syntactically valid
+()}, is a legitimate expression.  In Scheme, it is an error for a combination
+to have no subexpressions, so {\tt ()} is not a syntactically valid
 expression.
 \end{note}
 
@@ -189,8 +189,8 @@ allocated list, and the list is stored in the binding of the
 \hyper{variable$_{n+1}$})}:
 If a space-delimited period precedes the last variable, then
 the procedure takes $n$ or more arguments, where $n$ is the
-number of formal arguments before the period (there must
-be at least one).
+number of formal arguments before the period (it is an error if there is not
+at least one).
 The value stored in the binding of the last variable will be a
 newly allocated
 list of the actual arguments left over after all the other actual
@@ -246,8 +246,8 @@ unspecified.
 \proto{set!}{ \hyper{variable} \hyper{expression}}{\exprtype}}
 
 \hyper{Expression} is evaluated, and the resulting value is stored in
-the location to which \hyper{variable} is bound.  \hyper{Variable} must
-be bound either in some region\index{region} enclosing the {\cf set!}\ expression
+the location to which \hyper{variable} is bound.  It is an error if\hyper{Variable} is not
+bound either in some region\index{region} enclosing the {\cf set!}\ expression
 or at top level.  The result of the {\cf set!} expression is
 unspecified.
 
@@ -310,7 +310,7 @@ If the selected \hyper{clause} contains only the
 \hyper{test} and no \hyper{expression}s, then the value of the
 \hyper{test} is returned as the result.  If the selected \hyper{clause} uses the
 \ide{=>} alternate form, then the \hyper{expression} is evaluated.
-Its value must be a procedure that accepts one argument; this procedure is then
+It is an error if its value is not a procedure that accepts one argument.  This procedure is then
 called on the value of the \hyper{test} and the values returned by this
 procedure are returned by the {\cf cond} expression.
 
@@ -346,7 +346,7 @@ the form
 ((\hyperi{datum} \dotsfoo) \hyperi{expression} \hyperii{expression} \dotsfoo)\rm,%
 \end{scheme}
 where each \hyper{datum} is an external representation of some object.
-All the \hyper{datum}s must be distinct.
+It is an error unless all the \hyper{datum}s are distinct.
 Alternatively, a \hyper{clause} may be of the form
 \begin{scheme}
 ((\hyperi{datum} \dotsfoo) => \hyper{expression})%
@@ -378,7 +378,7 @@ otherwise the result of the {\cf case} expression is unspecified.
 
 If the selected \hyper{clause} or else clause uses the
 \ide{=>} alternate form, then the \hyper{expression} is evaluated.
-Its value must be a procedure that accepts one argument; this procedure is then
+It is an error unless its value is a procedure that accepts one argument.  This procedure is then
 called on the value of the \hyper{key} and the values returned by this
 procedure are returned by the {\cf case} expression.
 
@@ -576,9 +576,9 @@ define mutually recursive procedures.
 		\ev  \schtrue%
 \end{scheme}
 
-One restriction on {\cf letrec} is very important: it must be possible
+One restriction on {\cf letrec} is very important: it is an error if it is not possible
 to evaluate each \hyper{init} without assigning or referring to the value of any
-\hyper{variable}.  If this restriction is violated, then it is an error.  The
+\hyper{variable}.  The
 restriction is necessary because Scheme passes arguments by value rather than by
 name.  In the most common uses of {\cf letrec}, all the \hyper{init}s are
 \lambdaexp{}s and the restriction is satisfied automatically.
@@ -612,7 +612,7 @@ a \hyper{variable} has the entire {\cf letrec*} expression as its
 region\index{region}, making it possible to define mutually recursive
 procedures.
 
-It must be possible to evaluate each \hyper{init} without assigning or
+It is an error if it is not possible to evaluate each \hyper{init} without assigning or
 referring to the value of the corresponding \hyper{variable} or the
 \hyper{variable} of any of the bindings that follow it in
 \hyper{bindings}.
@@ -680,7 +680,7 @@ values returned by the corresponding \hyper{init}.
 \end{scheme}
 and \hyper{body} should be a sequence of sequence of zero or more
 definitions followed by one or more expressions.  In each \hyper{formals},
-any variable must not appear more than once.
+it is an error if any variable appears more than once.
 
 \semantics
 {\cf let-values*} is similar to {\cf let-values}, but the
@@ -699,8 +699,8 @@ set of bindings is visible and initialized, and so on.
 
 \end{entry}
 
-In all six constructs, the continuation of each expression
-used to compute initial values must not be invoked more than once.
+In all six constructs, it is an error if the continuation of each expression
+used to compute initial values is invoked more than once.
 
 \end{entry}
 
@@ -714,7 +714,7 @@ expression returning multiple values.
 \begin{entry}{%
 \proto{define-values}{ \hyper{formals} \hyper{expression}}{\exprtype}}\nobreak
 
-A variable must not appear more than once in the set of \hyper{formals}.
+It is an error if a variable appears more than once in the set of \hyper{formals}.
 
 \semantics
 \hyper{Expression} is evaluated, and the \hyper{formals} are bound
@@ -740,7 +740,7 @@ context:
 
 It may appear as part of a \hyper{body}, or at the
 \hyper{top-level}, or directly nested in a {\cf begin} that
-is one of these three types.  In this case, the {\cf begin} form must have
+is one of these three types.  In this case, it is an error if {\cf begin} form does not have
 the format specified in the first header line. This use of begin acts
 as a splicing form --- the forms inside the \hyper{body} are spliced
 into the surrounding body, as if the begin wrapper were not actually
@@ -751,7 +751,7 @@ present.
 \begin{entry}{%
 \proto{begin}{ \hyperi{expression} \hyperii{expression} \dotsfoo}{\exprtype}}
 
-It may appear as an ordinary expression.  In this case, it must have the shape
+It may also appear as an ordinary expression.  In this case, it is an error if it does not have the shape
 specified in the second header line. In this case, the
 \hyper{expression}s are evaluated sequentially from left to right,
 and the values of the last \hyper{expression} are returned. This
@@ -832,12 +832,12 @@ been written instead of {\cf(\hyper{variable} \hyper{init})}.
 
 \label{namedlet}
 ``Named {\cf let}'' is a variant on the syntax of \ide{let} which provides
-a more general looping construct than {\cf do} and may also be used to express
+a more general looping construct than {\cf do} and can also be used to express
 recursions.
 It has the same syntax and semantics as ordinary {\cf let}
 except that \hyper{variable} is bound within \hyper{body} to a procedure
 whose formal arguments are the bound variables and whose body is
-\hyper{body}.  Thus the execution of \hyper{body} may be repeated by
+\hyper{body}.  Thus the execution of \hyper{body} can be repeated by
 invoking the procedure named by \hyper{variable}.
 
 %                                              |  <-- right margin
@@ -885,7 +885,7 @@ is unspecified.
 \todo{Fix.}
 
 The {\cf lazy} construct
-is similar to {\cf delay}, but its argument must evaluate to a promise.
+is similar to {\cf delay}, but it is an error for its argument not to evaluate to a promise.
 The returned promise, when forced, will evaluate to whatever the original
 promise would have evaluated to if it had been forced.
 \todo{consider removing unspecified effect}
@@ -909,7 +909,7 @@ returns the value associated with the parameter object.
 Initially, this value is the value of
 {\cf (converter \var{init})}, or of \var{init}
 if the conversion procedure \var{converter} is not specified.
-The associated value may be temporarily changed
+The associated value can be temporarily changed
 using {\cf parameterize}, which is described below.
 
 The effect of passing arguments to a parameter object is
@@ -924,7 +924,7 @@ implementation-dependent.
 
 {\cf parameterize} is used to change the values returned by
 parameter objects for the dynamic extent of the body.
-\domain{The value of each \hyper{param} expression must be a parameter object.}
+\domain{It is an error unless the value of each \hyper{param} expression is a parameter object.}
 The \hyper{param} and \hyper{value} expressions
 are evaluated in an unspecified order.  The \hyper{body} is
 evaluated in a dynamic extent in which calls to the
@@ -1019,8 +1019,8 @@ evaluating
 \hyper{qq template}, however, the expression following the comma is
 evaluated (``unquoted'') and its result is inserted into the structure
 instead of the comma and the expression.  If a comma appears followed
-immediately by an at-sign (\atsign),\mainschindex{,@} then the following
-expression must evaluate to a list; the opening and closing parentheses
+immediately by an at-sign (\atsign),\mainschindex{,@} then it is an error if the following
+expression does not evaluate to a list; the opening and closing parentheses
 of the list are then ``stripped away'' and the elements of the list are
 inserted in place of the comma at-sign expression sequence.  A comma
 at-sign should only appear within a list or vector \hyper{qq template}.
@@ -1071,7 +1071,7 @@ may be equivalent to either of the following expressions:
         (cons a (cons 4 (cons 'five '(6))))))
 \end{scheme}
 
-However, it must not be equivalent to this expression:
+However, it is not equivalent to this expression:
 
 \begin{scheme}
 (let ((a 3)) (list (list 1 2) a 4 'five 6))
@@ -1151,9 +1151,10 @@ the \hyper{formals} of any \hyper{clause}.
 \pproto{\#\hyper{n}=\hyper{datum}}{\exprtype}
 \pproto{\#\hyper{n}\#}{\exprtype}}
 
-\hyper{N} must be an exact unsigned decimal integer.  The syntax
+The syntax
 \texttt{\#\hyper{n}=\hyper{datum}} reads as \hyper{datum}, but also
 results in \hyper{datum} being labelled by \hyper{n}.
+It is an error if \hyper{n} is not an exact unsigned decimal integer datum.
 
 The syntax \texttt{\#\hyper{n}\#} serves as a reference to some
 object labelled by \texttt{\#\hyper{n}=}; the result is the same
@@ -1169,8 +1170,8 @@ structures with shared or circular substructure.
 
 A reference \texttt{\#\hyper{n}\#} may occur only after a label
 \texttt{\#\hyper{n}=}; forward references are not permitted. In
-addition, the reference may not appear as the labelled object itself
-(that is, one may not write \texttt{\#\hyper{n}= \#\hyper{n}\#}),
+addition, it is an error if the reference appears as the labelled object itself
+(as in \texttt{\#\hyper{n}= \#\hyper{n}\#}),
 because the object labelled by \texttt{\#\hyper{n}=} is not well
 defined in this case.
 
@@ -1237,7 +1238,7 @@ see section~\ref{defines}.
 \item If a macro transformer inserts a free reference to an
 identifier, the reference refers to the binding that was visible
 where the transformer was specified, regardless of any local
-bindings that may surround the use of the macro.
+bindings that surround the use of the macro.
 
 \end{itemize}
 
@@ -1248,7 +1249,8 @@ bindings that may surround the use of the macro.
 analogous to {\cf let} and {\cf letrec}, but they bind
 syntactic keywords to macro transformers instead of binding variables
 to locations that contain values.  Syntactic keywords may also be
-bound at top level; see section~\ref{define-syntax}.
+bound at top level or elsewhere with {\cf define-syntax};
+see section~\ref{define-syntax}.
 
 \begin{entry}{%
 \proto{let-syntax}{ \hyper{bindings} \hyper{body}}{\exprtype}}
@@ -1347,9 +1349,9 @@ A \hyper{transformer spec} has one of the following forms:
 \mainschindex{_}
 
 \syntax
-Each \hyper{literal}, as well as the \hyper{ellipsis} in the second form must
-be an identifier, and each
-\hyper{syntax rule} should be of the form
+It is an error unless each \hyper{literal}, as well as the \hyper{ellipsis} in the second form 
+is an identifier and each
+\hyper{syntax rule} is of the form
 \begin{scheme}
 (\hyper{pattern} \hyper{template})%
 \end{scheme}
