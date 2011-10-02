@@ -443,6 +443,13 @@ or if there are no expressions, \schfalse{} is returned.
 The \hyper{test} expression is evaluated, and if it evaluates to a true value,
 the expressions are evaluated in order.  The result of the {\cf when}
 expression is unspecified.
+
+The following example prints {\cf 12}:
+\begin{scheme}
+(when (= 1 1.0)
+  (display "1")
+  (display "2")  \ev  \unspecified
+\end{scheme}
 \end{entry}
 
 \begin{entry}{%
@@ -451,6 +458,13 @@ expression is unspecified.
 The \hyper{test} expression is evaluated, and if it evaluates to \schfalse{},
 the expressions are evaluated in order.  The result of the {\cf unless}
 expression is unspecified.
+
+The following example prints nothing:
+\begin{scheme}
+(unless (= 1 1.0)
+  (display "1")
+  (display "2")  \ev  \unspecified
+\end{scheme}
 \end{entry}
 
 \subsection{Binding constructs}

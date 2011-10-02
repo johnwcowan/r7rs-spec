@@ -690,6 +690,11 @@ is true.
 The conjunction of {\cf exact?} and {\cf integer?}, it returns \schtrue{}
 if \vr{z} is both \tupe{exact} and an \tupe{integer}.
 Otherwise, it returns \schfalse{}.
+\begin{scheme}
+(exact-integer? 32) \ev \schtrue{}
+(exact-integer? 32.0) \ev \schfalse{}
+(exact-integer? 32/5) \ev \schfalse{}
+\end{scheme}
 \end{entry}
 
 
@@ -1593,6 +1598,10 @@ Returns a newly allocated list of \var{k} elements.  If a second
 argument is given, then each element is initialized to \var{fill}.
 Otherwise the initial contents of each element is unspecified.
 
+\begin{scheme}
+(make-list 2 3)   \ev   (3 3)
+\end{scheme}
+
 \end{entry}
 
 
@@ -1766,6 +1775,8 @@ and {\cf equal?} otherwise.
                 \ev  \schfalse
 (assoc (list 'a) '(((a)) ((b)) ((c))))   
                            \ev  ((a))
+(assoc 2.0 '((1 1) (2 4) (3 9)) =)
+                           \ev (2 4)
 (assq 5 '((2 3) (5 7) (11 13)))    
                            \ev  \unspecified
 (assv 5 '((2 3) (5 7) (11 13)))    
@@ -2007,12 +2018,17 @@ upper nor lower case.
 
 
 \begin{entry}{%
-\proto{numeric-digit}{ char}{char library procedure}}
+\proto{digit-value}{ char}{char library procedure}}
 
 This procedure returns the numeric value (0 to 9) of its argument
 if it is a numeric digit (that is, if {\cf char-numeric?} returns \schtrue{}),
 or \schfalse{} on any other character.
 
+\begin{scheme}
+(digit-value \#\backwhack{}3) \ev 3
+(digit-value \#\backwhack{}x0664) \ev 4
+(digit-value \#\backwhack{}x0EA6) \ev 0
+\end{scheme}
 \end{entry}
 
 
@@ -2490,6 +2506,12 @@ It is an error if any element is not a character allowed in strings.
 {\cf string->vector} returns a newly
 created vector initialized to the elements of the string \var{string}.
 
+
+\begin{scheme}
+(string->vector "ABC")  \ev   \#(\#\backwhack{}A \#\backwhack{}B \#\backwhack{}C)
+(vector->string
+  \#(\#\backwhack{}1 \#\backwhack{}2 \#\backwhack{}3) \ev "123"
+\end{scheme}
 \end{entry}
 
 \begin{entry}{%
@@ -2735,7 +2757,7 @@ the values returned by earlier returns are not mutated.
    (if (eqv? k \sharpsign\backwhack{}u)
        (char-upcase c)
        (char-downcase c)))
- "studlycaps"
+ "studlycaps xxx"
  "ululululul")   \lev   "StUdLyCaPs"
 \end{scheme}
 
@@ -2762,7 +2784,7 @@ the values returned by earlier returns are not mutated.
 (vector-map (lambda (n) (expt n n))
             '\#(1 2 3 4 5))                \lev  \#(1 4 27 256 3125)
 
-(vector-map + '\#(1 2 3) '\#(4 5 6))       \lev  \#(5 7 9)
+(vector-map + '\#(1 2 3) '\#(4 5 6 7))       \lev  \#(5 7 9)
 
 (let ((count 0))
   (vector-map
@@ -2956,7 +2978,7 @@ its argument: it is a procedure rather than syntax.
 \proto{call-with-current-continuation}{ proc}{procedure}
 \proto{call/cc}{ proc}{procedure}}
 
-\label{continuations} \domain{It is an error unless {\var{proc} is a procedure of one
+\label{continuations} \domain{It is an error unless \var{proc} accepts one
 argument.} The procedure {\cf call-with-current-continuation} (or its
 equivalent abbreviation {\cf call/cc}) packages
 the current continuation (see the rationale below) as an ``escape
@@ -3195,7 +3217,7 @@ object may be used to represent an exception.
 \begin{entry}{%
 \proto{with-exception-handler}{ \var{handler} \var{thunk}}{procedure}}
 
-\domain{It is an error unless \var{handler} is a procedure and accepts one argument,
+\domain{It is an error unless \var{handler} accepts one argument,
 and \var{thunk} is a procedure that accepts zero arguments.}  The {\cf
 with-exception-handler} procedure returns the results of invoking
 \var{thunk}.  \var{Handler} is installed as the current
@@ -3405,7 +3427,7 @@ system on which the Scheme program is running.
 \proto{call-with-input-file}{ string proc}{file library procedure}
 \proto{call-with-output-file}{ string proc}{file library procedure}}
 
-It is an error unless \var{proc} is a procedure that accepts one argument.
+It is an error unless \var{proc} accepts one argument.
 \todo{consider removing unspecified effect}
 For {\cf call-with-input-file},
 the file named by \var{string} should already exist; for
@@ -3434,7 +3456,7 @@ both {\cf call-with-current-continuation} and {\cf call-with-input-file} or
 \begin{entry}{%
 \proto{call-with-port}{ port proc}{procedure}}
 
-It is an error unless\var{Proc} accepts one argument.  The {\cf call-with-port}
+It is an error unless \var{proc} accepts one argument.  The {\cf call-with-port}
 procedure calls \var{proc} with \var{port} as an argument.  If
 \var{proc} returns, \var{port} is closed automatically and the values
 returned by \var{proc} are returned.
