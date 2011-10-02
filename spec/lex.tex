@@ -68,7 +68,10 @@ See section~\ref{extendedalphas} for a formal syntax of identifiers.
 
 In contrast with earlier revisions of the report~\cite{R5RS}, the
 syntax of data distinguishes between upper and lower case in
-identifiers and in characters specified via their names.
+identifiers and in characters specified via their names,
+but not in numbers,
+nor in \meta{inline hex escapes} used
+in the syntax of identifiers, characters, or strings.
 
 Implementations may support case-insensitive syntax for backward
 compatibility or for other reasons.
