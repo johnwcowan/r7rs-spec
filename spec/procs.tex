@@ -510,7 +510,7 @@ upon so as to produce an \tupe{inexact} result, then the most precise
 representation available must be used.  For example, the value of {\cf
 (sqrt 4)} should be {\cf 2}, but in an implementation that provides both
 single and double precision floating point numbers it may be {\cf 2.0d0}
-but must not be {\cf 2.0s0}.
+but must not be {\cf 2.0f0} (the standard representation of single precision).
 
 In addition, implementations may
 distinguish special numbers called \tupe{positive infinity},
@@ -3472,7 +3472,7 @@ returned by \var{proc} are returned.
 
 Returns \schtrue{} if \var{obj} is an input port, output port, 
 textual port, binary port, or any
-kind of port, respectively, otherwise returns \schfalse.
+kind of port, respectively.  Otherwise returns \schfalse.
 
 \end{entry}
 
