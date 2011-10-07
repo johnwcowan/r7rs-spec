@@ -13,6 +13,12 @@ This chapter describes Scheme's built-in procedures.  The initial (or
 ``top level'') Scheme environment is empty except for {\cf import},
 so further bindings can only be introduced with {\cf import}.
 
+The procedures {\cf force} and {\cf eager} are intimately associated
+with the expression types {\cf delay} and {\cf lazy}, and are described
+with them in section~\ref{force}.  In the same way, the procedure
+{\cf make-parameter} is intimately assocaited with the expression type
+{\cf parameterize}, and is described with it in section~\ref{make-parameter}.
+
 \todo{Gleckler: We need to make it clearer what ``top level'' really
   means here.  For example, how we shoudl explain how it differs from
   the REPL.}
@@ -34,7 +40,7 @@ chapter~\ref{stdlibraries}.
 \todo{consider removing unspecified effect}
 A program may use a top-level definition to bind any variable.  It may
 subsequently alter any such binding by an assignment (see
-\ref{assignment}).  These operations do not modify the behavior of
+section~\ref{assignment}).  These operations do not modify the behavior of
 Scheme's built-in procedures, or any procedure defined in a library
 (see section~\ref{libraries}).  Altering any top-level binding that has
 not been introduced by a definition has an unspecified effect on the
@@ -2863,116 +2869,6 @@ If more than one \var{vector} is given and not all vectors have the same length,
 
 \end{entry}
 
-
-\begin{entry}{%
-\proto{force}{ promise}{lazy library procedure}}
-
-Forces the value of a \var{promise} created by \ide{delay} or \ide{lazy},
-section~\ref{delay}).\index{promise}  
-If a value which is not a promise has already been computed, that value is
-returned.  Otherwise, the promise is first evaluated, then overwritten
-by the obtained promise or value, and then {\cf force} is again applied
-(iteratively) to the promise.
-
-\begin{scheme}
-(force (delay (+ 1 2)))   \ev  3
-(let ((p (delay (+ 1 2))))
-  (list (force p) (force p)))  
-                               \ev  (3 3)
-
-(define integers
-  (letrec ((next
-            (lambda (n)
-              (delay (cons n (next (+ n 1)))))))
-    (next 0)))
-(define head
-  (lambda (stream) (car (force stream))))
-(define tail
-  (lambda (stream) (cdr (force stream))))
-
-(head (tail (tail integers)))  
-                               \ev  2%
-\end{scheme}
-
-The following example is a mechanical transformation of a lazy
-stream-filtering algorithm into Scheme.  Each call to a constructor is
-wrapped in {\cf delay}, and each argument passed to a deconstructor is
-wrapped in {\cf force}.  The use of {\cf (lazy ...)} instead of {\cf
-(delay (force ...))} around the body of the procedure ensures that an
-ever-growing sequence of pending promises does not build up until the
-heap is exhausted.
-
-\begin{scheme}
-(define (stream-filter p? s)
-  (lazy
-   (if (null? (force s)) 
-       (delay '())
-       (let ((h (car (force s)))
-             (t (cdr (force s))))
-         (if (p? h)
-             (delay (cons h (stream-filter p? t)))
-             (stream-filter p? t))))))
-
-(head (tail (tail (stream-filter? odd? integers))))
-                               \ev 5
-\end{scheme}
-
-{\cf delay}, {\cf lazy}, and {\cf force} are mainly intended for
-programs written in functional style.  The following examples are
-not intended to illustrate good programming style, but they
-illustrate the property that only one value is computed for a promise,
-no matter how many times it is forced.
-
-\begin{scheme}
-(define count 0)
-(define p
-  (delay (begin (set! count (+ count 1))
-                (if (> count x)
-                    count
-                    (force p)))))
-(define x 5)
-p                     \ev  {\it{}a promise}
-(force p)             \ev  6
-p                     \ev  {\it{}a promise, still}
-(begin (set! x 10)
-       (force p))     \ev  6%
-\end{scheme}
-
-Various extensions to this semantics of {\cf delay}, {\cf force} and
-{\cf lazy} are supported in some implementations:
-
-\begin{itemize}
-\item Calling {\cf force} on an object that is not a promise may simply
-return the object.
-
-\item It may be the case that there is no means by which a promise can be
-operationally distinguished from its forced value.  That is, expressions
-like the following may evaluate to either \schtrue{} or to \schfalse{},
-depending on the implementation:
-
-\begin{scheme}
-(eqv? (delay 1) 1)          \ev  \unspecified
-(pair? (delay (cons 1 2)))  \ev  \unspecified%
-\end{scheme}
-
-\item Some implementations may implement ``implicit forcing,'' where
-the value of a promise is forced by primitive procedures like \cf{cdr}
-and \cf{+}:
-
-\begin{scheme}
-(+ (delay (* 3 7)) 13)  \ev  34%
-\end{scheme}
-\end{itemize}
-\end{entry}
-
-\begin{entry}{%
-\proto{eager} { \var{obj}}{lazy library procedure}}
-
-{\cf Eager} returns a promise which when forced will return
-\var{obj}.  It is similar to {\cf delay}, but does not delay
-its argument: it is a procedure rather than syntax.
-
-\end{entry}
 
 \begin{entry}{%
 \proto{call-with-current-continuation}{ proc}{procedure}
