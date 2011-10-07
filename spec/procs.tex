@@ -23,20 +23,6 @@ with them in section~\ref{force}.  In the same way, the procedure
   means here.  For example, how we shoudl explain how it differs from
   the REPL.}
 
-Implementations may provide an interactive session called a
-\defining{REPL} (Read-Eval-Print Loop), where Scheme program parts can be
-entered and evaluated one at a time.  For convenience and ease of use,
-the ``top-level'' Scheme environment in an interactive
-session is not empty, but must start out with a number of variables
-bound to locations containing at least the bindings provided by the
-{\cf(scheme base)} library.  This library includes mostly core syntax
-and primitive procedures that manipulate data.  For example, the
-variable {\cf abs} is bound to a
-procedure of one argument that computes the absolute value of a
-number, and the variable {\cf +} is bound to a procedure that computes
-sums.  The full list of {\cf(scheme base)} bindings can be found in
-chapter~\ref{stdlibraries}.
-
 \todo{consider removing unspecified effect}
 A program may use a top-level definition to bind any variable.  It may
 subsequently alter any such binding by an assignment (see

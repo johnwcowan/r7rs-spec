@@ -33,6 +33,20 @@ At the top level of a program {\tt(begin \hyperi{form} \dotsfoo)} is
 equivalent to the sequence of expressions, definitions, and syntax definitions
 that form the body of the \ide{begin}.
 
+Implementations may provide an interactive session called a
+\defining{REPL} (Read-Eval-Print Loop), where Scheme program parts can be
+entered and evaluated one at a time.  For convenience and ease of use,
+the ``top-level'' Scheme environment in an interactive
+session is not empty, but must start out with a number of variables
+bound to locations containing at least the bindings provided by the
+{\cf(scheme base)} library.  This library includes mostly core syntax
+and primitive procedures that manipulate data.  For example, the
+variable {\cf abs} is bound to a
+procedure of one argument that computes the absolute value of a
+number, and the variable {\cf +} is bound to a procedure that computes
+sums.  The full list of {\cf(scheme base)} bindings can be found in
+chapter~\ref{stdlibraries}.
+
 
 \section{Definitions}
 \label{defines}
@@ -411,10 +425,9 @@ forms modify this set as follows:
 
 \ide{import} declarations may also be made at the top level of a
 program.  In a library declaration, it is an error to import the same
-identifier more than once with different bindings, to redefine or
 identifier more than once with different bindings, or to redefine or
 mutate an imported binding with {\cf define}, {\cf define-syntax}
-or {\cf set!}.
+or {\cf set!}.  However, a REPL should permit these actions.
 
 The \ide{begin}, \ide{include}, and \ide{include-ci} declarations are
 used to specify the commands and definitions that make up the body of
@@ -429,6 +442,7 @@ though wrapped in a \ide{begin}.
 The difference between the two is that \ide{include-ci} reads each file
 as if it began with the {\cf{}\#!fold-case} directive, while \ide{include}
 does not.
+All three may appear at the top level of a program.
 
 \begin{note}
 Implementations are encouraged to search for files in the directory
@@ -443,7 +457,6 @@ implementations.
 \end{note}
 
 The \ide{cond-expand} library declaration,
-which may also appear at the top level of a program,
 provides a way to statically
 expand different library declarations depending on the 
 implementation under which the library is being loaded.  A
