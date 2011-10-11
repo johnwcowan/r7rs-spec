@@ -1,13 +1,13 @@
 \extrapart{Notes}
 
 
-\subsection*{Language changes}
+\subsection*{Language changes since R5RS}
 \label{differences}
-
-This section enumerates the changes that have been made to Scheme since
-the ``Revised$^5$ report''~\cite{R5RS} was published.
+This section enumerates the differences between this report and
+the ``Revised$^5$ report''~\cite{R5RS}.
 
 {\em The list is incomplete and subject to change while this report is in draft status.}
+
 
 \begin{itemize}
 
@@ -147,8 +147,162 @@ load into.
 
 \item {\cf Transcript-on} and {\cf transcript-off} have been removed.
 
+\item The current system time is provided using TAI time.
+
 \item The semantics of read-eval-print loops are now partly prescribed,
 allowing the retroactive redefinition of procedures but not syntax forms.
+
+\end{itemize}
+
+\subsection*{Incompatibilities with the main R6RS report}
+This section enumerates the incompatibilities between R7RS and
+the ``Revised$^6$ report''~\cite{R6RS} was published.
+
+{\em The list is incomplete and subject to change while this report is in draft status.}
+
+\begin{itemize}
+\item The syntax of the module system was deliberately chosen to be
+syntactically different from R6RS, using {\cf define-library} instead of
+{\cf library} in order to allow easy disambiguation between R6RS and R7RS libraries.
+
+\item The module system does not support phase distinctions, which
+are unnecessary in the absence of low-level macros (see below),
+nor versioning, which is an important feature but deserves more
+experimentation before standardizing.
+
+\item Putting an extra level of indirection around the library body
+allows room for extensibility. The R6RS syntax provides two positional
+forms which must be present and must have the correct keywords,
+{\cf export} and {\cf import}, which does not allow for unambiguous
+extensions. The working group considers extensibility to be important,
+and so chose a syntax which provides
+a clear separation between the module declarations and the Scheme code
+which makes up the body.
+
+\item The {\cf include} library form
+makes it easier to include separate files, 
+and the {\cf include-ci} variant allows legacy 
+case-insensitive code to be incorporated.
+
+\item The {\cf cond-expand} form from SRFI 0 allows for a more
+deterministic alternative to the R6RS {\cf .impl.sls} file naming
+convention.
+
+\item Since the R7RS module system is straightforward, it is expected
+that R6RS implementations will be able to support the {\cf define-library}
+syntax in addition to their {\cf library} syntax.
+
+\item The modularization of standardized identifiers is different from the R6RS
+approach. In particular, procedures which are optional either expressly
+or by implication in R5RS have been removed from the base module.
+Only the base module is an absolute requirement.
+
+\item Identifier syntax is not provided. This is a useful feature in
+some situations, but the existence of such macros means that neither
+programmers nor other macros can look at an identifier in an evaluated
+position and know it is a reference --- this in a sense makes all macros
+slightly weaker. Individual implementations are encouraged to continue
+experimenting with this and other extensions before further standardization is done.
+
+\item Internal syntax definitions are allowed, but all references to syntax
+must follow the definition --- the {\cf even}/{\cf odd} example given is
+R6RS is not allowed.
+
+\item The R6RS exception system was incorporated as-is, but the condition
+types have been left unspecified. Specific errors that must be signalled
+in R6RS remain ``an error'' in R7RS, allowing implementations to provide
+their own extensions.  The condition system and stricter semantics may
+reappear in the large language or a later SRFI or standard. There is no
+discussion of safety.
+
+\item Full Unicode support is not required, but implementations are required to
+implement whatever characters they do support in a manner
+consistent with Unicode.  Case
+conversions are described in terms of the Unicode locale-independent
+mappings, and instead of explicit normalization forms we provide 
+normalization-insensitive string comparisons that use
+an implementation-defined normalization form
+(which may be the identity transformation). Character comparisons are
+defined by Unicode, but string comparisons are implementation-dependent,
+and therefore need not be the lexicographic mapping of the corresponding
+character comparisons (an incompatibility with R5RS). Non-Unicode
+characters are permitted.
+
+\item The full numeric tower is optional as in R5RS, but optional support for IEEE
+infinities, NaN, and -0.0 was adopted from R6RS. Most clarifications on
+numeric results were also adopted, but the R6RS procedures {\cf real-valued?},
+{\cf rational-valued?}, and {\cf integer-valued}? were not. The R5RS names
+{\cf inexact->exact} for {\cf exact} and {\cf exact->inexact} for {\cf inexact} were retained,
+with a note indicating that their names are historical.
+The R6RS division operators {\cf div}, {\cf mod}, {\cf div-and-mod}, {\cf
+div0}, {\cf mod0} and {\cf div0-and-mod0} have been replaced with a full
+set of 18 operators describing 6 different rounding semantics.
+
+\item When a result is unspecified, it is still required to be a single value,
+in the interests of R5RS compatibility. However, non-final expressions
+in a body may return any number of values.
+
+\item Because of widespread SRFI 1 support and extensive code
+that uses it, the semantics of {\cf map} and {\cf for-each} have been changed to use
+the SRFI 1 early termination behavior. Likewise
+{\cf assoc} and {\cf member} take an optional {\cf equal?} argument as in SRFI 1,
+replacing the separate {\cf assp} and {\cf memp} procedures from R6RS.
+
+\item The R6RS {\cf quasiquote} clarifications have been adopted, but the working group has not seen
+convincing enough examples to allow multiple-argument {\cf unquote} and
+{\cf unquote-splicing}.
+
+\item The R6RS method of specifying mantissa widths was not adopted.
+
+\end{itemize}
+
+\subsection*{Incompatibilities with the R6RS library report}
+
+This section enumerates the incompatibilities between R7RS and
+the ``Revised$^6$ library report''~\cite{R6RS-lib} was published.
+
+{\em The list is incomplete and subject to change while this report is in draft status.}
+
+\begin{itemize}
+
+\item The low-level macro system and {\cf syntax-case} were not adopted. There
+are two general families of macro systems in widespread use --- the
+{\cf {\cf syntax-case} family and the syntactic-closures} family --- and they have
+neither been shown to be equivalent nor capable of implementing each
+other. Given this situation,
+low-level macros have been left to the large language.
+
+\item The new I/O system from R6RS was not adopted. We feel a completely new
+system deserves a period of usage before being standardized, and were
+unhappy with the backwards-compatibility ``simple I/O'' which introduced
+a redundant API and relegated R5RS code to being a second-class
+citien.  Instead, binary ports were made at least potentially disjoint from
+character ports, using their own procedures.
+
+\item String ports are compatible with SRFI 6 rather than R6RS; analogous
+bytevector ports are also provided.
+
+\item The working group felt that the R6RS records system was overly complex, and the two layers
+poorly integrated. We spent a lot of time debating this, but in the
+end decided to simply use a generative version of SRFI 9, which has
+near-universal support among implementations. We hope to provide a more
+powerful records system in the large language.
+
+\item Enumerations are not included in the small language.
+
+\item R6RS bytevectors are included, but provide only the "u8" procedures in the small
+language.  The lexical syntax uses {\cf \#u8} for compatibility
+with SRFI 4, rather than the R6RS {\cf \#vu8} style.
+With a module system it's easier to change names than reader syntax.
+
+\item The utility macros {\cf when} and {\cf unless} are provided, but since it would be
+meaningless to try to use their result, it is left unspecified.
+
+\item The working group could not agree on many issues with hash tables and have left them for
+the large language. We've also left sorting and bitwise arithmetic to WG2.
+
+\item Pair and string mutation are too well-established to be relegated to
+separate modules.
 
 \end{itemize}
 
