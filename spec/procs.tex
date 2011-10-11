@@ -852,7 +852,10 @@ however, they return the additive or multiplicative inverse of their argument.
 \proto{round-remainder}{ \vri{n} \vrii{n}}{procedure}
 \proto{euclidean/}{ \vri{n} \vrii{n}}{procedure}
 \proto{euclidean-quotient}{ \vri{n} \vrii{n}}{procedure}
-\proto{euclidean-remainder}{ \vri{n} \vrii{n}}{procedure}}
+\proto{euclidean-remainder}{ \vri{n} \vrii{n}}{procedure}
+\proto{centered/}{ \vri{n} \vrii{n}}{procedure}
+\proto{centered-quotient}{ \vri{n} \vrii{n}}{procedure}
+\proto{centered-remainder}{ \vri{n} \vrii{n}}{procedure}}
 
 These procedures, all in the division library, implement
 number-theoretic (integer) division.  It is an error if \vrii{n} is zero.
@@ -878,6 +881,7 @@ operators uses a different choice of \vr{n_q}:
 \texttt{truncate}  & $\vr{n_q} = \text{truncate}(\vri{n} / \vrii{n})$ \\
 \texttt{round}     & $\vr{n_q} = [\vri{n} / \vrii{n}]$ \\
 \texttt{euclidean} & $\text{if } \vrii{n} > 0, \vr{n_q} = \lfloor\vri{n} / \vrii{n}\rfloor; \text{ if } \vrii{n} < 0, \vr{n_q} = \lceil\vri{n} / \vrii{n}\rceil$ \\
+\texttt{centered}  &  \text{ choose } $\vr{n_q}$ \text{ such that } $-|d/2| <= \vr{n_r} < |d/2|$ \\
 \end{tabular}
 
 For any of the operators, and for integers \vri{n} and \vrii{n}
