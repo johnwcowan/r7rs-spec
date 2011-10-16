@@ -31,6 +31,8 @@
 \newcommand{\sharpfoo}[1]{{\tt\##1}}
 \newcommand{\schfalse}{\sharpfoo{f}}
 \newcommand{\schtrue}{\sharpfoo{t}}
+\newcommand{\sharpfalse}{\sharpfoo{false}}
+\newcommand{\sharptrue}{\sharpfoo{true}}
 
 \newcommand{\singlequote}{{\tt'}}  %\char19
 \newcommand{\doublequote}{{\tt"}}
@@ -211,6 +213,14 @@
 \vskip 1em
 \hbox{\hfil\cf #1}
 \parindent=2em\par{#2}}
+
+% Scheme reports
+\newcommand{\rnrs}[1]{R$^{#1}$RS}
+\newcommand{\rthreers}{\rnrs 3}
+\newcommand{\rfourrs}{\rnrs 4}
+\newcommand{\rfivers}{\rnrs 5}
+\newcommand{\rsixrs}{\rnrs 6}
+\newcommand{\rsevenrs}{\rnrs 7}
 
 % The index
 
