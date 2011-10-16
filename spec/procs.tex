@@ -16,11 +16,11 @@ so further bindings can only be introduced with {\cf import}.
 The procedures {\cf force} and {\cf eager} are intimately associated
 with the expression types {\cf delay} and {\cf lazy}, and are described
 with them in section~\ref{force}.  In the same way, the procedure
-{\cf make-parameter} is intimately assocaited with the expression type
+{\cf make-parameter} is intimately associated with the expression type
 {\cf parameterize}, and is described with it in section~\ref{make-parameter}.
 
 \todo{Gleckler: We need to make it clearer what ``top level'' really
-  means here.  For example, how we shoudl explain how it differs from
+  means here.  For example, how we should explain how it differs from
   the REPL.}
 
 \todo{consider removing unspecified effect}
@@ -502,7 +502,7 @@ upon so as to produce an \tupe{inexact} result, then the most precise
 representation available must be used.  For example, the value of {\cf
 (sqrt 4)} should be {\cf 2}, but in an implementation that provides both
 single and double precision floating point numbers it may be {\cf 2.0d0}
-but must not be {\cf 2.0f0} (the standard representation of single precision).
+but must not be {\cf 2.0f0} (the standard representation of single precision 2).
 
 In addition, implementations may
 distinguish special numbers called \tupe{positive infinity},
@@ -1277,7 +1277,7 @@ a decimal point is used.
 
 The standard boolean objects for true and false are written as
 \schtrue{} and \schfalse.\sharpindex{t}\sharpindex{f}  
-Alternatively, they may be written \sharpfoo{true} and \sharpfoo{false}
+Alternatively, they may be written \sharptrue~and \sharpfalse,
 respectively.  What really
 matters, though, are the objects that the Scheme conditional expressions
 ({\cf if}, {\cf cond}, {\cf and}, {\cf or}, {\cf do}) treat as
@@ -1294,7 +1294,7 @@ the empty list, and all pairs, symbols, numbers, strings, vectors,
 bytevectors, records, and procedures, count as true.
 
 \begin{note}
-Programmers accustomed to other dialects of Lisp need to realize that
+Unlike some other dialects of Lisp,
 Scheme distinguishes \schfalse{} and the empty list \index{empty list}
 from each other and from the symbol \ide{nil}.
 \end{note}
@@ -2366,7 +2366,7 @@ stores \var{char} in every character location of the given \var{string} and retu
 unspecified value.  % <!>
 If four arguments are given,
 stores \var{char} in every character location of the given \var{string}
-between \var{start} (inclusive) and \var{end} exclusive and returns an
+between \var{start} (inclusive) and \var{end} (exclusive) and returns an
 unspecified value.
 
 \end{entry}
@@ -2529,7 +2529,7 @@ stores \var{fill} in every element of \var{vector}
 and returns an unspecified value.
 If four arguments are given,
 stores \var{fill} in every element of the given \var{vector}
-between \var{start} (inclusive) and \var{end} exclusive and returns an
+between \var{start} (inclusive) and \var{end} (exclusive) and returns an
 unspecified value.
 
 \end{entry}
@@ -3693,7 +3693,7 @@ omitted, in which case it defaults to the value returned by {\cf
 \proto{read-bytevector!}{ bytevector start end}{procedure}
 \rproto{read-bytevector!}{ bytevector start end port}{procedure}}
 
-Places the next $end-start$ bytes, or as many as are available
+Reads the next $end - start$ bytes, or as many as are available
 before the end of file,
 from the binary
 input \var{port} into \var{bytevector} in left-to-right order
