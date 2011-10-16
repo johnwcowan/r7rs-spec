@@ -23,7 +23,7 @@ stdmod.tex: stdmod-raw.tex
 checkindex: stdmod-raw.tex index.tex
 	./checkindex.sh
 
-r7rs.pdf: $(SOURCES)
+r7rs.pdf: $(SOURCES) stdmod.tex
 	pdflatex $<
 	pdflatex $<
 
