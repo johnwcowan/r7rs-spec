@@ -750,7 +750,7 @@ call.
 
 \subsection{Sequencing}\unsection
 
-Both of Scheme's sequencing constructs are named begin, but the two
+Both of Scheme's sequencing constructs are named {\cf begin}, but the two
 have slightly different forms and uses:
 
 \begin{entry}{%
@@ -758,7 +758,7 @@ have slightly different forms and uses:
 
 This form may appear as part of a \hyper{body}, or at the
 \hyper{top-level}, or directly nested in a {\cf begin} of this form.
-It causes the contained expressions and definitionss to be evaluated
+It causes the contained expressions and definitions to be evaluated
 exactly as if the enclosing begin construct were not present.
 
 \begin{rationale}
@@ -1487,8 +1487,8 @@ A \hyper{transformer spec} has one of the following forms:
 \mainschindex{_}
 
 \syntax
-It is an error if the \hyper{literal}s, as well as the \hyper{ellipsis} in the second form,
-are not identifiers.
+It is an error if any of the \hyper{literal}s, or the \hyper{ellipsis} in the second form,
+is not an identifier.
 It is also an error if
 \hyper{syntax rule} is not of the form
 \begin{scheme}
