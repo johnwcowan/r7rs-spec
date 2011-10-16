@@ -147,15 +147,24 @@ chosen from the set of locations that are not in use, and the chosen
 locations are marked to indicate that they are now in use before the variable
 or object is made to denote them.
 
-In many systems it is desirable for constants\index{constant} (i.e. the values of
-literal expressions) to reside in read-only-memory.  To express this, it is
-convenient to imagine that every object that denotes locations is associated
-with a flag telling whether that object is mutable\index{mutable} or
-immutable\index{immutable}.  In such systems literal constants and the strings
-returned by \ide{symbol->string} are immutable objects, while all objects
-created by the other procedures listed in this report are mutable.  It is an
+Every object that denotes locations is 
+is either mutable\index{mutable} or
+immutable\index{immutable}.  Specifically: literal constants, the strings
+returned by \ide{symbol->string}, and environments
+returned by \ide{environment} and possibly by {\cf scheme-report-environment},
+are immutable objects, while all objects
+created by the other procedures listed in this report are mutable.
+It is an
 error to attempt to store a new value into a location that is denoted by an
 immutable object.
+
+\begin{rationale}
+In many systems it is desirable for constants\index{constant} (i.e. the values of
+literal expressions) to reside in read-only memory.
+Making it an error to alter constants permits this implementation strategy,
+while not requiring other systems to actually distinguish between
+mutable and immutable objects.
+\end{rationale}
 
 \section{Proper tail recursion}
 \label{proper tail recursion}
@@ -270,6 +279,9 @@ the form {\cf (\hyperi{expression} => \hyperii{expression})}
 then the (implied) call to
 the procedure that results from the evaluation of \hyperii{expression} is in a
 tail context.  \hyperii{expression} itself is not in a tail context.
+
+\item Note that \hyper{cond clause}s appear in {\cf guard} expressions
+as well as {\cf cond} expressions.
 
 \end{itemize}
 

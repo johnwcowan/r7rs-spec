@@ -1048,7 +1048,7 @@ computes the natural logarithm of \vr{z} (not the base ten logarithm).
 arccosine ($\cos^{-1}$), and arctangent ($\tan^{-1}$), respectively.
 The two-argument variant of {\cf atan} computes {\tt (angle
 (make-rectangular \vr{x} \vr{y}))} (see below), even in implementations
-that don't support the {\cf complex} library.
+that don't support the complex library.
 
 In general, the mathematical functions log, arcsine, arccosine, and
 arctangent are multiply defined.
@@ -1136,8 +1136,8 @@ arguments are exact.
 
 \begin{rationale}
 {\cf Magnitude} is the same as \ide{abs} for a real argument,
-but {\cf abs} is in the {\cf base} library, whereas
-{\cf magnitude} is in the optional {\cf complex} library.
+but {\cf abs} is in the base library, whereas
+{\cf magnitude} is in the optional complex library.
 \end{rationale}
 
 \end{entry}
@@ -1286,12 +1286,10 @@ true\index{true} or false\index{false}.  The phrase ``a true value''\index{true}
 conditional expressions, and the phrase ``a false value''\index{false} (or
 ``false'') means any object treated as false by the conditional expressions.
 
-\vest Of all the standard Scheme values, only \schfalse{}
+\vest Of all the Scheme values, only \schfalse{}
 counts as false in conditional expressions.
-Except for \schfalse{},
-all standard Scheme values, including \schtrue,
-the empty list, and all pairs, symbols, numbers, strings, vectors,
-bytevectors, records, and procedures, count as true.
+All other Scheme values, including \schtrue,
+count as true.
 
 \begin{note}
 Programmers accustomed to other dialects of Lisp need to realize that
@@ -3235,12 +3233,12 @@ corresponding to this revision of the Scheme report (the
 Revised$^\integerversion$ Report on Scheme).
 {\cf scheme-report-environment} returns a specifier for an
 environment that is empty except for all bindings 
-defined either in the {\cf base} library or in the other libraries
+defined either in the base library or in the other libraries
 of this report that the implementation supports.
 {\cf null-environment} returns
 a specifier for an environment that is empty except for the
 bindings for all syntactic keywords
-defined either in the {\cf base} library or in the other libraries
+defined either in the base library or in the other libraries
 of this report that the implementation supports.
 
 Other values of \var{version} can be used to specify environments
@@ -3726,7 +3724,7 @@ within those strings backslash and doublequote characters are
 escaped by backslashes.  Symbols that contain non-ASCII characters
 are escaped either with inline hex escapes or with vertical bars.
 Character objects are written using the {\cf \#\backwhack} notation.
-Shared list structure is represented using reader labels.
+Shared list structure is represented using datum labels.
 {\cf write} returns an unspecified value.
 \var{Port} may be omitted, in which case it defaults to the value
 returned by {\cf current-output-port}.
@@ -3738,7 +3736,7 @@ returned by {\cf current-output-port}.
 \rproto{write-simple}{ obj port}{write library procedure}}
 
 {\cf write-simple} is the same as {\cf write}, except that shared structure is
-not represented using reader labels.  This may cause {\cf write-simple} not to
+not represented using datum labels.  This may cause {\cf write-simple} not to
 terminate if \var{obj} contains circular structure.
 
 \end{entry}

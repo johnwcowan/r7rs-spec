@@ -220,7 +220,7 @@ It is an error for a \hyper{variable} to appear more than once in
 \rproto{if}{ \hyper{test} \hyper{consequent}}{\exprtype}}  %\/ if hyper = italic
 
 \syntax
-\hyper{Test}, \hyper{consequent}, and \hyper{alternate} may be arbitrary
+\hyper{Test}, \hyper{consequent}, and \hyper{alternate} should be
 expressions.
 
 \semantics
@@ -228,7 +228,7 @@ An {\cf if} expression is evaluated as follows: first,
 \hyper{test} is evaluated.  If it yields a true value\index{true} (see
 section~\ref{booleansection}), then \hyper{consequent} is evaluated and
 its values are returned.  Otherwise \hyper{alternate} is evaluated and its
-values are returned.  If \hyper{test} yields \schfalse{} and no
+values are returned.  If \hyper{test} yields a false value and no
 \hyper{alternate} is specified, then the result of the expression is
 unspecified.
 
@@ -283,12 +283,11 @@ into the primitive constructs described in the previous section.
 \pproto{=>}{\auxiliarytype}}
 
 \syntax
-Each \hyper{clause} should be of the form
+\hyper{Clauses} take one of two forms, either:
 \begin{scheme}
 (\hyper{test} \hyperi{expression} \dotsfoo)%
 \end{scheme}
-where \hyper{test} is any expression.  Alternatively, a \hyper{clause} may be
-of the form
+where \hyper{test} is any expression, or
 \begin{scheme}
 (\hyper{test} => \hyper{expression})%
 \end{scheme}
@@ -534,7 +533,7 @@ See also named {\cf let}, section \ref{namedlet}.
 \begin{scheme}
 ((\hyperi{variable} \hyperi{init}) \dotsfoo)\rm,%
 \end{scheme}
-and \hyper{body} should be a sequence of
+and \hyper{body} should be a
 sequence of zero or more definitions followed by
 one or more expressions.
 
@@ -750,28 +749,31 @@ call.
 
 \subsection{Sequencing}\unsection
 
-The {\cf begin} keyword has two different roles, depending on its
-context:
+Both of Scheme's sequencing constructs are named begin, but the two
+have slightly different forms and uses:
 
 \begin{entry}{%
 \proto{begin}{ \hyper{expression or definition} \dotsfoo}{\exprtype}}
 
-It may appear as part of a \hyper{body}, or at the
-\hyper{top-level}, or directly nested in a {\cf begin} that
-is one of these three types.  In this case, it is an error if {\cf begin} form does not have
-the format specified in the first header line. This use of begin acts
-as a splicing form --- the forms inside the \hyper{body} are spliced
-into the surrounding body, as if the begin wrapper were not actually
-present.
+This form may appear as part of a \hyper{body}, or at the
+\hyper{top-level}, or directly nested in a {\cf begin} of this form.
+It causes the contained expressions and definitionss to be evaluated
+exactly as if the enclosing begin construct were not present.
+
+\begin{rationale}
+This form is commonly used in the output of
+macros (see section~\ref{macrosection})
+which need to generate multiple definitions and
+splice them into the context in which they are expanded.
+\end{rationale}
 
 \end{entry}
 
 \begin{entry}{%
 \proto{begin}{ \hyperi{expression} \hyperii{expression} \dotsfoo}{\exprtype}}
 
-It may also appear as an ordinary expression.  In this case, it is an error if it does not have the shape
-specified in the second header line. In this case, the
-\hyper{expression}s are evaluated sequentially from left to right,
+This form can be used as an ordinary expression.
+The \hyper{expression}s are evaluated sequentially from left to right,
 and the values of the last \hyper{expression} are returned. This
 expression type is used to sequence side effects such as assignments
 or input and output.
@@ -917,8 +919,8 @@ is unspecified.
 \proto{force}{ promise}{lazy library procedure}}
 \label{force}
 
-Forces the value of a \var{promise} created by \ide{delay} or \ide{lazy},
-section~\ref{delay}).\index{promise}  
+The {\cf force} procedure
+forces the value of a \var{promise} created by \ide{delay} or \ide{lazy}.\index{promise}
 If a value which is not a promise has already been computed, that value is
 returned.  Otherwise, the promise is first evaluated, then overwritten
 by the obtained promise or value, and then {\cf force} is again applied
@@ -1018,13 +1020,13 @@ and \cf{+}:
 \begin{entry}{%
 \proto{eager} { \var{obj}}{lazy library procedure}}
 
-{\cf Eager} returns a promise which when forced will return
+The {\cf eager} procedure returns a promise which when forced will return
 \var{obj}.  It is similar to {\cf delay}, but does not delay
 its argument: it is a procedure rather than syntax.
 
 \end{entry}
 
-\subsection{Dynamic Bindings}\unsection
+\subsection{Dynamic bindings}\unsection
 
 \begin{entry}{%
 \proto{make-parameter}{ init}{procedure}
@@ -1129,8 +1131,6 @@ is no {\cf else} clause, then
 extent of the original call to {\cf raise} except that the current
 exception handler is that of the {\cf guard} expression.
 
-The final expression in a \hyper{cond} clause is in a tail context if
-the {\cf guard} expression itself is.
 
 See section~\ref{exceptionsection} for a more complete discussion of
 exceptions.
@@ -1281,7 +1281,7 @@ the \hyper{formals} of any \hyper{clause}.
 
 \end{entry}
 
-\subsection{Reader Labels}\unsection
+\subsection{Datum labels}\unsection
 \label{labelsection}
 
 \begin{entry}{%
@@ -1694,7 +1694,7 @@ which would result in an invalid procedure call.
 
 \end{entry}
 
-\subsection{Signalling errors in macros}
+\subsection{Signalling errors in macro transformers}
 \label{syntax-error}
 
 
@@ -1709,6 +1709,8 @@ a {\cf syntax-rules} \hyper{template} for a \hyper{pattern} that is
 an invalid use of the macro, which can provide more descriptive error
 messages.  \hyper{message} should be a string literal, and \hyper{args}
 arbitrary expressions providing additional information.
+Applications cannot count on being able to catch syntax errors with
+exception handlers or guards.
 
 \todo{Shinn: This doesn't check all non-identifier cases, think of a better example.}
 

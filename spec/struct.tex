@@ -20,7 +20,8 @@ are associated with values (also called objects\mainindex{object}) rather than
 with variables.  
 Statically typed languages, by contrast, associate types with
 variables and expressions as well as with values.
-All objects created in the course of a Scheme computation, including
+
+\vest All objects created in the course of a Scheme computation, including
 procedures and continuations, have unlimited extent.
 No Scheme object is ever destroyed.  The reason that
 implementations of Scheme do not (usually!)\ run out of storage is that
@@ -50,7 +51,6 @@ backtracking, and coroutines.  See section~\ref{continuations}.
 means that the actual argument expressions are evaluated before the
 procedure gains control, regardless of whether the procedure needs the
 result of the evaluation.  
-pass arguments by value include
 
 \vest Scheme's model of arithmetic is designed to remain as independent as
 possible of the particular ways in which numbers are represented within a
@@ -85,12 +85,12 @@ The formal syntax of Scheme is described in section~\ref{BNF}.
 \label{qualifiers}
 
 Every identifier defined in this report appears in one of several
-\defining{libraries}.  Identifiers defined in the {\cf base} library
+\defining{libraries}.  Identifiers defined in the base library
 are not marked specially in the body of the report.  A summary of
 all the standard libraries and the features they provide is given in
 Appendix~\ref{stdlibraries}.
 
-Implementations must provide the {\cf base} library and all the identifiers
+Implementations must provide the base library and all the identifiers
 exported from it.  Implementations are free to provide or omit the other
 libraries given in this report, but each library must either be provided
 in its entirety, exporting no additional identifiers, or else omitted
@@ -149,7 +149,7 @@ not say what value is returned. \mainindex{unspecified}
 Finally, the words and phrases ``must,'' ``must not,'' ``shall,''
 ``shall not,'' ``should,'' ``should not,'' ``may,'' ``required,''
 ``recommended,'' and ``optional'', although not capitalized in this
-report, are to be interpreted as described in RFC~2119.
+report, are to be interpreted throughout this report as described in RFC~2119.
 In particular, ``must'' and ``must not'' are used only when
 absolute restrictions are placed on implementations.
 
@@ -164,7 +164,7 @@ built-in procedure.  An entry begins with one or more header lines of the form
 
 \noindent\pproto{\var{template}}{\var{category}}\unpenalty
 
-for identifiers in the {\cf base} library, or
+for identifiers in the base library, or
 
 \noindent\pproto{\var{template}}{\var{library} \var{category}}\unpenalty
 

@@ -102,9 +102,9 @@ causes the {\cf read} procedure to return to the default, non-folding behavior.
 as tab or page break.)  Whitespace is used for improved readability and
 as necessary to separate tokens from each other, a token being an
 indivisible lexical unit such as an identifier or number, but is
-otherwise insignificant.  Whitespace may occur between any two tokens,
-but not within a token.  Whitespace may also occur inside a string,
-where it is significant.
+otherwise insignificant.  Whitespace can occur between any two tokens,
+but not within a token.  Whitespace occurring inside a string
+is significant.
 
 The lexical syntax includes several comment forms.  
 Comments are treated exactly like whitespace.
@@ -192,7 +192,8 @@ are reserved for possible future extensions to the language.
 the character that immediately follows it:
 
 \item[\schtrue{} \schfalse{}]
-These are the boolean constants (section~\ref{booleansection}).
+These are the boolean constants (section~\ref{booleansection}),
+along with the alternatives \sharpfoo{true} and \sharpfoo{false}.
 
 \item[\sharpsign\backwhack]
 This introduces a character constant (section~\ref{charactersection}).
