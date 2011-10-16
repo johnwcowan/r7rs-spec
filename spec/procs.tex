@@ -73,8 +73,8 @@ not specify the behavior of {\cf eqv?} on implementation-dependent
 extensions.
 \end{note}
 
-\item \vari{obj} and \varii{obj} are both numbers, and {\cf nan?}
-returns true on both of them.
+%\item \vari{obj} and \varii{obj} are both numbers, and {\cf nan?}
+%returns true on both of them.
 
 \item \vari{obj} and \varii{obj} are both numbers, are numerically
 equal (see {\cf =}, section~\ref{numbersection}), and are either both
@@ -423,8 +423,8 @@ range are approached.
 
 \vest An implementation of Scheme must support exact integers
 throughout the range of numbers permitted as indexes of
-lists, vectors, and strings or that result from computing the length of a
-list, vector, or string.  The \ide{length}, \ide{vector-length},
+lists, vectors, bytevectors, and strings or that result from computing the length of
+one of these.  The \ide{length}, \ide{vector-length},
 \ide{bytevector-length}, and \ide{string-length} procedures must return an exact
 integer, and it is an error to use anything but an exact integer as an
 index.  Furthermore, any integer constant within the index range, if
@@ -501,8 +501,8 @@ applied to \tupe{exact} arguments, if an \tupe{exact} number is operated
 upon so as to produce an \tupe{inexact} result, then the most precise
 representation available must be used.  For example, the value of {\cf
 (sqrt 4)} should be {\cf 2}, but in an implementation that provides both
-single and double precision floating point numbers it may be {\cf 2.0d0}
-but must not be {\cf 2.0f0} (the standard representation of single precision 2).
+single and double precision floating point numbers it may be the latter
+but must not be the former.
 
 In addition, implementations may
 distinguish special numbers called \tupe{positive infinity},
@@ -1075,7 +1075,7 @@ result from a real argument.
 \proto{sqrt}{ \vr{z}}{inexact library procedure}}
 
 Returns the principal square root of \vr{z}.  The result will have
-either positive real part, or zero real part and non-negative imaginary
+either a positive real part, or a zero real part and a non-negative imaginary
 part.
 \end{entry}
 
@@ -2182,6 +2182,7 @@ Returns the number of characters in the given \var{string}.
 \domain{It is an error if\vr{k} is not a valid index of \var{string}.}
 {\cf String-ref} returns character \vr{k} of \var{string} using zero-origin indexing.
 \end{entry}
+There is no requirement for this procedure to execute in constant time.
 
 
 \begin{entry}{%
@@ -2190,6 +2191,7 @@ Returns the number of characters in the given \var{string}.
 \domain{It is an error if \vr{k} is not a valid index of \var{string}.}
 {\cf String-set!} stores \var{char} in element \vr{k} of \var{string}
 and returns an unspecified value.  % <!>
+There is no requirement for this procedure to execute in constant time.
 
 \begin{scheme}
 (define (f) (make-string 3 \sharpsign\backwhack{}*))
@@ -2314,10 +2316,10 @@ See UAX \#29 (part of the Unicode Standard) for details.
 \begin{entry}{%
 \proto{substring}{ string start end}{procedure}}
 
-\domain{It is an error unless \var{String} is a string, and \var{start} and \var{end}
-are exact integers satisfying
+\domain{It is an error if \var{start} and \var{end} 
+are not exact integers satisfying the inequality
 $$0 \leq \var{start} \leq \var{end} \leq \hbox{\tt(string-length \var{string})\rm.}$$}
-{\cf substring} returns a newly allocated string formed from the characters of
+{\cf Substring} returns a newly allocated string formed from the characters of
 \var{string} beginning with index \var{start} (inclusive) and ending with index
 \var{end} (exclusive).
 \end{entry}
@@ -2634,7 +2636,7 @@ and returns the corresponding string;
 the {\cf string\coerce{}utf8} procedure
 encodes a string and returns the corresponding bytevector.
 It is an error to pass invalid byte sequences
-or byte sequences representing characters which are forbidden in strings,
+or byte sequences representing characters which are forbidden in strings
 to {\cf utf8\coerce{}string}.
 
 \begin{scheme}
@@ -2673,7 +2675,6 @@ Returns \schtrue{} if \var{obj} is a procedure, otherwise returns \schfalse.
 \begin{entry}{%
 \proto{apply}{ proc \vari{arg} $\ldots$ args}{procedure}}
 
-\domain{It is an error unless \var{proc} is a procedure and \var{args} is a list.}
 {\cf apply} calls \var{proc} with the elements of the list
 {\cf(append (list \vari{arg} \dotsfoo) \var{args})} as the actual
 arguments.
@@ -2694,9 +2695,9 @@ arguments.
 \begin{entry}{%
 \proto{map}{ proc \vari{list} \varii{list} \dotsfoo}{procedure}}
 
-\domain{It is an error unless the \var{list}s are lists, and \var{proc} is a
-procedure that accepts as many arguments as there are {\it list}s
-and that returns a single value.  If more
+\domain{It is an error if \var{proc} does not
+accept as many arguments as there are {\it list}s
+and returns a single value.  If more
 than one \var{list} is given and not all lists have the same length,
 {\cf map} terminates when the shortest list runs out.}
 {\cf map} applies \var{proc} element-wise to the elements of the
@@ -2726,9 +2727,9 @@ the values returned by earlier returns are not mutated.
 \begin{entry}{%
 \proto{string-map}{ proc \vari{string} \varii{string} \dotsfoo}{procedure}}
 
-\domain{It is an error unless the \var{string}s are strings, and \var{proc} is a
-procedure taking as many arguments as there are {\it string}s
-and returning a single value.  If more
+\domain{It is an error if \var{proc} does not
+accept as many arguments as there are {\it string}s
+and returns a single value.  If more
 than one \var{string} is given and not all strings have the same length,
 {\cf string-map} terminates when the shortest string runs out.}
 {\cf string-map} applies \var{proc} element-wise to the elements of the
@@ -2760,9 +2761,9 @@ the values returned by earlier returns are not mutated.
 \begin{entry}{%
 \proto{vector-map}{ proc \vari{vector} \varii{vector} \dotsfoo}{procedure}}
 
-\domain{It is an error unless the \var{vector}s are vectors, and \var{proc} is a
-procedure taking as many arguments as there are {\it vector}s
-and returning a single value.  If more
+\domain{It is an error if \var{proc} does not
+accept as many arguments as there are {\it vector}s
+and returns a single value.  If more
 than one \var{vector} is given and not all vectors have the same length,
 {\cf vector-map} terminates when the shortest vector runs out.}
 {\cf vector-map} applies \var{proc} element-wise to the elements of the
@@ -2862,7 +2863,7 @@ If more than one \var{vector} is given and not all vectors have the same length,
 \proto{call-with-current-continuation}{ proc}{procedure}
 \proto{call/cc}{ proc}{procedure}}
 
-\label{continuations} \domain{It is an error unless \var{proc} accepts one
+\label{continuations} \domain{It is an error if \var{proc} does not accept one
 argument.} The procedure {\cf call-with-current-continuation} (or its
 equivalent abbreviation {\cf call/cc}) packages
 the current continuation (see the rationale below) as an ``escape
@@ -2963,7 +2964,7 @@ in MacLisp.  Several Scheme implementors noticed that the full power of the
 special syntactic construct, and the name
 {\cf call-with-current-continuation} was coined in 1982.  This name is
 descriptive, but opinions differ on the merits of such a long name, and
-some people use the name \ide{call/cc} instead.
+some people prefer the name \ide{call/cc} instead.
 \end{rationale}
 
 %% \begin{note}
@@ -3101,8 +3102,9 @@ object may be used to represent an exception.
 \begin{entry}{%
 \proto{with-exception-handler}{ \var{handler} \var{thunk}}{procedure}}
 
-\domain{It is an error unless \var{handler} accepts one argument,
-and \var{thunk} is a procedure that accepts zero arguments.}  The {\cf
+\domain{It is an error if \var{handler} does not accept one argument.
+It is also an error if
+\var{thunk} does not accept zero arguments.}  The {\cf
 with-exception-handler} procedure returns the results of invoking
 \var{thunk}.  \var{Handler} is installed as the current
 exception handler for the dynamic extent (as determined by {\cf
@@ -3203,12 +3205,10 @@ Returns a list of the irritants encapsulated by \var{error-object}.
 \proto{eval}{ expression environment-specifier}{eval library procedure}}
 
 Evaluates \var{expression} in the specified environment and returns its value.
-It is an error unless \var{expression} is a valid Scheme expression represented as data,
-and \var{environment-specifier} is a value returned by one of the
-four procedures described below.
+It is an error if \var{expression} is not a valid Scheme expression represented as a datum.
 Implementations may extend {\cf eval} to allow non-expression programs
-(definitions) as the first argument and to allow other
-values as environments, with the restriction that {\cf eval} is not
+such as definitions as the first argument,
+with the restriction that {\cf eval} is not
 allowed to create new bindings in the environments returned by
 {\cf null-environment} or {\cf scheme-report-environment}.
 
@@ -3227,6 +3227,7 @@ allowed to create new bindings in the environments returned by
 \begin{entry}{%
 \proto{scheme-report-environment}{ version}{eval library procedure}
 \proto{null-environment}{ version}{eval library procedure}}
+\label{environments}
 
 It is an error if \var{Version} is not the exact integer {\cf \integerversion},
 corresponding to this revision of the Scheme report (the
@@ -3236,10 +3237,14 @@ environment that is empty except for all bindings
 defined either in the base library or in the other libraries
 of this report that the implementation supports.
 {\cf null-environment} returns
-a specifier for an environment that is empty except for the
+a specifier for an environment that contains only the
 bindings for all syntactic keywords
 defined either in the base library or in the other libraries
 of this report that the implementation supports.
+\begin{note}
+The name {\cf null-environment} is historical and may be
+misleading: it does not represent an empty environment.
+\end{note}
 
 Other values of \var{version} can be used to specify environments
 matching past revisions of this report, but their support is not
@@ -3311,7 +3316,7 @@ system on which the Scheme program is running.
 \proto{call-with-input-file}{ string proc}{file library procedure}
 \proto{call-with-output-file}{ string proc}{file library procedure}}
 
-It is an error unless \var{proc} accepts one argument.
+It is an error if \var{proc} does not accept one argument.
 \todo{consider removing unspecified effect}
 For {\cf call-with-input-file},
 the file named by \var{string} should already exist; for
@@ -3340,7 +3345,7 @@ both {\cf call-with-current-continuation} and {\cf call-with-input-file} or
 \begin{entry}{%
 \proto{call-with-port}{ port proc}{procedure}}
 
-It is an error unless \var{proc} accepts one argument.  The {\cf call-with-port}
+It is an error if \var{proc} does not accept one argument.  The {\cf call-with-port}
 procedure calls \var{proc} with \var{port} as an argument.  If
 \var{proc} returns, \var{port} is closed automatically and the values
 returned by \var{proc} are returned.
@@ -3354,9 +3359,9 @@ returned by \var{proc} are returned.
 \proto{binary-port?}{ obj}{procedure}
 \proto{port?}{ obj}{procedure}}
 
-Returns \schtrue{} if \var{obj} is an input port, output port, 
+These procedures return \schtrue{} if \var{obj} is an input port, output port, 
 textual port, binary port, or any
-kind of port, respectively.  Otherwise returns \schfalse.
+kind of port, respectively.  Otherwise they return \schfalse.
 
 \end{entry}
 
@@ -3389,7 +3394,7 @@ are system-defined textual ports.
 \proto{with-input-from-file}{ string thunk}{file library procedure}
 \proto{with-output-to-file}{ string thunk}{file library procedure}}
 
-It is an error unless \var{thunk} is a procedure of no arguments.
+It is an error if \var{thunk} does not accept zero arguments.
 \todo{consider removing unspecified effect}
 For {\cf with-input-from-file},
 it is an error if the file named by \var{string} does not already exist; for
@@ -3872,7 +3877,7 @@ implementations.
 \begin{entry}{%
 \proto{file-exists?}{ filename}{file library procedure}}
 
-It is an error unless \var{filename} is a string. The {\cf file-exists?} procedure returns
+It is an error if \var{filename} is not a string. The {\cf file-exists?} procedure returns
 \schtrue{} if the named file exists at the time the procedure is called,
 \schfalse{} otherwise.
 
@@ -3881,7 +3886,7 @@ It is an error unless \var{filename} is a string. The {\cf file-exists?} procedu
 \begin{entry}{%
 \proto{delete-file}{ filename}{file library procedure}}
 
-It is an error unless \var{filename} is a string. The {\cf delete-file} procedure deletes the
+It is an error if \var{filename} is not a string. The {\cf delete-file} procedure deletes the
 named file if it exists and can be deleted, and returns an unspecified
 value.  If the file does not exist or cannot be deleted, an error
 is signalled.
@@ -3917,8 +3922,10 @@ abnormal.
 
 Most operating systems provide each running process with an
 \defining{environment} consisting of \defining{environment variables}.
+(This environment is not to be confused with the Scheme environments that
+can be passed to {\cf eval}: see section~\ref{environments}.)
 Both the name and value of an environment variable are strings.
-{\cf get-environment-variable} returns the value 
+{\cf Get-environment-variable} returns the value 
 of the environment variable \var{name},
 or \schfalse{} if the named
 environment variable is not found.  {\cf get-environment-variable} may

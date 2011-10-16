@@ -36,8 +36,8 @@ that form the body of the \ide{begin}.
 Implementations may provide an interactive session called a
 \defining{REPL} (Read-Eval-Print Loop), where Scheme program parts can be
 entered and evaluated one at a time.  For convenience and ease of use,
-the ``top-level'' Scheme environment in an interactive
-session is not empty, but must start out with a number of variables
+the ``top-level'' Scheme environment in a REPL
+must not be not empty, but must start out with a number of variables
 bound to locations containing at least the bindings provided by the
 base library.  This library includes mostly core syntax
 and primitive procedures that manipulate data.  For example, the

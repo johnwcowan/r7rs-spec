@@ -349,7 +349,7 @@ the form
 ((\hyperi{datum} \dotsfoo) \hyperi{expression} \hyperii{expression} \dotsfoo)\rm,%
 \end{scheme}
 where each \hyper{datum} is an external representation of some object.
-It is an error unless all the \hyper{datum}s are distinct.
+It is an error if any the \hyper{datum}s are the same.
 Alternatively, a \hyper{clause} may be of the form
 \begin{scheme}
 ((\hyperi{datum} \dotsfoo) => \hyper{expression})%
@@ -381,7 +381,8 @@ otherwise the result of the {\cf case} expression is unspecified.
 
 If the selected \hyper{clause} or else clause uses the
 \ide{=>} alternate form, then the \hyper{expression} is evaluated.
-It is an error unless its value is a procedure that accepts one argument.  This procedure is then
+It is an error if its value is not a procedure accepting one argument.
+This procedure is then
 called on the value of the \hyper{key} and the values returned by this
 procedure are returned by the {\cf case} expression.
 
@@ -447,7 +448,7 @@ The \hyper{test} expression is evaluated, and if it evaluates to a true value,
 the expressions are evaluated in order.  The result of the {\cf when}
 expression is unspecified.
 
-The following example prints {\cf 12}:
+The following example outputs {\cf 12}:
 \begin{scheme}
 (when (= 1 1.0)
   (display "1")
@@ -462,7 +463,7 @@ The \hyper{test} expression is evaluated, and if it evaluates to \schfalse{},
 the expressions are evaluated in order.  The result of the {\cf unless}
 expression is unspecified.
 
-The following example prints nothing:
+The following example outputs nothing:
 \begin{scheme}
 (unless (= 1 1.0)
   (display "1")
@@ -593,9 +594,9 @@ define mutually recursive procedures.
 		\ev  \schtrue%
 \end{scheme}
 
-One restriction on {\cf letrec} is very important: it is an error if it is not possible
+One restriction on {\cf letrec} is very important: if it is not possible
 to evaluate each \hyper{init} without assigning or referring to the value of any
-\hyper{variable}.  The
+\hyper{variable}, it is an error.  The
 restriction is necessary because Scheme passes arguments by value rather than by
 name.  In the most common uses of {\cf letrec}, all the \hyper{init}s are
 \lambdaexp{}s and the restriction is satisfied automatically.
@@ -629,10 +630,10 @@ a \hyper{variable} has the entire {\cf letrec*} expression as its
 region\index{region}, making it possible to define mutually recursive
 procedures.
 
-It is an error if it is not possible to evaluate each \hyper{init} without assigning or
+If it is not possible to evaluate each \hyper{init} without assigning or
 referring to the value of the corresponding \hyper{variable} or the
 \hyper{variable} of any of the bindings that follow it in
-\hyper{bindings}.
+\hyper{bindings}, it is an error.
 
 \begin{scheme}
 (letrec* ((p
@@ -658,7 +659,7 @@ referring to the value of the corresponding \hyper{variable} or the
 ((\hyper{formals} \hyper{init}) \dotsfoo)\rm,%
 \end{scheme}
 
-where each \hyper{init} is an expression, and \hyper{body} should be a
+where each \hyper{init} should be an expression, and \hyper{body} should be a
 sequence of zero or more definitions followed by a sequence of one or
 more expressions.  It is an error for a variable to appear more than
 once in the set of \hyper{formals}.
@@ -951,8 +952,8 @@ stream-filtering algorithm into Scheme.  Each call to a constructor is
 wrapped in {\cf delay}, and each argument passed to a deconstructor is
 wrapped in {\cf force}.  The use of {\cf (lazy ...)} instead of {\cf
 (delay (force ...))} around the body of the procedure ensures that an
-ever-growing sequence of pending promises does not build up until the
-heap is exhausted.
+ever-growing sequence of pending promises does not 
+exhaust the heap.
 
 \begin{scheme}
 (define (stream-filter p? s)
@@ -1306,7 +1307,7 @@ structures with shared or circular substructure.
 \end{scheme}
 
 A reference \texttt{\#\hyper{n}\#} may occur only after a label
-\texttt{\#\hyper{n}=}; forward references are not permitted. In
+\texttt{\#\hyper{n}=}; it is an error to attempt a forward reference.  In
 addition, it is an error if the reference appears as the labelled object itself
 (as in \texttt{\#\hyper{n}= \#\hyper{n}\#}),
 because the object labelled by \texttt{\#\hyper{n}=} is not well
@@ -1486,9 +1487,10 @@ A \hyper{transformer spec} has one of the following forms:
 \mainschindex{_}
 
 \syntax
-It is an error unless each \hyper{literal}, as well as the \hyper{ellipsis} in the second form 
-is an identifier and each
-\hyper{syntax rule} is of the form
+It is an error if the \hyper{literal}s, as well as the \hyper{ellipsis} in the second form,
+are not identifiers.
+It is also an error if
+\hyper{syntax rule} is not of the form
 \begin{scheme}
 (\hyper{pattern} \hyper{template})%
 \end{scheme}

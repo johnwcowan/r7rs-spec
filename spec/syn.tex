@@ -46,8 +46,8 @@ provided that each such character has a Unicode general category of Lu,
 Ll, Lt, Lm, Lo, Mn, Mc, Me, Nd, Nl, No, Pd, Pc, Po, Sc, Sm, Sk, So,
 or Co, or is U+200C or U+200D (the zero-width non-joiner and joiner,
 respectively, which are needed for correct spelling in Persian, Hindi,
-and other languages). It is an error to use a non-Unicode character explicitly
-(that is, other than by specifying an escape) in symbols or identifiers.
+and other languages). It is an error to use a non-Unicode character
+in symbols or identifiers.
 
 All Scheme implementations must permit the escape sequence
 {\tt \backwhack{}x<hexdigits>;}
@@ -144,8 +144,8 @@ The following rules for \meta{num $R$}, \meta{complex $R$}, \meta{real
 $R$}, \meta{ureal $R$}, \meta{uinteger $R$}, and \meta{prefix $R$}
 are implicitly replicated for \hbox{$R = 2, 8, 10,$}
 and $16$.  There are no rules for \meta{decimal $2$}, \meta{decimal
-$8$}, and \meta{decimal $16$}, which means that it is an error for numbers containing
-decimal points or exponents to be in decimal radix.
+$8$}, and \meta{decimal $16$}, which means that numbers containing
+decimal points or exponents are always in decimal radix.
 Although not shown below, all alphabetic characters used in the grammar
 of numbers may appear in either upper or lower case.
 \begin{grammar}%
