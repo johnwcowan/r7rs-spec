@@ -13,7 +13,7 @@ given in section~\ref{derivedsection}.
 
 The procedures {\cf force}, {\cf eager}, and {\cf make-parameter}
 are described in this chapter because they are intimately associated
-with the {\cf delay}, {\cf lazy}, and {\cf parameterized} expression types.
+with the {\cf delay}, {\cf lazy}, and {\cf parameterize} expression types.
 
 \section{Primitive expression types}
 \label{primitivexps}
@@ -115,8 +115,6 @@ value or, for procedures such as {\cf apply}, pass on the values returned
 by a call to one of their arguments.
 Exceptions are noted in the individual descriptions.
 
-Procedure calls are also called {\em combinations}.
-\mainindex{combination}
 
 \begin{note} In contrast to other dialects of Lisp, the order of
 evaluation is unspecified, and the operator expression and the operand
@@ -130,10 +128,8 @@ constrained to be consistent with some sequential order of evaluation.
 The order of evaluation may be chosen differently for each procedure call.
 \end{note}
 
-\begin{note} In many dialects of Lisp, the empty combination, {\tt
-()}, is a legitimate expression.  In Scheme, it is an error for a combination
-to have no subexpressions, so {\tt ()} is not a syntactically valid
-expression.
+\begin{note} In many dialects of Lisp, the empty list, {\tt
+()}, is a legitimate expression evaluating to itself.  In Scheme, it is an error.
 \end{note}
 
 \end{entry}
@@ -156,8 +152,8 @@ procedure.  When the procedure is later called with some actual
 arguments, the environment in which the \lambdaexp{} was evaluated will
 be extended by binding the variables in the formal argument list to
 fresh locations, the corresponding actual argument values will be stored
-in those locations, and the expressions in the body of the \lambdaexp{}
-will be evaluated sequentially in the extended environment.
+in those locations, and the body of the \lambdaexp{}
+will be evaluated in the extended environment.
 The results of the last expression in the body will be returned as
 the results of the procedure call.
 
@@ -180,13 +176,15 @@ the results of the procedure call.
 \begin{itemize}
 \item {\tt(\hyperi{variable} \dotsfoo)}:
 The procedure takes a fixed number of arguments; when the procedure is
-called, the arguments will be stored in the bindings of the
+called, the arguments will be stored in newly allocated locations
+that are bound to the corresponding variables.
 corresponding variables.
 
 \item \hyper{variable}:
 The procedure takes any number of arguments; when the procedure is
 called, the sequence of actual arguments is converted into a newly
-allocated list, and the list is stored in the binding of the
+allocated list, and the list is stored in a newly allocated location
+that is bound to
 \hyper{variable}.
 
 \item {\tt(\hyperi{variable} \dotsfoo{} \hyper{variable$_{n}$}\ {\bf.}\
@@ -250,7 +248,7 @@ unspecified.
 \proto{set!}{ \hyper{variable} \hyper{expression}}{\exprtype}}
 
 \hyper{Expression} is evaluated, and the resulting value is stored in
-the location to which \hyper{variable} is bound.  It is an error if\hyper{Variable} is not
+the location to which \hyper{variable} is bound.  It is an error if\hyper{variable} is not
 bound either in some region\index{region} enclosing the {\cf set!}\ expression
 or at top level.  The result of the {\cf set!} expression is
 unspecified.
@@ -320,7 +318,7 @@ procedure are returned by the {\cf cond} expression.
 If all \hyper{test}s evaluate
 to \schfalse{}, and there is no else clause, then the result of
 the conditional expression is unspecified; if there is an else
-clause, then its \hyper{expression}s are evaluated, and the values of
+clause, then its \hyper{expression}s are evaluated in order, and the values of
 the last one are returned.
 
 \begin{scheme}
@@ -369,8 +367,8 @@ A {\cf case} expression is evaluated as follows.  \hyper{Key} is
 evaluated and its result is compared against each \hyper{datum}.  If the
 result of evaluating \hyper{key} is equivalent (in the sense of
 {\cf eqv?}; see section~\ref{eqv?}) to a \hyper{datum}, then the
-expressions in the corresponding \hyper{clause} are evaluated from left
-to right and the results of the last expression in the \hyper{clause} are
+expressions in the corresponding \hyper{clause} are evaluated in order
+and the results of the last expression in the \hyper{clause} are
 returned as the results of the {\cf case} expression.
 
 If the result of
@@ -472,6 +470,7 @@ The following example outputs nothing:
 \end{entry}
 
 \subsection{Binding constructs}
+\label{bindingsection}
 
 The binding constructs {\cf let}, {\cf let*}, {\cf letrec}, {\cf letrec*},
 {\cf let-values}, and {\cf let*-values}
@@ -498,7 +497,7 @@ different identifiers to each returned value.
 \end{scheme}
 where each \hyper{init} is an expression, and \hyper{body} should be a
 sequence of zero or more definitions followed by a
-sequence of one or more expressions.  It is
+sequence of one or more expressions as described in section~\ref{lambda}.  It is
 an error for a \hyper{variable} to appear more than once in the list of variables
 being bound.
 
@@ -535,8 +534,8 @@ See also named {\cf let}, section \ref{namedlet}.
 ((\hyperi{variable} \hyperi{init}) \dotsfoo)\rm,%
 \end{scheme}
 and \hyper{body} should be a
-sequence of zero or more definitions followed by
-one or more expressions.
+zero or more definitions followed by
+one or more expressions as described in section~\ref{lambda}.
 
 \semantics
 {\cf Let*} is similar to {\cf let}, but the bindings are performed
@@ -565,8 +564,8 @@ The \hyper{variable}s need not be distinct.
 ((\hyperi{variable} \hyperi{init}) \dotsfoo)\rm,%
 \end{scheme}
 and \hyper{body} should be a sequence of
-sequence of zero or more definitions followed by a
-one or more expressions. It is an error for a \hyper{variable} to appear more
+zero or more definitions followed by
+one or more expressions as described in section~\ref{lambda}. It is an error for a \hyper{variable} to appear more
 than once in the list of variables being bound.
 
 \semantics
@@ -597,8 +596,11 @@ define mutually recursive procedures.
 One restriction on {\cf letrec} is very important: if it is not possible
 to evaluate each \hyper{init} without assigning or referring to the value of any
 \hyper{variable}, it is an error.  The
-restriction is necessary because Scheme passes arguments by value rather than by
-name.  In the most common uses of {\cf letrec}, all the \hyper{init}s are
+restriction is necessary because 
+{\cf letrec} is defined in terms of a procedure
+call where a {\cf lambda} expression binds the \hyper{variable}s to the values
+of the \hyper{init}s.
+In the most common uses of {\cf letrec}, all the \hyper{init}s are
 \lambdaexp{}s and the restriction is satisfied automatically.
 Another restriction is that the continuation of each \hyper{init}
 should not be invoked more than once.
@@ -615,8 +617,8 @@ should not be invoked more than once.
 ((\hyperi{variable} \hyperi{init}) \dotsfoo)\rm,%
 \end{scheme}
 and \hyper{body} should be a sequence of
-sequence of zero or more definitions followed by
-one or more expressions. It is an error for a \hyper{variable} to appear more
+zero or more definitions followed by
+one or more expressions as described in section~\ref{lambda}. It is an error for a \hyper{variable} to appear more
 than once in the list of variables being bound.
 
 \semantics
@@ -660,8 +662,8 @@ referring to the value of the corresponding \hyper{variable} or the
 \end{scheme}
 
 where each \hyper{init} should be an expression, and \hyper{body} should be a
-sequence of zero or more definitions followed by a sequence of one or
-more expressions.  It is an error for a variable to appear more than
+zero or more definitions followed by a sequence of one or
+more expressions as described in section~\ref{lambda}.  It is an error for a variable to appear more than
 once in the set of \hyper{formals}.
 
 \semantics
@@ -697,14 +699,14 @@ values returned by the corresponding \hyper{init}.
 ((\hyper{formals} \hyper{init}) \dotsfoo)\rm,%
 \end{scheme}
 and \hyper{body} should be a sequence of sequence of zero or more
-definitions followed by one or more expressions.  In each \hyper{formals},
+definitions followed by one or more expressions as described in section~\ref{lambda}.  In each \hyper{formals},
 it is an error if any variable appears more than once.
 
 \semantics
 {\cf let-values*} is similar to {\cf let-values}, but the
 \hyper{init}s are evaluated and bindings created sequentially from
 left to right, with the region of the bindings of each \hyper{formals}
-including the bindings to its right as well as \hyper{body}.  Thus the
+including the \hyper{init}s to its right as well as \hyper{body}.  Thus the
 second \hyper{init} is evaluated in an environment in which the first
 set of bindings is visible and initialized, and so on.
 
@@ -717,8 +719,8 @@ set of bindings is visible and initialized, and so on.
 
 \end{entry}
 
-In all six constructs, it is an error if the continuation of each expression
-used to compute initial values is invoked more than once.
+In all six constructs, it is an error if the continuation of any \hyper{init}
+is invoked more than once.
 
 \end{entry}
 
@@ -970,7 +972,7 @@ exhaust the heap.
                                \ev 5
 \end{scheme}
 
-{\cf delay}, {\cf lazy}, and {\cf force} are mainly intended for
+{\cf Delay}, {\cf lazy}, and {\cf force} are mainly intended for
 programs written in functional style.  The following examples are
 not intended to illustrate good programming style, but they
 illustrate the property that only one value is computed for a promise,
@@ -1069,7 +1071,8 @@ expression in the \hyper{body} are returned as the results of the entire
 
 \begin{note}
 If the conversion procedure is not idempotent, the results of
-{\cf (parameterize ((x (x))) ...)}
+{\cf (parameterize ((x (x))) ...)},
+which appears to bind the parameter \var{x} to its current value,
 may not be what the user expects.
 \end{note}
 
@@ -1121,7 +1124,7 @@ procedure in the call chain explicitly.
 Each \hyper{cond clause} is as in the specification of {\cf cond}.
 
 \semantics
-Evaluating a {\cf guard} evaluates \hyper{body} with an exception
+The \hyper{body} is evaluated with an exception
 handler that binds the raised object to \hyper{variable} and, within the scope of
 that binding, evaluates the clauses as if they were the clauses of a
 {\cf cond} expression. That implicit {\cf cond} expression is evaluated with the
@@ -1400,7 +1403,7 @@ see section~\ref{define-syntax}.
 \end{scheme}
 Each \hyper{keyword} is an identifier,
 each \hyper{transformer spec} is an instance of {\cf syntax-rules}, and
-\hyper{body} should be a sequence of one or more expressions.  It is an error
+\hyper{body} should be a sequence of one or more definitions followed by expressions.  It is an error
 for a \hyper{keyword} to appear more than once in the list of keywords
 being bound.
 
@@ -1440,7 +1443,7 @@ Same as for {\cf let-syntax}.
 extending the syntactic environment of the {\cf letrec-syntax}
 expression with macros whose keywords are the
 \hyper{keyword}s, bound to the specified transformers.
-Each binding of a \hyper{keyword} has the \hyper{bindings}
+Each binding of a \hyper{keyword} has the \hyper{transformer spec}s
 as well as the \hyper{body} within its region,
 so the transformers can
 transcribe expressions into uses of the macros
@@ -1530,7 +1533,7 @@ When a match is found, the macro use is transcribed hygienically
 according to the template.
 
 An identifier appearing within a \hyper{pattern} may be an underscore
-(``{\cf \_}''), a literal identifier listed in the list of \hyper{literal}s,
+({\cf \_}), a literal identifier listed in the list of \hyper{literal}s,
 or the \hyper{ellipsis}.
 All other identifiers appearing within a \hyper{pattern} are
 {\em pattern variables}.
@@ -1565,7 +1568,7 @@ case it is matched as a literal.
 More formally, an input form $F$ matches a pattern $P$ if and only if:
 
 \begin{itemize}
-\item $P$ is an underscore (``{\cf \_}'').
+\item $P$ is an underscore ({\cf \_}).
 
 \item $P$ is a non-literal identifier; or
 
@@ -1580,7 +1583,7 @@ More formally, an input form $F$ matches a pattern $P$ if and only if:
       {\cf ($P_1$ $P_2$ $\dots$ $P_n$ . $P_{n+1}$)}
       and $F$ is a list or
       improper list of $n$ or more forms that match $P_1$ through $P_n$,
-      respectively, and whose $n$th ``cdr'' matches $P_{n+1}$; or
+      respectively, and whose $n$th tail matches $P_{n+1}$; or
 
 \item $P$ is of the form
       {\cf ($P_1$ $\dots$ $P_{e-1}$ $P_{e}$ \meta{ellipsis} $P_{m+1}$ \dotsfoo{} $P_n$)}
@@ -1704,7 +1707,7 @@ which would result in an invalid procedure call.
 \pproto{(syntax-error \hyper{message} \hyper{args} \dotsfoo)}{\exprtype}}
 \mainschindex{syntax-error}
 
-{\cf syntax-error} behaves similarly to {\cf error} except that implementations
+{\cf syntax-error} behaves similarly to {\cf error} (\ref{exceptionsection}) except that implementations
 with an expansion pass separate from evaluation should signal an error
 as soon as {\cf syntax-error} is expanded.  This can be used as
 a {\cf syntax-rules} \hyper{template} for a \hyper{pattern} that is
