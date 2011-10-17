@@ -108,14 +108,15 @@ The {\cf eqv?} procedure returns \schfalse{} if:
     \ev  \schfalse%
 \end{scheme}
 
-\item \vari{obj} and \varii{obj} are numbers, and {\cf nan?} returns true
-on one of them but not the other.
+%% \item \vari{obj} and \varii{obj} are numbers, and {\cf nan?} returns true
+%% on one of them but not the other.
 
 \item one of \vari{obj} and \varii{obj} is an exact number but the other
 is an inexact number.
 
 \item \vari{obj} and \varii{obj} are numbers for which the {\cf =}
-procedure returns \schfalse{}.
+procedure returns \schfalse{}, and {\cf nan?} returns \schfalse{}
+for both.
 
 \item \vari{obj} and \varii{obj} are characters for which the {\cf char=?}
 procedure returns \schfalse{}.
@@ -156,7 +157,8 @@ boolean.
 (let ((p (lambda (x) x)))
   (eqv? p p))                    \ev  \unspecified
 (eqv? (lambda (x) x)
-      (lambda (y) y))    \ev  \unspecified%
+      (lambda (y) y))    \ev  \unspecified
+(eqv? +nan.0 +nan.0)     \ev  \unspecified%
 \end{scheme}
 
 The next set of examples shows the use of {\cf eqv?}\ with procedures
