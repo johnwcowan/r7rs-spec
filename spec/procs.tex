@@ -2316,7 +2316,7 @@ See UAX \#29 (part of the Unicode Standard) for details.
 \domain{It is an error if \var{start} and \var{end} 
 are not exact integers satisfying the inequality
 $$0 \leq \var{start} \leq \var{end} \leq \hbox{\tt(string-length \var{string})\rm.}$$}
-{\cf Substring} returns a newly allocated string formed from the characters of
+The {\cf substring} procedure returns a newly allocated string formed from the characters of
 \var{string} beginning with index \var{start} (inclusive) and ending with index
 \var{end} (exclusive).
 \end{entry}
@@ -2694,7 +2694,7 @@ arguments.
 
 \domain{It is an error if \var{proc} does not
 accept as many arguments as there are {\it list}s
-and returns a single value.  If more
+and return a single value.  If more
 than one \var{list} is given and not all lists have the same length,
 {\cf map} terminates when the shortest list runs out.}
 {\cf map} applies \var{proc} element-wise to the elements of the
@@ -2726,7 +2726,7 @@ the values returned by earlier returns are not mutated.
 
 \domain{It is an error if \var{proc} does not
 accept as many arguments as there are {\it string}s
-and returns a single value.  If more
+and return a single value.  If more
 than one \var{string} is given and not all strings have the same length,
 {\cf string-map} terminates when the shortest string runs out.}
 {\cf string-map} applies \var{proc} element-wise to the elements of the
@@ -2760,7 +2760,7 @@ the values returned by earlier returns are not mutated.
 
 \domain{It is an error if \var{proc} does not
 accept as many arguments as there are {\it vector}s
-and returns a single value.  If more
+and return a single value.  If more
 than one \var{vector} is given and not all vectors have the same length,
 {\cf vector-map} terminates when the shortest vector runs out.}
 {\cf vector-map} applies \var{proc} element-wise to the elements of the
@@ -3922,7 +3922,7 @@ Most operating systems provide each running process with an
 (This environment is not to be confused with the Scheme environments that
 can be passed to {\cf eval}: see section~\ref{environments}.)
 Both the name and value of an environment variable are strings.
-{\cf Get-environment-variable} returns the value 
+The procedure {\cf get-environment-variable} returns the value 
 of the environment variable \var{name},
 or \schfalse{} if the named
 environment variable is not found.  {\cf get-environment-variable} may
