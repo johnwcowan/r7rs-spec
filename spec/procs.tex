@@ -841,9 +841,6 @@ however, they return the additive or multiplicative inverse of their argument.
 \proto{ceiling/}{ \vri{n} \vrii{n}}{procedure}
 \proto{ceiling-quotient}{ \vri{n} \vrii{n}}{procedure}
 \proto{ceiling-remainder}{ \vri{n} \vrii{n}}{procedure}
-\proto{centered/}{ \vri{n} \vrii{n}}{procedure}
-\proto{centered-quotient}{ \vri{n} \vrii{n}}{procedure}
-\proto{centered-remainder}{ \vri{n} \vrii{n}}{procedure}
 \proto{truncate/}{ \vri{n} \vrii{n}}{procedure}
 \proto{truncate-quotient}{ \vri{n} \vrii{n}}{procedure}
 \proto{truncate-remainder}{ \vri{n} \vrii{n}}{procedure}
@@ -3619,7 +3616,7 @@ that can be read in using {\cf read}.
 \proto{char-ready?}{}{procedure}
 \rproto{char-ready?}{ port}{procedure}}
 
-Returns \schtrue{} if a textual is ready on the character input \var{port} and
+Returns \schtrue{} if a character is ready on the textual input \var{port} and
 returns \schfalse{} otherwise.  If {\cf char-ready} returns \schtrue{} then
 the next {\cf read-char} operation on the given \var{port} is guaranteed
 not to hang.  If the \var{port} is at end of file then {\cf char-ready?}\

@@ -15,7 +15,7 @@ languages are also acceptable to Scheme.  The precise rules for forming
 identifiers vary among implementations of Scheme, but in all
 implementations, a sequence of letters, digits, and ``extended identifier
 characters'' that does not have a prefix which is a valid number
-is an identifier.  However, the  \ide{.} token used in the list syntax
+is an identifier.  However, the  \ide{.} token (a single period) used in the list syntax
 is not an identifier.
 Here are some examples of identifiers:
 
@@ -39,7 +39,7 @@ they were letters.  The following are always permitted as alphabetic characters
 In addition, any character can be used within an identifier when
 specified via an \meta{inline hex escape}.  For example, the
 identifier \verb|H\x65;llo| is the same as the identifier
-\verb|Hello|, and in an implementation which has the appropriate
+\verb|Hello|, and in an implementation which supports the appropriate
 Unicode character the identifier \verb|\x3BB;| is the same as the
 identifier $\lambda$.
 
@@ -82,7 +82,7 @@ to control case folding.
 {\cf{}\#!fold-case}\sharpbangindex{fold-case}\\
 {\cf{}\#!no-fold-case}\sharpbangindex{no-fold-case}}
 
-These directives may appear anywhere comments may appear (see
+These directives may appear anywhere comments are permitted (see
 section~\ref{wscommentsection})
 and are treated as comments, except that they affect the reading
 of subsequent data. The {\cf{}\#!fold-case} directive causes
@@ -97,8 +97,8 @@ causes the {\cf read} procedure to return to the default, non-folding behavior.
 \section{Whitespace and comments}
 \label{wscommentsection}
 
-\defining{Whitespace} characters are spaces and newlines.
-(Implementations typically provide additional whitespace characters such
+\defining{Whitespace} characters include the space and newline characters.
+(Implementations may provide additional whitespace characters such
 as tab or page break.)  Whitespace is used for improved readability and
 as necessary to separate tokens from each other, a token being an
 indivisible lexical unit such as an identifier or number, but is

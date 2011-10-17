@@ -497,7 +497,9 @@ macro, here called {\cf guard-aux}.
      (if test
          (begin result1 result2 ...)
          reraise))
-    ((guard-aux reraise (test result1 result2 ...) clause1 clause2 ...)
+    ((guard-aux reraise
+                (test result1 result2 ...)
+                clause1 clause2 ...)
      (if test
          (begin result1 result2 ...)
          (guard-aux reraise clause1 clause2 ...)))))
