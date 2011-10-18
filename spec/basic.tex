@@ -289,8 +289,8 @@ Certain built-in procedures are also required to perform tail calls.
 The first argument passed to \ide{apply} and to
 \ide{call-with-current-continuation}, and the second argument passed to
 \ide{call-with-values}, must be called via a tail call.
-%% Similarly, \ide{eval} must evaluate its first argument as if it
-%% were in tail position within the \ide{eval} procedure.
+Similarly, \ide{eval} must evaluate its first argument as if it
+were in tail position within the \ide{eval} procedure.
 
 In the following example the only tail call is the call to {\cf f}.
 None of the calls to {\cf g} or {\cf h} are tail calls.  The reference to
