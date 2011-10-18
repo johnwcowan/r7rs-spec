@@ -283,7 +283,7 @@ applying {\cf eqv?} on other objects such as numbers and symbols.
 A rule of thumb is that objects are generally {\cf equal?} if they print
 the same.  {\cf Equal?}\ must always terminate, even if its arguments are
 circular data structures.
-If two objects are {cf eqv?}, they must be {cf equal?} as well.
+If two objects are {\cf eqv?}, they must be {\cf equal?} as well.
 
 \begin{scheme}
 (equal? 'a 'a)                  \ev  \schtrue
@@ -1189,7 +1189,7 @@ these procedures may be either exact or inexact.
 \proto{number->string}{ z}{procedure}
 \rproto{number->string}{ z radix}{procedure}}
 
-It is an error if\vr{radix} is not one of 2, 8, 10, or 16.  If omitted,
+It is an error if \vr{radix} is not one of 2, 8, 10, or 16.  If omitted,
 \vr{radix} defaults to 10.
 The procedure {\cf number\coerce{}string} takes a
 number and a radix and returns as a string an external representation of
@@ -1248,7 +1248,6 @@ returns \schfalse{}.
 (string->number "100")        \ev  100
 (string->number "100" 16)     \ev  256
 (string->number "1e2")        \ev  100.0
-(string->number "15\#\#")       \ev  1500.0%
 \end{scheme}
 
 \begin{note}

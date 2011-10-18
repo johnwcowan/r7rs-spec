@@ -45,7 +45,7 @@ variable {\cf abs} is bound to a
 procedure of one argument that computes the absolute value of a
 number, and the variable {\cf +} is bound to a procedure that computes
 sums.  The full list of {\cf(scheme base)} bindings can be found in
-chapter~\ref{stdlibraries}.
+Appendix~\ref{stdlibraries}.
 
 
 \section{Definitions}
@@ -238,7 +238,7 @@ modifiers are defined for each record type.
 Record type definitions are valid wherever definitions are.
 
 \begin{entry}{%
-\proto{define-record-type}{ name constructor pred field \dotsfoo}{syntax}}
+\proto{define-record-type}{ \hyper{name} \hyper{constructor} \hyper{pred} \hyperi{field} \dotsfoo}{syntax}}
 
 \syntax
 \hyper{name} and \hyper{pred} should be identifiers.
@@ -246,12 +246,13 @@ The \hyper{constructor} should be of the form
 \begin{scheme}
 (\hyper{constructor name} \hyper{field name} \dotsfoo)%
 \end{scheme}
-and each \hyper{field} should be of the form
+and each \hyper{field} should be either of the form
 \begin{scheme}
 (\hyper{field name} \hyper{accessor name})%
 \end{scheme}
+or of the form
 \begin{scheme}
-$|$ (\hyper{field name} \hyper{accessor name} \hyper{modifier name})%
+(\hyper{field name} \hyper{accessor name} \hyper{modifier name})%
 \end{scheme}
 
 It is an error for the same identifier to occur more than once as a
@@ -367,7 +368,7 @@ A \hyper{library declaration} may be any of:
 
 An \ide{export} declaration specifies a list of identifiers which
 can be made visible to other libraries or programs.  An
-\hyper{Export spec} takes one of the following forms:
+An \hyper{export spec} takes one of the following forms:
 
 \begin{itemize}
 \item{\hyper{identifier}}
@@ -377,7 +378,8 @@ can be made visible to other libraries or programs.  An
 In an \hyper{export spec}, an \hyper{identifier} names a single
 binding defined within or imported into the library, where the
 external name for the export is the same as the name of the binding
-within the library. A rename spec exports the binding named by
+within the library. A rename spec exports the binding 
+defined within or imported into the library and named by
 \hyper{$identifier_1$} in each
 {\tt(\hyper{$identifier_1$} \hyper{$identifier_2$})} pairing,
 using \hyper{$identifier_2$} as the external name.
@@ -423,7 +425,7 @@ forms modify this set as follows:
 
 \end{itemize}
 
-\ide{import} declarations may also be made at the top level of a
+\ide{Import} declarations may also be made at the top level of a
 program.  In a library declaration, it is an error to import the same
 identifier more than once with different bindings, or to redefine or
 mutate an imported binding with {\cf define}, {\cf define-syntax}
