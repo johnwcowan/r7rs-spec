@@ -248,7 +248,7 @@ unspecified.
 \proto{set!}{ \hyper{variable} \hyper{expression}}{\exprtype}}
 
 \hyper{Expression} is evaluated, and the resulting value is stored in
-the location to which \hyper{variable} is bound.  It is an error if\hyper{variable} is not
+the location to which \hyper{variable} is bound.  It is an error if \hyper{variable} is not
 bound either in some region\index{region} enclosing the {\cf set!}\ expression
 or at top level.  The result of the {\cf set!} expression is
 unspecified.
@@ -519,7 +519,7 @@ region.\index{region}
     (* z x)))                   \ev  35%
 \end{scheme}
 
-See also named {\cf let}, section \ref{namedlet}.
+See also ``named {\cf let}'', section \ref{namedlet}.
 
 \end{entry}
 
@@ -658,7 +658,7 @@ referring to the value of the corresponding \hyper{variable} or the
 \syntax
 \hyper{Mvbindings} should have the form
 \begin{scheme}
-((\hyper{formals} \hyper{init}) \dotsfoo)\rm,%
+((\hyperi{formals} \hyperi{init}) \dotsfoo)\rm,%
 \end{scheme}
 
 where each \hyper{init} should be an expression, and \hyper{body} should be a
@@ -1055,7 +1055,7 @@ implementation-dependent.
 \hspace*{1em}\hyper{body})}}
 \mainschindex{parameterize}
 
-{\cf parameterize} is used to change the values returned by
+{\cf Parameterize} is used to change the values returned by
 parameter objects for the dynamic extent of the body.
 \domain{It is an error if the value of any \hyper{param} expression is not a parameter object.}
 The \hyper{param} and \hyper{value} expressions
