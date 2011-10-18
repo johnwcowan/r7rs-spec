@@ -129,7 +129,7 @@ objects in the appropriate sections of chapter~\ref{initialenv}.
 Variables and objects such as pairs, vectors, and strings implicitly
 denote locations\mainindex{location} or sequences of locations.  A string, for
 example, denotes as many locations as there are characters in the string. 
-(These locations need not correspond to a full machine word.) A new value can be
+A new value can be
 stored into one of these locations using the {\tt string-set!} procedure, but
 the string continues to denote the same locations as before.
 
@@ -157,6 +157,10 @@ created by the other procedures listed in this report are mutable.
 It is an
 error to attempt to store a new value into a location that is denoted by an
 immutable object.
+
+These locations should be understood as conceptual, not physical.
+Hence, they do not necessarily correspond to memory addresses,
+and even if they do, the memory address may not be constant.
 
 \begin{rationale}
 In many systems it is desirable for constants\index{constant} (i.e. the values of
