@@ -248,7 +248,7 @@ from their libraries, and that none of them have been redefined or shadowed.
 \meta{lambda expression} \: (lambda \meta{formals} \meta{body})
 \meta{formals} \: (\arbno{\meta{identifier}}) \| \meta{identifier}
 \>  \| (\atleastone{\meta{identifier}} .\ \meta{identifier})
-\meta{body} \:  \arbno{\meta{syntax definition}} \arbno{\meta{definition}} \meta{sequence}
+\meta{body} \:  \arbno{\meta{definition}} \meta{sequence}
 \meta{sequence} \: \arbno{\meta{command}} \meta{expression}
 \meta{command} \: \meta{expression}
 
@@ -393,10 +393,10 @@ un\-quo\-ta\-tion $D$} takes precedence.
 \meta{program} \: \arbno{\meta{command or definition}}
 \meta{command or definition} \: \meta{command}
 \> \| \meta{definition}
-\> \| \meta{syntax definition}
 \> \| (import \atleastone{\meta{import set}})
 \> \| (begin \atleastone{\meta{command or definition}})
 \meta{definition} \: (define \meta{identifier} \meta{expression})
+\> \| \meta{syntax definition}
 \>   \| (define (\meta{identifier} \meta{def formals}) \meta{body})
 \>   \| (define-record-type \meta{identifier}
 \> \> \ \ \meta{constructor} \meta{identifier} \arbno{\meta{field spec}})
@@ -411,7 +411,6 @@ un\-quo\-ta\-tion $D$} takes precedence.
 \meta{mutator} \: \meta{identifier}
 \meta{syntax definition} \:
 \>  (define-syntax \meta{keyword} \meta{transformer spec})
-\>   \| (begin \arbno{\meta{syntax definition}})
 \end{grammar}
 
 \subsection{Libraries}
