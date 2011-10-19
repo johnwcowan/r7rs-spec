@@ -9,19 +9,13 @@
 \mainindex{top level environment}
 \mainindex{procedure}
 
-This chapter describes Scheme's built-in procedures.  The initial (or
-``top level'') Scheme environment is empty except for {\cf import},
-so further bindings can only be introduced with {\cf import}.
+This chapter describes Scheme's built-in procedures.  
 
 The procedures {\cf force} and {\cf eager} are intimately associated
 with the expression types {\cf delay} and {\cf lazy}, and are described
 with them in section~\ref{force}.  In the same way, the procedure
 {\cf make-parameter} is intimately associated with the expression type
 {\cf parameterize}, and is described with it in section~\ref{make-parameter}.
-
-\todo{Gleckler: We need to make it clearer what ``top level'' really
-  means here.  For example, how we should explain how it differs from
-  the REPL.}
 
 \todo{consider removing unspecified effect}
 A program may use a top-level definition to bind any variable.  It may

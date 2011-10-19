@@ -22,12 +22,13 @@ Program parts other than expressions that are present
 at the top level of a program can be interpreted declaratively.
 They cause bindings to be created in the top level
 environment or modify the value of existing top-level bindings.
+The initial (or
+``top level'') Scheme environment is empty except for {\cf import},
+so further bindings can only be introduced with {\cf import}.
+
 Expressions occurring at the top level of a program are
 interpreted imperatively; they are executed in order when the program is
 invoked or loaded, and typically perform some kind of initialization.
-
-\todo{Shinn: The sections below seem to cover this - do we want to
-  summarize it here?}
 
 At the top level of a program {\tt(begin \hyperi{form} \dotsfoo)} is
 equivalent to the sequence of expressions, definitions, and syntax definitions
@@ -39,8 +40,8 @@ entered and evaluated one at a time.  For convenience and ease of use,
 the ``top-level'' Scheme environment in a REPL
 must not be not empty, but must start out with a number of variables
 bound to locations containing at least the bindings provided by the
-base library.  This library includes mostly core syntax
-and primitive procedures that manipulate data.  For example, the
+base library.  This library includes the core syntax of Scheme
+and generally useful procedures that manipulate data.  For example, the
 variable {\cf abs} is bound to a
 procedure of one argument that computes the absolute value of a
 number, and the variable {\cf +} is bound to a procedure that computes
