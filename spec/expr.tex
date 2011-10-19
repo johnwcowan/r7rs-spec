@@ -781,8 +781,9 @@ or input and output.
 \begin{scheme}
 (define x 0)
 
-(begin (set! x 5)
-       (+ x 1))                  \ev  6
+(and (= x 0)
+     (begin (set! x 5)
+            (+ x 1)              \ev  6
 
 (begin (display "4 plus 1 equals ")
        (display (+ 4 1)))      \ev  \unspecified

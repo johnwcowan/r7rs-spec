@@ -396,8 +396,9 @@ un\-quo\-ta\-tion $D$} takes precedence.
 \> \| (import \atleastone{\meta{import set}})
 \> \| (begin \atleastone{\meta{command or definition}})
 \meta{definition} \: (define \meta{identifier} \meta{expression})
-\> \| \meta{syntax definition}
 \>   \| (define (\meta{identifier} \meta{def formals}) \meta{body})
+\>   \| \meta{syntax definition}
+\>   \| (define-values \meta{def formals} \meta{body})
 \>   \| (define-record-type \meta{identifier}
 \> \> \ \ \meta{constructor} \meta{identifier} \arbno{\meta{field spec}})
 \>   \| (begin \arbno{\meta{definition}})
