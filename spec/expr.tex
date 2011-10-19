@@ -178,7 +178,6 @@ the results of the procedure call.
 The procedure takes a fixed number of arguments; when the procedure is
 called, the arguments will be stored in newly allocated locations
 that are bound to the corresponding variables.
-corresponding variables.
 
 \item \hyper{variable}:
 The procedure takes any number of arguments; when the procedure is
@@ -1095,8 +1094,8 @@ procedure in the call chain explicitly.
 (define (f n) (number->string n (radix)))
 
 (f 12)                                       \ev "12"
-(parameterize ((radix 16))
-  (f 12))                                    \ev "C"
+(parameterize ((radix 2))
+  (f 12))                                    \ev "1100"
 (f 12)                                       \ev "12"
 
 (radix 16)                                   \ev \unspecified

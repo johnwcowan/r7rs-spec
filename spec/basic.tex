@@ -61,13 +61,14 @@ boolean?          pair?
 symbol?           number?
 char?             string?
 vector?           bytevector?
-port?             procedure?%
+port?             procedure?
+null?%
 \end{scheme}
 
 These predicates define the types {\em boolean}, {\em pair}, {\em
 symbol}, {\em number}, {\em char} (or {\em character}), {\em string}, {\em
-vector}, {\em bytevector}, {\em port}, and {\em procedure}.  The empty list is a special
-object of its own type; it satisfies none of the above predicates.
+vector}, {\em bytevector}, {\em port}, {\em procedure} and the empty list
+object.
 \mainindex{type}\schindex{boolean?}\schindex{pair?}\schindex{symbol?}
 \schindex{number?}\schindex{char?}\schindex{string?}\schindex{vector?}
 \schindex{bytevector?}\schindex{port?}\schindex{procedure?}\index{empty list}
@@ -148,7 +149,7 @@ locations are marked to indicate that they are now in use before the variable
 or object is made to denote them.
 
 Every object that denotes locations is 
-is either mutable\index{mutable} or
+either mutable\index{mutable} or
 immutable\index{immutable}.  Specifically: literal constants, the strings
 returned by \ide{symbol->string}, and environments
 returned by \ide{environment} and possibly by {\cf scheme-report-environment},
