@@ -3226,30 +3226,20 @@ allowed to create new bindings in the environments returned by
 \end{entry}
 
 \begin{entry}{%
-\proto{scheme-report-environment}{ version}{eval library procedure}
-\proto{null-environment}{ version}{eval library procedure}}
+\proto{scheme-report-environment}{ version}{eval library procedure}}
 \label{environments}
 
-It is an error if \var{Version} is not the exact integer {\cf \integerversion},
+If \var{version} is equal to {\cf \integerversion},
 corresponding to this revision of the Scheme report (the
-Revised$^\integerversion$ Report on Scheme).
+Revised$^\integerversion$ Report on Scheme),
 {\cf scheme-report-environment} returns a specifier for an
-environment that is empty except for all bindings 
+environment that contains only the bindings
 defined either in the base library or in the other libraries
 of this report that the implementation supports.
-{\cf null-environment} returns
-a specifier for an environment that contains only the
-bindings for all syntactic keywords
-defined either in the base library or in the other libraries
-of this report that the implementation supports.
-\begin{note}
-The name {\cf null-environment} is historical and may be
-misleading: it does not represent an empty environment.
-\end{note}
+Implementations must support this value of \var{version}.
 
-Other values of \var{version} can be used to specify environments
-matching past revisions of this report, but their support is not
-required.  
+Implementations may also support other values of \var{version}, in which
+case they should return an environment containing bindings corresponding to the corresponding version of the report.
 If \var{version}
 is neither {\cf \integerversion} nor another value supported by
 the implementation, an error is signalled.
@@ -3259,6 +3249,22 @@ The effect of assigning (through the use of {\cf eval}) a variable
 bound in a {\cf scheme-report-environment}
 (for example {\cf car}) is unspecified.  Thus the environments specified
 by {\cf scheme-report-environment} may be immutable.
+
+\end{entry}
+
+\begin{entry}{%
+\proto{null-environment}{ version}{eval library procedure}}
+
+{\cf Null-environment} returns
+a specifier for an environment that contains only the
+bindings for all syntactic keywords
+defined either in the base library or in the other libraries
+of this report, provided that the implementation supports them.
+
+\begin{note}
+The name {\cf null-environment} is historical and may be
+misleading: it does not represent an empty environment.
+\end{note}
 
 \end{entry}
 
@@ -3280,7 +3286,7 @@ This procedure returns a specifier for an environment that
 contains an imple\-men\-ta\-tion-defined set of bindings, typically a superset of
 those listed in the report.  The intent is that this procedure
 will return the environment in which the implementation would evaluate
-expressions dynamically typed by the user.
+expressions entered by the user into a REPL.
 
 \end{entry}
 
