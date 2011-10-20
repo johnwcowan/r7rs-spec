@@ -240,7 +240,7 @@ errors:
 The values of a record type are called \defining{records} and are
 aggregations of zero or more \defining{fields}, each of which holds a single location.
 A predicate, a constructor, and field accessors and
-modifiers are defined for each record type.
+mutators are defined for each record type.
 Record type definitions are valid wherever definitions are.
 
 \begin{entry}{%
@@ -268,7 +268,7 @@ field name.
 {\cf define-record-type} is generative: each use creates a new record
 type that is distinct from all existing types, including Scheme's
 predefined types and other record types --- even record types of
-the same name.
+the same name or structure.
 
 An instance of {\cf define-record-type} is equivalent to the following
 definitions:

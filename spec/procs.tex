@@ -2131,6 +2131,7 @@ that the index \var{start} is inclusive and the index \var{end} is
 exclusive.  Thus if \var{start} and \var{end} are the same index, a null
 substring is referred to, and if \var{start} is zero and \var{end} is
 the length of \var{string}, then the entire string is referred to.
+It is an error if \var{start} is less than \var{end}.
 
 \vest Some of the procedures that operate on strings ignore the
 difference between upper and lower case.  The versions that ignore case
@@ -2362,13 +2363,13 @@ Returns a newly allocated copy of the given \var{string}.
 \proto{string-fill!}{ string char}{procedure}
 \proto{string-fill!}{ string char start end}{procedure}}
 
-If two arguments are given,
-stores \var{char} in every character location of the given \var{string} and returns an
-unspecified value.  % <!>
-If four arguments are given,
-stores \var{char} in every character location of the given \var{string}
-between \var{start} (inclusive) and \var{end} (exclusive) and returns an
-unspecified value.
+If \var{start} and \var{end} are given, {\cf string-fill!} stores \var{fill}
+in all the elements of \var{string}
+between \var{start} (inclusive) and \var{end} (exclusive).
+It is an error if \var{fill} is not a character or is forbidden in strings,
+or if \var{start} is less than \var{end}.
+If \var{start} and \var{end}y are omitted, \var{fill} is stored in all the elements of \var{string}.
+In either case, an unspecified value is returned.
 
 \end{entry}
 
@@ -2525,9 +2526,10 @@ The elements of the new vector are the same (in the sense of
 \proto{vector-fill!}{ vector fill}{procedure}
 \proto{vector-fill!}{ vector fill start end}{procedure}}
 
-If \var{start} and \var{end} are given, {\cf vector-fill} stores \var{fill}
+If \var{start} and \var{end} are given, {\cf vector-fill!} stores \var{fill}
 (which can be any object) in all the elements of \var{vector}
 between \var{start} (inclusive) and \var{end} (exclusive).
+It is an error if \var{start} is less than \var{end}.
 If they are omitted, \var{fill} is stored in all the elements of \var{vector}.
 In either case, an unspecified value is returned.
 \end{entry}
