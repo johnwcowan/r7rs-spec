@@ -59,7 +59,7 @@ containing the corresponding character.
 \begin{grammar}%
 \meta{token} \: \meta{identifier} \| \meta{boolean} \| \meta{number}\index{identifier}
 \>  \| \meta{character} \| \meta{string}
-\>  \| ( \| ) \| \sharpsign( \| \singlequote{} \| \backquote{} \| , \| ,@ \| {\bf.}
+\>  \| ( \| ) \| \sharpsign( \| \sharpsign u8( \| \singlequote{} \| \backquote{} \| , \| ,@ \| {\bf.}
 \meta{delimiter} \: \meta{whitespace} \| ( \| ) \| " \| ;
 \meta{intraline whitespace} \: \meta{space or tab}
 \meta{whitespace} \: \meta{intraline whitespace} \| \meta{newline} \| \meta{return}
@@ -239,7 +239,7 @@ from their libraries, and that none of them have been redefined or shadowed.
 
 \meta{literal} \: \meta{quotation} \| \meta{self-evaluating}
 \meta{self-evaluating} \: \meta{boolean} \| \meta{number}
-\>  \| \meta{character} \| \meta{string}
+\>  \| \meta{character} \| \meta{string} \| \meta{bytevector}
 \meta{quotation} \: '\meta{datum} \| (quote \meta{datum})
 \meta{procedure call} \: (\meta{operator} \arbno{\meta{operand}})
 \meta{operator} \: \meta{expression}

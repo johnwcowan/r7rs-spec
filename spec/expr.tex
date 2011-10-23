@@ -1267,17 +1267,15 @@ It is an error for the arguments not to agree with
 the \hyper{formals} of any \hyper{clause}.
 
 \begin{scheme}
-(define plus
+(define range
   (case-lambda
-    (() 0)
-    ((x) x)
-    ((x y) (+ x y))
-    ((x y z) (+ (+ x y) z))
-    (args (apply + args))))
+   ((e) (range 0 e))
+   ((b e) (do ((r '() (cons e r))
+               (e (- e 1) (- e 1)))
+              ((< e b) r)))))
 
-(plus) \ev 0
-(plus 1) \ev 1
-(plus 1 2 3) \ev 6
+(range 3)    => (0 1 2)
+(range 3 5)  => (3 4)
 \end{scheme}
 
 \end{entry}
