@@ -170,6 +170,32 @@ Wherever an internal definition may occur,
 is equivalent to the sequence of definitions
 that form the body of the \ide{begin}.
 
+\subsection{Multiple-value definitions}
+
+The construct {\cf define-values} introduces new definitions like
+{\cf define}, but can create multiple definitions from a single
+expression returning multiple values.
+It is allowed wherever {\cf define} is allowed.
+
+\begin{entry}{%
+\proto{define-values}{ \hyper{formals} \hyper{expression}}{\exprtype}}\nobreak
+
+It is an error if a variable appears more than once in the set of \hyper{formals}.
+
+\semantics
+\hyper{Expression} is evaluated, and the \hyper{formals} are bound
+to the return values in the same way that the \hyper{formals} in a
+{\cf lambda} expression are matched to the arguments in a procedure
+call.
+
+\begin{scheme}
+(let ()
+  (define-values (x y) (values 1 2))
+  (+ x y))     \ev 3%
+\end{scheme}
+
+\end{entry}
+
 \section{Syntax definitions}
 
 Syntax definitions are valid wherever definitions are.
