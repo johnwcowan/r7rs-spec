@@ -553,7 +553,12 @@ which it is so imported.
 \todo{Shinn: Mention it may also be loaded (or not in some cases, if
   the compiler is clever) during batch compilation?}
 
-\subsection{Library Examples}
+\subsection{Library example}
+The following example shows
+how a program may be divided into libraries plus a relatively small
+main program.
+If the main program is entered into a REPL, it is not necessary to import
+the base module.
 
 \begin{scheme}
 
@@ -603,12 +608,11 @@ which it is so imported.
    (define (party-pop! p)
      (balloon:pop (pop! p)))))
 
-(define-library (main)
-  (import (scheme base) (party))
-  (begin
-   (define p (make-party))
-   (pop! p)        ; displays "Boom! 108"
-   (push! p (push (make 5 5) 1))
-   (pop! p)))      ; displays "Boom! 24"
+;; The main program.
+(import (scheme base) (party))
+(define p (make-party))
+(pop! p)        ; displays "Boom! 108"
+(push! p (push (make 5 5) 1))
+(pop! p)       ; displays "Boom! 24"
 
 \end{scheme}
