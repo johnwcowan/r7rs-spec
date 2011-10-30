@@ -219,3 +219,49 @@ These are used in the notation for numbers (section~\ref{numbernotations}).
 These are used for labeling and referencing other literal data (section~\ref{labelsection}).
 
 \end{description}
+
+\section{Datum labels}\unsection
+\label{labelsection}
+
+\begin{entry}{%
+\pproto{\#\hyper{n}=\hyper{datum}}{lexical syntax}
+\pproto{\#\hyper{n}\#}{lexical syntax}}
+
+The lexical syntax
+\texttt{\#\hyper{n}=\hyper{datum}} reads the same as \hyper{datum}, but also
+results in \hyper{datum} being labelled by \hyper{n}.
+It is an error if \hyper{n} is not a sequence of digits.
+
+The lexical syntax \texttt{\#\hyper{n}\#} serves as a reference to some
+object labelled by \texttt{\#\hyper{n}=}; the result is the same
+object as the \texttt{\#\hyper{n}}= as compared with {\cf eqv?}
+(see section~\ref{equivalencesection}). 
+
+Together, these syntaxes permit the notation of
+structures with shared or circular substructure.
+
+\begin{scheme}
+(let ((x (list 'a 'b 'c)))
+  (set-cdr! (cddr x) x)
+  x)                       \ev \#0=(a b c . \#0\#)
+\end{scheme}
+
+The scope of a datum label is the portion of the datum in which it appears
+that is to the right of the label.
+Consequently, a reference \texttt{\#\hyper{n}\#} may occur only after a label
+\texttt{\#\hyper{n}=}; it is an error to attempt a forward reference.  In
+addition, it is an error if the reference appears as the labelled object itself
+(as in \texttt{\#\hyper{n}= \#\hyper{n}\#}),
+because the object labelled by \texttt{\#\hyper{n}=} is not well
+defined in this case.
+
+It is an error for a \hyper{program} or \hyper{library} to include
+circular references.  In particular,
+it is an error for {\cf quasiquote} (section~\ref{quasiquote}) to contain them.
+
+\begin{scheme}
+\#1=(begin (display \#\backwhack{}x) . \#1\#)
+                       \ev \scherror%
+\end{scheme}
+\end{entry}
+

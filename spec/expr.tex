@@ -1280,47 +1280,6 @@ the \hyper{formals} of any \hyper{clause}.
 
 \end{entry}
 
-\subsection{Datum labels}\unsection
-\label{labelsection}
-
-\begin{entry}{%
-\pproto{\#\hyper{n}=\hyper{datum}}{\exprtype}
-\pproto{\#\hyper{n}\#}{\exprtype}}
-
-The syntax
-\texttt{\#\hyper{n}=\hyper{datum}} reads as \hyper{datum}, but also
-results in \hyper{datum} being labelled by \hyper{n}.
-It is an error if \hyper{n} is not an exact unsigned decimal integer datum.
-
-The syntax \texttt{\#\hyper{n}\#} serves as a reference to some
-object labelled by \texttt{\#\hyper{n}=}; the result is the same
-object as the \texttt{\#\hyper{n}}= as compared with {\cf eqv?}
-(see section~\ref{equivalencesection}). This permits notation of
-structures with shared or circular substructure.
-
-\begin{scheme}
-(let ((x (list 'a 'b 'c)))
-  (set-cdr! (cddr x) x)
-  x)                       \ev \#0=(a b c . \#0\#)
-\end{scheme}
-
-A reference \texttt{\#\hyper{n}\#} may occur only after a label
-\texttt{\#\hyper{n}=}; it is an error to attempt a forward reference.  In
-addition, it is an error if the reference appears as the labelled object itself
-(as in \texttt{\#\hyper{n}= \#\hyper{n}\#}),
-because the object labelled by \texttt{\#\hyper{n}=} is not well
-defined in this case.
-
-It is an error for a \hyper{program} or \hyper{library} to include
-circular references.  In particular,
-it is an error for {\cf quasiquote} to contain them.
-
-\begin{scheme}
-\#1=(begin (display \#\backwhack{}x) . \#1\#)
-                       \ev \scherror%
-\end{scheme}
-\end{entry}
-
 \section{Macros}
 \label{macrosection}
 
@@ -1728,3 +1687,4 @@ exception handlers or guards.
 \end{scheme}
 
 \end{entry}
+
