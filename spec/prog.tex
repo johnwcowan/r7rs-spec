@@ -59,7 +59,7 @@ and at the beginning of a \hyper{body}.
 
 In a \hyper{body} {\tt(begin \hyperi{definition} \dotsfoo)} is equivalent
 to the sequence of definitions \hyperi{definition} \dotsfoo. Macros can
-expand into such {\cf begin} forms.
+expand into such {\cf begin}s.
 
 A definition takes one of the following forms:\mainschindex{define}
 
@@ -129,7 +129,7 @@ Definitions may occur at the
 beginning of a \hyper{body} (that is, the body of a \ide{lambda},
 \ide{let}, \ide{let*}, \ide{letrec}, \ide{letrec*},
 \ide{let-values}, \ide{let-values*}, \ide{let-syntax}, \ide{letrec-syntax},
-\ide{parameterize}, \ide{guard}, or \ide{case-lambda}.
+\ide{parameterize}, \ide{guard}, or \ide{case-lambda}
 expression or that of a definition of an appropriate form).
 Such definitions are known as {\em internal definitions} \mainindex{internal
 definition} as opposed to the top level definitions described above.
@@ -276,7 +276,7 @@ definitions:
 \begin{itemize}
 
 \item \hyper{name} is bound to a representation of the record type
-  itself, possibly as a syntactic form.
+itself.  This may be a run-time object or a purely syntactic representation.
 
 \item \hyper{constructor name} is bound to a procedure that takes as
   many arguments as there are \hyper{field name}s in the
@@ -440,13 +440,13 @@ or {\cf set!}.  However, a REPL should permit these actions.
 
 The \ide{begin}, \ide{include}, and \ide{include-ci} declarations are
 used to specify the commands and definitions that make up the body of
-the library.  \ide{Begin} takes a list of forms to be spliced
+the library.  \ide{Begin} takes a list of expressions and definitions to be spliced
 literally, analogous to the top-level \ide{begin}.  
 \ide{Include} and
 \ide{include-ci} both take one or more filenames expressed as string literals,
 apply an implementation-specific algorithm to find corresponding files,
-read all top-level
-forms from the files, and include the results into the library body or program as
+read the whole contents of each file,
+and include the results into the library body or program as
 though wrapped in a top-level \ide{begin}.
 The difference between the two is that \ide{include-ci} reads each file
 as if it began with the {\cf{}\#!fold-case} directive, while \ide{include}
@@ -512,13 +512,13 @@ appendix~\ref{stdfeatures}.
 \todo{Shinn: Perhaps make this a separate subsection describing a
   library ``resolution'' phase which runs prior to library expansion.}
 
-After all \ide{cond-expand} forms are expanded, a new environment is
+After all \ide{cond-expand} library declarations are expanded, a new environment is
 constructed for the library consisting of all imported bindings.  The
-forms from all \ide{begin}, \ide{include} and \ide{include-ci}
+expressions and declarations from all \ide{begin}, \ide{include} and \ide{include-ci}
 declarations are expanded in that environment in the order in which
 they occur in the library declaration.
 
-The top-level forms in a library are executed in the order in which
+The top-level expressions in a library are executed in the order in which
 they occur when the library is loaded.  A library is loaded zero or more
 times when it is imported by a program or by another library which is
 about to be loaded, but must be loaded at least once per program in

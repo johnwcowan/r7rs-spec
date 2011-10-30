@@ -2055,13 +2055,13 @@ returns that character.
 \proto{char-foldcase}{ char}{char library procedure}}
 
 
-The {\cf char-upcase} procedure, given an argument that forms the
+The {\cf char-upcase} procedure, given an argument that is the
 lowercase part of a Unicode casing pair, returns the uppercase member
 of the pair, provided that both characters are supported by the Scheme
 implementation.  Note that language-sensitive casing pairs are not used.  If the
 argument is not the lowercase part of such a pair, it is returned.
 
-The {\cf char-downcase} procedure, given an argument that forms the
+The {\cf char-downcase} procedure, given an argument that is the
 uppercase part of a Unicode casing pair, returns the lowercase member
 of the pair, provided that both characters are supported by the Scheme
 implementation.  Note that language-sensitive casing pairs are not used.  If the
@@ -2332,8 +2332,8 @@ The {\cf substring} procedure returns a newly allocated string formed from the c
 \begin{entry}{%
 \proto{string-append}{ \var{string} \dotsfoo}{procedure}}
 
-Returns a newly allocated string whose characters form the concatenation of the
-given strings.
+Returns a newly allocated string whose characters are the concatenation of the
+characters in the given strings.
 
 \end{entry}
 
@@ -2882,7 +2882,7 @@ The escape procedure accepts the same number of arguments as the continuation to
 the original call to \callcc.
 Except for continuations created by the {\cf call-with-values}
 procedure (including the initialization expressions of
-{\cf let-values} and {\cf let*-values} syntax forms),
+{\cf let-values} and {\cf let*-values} expressions),
 all continuations take exactly one value.  
 \todo{consider removing unspecified effect}
 The effect of passing no value or more than one value to continuations
@@ -2892,7 +2892,7 @@ However, the continuations of all non-final expressions within a sequence
 of expressions, such as in {\cf lambda}, {\cf case-lambda}, {\cf begin},
 {\cf let}, {\cf let*}, {\cf letrec}, {\cf letrec*}, {\cf let-values}, 
 {\cf let*-values}, {\cf let-syntax}, {\cf letrec-syntax}, {\cf parameterize},
-{\cf guard}, {\cf case}, {\cf cond}, {\cf when}, and {\cf unless} forms,
+{\cf guard}, {\cf case}, {\cf cond}, {\cf when}, and {\cf unless} expressions,
 take an arbitrary number of values, because they discard the values passed
 to them in any event.
 
@@ -2959,11 +2959,11 @@ escape constructs with names like {\tt exit}, \hbox{{\cf return}}, or
 even {\tt goto}.  In 1965, however, Peter Landin~\cite{Landin65}
 invented a general purpose escape operator called the J-operator.  John
 Reynolds~\cite{Reynolds72} described a simpler but equally powerful
-construct in 1972.  The {\cf catch} special form described by Sussman
+construct in 1972.  The {\cf catch} syntax described by Sussman
 and Steele in the 1975 report on Scheme is exactly the same as
 Reynolds's construct, though its name came from a less general construct
-in MacLisp.  Several Scheme implementors noticed that the full power of the
-\ide{catch} construct could be provided by a procedure instead of by a
+in MacLisp.  Several Scheme implementors noticed that the full power of
+\ide{catch} could be provided by a procedure instead of by a
 special syntactic construct, and the name
 {\cf call-with-current-continuation} was coined in 1982.  This name is
 descriptive, but opinions differ on the merits of such a long name, and

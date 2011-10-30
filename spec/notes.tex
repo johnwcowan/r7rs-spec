@@ -56,7 +56,7 @@ and write bytes to and from bytevectors.
 parameter objects, as is the newly introduced {\cf
 current-error-port}.
 
-\item The {\cf syntax-rules} special form now recognizes {\em \_} (underscore) as a wildcard, allows
+\item {\cf Syntax-rules} now recognizes {\em \_} (underscore) as a wildcard, allows
 the ellipsis symbol to be specified explicitly instead of the default
 {\cf ...}, allows template escapes with an ellipsis-prefixed list, and
 allows tail patterns to follow an ellipsis pattern.
@@ -67,7 +67,7 @@ and more informative errors when a macro is expanded.
 \item Internal {\cf define-syntax} definitions are now allowed wherever
 internal {\cf define}s are.
 
-\item The {\cf letrec*} special form has been added, and internal {\cf define} specified in
+\item {\cf Letrec*} has been added, and internal {\cf define} specified in
 terms of it.
 
 \item Support for capturing multiple values has been enhanced with {\cf
@@ -75,12 +75,12 @@ define-values}, {\cf let-values}, and {\cf let*-values}.
 Programs are now explicitly permitted to pass zero or more than one
 value to continuations which discard them.
 
-\item The {\cf case} special form now supports a {\tt =>} syntax analogous to {\cf cond}.
+\item {\cf Case} now supports a {\tt =>} syntax analogous to {\cf cond}.
 
-\item The special form {\cf case-lambda} has been added in its own library as a way to
+\item {\cf Case-lambda} has been added in its own library as a way to
 dispatch on the number of arguments passed to a procedure.
 
-\item The special forms {\cf when} and {\cf unless} have been added as convenience
+\item {\cf When} and {\cf unless} have been added as convenience
 conditionals.
 
 \item Positive infinity, negative infinity, NaN, and negative inexact zero have been added
@@ -148,7 +148,7 @@ load into.
 \item The procedures {\cf transcript-on} and {\cf transcript-off} have been removed.
 
 \item The semantics of read-eval-print loops are now partly prescribed,
-allowing the retroactive redefinition of procedures but not syntax forms.
+allowing the retroactive redefinition of procedures but not syntax keywords.
 
 \end{itemize}
 
@@ -178,12 +178,12 @@ and so chose a syntax which provides
 a clear separation between the library declarations and the Scheme code
 which makes up the body.
 
-\item The {\cf include} library form
+\item The {\cf include} library declaration
 makes it easier to include separate files, 
 and the {\cf include-ci} variant allows legacy 
 case-insensitive code to be incorporated.
 
-\item The {\cf cond-expand} form from SRFI 0 allows for a more
+\item The {\cf cond-expand} library declaration based on SRFI 0 allows for a more
 deterministic alternative to the \rsixrs\ {\cf .impl.sls} file naming
 convention.
 

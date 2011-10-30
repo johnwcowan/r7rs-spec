@@ -754,8 +754,8 @@ have slightly different forms and uses:
 \begin{entry}{%
 \proto{begin}{ \hyper{expression or definition} \dotsfoo}{\exprtype}}
 
-This form may appear as part of a \hyper{body}, or at the
-\hyper{top-level}, or directly nested in a {\cf begin} of this form.
+This form of {\cf begin} may appear as part of a \hyper{body}, or at the
+\hyper{top-level}, or directly nested in a {\cf begin} that is itself of this form.
 It causes the contained expressions and definitions to be evaluated
 exactly as if the enclosing begin construct were not present.
 
@@ -771,7 +771,7 @@ splice them into the context in which they are expanded.
 \begin{entry}{%
 \proto{begin}{ \hyperi{expression} \hyperii{expression} \dotsfoo}{\exprtype}}
 
-This form can be used as an ordinary expression.
+This form of {\cf begin} can be used as an ordinary expression.
 The \hyper{expression}s are evaluated sequentially from left to right,
 and the values of the last \hyper{expression} are returned. This
 expression type is used to sequence side effects such as assignments
@@ -1175,7 +1175,7 @@ at-sign should only appear within a list or vector \hyper{qq template}.
           \lev  \#(10 5 2 4 3 8)%
 \end{scheme}
 
-Quasiquote forms may be nested.  Substitutions are made only for
+Quasiquote expressions may be nested.  Substitutions are made only for
 unquoted components appearing at the same nesting level
 as the outermost backquote.  The nesting level increases by one inside
 each successive quasiquotation, and decreases by one inside each
@@ -1493,7 +1493,7 @@ It is also an error if
 (\hyper{pattern} \hyper{template})%
 \end{scheme}
 The \hyper{pattern} in a \hyper{syntax rule} is a list \hyper{pattern}
-whose first subform is an identifier.
+whose first element is an identifier.
 
 A \hyper{pattern} is either an identifier, a constant, or one of the
 following
@@ -1542,7 +1542,7 @@ are used to refer to elements of the input in the template.
 It is an error for the same pattern variable to appear more than once in a
 \hyper{pattern}.
 
-Underscores also match arbitrary input subforms but are not pattern variables
+Underscores also match arbitrary input elements but are not pattern variables
 and so cannot be used to refer to those elements.  If an underscore appears
 in the \hyper{literal}s list, then that takes precedence and
 underscores in the \hyper{pattern} match as literals.
@@ -1550,8 +1550,8 @@ Multiple underscores may appear in a \hyper{pattern}.
 
 Identifiers that appear in \texttt{(\hyper{literal} \dotsfoo)} are
 interpreted as literal
-identifiers to be matched against corresponding subforms of the input.
-A subform in the input matches a literal identifier if and only if it is an
+identifiers to be matched against corresponding elements of the input.
+A element in the input matches a literal identifier if and only if it is an
 identifier and either both its occurrence in the macro expression and its
 occurrence in the macro definition have the same lexical binding, or
 the two identifiers are equal and both have no lexical binding.
@@ -1560,7 +1560,7 @@ A subpattern followed by \hyper{ellipsis} can match zero or more elements of
 the input, unless \hyper{ellipsis} appears in the \hyper{literal}s in which
 case it is matched as a literal.
 
-More formally, an input form $F$ matches a pattern $P$ if and only if:
+More formally, an input $F$ matches a pattern $P$ if and only if:
 
 \begin{itemize}
 \item $P$ is an underscore ({\cf \_}).
@@ -1572,41 +1572,41 @@ More formally, an input form $F$ matches a pattern $P$ if and only if:
 
 \item $P$ is a list {\cf ($P_1$ $\dots$ $P_n$)} and $F$ is a
       list of $n$
-      forms that match $P_1$ through $P_n$, respectively; or
+      elements that match $P_1$ through $P_n$, respectively; or
 
 \item $P$ is an improper list
       {\cf ($P_1$ $P_2$ $\dots$ $P_n$ . $P_{n+1}$)}
       and $F$ is a list or
-      improper list of $n$ or more forms that match $P_1$ through $P_n$,
+      improper list of $n$ or more elements that match $P_1$ through $P_n$,
       respectively, and whose $n$th tail matches $P_{n+1}$; or
 
 \item $P$ is of the form
       {\cf ($P_1$ $\dots$ $P_{e-1}$ $P_{e}$ \meta{ellipsis} $P_{m+1}$ \dotsfoo{} $P_n$)}
       where $F$ is
-      a proper list of $n$ forms, the first $e-1$ of which match
+      a proper list of $n$ elements, the first $e-1$ of which match
       $P_1$ through $P_{e-1}$, respectively,
-      whose next $m-k$ forms each match $P_e$,
-      whose remaining $n-m$ forms match $P_{m+1}$ through $P_n$; or
+      whose next $m-k$ elements each match $P_e$,
+      whose remaining $n-m$ elements match $P_{m+1}$ through $P_n$; or
 
 \item $P$ is of the form
       {\cf ($P_1$ $\dots$ $P_{e-1}$ $P_{e}$ \meta{ellipsis} $P_{m+1}$ \dotsfoo{} $P_n$ . $P_x$)}
       where $F$ is
-      an list or improper list of $n$ forms, the first $e-1$ of which match
+      an list or improper list of $n$ elements, the first $e-1$ of which match
       $P_1$ through $P_{e-1}$,
-      whose next $m-k$ forms each match $P_e$,
-      whose remaining $n-m$ forms match $P_{m+1}$ through $P_n$,
+      whose next $m-k$ elements each match $P_e$,
+      whose remaining $n-m$ elements match $P_{m+1}$ through $P_n$,
       and whose $n$th and final cdr matches $P_x$; or
 
 \item $P$ is a vector of the form {\cf \#($P_1$ $\dots$ $P_n$)}
       and $F$ is a vector
-      of $n$ forms that match $P_1$ through $P_n$; or
+      of $n$ elements that match $P_1$ through $P_n$; or
 
 \item $P$ is of the form
       {\cf \#($P_1$ $\dots$ $P_{e-1}$ $P_{e}$ \meta{ellipsis} $P_{m+1}$ \dotsfoo $P_n$)}
       where $F$ is a vector of $n$
-      forms the first $e-1$ of which match $P_1$ through $P_{e-1}$,
-      whose next $m-k$ forms each match $P_e$,
-      and whose remaining $n-m$ forms matche $P_{m+1}$ through $P_n$; or
+      elements the first $e-1$ of which match $P_1$ through $P_{e-1}$,
+      whose next $m-k$ elements each match $P_e$,
+      and whose remaining $n-m$ elements matche $P_{m+1}$ through $P_n$; or
 
 \item $P$ is a datum and $F$ is equal to $P$ in the sense of
       the {\cf equal?} procedure.
@@ -1617,13 +1617,13 @@ binding, in an expression that does not match any of the patterns.
 
 When a macro use is transcribed according to the template of the
 matching \hyper{syntax rule}, pattern variables that occur in the
-template are replaced by the subforms they match in the input.
+template are replaced by the elements they match in the input.
 Pattern variables that occur in subpatterns followed by one or more
 instances of the identifier
 \hyper{ellipsis} are allowed only in subtemplates that are
 followed by as many instances of \hyper{ellipsis}.
 They are replaced in the
-output by all of the subforms they match in the input, distributed as
+output by all of the elements they match in the input, distributed as
 indicated.  It is an error if the output cannot be built up as
 specified.
 
