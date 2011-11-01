@@ -156,9 +156,9 @@ boolean.
 \end{scheme}
 
 The next set of examples shows the use of {\cf eqv?}\ with procedures
-that have local state.  {\cf Gen-counter} must return a distinct
+that have local state.  The {\cf gen-counter} procedure must return a distinct
 procedure every time, since each procedure has its own internal counter.
-{\cf Gen-loser}, however, returns equivalent procedures each time, since
+The {\cf gen-loser} procedure, however, returns equivalent procedures each time, since
 the local state does not affect the value or side effects of the
 procedures.  However, {\cf eqv?} may or may not detect this equivalence.
 

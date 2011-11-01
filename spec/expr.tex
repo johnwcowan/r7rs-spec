@@ -944,7 +944,7 @@ exhaust the heap.
                                \ev 5
 \end{scheme}
 
-{\cf Delay}, {\cf lazy}, and {\cf force} are mainly intended for
+The {\cf delay}, {\cf lazy}, and {\cf force} forms are mainly intended for
 programs written in functional style.  The following examples are
 not intended to illustrate good programming style, but they
 illustrate the property that only one value is computed for a promise,
@@ -1027,7 +1027,7 @@ implementation-dependent.
 \hspace*{1em}\hyper{body})}}
 \mainschindex{parameterize}
 
-{\cf Parameterize} is used to change the values returned by
+The {\cf parameterize} form is used to change the values returned by
 parameter objects for the dynamic extent of the body.
 \domain{It is an error if the value of any \hyper{param} expression is not a parameter object.}
 The \hyper{param} and \hyper{value} expressions
