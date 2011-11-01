@@ -12,7 +12,7 @@ Suitable definitions of some of the derived expressions are
 given in section~\ref{derivedsection}.
 
 The procedures {\cf force}, {\cf eager}, and {\cf make-parameter}
-are described in this chapter because they are intimately associated
+are also described in this chapter, because they are intimately associated
 with the {\cf delay}, {\cf lazy}, and {\cf parameterize} expression types.
 
 \section{Primitive expression types}
@@ -944,9 +944,11 @@ exhaust the heap.
                                \ev 5
 \end{scheme}
 
-The {\cf delay}, {\cf lazy}, and {\cf force} forms are mainly intended for
-programs written in functional style.  The following examples are
-not intended to illustrate good programming style, but they
+The following examples are
+not intended to illustrate good programming style, 
+as {\cf delay}, {\cf lazy}, and {\cf force} are mainly intended for
+programs written in the functional style.
+However, they do
 illustrate the property that only one value is computed for a promise,
 no matter how many times it is forced.
 
@@ -1027,8 +1029,8 @@ implementation-dependent.
 \hspace*{1em}\hyper{body})}}
 \mainschindex{parameterize}
 
-The {\cf parameterize} form is used to change the values returned by
-parameter objects for the dynamic extent of the body.
+A {\cf parameterize} expression is used to change the values returned by
+specified parameter objects for its dynamic extent of the body.
 \domain{It is an error if the value of any \hyper{param} expression is not a parameter object.}
 The \hyper{param} and \hyper{value} expressions
 are evaluated in an unspecified order.  The \hyper{body} is
@@ -1581,7 +1583,7 @@ That is, any ellipses contained within \hyper{template} are
 treated as ordinary identifiers.
 In particular, the template {\cf (\hyper{ellipsis} \hyper{ellipsis})} produces
 a single \hyper{ellipsis}.
-This allows syntactic abstractions to expand into forms containing
+This allows syntactic abstractions to expand into code containing
 ellipses.
 
 \begin{scheme}
