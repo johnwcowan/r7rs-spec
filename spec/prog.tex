@@ -411,7 +411,7 @@ An \hyper{export spec} takes one of the following forms:
 In an \hyper{export spec}, an \hyper{identifier} names a single
 binding defined within or imported into the library, where the
 external name for the export is the same as the name of the binding
-within the library. A rename spec exports the binding 
+within the library. A \ide{rename} spec exports the binding 
 defined within or imported into the library and named by
 \hyperi{$identifier$} in each
 {\tt(\hyperi{$identifier$} \hyperii{$identifier$})} pairing,
@@ -458,8 +458,8 @@ forms modify this set as follows:
 
 \end{itemize}
 
-\ide{Import} declarations may also be made at the top level of a
-program.  In a library declaration, it is an error to import the same
+The top level of a program may also include \ide{import} declarations.
+In a library declaration, it is an error to import the same
 identifier more than once with different bindings, or to redefine or
 mutate an imported binding with {\cf define}, {\cf define-syntax}
 or {\cf set!}.  However, a REPL should permit these actions.

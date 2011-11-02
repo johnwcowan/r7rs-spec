@@ -67,21 +67,20 @@ and more informative errors when a macro is expanded.
 \item Internal {\cf define-syntax} definitions are now allowed wherever
 internal {\cf define}s are.
 
-\item {\cf Letrec*} has been added, and internal {\cf define} specified in
-terms of it.
+\item The {\cf letrec*} binding construct has been added, and internal {\cf define} 
+is specified in terms of it.
 
 \item Support for capturing multiple values has been enhanced with {\cf
 define-values}, {\cf let-values}, and {\cf let*-values}.
 Programs are now explicitly permitted to pass zero or more than one
 value to continuations which discard them.
 
-\item {\cf Case} now supports a {\tt =>} syntax analogous to {\cf cond}.
+\item The {\cf case} conditional now supports a {\tt =>} syntax analogous to {\cf cond}.
 
-\item {\cf Case-lambda} has been added in its own library as a way to
-dispatch on the number of arguments passed to a procedure.
+\item To support dispatching on the number of arguments passed to a
+procedure, {\cf case-lambda} has been added in its own library.
 
-\item {\cf When} and {\cf unless} have been added as convenience
-conditionals.
+\item The convenience conditionals {\cf when} and {\cf unless} have been added.
 
 \item Positive infinity, negative infinity, NaN, and negative inexact zero have been added
 to the numeric tower as inexact values with the written

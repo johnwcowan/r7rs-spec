@@ -66,8 +66,8 @@ approximations.  Exact arithmetic is not limited to integers.
 Scheme, like most dialects of Lisp, employs a fully parenthesized prefix
 notation for programs and (other) data; the grammar of Scheme generates a
 sublanguage of the language used for data.  An important
-consequence of this simple, uniform representation is the suitability of
-Scheme programs and data to uniform treatment by other Scheme programs.
+consequence of this simple, uniform representation is that
+Scheme programs and data can easily be treated uniformly by other Scheme programs.
 For example, the {\cf eval} procedure evaluates a Scheme program expressed
 as data.
 
@@ -264,11 +264,11 @@ representations of objects.
 
 \subsection{Naming conventions}
 
-By convention, \ide{?} is used as the final character of the names
+By convention, \ide{?} is the final character of the names
 of procedures that always return a boolean value.
 Such procedures are called predicates.
 
-Similarly, \ide{!} is used as the final character of the names
+Similarly, \ide{!} is the final character of the names
 of procedures that store values into previously
 allocated locations (see section~\ref{storagemodel}).
 Such procedures are called mutation procedures.
