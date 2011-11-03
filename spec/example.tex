@@ -2,7 +2,7 @@
 \extrapart{Example} % -*- Mode: Lisp; Package: SCHEME; Syntax: Common-lisp -*-
 
 \nobreak
-{\cf Integrate-system} integrates the system 
+The procedure {\cf integrate-system} integrates the system 
 $$y_k^\prime = f_k(y_1, y_2, \ldots, y_n), \; k = 1, \ldots, n$$
 of differential equations with the method of Runge-Kutta.
 
@@ -27,8 +27,8 @@ system states.
         states))))%
 \end{schemenoindent}
 
-{\cf Runge-Kutta-4} takes a function, {\tt f}, that produces a
-system derivative from a system state.  {\cf Runge-Kutta-4}
+The procedure {\cf runge-kutta-4} takes a function, {\tt f}, that produces a
+system derivative from a system state.  It
 produces a function that takes a system state and
 produces a new system state.
 
@@ -79,7 +79,7 @@ produces a new system state.
     (elementwise (lambda (x) (* x s)))))%
 \end{schemenoindent}
 
-{\cf Map-streams} is analogous to {\cf map}: it applies its first
+The {\cf map-streams} procedure is analogous to {\cf map}: it applies its first
 argument (a procedure) to all the elements of its second argument (a
 stream).
 

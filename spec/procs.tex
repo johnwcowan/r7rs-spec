@@ -34,7 +34,7 @@ value (\schtrue{} or \schfalse).  An \defining{equivalence predicate} is
 the computational analogue of a mathematical equivalence relation (it is
 symmetric, reflexive, and transitive).  Of the equivalence predicates
 described in this section, {\cf eq?}\ is the finest or most
-discriminating, and {\cf equal?}\ is the coarsest.  {\cf Eqv?}\ is
+discriminating, {\cf equal?}\ is the coarsest, and {\cf eqv?}\ is
 slightly less discriminating than {\cf eq?}.  
 
 
@@ -220,19 +220,18 @@ bit pattern to represent both.
 \begin{entry}{%
 \proto{eq?}{ \vari{obj} \varii{obj}}{procedure}}
 
-{\cf Eq?}\ is similar to {\cf eqv?}\ except that in some cases it is
+The {\cf eq?}\ procedure is similar to {\cf eqv?}\ except that in some cases it is
 capable of discerning distinctions finer than those detectable by
 {\cf eqv?}.
 
-\vest {\cf Eq?}\ and {\cf eqv?}\ are guaranteed to have the same
-behavior on symbols, booleans, the empty list, pairs, procedures,
+\vest On symbols, booleans, the empty list, pairs, procedures,
 and non-empty
-strings, vectors, bytevectors, and records.  {\cf Eq?}'s behavior
-on numbers and characters is
+strings, vectors, bytevectors, and records, {\cf eq?}\ and {\cf eqv?}\ are guaranteed to have the same
+behavior.  On numbers and characters, {\cf eq?}'s behavior is
 implementation-dependent, but it will always return either true or
 false, and will return true only when {\cf eqv?}\ would also return
-true.  {\cf Eq?} may also behave differently from {\cf eqv?} on empty
-vectors and empty strings.
+true.  On empty vectors and empty strings, {\cf eq?} may also behave
+differently from {\cf eqv?}.
 
 \begin{scheme}
 (eq? 'a 'a)                     \ev  \schtrue
@@ -260,8 +259,9 @@ more efficiently than {\cf eqv?}, for example, as a simple pointer
 comparison instead of as some more complicated operation.  One reason is
 that it is not always possible to compute {\cf eqv?}\ of two numbers in
 constant time, whereas {\cf eq?}\ implemented as pointer comparison will
-always finish in constant time.  {\cf Eq?}\ may be used like {\cf eqv?}\
-in applications using procedures to implement objects with state since
+always finish in constant time.
+In applications using procedures to implement objects with state, 
+{\cf eq?}\ may be used like {\cf eqv?}\ since
 it obeys the same constraints as {\cf eqv?}.
 \end{rationale}
 
@@ -271,12 +271,12 @@ it obeys the same constraints as {\cf eqv?}.
 \begin{entry}{%
 \proto{equal?}{ \vari{obj} \varii{obj}}{procedure}}
 
-{\cf Equal?} recursively compares the contents of pairs, vectors, 
+The {\cf equal?} procedure recursively compares the contents of pairs, vectors, 
 strings, bytevectors, and records,
 applying {\cf eqv?} on other objects such as numbers and symbols.
 If two objects are {\cf eqv?}, they must be {\cf equal?} as well.
-{\cf Equal?}\ must always terminate, even if its arguments are
-circular data structures.
+Even if its arguments are
+circular data structures, {\cf equal?}\ must always terminate.
 
 \begin{scheme}
 (equal? 'a 'a)                  \ev  \schtrue
@@ -694,7 +694,7 @@ otherwise returns \schfalse{}.
 \begin{entry}{%
 \proto{finite?}{ \vr{z}}{inexact library procedure}}
 
-{\cf Finite?} returns \schtrue{} on all real numbers except
+The {\cf finite?} procedure returns \schtrue{} on all real numbers except
 {\cf +inf.0}, {\cf -inf.0}, and {\cf +nan.0}, and on complex
 numbers if their real and imaginary parts are both finite.
 Otherwise it returns \schfalse{}.
@@ -831,7 +831,7 @@ It is an error if any argument of {\cf /} other than the first is an exact zero.
 \begin{entry}{%
 \proto{abs}{ x}{procedure}}
 
-{\cf Abs} returns the absolute value of its argument.  
+The {\cf abs} procedure returns the absolute value of its argument.  
 \begin{scheme}
 (abs -7)                \ev  7
 \end{scheme}
@@ -904,9 +904,9 @@ See \cite{euclidean} for discussion.
 \proto{remainder}{ \vri{n} \vrii{n}}{procedure}
 \proto{modulo}{ \vri{n} \vrii{n}}{procedure}}
 
-{\cf Quotient} and {\cf remainder} are equivalent to {\cf
-  truncate-quotient} and {\cf truncate-remainder}, respectively.  {\cf
-  Modulo} is equivalent to {\cf floor-remainder}.
+The {\cf quotient} and {\cf remainder} procedures are equivalent to {\cf
+truncate-quotient} and {\cf truncate-remainder}, respectively, and {\cf
+modulo} is equivalent to {\cf floor-remainder}.
 
 \begin{scheme}
 (modulo 13 4)           \ev  1
@@ -975,15 +975,15 @@ denominator of 0 is defined to be 1.
 }
 
 These procedures return integers.
-\vest {\cf Floor} returns the largest integer not larger than \vr{x}.
-{\cf Ceiling} returns the smallest integer not smaller than~\vr{x}.
-{\cf Truncate} returns the integer closest to \vr{x} whose absolute
-value is not larger than the absolute value of \vr{x}.  {\cf Round} returns the
+\vest The {\cf floor} procedure returns the largest integer not larger than \vr{x}.
+The {\cf ceiling} procedure returns the smallest integer not smaller than~\vr{x},
+{\cf truncate} returns the integer closest to \vr{x} whose absolute
+value is not larger than the absolute value of \vr{x}, and {\cf round} returns the
 closest integer to \vr{x}, rounding to even when \vr{x} is halfway between two
 integers.
 
 \begin{rationale}
-{\cf Round} rounds to even for consistency with the default rounding
+The {\cf round} procedure rounds to even for consistency with the default rounding
 mode specified by the IEEE 754 IEEE floating-point standard.
 \end{rationale}
 
@@ -1014,7 +1014,7 @@ result can be passed to the {\cf inexact->exact} procedure.
 \proto{rationalize}{ x y}{procedure}
 }
 
-{\cf Rationalize} returns the {\em simplest} rational number
+The {\cf rationalize} procedure returns the {\em simplest} rational number
 differing from \vr{x} by no more than \vr{y}.  A rational number $r_1$ is
 {\em simpler} \mainindex{simplest rational} than another rational number
 $r_2$ if $r_1 = p_1/q_1$ and $r_2 = p_2/q_2$ (in lowest terms) and $|p_1|
@@ -1045,9 +1045,9 @@ all.
 \rproto{atan}{ \vr{y} \vr{x}}{inexact library procedure}}
 
 These procedures 
-compute the usual transcendental functions.  {\cf Log}
+compute the usual transcendental functions.  The {\cf log} procedure
 computes the natural logarithm of \vr{z} (not the base ten logarithm).
-{\cf Asin}, {\cf acos}, and {\cf atan} compute arcsine ($\sin^{-1}$),
+The {\cf asin}, {\cf acos}, and {\cf atan} procedures compute arcsine ($\sin^{-1}$),
 arccosine ($\cos^{-1}$), and arctangent ($\tan^{-1}$), respectively.
 The two-argument variant of {\cf atan} computes {\tt (angle
 (make-rectangular \vr{x} \vr{y}))} (see below), even in implementations
@@ -1133,12 +1133,12 @@ Then all of
 are true, where $-\pi < x_{angle} \le \pi$ with $x_{angle} = \vriv{x} + 2\pi n$
 for some integer $n$.
 
-{\cf Make-polar} may return an inexact complex number even if its
+The {\cf make-polar} procedure may return an inexact complex number even if its
 arguments are exact.
 
 
 \begin{rationale}
-{\cf Magnitude} is the same as \ide{abs} for a real argument,
+The {\cf magnitude} procedure is the same as \ide{abs} for a real argument,
 but {\cf abs} is in the base library, whereas
 {\cf magnitude} is in the optional complex library.
 \end{rationale}
@@ -1256,8 +1256,8 @@ returns \schfalse{}.
 
 \begin{note}
 The domain of {\cf string->number} may be restricted by implementations
-in the following ways.  {\cf String->number} is permitted to return
-\schfalse{} whenever \vr{string} contains an explicit radix prefix.
+in the following ways.  Whenever \vr{string} contains an explicit radix prefix,
+{\cf string->number} is permitted to return \schfalse{}.
 If all numbers supported by an implementation are real, then
 {\cf string->number} is permitted to return \schfalse{} whenever
 \vr{string} uses the polar or rectangular notations for complex
@@ -1312,7 +1312,7 @@ in programs.
 \begin{entry}{%
 \proto{not}{ obj}{procedure}}
 
-{\cf Not} returns \schtrue{} if \var{obj} is false, and returns
+The {\cf not} procedure returns \schtrue{} if \var{obj} is false, and returns
 \schfalse{} otherwise.
 
 \begin{scheme}
@@ -1331,7 +1331,7 @@ in programs.
 \begin{entry}{%
 \proto{boolean?}{ obj}{procedure}}
 
-{\cf Boolean?} returns \schtrue{} if \var{obj} is either \schtrue{} or
+The {\cf boolean?} predicate returns \schtrue{} if \var{obj} is either \schtrue{} or
 \schfalse{} and returns \schfalse{} otherwise.
 
 \begin{scheme}
@@ -1451,7 +1451,7 @@ parse Scheme programs.  See section~\ref{externalreps}.
 \begin{entry}{%
 \proto{pair?}{ obj}{procedure}}
 
-{\cf Pair?} returns \schtrue{} if \var{obj} is a pair, and otherwise
+The {\cf pair?} predicate returns \schtrue{} if \var{obj} is a pair, and otherwise
 returns \schfalse.
 
 \begin{scheme}
@@ -1678,7 +1678,7 @@ in reverse order.
 
 Returns the sublist of \var{list} obtained by omitting the first \vr{k}
 elements.  It is an error if \var{list} has fewer than \vr{k} elements.
-{\cf List-tail} could be defined by
+The {\cf list-tail} procedure could be defined by
 
 \begin{scheme}
 (define list-tail
@@ -1708,7 +1708,7 @@ It is an error if \var{list} has fewer than \vr{k} elements.
 \proto{list-set!}{ list k obj}{procedure}}
 
 \domain{It is an error if \vr{k} is not a valid index of \var{list}.}
-{\cf List-set!} stores \var{obj} in element \vr{k} of \var{list}.
+The {\cf list-set!} procedure stores \var{obj} in element \vr{k} of \var{list}.
 The value returned by {\cf list-set!}\ is unspecified.  % <!>
 
 \begin{scheme}
@@ -1734,7 +1734,7 @@ These procedures return the first sublist of \var{list} whose car is
 returned by {\tt (list-tail \var{list} \var{k})} for \var{k} less
 than the length of \var{list}.  If
 \var{obj} does not occur in \var{list}, then \schfalse{} (not the empty list) is
-returned.  {\cf Memq} uses {\cf eq?}\ to compare \var{obj} with the elements of
+returned.  The {\cf memq} procedure uses {\cf eq?}\ to compare \var{obj} with the elements of
 \var{list}, while {\cf memv} uses {\cf eqv?} and 
 {\cf member} uses \var{compare}, if given, and {\cf equal?} otherwise.
 
@@ -1764,7 +1764,7 @@ returned.  {\cf Memq} uses {\cf eq?}\ to compare \var{obj} with the elements of
 \domain{It is an error if \var{alist} (for ``association list'') is not a list of
 pairs.}  These procedures find the first pair in \var{alist} whose car field is \var{obj},
 and returns that pair.  If no pair in \var{alist} has \var{obj} as its
-car, then \schfalse{} (not the empty list) is returned.  {\cf Assq} uses
+car, then \schfalse{} (not the empty list) is returned.  The {\cf assq} procedure uses
 {\cf eq?}\ to compare \var{obj} with the car fields of the pairs in \var{alist},
 while {\cf assv} uses {\cf eqv?}\ and {\cf assoc} uses \var{compare} if given
 and {\cf equal?} otherwise.
@@ -2165,7 +2165,7 @@ Returns \schtrue{} if \var{obj} is a string, otherwise returns \schfalse.
 \proto{make-string}{ \vr{k}}{procedure}
 \rproto{make-string}{ \vr{k} char}{procedure}}
 
-{\cf Make-string} returns a newly allocated string of
+The {\cf make-string} procedure returns a newly allocated string of
 length \vr{k}.  If \var{char} is given, then all the characters of the string
 are initialized to \var{char}, otherwise the contents of the
 string are unspecified.
@@ -2191,7 +2191,7 @@ Returns the number of characters in the given \var{string}.
 \proto{string-ref}{ string \vr{k}}{procedure}}
 
 \domain{It is an error if \vr{k} is not a valid index of \var{string}.}
-{\cf String-ref} returns character \vr{k} of \var{string} using zero-origin indexing.
+The {\cf string-ref} procedure returns character \vr{k} of \var{string} using zero-origin indexing.
 \end{entry}
 There is no requirement for this procedure to execute in constant time.
 
@@ -2200,7 +2200,7 @@ There is no requirement for this procedure to execute in constant time.
 \proto{string-set!}{ string k char}{procedure}}
 
 \domain{It is an error if \vr{k} is not a valid index of \var{string}.}
-{\cf String-set!} stores \var{char} in element \vr{k} of \var{string}
+The {\cf string-set!} procedure stores \var{char} in element \vr{k} of \var{string}
 and returns an unspecified value.  % <!>
 There is no requirement for this procedure to execute in constant time.
 
@@ -2957,7 +2957,7 @@ the answer to the top level continuation to be printed.  Normally these
 ubiquitous continuations are hidden behind the scenes and programmers do not
 think much about them.  On rare occasions, however, a programmer
 needs to deal with continuations explicitly.
-{\cf Call-with-current-continuation} allows Scheme programmers to do
+The {\cf call-with-current-continuation} procedure allows Scheme programmers to do
 that by creating a procedure that acts just like the current
 continuation.
 
@@ -2978,7 +2978,7 @@ some people prefer the name \ide{call/cc} instead.
 \end{rationale}
 
 %% \begin{note}
-%% {\cf Call/cc} is capable of capturing continuations originating
+%% The {\cf call/cc} procedure is capable of capturing continuations originating
 %% outside of Scheme when using Scheme as a scripting
 %% language embedded in some host language. It is not always practical
 %% or even meaningful to restore these continuations.

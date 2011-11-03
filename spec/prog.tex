@@ -466,10 +466,10 @@ or {\cf set!}.  However, a REPL should permit these actions.
 
 The \ide{begin}, \ide{include}, and \ide{include-ci} declarations are
 used to specify the commands and definitions that make up the body of
-the library.  \ide{Begin} takes a list of expressions and definitions to be spliced
+the library.  The \ide{begin} declaration takes a list of expressions and definitions to be spliced
 literally, analogous to the top-level \ide{begin}.  
-\ide{Include} and
-\ide{include-ci} both take one or more filenames expressed as string literals,
+Both the \ide{include} and
+\ide{include-ci} declarations take one or more filenames expressed as string literals,
 apply an implementation-specific algorithm to find corresponding files,
 read the whole contents of each file,
 and include the results into the library body or program as

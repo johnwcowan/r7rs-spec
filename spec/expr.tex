@@ -537,7 +537,7 @@ zero or more definitions followed by
 one or more expressions as described in section~\ref{lambda}.
 
 \semantics
-{\cf Let*} is similar to {\cf let}, but the bindings are performed
+The {\cf let*} binding construct is similar to {\cf let}, but the bindings are performed
 sequentially from left to right, and the region\index{region} of a binding indicated
 by {\cf(\hyper{variable} \hyper{init})} is that part of the {\cf let*}
 expression to the right of the binding.  Thus the second binding is done
@@ -775,12 +775,12 @@ or input and output.
     (\hyper{test} \hyper{expression} \dotsfoo)\\
   \hyper{command} \dotsfoo)}
 
-{\cf Do} is an iteration construct.  It specifies a set of variables to
+A {\cf do} expression is an iteration construct.  It specifies a set of variables to
 be bound, how they are to be initialized at the start, and how they are
 to be updated on each iteration.  When a termination condition is met,
 the loop exits after evaluating the \hyper{expression}s.
 
-{\cf Do} expressions are evaluated as follows:
+A {\cf do} expression is evaluated as follows:
 The \hyper{init} expressions are evaluated (in some unspecified order),
 the \hyper{variable}s are bound to fresh locations, the results of the
 \hyper{init} expressions are stored in the bindings of the
@@ -1317,7 +1317,7 @@ bindings that surround the use of the macro.
 \subsection{Binding constructs for syntactic keywords}
 \label{bindsyntax}
 
-{\cf Let-syntax} and {\cf letrec-syntax} are
+The {\cf let-syntax} and {\cf letrec-syntax} binding constructs are
 analogous to {\cf let} and {\cf letrec}, but they bind
 syntactic keywords to macro transformers instead of binding variables
 to locations that contain values.  Syntactic keywords may also be
