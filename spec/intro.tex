@@ -20,7 +20,8 @@ environment for all variables, and to evaluate the operator position
 of a procedure call in the same way as an operand position.  By relying
 entirely on procedure calls to express iteration, Scheme emphasized the
 fact that tail recursive procedure calls are essentially goto's that
-pass arguments.  Scheme was the first widely used programming language to
+pass arguments, thus allowing a programming style that is both coherent
+and efficient.  Scheme was the first widely used programming language to
 embrace first class escape procedures, from which all previously known
 sequential control structures can be synthesized.  A subsequent
 version of Scheme introduced the concept of exact and inexact numbers,
@@ -85,15 +86,16 @@ In the fall of 2006, work began on a more ambitious standard,
 including many new improvements and stricter requirements made in the
 interest of improved portability.  The resulting standard, the
 \rsixrs, was completed in August 2007~\cite{R6RS}, and was organized
-as a core language and set of standard libraries.  The size and goals
-of the R$^{6}$RS, however, were controversial, and uptake of the new
-standard was not as widespread as could be hoped.
+as a core language and set of mandatory standard libraries.  The size and goals
+of the \rsixrs, however, were controversial, and uptake of the new
+standard was not as widespread as had been hoped.
 
-In August 2009, the Scheme Steering Committee decided to divide the
+In consequence, the Scheme Steering Committee decided in August 2009 to divide the
 standard into two separate but compatible languages --- a ``small''
 language, suitable for educators, researchers and embedded languages,
-focused on R$^{5}$RS compatibility, and a ``large'' language focused
-on the practical needs of mainstream software development.
+focused on \rfivers compatibility, and a ``large'' language focused
+on the practical needs of mainstream software development
+which would evolve to become a replacement for \rsixrs.
 The present report describes the ``small'' language of that effort.
 
 

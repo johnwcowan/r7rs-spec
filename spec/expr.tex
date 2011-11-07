@@ -697,7 +697,7 @@ values returned by the corresponding \hyper{init}.
 \begin{scheme}
 ((\hyper{formals} \hyper{init}) \dotsfoo)\rm,%
 \end{scheme}
-and \hyper{body} should be a sequence of sequence of zero or more
+and \hyper{body} should be a sequence of zero or more
 definitions followed by one or more expressions as described in section~\ref{lambda}.  In each \hyper{formals},
 it is an error if any variable appears more than once.
 
@@ -1030,11 +1030,11 @@ implementation-dependent.
 \mainschindex{parameterize}
 
 A {\cf parameterize} expression is used to change the values returned by
-specified parameter objects for its dynamic extent of the body.
+specified parameter objects during the evaluation of the body.
 \domain{It is an error if the value of any \hyper{param} expression is not a parameter object.}
 The \hyper{param} and \hyper{value} expressions
 are evaluated in an unspecified order.  The \hyper{body} is
-evaluated in a dynamic extent in which calls to the
+evaluated in a dynamic environment in which calls to the
 parameters return the results of passing the corresponding values
 to the conversion procedure specified when the parameters were created.
 Then the previous values of the parameters are restored without passing
@@ -1102,11 +1102,11 @@ The \hyper{body} is evaluated with an exception
 handler that binds the raised object to \hyper{variable} and, within the scope of
 that binding, evaluates the clauses as if they were the clauses of a
 {\cf cond} expression. That implicit {\cf cond} expression is evaluated with the
-continuation and dynamic extent of the {\cf guard} expression. If every
+continuation and dynamic environment of the {\cf guard} expression. If every
 \hyper{cond clause}'s \hyper{test} evaluates to \schfalse{} and there
 is no {\cf else} clause, then
 {\cf raise-continuable} is re-invoked on the raised object within the dynamic
-extent of the original call to {\cf raise} except that the current
+environment of the original call to {\cf raise} except that the current
 exception handler is that of the {\cf guard} expression.
 
 
@@ -1291,13 +1291,7 @@ the scope within which a macro is defined, and
 \end{itemize}
 
 The syntactic keyword of a macro may shadow variable bindings, and local
-variable bindings may shadow keyword bindings.  \index{keyword}  All macros
-defined using the pattern language  are ``hygienic'' and ``referentially
-transparent'' and thus preserve Scheme's lexical scoping~\cite{Kohlbecker86,
-hygienic,Bawden88,macrosthatwork,syntacticabstraction}:
-\mainindex{hygienic}
-\mainindex{referentially transparent}
-
+variable bindings may shadow keyword bindings:  \index{keyword}  
 
 \begin{itemize}
 
@@ -1313,6 +1307,13 @@ where the transformer was specified, regardless of any local
 bindings that surround the use of the macro.
 
 \end{itemize}
+
+In consequence, all macros
+defined using the pattern language  are ``hygienic'' and ``referentially
+transparent'' and thus preserve Scheme's lexical scoping~\cite{Kohlbecker86,
+hygienic,Bawden88,macrosthatwork,syntacticabstraction}:
+\mainindex{hygienic}
+\mainindex{referentially transparent}
 
 \subsection{Binding constructs for syntactic keywords}
 \label{bindsyntax}

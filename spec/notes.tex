@@ -266,14 +266,18 @@ neither been shown to be equivalent nor capable of implementing each
 other. Given this situation,
 low-level macros have been left to the large language.
 
-\item The new I/O system from \rsixrs was not adopted. The Working Group believes that a completely new
-system deserves a period of usage before being standardized, and were
+\item The new I/O system from \rsixrs was not adopted. 
+Historically, standardization reflects technologies that have undergone
+a period of adoption, experimentation, and usage before incorporation
+into a standard.  The Working Group was
 unhappy with the redundant
 provision of both the new system and the \rfivers{}-compatible ``simple I/O''
 system, which
 relegated \rfivers\ code to being a second-class
-citizen.  Instead, binary ports were made at least potentially disjoint from
-textual ports, using their own parallel set of procedures.
+citizen.
+However, binary I/O was added using binary ports that are
+at least potentially disjoint from
+textual ports and use their own parallel set of procedures.
 
 \item String ports are compatible with SRFI 6 rather than \rsixrs; analogous
 bytevector ports are also provided.
