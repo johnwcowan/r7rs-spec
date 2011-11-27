@@ -940,7 +940,7 @@ exhaust the heap.
              (delay (cons h (stream-filter p? t)))
              (stream-filter p? t))))))
 
-(head (tail (tail (stream-filter? odd? integers))))
+(head (tail (tail (stream-filter odd? integers))))
                                \ev 5
 \end{scheme}
 
