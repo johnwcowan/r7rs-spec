@@ -1714,7 +1714,7 @@ The value returned by {\cf list-set!}\ is unspecified.  % <!>
 \begin{scheme}
 (let ((lst (list 0 '(2 2 2 2) "Anna")))
   (list-set! lst 1 '("Sue" "Sue"))
-  vec)      \lev  (0 ("Sue" "Sue") "Anna")
+  lst)      \lev  (0 ("Sue" "Sue") "Anna")
 
 (list-set! '(0 1 2) 1 "doe")  \lev  \scherror  ; constant list%
 \end{scheme}
