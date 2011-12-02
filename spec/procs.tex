@@ -1801,6 +1801,9 @@ potentially useful values rather than just \schtrue{} or \schfalse{}.
 Returns a newly allocated copy of the given \var{list}.
 Only the pairs themselves are copied; the cars of the result are
 the same (in the sense of {\cf eqv?} as the cars of \var{list}.
+If the last pair of \var{list} has a cdr which is not the empty
+list, the last pair of the result does too.  As a degenerate case,
+an argument which is not a list is returned unchanged.
 
 \end{entry}
 
@@ -2526,11 +2529,20 @@ created vector initialized to the elements of the string \var{string}.
 \end{entry}
 
 \begin{entry}{%
-\proto{vector-copy}{ vector}{procedure}}
+\proto{vector-copy}{ vector}{procedure}
+\rproto{vector-copy}{ vector start}{procedure}
+\rproto{vector-copy}{ vector start end}{procedure}
+\rproto{vector-copy}{ vector start end fill}{procedure}}
 
 Returns a newly allocated copy of the given \var{vector}.
 The elements of the new vector are the same (in the sense of
 {\cf eqv?}) as the elements of the old.
+
+The arguments \var{start}, \var{end}, and \var{fill}
+default to 0, the length of \var{vector}, and an implementation-specified
+value respectively.
+If \var{end} is greater than the length of \var{vector}, the
+\var{fill} argument is used to fill the additional elements of the result.
 
 \end{entry}
 
