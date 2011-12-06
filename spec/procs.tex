@@ -2069,13 +2069,13 @@ The {\cf char-upcase} procedure, given an argument that is the
 lowercase part of a Unicode casing pair, returns the uppercase member
 of the pair, provided that both characters are supported by the Scheme
 implementation.  Note that language-sensitive casing pairs are not used.  If the
-argument is not the lowercase part of such a pair, it is returned.
+argument is not the lowercase member of such a pair, it is returned.
 
 The {\cf char-downcase} procedure, given an argument that is the
 uppercase part of a Unicode casing pair, returns the lowercase member
 of the pair, provided that both characters are supported by the Scheme
 implementation.  Note that language-sensitive casing pairs are not used.  If the
-argument is not the uppercase part of such a pair, it is returned.
+argument is not the uppercase member of such a pair, it is returned.
 
 The {\cf char-foldcase} procedure applies the Unicode simple
 case-folding algorithm to its argument and returns the result.  Note that
