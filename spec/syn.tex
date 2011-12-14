@@ -62,7 +62,8 @@ containing the corresponding character.
 \>  \| ( \| ) \| \sharpsign( \| \sharpsign u8( \| \singlequote{} \| \backquote{} \| , \| ,@ \| {\bf.}
 \meta{delimiter} \: \meta{whitespace} \| ( \| ) \| " \| ;
 \meta{intraline whitespace} \: \meta{space or tab}
-\meta{whitespace} \: \meta{intraline whitespace} \| \meta{newline} \| \meta{return}
+\meta{whitespace} \: \meta{intraline whitespace} \| \meta{newline}
+\> \| \meta{return}
 \meta{comment} \: ; \= $\langle$\rm all subsequent characters up to a
 		    \>\ \rm line break$\rangle$\index{comment}
 \> \| \meta{nested comment}
@@ -85,7 +86,8 @@ containing the corresponding character.
 \todo{Disambiguate +/-i +/-inf.0 and +nan.0 with identifier syntax.}
 
 \begin{grammar}%
-\meta{identifier} \: \meta{initial} \arbno{\meta{subsequent}}
+\meta{identifier} \: $\langle$\meta{initial} \arbno{\meta{subsequent}}
+                  \>\ \ \ \ \rm except for \meta{infinity}, +i and -i$\rangle$
  \>  \| \meta{vertical bar} \arbno{\meta{symbol element}} \meta{vertical bar}
  \>  \| \meta{peculiar identifier}
 \meta{initial} \: \meta{letter} \| \meta{special initial}
