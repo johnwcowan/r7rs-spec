@@ -395,7 +395,8 @@ arbitrary unique objects \texttt{<param-set!>} and
 
 \begin{scheme}
 (define (make-parameter init . o)
-  (let* ((converter (if (pair? o) (car o) (lambda (x) x)))
+  (let* ((converter
+          (if (pair? o) (car o) (lambda (x) x)))
          (value (converter init)))
     (lambda args
       (cond
