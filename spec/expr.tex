@@ -1386,15 +1386,15 @@ introduced by the {\cf letrec-syntax} expression.
                (if temp
                    temp
                    (my-or e2 ...)))))))
-  (let ((x \schfalse)
-        (y 7)
-        (temp 8)
-        (let odd?)
-        (if even?))
-    (my-or x
-           (let temp)
-           (if y)
-           y)))        \ev  7%
+    (let ((x \schfalse)
+          (y 7)
+          (temp 8)
+          (let odd?)
+          (if even?))
+      (my-or x
+             (let temp)
+             (if y)
+             y)))        \ev  7%
 \end{scheme}
 
 \end{entry}
