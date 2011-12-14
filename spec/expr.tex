@@ -879,13 +879,10 @@ is unspecified.
 
 \todo{Fix.}
 
-The {\cf lazy} construct
-is similar to {\cf delay}, but it is an error for its argument not to evaluate to a promise.
+The {\cf lazy} construct is similar to {\cf delay}, but it is an error
+for its argument not to evaluate to a promise.
 The returned promise, when forced, will evaluate to whatever the original
 promise would have evaluated to if it had been forced.
-\todo{consider removing unspecified effect}
-The effect of \hyper{expression} returning multiple values
-is unspecified.
 
 
 \end{entry}
@@ -894,12 +891,12 @@ is unspecified.
 \proto{force}{ promise}{lazy library procedure}}
 \label{force}
 
-The {\cf force} procedure
-forces the value of a \var{promise} created by \ide{delay} or \ide{lazy}.\index{promise}
-If a value which is not a promise has already been computed, that value is
-returned.  Otherwise, the promise is first evaluated, then overwritten
-by the obtained promise or value, and then {\cf force} is again applied
-(iteratively) to the promise.
+The {\cf force} procedure forces the value of a \var{promise} created
+by \ide{delay} or \ide{lazy}.\index{promise}
+If no value has been computed for the promise, then a value is
+computed and returned.  The value of the promise is cached (or
+"memoized") so that if it is forced a second time, the previously
+computed value is returned.
 
 \begin{scheme}
 (force (delay (+ 1 2)))   \ev  3
@@ -944,13 +941,11 @@ exhaust the heap.
                                \ev 5
 \end{scheme}
 
-The following examples are
-not intended to illustrate good programming style, 
-as {\cf delay}, {\cf lazy}, and {\cf force} are mainly intended for
-programs written in the functional style.
-However, they do
-illustrate the property that only one value is computed for a promise,
-no matter how many times it is forced.
+The following examples are not intended to illustrate good programming
+style, as {\cf delay}, {\cf lazy}, and {\cf force} are mainly intended
+for programs written in the functional style.
+However, they do illustrate the property that only one value is
+computed for a promise, no matter how many times it is forced.
 
 \begin{scheme}
 (define count 0)
