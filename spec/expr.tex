@@ -1246,8 +1246,8 @@ the \hyper{formals} of any \hyper{clause}.
                (e (- e 1) (- e 1)))
               ((< e b) r)))))
 
-(range 3)    => (0 1 2)
-(range 3 5)  => (3 4)
+(range 3)    \ev (0 1 2)
+(range 3 5)  \ev (3 4)
 \end{scheme}
 
 \end{entry}
@@ -1378,23 +1378,23 @@ introduced by the {\cf letrec-syntax} expression.
 
 \begin{scheme}
 (letrec-syntax
-  ((my-or (syntax-rules ()
-            ((my-or) \schfalse)
-            ((my-or e) e)
-            ((my-or e1 e2 ...)
-             (let ((temp e1))
-               (if temp
-                   temp
-                   (my-or e2 ...)))))))
-    (let ((x \schfalse)
-          (y 7)
-          (temp 8)
-          (let odd?)
-          (if even?))
-      (my-or x
-             (let temp)
-             (if y)
-             y)))        \ev  7%
+    ((my-or (syntax-rules ()
+              ((my-or) \schfalse)
+              ((my-or e) e)
+              ((my-or e1 e2 ...)
+               (let ((temp e1))
+                 (if temp
+                     temp
+                     (my-or e2 ...)))))))
+  (let ((x \schfalse)
+        (y 7)
+        (temp 8)
+        (let odd?)
+        (if even?))
+    (my-or x
+           (let temp)
+           (if y)
+           y)))        \ev  7%
 \end{scheme}
 
 \end{entry}
@@ -1656,7 +1656,7 @@ exception handlers or guards.
       (x . y)))
     ((\_ ((name val) ...) body1 body2 ...)
      ((lambda (name ...) body1 body2 ...)
-       val ...))))
+       val ...))))%
 \end{scheme}
 
 \end{entry}

@@ -245,15 +245,15 @@ errors:
 (begin (define begin list))
 
 (let-syntax
-  ((foo (syntax-rules ()
-          ((foo (proc args ...) body ...)
-           (define proc
-             (lambda (args ...)
-               body ...))))))
+    ((foo (syntax-rules ()
+            ((foo (proc args ...) body ...)
+             (define proc
+               (lambda (args ...)
+                 body ...))))))
   (let ((x 3))
     (foo (plus x y) (+ x y))
     (define foo x)
-    (plus foo x)))
+    (plus foo x)))%
 \end{scheme}
 
 \todo{Shinn: Example using internal define-syntax.}
