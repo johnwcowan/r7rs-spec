@@ -459,9 +459,10 @@ macro, here called {\cf guard-aux}.
                   (lambda ()
                     (let ((var condition))
                       (guard-aux
-                        (handler-k (lambda()
-                                     (raise condition)))
-                                 clause ...))))))))
+                        (handler-k
+                          (lambda ()
+                            (raise condition)))
+                        clause ...))))))))
           (lambda ()
             (call-with-values
              (lambda () e1 e2 ...)
