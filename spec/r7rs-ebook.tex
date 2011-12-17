@@ -1,0 +1,48 @@
+\documentclass{algol60}
+\usepackage[papersize={108mm,144mm},margin=2mm]{geometry}  
+
+\usepackage{amsmath}
+
+\pagestyle{headings}
+\showboxdepth=0
+\makeindex
+\input{commands}
+
+\def\integerversion{7}
+
+\usepackage{hyperref}
+
+\begin{document}
+
+\parindent 0pt %!! 15pt                    % Width of paragraph indentation.
+
+\vspace*{\fill}
+\begin{center}
+{\Huge \textbf{Revised$^{7}$ Scheme}}
+\end{center}
+\vspace*{\fill}
+
+\input{first}   \par
+\input{intro-ebook} \par
+\vskip 2ex
+\input{struct}  \par
+\input{lex}	\par
+\input{basic}	\par
+\input{expr}	\par  \vfill\eject
+\input{prog}	\par
+\input{procs}	\par  \vfill\eject
+\input{syn}	\par
+\input{sem}	\par
+\input{derive}	\par  \vfill\eject
+\appendix
+\input{stdmod}	\par \vfill\eject
+\input{features} \par \vfill\eject
+\input{notes}	\par
+\input{repository} \par \vfill\eject
+\input{example}	\par  \vfill\eject
+\renewcommand{\bibname}{References}
+\input{bib}	\par
+
+\vfill\eject
+
+\end{document}

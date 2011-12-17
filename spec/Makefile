@@ -23,7 +23,14 @@ stdmod.tex: stdmod-raw.tex
 checkindex: stdmod-raw.tex index.tex
 	./checkindex.sh
 
+intro-ebook.tex: intro.tex
+	sed 's/\\clearextrapart{\(.*\)}/\1/g' $< > $@
+
 r7rs.pdf: $(SOURCES) stdmod.tex
+	pdflatex $<
+	pdflatex $<
+
+r7rs-ebook.pdf: r7rs-ebook.tex intro-ebook.tex $(SOURCES) stdmod.tex
 	pdflatex $<
 	pdflatex $<
 
