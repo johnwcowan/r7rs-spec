@@ -83,11 +83,12 @@ containing the corresponding character.
 % This is a kludge, but \multicolumn doesn't work in tabbing environments.
 \setbox0\hbox{\cf\meta{identifier} \goesto{} $\langle$}
 
-\todo{Disambiguate +/-i +/-inf.0 and +nan.0 with identifier syntax.}
+Note that +i, -i and \meta{infinity} below are exceptions to the
+\meta{peculiar identifier} rule; they are parsed as numbers, not
+identifiers.
 
 \begin{grammar}%
-\meta{identifier} \: $\langle$\meta{initial} \arbno{\meta{subsequent}}
-                  \>\ \ \ \ \rm except for \meta{infinity}, +i and -i$\rangle$
+\meta{identifier} \: \meta{initial} \arbno{\meta{subsequent}
  \>  \| \meta{vertical bar} \arbno{\meta{symbol element}} \meta{vertical bar}
  \>  \| \meta{peculiar identifier}
 \meta{initial} \: \meta{letter} \| \meta{special initial}
