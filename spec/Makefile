@@ -9,9 +9,12 @@ clean:
 cleaner: clean
 	rm -f *.pdf *.aux *.log *.idx *.toc
 
-SOURCES=r7rs.tex basic.tex example.tex intro.tex prog.tex struct.tex \
-	bib.tex expr.tex lex.tex syn.tex commands.tex first.tex notes.tex \
-	repository.tex derive.tex index.tex procs.tex sem.tex stdmod-raw.tex \
+DIFF_SOURCES=basic.tex derive.tex example.tex expr.tex \
+	lex.tex procs.tex prog.tex struct.tex
+
+SOURCES=r7rs.tex $(DIFF_SOURCES) intro.tex \
+	bib.tex syn.tex commands.tex first.tex notes.tex \
+	repository.tex index.tex sem.tex stdmod-raw.tex \
 	features.tex
 
 # index.tex: r7rs.idx
@@ -36,9 +39,10 @@ r7rs-ebook.pdf: r7rs-ebook.tex intro-ebook.tex $(SOURCES) stdmod.tex
 
 r5diff/%.tex: %.tex
 	hg cat -r 1 $< > r5diff/old-$<
-	latexdiff --type=UNDERLINE --subtype=SAFE r5diff/old-$< $< > $@
+	latexdiff --type=UNDERLINE --subtype=SAFE r5diff/old-$< $< | \
+	  perl -pe 's/\\section{\\DIF(add|del){([^{}]*)}}/\\section{\2}/; s/}\\ev  \\DIFadd{/\\ev/' | \
+	  perl -pe 'BEGIN{undef $$/} s/\\ev([^%{]*)(%.*)?\n}/} \\ev \1\n/g' > $@
 	rm -f r5diff/old-$<
 
-r5diff/r7rs.pdf: $(SOURCES:%=r5diff/%)
-	pdflatex -output-directory r5diff $<
-	pdflatex -output-directory r5diff $<
+r5diff/r7rs.pdf: $(DIFF_SOURCES:%=r5diff/%)
+	cd r5diff && $(MAKE) r7rs.pdf
