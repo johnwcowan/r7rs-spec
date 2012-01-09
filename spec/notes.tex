@@ -35,7 +35,7 @@ generated with SRFI 9's {\cf define-record-type}.
 dynamically rebound with {\cf parameterize}.
 
 \item {\em Bytevectors}, homogeneous vectors of integers in the range
-$[0..255]$, have been added as a new disjoint type.
+$[0, 255]$, have been added as a new disjoint type.
 A subset of the procedures available for vectors is provided.  Bytevectors
 can be converted to and from strings in accordance with the UTF-8 character encoding.
 Bytevectors have a datum representation and evaluate to themselves.
@@ -266,7 +266,7 @@ neither been shown to be equivalent nor capable of implementing each
 other. Given this situation,
 low-level macros have been left to the large language.
 
-\item The new I/O system from \rsixrs was not adopted. 
+\item The new I/O system from \rsixrs{} was not adopted. 
 Historically, standardization reflects technologies that have undergone
 a period of adoption, experimentation, and usage before incorporation
 into a standard.  The Working Group was

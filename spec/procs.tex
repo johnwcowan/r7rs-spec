@@ -1167,7 +1167,7 @@ For exact arguments, the result is the same as the argument. For inexact
 non-integral real arguments, the implementation may return a rational
 approximation, or may report an implementation violation. For inexact
 complex arguments, the result is a complex number whose real and
-imaginary parts are result of applying {\cf inexact\coerce{}exact} to the
+imaginary parts are the result of applying {\cf inexact\coerce{}exact} to the
 real and imaginary parts of the argument, respectively.
 If an \tupe{inexact} argument has no reasonably close \tupe{exact} equivalent,
 then a violation of an implementation restriction may be reported.
@@ -1176,12 +1176,6 @@ then a violation of an implementation restriction may be reported.
 These procedures implement the natural one-to-one correspondence between
 \tupe{exact} and \tupe{inexact} integers throughout an
 implementation-dependent range.  See section~\ref{restrictions}.
-
-\begin{note}
-The names {\cf exact\coerce{}inexact} and {\cf
-inexact\coerce{}exact} are historical anomalies; the argument to each of
-these procedures may be either exact or inexact.
-\end{note}
 
 \end{entry}
 
@@ -1282,7 +1276,7 @@ The standard boolean objects for true and false are written as
 Alternatively, they may be written \sharptrue~and \sharpfalse,
 respectively.  What really
 matters, though, are the objects that the Scheme conditional expressions
-({\cf if}, {\cf cond}, {\cf and}, {\cf or}, {\cf do}) treat as
+({\cf if}, {\cf cond}, {\cf and}, {\cf or}, {\cf when}, {\cf unless}, {\cf do}) treat as
 true\index{true} or false\index{false}.  The phrase ``a true value''\index{true}
 (or sometimes just ``true'') means any object treated as true by the
 conditional expressions, and the phrase ``a false value''\index{false} (or
@@ -1712,11 +1706,11 @@ The {\cf list-set!} procedure stores \var{obj} in element \vr{k} of \var{list}.
 The value returned by {\cf list-set!}\ is unspecified.  % <!>
 
 \begin{scheme}
-(let ((lst (list 0 '(2 2 2 2) "Anna")))
-  (list-set! lst 1 '("Sue" "Sue"))
-  lst)      \lev  (0 ("Sue" "Sue") "Anna")
+(let ((ls (list 'one 'two 'five!)))
+  (list-set! ls 2 'three)
+  ls)      \lev  (one two three)
 
-(list-set! '(0 1 2) 1 "doe")  \lev  \scherror  ; constant list%
+(list-set! '(0 1 2) 1 "oops")  \lev  \scherror  ; constant list%
 \end{scheme}
 \end{entry}
 
@@ -2471,10 +2465,8 @@ Returns the number of elements in \var{vector} as an exact integer.
 (vector-ref '\#(1 1 2 3 5 8 13 21)
             5)  \lev  8
 (vector-ref '\#(1 1 2 3 5 8 13 21)
-            (let ((i (round (* 2 (acos -1)))))
-              (if (inexact? i)
-                  (inexact->exact i)
-                  i))) \lev 13%
+            (inexact->exact
+             (round (* 2 (acos -1))))) \lev 13%
 \end{scheme}
 \end{entry}
 
@@ -2565,7 +2557,7 @@ In either case, an unspecified value is returned.
 
 \defining{Bytevectors} represent blocks of binary data.
 They are fixed-length sequences of bytes, where
-a \defining{byte} is an exact integer in the range $[0..255]$.
+a \defining{byte} is an exact integer in the range $[0, 255]$.
 A bytevector is typically more space-efficient than a vector
 containing the same values.
 
@@ -2745,7 +2737,7 @@ the values returned by earlier returns are not mutated.
   (map (lambda (ignored)
          (set! count (+ count 1))
          count)
-       '(a b)))                 \ev  (1 2) \var{or} (2 1)
+       '(a b)))                 \ev  (1 2) \var{or} (2 1)%
 \end{scheme}
 
 \end{entry}
@@ -2755,7 +2747,7 @@ the values returned by earlier returns are not mutated.
 
 \domain{It is an error if \var{proc} does not
 accept as many arguments as there are {\it string}s
-and return a single value.  If more
+and return a single character.  If more
 than one \var{string} is given and not all strings have the same length,
 {\cf string-map} terminates when the shortest string runs out.}
 {\cf string-map} applies \var{proc} element-wise to the elements of the
@@ -2775,11 +2767,10 @@ the values returned by earlier returns are not mutated.
 
 (string-map
  (lambda (c k)
-   (if (eqv? k \sharpsign\backwhack{}u)
-       (char-upcase c)
-       (char-downcase c)))
+   ((if (eqv? k \sharpsign\backwhack{}u) char-upcase char-downcase)
+    c))
  "studlycaps xxx"
- "ululululul")   \lev   "StUdLyCaPs"
+ "ululululul")   \lev   "StUdLyCaPs"%
 \end{scheme}
 
 \end{entry}
@@ -2812,7 +2803,7 @@ the values returned by earlier returns are not mutated.
    (lambda (ignored)
      (set! count (+ count 1))
      count)
-   '\#(a b)))                     \ev  \#(1 2) \var{or} \#(2 1)
+   '\#(a b)))                     \ev  \#(1 2) \var{or} \#(2 1)%
 \end{scheme}
 
 \end{entry}
@@ -2857,7 +2848,7 @@ If more than one \var{string} is given and not all strings have the same length,
   (string-for-each
    (lambda (c) (set! v (cons (char->integer c) v))
    "abcde")
-  v)                                \ev  (101 100 99 98 97)%
+  v)                         \ev  (101 100 99 98 97)%
 \end{scheme}
 
 \end{entry}
@@ -3286,11 +3277,6 @@ bindings for all syntactic keywords
 defined either in the base library or in the other libraries
 of this report, provided that the implementation supports them.
 
-\begin{note}
-The name {\cf null-environment} is historical and may be
-misleading: it does not represent an empty environment.
-\end{note}
-
 \end{entry}
 
 \begin{entry}{%
@@ -3307,9 +3293,9 @@ represented by the specifier are immutable.
 \begin{entry}{%
 \proto{interaction-environment}{}{repl library procedure}}
 
-This procedure returns a specifier for an environment that
-contains an imple\-men\-ta\-tion-defined set of bindings, typically a superset of
-those listed in the report.  The intent is that this procedure
+This procedure returns a specifier for an environment that contains an
+imple\-men\-ta\-tion-defined set of bindings, typically a superset of
+those exported by {\cf(scheme base)}.  The intent is that this procedure
 will return the environment in which the implementation would evaluate
 expressions entered by the user into a REPL.
 
@@ -3516,9 +3502,10 @@ retrieval by {\cf get-output-string}.
 \begin{entry}{%
 \proto{get-output-string}{ port}{procedure}}
 
-Given an output port created by {\cf open-output-string}, returns a
-string consisting of the characters that have been output to the port
-so far in the order they were output.
+\domain{It is an error if \var{port} was not created with
+{\cf open-output-string}.}  Returns a string consisting of the
+characters that have been output to the port so far in the order they
+were output.
 \end{entry}
 
 
@@ -3542,9 +3529,10 @@ retrieval by {\cf get-output-bytevector}.
 \begin{entry}{%
 \proto{get-output-bytevector}{ port}{procedure}}
 
-Given an output port created by {\cf open-output-bytevector}, returns a
-bytevector consisting of the bytes that have been output to the port
-so far in the order they were output.
+\domain{It is an error if \var{port} was not created with
+{\cf open-output-bytevector}.}  Returns a bytevector consisting
+of the bytes that have been output to the port so far in the
+order they were output.
 \end{entry}
 
 

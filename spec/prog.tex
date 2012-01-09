@@ -566,25 +566,24 @@ the base module.
           (rename put! set!))
   (import (scheme base))
   (begin
-    ;; Create an NxM grid of zeros.
+    ;; Create an NxM grid.
     (define (make n m)
       (let ((grid (make-vector n)))
         (do ((i 0 (+ i 1)))
             ((= i n) grid)
-          (vector-set! grid i (make-vector m 0)))))
+          (let ((v (make-vector m \schfalse{})))
+            (vector-set! grid i v)))))
     (define (rows grid)
       (vector-length grid))
     (define (cols grid)
       (vector-length (vector-ref grid 0)))
-    ;; Return 0 if out of range.
+    ;; Return \sharpfalse{} if out of range.
     (define (ref grid n m)
-      (if (and (< -1 n (rows grid))
-               (< -1 m (cols grid)))
-          (vector-ref (vector-ref grid n) m)
-          0))
+      (and (< -1 n (rows grid))
+           (< -1 m (cols grid))
+           (vector-ref (vector-ref grid n) m)))
     (define (put! grid n m v)
       (vector-set! (vector-ref grid n) m v))
-    ;; Iterate over each element of the grid.
     (define (each grid proc)
       (do ((j 0 (+ j 1)))
           ((= j (rows grid)))
@@ -599,24 +598,26 @@ the base module.
           (example grid))
   (begin
     (define (life-count grid i j)
-      (+ (ref grid (- i 1) (- j 1))
-         (ref grid (- i 1) j)
-         (ref grid (- i 1) (+ j 1))
-         (ref grid i (- j 1))
-         (ref grid i (+ j 1))
-         (ref grid (+ i 1) (- j 1))
-         (ref grid (+ i 1) j)
-         (ref grid (+ i 1) (+ j 1))))
+      (define (count i j)
+        (if (ref grid i j) 1 0))
+      (+ (count (- i 1) (- j 1))
+         (count (- i 1) j)
+         (count (- i 1) (+ j 1))
+         (count i (- j 1))
+         (count i (+ j 1))
+         (count (+ i 1) (- j 1))
+         (count (+ i 1) j)
+         (count (+ i 1) (+ j 1))))
     (define (life-alive? grid i j)
       (case (life-count grid i j)
-        ((3) \schtrue{})
-        ((2) (positive? (ref grid i j)))
-        (else \schfalse{})))
+        ((3) \sharptrue{})
+        ((2) (ref grid i j))
+        (else \sharpfalse{})))
     (define (life-print grid)
-      (display "\backwhack{}x1B[1H\backwhack{}x1B[J")  ; clear vt100
+      (display "\backwhack{}x1B;[1H\backwhack{}x1B;[J")  ; clear vt100
       (each grid
        (lambda (i j v)
-         (display (if (zero? v) " " "*"))
+         (display (if v "*" " "))
          (when (= j (- (cols grid) 1))
            (newline)))))
     (define (life grid iterations)
@@ -627,9 +628,8 @@ the base module.
           ((= i iterations))
         (each grid0
          (lambda (j k v)
-           (if (life-alive? grid0 j k)
-               (set! grid1 j k 1)
-               (set! grid1 j k 0))))
+           (let ((a (life-alive? grid0 j k)))
+             (set! grid1 j k a))))
         (life-print grid1)))))
 
 ;; Main program.
@@ -640,11 +640,11 @@ the base module.
 
 ;; Initialize a grid with a glider.
 (define grid (make-grid 24 24))
-(grid-set! grid 1 1 1)
-(grid-set! grid 2 2 1)
-(grid-set! grid 3 0 1)
-(grid-set! grid 3 1 1)
-(grid-set! grid 3 2 1)
+(grid-set! grid 1 1 \sharptrue{})
+(grid-set! grid 2 2 \sharptrue{})
+(grid-set! grid 3 0 \sharptrue{})
+(grid-set! grid 3 1 \sharptrue{})
+(grid-set! grid 3 2 \sharptrue{})
 
 ;; Run for 80 iterations.
 (life grid 80)
