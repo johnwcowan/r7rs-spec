@@ -2567,6 +2567,19 @@ the bytevector is created.  The {\em valid indexes}\index{valid indexes} of
 a bytevector are the exact non-negative integers less than the length of the
 bytevector, starting at index zero as with vectors.
 
+Bytevectors are written using the notation {\tt\#u8(\var{byte} \dotsfoo)}.
+For example, a bytevector of length 3 containing the byte 0 in element
+0, the byte 10 in element 1, and the byte 5 in
+element 2 can be written as following:
+
+\begin{scheme}
+\#u8(0 10 5)%
+\end{scheme}
+
+Note that this is both the external representation of a vector and an
+expression evaluating to a vector.  
+
+
 \begin{entry}{%
 \proto{bytevector?}{ obj}{procedure}}
 
@@ -2623,8 +2636,10 @@ The value returned by {\cf bytevector-copy!} is unspecified.
 \proto{bytevector-copy-partial}{ bytevector start end}{procedure}}
 
 Returns a newly allocated bytevector containing the bytes in \var{bytevector}
-between \var{start} (inclusive) and \var{end}
-(exclusive).
+between \var{start} (inclusive) and \var{end} (exclusive).
+It is an error if \var{start} is less than \var{end},
+or \var{start} is less than zero, or \var{end} is greater than
+the length of \var{bytevector}.
 \end{entry}
 
 \begin{entry}{%
@@ -2638,7 +2653,11 @@ bytevector and then into the destination.  This can be achieved without
 allocating storage by making sure to copy in the correct direction in
 such circumstances.
 
-It is an error if the inequality
+It is an error if \var{start} is less than \var{end},
+or \var{start} is less than zero, or \var{end} is greater than
+the length of \var{from},
+or \var{to} is less than zero or greater than the length of \var{to}.
+It is also an error if the inequality
 \texttt{({\cf >=} ({\cf -} ({\cf bytevector-length} \var{to}) \var{at}) ({\cf -} \var{end} \var{start}))}
 is false.  The value returned by {\cf bytevector-copy-partial!} is unspecified.
 \end{entry}
