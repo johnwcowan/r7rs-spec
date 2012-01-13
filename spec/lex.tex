@@ -123,7 +123,7 @@ prevents a comment from appearing in the middle of an identifier or
 number.
 
 Another way to indicate a comment is to prefix a \hyper{datum}
-(cf.\ section~\ref{datumsyntax}) with {\tt \#;}\sharpindex{;} as well as possible
+(cf.\ section~\ref{datumsyntax}) with {\tt \#;}\sharpindex{;}, possibly with
 \meta{whitespace} before the \hyper{datum}.  The comment consists of
 the comment prefix {\tt \#;}, the space, and the \hyper{datum} together.  This
 notation is useful for ``commenting out'' sections of code.
@@ -256,7 +256,7 @@ because the object labelled by \texttt{\#\hyper{n}=} is not well
 defined in this case.
 
 It is an error for a \hyper{program} or \hyper{library} to include
-circular references.  In particular,
+circular references except in literals.  In particular,
 it is an error for {\cf quasiquote} (section~\ref{quasiquote}) to contain them.
 
 \begin{scheme}
