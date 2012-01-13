@@ -88,6 +88,22 @@ terms of the primitive expression types (literal, variable, call, {\cf lambda},
 \end{scheme}
 
 \begin{scheme}
+(define-syntax \ide{when}
+  (syntax-rules ()
+    ((when test result1 result2 ...)
+     (if test
+         (begin result1 result2 ...)))))
+\end{scheme}
+
+\begin{scheme}
+(define-syntax \ide{unless}
+  (syntax-rules ()
+    ((unless test result1 result2 ...)
+     (if (not test)
+         (begin result1 result2 ...)))))
+\end{scheme}
+
+\begin{scheme}
 (define-syntax \ide{let}
   (syntax-rules ()
     ((let ((name val) ...) body1 body2 ...)
