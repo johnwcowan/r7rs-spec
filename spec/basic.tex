@@ -150,10 +150,10 @@ or object is made to denote them.
 
 Every object that denotes locations is 
 either mutable\index{mutable} or
-immutable\index{immutable}.  Specifically: literal constants, the strings
+immutable\index{immutable}.  Literal constants, the strings
 returned by \ide{symbol->string},
-and possibly the environment returned by {\cf scheme-report-environment},
-are immutable objects, while all objects
+and possibly the environment returned by {\cf scheme-report-environment}
+are immutable objects.  All objects
 created by the other procedures listed in this report are mutable.
 It is an
 error to attempt to store a new value into a location that is denoted by an
@@ -220,7 +220,7 @@ expression.
 \begin{itemize}
 \item The last expression within the body of a lambda expression,
   shown as \hyper{tail expression} below, occurs in a tail context.
-  The same is true of the bodies of a {\cf case-lambda} expression.
+  The same is true of the bodies of {\cf case-lambda} expressions.
 \begin{grammar}%
 (l\=ambda \meta{formals}
   \>\arbno{\meta{definition}} \arbno{\meta{expression}} \meta{tail expression})
@@ -229,8 +229,10 @@ expression.
 \item If one of the following expressions is in a tail context,
 then the subexpressions shown as \meta{tail expression} are in a tail context.
 These were derived from rules in the grammar given in
-chapter~\ref{formalchapter} by replacing some occurrences of \meta{expression}
-with \meta{tail expression}.  Only those rules that contain tail contexts
+chapter~\ref{formalchapter} by replacing some occurrences of \meta{body}
+with \meta{tail body},  some occurrences of \meta{expression}
+with \meta{tail expression},  and some occurrences of \meta{sequence}
+with \meta{tail sequence}.  Only those rules that contain tail contexts
 are shown here.
 
 \begin{grammar}%
