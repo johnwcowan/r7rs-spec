@@ -280,7 +280,7 @@ into the primitive constructs described in the previous section.
 \pproto{=>}{\auxiliarytype}}
 
 \syntax
-\hyper{Clauses} take one of two forms, either:
+\hyper{Clauses} take one of two forms, either
 \begin{scheme}
 (\hyper{test} \hyperi{expression} \dotsfoo)%
 \end{scheme}
@@ -482,7 +482,7 @@ sequentially; while in {\cf letrec} and {\cf letrec*} expressions,
 all the bindings are in
 effect while their initial values are being computed, thus allowing
 mutually recursive definitions.
-{\cf let-values} and {\cf let*-values} are analogous to {\cf let} and {\cf let*}
+The {\cf let-values} and {\cf let*-values} constructs are analogous to {\cf let} and {\cf let*}
 respectively, but are designed to handle multiple-valued expressions, binding
 different identifiers to each returned value.
 
@@ -532,7 +532,7 @@ See also ``named {\cf let},'' section \ref{namedlet}.
 \begin{scheme}
 ((\hyperi{variable} \hyperi{init}) \dotsfoo)\rm,%
 \end{scheme}
-and \hyper{body} should be a
+and \hyper{body} should be a sequence of
 zero or more definitions followed by
 one or more expressions as described in section~\ref{lambda}.
 
@@ -601,8 +601,8 @@ call where a {\cf lambda} expression binds the \hyper{variable}s to the values
 of the \hyper{init}s.
 In the most common uses of {\cf letrec}, all the \hyper{init}s are
 \lambdaexp{}s and the restriction is satisfied automatically.
-Another restriction is that the continuation of each \hyper{init}
-should not be invoked more than once.
+Another restriction is that the continuation of no \hyper{init}
+should be invoked more than once.
 
 \end{entry}
 
@@ -667,8 +667,8 @@ once in the set of \hyper{formals}.
 
 \semantics
 The \hyper{init}s are evaluated in the current environment (in some
-unspecified order) as if by invoking {\cf call-with-values}, the
-variables occuring in the \hyper{formals} are bound to fresh locations
+unspecified order) as if by invoking {\cf call-with-values}, and the
+variables occurring in the \hyper{formals} are bound to fresh locations
 holding the values returned by the \hyper{init}s, where the
 \hyper{formals} are matched to the return values in the same way that
 the \hyper{formals} in a {\cf lambda} expression are matched to the
@@ -702,7 +702,7 @@ definitions followed by one or more expressions as described in section~\ref{lam
 it is an error if any variable appears more than once.
 
 \semantics
-{\cf let-values*} is similar to {\cf let-values}, but the
+The {\cf let-values*} construct is similar to {\cf let-values}, but the
 \hyper{init}s are evaluated and bindings created sequentially from
 left to right, with the region of the bindings of each \hyper{formals}
 including the \hyper{init}s to its right as well as \hyper{body}.  Thus the
@@ -732,7 +732,7 @@ have slightly different forms and uses:
 This form of {\cf begin} may appear as part of a \hyper{body}, or at the
 \hyper{top-level}, or directly nested in a {\cf begin} that is itself of this form.
 It causes the contained expressions and definitions to be evaluated
-exactly as if the enclosing begin construct were not present.
+exactly as if the enclosing {\cf begin} construct were not present.
 
 \begin{rationale}
 This form is commonly used in the output of
@@ -895,7 +895,7 @@ The {\cf force} procedure forces the value of a \var{promise} created
 by \ide{delay} or \ide{lazy}.\index{promise}
 If no value has been computed for the promise, then a value is
 computed and returned.  The value of the promise is cached (or
-"memoized") so that if it is forced a second time, the previously
+``memoized'') so that if it is forced a second time, the previously
 computed value is returned.
 
 \begin{scheme}
@@ -992,7 +992,7 @@ and \cf{+}:
 \begin{entry}{%
 \proto{eager} { \var{obj}}{lazy library procedure}}
 
-The {\cf eager} procedure returns a promise which when forced will return
+The {\cf eager} procedure returns a promise which, when forced, will return
 \var{obj}.  It is similar to {\cf delay}, but does not delay
 its argument: it is a procedure rather than syntax.
 
@@ -1047,7 +1047,7 @@ may not be what the user expects.
 
 If an implementation supports multiple threads of execution, then
 {\cf parameterize} must not change the associated values of any parameters
-in any thread other than the current thread or threads created
+in any thread other than the current thread and threads created
 inside \hyper{body}.
 
 Parameter objects can be used to specify configurable settings for a
@@ -1305,8 +1305,8 @@ bindings that surround the use of the macro.
 
 In consequence, all macros
 defined using the pattern language  are ``hygienic'' and ``referentially
-transparent'' and thus preserve Scheme's lexical scoping~\cite{Kohlbecker86,
-hygienic,Bawden88,macrosthatwork,syntacticabstraction}:
+transparent'' and thus preserve Scheme's lexical scoping.~\cite{Kohlbecker86,
+hygienic,Bawden88,macrosthatwork,syntacticabstraction}
 \mainindex{hygienic}
 \mainindex{referentially transparent}
 
@@ -1330,7 +1330,8 @@ see section~\ref{define-syntax}.
 \end{scheme}
 Each \hyper{keyword} is an identifier,
 each \hyper{transformer spec} is an instance of {\cf syntax-rules}, and
-\hyper{body} should be a sequence of one or more definitions followed by expressions.  It is an error
+\hyper{body} should be a sequence of one or more definitions followed
+by one or more expressions.  It is an error
 for a \hyper{keyword} to appear more than once in the list of keywords
 being bound.
 
@@ -1483,38 +1484,38 @@ Multiple underscores may appear in a \hyper{pattern}.
 Identifiers that appear in \texttt{(\hyper{literal} \dotsfoo)} are
 interpreted as literal
 identifiers to be matched against corresponding elements of the input.
-A element in the input matches a literal identifier if and only if it is an
+An element in the input matches a literal identifier if and only if it is an
 identifier and either both its occurrence in the macro expression and its
 occurrence in the macro definition have the same lexical binding, or
 the two identifiers are equal and both have no lexical binding.
 
 A subpattern followed by \hyper{ellipsis} can match zero or more elements of
-the input, unless \hyper{ellipsis} appears in the \hyper{literal}s in which
+the input, unless \hyper{ellipsis} appears in the \hyper{literal}s, in which
 case it is matched as a literal.
 
-More formally, an input $F$ matches a pattern $P$ if and only if:
+More formally, an input expression $E$ matches a pattern $P$ if and only if:
 
 \begin{itemize}
 \item $P$ is an underscore ({\cf \_}).
 
 \item $P$ is a non-literal identifier; or
 
-\item $P$ is a literal identifier and $F$ is an identifier with the same
+\item $P$ is a literal identifier and $E$ is an identifier with the same
       binding; or
 
-\item $P$ is a list {\cf ($P_1$ $\dots$ $P_n$)} and $F$ is a
+\item $P$ is a list {\cf ($P_1$ $\dots$ $P_n$)} and $E$ is a
       list of $n$
       elements that match $P_1$ through $P_n$, respectively; or
 
 \item $P$ is an improper list
       {\cf ($P_1$ $P_2$ $\dots$ $P_n$ . $P_{n+1}$)}
-      and $F$ is a list or
+      and $E$ is a list or
       improper list of $n$ or more elements that match $P_1$ through $P_n$,
       respectively, and whose $n$th tail matches $P_{n+1}$; or
 
 \item $P$ is of the form
       {\cf ($P_1$ $\dots$ $P_{e-1}$ $P_{e}$ \meta{ellipsis} $P_{m+1}$ \dotsfoo{} $P_n$)}
-      where $F$ is
+      where $E$ is
       a proper list of $n$ elements, the first $e-1$ of which match
       $P_1$ through $P_{e-1}$, respectively,
       whose next $m-k$ elements each match $P_e$,
@@ -1522,7 +1523,7 @@ More formally, an input $F$ matches a pattern $P$ if and only if:
 
 \item $P$ is of the form
       {\cf ($P_1$ $\dots$ $P_{e-1}$ $P_{e}$ \meta{ellipsis} $P_{m+1}$ \dotsfoo{} $P_n$ . $P_x$)}
-      where $F$ is
+      where $E$ is
       an list or improper list of $n$ elements, the first $e-1$ of which match
       $P_1$ through $P_{e-1}$,
       whose next $m-k$ elements each match $P_e$,
@@ -1530,17 +1531,17 @@ More formally, an input $F$ matches a pattern $P$ if and only if:
       and whose $n$th and final cdr matches $P_x$; or
 
 \item $P$ is a vector of the form {\cf \#($P_1$ $\dots$ $P_n$)}
-      and $F$ is a vector
+      and $E$ is a vector
       of $n$ elements that match $P_1$ through $P_n$; or
 
 \item $P$ is of the form
       {\cf \#($P_1$ $\dots$ $P_{e-1}$ $P_{e}$ \meta{ellipsis} $P_{m+1}$ \dotsfoo $P_n$)}
-      where $F$ is a vector of $n$
+      where $E$ is a vector of $n$
       elements the first $e-1$ of which match $P_1$ through $P_{e-1}$,
       whose next $m-k$ elements each match $P_e$,
       and whose remaining $n-m$ elements matche $P_{m+1}$ through $P_n$; or
 
-\item $P$ is a constant and $F$ is equal to $P$ in the sense of
+\item $P$ is a constant and $E$ is equal to $P$ in the sense of
       the {\cf equal?} procedure.
 \end{itemize}
 

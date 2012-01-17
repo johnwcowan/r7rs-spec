@@ -31,8 +31,8 @@ behavior of the built-in procedures.
 
 A \defining{predicate} is a procedure that always returns a boolean
 value (\schtrue{} or \schfalse).  An \defining{equivalence predicate} is
-the computational analogue of a mathematical equivalence relation (it is
-symmetric, reflexive, and transitive).  Of the equivalence predicates
+the computational analogue of a mathematical equivalence relation; it is
+symmetric, reflexive, and transitive.  Of the equivalence predicates
 described in this section, {\cf eq?}\ is the finest or most
 discriminating, {\cf equal?}\ is the coarsest, and {\cf eqv?}\ is
 slightly less discriminating than {\cf eq?}.  
@@ -225,7 +225,7 @@ capable of discerning distinctions finer than those detectable by
 {\cf eqv?}.
 
 \vest On symbols, booleans, the empty list, pairs, procedures,
-and non-empty
+non-empty
 strings, vectors, bytevectors, and records, {\cf eq?}\ and {\cf eqv?}\ are guaranteed to have the same
 behavior.  On numbers and characters, {\cf eq?}'s behavior is
 implementation-dependent, but it will always return either true or
@@ -1067,7 +1067,7 @@ $$\tan^{-1} z = (\log (1 + i z) - \log (1 - i z)) / (2 i)$$
 The above specification follows~\cite{CLtL}, which in turn
 cites~\cite{Penfield81}; refer to these sources for more detailed
 discussion of branch cuts, boundary conditions, and implementation of
-these functions.  When it is possible these procedures produce a real
+these functions.  When it is possible, these procedures produce a real
 result from a real argument.
 
 
@@ -1796,8 +1796,8 @@ Returns a newly allocated copy of the given \var{list}.
 Only the pairs themselves are copied; the cars of the result are
 the same (in the sense of {\cf eqv?} as the cars of \var{list}.
 If the last pair of \var{list} has a cdr which is not the empty
-list, the last pair of the result does too.  As a degenerate case,
-an argument which is not a list is returned unchanged.
+list, the last pair of the result does, too.  
+An argument which is not a list is returned unchanged.
 
 \end{entry}
 
@@ -1933,8 +1933,8 @@ Case is significant in \sharpsign\backwhack\hyper{character}, and in
 \sharpsign\backwhack{\rm$\langle$character name$\rangle$},
 but not in {\cf\sharpsign\backwhack{}x}\meta{hex scalar value}.  
 If \hyper{character} in
-\sharpsign\backwhack\hyper{character} is alphabetic, then the character
-following \hyper{character} must be a delimiter character such as a
+\sharpsign\backwhack\hyper{character} is alphabetic, then any character
+immediately following \hyper{character} must be a delimiter character such as a
 space or parenthesis.  This rule resolves the ambiguous case where, for
 example, the sequence of characters ``{\tt\sharpsign\backwhack space}''
 could be taken to be either a representation of the space character or a
@@ -2077,7 +2077,7 @@ language-sensitive folding is not used.  If the argument is an uppercase
 letter, the result will be either a lowercase letter
 or the same as the argument if the lowercase letter does not exist or
 is not supported by the implementation.
-See UAX \#29 (part of the Unicode Standard) for details.
+See UAX \#29~\cite{uax29} (part of the Unicode Standard) for details.
 
 Note that many Unicode lowercase characters do not have uppercase
 equivalents.
@@ -2250,7 +2250,7 @@ sequence of characters.
 
 Specifically, an implementation which
 supports Unicode should use Unicode normalization NFC or
-NFD as specified by Unicode TR\#15.  Implementations which only
+NFD as specified by Unicode TR\#15~\cite{uax15}.  Implementations which only
 support ASCII or some other character set which provides no ambiguous
 representations of character sequences may define the normalization to
 be the identity operation, in which case {\cf string-ni=?}\ is
@@ -2320,7 +2320,7 @@ The result may differ in length from the argument.  What is more, a
 few characters have case-mappings that depend on the surrounding context.
 For example, Greek capital sigma normally lowercases to Greek small sigma,
 but at the end of a word it downcases to Greek small final sigma instead.
-See UAX \#29 (part of the Unicode Standard) for details.
+See UAX \#29~\cite{uax29} (part of the Unicode Standard) for details.
 
 \end{entry}
 
@@ -2458,7 +2458,7 @@ Returns the number of elements in \var{vector} as an exact integer.
 \proto{vector-ref}{ vector k}{procedure}}
 
 \domain{It is an error if \vr{k} is not a valid index of \var{vector}.}
-{\cf vector-ref} returns the contents of element \vr{k} of
+The {\cf vector-ref} procedure returns the contents of element \vr{k} of
 \var{vector}.
 
 \begin{scheme}
@@ -2475,7 +2475,7 @@ Returns the number of elements in \var{vector} as an exact integer.
 \proto{vector-set!}{ vector k obj}{procedure}}
 
 \domain{It is an error if \vr{k} is not a valid index of \var{vector}.}
-{\cf vector-set!} stores \var{obj} in element \vr{k} of \var{vector}.
+The {\cf vector-set!} procedure stores \var{obj} in element \vr{k} of \var{vector}.
 The value returned by {\cf vector-set!}\ is unspecified.  % <!>
 
 \begin{scheme}
@@ -2492,8 +2492,8 @@ The value returned by {\cf vector-set!}\ is unspecified.  % <!>
 \proto{vector->list}{ vector}{procedure}
 \proto{list->vector}{ list}{procedure}}
 
-{\cf vector->list} returns a newly allocated list of the objects contained
-in the elements of \var{vector}.  {\cf list->vector} returns a newly
+The {\cf vector->list} procedure returns a newly allocated list of the objects contained
+in the elements of \var{vector}.  The {\cf list->vector} procedure returns a newly
 created vector initialized to the elements of the list \var{list}.
 
 \begin{scheme}
@@ -2506,10 +2506,10 @@ created vector initialized to the elements of the list \var{list}.
 \proto{vector->string}{ string}{procedure}
 \proto{string->vector}{ vector}{procedure}}
 
-{\cf vector->string} returns a newly allocated string of the objects contained
+The {\cf vector->string} procedure returns a newly allocated string of the objects contained
 in the elements of \var{vector}.
 It is an error if any element is not a character allowed in strings.
-{\cf string->vector} returns a newly
+The {\cf string->vector} procedure returns a newly
 created vector initialized to the elements of the string \var{string}.
 
 
@@ -2591,7 +2591,7 @@ Otherwise, \schfalse{} is returned.
 \proto{make-bytevector}{ k}{procedure}
 \rproto{make-bytevector}{ k byte}{procedure}}
 
-{\cf make-bytevector} returns a newly allocated bytevector of
+The {\cf make-bytevector} procedure returns a newly allocated bytevector of
 length \vr{k}.  If \var{byte} is given, then all elements of the bytevector
 are initialized to \var{byte}, otherwise the contents of each
 element are unspecified.
@@ -2712,7 +2712,7 @@ Returns \schtrue{} if \var{obj} is a procedure, otherwise returns \schfalse.
 \begin{entry}{%
 \proto{apply}{ proc \vari{arg} $\ldots$ args}{procedure}}
 
-{\cf apply} calls \var{proc} with the elements of the list
+The {\cf apply} procedure calls \var{proc} with the elements of the list
 {\cf(append (list \vari{arg} \dotsfoo) \var{args})} as the actual
 arguments.
 
@@ -2737,7 +2737,7 @@ accept as many arguments as there are {\it list}s
 and return a single value.  If more
 than one \var{list} is given and not all lists have the same length,
 {\cf map} terminates when the shortest list runs out.}
-{\cf map} applies \var{proc} element-wise to the elements of the
+The {\cf map} procedure applies \var{proc} element-wise to the elements of the
 \var{list}s and returns a list of the results, in order.  It is an
 error for \var{proc} to mutate any of the lists.
 The dynamic order in which \var{proc} is applied to the elements of the
@@ -2769,7 +2769,7 @@ accept as many arguments as there are {\it string}s
 and return a single character.  If more
 than one \var{string} is given and not all strings have the same length,
 {\cf string-map} terminates when the shortest string runs out.}
-{\cf string-map} applies \var{proc} element-wise to the elements of the
+The {\cf string-map} procedure applies \var{proc} element-wise to the elements of the
 \var{string}s and returns a string of the results, in order.
 The dynamic order in which \var{proc} is applied to the elements of the
 \var{string}s is unspecified.
@@ -2802,7 +2802,7 @@ accept as many arguments as there are {\it vector}s
 and return a single value.  If more
 than one \var{vector} is given and not all vectors have the same length,
 {\cf vector-map} terminates when the shortest vector runs out.}
-{\cf vector-map} applies \var{proc} element-wise to the elements of the
+The {\cf vector-map} procedure applies \var{proc} element-wise to the elements of the
 \var{vector}s and returns a vector of the results, in order.
 The dynamic order in which \var{proc} is applied to the elements of the
 \var{vector}s is unspecified.
@@ -3018,7 +3018,7 @@ some people prefer the name \ide{call/cc} instead.
 \proto{values}{ obj $\ldots$}{procedure}}
 
 Delivers all of its arguments to its continuation.
-{\tt Values} might be defined as follows:
+The {\tt values} procedure might be defined as follows:
 \begin{scheme}
 (define (values . things)
   (call-with-current-continuation 
@@ -3216,7 +3216,7 @@ The procedure {\cf error-object?} must return \schtrue{} on such objects.
 \proto{error-object?}{ obj}{procedure}}
 
 Returns \schtrue{} if \var{obj} is an object created by {\cf error} 
-or one of an implementation-defined set of objects, otherwise returns
+or one of an implementation-defined set of objects.  Otherwise, it returns
 \schfalse.  
 
 \end{entry}
@@ -3566,18 +3566,18 @@ order they were output.
 \proto{read}{}{read library procedure}
 \rproto{read}{ port}{read library procedure}}
 
-{\cf read} converts external representations of Scheme objects into the
+The {\cf read} procedure converts external representations of Scheme objects into the
 objects themselves.  That is, it is a parser for the nonterminal
 \meta{datum} (see sections~\ref{datum} and
-\ref{listsection}).  {\cf read} returns the next
+\ref{listsection}).  It returns the next
 object parsable from the given textual input \var{port}, updating
 \var{port} to point to
 the first character past the end of the external representation of the object.
 
 \vest If an end of file is encountered in the input before any
-characters are found that can begin an object, then an end of file
+characters are found that can begin an object, then an end-of-file
 object is returned.  The port remains open, and further attempts
-to read will also return an end of file object.  If an end of file is
+to read will also return an end-of-file object.  If an end of file is
 encountered after the beginning of an object's external representation,
 but the external representation is incomplete and therefore not parsable,
 an error is signalled.
@@ -3594,7 +3594,7 @@ a closed port.
 Returns the next character available from the textual input \var{port},
 updating
 the \var{port} to point to the following character.  If no more characters
-are available, an end of file object is returned.  \var{Port} may be
+are available, an end-of-file object is returned.  \var{Port} may be
 omitted, in which case it defaults to the value returned by {\cf current-input-port}.
 
 \end{entry}
@@ -3607,7 +3607,7 @@ omitted, in which case it defaults to the value returned by {\cf current-input-p
 Returns the next character available from the textual input \var{port},
 {\em without} updating
 the \var{port} to point to the following character.  If no more characters
-are available, an end of file object is returned.  \var{Port} may be
+are available, an end-of-file object is returned.  \var{Port} may be
 omitted, in which case it defaults to the value returned by {\cf current-input-port}.
 
 \begin{note}
@@ -3646,9 +3646,9 @@ by {\cf current-input-port}.
 \begin{entry}{%
 \proto{eof-object?}{ obj}{procedure}}
 
-Returns \schtrue{} if \var{obj} is an end of file object, otherwise returns
-\schfalse.  The precise set of end of file objects will vary among
-implementations, but in any case no end of file object will ever be an object
+Returns \schtrue{} if \var{obj} is an end-of-file object, otherwise returns
+\schfalse.  The precise set of end-of-file objects will vary among
+implementations, but in any case no end-of-file object will ever be an object
 that can be read in using {\cf read}.
 
 \end{entry}
@@ -3666,12 +3666,12 @@ returns \schtrue.  \var{Port} may be omitted, in which case it defaults to
 the value returned by {\cf current-input-port}.
 
 \begin{rationale}
-{\cf char-ready?}\ exists to make it possible for a program to
+The {\cf char-ready?} procedure exists to make it possible for a program to
 accept characters from interactive ports without getting stuck waiting for
 input.  Any input editors associated with such ports must ensure that
 characters whose existence has been asserted by {\cf char-ready?}\ cannot
 be rubbed out.  If {\cf char-ready?}\ were to return \schfalse{} at end of
-file, a port at end of file would be indistinguishable from an interactive
+file, a port at end-of-file would be indistinguishable from an interactive
 port that has no ready characters.
 \end{rationale}
 \end{entry}
@@ -3683,7 +3683,7 @@ port that has no ready characters.
 Returns the next byte available from the binary input \var{port},
 updating the \var{port} to point to the following byte.  
 If no more bytes are
-available, an end of file object is returned.  \var{Port} may be
+available, an end-of-file object is returned.  \var{Port} may be
 omitted, in which case it defaults to the value returned by {\cf
   current-input-port}.
 
@@ -3695,7 +3695,7 @@ omitted, in which case it defaults to the value returned by {\cf
 
 Returns the next byte available from the binary input \var{port},
 {\em without} updating the \var{port} to point to the following
-byte.  If no more bytes are available, an end of file object is
+byte.  If no more bytes are available, an end-of-file object is
 returned.  \var{Port} may be omitted, in which case it defaults to the
 value returned by {\cf current-input-port}.
 
@@ -3724,7 +3724,7 @@ from the binary
 input \var{port} into a newly allocated bytevector in left-to-right order
 and returns the bytevector.
 If no bytes are available,
-an end of file object is returned.
+an end-of-file object is returned.
 \var{Port} may be
 omitted, in which case it defaults to the value returned by {\cf
   current-input-port}.
@@ -3742,7 +3742,7 @@ input \var{port} into \var{bytevector} in left-to-right order
 beginning at the \var{start} position.
 Returns the number of bytes read.
 If no bytes are available,
-an end of file object is returned.
+an end-of-file object is returned.
 \var{Port} may be
 omitted, in which case it defaults to the value returned by {\cf
   current-input-port}.
@@ -3769,7 +3769,7 @@ escaped by backslashes.  Symbols that contain non-ASCII characters
 are escaped either with inline hex escapes or with vertical bars.
 Character objects are written using the {\cf \#\backwhack} notation.
 Shared list structure is represented using datum labels.
-{\cf write} returns an unspecified value.
+The {\cf write} procedure returns an unspecified value.
 \var{Port} may be omitted, in which case it defaults to the value
 returned by {\cf current-output-port}.
 
@@ -3779,7 +3779,7 @@ returned by {\cf current-output-port}.
 \proto{write-simple}{ obj}{write library procedure}
 \rproto{write-simple}{ obj port}{write library procedure}}
 
-{\cf write-simple} is the same as {\cf write}, except that shared structure is
+The {\cf write-simple} procedure is the same as {\cf write}, except that shared structure is
 not represented using datum labels.  This may cause {\cf write-simple} not to
 terminate if \var{obj} contains circular structure.
 
@@ -3795,12 +3795,12 @@ Strings that appear in the written representation are not enclosed in
 doublequotes, and no characters are escaped within those strings.  
 Symbols are not escaped.  Character
 objects appear in the representation as if written by {\cf write-char}
-instead of by {\cf write}.  {\cf display} returns an unspecified value.
+instead of by {\cf write}.  The {\cf display} procedure returns an unspecified value.
 \var{Port} may be omitted, in which case it defaults to the
 value returned by {\cf current-output-port}.
 
 \begin{rationale}
-{\cf write} is intended
+The {\cf write} procedure is intended
 for producing mach\-ine-readable output and {\cf display} for producing
 human-readable output.  
 \end{rationale}
@@ -3918,7 +3918,7 @@ implementations.
 
 It is an error if \var{filename} is not a string. The {\cf file-exists?} procedure returns
 \schtrue{} if the named file exists at the time the procedure is called,
-\schfalse{} otherwise.
+and \schfalse{} otherwise.
 
 \end{entry}
 

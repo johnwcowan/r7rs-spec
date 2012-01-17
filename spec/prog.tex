@@ -5,12 +5,12 @@
 
 A Scheme program consists of a sequence of 
 \defining{program parts}: expressions, definitions, syntax definitions,
-record type definitions, imports, cond-expands, and includes.  A collection of program
+record type definitions, {\cf import}s, {\cf cond-expand}s, and {\cf include}s.  A collection of program
 parts may be encapsulated in a library to be reused by multiple
 programs.
 Expressions are described in chapter~\ref{expressionchapter};
 the other program parts, as well as libraries, are the subject of the
-rest of the present chapter.
+present chapter.
 
 Programs and libraries are typically stored in files, although programs
 can be entered interactively to a running Scheme system, and other
@@ -38,7 +38,7 @@ Implementations may provide an interactive session called a
 \defining{REPL} (Read-Eval-Print Loop), where Scheme program parts can be
 entered and evaluated one at a time.  For convenience and ease of use,
 the ``top-level'' Scheme environment in a REPL
-must not be not empty, but must start out with a number of variables
+must not be not empty, but must start out with variables
 bound to locations containing at least the bindings provided by the
 base library.  This library includes the core syntax of Scheme
 and generally useful procedures that manipulate data.  For example, the
@@ -132,7 +132,7 @@ beginning of a \hyper{body} (that is, the body of a \ide{lambda},
 \ide{parameterize}, \ide{guard}, or \ide{case-lambda}
 expression or that of a definition of an appropriate form).
 Such definitions are known as {\em internal definitions} \mainindex{internal
-definition} as opposed to the top level definitions described above.
+definition} as opposed to the top-level definitions described above.
 The variable defined by an internal definition is local to the
 \hyper{body}.  That is, \hyper{variable} is bound rather than assigned,
 and the region of the binding is the entire \hyper{body}.  For example,
@@ -306,11 +306,12 @@ itself.  This may be a run-time object or a purely syntactic representation.
 
 \item \hyper{constructor name} is bound to a procedure that takes as
   many arguments as there are \hyper{field name}s in the
-  \texttt{(\hyper{constructor name} \dotsfoo)} subform and returns a
+  \texttt{(\hyper{constructor name} \dotsfoo)} subexpression and returns a
   new record of type \hyper{name}.  Fields whose names are listed with
   \hyper{constructor name} have the corresponding argument as their
   initial value.  The initial values of all other fields are
-  unspecified.
+  unspecified.  It is an error for a field name to appear in
+  \hyper{constructor} but not as a \hyper{field name}.
 
 \item \hyper{pred} is bound to a predicate that returns \schtrue{} when given a
   value returned by the procedure bound to  \hyper{constructor name} and \schfalse{} for
@@ -373,7 +374,7 @@ A library definition takes the following form:
   \hyper{library declaration} \dotsfoo)
 \end{scheme}
 
-\hyper{library name} is a list whose members are identifiers or unsigned exact integers that is used to
+\hyper{library name} is a list whose members are identifiers and unsigned exact integers.  It is used to
 identify the library uniquely when importing from other programs or
 libraries.
 Libraries whose first identifier is {\cf scheme} are reserved for use by this
@@ -430,7 +431,7 @@ imported bindings. It takes one of the following forms:
 \item {\tt(rename \hyperi{import set} (\hyperii{$identifier$} \hyper{$identifier$}) \dotsfoo)}
 \end{itemize}
 
-In the first form, all of the identifiers in the named library's export
+In the first form, all of the identifiers in the named library's {\cf export}
 clauses are imported with the same names (or the exported names if
 exported with \ide{rename}).  The additional \hyper{import set}
 forms modify this set as follows:
@@ -558,7 +559,7 @@ The following example shows
 how a program may be divided into libraries plus a relatively small
 main program~\cite{life}.
 If the main program is entered into a REPL, it is not necessary to import
-the base module.
+the base library.
 
 \begin{scheme}
 (define-library (example grid)
