@@ -175,10 +175,10 @@ mutable and immutable objects.
 \label{proper tail recursion}
 
 Implementations of Scheme are required to be
-{\em properly tail recursive}\mainindex{proper tail recursion}.
+{\em properly tail-recursive}\mainindex{proper tail recursion}.
 Procedure calls that occur in certain syntactic
 contexts defined below are {\em tail calls}.  A Scheme implementation is
-properly tail recursive if it supports an unbounded number of active
+properly tail-recursive if it supports an unbounded number of active
 tail calls.  A call is {\em active} if the called procedure might still
 return.  Note that this includes calls that might be returned from either
 by the current continuation or by continuations captured earlier by
@@ -196,7 +196,7 @@ continuation that is used in the tail call has the same semantics as the
 continuation passed to the procedure containing the call.  Although an improper
 implementation might use a new continuation in the call, a return
 to this new continuation would be followed immediately by a return
-to the continuation passed to the procedure.  A properly tail recursive
+to the continuation passed to the procedure.  A properly tail-recursive
 implementation returns to that continuation directly.
 
 Proper tail recursion was one of the central ideas in Steele and
