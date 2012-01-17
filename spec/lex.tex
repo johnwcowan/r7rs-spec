@@ -71,8 +71,8 @@ See section~\ref{extendedalphas} for the formal syntax of identifiers.
 
 In contrast with earlier revisions of the report~\cite{R5RS}, the
 syntax distinguishes between upper and lower case in
-identifiers and in characters specified via their names,
-but not in numbers,
+identifiers and in characters specified via their names.  However, it
+does not distinguish between upper and lower case in numbers,
 nor in \meta{inline hex escapes} used
 in the syntax of identifiers, characters, or strings.
 None of the identifiers defined in this report contain upper-case
@@ -123,8 +123,8 @@ prevents a comment from appearing in the middle of an identifier or
 number.
 
 Another way to indicate a comment is to prefix a \hyper{datum}
-(cf.\ section~\ref{datumsyntax}) with {\tt \#;}\sharpindex{;}, possibly with
-\meta{whitespace} before the \hyper{datum}.  The comment consists of
+(cf.\ section~\ref{datumsyntax}) with {\tt \#;}\sharpindex{;} and optional
+\meta{whitespace}.  The comment consists of
 the comment prefix {\tt \#;}, the space, and the \hyper{datum} together.  This
 notation is useful for ``commenting out'' sections of code.
 
@@ -172,7 +172,7 @@ Parentheses are used for grouping and to notate lists
 The single quote character is used to indicate literal data (section~\ref{quote}).
 
 \item[\backquote]
-The backquote character is used to indicate partly-constant
+The backquote character is used to indicate partly constant
 data (section~\ref{quasiquote}).
 
 \item[\tt, ,@]
