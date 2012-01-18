@@ -93,7 +93,8 @@ and are treated as comments, except that they affect the reading
 of subsequent data. The {\cf{}\#!fold-case} directive causes
 the {\cf read} procedure to case-fold (as if by {\cf string-foldcase};
 see section~\ref{stringsection}) each identifier and character name
-subsequently read from the same port. The {\cf{}\#!no-fold-case} directive
+subsequently read from the same port.  (It has no effect on character
+literals.)  The {\cf{}\#!no-fold-case} directive
 causes the {\cf read} procedure to return to the default, non-folding behavior.
 \end{entry}
 
@@ -246,7 +247,7 @@ structures with shared or circular substructure.
   x)                       \ev \#0=(a b c . \#0\#)
 \end{scheme}
 
-The scope of a datum label is the portion of the datum in which it appears
+The scope of a datum label is the portion of the outermost datum in which it appears
 that is to the right of the label.
 Consequently, a reference \texttt{\#\hyper{n}\#} may occur only after a label
 \texttt{\#\hyper{n}=}; it is an error to attempt a forward reference.  In
