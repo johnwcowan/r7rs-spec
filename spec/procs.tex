@@ -2250,7 +2250,7 @@ sequence of characters.
 
 Specifically, an implementation which
 supports Unicode should use Unicode normalization NFC or
-NFD as specified by Unicode TR\#15~\cite{uax15}.  Implementations which only
+NFD as specified by Unicode UAX\#15~\cite{uax15}.  Implementations which only
 support ASCII or some other character set which provides no ambiguous
 representations of character sequences may define the normalization to
 be the identity operation, in which case {\cf string-ni=?}\ is
@@ -2354,6 +2354,7 @@ characters in the given strings.
 characters that make up the given string.  {\cf list\coerce{}string}
 returns a newly allocated string formed from the elements in the list
 \var{list}.  It is an error if any element is not a character.
+In both procedures, order is preserved.
 {\cf string\coerce{}list}
 and {\cf list\coerce{}string} are
 inverses so far as {\cf equal?}\ is concerned.  
@@ -2495,6 +2496,7 @@ The value returned by {\cf vector-set!}\ is unspecified.  % <!>
 The {\cf vector->list} procedure returns a newly allocated list of the objects contained
 in the elements of \var{vector}.  The {\cf list->vector} procedure returns a newly
 created vector initialized to the elements of the list \var{list}.
+In both procedures, order is preserved.
 
 \begin{scheme}
 (vector->list '\#(dah dah didah))  \lev  (dah dah didah)
@@ -2511,6 +2513,7 @@ in the elements of \var{vector}.
 It is an error if any element is not a character allowed in strings.
 The {\cf string->vector} procedure returns a newly
 created vector initialized to the elements of the string \var{string}.
+In both procedures, order is preserved.
 
 
 \begin{scheme}
