@@ -21,10 +21,10 @@ with them in section~\ref{force}.  In the same way, the procedure
 A program may use a top-level definition to bind any variable.  It may
 subsequently alter any such binding by an assignment (see
 section~\ref{assignment}).  These operations do not modify the behavior of
-Scheme's built-in procedures, or any procedure defined in a library
+any procedure defined in this report or imported from a library.
 (see section~\ref{libraries}).  Altering any top-level binding that has
 not been introduced by a definition has an unspecified effect on the
-behavior of the built-in procedures.
+behavior of the procedures defined in this chapter.
 
 \section{Equivalence predicates}
 \label{equivalencesection}
@@ -454,7 +454,7 @@ round-quotient     round-remainder
 euclidean-quotient euclidean-remainder
 \end{scheme}
 
-\vest Implementations are encouraged, but not required, to support
+\vest It is recommended, but not required, that implementations support
 \tupe{exact} \tupe{integer}s and \tupe{exact} \tupe{rational}s of
 practically unlimited size and precision, and to implement the
 above procedures and the {\cf /} procedure in
@@ -2689,7 +2689,7 @@ to {\cf utf8\coerce{}string}.
 \section{Control features}
 \label{proceduresection}
  
-This chapter describes various primitive procedures which control the
+This section describes various primitive procedures which control the
 flow of program execution in special ways.
 The {\cf procedure?}\ predicate is also described here.
 
