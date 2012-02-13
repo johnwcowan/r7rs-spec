@@ -230,7 +230,7 @@ strings, vectors, bytevectors, and records, {\cf eq?}\ and {\cf eqv?}\ are guara
 behavior.  On numbers and characters, {\cf eq?}'s behavior is
 implementation-dependent, but it will always return either true or
 false, and will return true only when {\cf eqv?}\ would also return
-true.  On empty vectors and empty strings, {\cf eq?} may also behave
+true.  On empty strings, vectors, bytevectors, and records, {\cf eq?} may also behave
 differently from {\cf eqv?}.
 
 \begin{scheme}
@@ -323,14 +323,14 @@ and Scheme numbers.
 in which each level is a subset of the level above it:
 \begin{tabbing}
 \ \ \ \ \ \ \ \ \ \=\tupe{number} \\
-\> \tupe{complex} \\
-\> \tupe{real} \\
-\> \tupe{rational} \\
+\> \tupe{complex number} \\
+\> \tupe{real number} \\
+\> \tupe{rational number} \\
 \> \tupe{integer} 
 \end{tabbing}
 
 For example, 3 is an integer.  Therefore 3 is also a rational,
-a real, and a complex.  The same is true of the Scheme numbers
+a real, and a complex number.  The same is true of the Scheme numbers
 that model 3.  For Scheme numbers, these types are defined by the
 predicates \ide{number?}, \ide{complex?}, \ide{real?}, \ide{rational?},
 and \ide{integer?}.
@@ -382,6 +382,7 @@ If the operation is unable to produce an \tupe{exact} result,
 then it may either report the violation of an implementation restriction
 or it may silently coerce its
 result to an \tupe{inexact} value.
+However, {\cf (/ 3 4)} must not return the mathematically incorrect value {\cf 0}.
 See section~\ref{restrictions}.
 
 \vest Except for \ide{inexact->exact}, the operations described in
@@ -429,7 +430,7 @@ one of these.  The \ide{length}, \ide{vector-length},
 \ide{bytevector-length}, and \ide{string-length} procedures must return an exact
 integer, and it is an error to use anything but an exact integer as an
 index.  Furthermore, any integer constant within the index range, if
-expressed by an exact integer syntax, will indeed be read as an exact
+expressed by an exact integer syntax, must be read as an exact
 integer, regardless of any implementation restrictions that apply
 outside this range.  Finally, the procedures listed below will always
 return exact integer results provided all their arguments are exact integers
@@ -470,9 +471,11 @@ reporting an implementation restriction.
 
 \vest An implementation may use floating-point and other approximate 
 representation strategies for \tupe{inexact} numbers.
-This report recommends, but does not require, that the IEEE 754
-standard be followed by implementations that use
-floating-point representations, and that implementations using
+This report recommends, but does not require, that 
+implementations that use
+floating-point representations
+follow the IEEE 754 standard,
+and that implementations using
 other representations should match or exceed the precision achievable
 using these floating-point standards~\cite{IEEE}.
 In particular, the description of transcendental functions in IEEE 754-2008
@@ -1237,7 +1240,7 @@ Returns a number of the maximally precise representation expressed by the
 given \vr{string}.
 It is an error if \vr{radix} is not 2, 8, 10,
 or 16.  If supplied, \vr{radix} is a default radix that will be overridden
-by an explicit radix prefix in \vr{string} (e.g. {\tt "\#o177"}).  If \vr{radix}
+if an explicit radix prefix is present in \vr{string} (e.g. {\tt "\#o177"}).  If \vr{radix}
 is not supplied, then the default radix is 10.  If \vr{string} is not
 a syntactically valid notation for a number, then {\cf string->number}
 returns \schfalse{}.
@@ -1701,8 +1704,8 @@ It is an error if \var{list} has fewer than \vr{k} elements.
 \begin{entry}{%
 \proto{list-set!}{ list k obj}{procedure}}
 
-\domain{It is an error if \vr{k} is not a valid index of \var{list}.}
 The {\cf list-set!} procedure stores \var{obj} in element \vr{k} of \var{list}.
+\domain{It is an error if \vr{k} is not a valid index of \var{list}.}
 The value returned by {\cf list-set!}\ is unspecified.  % <!>
 
 \begin{scheme}
@@ -1755,13 +1758,13 @@ returned.  The {\cf memq} procedure uses {\cf eq?}\ to compare \var{obj} with th
 \proto{assoc}{ obj alist}{procedure}
 \proto{assoc}{ obj alist compare}{procedure}}
 
-\domain{It is an error if \var{alist} (for ``association list'') is not a list of
 pairs.}  These procedures find the first pair in \var{alist} whose car field is \var{obj},
 and returns that pair.  If no pair in \var{alist} has \var{obj} as its
 car, then \schfalse{} (not the empty list) is returned.  The {\cf assq} procedure uses
 {\cf eq?}\ to compare \var{obj} with the car fields of the pairs in \var{alist},
 while {\cf assv} uses {\cf eqv?}\ and {\cf assoc} uses \var{compare} if given
 and {\cf equal?} otherwise.
+\domain{It is an error if \var{alist} (for ``association list'') is not a list of
 
 \begin{scheme}
 (define e '((a 1) (b 2) (c 3)))
@@ -2249,7 +2252,7 @@ equivalent in some situations but are represented by a different
 sequence of characters.
 
 Specifically, an implementation which
-supports Unicode should use Unicode normalization NFC or
+supports Unicode should use either Unicode normalization NFC or
 NFD as specified by Unicode UAX\#15~\cite{uax15}.  Implementations which only
 support ASCII or some other character set which provides no ambiguous
 representations of character sequences may define the normalization to
@@ -2314,7 +2317,7 @@ invoking the corresponding procedures without \hbox{``{\tt -ni}''}.
 
 These procedures apply the Unicode full string uppercasing, lowercasing,
 and case-folding algorithms to their arguments and return the result.
-If the result is equal to the argument, a new string need not be allocated.
+If the result is equal to the argument, the argument may be returned.
 Note that language-sensitive mappings and foldings are not used.  
 The result may differ in length from the argument.  What is more, a
 few characters have case-mappings that depend on the surrounding context.
@@ -2380,7 +2383,7 @@ between \var{start} (inclusive) and \var{end} (exclusive).
 It is an error if \var{fill} is not a character or is forbidden in strings,
 or if \var{start} is less than \var{end}.
 If \var{start} and \var{end}y are omitted, \var{fill} is stored in all the elements of \var{string}.
-In either case, an unspecified value is returned.
+In any case, an unspecified value is returned.
 
 \end{entry}
 
@@ -2735,14 +2738,14 @@ arguments.
 \begin{entry}{%
 \proto{map}{ proc \vari{list} \varii{list} \dotsfoo}{procedure}}
 
+The {\cf map} procedure applies \var{proc} element-wise to the elements of the
+\var{list}s and returns a list of the results, in order.
+If more than one \var{list} is given and not all lists have the same length,
+{\cf map} terminates when the shortest list runs out.
+It is an error for \var{proc} to mutate any of the lists.
 \domain{It is an error if \var{proc} does not
 accept as many arguments as there are {\it list}s
-and return a single value.  If more
-than one \var{list} is given and not all lists have the same length,
-{\cf map} terminates when the shortest list runs out.}
-The {\cf map} procedure applies \var{proc} element-wise to the elements of the
-\var{list}s and returns a list of the results, in order.  It is an
-error for \var{proc} to mutate any of the lists.
+and return a single value.}
 The dynamic order in which \var{proc} is applied to the elements of the
 \var{list}s is unspecified.  If multiple returns occur from {\cf map},
 the values returned by earlier returns are not mutated.
@@ -2767,13 +2770,13 @@ the values returned by earlier returns are not mutated.
 \begin{entry}{%
 \proto{string-map}{ proc \vari{string} \varii{string} \dotsfoo}{procedure}}
 
-\domain{It is an error if \var{proc} does not
-accept as many arguments as there are {\it string}s
-and return a single character.  If more
-than one \var{string} is given and not all strings have the same length,
-{\cf string-map} terminates when the shortest string runs out.}
 The {\cf string-map} procedure applies \var{proc} element-wise to the elements of the
 \var{string}s and returns a string of the results, in order.
+If more than one \var{string} is given and not all strings have the same length,
+{\cf string-map} terminates when the shortest string runs out.
+\domain{It is an error if \var{proc} does not
+accept as many arguments as there are {\it string}s
+and return a single character.}
 The dynamic order in which \var{proc} is applied to the elements of the
 \var{string}s is unspecified.
 If multiple returns occur from {\cf string-map},
@@ -2800,13 +2803,13 @@ the values returned by earlier returns are not mutated.
 \begin{entry}{%
 \proto{vector-map}{ proc \vari{vector} \varii{vector} \dotsfoo}{procedure}}
 
-\domain{It is an error if \var{proc} does not
-accept as many arguments as there are {\it vector}s
-and return a single value.  If more
-than one \var{vector} is given and not all vectors have the same length,
-{\cf vector-map} terminates when the shortest vector runs out.}
 The {\cf vector-map} procedure applies \var{proc} element-wise to the elements of the
 \var{vector}s and returns a vector of the results, in order.
+If more than one \var{vector} is given and not all vectors have the same length,
+{\cf vector-map} terminates when the shortest vector runs out.}
+\domain{It is an error if \var{proc} does not
+accept as many arguments as there are {\it vector}s
+and return a single value.}
 The dynamic order in which \var{proc} is applied to the elements of the
 \var{vector}s is unspecified.
 If multiple returns occur from {\cf vector-map},
@@ -2839,9 +2842,9 @@ The arguments to {\cf for-each} are like the arguments to {\cf map}, but
 values.  Unlike {\cf map}, {\cf for-each} is guaranteed to call \var{proc} on
 the elements of the \var{list}s in order from the first element(s) to the
 last, and the value returned by {\cf for-each} is unspecified.
-It is an error for \var{proc} to mutate any of the lists.
 If more than one \var{list} is given and not all lists have the same length,
 {\cf for-each} terminates when the shortest list runs out.
+It is an error for \var{proc} to mutate any of the lists.
 
 \begin{scheme}
 (let ((v (make-vector 5)))
@@ -2864,6 +2867,7 @@ the \var{list}s in order from the first element(s) to the last, and the
 value returned by {\cf string-for-each} is unspecified.
 If more than one \var{string} is given and not all strings have the same length,
 {\cf string-for-each} terminates when the shortest string runs out.
+It is an error for \var{proc} to mutate any of the strings.
 
 \begin{scheme}
 (let ((v '()))
@@ -2886,6 +2890,7 @@ the \var{vector}s in order from the first element(s) to the last, and
 the value returned by {\cf vector-for-each} is unspecified.
 If more than one \var{vector} is given and not all vectors have the same length,
 {\cf vector-for-each} terminates when the shortest vector runs out.
+It is an error for \var{proc} to mutate any of the vectors.
 
 \begin{scheme}
 (let ((v (make-list 5)))
@@ -2902,12 +2907,14 @@ If more than one \var{vector} is given and not all vectors have the same length,
 \proto{call-with-current-continuation}{ proc}{procedure}
 \proto{call/cc}{ proc}{procedure}}
 
-\label{continuations} \domain{It is an error if \var{proc} does not accept one
-argument.} The procedure {\cf call-with-current-continuation} (or its
+\label{continuations} The procedure {\cf call-with-current-continuation} (or its
 equivalent abbreviation {\cf call/cc}) packages
 the current continuation (see the rationale below) as an ``escape
 procedure''\mainindex{escape procedure} and passes it as an argument to
-\var{proc}.  The escape procedure is a Scheme procedure that, if it is
+\var{proc}.
+\domain{It is an error if \var{proc} does not accept one
+argument.}
+The escape procedure is a Scheme procedure that, if it is
 later called, will abandon whatever continuation is in effect at that later
 time and will instead use the continuation that was in effect
 when the escape procedure was created.  Calling the escape procedure
@@ -3141,13 +3148,13 @@ object may be used to represent an exception.
 \begin{entry}{%
 \proto{with-exception-handler}{ \var{handler} \var{thunk}}{procedure}}
 
-\domain{It is an error if \var{handler} does not accept one argument.
-It is also an error if
-\var{thunk} does not accept zero arguments.}  The {\cf
-with-exception-handler} procedure returns the results of invoking
+The {\cf with-exception-handler} procedure returns the results of invoking
 \var{thunk}.  \var{Handler} is installed as the current
 exception handler for the dynamic extent (as determined by {\cf
   dynamic-wind}) of the invocation of \var{thunk}.
+\domain{It is an error if \var{handler} does not accept one argument.
+It is also an error if
+\var{thunk} does not accept zero arguments.}
 
 
 \end{entry}
@@ -3196,11 +3203,11 @@ the call to {\cf raise-continuable}.
 \begin{entry}{%
 \proto{error}{ \var{message} \var{obj} $\ldots$}{procedure}}
 
-\domain{\var{Message} should be a string.}
 Raises an exception as if by calling
 {\cf raise} on a newly allocated implementation-defined object which encapsulates
 the information provided by \var{message},
 as well as any \var{obj}s, known as the \defining{irritants}.
+\domain{\var{Message} should be a string.}
 The procedure {\cf error-object?} must return \schtrue{} on such objects.
 
 \begin{scheme}
@@ -3293,11 +3300,21 @@ by {\cf scheme-report-environment} may be immutable.
 \begin{entry}{%
 \proto{null-environment}{ version}{eval library procedure}}
 
-The {\cf null-environment} procedure returns
+If \var{version} is equal to {\cf \integerversion},
+corresponding to this revision of the Scheme report (the
+Revised$^\integerversion$ Report on Scheme),
+the {\cf null-environment} procedure returns
 a specifier for an environment that contains only the
 bindings for all syntactic keywords
 defined either in the base library or in the other libraries
 of this report, provided that the implementation supports them.
+Implementations must support this value of \var{version}.
+
+Implementations may also support other values of \var{version}, in which
+case they should return an environment containing bindings corresponding to the corresponding version of the report.
+If \var{version}
+is neither {\cf \integerversion} nor another value supported by
+the implementation, an error is signalled.
 
 \end{entry}
 
@@ -3434,13 +3451,7 @@ are system-defined textual ports.
 \proto{with-input-from-file}{ string thunk}{file library procedure}
 \proto{with-output-to-file}{ string thunk}{file library procedure}}
 
-It is an error if \var{thunk} does not accept zero arguments.
 \todo{consider removing unspecified effect}
-For {\cf with-input-from-file},
-it is an error if the file named by \var{string} does not already exist; for
-{\cf with-output-to-file},
-the effect is unspecified if the file
-already exists.
 The file is opened for input or output
 as if by {\cf open-input-file} or {\cf open-output-file}, 
 and the new port is made the default value returned by
@@ -3448,8 +3459,13 @@ and the new port is made the default value returned by
 (and is used by {\tt (read)}, {\tt (write \var{obj})}, and so forth).
 The \var{thunk} is then called with no arguments.  When the \var{thunk} returns,
 the port is closed and the previous default is restored.
-{\cf with-input-from-file} and {\cf with-output-to-file} return the
-values yielded by \var{thunk}.
+It is an error if \var{thunk} does not accept zero arguments.
+Both procedures return the values yielded by \var{thunk}.
+For {\cf with-input-from-file},
+it is an error if the file named by \var{string} does not already exist; for
+{\cf with-output-to-file},
+the effect is unspecified if the file
+already exists.
 If an escape procedure
 is used to escape from the continuation of these procedures, their
 behavior is implementation-dependent.
@@ -3524,10 +3540,11 @@ retrieval by {\cf get-output-string}.
 \begin{entry}{%
 \proto{get-output-string}{ port}{procedure}}
 
-\domain{It is an error if \var{port} was not created with
-{\cf open-output-string}.}  Returns a string consisting of the
+Returns a string consisting of the
 characters that have been output to the port so far in the order they
 were output.
+\domain{It is an error if \var{port} was not created with
+{\cf open-output-string}.}
 \end{entry}
 
 
@@ -3640,6 +3657,7 @@ file is encountered before any characters are read, an end-of-file
 object is returned.  For the purpose of this procedure, an end of line
 consists of either a linefeed character, a carriage return character, or a
 sequence of a carriage return character followed by a linefeed character.
+Implementations may also recognize other end of line characters or sequences.
 \var{Port} may be omitted, in which case it defaults to the value returned
 by {\cf current-input-port}.
 
@@ -3673,7 +3691,7 @@ The {\cf char-ready?} procedure exists to make it possible for a program to
 accept characters from interactive ports without getting stuck waiting for
 input.  Any input editors associated with such ports must ensure that
 characters whose existence has been asserted by {\cf char-ready?}\ cannot
-be rubbed out.  If {\cf char-ready?}\ were to return \schfalse{} at end of
+be removed from the input.  If {\cf char-ready?}\ were to return \schfalse{} at end of
 file, a port at end-of-file would be indistinguishable from an interactive
 port that has no ready characters.
 \end{rationale}
@@ -3726,7 +3744,7 @@ Reads the next \var{length} bytes, or as many as are available before the end of
 from the binary
 input \var{port} into a newly allocated bytevector in left-to-right order
 and returns the bytevector.
-If no bytes are available,
+If no bytes are available before the end of file,
 an end-of-file object is returned.
 \var{Port} may be
 omitted, in which case it defaults to the value returned by {\cf
@@ -3744,8 +3762,7 @@ from the binary
 input \var{port} into \var{bytevector} in left-to-right order
 beginning at the \var{start} position.
 Returns the number of bytes read.
-If no bytes are available,
-an end-of-file object is returned.
+If no bytes are available, an end-of-file object is returned.
 \var{Port} may be
 omitted, in which case it defaults to the value returned by {\cf
   current-input-port}.
@@ -3764,7 +3781,7 @@ omitted, in which case it defaults to the value returned by {\cf
 \proto{write}{ obj}{write library procedure}
 \rproto{write}{ obj port}{write library procedure}}
 
-Writes a written representation of \var{obj} to the given textual output
+Writes a representation of \var{obj} to the given textual output
 \var{port}.  Strings
 that appear in the written representation are enclosed in double quotes, and
 within those strings backslash and double quote characters are
@@ -3999,11 +4016,11 @@ It is an error to mutate any of these strings.
 \begin{entry}{%
 \proto{current-second}{}{time library procedure}}
 
-Returns an inexact number representing time on the International Atomic
+Returns an inexact number representing the current time on the International Atomic
 Time (TAI) scale.  The value 0.0 represents ten seconds after midnight
 on January 1, 1970 TAI (equivalent to midnight Universal Time)
 and the value 1.0 represents one TAI
-second later.  Neither high-accuracy nor high-precision values are required; in particular,
+second later.  Neither high accuracy nor high precision are required; in particular,
 returning Coordinated Universal Time plus a suitable constant may be
 the best an implementation can do.
 \end{entry}
@@ -4011,7 +4028,7 @@ the best an implementation can do.
 \begin{entry}{%
 \proto{current-jiffy}{}{time library procedure}}
 
-Returns the number of \defining{jiffies} that have elapsed since an arbitrary,
+Returns the number of \defining{jiffies} as an exact integer that have elapsed since an arbitrary,
 implementation-defined epoch. A jiffy is an implementation-defined
 fraction of a second which is defined by the return value of the
 {\cf jiffies-per-second} procedure. The starting epoch is guaranteed to be

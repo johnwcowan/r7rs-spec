@@ -73,7 +73,7 @@ is specified in terms of it.
 
 \item Support for capturing multiple values has been enhanced with {\cf
 define-values}, {\cf let-values}, and {\cf let*-values}.
-Programs are now explicitly permitted to pass zero or more than one
+Programs are now explicitly permitted to pass zero values or more than one
 value to continuations which discard them.
 
 \item The {\cf case} conditional now supports a {\tt =>} syntax analogous to {\cf cond}.
@@ -116,15 +116,14 @@ compare strings as though they had gone through an
 implementation-defined normalization, without exposing the
 normalization.
 
-\item The case-folding behavior of {\cf read} can now be explicitly
-controlled, with no folding as the default.
+\item Case insensitivity is now the default.
 
 \item There are now two additional comment syntaxes: {\tt \#;} to
 skip the next datum, and {\tt \#| ... |\#}
 for nestable block comments.
 
 \item Data prefixed with datum labels {\tt \#<n>=} can be referenced
-with {\tt \#<n>\#} allowing for reading and writing of data with
+with {\tt \#<n>\#}, allowing for reading and writing of data with
 shared structure.
 
 \item Strings and symbols now allow mnemonic and numeric escape
@@ -136,7 +135,7 @@ sequences, and the list of named characters has been extended.
 \item An interface to the system environment and command line is
 available in the {\tt (scheme process-context)} library.
 
-\item Procedures for accessing the current time are available in the
+\item Procedures for accessing time-related values are available in the
 {\tt (scheme time)} library.
 
 \item A complete set of integer division operators is available in the
@@ -148,7 +147,7 @@ load into.
 \item The procedures {\cf transcript-on} and {\cf transcript-off} have been removed.
 
 \item The semantics of read-eval-print loops are now partly prescribed,
-allowing the retroactive redefinition of procedures but not syntax keywords.
+allowing the redefinition of procedures (but not syntax keywords) to be retroactive.
 
 \end{itemize}
 
@@ -184,7 +183,7 @@ and the {\cf include-ci} variant allows legacy
 case-insensitive code to be incorporated.
 
 \item The {\cf cond-expand} library declaration based on SRFI 0 allows for a more
-deterministic alternative to the \rsixrs\ {\cf .impl.sls} file naming
+flexible alternative to the \rsixrs\ {\cf .impl.sls} file naming
 convention.
 
 \item Since the \rsevenrs\ library system is straightforward, we expect
@@ -207,7 +206,7 @@ experimenting with this and other extensions before further standardization is d
 must follow the definition; the {\cf even}/{\cf odd} example given in
 \rsixrs\ is not allowed.
 
-\item The \rsixrs\ exception system was incorporated as is, but the condition
+\item The \rsixrs\ exception system was incorporated as-is, but the condition
 types have been left unspecified.  Specific errors that must be signalled
 in \rsixrs\ remain errors in \rsevenrs, allowing implementations to provide
 their own extensions.  There is no discussion of safety.
@@ -240,11 +239,11 @@ in a body may return any number of values.
 that uses it, the semantics of {\cf map} and {\cf for-each} have been changed to use
 the SRFI 1 early termination behavior. Likewise
 {\cf assoc} and {\cf member} take an optional {\cf equal?} argument as in SRFI 1,
-instead of the separate {\cf assp} and {\cf memp} procedures from \rsixrs.
+instead of the separate {\cf assp} and {\cf memp} procedures of \rsixrs.
 
 \item The \rsixrs~{\cf quasiquote} clarifications have been adopted, but the Working Group has not seen
-convincing enough examples to allow multiple-argument {\cf unquote} and
-{\cf unquote-splicing}.
+convincing enough examples of multiple-argument {\cf unquote} and
+{\cf unquote-splicing}, so they are not provided.
 
 \item The \rsixrs~method of specifying mantissa widths was not adopted.
 
