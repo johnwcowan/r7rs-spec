@@ -2739,14 +2739,14 @@ arguments.
 \begin{entry}{%
 \proto{map}{ proc \vari{list} \varii{list} \dotsfoo}{procedure}}
 
+\domain{It is an error if \var{proc} does not
+accept as many arguments as there are {\it list}s
+and return a single value.}
 The {\cf map} procedure applies \var{proc} element-wise to the elements of the
 \var{list}s and returns a list of the results, in order.
 If more than one \var{list} is given and not all lists have the same length,
 {\cf map} terminates when the shortest list runs out.
 It is an error for \var{proc} to mutate any of the lists.
-\domain{It is an error if \var{proc} does not
-accept as many arguments as there are {\it list}s
-and return a single value.}
 The dynamic order in which \var{proc} is applied to the elements of the
 \var{list}s is unspecified.  If multiple returns occur from {\cf map},
 the values returned by earlier returns are not mutated.
@@ -2771,13 +2771,13 @@ the values returned by earlier returns are not mutated.
 \begin{entry}{%
 \proto{string-map}{ proc \vari{string} \varii{string} \dotsfoo}{procedure}}
 
+\domain{It is an error if \var{proc} does not
+accept as many arguments as there are {\it string}s
+and return a single character.}
 The {\cf string-map} procedure applies \var{proc} element-wise to the elements of the
 \var{string}s and returns a string of the results, in order.
 If more than one \var{string} is given and not all strings have the same length,
 {\cf string-map} terminates when the shortest string runs out.
-\domain{It is an error if \var{proc} does not
-accept as many arguments as there are {\it string}s
-and return a single character.}
 The dynamic order in which \var{proc} is applied to the elements of the
 \var{string}s is unspecified.
 If multiple returns occur from {\cf string-map},
@@ -2908,13 +2908,13 @@ It is an error for \var{proc} to mutate any of the vectors.
 \proto{call-with-current-continuation}{ proc}{procedure}
 \proto{call/cc}{ proc}{procedure}}
 
-\label{continuations} The procedure {\cf call-with-current-continuation} (or its
+\label{continuations} \domain{It is an error if \var{proc} does not accept one
+argument.}
+The procedure {\cf call-with-current-continuation} (or its
 equivalent abbreviation {\cf call/cc}) packages
 the current continuation (see the rationale below) as an ``escape
 procedure''\mainindex{escape procedure} and passes it as an argument to
 \var{proc}.
-\domain{It is an error if \var{proc} does not accept one
-argument.}
 The escape procedure is a Scheme procedure that, if it is
 later called, will abandon whatever continuation is in effect at that later
 time and will instead use the continuation that was in effect
@@ -3149,14 +3149,12 @@ object may be used to represent an exception.
 \begin{entry}{%
 \proto{with-exception-handler}{ \var{handler} \var{thunk}}{procedure}}
 
+\domain{It is an error if \var{handler} does not accept one argument.
+It is also an error if \var{thunk} does not accept zero arguments.}
 The {\cf with-exception-handler} procedure returns the results of invoking
 \var{thunk}.  \var{Handler} is installed as the current
 exception handler for the dynamic extent (as determined by {\cf
   dynamic-wind}) of the invocation of \var{thunk}.
-\domain{It is an error if \var{handler} does not accept one argument.
-It is also an error if
-\var{thunk} does not accept zero arguments.}
-
 
 \end{entry}
 
@@ -3204,11 +3202,11 @@ the call to {\cf raise-continuable}.
 \begin{entry}{%
 \proto{error}{ \var{message} \var{obj} $\ldots$}{procedure}}
 
+\domain{\var{Message} should be a string.}
 Raises an exception as if by calling
 {\cf raise} on a newly allocated implementation-defined object which encapsulates
 the information provided by \var{message},
 as well as any \var{obj}s, known as the \defining{irritants}.
-\domain{\var{Message} should be a string.}
 The procedure {\cf error-object?} must return \schtrue{} on such objects.
 
 \begin{scheme}
@@ -3374,7 +3372,7 @@ system on which the Scheme program is running.
 \proto{call-with-input-file}{ string proc}{file library procedure}
 \proto{call-with-output-file}{ string proc}{file library procedure}}
 
-It is an error if \var{proc} does not accept one argument.
+\domain{It is an error if \var{proc} does not accept one argument.}
 \todo{consider removing unspecified effect}
 For {\cf call-with-input-file},
 the file named by \var{string} should already exist; for
@@ -3452,6 +3450,11 @@ are system-defined textual ports.
 \proto{with-input-from-file}{ string thunk}{file library procedure}
 \proto{with-output-to-file}{ string thunk}{file library procedure}}
 
+\domain{For {\cf with-input-from-file},
+it is an error if the file named by \var{string} does not already exist; for
+{\cf with-output-to-file},
+the effect is unspecified if the file
+already exists.}
 \todo{consider removing unspecified effect}
 The file is opened for input or output
 as if by {\cf open-input-file} or {\cf open-output-file}, 
@@ -3462,11 +3465,6 @@ The \var{thunk} is then called with no arguments.  When the \var{thunk} returns,
 the port is closed and the previous default is restored.
 It is an error if \var{thunk} does not accept zero arguments.
 Both procedures return the values yielded by \var{thunk}.
-For {\cf with-input-from-file},
-it is an error if the file named by \var{string} does not already exist; for
-{\cf with-output-to-file},
-the effect is unspecified if the file
-already exists.
 If an escape procedure
 is used to escape from the continuation of these procedures, their
 behavior is implementation-dependent.
@@ -3541,11 +3539,11 @@ retrieval by {\cf get-output-string}.
 \begin{entry}{%
 \proto{get-output-string}{ port}{procedure}}
 
+\domain{It is an error if \var{port} was not created with
+{\cf open-output-string}.}
 Returns a string consisting of the
 characters that have been output to the port so far in the order they
 were output.
-\domain{It is an error if \var{port} was not created with
-{\cf open-output-string}.}
 \end{entry}
 
 
