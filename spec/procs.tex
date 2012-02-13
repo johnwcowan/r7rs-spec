@@ -1758,13 +1758,14 @@ returned.  The {\cf memq} procedure uses {\cf eq?}\ to compare \var{obj} with th
 \proto{assoc}{ obj alist}{procedure}
 \proto{assoc}{ obj alist compare}{procedure}}
 
-pairs.}  These procedures find the first pair in \var{alist} whose car field is \var{obj},
+\domain{It is an error if \var{alist} (for ``association list'') is not a list of
+pairs.}
+These procedures find the first pair in \var{alist} whose car field is \var{obj},
 and returns that pair.  If no pair in \var{alist} has \var{obj} as its
 car, then \schfalse{} (not the empty list) is returned.  The {\cf assq} procedure uses
 {\cf eq?}\ to compare \var{obj} with the car fields of the pairs in \var{alist},
 while {\cf assv} uses {\cf eqv?}\ and {\cf assoc} uses \var{compare} if given
 and {\cf equal?} otherwise.
-\domain{It is an error if \var{alist} (for ``association list'') is not a list of
 
 \begin{scheme}
 (define e '((a 1) (b 2) (c 3)))
@@ -2582,8 +2583,8 @@ element 2 can be written as following:
 \#u8(0 10 5)%
 \end{scheme}
 
-Note that this is both the external representation of a vector and an
-expression evaluating to a vector.  
+Note that this is both the external representation of a bytevector and
+an expression evaluating to a bytevector.
 
 
 \begin{entry}{%
@@ -2803,13 +2804,13 @@ the values returned by earlier returns are not mutated.
 \begin{entry}{%
 \proto{vector-map}{ proc \vari{vector} \varii{vector} \dotsfoo}{procedure}}
 
-The {\cf vector-map} procedure applies \var{proc} element-wise to the elements of the
-\var{vector}s and returns a vector of the results, in order.
-If more than one \var{vector} is given and not all vectors have the same length,
-{\cf vector-map} terminates when the shortest vector runs out.}
 \domain{It is an error if \var{proc} does not
 accept as many arguments as there are {\it vector}s
 and return a single value.}
+The {\cf vector-map} procedure applies \var{proc} element-wise to the elements of the
+\var{vector}s and returns a vector of the results, in order.
+If more than one \var{vector} is given and not all vectors have the same length,
+{\cf vector-map} terminates when the shortest vector runs out.
 The dynamic order in which \var{proc} is applied to the elements of the
 \var{vector}s is unspecified.
 If multiple returns occur from {\cf vector-map},
