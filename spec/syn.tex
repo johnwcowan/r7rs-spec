@@ -293,7 +293,8 @@ from their libraries, and that none of them have been redefined or shadowed.
 \>       \>\arbno{\meta{command}})
 \>  \| (delay \meta{expression})
 \>  \| (lazy \meta{expression})
-\>  \| (parameterize \arbno{(\meta{expression} \meta{expression})} \meta{body})
+\>  \| (p\=arameterize \arbno{(\meta{expression} \meta{expression})}
+\>       \> \meta{body})
 \>  \| (guard (\meta{identifier} \arbno{\meta{cond clause}}) \meta{body})
 \>  \| \meta{quasiquotation}
 \>  \| (c\=ase-lambda \arbno{\meta{case-lambda clause}})
@@ -424,7 +425,8 @@ un\-quo\-ta\-tion $D$} takes precedence.
 
 \begin{grammar}%
 \meta{library} \:
-\> (define-library \meta{library name} \arbno{\meta{library declaration}})
+\> (d\=efine-library \meta{library name}
+\>   \> \arbno{\meta{library declaration}})
 \meta{library name} \: (\atleastone{\meta{library name part}})
 \meta{library name part} \: \meta{identifier} \| \meta{uinteger 10}
 \meta{library declaration} \: (export \arbno{\meta{export spec}})
