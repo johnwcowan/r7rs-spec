@@ -90,18 +90,27 @@ are not marked specially in the body of the report.  A summary of
 all the standard libraries and the features they provide is given in
 Appendix~\ref{stdlibraries}.
 
-Implementations must provide the base library and all the identifiers
-exported from it.  Implementations are free to provide or omit the other
+All implementations of Scheme:
+\begin{itemize}
+
+\item Must provide the base library and all the identifiers
+exported from it.
+
+\item May provide or omit the other
 libraries given in this report, but each library must either be provided
 in its entirety, exporting no additional identifiers, or else omitted
 altogether.
 
-Implementations may provide other libraries not described in this report.
-Implementations may also extend the function of any identifier in this
+\item May provide other libraries not described in this report.
+
+\item May also extend the function of any identifier in this
 report, provided the extensions are not in conflict with the language
-reported here.  In particular, implementations must support portable
+reported here.
+
+\item Must support portable
 code by providing a mode of operation in which the lexical syntax does
 not conflict with the lexical syntax described in this report.
+\end{itemize}
 
 \subsection{Error situations and unspecified behavior}
 \label{errorsituations}
@@ -112,8 +121,8 @@ error is signalled'' to indicate that implementations must detect and
 report the error.
 An error is signalled by raising a non-continuable exception, as if by
 the procedure {\cf raise} as described in section~\ref{exceptionsection}.  The object raised is implementation-dependent
-and need not be a newly allocated object every time.
-In addition to errors signalled by situations described in this
+and need not be distinct from objects previously used for the same purpose.
+In addition to errors signalled in situations described in this
 report, programmers may signal their own errors and handle signalled errors.
 
 

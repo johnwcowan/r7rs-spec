@@ -2873,7 +2873,7 @@ It is an error for \var{proc} to mutate any of the strings.
 \begin{scheme}
 (let ((v '()))
   (string-for-each
-   (lambda (c) (set! v (cons (char->integer c) v))
+   (lambda (c) (set! v (cons (char->integer c) v)))
    "abcde")
   v)                         \ev  (101 100 99 98 97)%
 \end{scheme}
@@ -3254,7 +3254,7 @@ It is an error if \var{expression} is not a valid Scheme expression represented 
 Implementations may extend {\cf eval} to allow non-expression programs
 such as definitions as the first argument,
 with the restriction that {\cf eval} is not
-allowed to create new bindings in the environments returned by
+allowed to create new bindings in the environment-specifiers returned by
 {\cf null-environment} or {\cf scheme-report-environment}.
 
 \begin{scheme}
@@ -3283,7 +3283,7 @@ of this report that the implementation supports.
 Implementations must support this value of \var{version}.
 
 Implementations may also support other values of \var{version}, in which
-case they should return an environment containing bindings corresponding to the corresponding version of the report.
+case they should return a specifier for an environment containing bindings corresponding to the corresponding version of the report.
 If \var{version}
 is neither {\cf \integerversion} nor another value supported by
 the implementation, an error is signalled.
@@ -3310,7 +3310,7 @@ of this report, provided that the implementation supports them.
 Implementations must support this value of \var{version}.
 
 Implementations may also support other values of \var{version}, in which
-case they should return an environment containing bindings corresponding to the corresponding version of the report.
+case they should return a specifier for an environment containing bindings corresponding to the corresponding version of the report.
 If \var{version}
 is neither {\cf \integerversion} nor another value supported by
 the implementation, an error is signalled.
@@ -3900,7 +3900,7 @@ the value returned by {\cf current-output-port}.
 \end{entry}
 
 
-\subsection{System interface}
+\section{System interface}
 
 Questions of system interface generally fall outside of the domain of this
 report.  However, the following operations are important enough to
@@ -4004,7 +4004,7 @@ It is also an error to mutate the resulting string.
 Returns the names and values of all the environment variables as an
 alist, where the car of each entry is the name of an environment
 variable and the cdr is its value, both as strings.  The order of the list is unspecified.
-It is an error to mutate any of these strings.
+It is an error to mutate any of these strings or the alist itself.
 
 \begin{scheme}
 (get-environment-variables) \lev (("USER" . "root") ("HOME" . "/"))
@@ -4032,6 +4032,18 @@ implementation-defined epoch. A jiffy is an implementation-defined
 fraction of a second which is defined by the return value of the
 {\cf jiffies-per-second} procedure. The starting epoch is guaranteed to be
 constant during a run of the program, but may vary between different runs.
+
+begin{rationale}
+The reason for allowing jiffies to be implementation-dependent is so that
+{\cf current-jiffy} can execute with minimum overhead. The idea is that it
+should be very likely that a compactly represented integer will suffice
+as the returned value.  Any particular jiffy size will be inappropriate
+for some implementations: a microsecond is too long for a very fast
+machine, while a much smaller unit would force many implementations to
+return integers which must be allocated for most calls, rendering {\cf
+current-jiffy} less useful for accurate timing measurements.
+\end{rationale}
+
 \end{entry}
 
 \begin{entry}{%

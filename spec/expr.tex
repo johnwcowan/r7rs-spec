@@ -757,7 +757,7 @@ or input and output.
 
 (and (= x 0)
      (begin (set! x 5)
-            (+ x 1)              \ev  6
+            (+ x 1)))              \ev  6
 
 (begin (display "4 plus 1 equals ")
        (display (+ 4 1)))      \ev  \unspecified
@@ -924,7 +924,8 @@ wrapped in {\cf delay}, and each argument passed to a deconstructor is
 wrapped in {\cf force}.  The use of {\cf (lazy ...)} instead of {\cf
 (delay (force ...))} around the body of the procedure ensures that an
 ever-growing sequence of pending promises does not 
-exhaust the heap.
+exhaust available storage,
+because {\cf force} will in effect force such sequences iteratively.
 
 \begin{scheme}
 (define (stream-filter p? s)
