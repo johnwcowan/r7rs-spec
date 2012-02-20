@@ -526,6 +526,12 @@ infinity or less than negative infinity.
 It might even represent no number at all, as in the case of 
 {\cf (asin 2.0)}.
 
+IEEE 754 specifies multiple NaN values.  Scheme generally does
+not care if there is a single value (bit pattern) for NaN,
+or if there are multiple values:  If there are multiple NaN
+values, or just one, they are all equivalent in terms of Scheme
+computation.
+
 Note that the real and the imaginary parts of a complex number
 can be infinities or NaNs.
 
