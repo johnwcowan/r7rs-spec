@@ -2644,7 +2644,7 @@ The value returned by {\cf bytevector-copy!} is unspecified.
 
 Returns a newly allocated bytevector containing the bytes in \var{bytevector}
 between \var{start} (inclusive) and \var{end} (exclusive).
-It is an error if \var{start} is less than \var{end},
+It is an error if \var{start} is greater than \var{end},
 or \var{start} is less than zero, or \var{end} is greater than
 the length of \var{bytevector}.
 \end{entry}
@@ -2660,7 +2660,7 @@ bytevector and then into the destination.  This can be achieved without
 allocating storage by making sure to copy in the correct direction in
 such circumstances.
 
-It is an error if \var{start} is less than \var{end},
+It is an error if \var{start} is greater than \var{end},
 or \var{start} is less than zero, or \var{end} is greater than
 the length of \var{from},
 or \var{to} is less than zero or greater than the length of \var{to}.
