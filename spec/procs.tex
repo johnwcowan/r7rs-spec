@@ -4033,15 +4033,15 @@ fraction of a second which is defined by the return value of the
 {\cf jiffies-per-second} procedure. The starting epoch is guaranteed to be
 constant during a run of the program, but may vary between different runs.
 
-begin{rationale}
+\begin{rationale}
 The reason for allowing jiffies to be implementation-dependent is so that
 {\cf current-jiffy} can execute with minimum overhead. The idea is that it
 should be very likely that a compactly represented integer will suffice
 as the returned value.  Any particular jiffy size will be inappropriate
 for some implementations: a microsecond is too long for a very fast
 machine, while a much smaller unit would force many implementations to
-return integers which must be allocated for most calls, rendering {\cf
-current-jiffy} less useful for accurate timing measurements.
+return integers which must be allocated for most calls, rendering 
+{\cf current-jiffy} less useful for accurate timing measurements.
 \end{rationale}
 
 \end{entry}
