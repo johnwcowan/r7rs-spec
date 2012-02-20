@@ -531,7 +531,7 @@ It might even represent no number at all, as in the case of
 
 IEEE 754 specifies multiple NaN values.  Scheme generally does
 not care if there is a single value (bit pattern) for NaN,
-or if there are multiple values:  If there are multiple NaN
+or if there are multiple values: if there are multiple NaN
 values, or just one, they are all equivalent in terms of Scheme
 computation.
 
@@ -746,6 +746,7 @@ equal, monotonically increasing, monotonically decreasing,
 monotonically nondecreasing, or monotonically nonincreasing,
 and \schfalse{} otherwise.
 If any of the arguments are +nan.0, all the predicates return \schfalse{}.
+They do not distinguish between inexact zero and inexact negative zero.
 
 These predicates are required to be transitive.
 
