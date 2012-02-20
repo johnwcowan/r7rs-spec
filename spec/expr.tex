@@ -154,6 +154,8 @@ be extended by binding the variables in the formal argument list to
 fresh locations, the corresponding actual argument values will be stored
 in those locations, and the body of the \lambdaexp{}
 will be evaluated in the extended environment.
+A \defining{fresh} location is one that is distinct from every previously
+existing location.
 The results of the last expression in the body will be returned as
 the results of the procedure call.
 
@@ -176,13 +178,13 @@ the results of the procedure call.
 \begin{itemize}
 \item {\tt(\hyperi{variable} \dotsfoo)}:
 The procedure takes a fixed number of arguments; when the procedure is
-called, the arguments will be stored in newly allocated locations
+called, the arguments will be stored in fresh locations
 that are bound to the corresponding variables.
 
 \item \hyper{variable}:
 The procedure takes any number of arguments; when the procedure is
 called, the sequence of actual arguments is converted into a newly
-allocated list, and the list is stored in a newly allocated location
+allocated list, and the list is stored in a fresh location
 that is bound to
 \hyper{variable}.
 
@@ -1163,7 +1165,7 @@ unquotation.
           \lev  (a `(b ,x ,'y d) e)%
 \end{scheme}
 
-A quasiquote expression may return either fresh, mutable objects or
+A quasiquote expression may return either newly allocated, mutable objects or
 literal structure for any structure that is constructed at run time
 during the evaluation of the expression. Portions that do not need to
 be rebuilt are always literal. Thus,
