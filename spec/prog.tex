@@ -376,7 +376,7 @@ A library definition takes the following form:
   \hyper{library declaration} \dotsfoo)
 \end{scheme}
 
-\hyper{library name} is a list whose members are identifiers and unsigned exact integers.  It is used to
+\hyper{library name} is a list whose members are identifiers and exact nonnegative integers.  It is used to
 identify the library uniquely when importing from other programs or
 libraries.
 Libraries whose first identifier is {\cf scheme} are reserved for use by this
@@ -547,8 +547,8 @@ expressions and declarations from all \ide{begin}, \ide{include} and \ide{includ
 declarations are expanded in that environment in the order in which
 they occur in the library declaration.
 
-The top-level expressions in a library are executed in the order in which
-they occur when the library is loaded.  A library is loaded zero or more
+When a library is loaded, its outermost expressions are executed
+in textual order.  A library is loaded zero or more
 times when it is imported by a program or by another library which is
 about to be loaded, but must be loaded at least once in every program in
 which it is so imported.
