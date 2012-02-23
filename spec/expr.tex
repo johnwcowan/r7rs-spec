@@ -893,7 +893,7 @@ of {\cf lazy} will in effect result in a tail call to
 {\cf (force \var{expression})},
 while forcing the result of
 {\cf (delay (force \var{expression}))}
-will not.  Thus
+may not.  Thus
 iterative lazy algorithms that may result in a long series of 
 {\cf delay}-{\cf force}
 chains can be rewritten using {\cf lazy} to prevent consuming
