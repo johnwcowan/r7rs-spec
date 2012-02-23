@@ -890,8 +890,8 @@ The remainder \vr{n_r} is determined by the choice of integer
 operators uses a different choice of \vr{n_q}:
 
 \begin{tabular}{l l}
-\texttt{ceiling}   & $\vr{n_q} = \lceil\vri{n} / \vrii{n}\rceil$ \\
 \texttt{floor}     & $\vr{n_q} = \lfloor\vri{n} / \vrii{n}\rfloor$ \\
+\texttt{ceiling}   & $\vr{n_q} = \lceil\vri{n} / \vrii{n}\rceil$ \\
 \texttt{truncate}  & $\vr{n_q} = \text{truncate}(\vri{n} / \vrii{n})$ \\
 \texttt{round}     & $\vr{n_q} = [\vri{n} / \vrii{n}]$ \\
 \texttt{euclidean} & $\text{if } \vrii{n} > 0, \vr{n_q} = \lfloor\vri{n} / \vrii{n}\rfloor; \text{ if } \vrii{n} < 0, \vr{n_q} = \lceil\vri{n} / \vrii{n}\rceil$ \\
@@ -909,6 +909,36 @@ provided all numbers involved in that computation are exact.
 
 See \cite{euclidean} for discussion.
 
+Examples:
+
+\begin{scheme}
+(floor/ 5 2)         \ev 2 1
+(floor/ -5 2)        \ev -3 1
+(floor/ 5 -2)        \ev -3 -1
+(floor/ -5 -2)       \ev 2 -1
+(ceiling/ 5 2)       \ev 3 -1
+(ceiling/ -5 2)      \ev -2 -1
+(ceiling/ 5 -2)      \ev -2 1
+(ceiling/ -5 -2)     \ev 3 1
+(truncate/ 5 2)      \ev 2 1
+(truncate/ -5 2)     \ev -2 -1
+(truncate/ 5 -2)     \ev -2 1
+(truncate/ -5 -2)    \ev 2 -1
+(round/ 5 2)         \ev 2 1
+(round/ 5 -2)        \ev -2 1
+(round/ -5 2)        \ev -2 -1
+(round/ -5 -2)       \ev 2 -1
+(euclidean/ 5 2)     \ev 2 1
+(euclidean/ -5 2)    \ev -3 1
+(euclidean/ 5 -2)    \ev -2 1
+(euclidean/ -5 -2)   \ev 3 1
+(centered/ 5 2)      \ev 3 -1
+(centered/ -5 2)     \ev -2 -1
+(centered/ 5 -2)     \ev -3 -1
+(centered/ -5 -2)    \ev 2 -1
+(centered/ -5.0 -2)  \ev 2.0 -1.0
+\end{scheme}
+
 \end{entry}
 
 
@@ -920,22 +950,6 @@ See \cite{euclidean} for discussion.
 The {\cf quotient} and {\cf remainder} procedures are equivalent to {\cf
 truncate-quotient} and {\cf truncate-remainder}, respectively, and {\cf
 modulo} is equivalent to {\cf floor-remainder}.
-
-\begin{scheme}
-(modulo 13 4)           \ev  1
-(remainder 13 4)        \ev  1
-
-(modulo -13 4)          \ev  3
-(remainder -13 4)       \ev  -1
-
-(modulo 13 -4)          \ev  -3
-(remainder 13 -4)       \ev  1
-
-(modulo -13 -4)         \ev  -1
-(remainder -13 -4)      \ev  -1
-
-(remainder -13 -4.0)    \ev  -1.0  ; inexact%
-\end{scheme}
 
 \begin{note}
 These procedures are provided for backward compatibility with earlier
