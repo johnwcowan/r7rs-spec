@@ -274,10 +274,12 @@ it obeys the same constraints as {\cf eqv?}.
 \begin{entry}{%
 \proto{equal?}{ \vari{obj} \varii{obj}}{procedure}}
 
-The {\cf equal?} procedure recursively compares the contents of pairs, vectors, 
-strings, bytevectors, and records,
-applying {\cf eqv?} on other objects such as numbers and symbols.
-If two objects are {\cf eqv?}, they must be {\cf equal?} as well.
+The {\cf equal?} procedure recursively compares the contents of pairs,
+vectors, strings, and bytevectors, applying {\cf eqv?} on booleans,
+symbols, numbers, characters, ports, procedures, and the empty list.
+If two objects are {\cf eqv?}, they must be {\cf equal?} as well.  In all
+other cases, implementations may return either \schtrue{} or \schfalse{}.
+
 Even if its arguments are
 circular data structures, {\cf equal?}\ must always terminate.
 
@@ -1660,8 +1662,15 @@ Returns the length of \var{list}.
 \begin{entry}{%
 \proto{append}{ list \dotsfoo}{procedure}}
 
+\domain{The last argument, if there is one, may be of any type.}
 Returns a list consisting of the elements of the first \var{list}
 followed by the elements of the other \var{list}s.
+If there are no arguments, the empty list is returned.
+If there is exactly one argument, it is returned.
+Otherwise the resulting list is always newly allocated, except that it shares
+structure with the last argument.  
+An improper list results if the last argument is not a
+proper list.  
 
 \begin{scheme}
 (append '(x) '(y))              \ev  (x y)
@@ -1669,10 +1678,6 @@ followed by the elements of the other \var{list}s.
 (append '(a (b)) '((c)))        \ev  (a (b) (c))%
 \end{scheme}
 
-The resulting list is always newly allocated, except that it shares
-structure with the last \var{list} argument.  The last argument may
-actually be any object; an improper list results if the last argument is not a
-proper list.  
 
 \begin{scheme}
 (append '(a b) '(c . d))        \ev  (a b c . d)
@@ -1818,14 +1823,14 @@ potentially useful values rather than just \schtrue{} or \schfalse{}.
 \end{entry}
 
 \begin{entry}{%
-\proto{list-copy}{ list}{procedure}}
+\proto{list-copy}{ obj}{procedure}}
 
-Returns a newly allocated copy of the given \var{list}.
+Returns a newly allocated copy of the given \var{obj} if it is a list.
 Only the pairs themselves are copied; the cars of the result are
-the same (in the sense of {\cf eqv?} as the cars of \var{list}.
-If the last pair of \var{list} has a cdr which is not the empty
-list, the last pair of the result does, too.  
-An argument which is not a list is returned unchanged.
+the same (in the sense of {\cf eqv?}) as the cars of \var{list}.
+If \var{obj} is an improper list, so is the result, and the final
+cdrs are the same in the sense of {\cf eqv?}.
+An \var{obj} which is not a list is returned unchanged.
 
 \end{entry}
 
