@@ -372,6 +372,9 @@ if it was
 derived using \tupe{inexact} ingredients, or if it was derived using
 \tupe{inexact} operations. Thus \tupe{inexact}ness is a contagious
 property of a number.
+In particular, a \defining{exact complex number} must have an exact real part
+and an exact imaginary part; all other complex numbers are \defining{inexact
+complex numbers}.
 
 \vest If two implementations produce \tupe{exact} results for a
 computation that did not involve \tupe{inexact} intermediate results,
@@ -1164,6 +1167,9 @@ for some integer $n$.
 
 The {\cf make-polar} procedure may return an inexact complex number even if its
 arguments are exact.
+The {\cf real-part} and {\cf imag-part} procedures may return exact real
+numbers when applied to an inexact complex number if the corresponding
+argument passed to {\cf make-rectangular} was exact.
 
 
 \begin{rationale}
