@@ -516,6 +516,10 @@ representation available must be used.  For example, the value of {\cf
 single and double precision floating point numbers it may be the latter
 but must not be the former.
 
+It is the programmer's responsibility to avoid using inexact
+number objects with magnitude or significand too large to be
+represented in the implementation.
+
 In addition, implementations may
 distinguish special numbers called \tupe{positive infinity},
 \tupe{negative infinity}, \tupe{NaN}, and \tupe{negative zero}.
