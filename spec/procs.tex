@@ -351,7 +351,11 @@ of Scheme may use multiple internal representations of
 numbers, this should not be apparent to a casual programmer writing
 simple programs.
 
-It is necessary, however, to distinguish between numbers that are
+\subsection{Exactness}
+
+\mainindex{exactness} \label{exactly}
+
+It is useful to distinguish between numbers that are
 represented exactly and those that might not be.  For example, indexes
 into data structures must be known exactly, as must some polynomial
 coefficients in a symbolic algebra system.  On the other hand, the
@@ -361,13 +365,10 @@ In order to catch uses of inexact numbers where exact numbers are
 required, Scheme explicitly distinguishes exact from inexact numbers.
 This distinction is orthogonal to the dimension of type.
 
-\subsection{Exactness}
-
-\mainindex{exactness} \label{exactly}
-Scheme numbers are either \type{exact} or \type{inexact}.  A number is
-\tupe{exact} if it was written as an exact constant or was derived from
+A Scheme number is
+\type{exact} if it was written as an exact constant or was derived from
 \tupe{exact} numbers using only \tupe{exact} operations.  A number is
-\tupe{inexact} if it was written as an inexact constant,
+\type{inexact} if it was written as an inexact constant,
 if it was
 derived using \tupe{inexact} ingredients, or if it was derived using
 \tupe{inexact} operations. Thus \tupe{inexact}ness is a contagious
