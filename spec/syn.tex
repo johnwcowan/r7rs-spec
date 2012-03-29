@@ -85,7 +85,7 @@ containing the corresponding character.
 % This is a kludge, but \multicolumn doesn't work in tabbing environments.
 \setbox0\hbox{\cf\meta{identifier} \goesto{} $\langle$}
 
-Note that +i, -i and \meta{infinity} below are exceptions to the
+Note that +i, -i and \meta{infnan} below are exceptions to the
 \meta{peculiar identifier} rule; they are parsed as numbers, not
 identifiers.
 
@@ -163,14 +163,14 @@ of numbers may appear in either upper or lower case.
       \| \meta{real $R$} - \meta{ureal $R$} i
    \> \| \meta{real $R$} + i %
       \| \meta{real $R$} - i %
-      \| \meta{real $R$} \meta{infinity} i 
+      \| \meta{real $R$} \meta{infnan} i 
    \> \| + \meta{ureal $R$} i %
       \| - \meta{ureal $R$} i
-   \> \| \meta{infinity} i %
+   \> \| \meta{infnan} i %
       \| + i %
       \| - i
 \meta{real $R$} \: \meta{sign} \meta{ureal $R$}
-   \> \| \meta{infinity}
+   \> \| \meta{infnan}
 \meta{ureal $R$} \: %
          \meta{uinteger $R$}
    \> \| \meta{uinteger $R$} / \meta{uinteger $R$}
@@ -183,7 +183,7 @@ of numbers may appear in either upper or lower case.
 \meta{prefix $R$} \: %
          \meta{radix $R$} \meta{exactness}
    \> \| \meta{exactness} \meta{radix $R$}
-\meta{infinity} \: +inf.0 \| -inf.0 \| +nan.0
+\meta{infnan} \: +inf.0 \| -inf.0 \| +nan.0
 \end{grammar}
 
 \begin{grammar}%
