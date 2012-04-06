@@ -144,7 +144,8 @@ and the region of the binding is the entire \hyper{body}.  For example,
   (foo (+ x 3)))                \ev  45%
 \end{scheme}
 
-An expanded \hyper{body} containing internal definitions can always be
+An expanded \hyper{body} containing internal definitions
+(but not syntax definitions or record definitions) can always be
 converted into a completely equivalent {\cf letrec*} expression.  For
 example, the {\cf let} expression in the above example is equivalent
 to
