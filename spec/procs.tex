@@ -2963,7 +2963,7 @@ The escape procedure accepts the same number of arguments as the continuation to
 the original call to \callcc.
 Except for continuations created by the {\cf call-with-values}
 procedure (including the initialization expressions of
-{\cf let-values} and {\cf let*-values} expressions),
+{\cf define-values}, {\cf let-values}, and {\cf let*-values} expressions),
 all continuations take exactly one value.  
 \todo{consider removing unspecified effect}
 The effect of passing no value or more than one value to continuations
