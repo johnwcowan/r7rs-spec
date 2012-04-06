@@ -1913,7 +1913,8 @@ implementation-dependent extensions.
 \begin{entry}{%
 \proto{symbol->string}{ symbol}{procedure}}
 
-Returns the name of \var{symbol} as a string.  It is an error
+Returns the name of \var{symbol} as a string that does not contain escapes.
+It is an error
 to apply mutation procedures like \ide{string-set!} to strings returned
 by this procedure.
 
@@ -1933,7 +1934,7 @@ by this procedure.
 
 Returns the symbol whose name is \var{string}.  This procedure can
 create symbols with names containing special characters that would
-require escaping when written.
+require escaping when written, but does not generate the escapes itself.
 
 \begin{scheme}
 (string->symbol "mISSISSIppi")  \lev%
