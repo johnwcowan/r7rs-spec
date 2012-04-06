@@ -324,10 +324,10 @@ value.
 \end{scheme}
 
 Here is a possible implementation of {\cf delay}, {\cf force} and {\cf
-  lazy}.  We define the expression
+  delay-force}.  We define the expression
 
 \begin{scheme}
-(lazy \hyper{expression})%
+(delay-force \hyper{expression})%
 \end{scheme}
 
 to have the same meaning as the procedure call
@@ -339,9 +339,9 @@ to have the same meaning as the procedure call
 as follows
 
 \begin{scheme}
-(define-syntax lazy
+(define-syntax delay-force
   (syntax-rules ()
-    ((lazy expression) 
+    ((delay-force expression) 
      (make-promise \schfalse{} (lambda () expression)))))%
 \end{scheme}
 
@@ -354,7 +354,7 @@ and we define the expression
 to have the same meaning as:
 
 \begin{scheme}
-(lazy (make-promise \schtrue{} \hyper{expression}))%
+(delay-force (make-promise \schtrue{} \hyper{expression}))%
 \end{scheme}
 
 as follows
@@ -363,7 +363,7 @@ as follows
 (define-syntax delay
   (syntax-rules ()
     ((delay expression)
-     (lazy (make-promise \schtrue{} expression)))))%
+     (delay-force (make-promise \schtrue{} expression)))))%
 \end{scheme}
 
 where {\cf make-promise} is defined as follows:
@@ -377,7 +377,7 @@ where {\cf make-promise} is defined as follows:
 Finally, we define {\cf force} to call the procedure expressions in
 promises iteratively using a trampoline technique following
 \cite{srfi45} until a non-lazy result (i.e. a value created by {\cf
-  delay} instead of {\cf lazy}) is returned, as follows:
+  delay} instead of {\cf delay-force}) is returned, as follows:
 
 \begin{scheme}
 (define (force promise)
