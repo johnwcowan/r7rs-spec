@@ -3421,7 +3421,8 @@ system on which the Scheme program is running.
 \domain{It is an error if \var{proc} does not accept one argument.}
 \todo{consider removing unspecified effect}
 For {\cf call-with-input-file},
-the file named by \var{string} should already exist; for
+an error is signalled if
+the file named by \var{string} does not already exist; for
 {\cf call-with-output-file},
 the effect is unspecified if the file
 already exists. These procedures call \var{proc} with one argument: the
@@ -3497,7 +3498,7 @@ are system-defined textual ports.
 \proto{with-output-to-file}{ string thunk}{file library procedure}}
 
 \domain{For {\cf with-input-from-file},
-it is an error if the file named by \var{string} does not already exist; for
+an error is signalled if the file named by \var{string} does not already exist; for
 {\cf with-output-to-file},
 the effect is unspecified if the file
 already exists.}
