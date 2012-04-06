@@ -2352,13 +2352,16 @@ procedures without  \hbox{``{\tt -ci}''}.
 
 These procedures apply the Unicode full string uppercasing, lowercasing,
 and case-folding algorithms to their arguments and return the result.
+The result may differ in length from the argument.  
 If the result is equal to the argument, the argument may be returned.
 Note that language-sensitive mappings and foldings are not used.  
-The result may differ in length from the argument.  What is more, a
-few characters have case-mappings that depend on the surrounding context.
-For example, Greek capital sigma normally lowercases to Greek small sigma,
-but at the end of a word it downcases to Greek small final sigma instead.
-See UAX \#29~\cite{uax29} (part of the Unicode Standard) for details.
+
+The Unicode Standard prescribes special treatment of the Greek letter
+$\Sigma$, whose normal lower-case form is $\sigma$ but which becomes
+$\varsigma$ at the end of a word.  See UAX \#29~\cite{uax29} (part of
+the Unicode Standard) for details.  However, implementations of {\cf
+string-downcase} are not required to provide this behavior, and may
+choose to change $\Sigma$ to $\sigma$ in all cases.
 
 \end{entry}
 
