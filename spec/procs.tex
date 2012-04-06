@@ -4062,8 +4062,8 @@ It is an error to mutate any of these strings or the alist itself.
 \proto{current-second}{}{time library procedure}}
 
 Returns an inexact number representing the current time on the International Atomic
-Time (TAI) scale.  The value 0.0 represents ten seconds after midnight
-on January 1, 1970 TAI (equivalent to midnight Universal Time)
+Time (TAI) scale.  The value 0.0 represents midnight
+on January 1, 1970 TAI (equivalent to ten seconds before midnight Universal Time)
 and the value 1.0 represents one TAI
 second later.  Neither high accuracy nor high precision are required; in particular,
 returning Coordinated Universal Time plus a suitable constant may be
