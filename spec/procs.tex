@@ -2287,39 +2287,14 @@ returns \schfalse.  Specifically, these procedures behave as if
 
 
 \begin{entry}{%
-\proto{string-ni=?}{ \vri{string} \vrii{string} \vriii{string} \dotsfoo}{procedure}}
-
-Returns \schtrue{} if, after an implementation-defined normalization,
-all the strings are the same length and contain the same characters in
-the same positions, otherwise returns \schfalse.  The intent is to
-provide a means of comparing strings that are considered
-equivalent in some situations but are represented by a different
-sequence of characters.
-
-Specifically, an implementation which
-supports Unicode should use either Unicode normalization NFC or
-NFD as specified by Unicode UAX\#15~\cite{uax15}.  Implementations which only
-support ASCII or some other character set which provides no ambiguous
-representations of character sequences may define the normalization to
-be the identity operation, in which case {\cf string-ni=?}\ is
-equivalent to {\cf string=?}.
-
-\end{entry}
-
-
-\begin{entry}{%
 \proto{string<?}{ \vri{string} \vrii{string} \vriii{string} \dotsfoo}{procedure}
 \proto{string-ci<?}{ \vri{string} \vrii{string} \vriii{string} \dotsfoo}{char library procedure}
-\proto{string-ni<?}{ \vri{string} \vrii{string} \vriii{string} \dotsfoo}{char library procedure}
 \proto{string>?}{ \vri{string} \vrii{string} \vriii{string} \dotsfoo}{procedure}
 \proto{string-ci>?}{ \vri{string} \vrii{string} \vriii{string} \dotsfoo}{char library procedure}
-\proto{string-ni>?}{ \vri{string} \vrii{string} \vriii{string} \dotsfoo}{char library procedure}
 \proto{string<=?}{ \vri{string} \vrii{string} \vriii{string} \dotsfoo}{procedure}
 \proto{string-ci<=?}{ \vri{string} \vrii{string} \vriii{string} \dotsfoo}{char library procedure}
-\proto{string-ni<=?}{ \vri{string} \vrii{string} \vriii{string} \dotsfoo}{char library procedure}
 \proto{string>=?}{ \vri{string} \vrii{string} \vriii{string} \dotsfoo}{procedure}
-\proto{string-ci>=?}{ \vri{string} \vrii{string} \vriii{string} \dotsfoo}{char library procedure}
-\proto{string-ni>=?}{ \vri{string} \vrii{string} \vriii{string} \dotsfoo}{char library procedure}}
+\proto{string-ci>=?}{ \vri{string} \vrii{string} \vriii{string} \dotsfoo}{char library procedure}}
 
 These procedures return \schtrue{} if their arguments are (respectively):
 equal, monotonically increasing, monotonically decreasing,
@@ -2347,10 +2322,6 @@ The \hbox{``{\tt -ci}''} procedures behave as if they applied
 {\cf string-foldcase} to their arguments before invoking the corresponding
 procedures without  \hbox{``{\tt -ci}''}.
 
-The \hbox{``{\tt -ni}''} procedures behave as if they applied the
-implementation-defined normalization used by {\cf string-ni=?}
-to their arguments before
-invoking the corresponding procedures without \hbox{``{\tt -ni}''}.
 
 \end{entry}
 

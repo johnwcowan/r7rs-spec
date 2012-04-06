@@ -111,11 +111,6 @@ on Unicode code points.
 The new {\cf digit-value} procedure is added to obtain the numerical
 value of a numeric character.
 
-\item The procedures {\cf string-ni=?} and related procedures have been added to
-compare strings as though they had gone through an
-implementation-defined normalization, without exposing the
-normalization.
-
 \item Case insensitivity is now the default.
 
 \item There are now two additional comment syntaxes: {\tt \#;} to
@@ -212,10 +207,8 @@ in \rsixrs\ remain errors in \rsevenrs, allowing implementations to provide
 their own extensions.  There is no discussion of safety.
 
 \item Full Unicode support is not required.
-Instead of explicit normalization forms this report provides
-normalization-insensitive string comparisons that use
-an implementation-defined normalization form
-(which may be the identity transformation). Character comparisons are
+Normalization is not provided.
+Character comparisons are
 defined by Unicode, but string comparisons are implementation-dependent,
 and therefore need not be the lexicographic mapping of the corresponding
 character comparisons (an incompatibility with \rfivers). Non-Unicode
