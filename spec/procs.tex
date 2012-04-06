@@ -55,20 +55,9 @@ The {\cf eqv?} procedure returns \schtrue{} if:
 \begin{itemize}
 \item \vari{obj} and \varii{obj} are both \schtrue{} or both \schfalse.
 
-\item \vari{obj} and \varii{obj} are both symbols and
-
-\begin{scheme}
-(string=? (symbol->string obj1)
-          (symbol->string obj2))
-    \ev  \schtrue%
-\end{scheme}
-
-\begin{note} 
-This assumes that neither \vari{obj} nor \varii{obj} is an ``uninterned
-symbol'' as alluded to in section~\ref{symbolsection}.  This report does
-not specify the behavior of {\cf eqv?} on implementation-dependent
-extensions.
-\end{note}
+\item \vari{obj} and \varii{obj} are both symbols and are the same
+symbol according to the {\cf symbol=?} procedure
+(section~\ref{symbolsection}).
 
 %\item \vari{obj} and \varii{obj} are both numbers, and {\cf nan?}
 %returns true on both of them.
@@ -97,13 +86,9 @@ The {\cf eqv?} procedure returns \schfalse{} if:
 \item one of \vari{obj} and \varii{obj} is \schtrue{} but the other is
 \schfalse{}.
 
-\item \vari{obj} and \varii{obj} are symbols but
-
-\begin{scheme}
-(string=? (symbol->string \vari{obj})
-          (symbol->string \varii{obj}))
-    \ev  \schfalse%
-\end{scheme}
+\item \vari{obj} and \varii{obj} are symbols but are not the same
+symbol according to the {\cf symbol=?} procedure
+(section~\ref{symbolsection}).
 
 %% \item \vari{obj} and \varii{obj} are numbers, and {\cf nan?} returns true
 %% on one of them but not the other.
@@ -1863,13 +1848,8 @@ and~\ref{identifiersyntax}.
 a literal expression, or read using the {\cf read} procedure, and
 subsequently written out using the {\cf write} procedure, will read back
 in as the identical symbol (in the sense of {\cf eqv?}).
-
-\begin{note}
-Some implementations have values known as ``uninterned symbols,'' which
-defeat write/read invariance,
-and also violate the rule that two symbols are the same
-if and only if their names are spelled the same.
-\end{note}
+This is not true in implementations that have ``uninterned symbols''
+(see \ref{symbolsection}).
 
 
 \begin{entry}{%
@@ -1887,6 +1867,22 @@ Returns \schtrue{} if \var{obj} is a symbol, otherwise returns \schfalse.
 \end{scheme}
 \end{entry}
 
+\begin{entry}{%
+\proto{symbol=?}{ \vari{symbol} \varii{symbol} \variii{symbol} \dotsfoo}{procedure}}
+
+Returns \schtrue{} if all the arguments are symbols and all have the same
+names in the sense of {\cf string=?}.
+
+\begin{note}
+Some implementations have values known as ``uninterned symbols,''
+which defeat write/read invariance, and also violate the rule that two
+symbols are the same if and only if their names are spelled the same.
+The definition above assumes that none of the arguments
+are uninterned symbols.  This report does not specify the behavior of
+implementation-dependent extensions.
+\end{note}
+
+\end{entry}
 
 \begin{entry}{%
 \proto{symbol->string}{ symbol}{procedure}}
