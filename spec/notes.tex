@@ -95,6 +95,10 @@ the shortest list when inputs have different length.
 \item The procedures {\cf member} and {\cf assoc} now take an optional third argument
 specifying the equality predicate to be used.
 
+\item The \rfivers\ procedures {\cf exact->inexact} and {\cf inexact->exact}
+have been renamed to their \rsixrs\ names, {\cf inexact} and {\cf exact},
+respectively, as these names are shorter and more correct.
+
 \item The procedures {\cf exact-integer?}\  and {\cf exact-integer-sqrt} have been added.
 
 \item The procedures {\cf make-list}, {\cf list-copy}, {\cf list-set!}, {\cf
@@ -218,9 +222,7 @@ characters are permitted.
 \item The full numeric tower is optional as in \rfivers, but optional support for IEEE
 infinities, NaN, and {\mbox -0.0} was adopted from \rsixrs. Most clarifications on
 numeric results were also adopted, but the \rsixrs\ procedures {\cf real-valued?},
-{\cf rational-valued?}, and {\cf integer-valued}? were not. The \rfivers\ names
-{\cf inexact->exact} for {\cf exact} and {\cf exact->inexact} for {\cf inexact} were retained,
-with a note indicating that their names are historical.
+{\cf rational-valued?}, and {\cf integer-valued}? were not. 
 The \rsixrs\ division operators {\cf div}, {\cf mod}, {\cf div-and-mod}, {\cf
 div0}, {\cf mod0} and {\cf div0-and-mod0} have been replaced with a full
 set of 18 operators describing 6 different rounding semantics.

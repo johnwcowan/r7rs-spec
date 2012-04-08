@@ -379,7 +379,7 @@ result to an \tupe{inexact} value.
 However, {\cf (/~3~4)} must not return the mathematically incorrect value {\cf 0}.
 See section~\ref{restrictions}.
 
-\vest Except for \ide{inexact->exact}, the operations described in
+\vest Except for \ide{exact}, the operations described in
 this section must generally return inexact results when given any inexact
 arguments.  An operation may, however, return an \tupe{exact} result if it can
 prove that the value of the result is unaffected by the inexactness of its
@@ -1002,7 +1002,7 @@ denominator of 0 is defined to be 1.
 (numerator (/ 6 4))  \ev  3
 (denominator (/ 6 4))  \ev  2
 (denominator
-  (exact->inexact (/ 6 4))) \ev 2.0%
+  (inexact (/ 6 4))) \ev 2.0%
 \end{scheme}
 
 \end{entry}
@@ -1031,7 +1031,7 @@ mode specified by the IEEE 754 IEEE floating-point standard.
 \begin{note}
 If the argument to one of these procedures is inexact, then the result
 will also be inexact.  If an exact value is needed, the
-result can be passed to the {\cf inexact->exact} procedure.
+result can be passed to the {\cf exact} procedure.
 \end{note}
 
 \begin{scheme}
@@ -1068,7 +1068,7 @@ all.
 
 \begin{scheme}
 (rationalize
-  (inexact->exact .3) 1/10)  \ev 1/3    ; exact
+  (exact .3) 1/10)  \ev 1/3    ; exact
 (rationalize .3 1/10)        \ev \#i1/3  ; inexact%
 \end{scheme}
 
@@ -1192,35 +1192,41 @@ but {\cf abs} is in the base library, whereas
 
 
 \begin{entry}{%
-\proto{exact->inexact}{ \vr{z}}{procedure}
-\proto{inexact->exact}{ \vr{z}}{procedure}}
+\proto{inexact}{ \vr{z}}{procedure}
+\proto{exact}{ \vr{z}}{procedure}}
 
-The procedure {\cf exact\coerce{}inexact} returns an \tupe{inexact} representation of \vr{z}.
+The procedure {\cf inexact} returns an \tupe{inexact} representation of \vr{z}.
 The value returned is the
 \tupe{inexact} number that is numerically closest to the argument.  
 For inexact arguments, the result is the same as the argument. For exact
 complex numbers, the result is a complex number whose real and imaginary
-parts are the result of applying {\cf exact\coerce{}inexact} to the real
+parts are the result of applying {\cf inexact} to the real
 and imaginary parts of the argument, respectively.
 If an \tupe{exact} argument has no reasonably close \tupe{inexact} equivalent,
 then a violation of an implementation restriction may be reported.
 
-The procedure {\cf inexact\coerce{}exact} returns an \tupe{exact} representation of
+The procedure {\cf exact} returns an \tupe{exact} representation of
 \vr{z}.  The value returned is the \tupe{exact} number that is numerically
 closest to the argument.
 For exact arguments, the result is the same as the argument. For inexact
 non-integral real arguments, the implementation may return a rational
 approximation, or may report an implementation violation. For inexact
 complex arguments, the result is a complex number whose real and
-imaginary parts are the result of applying {\cf inexact\coerce{}exact} to the
+imaginary parts are the result of applying {\cf exact} to the
 real and imaginary parts of the argument, respectively.
 If an \tupe{inexact} argument has no reasonably close \tupe{exact} equivalent,
 then a violation of an implementation restriction may be reported.
 
-
 These procedures implement the natural one-to-one correspondence between
 \tupe{exact} and \tupe{inexact} integers throughout an
 implementation-dependent range.  See section~\ref{restrictions}.
+
+\begin{note}
+These procedures were known in \rfivers\ as {\cf exact->inexact} and
+{\cf inexact->exact}, respectively, but they have always accepted
+arguments of any exactness.  The new names are clearer and shorter,
+as well as being compatible with \rsixrs.
+\end{note}
 
 \end{entry}
 
@@ -1749,7 +1755,7 @@ It is an error if \var{list} has fewer than \vr{k} elements.
 \begin{scheme}
 (list-ref '(a b c d) 2)                 \ev  c
 (list-ref '(a b c d)
-          (inexact->exact (round 1.8))) \lev  c%
+          (exact (round 1.8))) \lev  c%
 \end{scheme}
 \end{entry}
 
@@ -2508,7 +2514,7 @@ The {\cf vector-ref} procedure returns the contents of element \vr{k} of
 (vector-ref '\#(1 1 2 3 5 8 13 21)
             5)  \lev  8
 (vector-ref '\#(1 1 2 3 5 8 13 21)
-            (inexact->exact
+            (exact
              (round (* 2 (acos -1))))) \lev 13%
 \end{scheme}
 \end{entry}
