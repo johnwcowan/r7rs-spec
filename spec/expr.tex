@@ -68,15 +68,21 @@ respects.
 ''a                  \ev  (quote a)%
 \end{scheme}
 
-Numerical constants, string constants, character constants, bytevector
-constants, and boolean constants evaluate to themselves; they need
-not be quoted.
+Numerical constants, string constants, character constants, vector
+constants, bytevector constants, and boolean constants evaluate to
+themselves; they need not be quoted.
 
 \begin{scheme}
-'"abc"     \ev  "abc"
-"abc"      \ev  "abc"
 '145932    \ev  145932
 145932     \ev  145932
+'"abc"     \ev  "abc"
+"abc"      \ev  "abc"
+'\#\space   \ev  \#\space
+\#\space   \ev  \#\space
+'\#(a 10)  \ev  \#(a 10)
+\#(a 10)  \ev  \#(a 10)
+'\#u8(64 65)  \ev  \#(64 65)
+\#u8(64 65)  \ev  \#(64 65)
 '\schtrue  \ev  \schtrue
 \schtrue   \ev  \schtrue%
 \end{scheme}

@@ -2443,14 +2443,7 @@ element 2 can be written as following:
 \#(0 (2 2 2 2) "Anna")%
 \end{scheme}
 
-Note that this is the external representation of a vector, not an
-expression evaluating to a vector.  
-It is an error not to quote a vector constant:
-
-\begin{scheme}
-'\#(0 (2 2 2 2) "Anna")  \lev  \#(0 (2 2 2 2) "Anna")%
-\end{scheme}
-
+Vector constants are self-evaluating, so they do not need to be quoted in programs.
 
 \begin{entry}{%
 \proto{vector?}{ obj}{procedure}}
@@ -2613,8 +2606,7 @@ element 2 can be written as following:
 \#u8(0 10 5)%
 \end{scheme}
 
-Note that this is both the external representation of a bytevector and
-an expression evaluating to a bytevector.
+Vector constants are self-evaluating, so they do not need to be quoted in programs.
 
 
 \begin{entry}{%
@@ -4003,15 +3995,21 @@ implementation-dependent.  It is an error to mutate any of these strings.
 \proto{exit}{}{process-context library procedure}
 \rproto{exit}{ obj}{process-context library procedure}}
 
-Exits the running program and communicates an exit value to the
+Runs all outstanding dynamic-wind \var{after} procedures, terminates the running program and communicates an exit value to the
 operating system.  If no argument is supplied, the {\cf exit}
 procedure should communicate to the operating system that the program
-exited normally.  If an argument is supplied, the exit procedure
-should translate the argument into an appropriate exit value for the
-operating system. If obj is \schfalse{}, the exit is assumed to be
+exited normally.  If \var{obj} is supplied, the exit procedure
+should translate it into an appropriate exit value for the
+operating system. If \var{obj} is \schfalse{}, the exit is assumed to be
 abnormal.
 
+\begin{note}
+Because of the requirement to run handlers, this procedure is not just the
+operating system's exit procedure.
+\end{note}
+
 \end{entry}
+
 
 \todo{Shinn: Do we need any description of what an environment variable is?}
 
