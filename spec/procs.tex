@@ -438,7 +438,7 @@ max                min                 abs
 numerator          denominator         gcd
 lcm                floor               ceiling
 truncate           round               rationalize
-expt               exact-integer-sqrt
+expt               exact-integer-sqrt  square
 floor/             ceiling/            centered/
 truncate/          round/              euclidean/
 floor-quotient     floor-remainder
@@ -1115,6 +1115,14 @@ result from a real argument.
 
 \end{entry}
 
+\begin{entry}{%
+\proto{square}{ \vr{z}}{procedure}}
+
+Returns the square of \vr{z}.  Taking the square of a large integer
+is more efficient than multiplying arbitrary integers,
+and floating-point processors often have a primitive square operator.
+
+\end{entry}
 
 \begin{entry}{%
 \proto{sqrt}{ \vr{z}}{inexact library procedure}}
