@@ -1736,7 +1736,8 @@ The {\cf list-tail} procedure could be defined by
 
 Returns the \vr{k}th element of \var{list}.  (This is the same
 as the car of {\tt(list-tail \var{list} \vr{k})}.)
-It is an error if \var{list} has fewer than \vr{k} elements.
+The \var{list} argument may be circular, but
+it is an error if \var{list} has fewer than \vr{k} elements.
 
 \begin{scheme}
 (list-ref '(a b c d) 2)                 \ev  c
@@ -2768,6 +2769,7 @@ The {\cf map} procedure applies \var{proc} element-wise to the elements of the
 \var{list}s and returns a list of the results, in order.
 If more than one \var{list} is given and not all lists have the same length,
 {\cf map} terminates when the shortest list runs out.
+The \var{list}s may be circular, but it is an error if they are all circular.
 It is an error for \var{proc} to mutate any of the lists.
 The dynamic order in which \var{proc} is applied to the elements of the
 \var{list}s is unspecified.  If multiple returns occur from {\cf map},
@@ -2867,6 +2869,7 @@ the elements of the \var{list}s in order from the first element(s) to the
 last, and the value returned by {\cf for-each} is unspecified.
 If more than one \var{list} is given and not all lists have the same length,
 {\cf for-each} terminates when the shortest list runs out.
+The \var{list}s may be circular, but it is an error if they are all circular.
 It is an error for \var{proc} to mutate any of the lists.
 
 \begin{scheme}
