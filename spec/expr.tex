@@ -1145,11 +1145,16 @@ evaluating
 \hyper{qq template}, however, the expression following the comma is
 evaluated (``unquoted'') and its result is inserted into the structure
 instead of the comma and the expression.  If a comma appears followed
-immediately by an at-sign (\atsign),\mainschindex{,@} then it is an error if the following
+without intervening whitespace by an at-sign (\atsign),\mainschindex{,@} then it is an error if the following
 expression does not evaluate to a list; the opening and closing parentheses
 of the list are then ``stripped away'' and the elements of the list are
 inserted in place of the comma at-sign expression sequence.  A comma
 at-sign should only appear within a list or vector \hyper{qq template}.
+
+\begin{note}
+In order to unquote an identifier beginning with {\cf @}, it is necessary
+to use either an explicit {\cf unquote} or to put whitespace after the comma.
+\end{note}
 
 \begin{scheme}
 `(list ,(+ 1 2) 4)  \ev  (list 3 4)
@@ -1160,7 +1165,9 @@ at-sign should only appear within a list or vector \hyper{qq template}.
 `(({\cf foo} ,(- 10 3)) ,@(cdr '(c)) . ,(car '(cons))) %
           \lev  ((foo 7) . cons)
 `\#(10 5 ,(sqrt 4) ,@(map sqrt '(16 9)) 8) %
-          \lev  \#(10 5 2 4 3 8)%
+          \lev  \#(10 5 2 4 3 8)
+(let ((foo '(foo bar)) (@baz 'baz)) `(list ,@foo , @baz))%
+          \lev  (foo bar baz)%
 \end{scheme}
 
 Quasiquote expressions may be nested.  Substitutions are made only for
