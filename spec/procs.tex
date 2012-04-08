@@ -439,14 +439,9 @@ numerator          denominator         gcd
 lcm                floor               ceiling
 truncate           round               rationalize
 expt               exact-integer-sqrt  square
-floor/             ceiling/            centered/
-truncate/          round/              euclidean/
+floor/             truncate/
 floor-quotient     floor-remainder
-ceiling-quotient   ceiling-remainder
-centered-quotient  centered-remainder
 truncate-quotient  truncate-remainder
-round-quotient     round-remainder
-euclidean-quotient euclidean-remainder
 \end{scheme}
 
 \vest It is recommended, but not required, that implementations support
@@ -869,28 +864,16 @@ The {\cf abs} procedure returns the absolute value of its argument.
 \proto{floor/}{ \vri{n} \vrii{n}}{procedure}
 \proto{floor-quotient}{ \vri{n} \vrii{n}}{procedure}
 \proto{floor-remainder}{ \vri{n} \vrii{n}}{procedure}
-\proto{ceiling/}{ \vri{n} \vrii{n}}{procedure}
-\proto{ceiling-quotient}{ \vri{n} \vrii{n}}{procedure}
-\proto{ceiling-remainder}{ \vri{n} \vrii{n}}{procedure}
 \proto{truncate/}{ \vri{n} \vrii{n}}{procedure}
 \proto{truncate-quotient}{ \vri{n} \vrii{n}}{procedure}
-\proto{truncate-remainder}{ \vri{n} \vrii{n}}{procedure}
-\proto{round/}{ \vri{n} \vrii{n}}{procedure}
-\proto{round-quotient}{ \vri{n} \vrii{n}}{procedure}
-\proto{round-remainder}{ \vri{n} \vrii{n}}{procedure}
-\proto{euclidean/}{ \vri{n} \vrii{n}}{procedure}
-\proto{euclidean-quotient}{ \vri{n} \vrii{n}}{procedure}
-\proto{euclidean-remainder}{ \vri{n} \vrii{n}}{procedure}
-\proto{centered/}{ \vri{n} \vrii{n}}{procedure}
-\proto{centered-quotient}{ \vri{n} \vrii{n}}{procedure}
-\proto{centered-remainder}{ \vri{n} \vrii{n}}{procedure}}
+\proto{truncate-remainder}{ \vri{n} \vrii{n}}{procedure}}
 
 These procedures, all in the division library, implement
 number-theoretic (integer) division.  It is an error if \vrii{n} is zero.
 The procedures ending in {\cf /} return two integers; the other
 procedures return an integer.  All the procedures compute a
 quotient \vr{n_q} and remainder \vr{n_r} such that
-$\vri{n} = \vrii{n} \vr{n_q} + \vr{n_r}$.  For each of the six
+$\vri{n} = \vrii{n} \vr{n_q} + \vr{n_r}$.  For each of the 
 division operators, there are three procedures defined as follows:
 
 \begin{scheme}
@@ -905,11 +888,7 @@ operators uses a different choice of \vr{n_q}:
 
 \begin{tabular}{l l}
 \texttt{floor}     & $\vr{n_q} = \lfloor\vri{n} / \vrii{n}\rfloor$ \\
-\texttt{ceiling}   & $\vr{n_q} = \lceil\vri{n} / \vrii{n}\rceil$ \\
 \texttt{truncate}  & $\vr{n_q} = \text{truncate}(\vri{n} / \vrii{n})$ \\
-\texttt{round}     & $\vr{n_q} = [\vri{n} / \vrii{n}]$ \\
-\texttt{euclidean} & $\text{if } \vrii{n} > 0, \vr{n_q} = \lfloor\vri{n} / \vrii{n}\rfloor; \text{ if } \vrii{n} < 0, \vr{n_q} = \lceil\vri{n} / \vrii{n}\rceil$ \\
-\texttt{centered}  &  \text{ choose } $\vr{n_q}$ \text{ such that } $-|\vrii{n}/2| <= \vr{n_r} < |\vrii{n}/2|$ \\
 \end{tabular}
 
 For any of the operators, and for integers \vri{n} and \vrii{n}
@@ -921,8 +900,6 @@ with \vrii{n} not equal to 0,
 \end{scheme}
 provided all numbers involved in that computation are exact.
 
-See \cite{euclidean} for discussion.
-
 Examples:
 
 \begin{scheme}
@@ -930,27 +907,11 @@ Examples:
 (floor/ -5 2)        \ev -3 1
 (floor/ 5 -2)        \ev -3 -1
 (floor/ -5 -2)       \ev 2 -1
-(ceiling/ 5 2)       \ev 3 -1
-(ceiling/ -5 2)      \ev -2 -1
-(ceiling/ 5 -2)      \ev -2 1
-(ceiling/ -5 -2)     \ev 3 1
 (truncate/ 5 2)      \ev 2 1
 (truncate/ -5 2)     \ev -2 -1
 (truncate/ 5 -2)     \ev -2 1
 (truncate/ -5 -2)    \ev 2 -1
-(round/ 5 2)         \ev 2 1
-(round/ 5 -2)        \ev -2 1
-(round/ -5 2)        \ev -2 -1
-(round/ -5 -2)       \ev 2 -1
-(euclidean/ 5 2)     \ev 2 1
-(euclidean/ -5 2)    \ev -3 1
-(euclidean/ 5 -2)    \ev -2 1
-(euclidean/ -5 -2)   \ev 3 1
-(centered/ 5 2)      \ev 3 -1
-(centered/ -5 2)     \ev -2 -1
-(centered/ 5 -2)     \ev -3 -1
-(centered/ -5 -2)    \ev 2 -1
-(centered/ -5.0 -2)  \ev 2.0 -1.0
+(truncate/ -5.0 -2)  \ev 2.0 -1.0
 \end{scheme}
 
 \end{entry}
@@ -1602,26 +1563,43 @@ The value returned by {\cf set-cdr!}\ is unspecified.  % <!>
 \begin{entry}{%
 \proto{caar}{ pair}{procedure}
 \proto{cadr}{ pair}{procedure}
+\proto{cdar}{ pair}{procedure}
+\proto{cddr}{ pair}{procedure}}
+
+These procedures are compositions of {\cf car} and {\cf cdr} as follows:
+
+\begin{scheme}
+(define (caar x) (car (car x)))
+(define (cadr x) (car (cdr x)))
+(define (cdar x) (cdr (car x)))
+(define (cddr x) (cdr (cdr x)))
+(define (caar x) (car (car x)))
+\end{scheme}
+
+\end{entry}
+
+\begin{entry}{%
+\proto{caaar}{ pair}{cxr library procedure}%
+\proto{caadr}{ pair}{cxr library procedure}%
 \pproto{\hbox to 1\wd0 {\hfil$\vdots$\hfil}}{\hbox to 1\wd1 {\hfil$\vdots$\hfil}}%
-\mainschindex{cdar}\mainschindex{cddr}%
-\mainschindex{caaar}\mainschindex{caadr}\mainschindex{cadar}\mainschindex{caddr}%
+\mainschindex{cadar}\mainschindex{caddr}%
 \mainschindex{cdaar}\mainschindex{cdadr}\mainschindex{cddar}\mainschindex{cdddr}%
 \mainschindex{caaaar}\mainschindex{caaadr}\mainschindex{caadar}\mainschindex{caaddr}%
 \mainschindex{cadaar}\mainschindex{cadadr}\mainschindex{caddar}\mainschindex{cadddr}%
 \mainschindex{cdaaar}\mainschindex{cdaadr}\mainschindex{cdadar}\mainschindex{cdaddr}%
 \mainschindex{cddaar}\mainschindex{cddadr}%
-\proto{cdddar}{ pair}{procedure}
-\proto{cddddr}{ pair}{procedure}}
+\proto{cdddar}{ pair}{cxr library procedure}%
+\proto{cddddr}{ pair}{cxr library procedure}}
 
-These procedures are compositions of {\cf car} and {\cf cdr}, where
-for example {\cf caddr} could be defined by
+These 24 procedures are further compositions of {\cf car} and {\cf cdr}
+on the same principles.
+For example {\cf caddr} could be defined by
 
 \begin{scheme}
 (define caddr (lambda (x) (car (cdr (cdr x))))){\rm.}%
 \end{scheme}
 
-Arbitrary compositions, up to four deep, are provided.  There are
-twenty-eight of these procedures in all.
+Arbitrary compositions up to four deep are provided.  
 
 \end{entry}
 
