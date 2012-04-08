@@ -48,7 +48,9 @@ provided that each such character has a Unicode general category of Lu,
 Ll, Lt, Lm, Lo, Mn, Mc, Me, Nd, Nl, No, Pd, Pc, Po, Sc, Sm, Sk, So,
 or Co, or is U+200C or U+200D (the zero-width non-joiner and joiner,
 respectively, which are needed for correct spelling in Persian, Hindi,
-and other languages). It is an error to use a non-Unicode character
+and other languages).
+However, it is an error for the first character to have a general category
+of Nd, Mc, or Me.  It is also an error to use a non-Unicode character
 in symbols or identifiers.
 
 All Scheme implementations must permit the escape sequence
