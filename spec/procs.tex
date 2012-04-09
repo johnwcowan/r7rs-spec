@@ -623,8 +623,8 @@ predicate is false of a number, then all lower type predicates are
 also false of that number.
 
 If \vr{z} is a complex number, then {\cf (real? \vr{z})} is true if
-and only if {\cf (zero? (imag-part \vr{z}))} and {\cf (exact? (imag-part
-\vr{z}))} are both true.  If \vr{x} is an inexact real number, then {\cf
+and only if {\cf (zero? (imag-part \vr{z}))} is true.
+If \vr{x} is an inexact real number, then {\cf
 (integer? \vr{x})} is true if and only if {\cf (= \vr{x} (round \vr{x}))}.
 
 The numbers {\cf +inf.0}, {\cf -inf.0}, and {\cf +nan.0} are real but
