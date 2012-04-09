@@ -2655,14 +2655,6 @@ Returns a newly allocated bytevector containing the same bytes as
 \end{entry}
 
 \begin{entry}{%
-\proto{bytevector-copy!}{ from to}{procedure}}
-
-Copies the bytes of bytevector \var{from} to bytevector \var{to}.
-It is an error if \var{to} is shorter than \var{from}.
-The value returned by {\cf bytevector-copy!} is unspecified.
-\end{entry}
-
-\begin{entry}{%
 \proto{bytevector-copy-partial}{ bytevector start end}{procedure}}
 
 Returns a newly allocated bytevector containing the bytes in \var{bytevector}
@@ -2673,7 +2665,7 @@ the length of \var{bytevector}.
 \end{entry}
 
 \begin{entry}{%
-\proto{bytevector-copy-partial!}{ from start end to at}{procedure}}
+\proto{bytevector-copy!}{ to at from start end}{procedure}}
 
 Copies the bytes of bytevector \var{from} between \var{start} and \var{end}
 to bytevector \var{to}, starting at \var{at}.  The order in which bytes are
@@ -2689,7 +2681,7 @@ the length of \var{from},
 or \var{to} is less than zero or greater than the length of \var{to}.
 It is also an error if the inequality
 \texttt{({\cf >=} ({\cf -} ({\cf bytevector-length} \var{to}) \var{at}) ({\cf -} \var{end} \var{start}))}
-is false.  The value returned by {\cf bytevector-copy-partial!} is unspecified.
+is false.  The value returned by {\cf bytevector-copy!} is unspecified.
 \end{entry}
 
 \begin{entry}{%
