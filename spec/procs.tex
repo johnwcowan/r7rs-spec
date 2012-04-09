@@ -59,12 +59,10 @@ The {\cf eqv?} procedure returns \schtrue{} if:
 symbol according to the {\cf symbol=?} procedure
 (section~\ref{symbolsection}).
 
-%\item \vari{obj} and \varii{obj} are both numbers, and {\cf nan?}
-%returns true on both of them.
-
-\item \vari{obj} and \varii{obj} are both numbers, are numerically
-equal (see {\cf =}, section~\ref{numbersection}), and are either both
-exact\index{exact} or both inexact\index{inexact}.
+\item \vari{obj} and \varii{obj} are both numbers, 
+have the same exactness,
+are numerically equal (see {\cf =}, section~\ref{numbersection}),
+and it is not the case that one is {\cf 0.0} and the other is {\cf -0.0}.
 
 \item \vari{obj} and \varii{obj} are both characters and are the same
 character according to the {\cf char=?} procedure
@@ -89,9 +87,6 @@ The {\cf eqv?} procedure returns \schfalse{} if:
 \item \vari{obj} and \varii{obj} are symbols but are not the same
 symbol according to the {\cf symbol=?} procedure
 (section~\ref{symbolsection}).
-
-%% \item \vari{obj} and \varii{obj} are numbers, and {\cf nan?} returns true
-%% on one of them but not the other.
 
 \item one of \vari{obj} and \varii{obj} is an exact number but the other
 is an inexact number.
