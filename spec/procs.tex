@@ -2378,6 +2378,8 @@ characters in the given strings.
 
 \begin{entry}{%
 \proto{string->list}{ string}{procedure}
+\proto{string->list}{ string start}{procedure}
+\proto{string->list}{ string start end}{procedure}
 \proto{list->string}{ list}{procedure}}
 
 {\cf string\coerce{}list} returns a newly allocated list of the
@@ -2385,6 +2387,8 @@ characters that make up the given string.  {\cf list\coerce{}string}
 returns a newly allocated string formed from the elements in the list
 \var{list}.  It is an error if any element is not a character.
 In both procedures, order is preserved.
+If \var{start} is omitted, it is assumed to be 0;
+if \var{end} is omitted, it is assumed to be the length of \var{string}.
 {\cf string\coerce{}list}
 and {\cf list\coerce{}string} are
 inverses so far as {\cf equal?}\ is concerned.  
@@ -2538,15 +2542,20 @@ The value returned by {\cf vector-set!}\ is unspecified.  % <!>
 
 \begin{entry}{%
 \proto{vector->list}{ vector}{procedure}
+\proto{vector->list}{ vector start}{procedure}
+\proto{vector->list}{ vector start end}{procedure}
 \proto{list->vector}{ list}{procedure}}
 
 The {\cf vector->list} procedure returns a newly allocated list of the objects contained
 in the elements of \var{vector}.  The {\cf list->vector} procedure returns a newly
 created vector initialized to the elements of the list \var{list}.
 In both procedures, order is preserved.
+If \var{start} is omitted, it is assumed to be 0;
+if \var{end} is omitted, it is assumed to be the length of \var{vector}.
 
 \begin{scheme}
 (vector->list '\#(dah dah didah))  \lev  (dah dah didah)
+(vector->list '\#(dah dah didah) 1 2) \lev (dah)%
 (list->vector '(dididit dah))   \lev  \#(dididit dah)%
 \end{scheme}
 \end{entry}
