@@ -2419,6 +2419,30 @@ In any case, an unspecified value is returned.
 
 \end{entry}
 
+\begin{entry}{%
+\proto{string-copy!}{ to at from}{procedure}
+\proto{string-copy!}{ to at from start}{procedure}
+\proto{string-copy!}{ to at from start end}{procedure}}
+
+Copies the characters of string \var{from} between \var{start} and \var{end}
+to bytevector \var{to}, starting at \var{at}.  The order in which characters are
+copied is unspecified, except that if the source and destination overlap,
+copying takes place as if the source is first copied into a temporary
+string and then into the destination.  This can be achieved without
+allocating storage by making sure to copy in the correct direction in
+such circumstances.
+If \var{start} is omitted, it is assumed to be 0;
+if \var{end} is omitted, it is assumed to be the length of \var{from}.
+
+It is an error if \var{start} is greater than \var{end},
+or \var{start} is less than zero, or \var{end} is greater than
+the length of \var{from},
+or \var{to} is less than zero or greater than the length of \var{to}.
+It is also an error if the inequality
+\texttt{({\cf >=} ({\cf -} ({\cf string-length} \var{to}) \var{at}) ({\cf -} \var{end} \var{start}))}
+is false.  The value returned by {\cf string-copy!} is unspecified.
+\end{entry}
+
 
 \section{Vectors}
 \label{vectorsection}
@@ -2582,6 +2606,30 @@ If they are omitted, \var{fill} is stored in all the elements of \var{vector}.
 In either case, an unspecified value is returned.
 \end{entry}
 
+\begin{entry}{%
+\proto{vector-copy!}{ to at from}{procedure}
+\proto{vector-copy!}{ to at from start}{procedure}
+\proto{vector-copy!}{ to at from start end}{procedure}}
+
+Copies the elements of vector \var{from} between \var{start} and \var{end}
+to vector \var{to}, starting at \var{at}.  The order in which elements are
+copied is unspecified, except that if the source and destination overlap,
+copying takes place as if the source is first copied into a temporary
+vector and then into the destination.  This can be achieved without
+allocating storage by making sure to copy in the correct direction in
+such circumstances.
+If \var{start} is omitted, it is assumed to be 0;
+if \var{end} is omitted, it is assumed to be the length of \var{from}.
+
+It is an error if \var{start} is greater than \var{end},
+or \var{start} is less than zero, or \var{end} is greater than
+the length of \var{from},
+or \var{to} is less than zero or greater than the length of \var{to}.
+It is also an error if the inequality
+\texttt{({\cf >=} ({\cf -} ({\cf vector-length} \var{to}) \var{at}) ({\cf -} \var{end} \var{start}))}
+is false.  The value returned by {\cf vector-copy!} is unspecified.
+\end{entry}
+
 
 \section{Bytevectors}
 \label{bytevectorsection}
@@ -2665,6 +2713,8 @@ the length of \var{bytevector}.
 \end{entry}
 
 \begin{entry}{%
+\proto{bytevector-copy!}{ to at from}{procedure}
+\proto{bytevector-copy!}{ to at from start}{procedure}
 \proto{bytevector-copy!}{ to at from start end}{procedure}}
 
 Copies the bytes of bytevector \var{from} between \var{start} and \var{end}
@@ -2674,6 +2724,8 @@ copying takes place as if the source is first copied into a temporary
 bytevector and then into the destination.  This can be achieved without
 allocating storage by making sure to copy in the correct direction in
 such circumstances.
+If \var{start} is omitted, it is assumed to be 0;
+if \var{end} is omitted, it is assumed to be the length of \var{from}.
 
 It is an error if \var{start} is greater than \var{end},
 or \var{start} is less than zero, or \var{end} is greater than
