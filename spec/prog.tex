@@ -384,6 +384,9 @@ Libraries whose first identifier is {\cf scheme} are reserved for use by this
 report and future versions of this report.
 Libraries whose first identifier is {\cf srfi} are reserved for libraries
 implementing Scheme Requests for Implementation.
+It is an error for identifiers in library names to contain any of the characters
+{\cf | \backwhack{} ? * < " : > + [ ] /} or control characters
+after escapes are expanded.
 
 A \hyper{library declaration} may be any of:
 
