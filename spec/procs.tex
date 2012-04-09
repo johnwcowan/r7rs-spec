@@ -2397,9 +2397,9 @@ inverses so far as {\cf equal?}\ is concerned.
 
 
 \begin{entry}{%
-\proto{string-copy}{ string start}{procedure}}
+\proto{string-copy}{ string}{procedure}
+\proto{string-copy}{ string start}{procedure}
 \proto{string-copy}{ string start end}{procedure}}
-\proto{string-copy}{ string}{procedure}}
 
 Returns a newly allocated copy of the given \var{string}.
 If \var{start} is omitted, it is assumed to be 0;
@@ -2409,15 +2409,18 @@ if \var{end} is omitted, it is assumed to be the length of \var{string}.
 
 
 \begin{entry}{%
-\proto{string-fill!}{ string char}{procedure}
-\proto{string-fill!}{ string char start end}{procedure}}
+\proto{string-fill!}{ string fill}{procedure}
+\proto{string-fill!}{ string fill start}{procedure}
+\proto{string-fill!}{ string fill start end}{procedure}}
 
-If \var{start} and \var{end} are given, {\cf string-fill!} stores \var{fill}
-in all the elements of \var{string}
+The {\cf string-fill!} procedure stores \var{fill}
+in the elements of \var{string}
 between \var{start} (inclusive) and \var{end} (exclusive).
+If \var{start} is omitted, it is assumed to be 0;
+if \var{end} is omitted, it is assumed to be the length of \var{string}.
+
 It is an error if \var{fill} is not a character or is forbidden in strings,
 or if \var{start} is less than \var{end}.
-If \var{start} and \var{end}y are omitted, \var{fill} is stored in all the elements of \var{string}.
 In any case, an unspecified value is returned.
 
 \end{entry}
@@ -2604,14 +2607,17 @@ If \var{fill} is omitted, an implementation-defined value is used.
 
 \begin{entry}{%
 \proto{vector-fill!}{ vector fill}{procedure}
+\proto{vector-fill!}{ vector fill start}{procedure}
 \proto{vector-fill!}{ vector fill start end}{procedure}}
 
-If \var{start} and \var{end} are given, {\cf vector-fill!} stores \var{fill}
-(which can be any object) in all the elements of \var{vector}
+The {\cf vector-fill!} procedure stores \var{fill}
+in the elements of \var{vector}
 between \var{start} (inclusive) and \var{end} (exclusive).
+If \var{start} is omitted, it is assumed to be 0;
+if \var{end} is omitted, it is assumed to be the length of \var{vector}.
+
 It is an error if \var{start} is less than \var{end}.
-If they are omitted, \var{fill} is stored in all the elements of \var{vector}.
-In either case, an unspecified value is returned.
+In any case, an unspecified value is returned.
 \end{entry}
 
 \begin{entry}{%
