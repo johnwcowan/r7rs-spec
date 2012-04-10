@@ -3,7 +3,7 @@
 # http://xkcd.com/224/
 
 # Usage: write-ballot.pl < WG1Ballot > WG1BallotResults
-# (must have extracted Wg1BallotName files with extract_ballots.sh)
+# (must have extracted WG1BallotName files with extract_ballots.sh)
 
 use strict;
 use warnings;
@@ -214,6 +214,14 @@ sub format_rationale {
 ########################################################################
 # Run through the official ballot, inserting results.
 
+my $section = "";
+my $result_notes = <<EOF;
+= Notes about Results =
+
+See [wiki:WG1BallotExplanation WG1BallotExplanation].
+
+EOF
+
 while (<>) {
   if (/^\s*\*\s*'*Preferences:\s*'*/i) {
     my $votes = $votes{$ticket};
@@ -233,7 +241,12 @@ while (<>) {
     print;
     $defaults{$ticket} ||= normalize_option($1);
   } else {
-    print;
-    $ticket = int($1) if /^=== #?(\d+) .*===\s*$/;
+    if (/^=\s+(.*?)\s*=\s*$/) {
+      # Update section, replacing instructions with result notes.
+      print $result_notes if lc $section eq "instructions";
+      $section = $1;
+    }
+    print unless lc $section eq "instructions";
+    $ticket = int($1) if /^===\s+#?(\d+) .*===\s*$/;
   }
 }
