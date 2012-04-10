@@ -1265,8 +1265,7 @@ returns \schfalse{}.
 
 \begin{note}
 The domain of {\cf string->number} may be restricted by implementations
-in the following ways.  Whenever \vr{string} contains an explicit radix prefix,
-{\cf string->number} is permitted to return \schfalse{}.
+in the following ways.  
 If all numbers supported by an implementation are real, then
 {\cf string->number} is permitted to return \schfalse{} whenever
 \vr{string} uses the polar or rectangular notations for complex
@@ -1279,6 +1278,13 @@ If all inexact
 numbers are integers, then
 {\cf string->number} may return \schfalse{} whenever
 a decimal point is used.
+
+The rules used by a particular implementation for {\cf string->number} must
+also be applied to {\cf read} and to the routine that reads programs, in
+order to maintain consistency between internal numeric processing, I/O,
+and the processing of programs.
+As a consequence, the \rfivers\ permission to return \schfalse{} when
+\var{string} has an explicit radix prefix has been withdrawn.
 \end{note}
 
 \end{entry}
