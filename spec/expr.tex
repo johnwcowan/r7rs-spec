@@ -1135,7 +1135,7 @@ exceptions.
 \pproto{unquote}{\auxiliarytype}
 \pproto{unquote-splicing}{\auxiliarytype}}
 
-``Backquote'' or ``quasiquote''\index{backquote} expressions are useful
+``Quasiquote''\index{backquote} expressions are useful
 for constructing a list or vector structure when some but not all of the
 desired structure is known in advance.  If no
 commas\index{comma} appear within the \hyper{qq template}, the result of
@@ -1145,7 +1145,7 @@ evaluating
 \hyper{qq template}, however, the expression following the comma is
 evaluated (``unquoted'') and its result is inserted into the structure
 instead of the comma and the expression.  If a comma appears followed
-without intervening whitespace by an at-sign (\atsign),\mainschindex{,@} then it is an error if the following
+without intervening whitespace by a commercial at-sign (\atsign),\mainschindex{,@} then it is an error if the following
 expression does not evaluate to a list; the opening and closing parentheses
 of the list are then ``stripped away'' and the elements of the list are
 inserted in place of the comma at-sign expression sequence.  A comma
@@ -1153,7 +1153,8 @@ at-sign should only appear within a list or vector \hyper{qq template}.
 
 \begin{note}
 In order to unquote an identifier beginning with {\cf @}, it is necessary
-to use either an explicit {\cf unquote} or to put whitespace after the comma.
+to use either an explicit {\cf unquote} or to put whitespace after the comma,
+to avoid colliding with the comma at-sign sequence.
 \end{note}
 
 \begin{scheme}
@@ -1172,7 +1173,7 @@ to use either an explicit {\cf unquote} or to put whitespace after the comma.
 
 Quasiquote expressions may be nested.  Substitutions are made only for
 unquoted components appearing at the same nesting level
-as the outermost backquote.  The nesting level increases by one inside
+as the outermost quasiquote.  The nesting level increases by one inside
 each successive quasiquotation, and decreases by one inside each
 unquotation.
 
@@ -1483,7 +1484,7 @@ of a macro whose keyword is associated with a transformer specified by
 When a match is found, the macro use is transcribed hygienically
 according to the template.
 
-An identifier appearing within a \hyper{pattern} may be an underscore
+An identifier appearing within a \hyper{pattern} may be a low line
 ({\cf \_}), a literal identifier listed in the list of \hyper{literal}s,
 or the \hyper{ellipsis}.
 All other identifiers appearing within a \hyper{pattern} are
@@ -1499,10 +1500,10 @@ It is an error for the same pattern variable to appear more than once in a
 \hyper{pattern}.
 
 Underscores also match arbitrary input elements but are not pattern variables
-and so cannot be used to refer to those elements.  If an underscore appears
+and so cannot be used to refer to those elements.  If a low line appears
 in the \hyper{literal}s list, then that takes precedence and
-underscores in the \hyper{pattern} match as literals.
-Multiple underscores may appear in a \hyper{pattern}.
+low lines in the \hyper{pattern} match as literals.
+Multiple low lines may appear in a \hyper{pattern}.
 
 Identifiers that appear in \texttt{(\hyper{literal} \dotsfoo)} are
 interpreted as literal
@@ -1519,7 +1520,7 @@ case it is matched as a literal.
 More formally, an input expression $E$ matches a pattern $P$ if and only if:
 
 \begin{itemize}
-\item $P$ is an underscore ({\cf \_}).
+\item $P$ is a low line ({\cf \_}).
 
 \item $P$ is a non-literal identifier; or
 

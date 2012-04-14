@@ -32,11 +32,11 @@ identifier $\lambda$.
 
 As a convenience, identifiers may also be written as a sequence of
 zero or more
-characters enclosed within vertical bars ({\cf $|$}), analogous to
+characters enclosed within vertical lines ({\cf $|$}), analogous to
 string literals.  Any character, including whitespace characters, but
-excluding the backslash and vertical bar characters,
+excluding the backslash and vertical line characters,
 may appear verbatim in such an identifier.
-It is also possible to include the backslash and vertical bar characters,
+It is also possible to include the backslash and vertical line characters,
 as well as any other character,
 in the identifier with an \meta{inline hex escape}.  Thus the
 identifier \verb+|foo bar|+ is the same as the identifier
@@ -77,8 +77,8 @@ nor in \meta{inline hex escapes} used
 in the syntax of identifiers, characters, or strings.
 None of the identifiers defined in this report contain upper-case
 characters, even when they may appear to do so as a result
-of the English-language convention of capitalizing the word at
-the beginning of a sentence.
+of the English-language convention of capitalizing the first word of
+a sentence.
 
 The following directives give explicit control over case
 folding.
@@ -110,7 +110,7 @@ as necessary to separate tokens from each other, a token being an
 indivisible lexical unit such as an identifier or number, but is
 otherwise insignificant.  Whitespace can occur between any two tokens,
 but not within a token.  Whitespace occurring inside a string
-or inside a symbol delimited by vertical bars
+or inside a symbol delimited by vertical lines
 is significant.
 
 The lexical syntax includes several comment forms.  
@@ -170,18 +170,18 @@ Parentheses are used for grouping and to notate lists
 (section~\ref{listsection}).
 
 \item[\singlequote]
-The single quote character is used to indicate literal data (section~\ref{quote}).
+The apostrophe (single quote) character is used to indicate literal data (section~\ref{quote}).
 
 \item[\backquote]
-The backquote character is used to indicate partly constant
+The grave accent (backquote) character is used to indicate partly constant
 data (section~\ref{quasiquote}).
 
 \item[\tt, ,@]
 The character comma and the sequence comma at-sign are used in conjunction
-with backquote (section~\ref{quasiquote}).
+with quasiquotation (section~\ref{quasiquote}).
 
 \item[\tt"]
-The double quote character is used to delimit strings (section~\ref{stringsection}).
+The quotation mark character is used to delimit strings (section~\ref{stringsection}).
 
 \item[\backwhack]
 Backslash is used in the syntax for character constants
@@ -192,10 +192,10 @@ constants (section~\ref{stringsection}) and identifiers
 % A box used because \verb is not allowed in command arguments.
 \setbox0\hbox{\tt \verb"[" \verb"]" \verb"{" \verb"}"}
 \item[\copy0]
-Left and right square brackets and curly braces
+Left and right square and curly brackets (braces)
 are reserved for possible future extensions to the language.
 
-\item[\sharpsign] Sharp sign is used for a variety of purposes depending on
+\item[\sharpsign] The number sign is used for a variety of purposes depending on
 the character that immediately follows it:
 
 \item[\schtrue{} \schfalse{}]
