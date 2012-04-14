@@ -1,7 +1,7 @@
 
-.PHONY: all clean
+.PHONY: all clean extract
 
-all: WG1BallotResults
+all: extract WG1BallotResults
 
 extract:
 	./extract_ballots.sh
