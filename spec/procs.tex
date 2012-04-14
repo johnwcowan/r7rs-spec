@@ -2151,7 +2151,7 @@ equivalents.
 \label{stringsection}
 
 Strings are sequences of characters.  
-\vest Strings are written as sequences of characters enclosed within double quotes
+\vest Strings are written as sequences of characters enclosed within quotation marks
 ({\cf "}).  Within a string literal, various escape
 sequences\mainindex{escape sequence} represent characters other than
 themselves.  Escape sequences always start with a backslash (\backwhack{}):
@@ -3881,8 +3881,8 @@ omitted, in which case it defaults to the value returned by {\cf
 
 Writes a representation of \var{obj} to the given textual output
 \var{port}.  Strings
-that appear in the written representation are enclosed in double quotes, and
-within those strings backslash and double quote characters are
+that appear in the written representation are enclosed in quotation marks, and
+within those strings backslash and quotation mark characters are
 escaped by backslashes.  Symbols that contain non-ASCII characters
 are escaped either with inline hex escapes or with vertical lines.
 Character objects are written using the {\cf \#\backwhack} notation.
@@ -3910,7 +3910,7 @@ terminate if \var{obj} contains circular structure.
 
 Writes a representation of \var{obj} to the given textual output \var{port}.
 Strings that appear in the written representation are not enclosed in
-double quotes, and no characters are escaped within those strings.  
+quotation marks, and no characters are escaped within those strings.  
 Symbols are not escaped.  Character
 objects appear in the representation as if written by {\cf write-char}
 instead of by {\cf write}.  The {\cf display} procedure returns an unspecified value.
