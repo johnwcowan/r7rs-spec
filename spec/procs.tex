@@ -590,6 +590,17 @@ they must do so in conformance with IEEE 754.  However, implementations
 are not required to support signaling NaNs, or provide a way to distinguish
 between different NaNs.
 
+There are two notations provided for non-real complex numbers:
+the \defining{rectangular notation}
+\var{a}{\cf +}\var{b}{\cf i},
+where \var{a} is the real part and \var{b} is the imaginary part;
+and the \defining{polar notation}
+\var{r}{\cf @}$\theta$,
+where \var{r} is the magnitude and $\theta$ is the phase (angle).
+These are related by the equation
+$a+bi = r \cos\theta + (r \sin\theta) i$.
+All of \var{a}, \var{b}, \var{r}, $\theta$ must be real numbers.
+
 
 \subsection{Numerical operations}
 
