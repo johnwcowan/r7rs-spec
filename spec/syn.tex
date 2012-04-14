@@ -32,10 +32,10 @@ of tokens.
 \meta{Intertoken space} may occur on either side of any token, but not
 within a token.
 
-\vest Identifiers that do not begin with a vertical bar are
+\vest Identifiers that do not begin with a vertical line are
 terminated by a \meta{delimiter} or by the end of the input.
 So are dot, numbers, characters, and booleans.
-Identifiers that begin with a vertical bar are terminated by another vertical bar.
+Identifiers that begin with a vertical line are terminated by another vertical bar.
 
 The following four characters from the ASCII repertoire
 are reserved for future extensions to the
@@ -64,11 +64,11 @@ containing the corresponding character.
 \meta{token} \: \meta{identifier} \| \meta{boolean} \| \meta{number}\index{identifier}
 \>  \| \meta{character} \| \meta{string}
 \>  \| ( \| ) \| \sharpsign( \| \sharpsign u8( \| \singlequote{} \| \backquote{} \| , \| ,@ \| {\bf.}
-\meta{delimiter} \: \meta{whitespace} \| ( \| ) \| " \| ;\| \meta{vertical bar}
+\meta{delimiter} \: \meta{whitespace} \| ( \| ) \| " \| ;\| \meta{vertical line}
 \meta{intraline whitespace} \: \meta{space or tab}
 \meta{whitespace} \: \meta{intraline whitespace} \| \meta{newline}
 \> \| \meta{return}
-\meta{vertical bar} \: |
+\meta{vertical line} \: |
 \meta{comment} \: ; \= $\langle$\rm all subsequent characters up to a
 		    \>\ \rm line break$\rangle$\index{comment}
 \> \| \meta{nested comment}
@@ -94,7 +94,7 @@ identifiers.
 
 \begin{grammar}%
 \meta{identifier} \: \meta{initial} \arbno{\meta{subsequent}}
- \>  \| \meta{vertical bar} \arbno{\meta{symbol element}} \meta{vertical bar}
+ \>  \| \meta{vertical line} \arbno{\meta{symbol element}} \meta{vertical bar}
  \>  \| \meta{peculiar identifier}
 \meta{initial} \: \meta{letter} \| \meta{special initial}
  \> \| \meta{inline hex escape}
@@ -120,7 +120,7 @@ identifiers.
 \meta{dot subsequent} \: \meta{sign subsequent} \| .
 \meta{sign subsequent} \: \meta{initial} \| \meta{explicit sign} \| @
 \meta{symbol element} \:
- \> \meta{any character other than \meta{vertical bar} or \backwhack}
+ \> \meta{any character other than \meta{vertical line} or \backwhack}
  \> \| \meta{inline hex escape}
 
 \meta{boolean} \: \schtrue{} \| \schfalse{} \| \sharptrue{} \| \sharpfalse{}
