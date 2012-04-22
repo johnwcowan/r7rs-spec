@@ -25,7 +25,8 @@ syntax bindings that are traditionally associated with Scheme.
 .>                abs              and
 .append           apply            assoc
 .assq             assv             begin
-.boolean?         bytevector-copy  bytevector-copy!
+.boolean?         boolean=?
+.bytevector-copy  bytevector-copy!
 .bytevector-copy-partial
 .bytevector-length bytevector-u8-ref bytevector-u8-set!
 .bytevector?            caar             cadr
@@ -49,11 +50,11 @@ syntax bindings that are traditionally associated with Scheme.
 .eq?
 .equal?           eqv?             error
 .error-object?    error-object-message  error-object-irritants
-.even?            exact->inexact   exact-integer-sqrt
+.even?            exact            exact-integer-sqrt
 .exact-integer?   exact?           expt
 .floor            for-each         gcd
 .guard            if               import
-.inexact->exact   inexact?
+.inexact          inexact?
 .integer->char    integer?         lambda
 .lcm              length           let*
 .let-syntax       letrec*          letrec-syntax
@@ -82,7 +83,8 @@ syntax bindings that are traditionally associated with Scheme.
 .string-set!      string<=?        string<?
 .string=?         string>=?        string>?
 .string?          string           substring
-.symbol->string   symbol?          syntax-error
+.symbol->string   symbol=?
+.symbol?          syntax-error
 .syntax-rules     truncate         values
 .unquote          unquote-splicing
 .vector-copy
@@ -153,7 +155,7 @@ division.
 The \texttt{(scheme lazy)} library exports procedures and syntax keywords for lazy evaluation.
 
 \begin{scheme}
-.delay   eager  force   lazy
+.delay   delay-force   force   make-promise
 \end{scheme}
 
 \textbf{Case-Lambda Library}
@@ -163,6 +165,27 @@ syntax.
 
 \begin{scheme}
 .case-lambda
+\end{scheme}
+
+\textbf{CxR Library}
+
+These twenty-four procedures are the compositions of {\cf car} and {\cf cdr}
+with more than three {\cf car} and {\cf cdr} operations.
+For example {\cf caddr} could be defined by
+
+\begin{scheme}
+(define caddr (lambda (x) (car (cdr (cdr x))))){\rm.}%
+\end{scheme}
+
+Similar procedures with fewer operations are included in the base
+library.  See section~\ref{listsection}.
+
+\begin{scheme}
+.caaar
+.caadr
+\ldots
+.cdddar
+.cddddr
 \end{scheme}
 
 \textbf{Eval Library}

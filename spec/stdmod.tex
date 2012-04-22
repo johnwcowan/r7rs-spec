@@ -25,7 +25,7 @@ syntax bindings that are traditionally associated with Scheme.
 {\cf abs}             {\cf and}             {\cf append}
 {\cf apply}           {\cf assoc}           {\cf assq}
 {\cf assv}            {\cf begin}           {\cf binary-port?}
-{\cf boolean?\ }       {\cf bytevector-copy}
+{\cf boolean=?\ }      {\cf boolean?\ }       {\cf bytevector-copy}
 {\cf bytevector-copy!}
 {\cf bytevector-copy-partial}
 {\cf bytevector-copy-partial!}
@@ -60,13 +60,13 @@ syntax bindings that are traditionally associated with Scheme.
 {\cf eq?\ }            {\cf equal?\ }         {\cf eqv?}
 {\cf error}           {\cf error-object-irritants}
 {\cf error-object-message}             {\cf error-object?}
-{\cf even?\ }          {\cf exact->inexact}
+{\cf even?\ }          {\cf exact}
 {\cf exact-integer-sqrt}               {\cf exact-integer?}
 {\cf exact?\ }         {\cf expt}            {\cf floor}
 {\cf flush-output-port}                {\cf for-each}
 {\cf gcd}             {\cf get-output-bytevector}
 {\cf get-output-string}                {\cf guard}
-{\cf if}              {\cf import}          {\cf inexact->exact}
+{\cf if}              {\cf import}          {\cf inexact}
 {\cf inexact?\ }       {\cf input-port?\ }    {\cf integer->char}
 {\cf integer?\ }       {\cf lambda}          {\cf lcm}
 {\cf length}          {\cf let}             {\cf let*}
@@ -102,15 +102,16 @@ syntax bindings that are traditionally associated with Scheme.
 {\cf string-ref}      {\cf string-set!}     {\cf string<=?}
 {\cf string<?\ }       {\cf string=?\ }       {\cf string>=?}
 {\cf string>?\ }       {\cf string?\ }        {\cf substring}
-{\cf symbol->string}  {\cf symbol?\ }        {\cf syntax-error}
-{\cf syntax-rules}    {\cf textual-port?\ }  {\cf truncate}
-{\cf u8-ready?\ }      {\cf unless}          {\cf unquote}
-{\cf unquote-splicing}                 {\cf utf8->string}
-{\cf values}          {\cf vector}          {\cf vector->list}
-{\cf vector->string}  {\cf vector-copy}     {\cf vector-fill!}
-{\cf vector-for-each} {\cf vector-length}   {\cf vector-map}
-{\cf vector-ref}      {\cf vector-set!}     {\cf vector?}
-{\cf when}            {\cf with-exception-handler}
+{\cf symbol->string}  {\cf symbol=?\ }       {\cf symbol?}
+{\cf syntax-error}    {\cf syntax-rules}    {\cf textual-port?}
+{\cf truncate}        {\cf u8-ready?\ }      {\cf unless}
+{\cf unquote}         {\cf unquote-splicing}
+{\cf utf8->string}    {\cf values}          {\cf vector}
+{\cf vector->list}    {\cf vector->string}  {\cf vector-copy}
+{\cf vector-fill!}    {\cf vector-for-each} {\cf vector-length}
+{\cf vector-map}      {\cf vector-ref}      {\cf vector-set!}
+{\cf vector?\ }        {\cf when}
+{\cf with-exception-handler}
 {\cf write-bytevector}                 {\cf write-char}
 {\cf write-partial-bytevector}         {\cf write-u8}
 {\cf zero?}
@@ -162,8 +163,8 @@ division.
 The \texttt{(scheme lazy)} library exports procedures and syntax keywords for lazy evaluation.
 
 \begin{scheme}
-{\cf delay}           {\cf eager}           {\cf force}
-{\cf lazy}
+{\cf delay}           {\cf delay-force}     {\cf force}
+{\cf make-promise}
 \end{scheme}
 
 \textbf{Case-Lambda Library}
@@ -173,6 +174,25 @@ syntax.
 
 \begin{scheme}
 {\cf case-lambda}
+\end{scheme}
+
+\textbf{CxR Library}
+
+These twenty-four procedures are the compositions of {\cf car} and {\cf cdr}
+with more than three {\cf car} and {\cf cdr} operations.
+For example {\cf caddr} could be defined by
+
+\begin{scheme}
+(define caddr (lambda (x) (car (cdr (cdr x))))){\rm.}%
+\end{scheme}
+
+Similar procedures with fewer operations are included in the base
+library.  See section~\ref{listsection}.
+
+\begin{scheme}
+{\cf caaar}           {\cf caadr}
+\ldots
+{\cf cdddar}          {\cf cddddr}
 \end{scheme}
 
 \textbf{Eval Library}
