@@ -599,7 +599,7 @@ and the \defining{polar notation}
 where \var{r} is the magnitude and $\theta$ is the phase (angle) in radians.
 These are related by the equation
 $a+b\mathrm{i} = r \cos\theta + (r \sin\theta) \mathrm{i}$.
-All of \var{a}, \var{b}, \var{r}, $\theta$ are real numbers.
+All of \var{a}, \var{b}, \var{r}, and $\theta$ are real numbers.
 
 
 \subsection{Numerical operations}
@@ -2400,12 +2400,13 @@ characters in the given strings.
 \proto{list->string}{ list}{procedure}}
 
 {\cf string\coerce{}list} returns a newly allocated list of the
-characters that make up the given string.  {\cf list\coerce{}string}
+characters of \var{string} between \var{start} (inclusive) and \var{end} (exclusive).
+{\cf list\coerce{}string}
 returns a newly allocated string formed from the elements in the list
 \var{list}.  It is an error if any element is not a character.
 In both procedures, order is preserved.
-If \var{start} is omitted, it is assumed to be 0;
-if \var{end} is omitted, it is assumed to be the length of \var{string}.
+If \var{start} is omitted, it is assumed to be 0.
+If \var{end} is omitted, it is assumed to be the length of \var{string}.
 {\cf string\coerce{}list}
 and {\cf list\coerce{}string} are
 inverses so far as {\cf equal?}\ is concerned.  
@@ -2418,9 +2419,10 @@ inverses so far as {\cf equal?}\ is concerned.
 \proto{string-copy}{ string start}{procedure}
 \proto{string-copy}{ string start end}{procedure}}
 
-Returns a newly allocated copy of the given \var{string}.
-If \var{start} is omitted, it is assumed to be 0;
-if \var{end} is omitted, it is assumed to be the length of \var{string}.
+Returns a newly allocated copy of the part of the given \var{string}
+between \var{start} (inclusive) and \var{end} (exclusive).
+If \var{start} is omitted, it is assumed to be 0.
+If \var{end} is omitted, it is assumed to be the length of \var{string}.
 
 \end{entry}
 
@@ -2433,8 +2435,8 @@ if \var{end} is omitted, it is assumed to be the length of \var{string}.
 The {\cf string-fill!} procedure stores \var{fill}
 in the elements of \var{string}
 between \var{start} (inclusive) and \var{end} (exclusive).
-If \var{start} is omitted, it is assumed to be 0;
-if \var{end} is omitted, it is assumed to be the length of \var{string}.
+If \var{start} is omitted, it is assumed to be 0.
+If \var{end} is omitted, it is assumed to be the length of \var{string}.
 
 It is an error if \var{fill} is not a character or is forbidden in strings,
 or if \var{start} is less than \var{end}.
@@ -2454,8 +2456,8 @@ copying takes place as if the source is first copied into a temporary
 string and then into the destination.  This can be achieved without
 allocating storage by making sure to copy in the correct direction in
 such circumstances.
-If \var{start} is omitted, it is assumed to be 0;
-if \var{end} is omitted, it is assumed to be the length of \var{from}.
+If \var{start} is omitted, it is assumed to be 0.
+If \var{end} is omitted, it is assumed to be the length of \var{from}.
 
 It is an error if \var{start} is greater than \var{end},
 or \var{start} is less than zero, or \var{end} is greater than
@@ -2571,11 +2573,12 @@ The value returned by {\cf vector-set!}\ is unspecified.  % <!>
 \proto{list->vector}{ list}{procedure}}
 
 The {\cf vector->list} procedure returns a newly allocated list of the objects contained
-in the elements of \var{vector}.  The {\cf list->vector} procedure returns a newly
+in the elements of \var{vector} between \var{start} (inclusive) and \var{end} (exclusive).
+The {\cf list->vector} procedure returns a newly
 created vector initialized to the elements of the list \var{list}.
 In both procedures, order is preserved.
-If \var{start} is omitted, it is assumed to be 0;
-if \var{end} is omitted, it is assumed to be the length of \var{vector}.
+If \var{start} is omitted, it is assumed to be 0.
+If \var{end} is omitted, it is assumed to be the length of \var{vector}.
 
 \begin{scheme}
 (vector->list '\#(dah dah didah))  \lev  (dah dah didah)
@@ -2609,11 +2612,12 @@ In both procedures, order is preserved.
 \rproto{vector-copy}{ vector start end}{procedure}
 \rproto{vector-copy}{ vector start end fill}{procedure}}
 
-Returns a newly allocated copy of the given \var{vector}.
+Returns a newly allocated copy of the elements of the given \var{vector}
+between \var{start} (inclusive) and \var{end} (exclusive).
 The elements of the new vector are the same (in the sense of
 {\cf eqv?}) as the elements of the old.
-If \var{start} is omitted, it is assumed to be 0;
-if \var{end} is omitted, it is assumed to be the length of \var{vector}.
+If \var{start} is omitted, it is assumed to be 0.
+If \var{end} is omitted, it is assumed to be the length of \var{vector}.
 
 If \var{end} is greater than the length of \var{vector}, the
 \var{fill} argument is used to fill the additional elements of the result.
@@ -2630,8 +2634,8 @@ If \var{fill} is omitted, an implementation-defined value is used.
 The {\cf vector-fill!} procedure stores \var{fill}
 in the elements of \var{vector}
 between \var{start} (inclusive) and \var{end} (exclusive).
-If \var{start} is omitted, it is assumed to be 0;
-if \var{end} is omitted, it is assumed to be the length of \var{vector}.
+If \var{start} is omitted, it is assumed to be 0.
+If \var{end} is omitted, it is assumed to be the length of \var{vector}.
 
 It is an error if \var{start} is less than \var{end}.
 In any case, an unspecified value is returned.
@@ -2642,15 +2646,15 @@ In any case, an unspecified value is returned.
 \proto{vector-copy!}{ to at from start}{procedure}
 \proto{vector-copy!}{ to at from start end}{procedure}}
 
-Copies the elements of vector \var{from} between \var{start} and \var{end}
+Copies the elements of vector \var{from} between \var{start} (inclusive) and \var{end} (exclusive)
 to vector \var{to}, starting at \var{at}.  The order in which elements are
 copied is unspecified, except that if the source and destination overlap,
 copying takes place as if the source is first copied into a temporary
 vector and then into the destination.  This can be achieved without
 allocating storage by making sure to copy in the correct direction in
 such circumstances.
-If \var{start} is omitted, it is assumed to be 0;
-if \var{end} is omitted, it is assumed to be the length of \var{from}.
+If \var{start} is omitted, it is assumed to be 0.
+If \var{end} is omitted, it is assumed to be the length of \var{from}.
 
 It is an error if \var{start} is greater than \var{end},
 or \var{start} is less than zero, or \var{end} is greater than
@@ -2748,15 +2752,15 @@ the length of \var{bytevector}.
 \proto{bytevector-copy!}{ to at from start}{procedure}
 \proto{bytevector-copy!}{ to at from start end}{procedure}}
 
-Copies the bytes of bytevector \var{from} between \var{start} and \var{end}
+Copies the bytes of bytevector \var{from} between \var{start} (inclusive) and \var{end} (exclusive)
 to bytevector \var{to}, starting at \var{at}.  The order in which bytes are
 copied is unspecified, except that if the source and destination overlap,
 copying takes place as if the source is first copied into a temporary
 bytevector and then into the destination.  This can be achieved without
 allocating storage by making sure to copy in the correct direction in
 such circumstances.
-If \var{start} is omitted, it is assumed to be 0;
-if \var{end} is omitted, it is assumed to be the length of \var{from}.
+If \var{start} is omitted, it is assumed to be 0.
+If \var{end} is omitted, it is assumed to be the length of \var{from}.
 
 It is an error if \var{start} is greater than \var{end},
 or \var{start} is less than zero, or \var{end} is greater than
@@ -2793,7 +2797,7 @@ to {\cf utf8\coerce{}string}.
  
 This section describes various primitive procedures which control the
 flow of program execution in special ways.
-Procedures in this section that invoke procedural arguments
+Procedures in this section that invoke procedure arguments
 always do so in the same dynamic environment as the call of the
 original procedure.
 The {\cf procedure?}\ predicate is also described here.
