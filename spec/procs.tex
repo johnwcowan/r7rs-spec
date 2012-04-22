@@ -2660,7 +2660,7 @@ If \var{end} is omitted, it is assumed to be the length of \var{from}.
 It is an error if \var{start} is greater than \var{end},
 or \var{start} is less than zero, or \var{end} is greater than
 the length of \var{from},
-or \var{to} is less than zero or greater than the length of \var{to}.
+or \var{at} is less than zero or greater than the length of \var{to}.
 It is also an error if the inequality
 \texttt{({\cf >=} ({\cf -} ({\cf vector-length} \var{to}) \var{at}) ({\cf -} \var{end} \var{start}))}
 is false.  The value returned by {\cf vector-copy!} is unspecified.
