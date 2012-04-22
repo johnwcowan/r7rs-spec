@@ -722,7 +722,7 @@ Otherwise it returns \schfalse{}.
 
 The {\cf infinite?} procedure returns \schtrue{} on the real numbers
 {\cf +inf.0} and {\cf -inf.0}, and on complex
-numbers if either their real or imaginary parts are infinite.
+numbers if their real or imaginary parts or both are infinite.
 Otherwise it returns \schfalse{}.
 
 \begin{scheme}
@@ -736,8 +736,8 @@ Otherwise it returns \schfalse{}.
 \begin{entry}{%
 \proto{nan?}{ \vr{z}}{inexact library procedure}}
 
-The {\cf nan?} procedure returns \schtrue{} on {\cf +nan.0}, and on any complex number
-if its real part or its imaginary part or both are {\cf +nan.0}.
+The {\cf nan?} procedure returns \schtrue{} on {\cf +nan.0}, and on complex
+numbers if their real or imaginary parts or both are {\cf +nan.0}.
 Otherwise it returns \schfalse{}.
 
 \begin{scheme}
@@ -760,7 +760,7 @@ These procedures return \schtrue{} if their arguments are (respectively):
 equal, monotonically increasing, monotonically decreasing,
 monotonically nondecreasing, or monotonically nonincreasing,
 and \schfalse{} otherwise.
-If any of the arguments are +nan.0, all the predicates return \schfalse{}.
+If any of the arguments are {\cf +nan.0}, all the predicates return \schfalse{}.
 They do not distinguish between inexact zero and inexact negative zero.
 
 These predicates are required to be transitive.
