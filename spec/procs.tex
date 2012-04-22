@@ -2215,7 +2215,7 @@ that the index \var{start} is inclusive and the index \var{end} is
 exclusive.  Thus if \var{start} and \var{end} are the same index, a null
 substring is referred to, and if \var{start} is zero and \var{end} is
 the length of \var{string}, then the entire string is referred to.
-It is an error if \var{start} is less than \var{end}.
+It is an error if \var{start} is greater than \var{end}.
 
 \vest Some of the procedures that operate on strings ignore the
 difference between upper and lower case.  The versions that ignore case
@@ -2440,7 +2440,7 @@ If \var{start} is omitted, it is assumed to be 0.
 If \var{end} is omitted, it is assumed to be the length of \var{string}.
 
 It is an error if \var{fill} is not a character or is forbidden in strings,
-or if \var{start} is less than \var{end}.
+or if \var{start} is greater than \var{end}.
 In any case, an unspecified value is returned.
 
 \end{entry}
@@ -2638,7 +2638,7 @@ between \var{start} (inclusive) and \var{end} (exclusive).
 If \var{start} is omitted, it is assumed to be 0.
 If \var{end} is omitted, it is assumed to be the length of \var{vector}.
 
-It is an error if \var{start} is less than \var{end}.
+It is an error if \var{start} is greater than \var{end}.
 In any case, an unspecified value is returned.
 \end{entry}
 
