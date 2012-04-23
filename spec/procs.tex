@@ -3575,6 +3575,10 @@ The \var{thunk} is then called with no arguments.  When the \var{thunk} returns,
 the port is closed and the previous default is restored.
 It is an error if \var{thunk} does not accept zero arguments.
 Both procedures return the values yielded by \var{thunk}.
+If an escape procedure
+is used to escape from the continuation of these procedures, they
+behave exactly as if the current input/output port had been bound
+dynamically with {\cf parameterize}.
 
 
 \end{entry}
