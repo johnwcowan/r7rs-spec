@@ -32,18 +32,13 @@ syntax bindings that are traditionally associated with Scheme.
 {\cf bytevector-length}
 {\cf bytevector-u8-ref}
 {\cf bytevector-u8-set!}               {\cf bytevector?}
-{\cf caaaar}          {\cf caaadr}          {\cf caaar}
-{\cf caadar}          {\cf caaddr}          {\cf caadr}
-{\cf caar}            {\cf caar}            {\cf cadaar}
-{\cf cadadr}          {\cf cadar}           {\cf caddar}
-{\cf cadddr}          {\cf caddr}           {\cf cadr}
-{\cf cadr}            {\cf call-with-current-continuation}
-{\cf call-with-port}  {\cf call-with-values}
-{\cf call/cc}         {\cf car}             {\cf case}
-{\cf cdaaar}          {\cf cdaadr}          {\cf cdaar}
-{\cf cdadar}          {\cf cdaddr}          {\cf cdadr}
-{\cf cdar}            {\cf cddaar}          {\cf cddadr}
-{\cf cddar}           {\cf cdddar}          {\cf cddddr}
+{\cf caaar}           {\cf caadr}           {\cf caar}
+{\cf caar}            {\cf cadar}           {\cf caddr}
+{\cf cadr}            {\cf cadr}
+{\cf call-with-current-continuation}   {\cf call-with-port}
+{\cf call-with-values}                 {\cf call/cc}
+{\cf car}             {\cf case}            {\cf cdaar}
+{\cf cdadr}           {\cf cdar}            {\cf cddar}
 {\cf cdddr}           {\cf cddr}            {\cf cdr}
 {\cf ceiling}         {\cf char->integer}   {\cf char-ready?}
 {\cf char<=?\ }        {\cf char<?\ }         {\cf char=?}
@@ -178,12 +173,12 @@ syntax.
 
 \textbf{CxR Library}
 
-These twenty-four procedures are the compositions of {\cf car} and {\cf cdr}
-with more than three {\cf car} and {\cf cdr} operations.
-For example {\cf caddr} could be defined by
+These sixteen procedures are the compositions of {\cf car} and {\cf
+cdr} with more than three {\cf car} and {\cf cdr} operations.  For
+example {\cf caddar} could be defined by
 
 \begin{scheme}
-(define caddr (lambda (x) (car (cdr (cdr x))))){\rm.}%
+(define caddar (lambda (x) (car (cdr (cdr (car x)))))){\rm.}%
 \end{scheme}
 
 Similar procedures with fewer operations are included in the base

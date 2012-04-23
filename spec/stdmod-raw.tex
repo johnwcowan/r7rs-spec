@@ -36,8 +36,6 @@ syntax bindings that are traditionally associated with Scheme.
 .car              cdr
 .caar    cadr     cdar    cddr
 .caaar caadr cadar caddr cdaar cdadr cddar cdddr
-.caaaar caaadr caadar caaddr cadaar cadadr caddar cadddr
-.cdaaar cdaadr cdadar cdaddr cddaar cddadr cdddar cddddr
 .ceiling          char->integer    char<=?
 .char<?
 .char=?           char>=?          char>?
@@ -169,12 +167,12 @@ syntax.
 
 \textbf{CxR Library}
 
-These twenty-four procedures are the compositions of {\cf car} and {\cf cdr}
-with more than three {\cf car} and {\cf cdr} operations.
-For example {\cf caddr} could be defined by
+These sixteen procedures are the compositions of {\cf car} and {\cf
+cdr} with more than three {\cf car} and {\cf cdr} operations.  For
+example {\cf caddar} could be defined by
 
 \begin{scheme}
-(define caddr (lambda (x) (car (cdr (cdr x))))){\rm.}%
+(define caddar (lambda (x) (car (cdr (cdr (car x)))))){\rm.}%
 \end{scheme}
 
 Similar procedures with fewer operations are included in the base
