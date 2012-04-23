@@ -35,7 +35,7 @@ within a token.
 \vest Identifiers that do not begin with a vertical line are
 terminated by a \meta{delimiter} or by the end of the input.
 So are dot, numbers, characters, and booleans.
-Identifiers that begin with a vertical line are terminated by another vertical bar.
+Identifiers that begin with a vertical line are terminated by another vertical line.
 
 The following four characters from the ASCII repertoire
 are reserved for future extensions to the
@@ -66,7 +66,7 @@ containing the corresponding character.
 \>  \| ( \| ) \| \sharpsign( \| \sharpsign u8( \| \singlequote{} \| \backquote{} \| , \| ,@ \| {\bf.}
 \meta{delimiter} \: \meta{whitespace} \| ( \| ) \| " \| ;\| \meta{vertical line}
 =======
-\meta{delimiter} \: \meta{whitespace} \| \meta{vertical bar}
+\meta{delimiter} \: \meta{whitespace} \| \meta{vertical line}
 \> \| ( \| ) \| " \| ;
 >>>>>>> other
 \meta{intraline whitespace} \: \meta{space or tab}
@@ -74,7 +74,7 @@ containing the corresponding character.
 \> \| \meta{return}
 \meta{vertical line} \: |
 =======
-\meta{vertical bar} \: |
+\meta{vertical line} \: |
 >>>>>>> other
 \meta{comment} \: ; \= $\langle$\rm all subsequent characters up to a
 		    \>\ \rm line break$\rangle$\index{comment}
@@ -101,7 +101,7 @@ identifiers.
 
 \begin{grammar}%
 \meta{identifier} \: \meta{initial} \arbno{\meta{subsequent}}
- \>  \| \meta{vertical line} \arbno{\meta{symbol element}} \meta{vertical bar}
+ \>  \| \meta{vertical line} \arbno{\meta{symbol element}} \meta{vertical line}
  \>  \| \meta{peculiar identifier}
 \meta{initial} \: \meta{letter} \| \meta{special initial}
  \> \| \meta{inline hex escape}
@@ -128,7 +128,7 @@ identifiers.
 \meta{sign subsequent} \: \meta{initial} \| \meta{explicit sign} \| @
 \meta{symbol element} \:
  \> \meta{any character other than \meta{vertical line} or \backwhack}
- \> \| \meta{inline hex escape}
+ \> \| \meta{string element} \| \backwhack{}|
 
 \meta{boolean} \: \schtrue{} \| \schfalse{} \| \sharptrue{} \| \sharpfalse{}
 \label{charactersyntax}

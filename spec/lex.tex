@@ -23,24 +23,22 @@ characters:
 !\ \$ \% \verb"&" * + - . / :\ < = > ? @ \verb"^" \verb"_" \verb"~" %
 \end{scheme}
 
-In addition, any character supported by an implementation can be used within an identifier when
-specified using an \meta{inline hex escape}.  For example, the
-identifier \verb|H\x65;llo| is the same as the identifier
-\verb|Hello|, and in an implementation that supports the appropriate
-Unicode character the identifier \verb|\x3BB;| is the same as the
-identifier $\lambda$.
-
-As a convenience, identifiers may also be written as a sequence of
-zero or more
+Alternatively, an identifier can be represented by a sequence of zero or more
 characters enclosed within vertical lines ({\cf $|$}), analogous to
 string literals.  Any character, including whitespace characters, but
 excluding the backslash and vertical line characters,
 may appear verbatim in such an identifier.
+In addition, characters may be
+specified using an \meta{inline hex escape}.  For example, the
+identifier \verb+|H\x65;llo|+ is the same as the identifier
+\verb+Hello+, and in an implementation that supports the appropriate
+Unicode character the identifier \verb+|\x3BB;|+ is the same as the
+identifier $\lambda$.
+
 It is also possible to include the backslash and vertical line characters,
 as well as any other character,
-in the identifier with an \meta{inline hex escape}.  Thus the
-identifier \verb+|foo bar|+ is the same as the identifier
-\verb+foo\x20;bar+.
+in an identifier written with vertical lines by using escapes, the same ones
+available in strings:  \verb+|\t\t|+ and \verb+|\x9;\x9;|+ are the same.
 Note that \verb+||+ is a valid identifier that is not equal to any other
 identifier.
 
