@@ -1310,7 +1310,8 @@ the scope within which a macro is defined, and
 \end{itemize}
 
 The syntactic keyword of a macro may shadow variable bindings, and local
-variable bindings may shadow keyword bindings:  \index{keyword}  
+variable bindings may shadow syntactic bindings.  \index{keyword}  
+Two mechanisms are provided to prevent unintended conflicts:
 
 \begin{itemize}
 
@@ -1331,8 +1332,9 @@ In consequence, all macros
 defined using the pattern language  are ``hygienic'' and ``referentially
 transparent'' and thus preserve Scheme's lexical scoping.~\cite{Kohlbecker86,
 hygienic,Bawden88,macrosthatwork,syntacticabstraction}
-\mainindex{hygienic}
-\mainindex{referentially transparent}
+\mainindex{hygienic}\mainindex{referentially transparent}
+
+Implementations may provide macro facilities of other types.
 
 \subsection{Binding constructs for syntactic keywords}
 \label{bindsyntax}
