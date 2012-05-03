@@ -17,7 +17,9 @@ The value returned by {\cf integrate-system} is an infinite stream of
 system states.
 
 \begin{schemenoindent}
-(define (integrate-system system-derivative initial-state h)
+(define (integrate-system system-derivative
+                          initial-state
+                          h)
   (let ((next (runge-kutta-4 system-derivative h)))
     (letrec ((states
               (cons initial-state
