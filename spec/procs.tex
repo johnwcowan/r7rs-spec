@@ -382,6 +382,11 @@ arguments.  For example, multiplication of any number by an \tupe{exact} zero
 may produce an \tupe{exact} zero result, even if the other argument is
 \tupe{inexact}.
 
+Specifically, the expression {\cf (* 0 +inf.0)} may return {\cf 0},
+or {\cf +nan.0}, or report that inexact numbers are not supported,
+or report that non-rational real numbers are not supported, or fail
+silently or noisily in other implementation-specific ways.
+
 \subsection{Implementation restrictions}
 
 \index{implementation restriction}\label{restrictions}
