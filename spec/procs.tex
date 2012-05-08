@@ -533,9 +533,11 @@ Negative zero is an inexact real value written {\cf -0.0} which is distinct
 is not required to distinguish negative zero.  If it does, however, the
 behavior of the transcendental functions is sensitive to the distinction
 in accordance with IEEE 754.
+Specifically, in a Scheme implementing complex numbers and negative zero,
+{\cf (imag-part (log -1.0-0.0i))} is $-\pi$ rather than $\pi$.
 
 Furthermore, the negation of negative zero is ordinary zero and vice
-versa.  This implies that the sum of two negative zeros is negative,
+versa.  This implies that the sum of two or more negative zeros is negative,
 and the result of subtracting (positive) zero from a negative zero is
 likewise negative.  However, numerical comparisons treat negative zero
 as equal to zero.
