@@ -512,21 +512,25 @@ is regarded as an inexact real (but not rational) number that
 represents an indeterminate value less than the numbers represented
 by all rational numbers.
 
+Adding or multiplying an infinite value by any finite real value results
+in an appropriately signed infinity; however, the sum of positive and
+negative infinities is a NaN.  Positive infinity is the reciprocal
+of zero, and negative infinity is the reciprocal of negative zero.
+The behavior of the transcendental functions is sensitive to infinity
+in accordance with IEEE 754.
+
 A NaN is regarded as an inexact real (but not rational) number
 so indeterminate that it might represent any real value, including
 positive or negative infinity, and might even be greater than positive
 infinity or less than negative infinity.
-It might even represent no number at all, as in the case of 
-{\cf (asin 2.0)}.
+Additionally, in implementations that do not support non-real numbers, it
+represents the non-real value of {\cf (sqrt -1.0)} or {\cf (asin 2.0)}.
 
 IEEE 754 specifies multiple NaN values.  Scheme generally does
 not care if there is a single value (bit pattern) for NaN,
 or if there are multiple values: if there are multiple NaN
 values, or just one, they are all equivalent in terms of Scheme
 computation.
-
-Note that the real and the imaginary parts of a complex number
-can be infinities or NaNs.
 
 Negative zero is an inexact real value written {\cf -0.0} which is distinct
 (in the sense of {\cf eqv?}) from {\cf 0.0}.  A Scheme implementation
@@ -541,6 +545,9 @@ versa.  This implies that the sum of two or more negative zeros is negative,
 and the result of subtracting (positive) zero from a negative zero is
 likewise negative.  However, numerical comparisons treat negative zero
 as equal to zero.
+
+Note that both the real and the imaginary parts of a complex number
+can be infinities, NaNs, or negative zero.
 
 \subsection{Syntax of numerical constants}
 \label{numbernotations}
