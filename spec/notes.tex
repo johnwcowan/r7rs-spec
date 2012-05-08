@@ -88,7 +88,7 @@ procedure, {\cf case-lambda} has been added in its own library.
 \item Positive infinity, negative infinity, NaN, and negative inexact zero have been added
 to the numeric tower as inexact values with the written
 representations {\tt +inf.0}, {\tt -inf.0}, {\tt +nan.0}, and {\cf -0.0}
-respectively.
+respectively.  Support for them is not required.
 The representation {\tt -nan.0} is synonymous with {\tt +nan.0}.
 
 \item The procedures {\cf map} and {\cf for-each} are now required to terminate on
@@ -109,6 +109,8 @@ and {\cf exact-integer-sqrt} have been added.
 {\cf vector-copy}, {\cf vector-map}, {\cf vector-for-each}, 
 {\cf vector->string}, {\cf vector-copy!}, and {\cf string-copy!}
 have been added to round out the sequence operations.
+Some of these support processing of part of a string or vector using
+optional start and end arguments.
 
 \item Implementations may provide any subset of the full Unicode
 repertoire that includes ASCII, but implementations must support any
@@ -120,7 +122,7 @@ on Unicode code points.
 The new {\cf digit-value} procedure is added to obtain the numerical
 value of a numeric character.
 
-\item Case insensitivity is now the default.
+\item Case sensitivity is now the default in symbols and character names.
 
 \item There are now two additional comment syntaxes: {\tt \#;} to
 skip the next datum, and {\tt \#| ... |\#}
@@ -142,7 +144,8 @@ available in the {\tt (scheme process-context)} library.
 \item Procedures for accessing time-related values are available in the
 {\tt (scheme time)} library.
 
-\item A less irregular set of integer division operators is provided.
+\item A less irregular set of integer division operators is provided
+with new and clearer names.
 
 \item The {\cf load} procedure now accepts a second argument specifying the environment to
 load into.
@@ -229,8 +232,7 @@ infinities, NaN, and {\mbox -0.0} was adopted from \rsixrs. Most clarifications 
 numeric results were also adopted, but the \rsixrs\ procedures {\cf real-valued?},
 {\cf rational-valued?}, and {\cf integer-valued}? were not. 
 The \rsixrs\ division operators {\cf div}, {\cf mod}, {\cf div-and-mod}, {\cf
-div0}, {\cf mod0} and {\cf div0-and-mod0} have been replaced with a full
-set of 18 operators describing 6 different rounding semantics.
+div0}, {\cf mod0} and {\cf div0-and-mod0} are not provided.
 
 \item When a result is unspecified, it is still required to be a single value,
 in the interests of \rfivers\ compatibility. However, non-final expressions
