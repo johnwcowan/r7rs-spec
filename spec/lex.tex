@@ -259,7 +259,7 @@ circular references except in literals.  In particular,
 it is an error for {\cf quasiquote} (section~\ref{quasiquote}) to contain them.
 
 \begin{scheme}
-\#1=(begin (display \#\backwhack{}x) . \#1\#)
+\#1=(begin (display \#\backwhack{}x) \#1\#)
                        \ev \scherror%
 \end{scheme}
 \end{entry}
