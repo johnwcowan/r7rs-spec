@@ -453,11 +453,11 @@ The \hyper{test} expression is evaluated, and if it evaluates to a true value,
 the expressions are evaluated in order.  The result of the {\cf when}
 expression is unspecified.
 
-The following example outputs {\cf 12}:
 \begin{scheme}
 (when (= 1 1.0)
   (display "1")
   (display "2"))  \ev  \unspecified
+ \>{\em and prints}  12%
 \end{scheme}
 \end{entry}
 
@@ -468,11 +468,11 @@ The \hyper{test} expression is evaluated, and if it evaluates to \schfalse{},
 the expressions are evaluated in order.  The result of the {\cf unless}
 expression is unspecified.
 
-The following example outputs nothing:
 \begin{scheme}
 (unless (= 1 1.0)
   (display "1")
   (display "2"))  \ev  \unspecified
+ \>{\em and prints nothing}%
 \end{scheme}
 \end{entry}
 
