@@ -1106,9 +1106,13 @@ result from a real argument.
 \begin{entry}{%
 \proto{square}{ \vr{z}}{procedure}}
 
-Returns the square of \vr{z}.  Taking the square of a large integer
-is more efficient than multiplying arbitrary integers,
-and floating-point processors often have a primitive square operator.
+Returns the square of \vr{z}.
+This is equivalent to \texttt{({\cf *} \var{z} \var{z})}.
+
+%% Taking the square of a large integer is more efficient than
+%% multiplying arbitrary integers, and floating-point processors often
+%% have a primitive square operator.
+\todo{Shinn: We should move this to a separate rationale document and clarify.}
 
 \end{entry}
 
