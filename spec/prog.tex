@@ -470,8 +470,9 @@ or {\cf set!}.  However, a REPL should permit these actions.
 
 The \ide{begin}, \ide{include}, and \ide{include-ci} declarations are
 used to specify the commands and definitions that make up the body of
-the library.  The \ide{begin} declaration takes a list of expressions and definitions to be spliced
-literally, analogous to the top-level \ide{begin}.  
+the library.
+The \ide{begin} declaration takes a list of expressions and definitions
+analogous to the top-level \ide{begin}.  
 Both the \ide{include} and
 \ide{include-ci} declarations take one or more filenames expressed as string literals,
 apply an implementation-specific algorithm to find corresponding files,
@@ -487,12 +488,6 @@ All three may appear at the top level of a program.
 Implementations are encouraged to search for files in the directory
 which contains the including file, and to provide a way for users to
 specify other directories to search.
-\end{note}
-
-\begin{note}
-For portability, \ide{include} and \ide{include-ci} must operate on source files.
-Their operation on other kinds of files necessarily varies among
-implementations.
 \end{note}
 
 The \ide{cond-expand} library declaration
