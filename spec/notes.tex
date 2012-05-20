@@ -75,8 +75,8 @@ is specified in terms of it.
 
 \item Support for capturing multiple values has been enhanced with {\cf
 define-values}, {\cf let-values}, and {\cf let*-values}.
-Programs are now explicitly permitted to pass zero values or more than one
-value to continuations which discard them.
+Standard forms which introduce a body now permit passing zero or more than
+one value to the continuations of all non-final forms of the body.
 
 \item The {\cf case} conditional now supports a {\tt =>} syntax analogous to {\cf cond}.
 
