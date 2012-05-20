@@ -166,6 +166,13 @@
       "\\_"
       str))
 
+(define (write-page-ref page-n out)
+  (display "\\hyperlink{page." out)
+  (write page-n out)
+  (display "}{" out)
+  (write page-n out)
+  (display "}" out))
+
 (define (write-entries key font main pages p)
   (if (and (char-alphabetic? (string-ref key 0))
            (not (char=? (string-ref *last-key* 0)
@@ -175,13 +182,13 @@
   (set! *last-key* key)
   (display (string-append *s1* font *s2* (escape key) *s3*) p)
   (if main
-      (begin (write main p)
+      (begin (write-page-ref main p)
              (if (not (null? pages))
                  (display *semi* p))))
   (if (not (null? pages))
-      (begin (write (car pages) p)
+      (begin (write-page-ref (car pages) p)
              (for-each (lambda (page)
                          (display *comma* p)
-                         (write page p))
+                         (write-page-ref page p))
                        (cdr pages))))
   (newline p))
