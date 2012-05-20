@@ -51,8 +51,11 @@ syntax bindings that are traditionally associated with Scheme.
 .even?            exact            exact-integer-sqrt
 .exact-integer?   exact?           expt
 .floor            for-each         gcd
+.floor/     floor-quotient     floor-remainder
+.truncate/  truncate-quotient  truncate-remainder
+.get-features
 .guard            if               import
-.inexact          inexact?
+.inexact          inexact?         infinite?
 .integer->char    integer?         lambda
 .lcm              length           let*
 .let-syntax       letrec*          letrec-syntax
@@ -68,15 +71,17 @@ syntax bindings that are traditionally associated with Scheme.
 .null?            number->string   number?
 .numerator        odd?             or
 .pair?            parameterize
-.bytevector-copy-partial!           positive?
+.positive?
 .procedure?       quasiquote       quote
 .quotient         raise-continuable
 .raise            rational?        rationalize
 .real?            remainder        reverse
 .round            set!             set-car!
-.set-cdr!         string->list     string->number
+.set-cdr!         square
+.string->list     string->number
 .string->symbol   string->vector   string-append
-.string-copy      string-fill!     string-for-each
+.string-copy      string-copy!
+.string-fill!     string-for-each
 .string-length    string-map       string-ref
 .string-set!      string<=?        string<?
 .string=?         string>=?        string>?
@@ -85,7 +90,7 @@ syntax bindings that are traditionally associated with Scheme.
 .symbol?          syntax-error
 .syntax-rules     truncate         values
 .unquote          unquote-splicing
-.vector-copy
+.vector-copy      vector-copy!
 .vector->list     vector->string   vector-fill!
 .vector-for-each  vector-length    vector-map
 .vector-ref       vector-set!      vector?
@@ -96,6 +101,7 @@ syntax bindings that are traditionally associated with Scheme.
 .close-input-port
 .close-output-port        current-error-port
 .current-input-port       current-output-port
+.eof-object
 .eof-object?              flush-output-port
 .get-output-string        get-output-bytevector
 .input-port?              newline
@@ -134,20 +140,6 @@ typically only useful with non-real numbers.
 .make-polar           make-rectangular
 \end{scheme}
 
-\textbf{Division Library}
-
-The \texttt{(scheme division)} library exports procedures for integer
-division.
-
-\begin{scheme}
-.floor/     floor-quotient     floor-remainder
-.ceiling/   ceiling-quotient   ceiling-remainder
-.truncate/  truncate-quotient  truncate-remainder
-.round/     round-quotient     round-remainder
-.euclidean/ euclidean-quotient euclidean-remainder
-.centered/ centered-quotient centered-remainder
-\end{scheme}
-
 \textbf{Lazy Library}
 
 The \texttt{(scheme lazy)} library exports procedures and syntax keywords for lazy evaluation.
@@ -167,16 +159,17 @@ syntax.
 
 \textbf{CxR Library}
 
-These sixteen procedures are the compositions of {\cf car} and {\cf
-cdr} with more than three {\cf car} and {\cf cdr} operations.  For
-example {\cf caddar} could be defined by
+The \texttt{(scheme cxr)} library exports twenty-four procedures which
+are the compositions of from three to four {\cf car} and {\cf cdr}
+operations.  For example {\cf caddar} could be defined by
 
 \begin{scheme}
 (define caddar (lambda (x) (car (cdr (cdr (car x)))))){\rm.}%
 \end{scheme}
 
-Similar procedures with fewer operations are included in the base
-library.  See section~\ref{listsection}.
+The procedures {\cf car} and {\cf cdr} themselves and the four
+two-level compositions are included in the base library.  See
+section~\ref{listsection}.
 
 \begin{scheme}
 .caaar
@@ -277,16 +270,6 @@ with Unicode character operations.
 .digit-value
 \end{scheme}
 
-\textbf{Char Normalization Library}
-
-The \texttt{(scheme char normalization)} library provides procedures
-for dealing with Unicode normalization operations.
-
-\begin{scheme}
-.string-ni=?     string-ni<?     string-ni>?
-.string-ni<=?    string-ni>=?
-\end{scheme}
-
 \textbf{Time Library}
 
 The \texttt{(scheme time)} library provides access to time-related values.
@@ -295,4 +278,39 @@ The \texttt{(scheme time)} library provides access to time-related values.
 .current-second
 .current-jiffy
 .jiffies-per-second
+\end{scheme}
+
+\textbf{R5RS Library}
+
+The \texttt{(scheme r5rs)} library provides backwards compatibility with
+the ``Revised$^5$ report''~\cite{R5RS}.
+
+\begin{scheme}
+.- * / + < <= = > >= abs acos and angle append apply asin assoc assq
+.assv atan begin boolean? call-with-current-continuation
+.call-with-values car case cdr ceiling char->integer char-alphabetic?
+.char-ci<? char-ci<=? char-ci=? char-ci>? char-ci>=? char-downcase
+.char-lower-case? char-numeric? char-ready? char-upcase
+.char-upper-case? char-whitespace? char? char<? char<=? char=? char>?
+.char>=? close-input-port close-output-port complex? cond cons cos
+.current-input-port current-output-port define define-syntax delay
+.denominator display do dynamic-wind eof-object? eq? equal? eqv? eval
+.even? exact->inexact exact? exp expt floor for-each force gcd if
+.imag-part inexact->exact inexact? input-port? integer->char integer?
+.interaction-environment lambda lcm length let let-syntax let* letrec
+.letrec-syntax list list->string list->vector list-ref list-tail list?
+.load log magnitude make-polar make-rectangular make-string make-vector
+.map max member memq memv min modulo negative? newline not
+.null-environment null? number->string number? numerator odd?
+.open-input-file open-output-file or output-port? pair? peek-char
+.positive? procedure? quasiquote quote quotient rational? rationalize
+.read read-char real-part real? remainder reverse round
+.scheme-report-environment set-car! set-cdr! set! sin sqrt string
+.string->list string->number string->symbol string-append string-ci<?
+.string-ci<=? string-ci=? string-ci>? string-ci>=? string-copy
+.string-fill! string-length string-ref string-set! string? string<?
+.string<=? string=? string>? string>=? substring symbol->string symbol?
+.tan truncate values vector vector->list vector-fill! vector-length
+.vector-ref vector-set! vector? with-input-from-file
+.with-output-to-file write write-char zero?
 \end{scheme}
