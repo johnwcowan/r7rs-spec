@@ -70,10 +70,12 @@ containing the corresponding character.
 \meta{whitespace} \: \meta{intraline whitespace} \| \meta{newline}
 \> \| \meta{return}
 \meta{vertical line} \: |
+\meta{line ending} \: \meta{newline} \| \meta{return} \meta{newline}
+\> \| \meta{return}
 \meta{comment} \: ; \= $\langle$\rm all subsequent characters up to a
-		    \>\ \rm line break$\rangle$\index{comment}
+		    \>\ \rm line ending$\rangle$\index{comment}
 \> \| \meta{nested comment}
-\> \| \#; \meta{atmosphere} \meta{datum}
+\> \| \#; \meta{intertoken space} \meta{datum}
 \meta{nested comment} \: \#| \= \meta{comment text}
 \> \arbno{\meta{comment cont}} |\#
 \meta{comment text} \: \= $\langle$\rm character sequence not containing
