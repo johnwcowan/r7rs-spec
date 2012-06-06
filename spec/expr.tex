@@ -877,6 +877,9 @@ implement \defining{lazy evaluation} or \defining{call by need}.
 the {\cf force} procedure) to evaluate
 \hyper{expression}, and deliver the resulting value.
 \todo{consider removing unspecified effect}
+This behavior may be implemented in a variety of ways,
+including the return of a thunk which `force` will evaluate
+to the creation of a background thread to do the computation.
 The effect of \hyper{expression} returning multiple values
 is unspecified.
 
