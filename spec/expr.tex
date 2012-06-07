@@ -878,8 +878,8 @@ the {\cf force} procedure) to evaluate
 \hyper{expression}, and deliver the resulting value.
 \todo{consider removing unspecified effect}
 This behavior may be implemented in a variety of ways,
-including the return of a thunk which `force` will evaluate
-to the creation of a background thread to do the computation.
+including the return of a thunk which `force` will evaluate,
+or even the creation of a background thread to do the computation.
 The effect of \hyper{expression} returning multiple values
 is unspecified.
 
@@ -915,6 +915,10 @@ If no value has been computed for the promise, then a value is
 computed and returned.  The value of the promise must be cached (or
 ``memoized'') so that if it is forced a second time, the previously
 computed value is returned.
+
+If the value of the promise depends on any parameter whose value is
+different when the promise is forced for the first time, the result is
+unspecified.
 
 \begin{scheme}
 (force (delay (+ 1 2)))   \ev  3
