@@ -3661,6 +3661,7 @@ The value returned is unspecified.
 
 Takes a string and returns a textual input port that delivers
 characters from the string.
+If the string is modified, the effect is unspecified.
 
 \end{entry}
 
@@ -3680,6 +3681,7 @@ retrieval by {\cf get-output-string}.
 Returns a string consisting of the
 characters that have been output to the port so far in the order they
 were output.
+If the result string is modified, the effect is unspecified.
 \end{entry}
 
 
