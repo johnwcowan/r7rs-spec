@@ -537,9 +537,10 @@ appendix~\ref{stdfeatures}.
 \todo{Shinn: Perhaps make this a separate subsection describing a
   library ``resolution'' phase which runs prior to library expansion.}
 
-After all \ide{cond-expand} library declarations are expanded, a new environment is
-constructed for the library consisting of all imported bindings.  The
-expressions and declarations from all \ide{begin}, \ide{include} and \ide{include-ci}
+After all \ide{cond-expand} library declarations are expanded, a new
+environment is constructed for the library.  It consists of all
+bindings imported in the library declaration.  The expressions and
+declarations from all \ide{begin}, \ide{include} and \ide{include-ci}
 declarations are expanded in that environment in the order in which
 they occur in the library declaration.
 
