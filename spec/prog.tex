@@ -19,15 +19,15 @@ Implementations which store libraries in files should document the
 mapping from the name of a library to its location in the file system.
 
 Program parts other than expressions that are present
-at the top level of a program can be interpreted declaratively.
-They cause bindings to be created in the top level
+at the top level of the problems 
+cause bindings to be created in the top level
 environment or modify the value of existing top-level bindings.
 The initial (or
 ``top level'') Scheme environment is empty except for {\cf import},
 so further bindings can only be introduced with {\cf import}.
 
 Expressions occurring at the top level of a program are
-interpreted imperatively; they are executed in order when the program is
+executed in order when the program is
 invoked or loaded, and typically perform some kind of initialization.
 
 At the top level of a program {\tt(begin \hyperi{form} \dotsfoo)} is
