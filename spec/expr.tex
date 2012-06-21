@@ -254,6 +254,7 @@ unspecified.
 \begin{entry}{%
 \proto{set!}{ \hyper{variable} \hyper{expression}}{\exprtype}}
 
+\semantics
 \hyper{Expression} is evaluated, and the resulting value is stored in
 the location to which \hyper{variable} is bound.  It is an error if \hyper{variable} is not
 bound either in some region\index{region} enclosing the {\cf set!}\ expression
@@ -410,6 +411,7 @@ procedure are returned by the {\cf case} expression.
 \begin{entry}{%
 \proto{and}{ \hyperi{test} \dotsfoo}{\exprtype}}
 
+\semantics
 The \hyper{test} expressions are evaluated from left to right, and if
 any expression evaluates to \schfalse{} (see
 section~\ref{booleansection}), then \schfalse{} is returned.  Any remaining
@@ -430,6 +432,7 @@ are no expressions then \schtrue{} is returned.
 \begin{entry}{%
 \proto{or}{ \hyperi{test} \dotsfoo}{\exprtype}}
 
+\semantics
 The \hyper{test} expressions are evaluated from left to right, and the value of the
 first expression that evaluates to a true value (see
 section~\ref{booleansection}) is returned.  Any remaining expressions
@@ -449,7 +452,11 @@ or if there are no expressions, \schfalse{} is returned.
 \begin{entry}{%
 \proto{when}{ \hyper{test} \hyperi{expression} \hyperii{expression} \dotsfoo}{\exprtype}}
 
-The \hyper{test} expression is evaluated, and if it evaluates to a true value,
+\syntax
+The \hyper{test} is an expression.
+
+\semantics
+The test is evaluated, and if it evaluates to a true value,
 the expressions are evaluated in order.  The result of the {\cf when}
 expression is unspecified.
 
@@ -464,7 +471,11 @@ expression is unspecified.
 \begin{entry}{%
 \proto{unless}{ \hyper{test} \hyperi{expression} \hyperii{expression} \dotsfoo}{\exprtype}}
 
-The \hyper{test} expression is evaluated, and if it evaluates to \schfalse{},
+\syntax
+The \hyper{test} is an expression.
+
+\semantics
+The test is evaluated, and if it evaluates to \schfalse{},
 the expressions are evaluated in order.  The result of the {\cf unless}
 expression is unspecified.
 
@@ -783,6 +794,11 @@ or input and output.
     (\hyper{test} \hyper{expression} \dotsfoo)\\
   \hyper{command} \dotsfoo)}
 
+\syntax
+All of \hyper{init}, \hyper{step}, \hyper{test}, and \hyper{command}
+are expressions.
+
+\semantics
 A {\cf do} expression is an iteration construct.  It specifies a set of variables to
 be bound, how they are to be initialized at the start, and how they are
 to be updated on each iteration.  When a termination condition is met,
@@ -834,6 +850,7 @@ been written instead of {\cf(\hyper{variable} \hyper{init})}.
 \rproto{let}{ \hyper{variable} \hyper{bindings} \hyper{body}}{\exprtype}}
 
 \label{namedlet}
+\semantics
 ``Named {\cf let}'' is a variant on the syntax of \ide{let} which provides
 a more general looping construct than {\cf do} and can also be used to express
 recursions.
@@ -870,6 +887,7 @@ invoking the procedure named by \hyper{variable}.
 
 \todo{Fix.}
 
+\semantics
 The {\cf delay} construct is used together with the procedure \ide{force} to
 implement \defining{lazy evaluation} or \defining{call by need}.
 {\tt(delay~\hyper{expression})} returns an object called a
@@ -887,6 +905,7 @@ is unspecified.
 
 \todo{Fix.}
 
+\semantics
 The expression {\cf (delay-force \var{expression})} is conceptually similar to 
 {\cf (delay (force \var{expression}))},
 with the difference that forcing the result
@@ -1040,6 +1059,10 @@ implementation-dependent.
 \hspace*{1em}\hyper{body})}}
 \mainschindex{parameterize}
 
+\syntax
+Both of \hyperi{param} and \hyperi{value} are expressions.
+
+\semantics
 A {\cf parameterize} expression is used to change the values returned by
 specified parameter objects during the evaluation of the body.
 \domain{It is an error if the value of any \hyper{param} expression is not a parameter object.}
