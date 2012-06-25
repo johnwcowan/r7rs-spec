@@ -1108,11 +1108,16 @@ result from a real argument.
 
 Returns the square of \vr{z}.
 This is equivalent to \texttt{({\cf *} \var{z} \var{z})}.
+\begin{scheme}
+(square 2)       \ev 4
+(square 2.0)     \ev 4.0
+\end{scheme}
 
-%% Taking the square of a large integer is more efficient than
-%% multiplying arbitrary integers, and floating-point processors often
-%% have a primitive square operator.
-\todo{Shinn: We should move this to a separate rationale document and clarify.}
+\begin{rationale}
+Taking the square of a large integer is more efficient than
+multiplying arbitrary integers, and floating-point processors often
+have a primitive square operator.
+\end{rationale}
 
 \end{entry}
 
@@ -1122,6 +1127,10 @@ This is equivalent to \texttt{({\cf *} \var{z} \var{z})}.
 Returns the principal square root of \vr{z}.  The result will have
 either a positive real part, or a zero real part and a non-negative imaginary
 part.
+
+\begin{scheme}
+(sqrt -1) \ev i {\it or} 1.0i {\it or} +nan.0
+\end{scheme}
 \end{entry}
 
 
@@ -4185,8 +4194,8 @@ fraction of a second which is defined by the return value of the
 constant during a run of the program, but may vary between different runs.
 
 \begin{rationale}
-The reason for allowing jiffies to be implementation-dependent is so that
-{\cf current-jiffy} can execute with minimum overhead. The idea is that it
+Jiffies are allowed to be implementation-dependent so that
+{\cf current-jiffy} can execute with minimum overhead. It
 should be very likely that a compactly represented integer will suffice
 as the returned value.  Any particular jiffy size will be inappropriate
 for some implementations: a microsecond is too long for a very fast
