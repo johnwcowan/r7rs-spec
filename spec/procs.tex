@@ -1077,7 +1077,7 @@ These procedures
 compute the usual transcendental functions.  The {\cf log} procedure
 computes the natural logarithm of \vr{z} (not the base ten logarithm).
 The {\cf asin}, {\cf acos}, and {\cf atan} procedures compute arcsine ($\sin^{-1}$),
-arccosine ($\cos^{-1}$), and arctangent ($\tan^{-1}$), respectively.
+arc-cosine ($\cos^{-1}$), and arctangent ($\tan^{-1}$), respectively.
 The two-argument variant of {\cf atan} computes {\tt (angle
 (make-rectangular \vr{x} \vr{y}))} (see below), even in implementations
 that don't support the complex library.
@@ -1150,7 +1150,7 @@ $\var{k} = s^2 + r$ and $\var{k} < (s+1)^2$.
 \begin{entry}{%
 \proto{expt}{ \vri{z} \vrii{z}}{procedure}}
 
-Returns \vri{z} raised to the power \vrii{z}.  For nonzero z1, this is
+Returns \vri{z} raised to the power \vrii{z}.  For nonzero \vri{z}, this is
 $${z_1}^{z_2} = e^{z_2 \log {z_1}}$$
 $0.0^z$ is $1.0$ if $z = 0.0$, and $0.0$ if {\cf (real-part z)} is positive.
 For other cases in which the first argument is zero, either an error is
