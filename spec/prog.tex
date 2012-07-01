@@ -549,10 +549,10 @@ declarations are expanded in that environment in the order in which
 they occur in the library declaration.
 
 When a library is loaded, its outermost expressions are executed
-in textual order.  A library is loaded zero or more
-times when it is imported by a program or by another library which is
-about to be loaded, but must be loaded at least once in every program in
-which it is so imported.
+in textual order.  
+Within a program, each imported library is loaded at least once,
+and, if imported by more than one program or library, may possibly
+be loaded additional times.
 
 \todo{Shinn: Mention it may also be loaded (or not in some cases, if
   the compiler is clever) during batch compilation?}
