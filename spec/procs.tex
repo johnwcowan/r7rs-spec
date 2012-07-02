@@ -2006,21 +2006,9 @@ Characters are written using the notation \sharpsign\backwhack\hyper{character}
 or \sharpsign\backwhack\hyper{character name} or
 \sharpsign\backwhack{}x\meta{hex scalar value}.
 
-Here are some examples:
-
-$$
-\begin{tabular}{ll}
-{\tt \#\backwhack{}a}&; lower case letter\\
-{\tt \#\backwhack{}A}&; upper case letter\\
-{\tt \#\backwhack{}(}&; left parenthesis\\
-{\tt \#\backwhack{} }&; the space character\\
-{\tt \#\backwhack{}iota}&; $\iota$ (if supported)\\
-{\tt \#\backwhack{}x03BB}&; $\lambda$ (if supported)\\
-\end{tabular}
-$$
-
 The following character names must be supported
-by all implementations:
+by all implementations with the given values.  
+Implementations are free to add other names.
 
 $$
 \begin{tabular}{ll}
@@ -2033,6 +2021,19 @@ $$
 {\tt \#\backwhack{}return}&; the return character, \textrm{U+000D}\\
 {\tt \#\backwhack{}space}&; the preferred way to write a space\\
 {\tt \#\backwhack{}tab}&; the tab character, \textrm{U+0009}\\
+\end{tabular}
+$$
+
+Here are some additional examples:
+
+$$
+\begin{tabular}{ll}
+{\tt \#\backwhack{}a}&; lower case letter\\
+{\tt \#\backwhack{}A}&; upper case letter\\
+{\tt \#\backwhack{}(}&; left parenthesis\\
+{\tt \#\backwhack{} }&; the space character\\
+{\tt \#\backwhack{}x03BB}&; $\lambda$ (if name is supported)\\
+{\tt \#\backwhack{}iota}&; $\iota$ (if both character and name are supported)\\
 \end{tabular}
 $$
 
