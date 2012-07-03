@@ -85,8 +85,14 @@ The formal syntax of Scheme is described in section~\ref{BNF}.
 \label{qualifiers}
 
 Every identifier defined in this report appears in one of several
-\defining{libraries}.  Identifiers defined in the base library
-are not marked specially in the body of the report.  A summary of
+\defining{libraries}.  Identifiers defined in the \defining{base library}
+are not marked specially in the body of the report.  
+This library includes the core syntax of Scheme
+and generally useful procedures that manipulate data.  For example, the
+variable {\cf abs} is bound to a
+procedure of one argument that computes the absolute value of a
+number, and the variable {\cf +} is bound to a procedure that computes
+sums.  The full list 
 all the standard libraries and the features they provide is given in
 Appendix~\ref{stdlibraries}.
 

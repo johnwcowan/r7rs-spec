@@ -34,19 +34,17 @@ At the top level of a program {\tt(begin \hyperi{form} \dotsfoo)} is
 equivalent to the sequence of expressions, definitions, and syntax definitions
 in the \ide{begin}.   Macros can expand into such {\cf begin}s.
 
-Implementations may provide an interactive session called a
+Implementations may provide facility called a
 \defining{REPL} (Read-Eval-Print Loop), where Scheme program parts can be
-entered and evaluated one at a time.  For convenience and ease of use,
+entered and evaluated one at a time.
+A REPL may be interactive in nature, or may take its input from a file
+or similar source or send its output to a file or similar destination or both.
+For convenience and ease of use,
 the ``top-level'' Scheme environment in a REPL
-must not be empty, but must start out with variables
-bound to locations containing at least the bindings provided by the
-base library.  This library includes the core syntax of Scheme
-and generally useful procedures that manipulate data.  For example, the
-variable {\cf abs} is bound to a
-procedure of one argument that computes the absolute value of a
-number, and the variable {\cf +} is bound to a procedure that computes
-sums.  The full list of {\cf(scheme base)} bindings can be found in
-Appendix~\ref{stdlibraries}.
+must not be empty, but must start out with 
+at least the identifiers of the base library bound.
+Other libraries may be imported or identifiers bound that are not
+part of any library.
 
 
 \section{Definitions}
