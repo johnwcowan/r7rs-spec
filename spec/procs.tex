@@ -1892,6 +1892,7 @@ Only the pairs themselves are copied; the cars of the result are
 the same (in the sense of {\cf eqv?}) as the cars of \var{list}.
 If \var{obj} is an improper list, so is the result, and the final
 cdrs are the same in the sense of {\cf eqv?}.
+It is an error if \var{obj} is a circular list.
 An \var{obj} which is not a list is returned unchanged.
 
 \end{entry}
