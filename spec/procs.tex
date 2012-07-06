@@ -3370,6 +3370,34 @@ The {\cf with-exception-handler} procedure returns the results of invoking
 exception handler for the dynamic extent (as determined by {\cf
   dynamic-wind}) of the invocation of \var{thunk}.
 
+\begin{scheme}
+(call-with-current-continuation
+ (lambda (k)
+  (with-exception-handler
+   (lambda (x)
+    (display "condition: ")
+    (write x)
+    (newline)
+    (k 'exception))
+   (lambda ()
+    (+ 1 (raise 'an-error))))))
+        \ev exception
+ \>{\em and prints}  condition: an error%
+
+(call-with-current-continuation
+ (lambda (k)
+   (with-exception-handler
+    (lambda (x)
+     (display "something went wrong")
+     (newline)
+     'dont-care)
+    (lambda ()
+     (+ 1 (raise 'an-error))))))
+         \ev \unspecified
+ \>{\em and prints}  something went wrong%
+\end{scheme}
+
+After printing, the second example then behaves in an unspecified way.
 \end{entry}
 
 \begin{entry}{%
