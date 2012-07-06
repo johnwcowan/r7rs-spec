@@ -2784,6 +2784,11 @@ The {\cf make-bytevector} procedure returns a newly allocated bytevector of
 length \vr{k}.  If \var{byte} is given, then all elements of the bytevector
 are initialized to \var{byte}, otherwise the contents of each
 element are unspecified.
+
+\begin{scheme}
+(make-bytevector 2 12) \ev \#u8(12 12)
+\end{scheme}
+
 \end{entry}
 
 \begin{entry}{%
@@ -2796,6 +2801,11 @@ Returns the length of \var{bytevector} in bytes as an exact integer.
 \proto{bytevector-u8-ref}{ bytevector k}{procedure}}
 
 Returns the \var{k}th byte of \var{bytevector}.
+
+\begin{scheme}
+(bytevector-u8-ref '\#u8(1 1 2 3 5 8 13 21)
+            5)  \lev  8
+\end{scheme}
 \end{entry}
 
 \begin{entry}{%
@@ -2804,6 +2814,12 @@ Returns the \var{k}th byte of \var{bytevector}.
 Stores \var{byte} as the \var{k}th byte of \var{bytevector}.
 The value returned by
 {\cf bytevector-u8-set!} is unspecified.
+
+\begin{scheme}
+(let ((bv (bytevector 1 2 3 4)
+  (bytevector-u8-set! bv 1 3)
+  bv) \lev \#u8(1 3 3 4)
+\end{scheme}
 \end{entry}
 
 \begin{entry}{%
@@ -2821,6 +2837,13 @@ between \var{start} (inclusive) and \var{end} (exclusive).
 It is an error if \var{start} is greater than \var{end},
 or \var{start} is less than zero, or \var{end} is greater than
 the length of \var{bytevector}.
+
+\begin{scheme}
+(define a \#u8(1 2 3 4 5))
+(bytevector-copy-partial
+  a 2 4)) \ev \#u8(3 4)
+\end{scheme}
+
 \end{entry}
 
 \begin{entry}{%
@@ -2845,6 +2868,14 @@ or \var{at} is less than zero or greater than the length of \var{to}.
 It is also an error if the inequality
 \texttt{({\cf >=} ({\cf -} ({\cf bytevector-length} \var{to}) \var{at}) ({\cf -} \var{end} \var{start}))}
 is false.  The value returned by {\cf bytevector-copy!} is unspecified.
+
+\begin{scheme}
+(define a (bytevector 1 2 3 4 5))
+(define b (bytevector 10 20 30 40 50))
+(bytevector-copy! b 1 a 0 2)
+b \ev \#u8(10 1 2 40 50)
+\end{scheme}
+
 \end{entry}
 
 \begin{entry}{%
