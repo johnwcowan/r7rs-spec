@@ -1148,6 +1148,21 @@ exception handler is that of the {\cf guard} expression.
 
 See section~\ref{exceptionsection} for a more complete discussion of
 exceptions.
+
+\begin{scheme}
+(guard (condition
+         ((assq 'a condition) => cdr)
+         ((assq 'b condition)))
+  (raise (list (cons 'a 42))))
+\ev 42
+
+(guard (condition
+         ((assq 'a condition) => cdr)
+         ((assq 'b condition)))
+  (raise (list (cons 'b 23))))
+\ev (b . 23)
+\end{scheme}
+
 \end{entry}
 
 
