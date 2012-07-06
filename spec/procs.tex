@@ -3712,7 +3712,7 @@ It is an error if \var{thunk} does not accept zero arguments.
 Both procedures return the values yielded by \var{thunk}.
 If an escape procedure
 is used to escape from the continuation of these procedures, they
-behave exactly as if the current input/output port had been bound
+behave exactly as if the current input or output port had been bound
 dynamically with {\cf parameterize}.
 
 
@@ -3792,9 +3792,20 @@ Returns a string consisting of the
 characters that have been output to the port so far in the order they
 were output.
 If the result string is modified, the effect is unspecified.
+
+\begin{scheme}
+(parameterize
+    ((current-output-port
+      (open-output-string)))
+    (display "piece")
+    (display " by piece ")
+    (display "by piece.")
+    (newline)
+    (get-output-string (current-output-port)))
+\ev "piece by piece by piece.\n"
+\end{scheme}
+
 \end{entry}
-
-
 
 \begin{entry}{%
 \proto{open-input-bytevector}{ bytevector}{procedure}}
