@@ -1,9 +1,45 @@
 \extrapart{Notes}
 
 
-\subsection*{Language changes since \rfivers}
+\subsection*{Incompatibilities with \rfivers}
+\label{incompatibilities}
+
+This section enumerates the incompatibilities between this report and
+the ``Revised$^5$ report''~\cite{R5RS}.
+
+{\em The list is incomplete and subject to change while this report is in draft status.}
+
+
+\begin{itemize}
+
+\item Case sensitivity is now the default in symbols and character names.
+This means that code written under the assumption that symbols could be
+written {\cf FOO} or {\cf Foo} in some contexts and {\cf foo} in other contexts
+must either be changed, be marked with a {\cf \#!fold-case} directive,
+or be included in a module using the {\cf include-ci} library declaration.
+All standard identifiers are entirely in lower case.
+
+\item The {\cf syntax-rules} construct now recognizes {\em \_} (low line) 
+as a wildcard, which means it cannot be used as a syntax variable.
+
+\item The \rfivers\ procedures {\cf exact->inexact} and {\cf inexact->exact}
+have been renamed to their \rsixrs\ names, {\cf inexact} and {\cf exact},
+respectively, as these names are shorter and more correct.
+The former names are still available in the \rfivers\ compatibility library.
+
+\item The guarantee that string comparison (with {\cf string<?} and the
+related predicates) is a lexicographical extension of character comparison
+(with {\cf char<?} and the related predicates) has been removed.  The former
+set provide an implementation-defined comparison as in \rfivers; the latter
+set provide comparison by Unicode code point.
+
+\item The procedures {\cf transcript-on} and {\cf transcript-off} have been removed.
+
+\end{itemize}
+
+\subsection*{Other language changes since \rfivers}
 \label{differences}
-This section enumerates the differences between this report and
+This section enumerates the additional differences between this report and
 the ``Revised$^5$ report''~\cite{R5RS}.
 
 {\em The list is incomplete and subject to change while this report is in draft status.}
@@ -58,8 +94,7 @@ and write bytes to and from bytevectors.
 parameter objects, as is the newly introduced {\cf
 current-error-port}.
 
-\item The {\cf syntax-rules} construct now recognizes {\em \_} (low line) 
-as a wildcard, allows
+\item The {\cf syntax-rules} construct now allows
 the ellipsis symbol to be specified explicitly instead of the default
 {\cf ...}, allows template escapes with an ellipsis-prefixed list, and
 allows tail patterns to follow an ellipsis pattern.
@@ -97,10 +132,6 @@ the shortest list when inputs have different length.
 \item The procedures {\cf member} and {\cf assoc} now take an optional third argument
 specifying the equality predicate to be used.
 
-\item The \rfivers\ procedures {\cf exact->inexact} and {\cf inexact->exact}
-have been renamed to their \rsixrs\ names, {\cf inexact} and {\cf exact},
-respectively, as these names are shorter and more correct.
-
 \item The procedures {\cf exact-integer?}\, {\cf square},
 and {\cf exact-integer-sqrt} have been added.
 
@@ -119,10 +150,8 @@ Various character and string procedures have been extended accordingly.
 String comparison remains implementation-dependent, and is no longer
 required to be consistent with character comparison, which is based
 on Unicode code points.
-The new {\cf digit-value} procedure is added to obtain the numerical
+The new {\cf digit-value} procedure has been added to obtain the numerical
 value of a numeric character.
-
-\item Case sensitivity is now the default in symbols and character names.
 
 \item There are now two additional comment syntaxes: {\tt \#;} to
 skip the next datum, and {\tt \#| ... |\#}
@@ -150,10 +179,8 @@ with new and clearer names.
 \item The {\cf load} procedure now accepts a second argument specifying the environment to
 load into.
 
-\item The procedures {\cf transcript-on} and {\cf transcript-off} have been removed.
-
 \item The semantics of read-eval-print loops are now partly prescribed,
-allowing the redefinition of procedures (but not syntax keywords) to be retroactive.
+requiring the redefinition of procedures, but not syntax keywords, to have retroactive effect.
 
 \end{itemize}
 
