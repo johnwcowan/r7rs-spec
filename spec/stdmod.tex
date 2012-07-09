@@ -166,7 +166,8 @@ are the compositions of from three to four {\cf car} and {\cf cdr}
 operations.  For example {\cf caddar} could be defined by
 
 \begin{scheme}
-(define caddar (lambda (x) (car (cdr (cdr (car x)))))){\rm.}%
+(define caddar
+  (lambda (x) (car (cdr (cdr (car x)))))){\rm.}%
 \end{scheme}
 
 The procedures {\cf car} and {\cf cdr} themselves and the four
