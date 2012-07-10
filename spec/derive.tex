@@ -524,7 +524,7 @@ macro, here called {\cf guard-aux}.
 \begin{scheme}
 (define-syntax \ide{case-lambda}
   (syntax-rules ()
-    ((case-lambda (params body0 body1 ...) ...)
+    ((case-lambda (params body0 ...) ...)
      (lambda args
        (let ((len (length args)))
          (let-syntax
@@ -545,6 +545,6 @@ macro, here called {\cf guard-aux}.
                             . body)
                           args)
                          (cl . rest))))))
-           (cl (params body0 body1 ...) ...)))))))
+           (cl (params body0 ...) ...)))))))
 \end{scheme}
 
