@@ -3857,6 +3857,9 @@ object parsable from the given textual input \var{port}, updating
 \var{port} to point to
 the first character past the end of the external representation of the object.
 
+Implementations may support extended syntax to represent record types or
+other types that do not have datum representations.
+
 \vest If an end of file is encountered in the input before any
 characters are found that can begin an object, then an end-of-file
 object is returned.  The port remains open, and further attempts
@@ -4059,6 +4062,10 @@ escaped by backslashes.  Symbols that contain non-ASCII characters
 are escaped with vertical lines.
 Character objects are written using the {\cf \#\backwhack} notation.
 Shared list structure is represented using datum labels.
+
+Implementations may support extended syntax to represent record types or
+other types that do not have datum representations.
+
 The {\cf write} procedure returns an unspecified value.
 \var{Port} may be omitted, in which case it defaults to the value
 returned by {\cf current-output-port}.
@@ -4085,7 +4092,12 @@ Strings that appear in the written representation are not enclosed in
 quotation marks, and no characters are escaped within those strings.  
 Symbols are not escaped.  Character
 objects appear in the representation as if written by {\cf write-char}
-instead of by {\cf write}.  The {\cf display} procedure returns an unspecified value.
+instead of by {\cf write}.
+
+Implementations may support extended syntax to represent record types or
+other types that do not have datum representations.
+
+The {\cf display} procedure returns an unspecified value
 \var{Port} may be omitted, in which case it defaults to the
 value returned by {\cf current-output-port}.
 
