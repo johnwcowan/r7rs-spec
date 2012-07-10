@@ -1304,6 +1304,7 @@ if an explicit radix prefix is present in \vr{string} (e.g. {\tt "\#o177"}).  If
 is not supplied, then the default radix is 10.  If \vr{string} is not
 a syntactically valid notation for a number, then {\cf string->number}
 returns \schfalse{}.
+An error is never signalled due to the content of \vr{string}.
 
 \begin{scheme}
 (string->number "100")        \ev  100
