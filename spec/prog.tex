@@ -468,7 +468,7 @@ forms modify this set as follows:
 \end{itemize}
 
 The top level of a program may also include \ide{import} declarations.
-In a library declaration, it is an error to import the same
+In a library declaration and at the top level, it is an error to import the same
 identifier more than once with different bindings, or to redefine or
 mutate an imported binding with {\cf define}, {\cf define-syntax}
 or {\cf set!}.  However, a REPL should permit these actions.
