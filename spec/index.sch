@@ -24,6 +24,9 @@
 ;; The TeX index entries for these values confuse the reader so we
 ;; skip them.
 (define *bad-entries* '("" "##"))
+(define *rename-entries*
+  '(("fold-case@\\texttt  {\\#!fold-case}" . "\\#!fold-case")
+    ("no-fold-case@\\texttt  {\\#!no-fold-case}" . "\\#!no-fold-case")))
 
 (define (read-entries in)
   (let ((next (read-char in)))
@@ -35,7 +38,9 @@
                (read-rest-of-line in)
                (read-entries in))
               (else
-               (let* ((font (read in))
+               (let* ((key (cond ((assoc key *rename-entries*) => cdr)
+                                 (else key)))
+                      (font (read in))
                       (main/aux (if (eq? 'main (read in)) 0 1))
                       (page (read in)))
                  (index-entry key font main/aux page)
