@@ -19,7 +19,7 @@ Implementations which store libraries in files should document the
 mapping from the name of a library to its location in the file system.
 
 Program parts other than expressions that are present
-at the top level of the problems 
+at the top level of the programs
 cause bindings to be created in the top level
 environment or modify the value of existing top-level bindings.
 The initial (or
@@ -34,7 +34,7 @@ At the top level of a program {\tt(begin \hyperi{form} \dotsfoo)} is
 equivalent to the sequence of expressions, definitions, and syntax definitions
 in the \ide{begin}.   Macros can expand into such {\cf begin}s.
 
-Implementations may provide facility called a
+Implementations may provide a facility called a
 \defining{REPL} (Read-Eval-Print Loop), where Scheme program parts can be
 entered and evaluated one at a time.
 A REPL may be interactive in nature, or may take its input from a file
