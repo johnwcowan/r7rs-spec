@@ -131,7 +131,7 @@ objects in the appropriate sections of chapter~\ref{initialenv}.
 \section{Storage model}
 \label{storagemodel}
 
-Variables and objects such as pairs, vectors, and strings implicitly
+Variables and objects such as pairs, strings, vectors, and bytevectors implicitly
 denote locations\mainindex{location} or sequences of locations.  A string, for
 example, denotes as many locations as there are characters in the string. 
 A new value can be
@@ -162,6 +162,11 @@ created by the other procedures listed in this report are mutable.
 It is an
 error to attempt to store a new value into a location that is denoted by an
 immutable object.
+
+If an implementation makes it impossible for any program to alter an
+immutable object, it may treat the object as a value (similar to a
+number, boolean, symbol, or the empty list) rather than as a container
+for immutable locations.
 
 These locations should be understood as conceptual, not physical.
 Hence, they do not necessarily correspond to memory addresses,
