@@ -283,6 +283,12 @@ The \texttt{(scheme time)} library provides access to time-related values.
 
 The \texttt{(scheme r5rs)} library provides backwards compatibility with
 the ``Revised$^5$ report''~\cite{R5RS}.
+Note that {\cf transcript-on} and {\cf transcript-off} are not present,
+and that {\cf exact} and {\cf inexact} appear under their \rfivers\ names
+of {\cf inexact->exact} and {\cf exact->inexact} respectively.  In addition,
+if an implementation does not provide a particular library such as the
+complex library, the corresponding identifiers will not appear in this
+library either.
 
 \begin{scheme}
 {\cf *}               {\cf +}               {\cf -}
