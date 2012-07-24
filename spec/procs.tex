@@ -1302,7 +1302,8 @@ It is an error if \vr{radix} is not 2, 8, 10,
 or 16.  If supplied, \vr{radix} is a default radix that will be overridden
 if an explicit radix prefix is present in \vr{string} (e.g. {\tt "\#o177"}).  If \vr{radix}
 is not supplied, then the default radix is 10.  If \vr{string} is not
-a syntactically valid notation for a number, then {\cf string->number}
+a syntactically valid notation for a number, or would result in a
+number that the implementation cannot represent, then {\cf string->number}
 returns \schfalse{}.
 An error is never signalled due to the content of \vr{string}.
 
@@ -3402,7 +3403,7 @@ exception handler for the dynamic extent (as determined by {\cf
  \>{\em and prints}  something went wrong%
 \end{scheme}
 
-After printing, the second example then behaves in an unspecified way.
+After printing, the second example then raises another exception.
 \end{entry}
 
 \begin{entry}{%

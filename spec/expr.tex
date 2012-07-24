@@ -932,7 +932,7 @@ If no value has been computed for the promise, then a value is
 computed and returned.  The value of the promise must be cached (or
 ``memoized'') so that if it is forced a second time, the previously
 computed value is returned.
-Consequently, a delayed expression is always evaluated using the parameter
+Consequently, a delayed expression is evaluated using the parameter
 values and exception handler of the call to {\cf force} which first
 requested its value.
 
