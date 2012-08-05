@@ -36,6 +36,7 @@ my %ticket_aliases = (37 => {keep => 'yes'},
                       58 => {yes => 'r6rs',
                              s => 'single'},
                       52 => {yes => 'srfi-38'},
+                      460 => {samebits => 'same-bits'},
                     );
 
 my $ticket;
@@ -97,9 +98,10 @@ sub load_votes {
       } else {
         $in_proposals = 0;
       }
-    } elsif (/^=== #?(\d+) .*===\s*$/) {
+    } elsif (/^=== #?(\d+) .*?(=*)\s*$/) {
       $ticket = int($1);
       $in_proposals = 0;
+      warn "missing closing === in header: $_" unless $2 eq "===";
       $votes{$ticket} = {} unless exists $votes{$ticket};
     } elsif ($ticket
              and $in_rationale
@@ -247,6 +249,9 @@ while (<>) {
       $section = $1;
     }
     print unless lc $section eq "instructions";
-    $ticket = int($1) if /^===\s+#?(\d+) .*===\s*$/;
+    if (/^===\s+#?(\d+) .*?(=*)\s*$/) {
+      $ticket = int($1);
+      warn "missing closing === in header: $_" unless $2 eq "===";
+    }
   }
 }
