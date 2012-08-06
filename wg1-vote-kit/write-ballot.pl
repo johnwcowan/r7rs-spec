@@ -15,7 +15,7 @@ my %aliases;
 
 # Fixed aliases for English synonyms.
 my %all_aliases =    (neither => 'no',
-		      none => 'no');
+                      none => 'no');
 
 # Fixed aliases added as the options changed.  Mostly mapping a naive
 # 'yes' option to a sensible default as more options are added.
@@ -37,6 +37,7 @@ my %ticket_aliases = (37 => {keep => 'yes'},
                              s => 'single'},
                       52 => {yes => 'srfi-38'},
                       460 => {samebits => 'same-bits'},
+                      369 => {require => 'required'},
                     );
 
 my $ticket;
@@ -88,6 +89,9 @@ sub load_votes {
       $votes{$ticket}{$user} = [@prefs2] if @prefs2;
     } elsif (/^\s*\*\s*'*Options:\s*'*\s*([^']\S.*)/i) {
       $options{$ticket}{$_}++ for split(/\s*,\s*/, lc $1);
+    } elsif (/^\s*\*\s*'*Rationale:\s*'*\s*(.*)/i) {
+      $rationales{$ticket} = {} unless exists $rationales{$ticket};
+      $rationales{$ticket}{$user} .= $1;
     } elsif (/^(\s*)\*\s*'*Proposals:\s*'*/i) {
       $in_proposals = 1;
       $proposal_depth = length($1);
