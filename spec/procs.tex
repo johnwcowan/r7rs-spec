@@ -2836,25 +2836,21 @@ The value returned by
 \end{entry}
 
 \begin{entry}{%
-\proto{bytevector-copy}{ bytevector}{procedure}}
-
-Returns a newly allocated bytevector containing the same bytes as
-\var{bytevector}.
-\end{entry}
-
-\begin{entry}{%
-\proto{bytevector-copy-partial}{ bytevector start end}{procedure}}
+\proto{bytevector-copy}{ bytevector}{procedure}
+\rproto{bytevector-copy}{ bytevector start}{procedure}
+\rproto{bytevector-copy}{ bytevector start end}{procedure}}
 
 Returns a newly allocated bytevector containing the bytes in \var{bytevector}
 between \var{start} (inclusive) and \var{end} (exclusive).
+If \var{start} is omitted, it is assumed to be 0.
+If \var{end} is omitted, it is assumed to be the length of \var{bytevector}.
 It is an error if \var{start} is greater than \var{end},
 or \var{start} is less than zero, or \var{end} is greater than
 the length of \var{bytevector}.
 
 \begin{scheme}
 (define a \#u8(1 2 3 4 5))
-(bytevector-copy-partial
-  a 2 4)) \ev \#u8(3 4)
+(bytevector-copy a 2 4)) \ev \#u8(3 4)
 \end{scheme}
 
 \end{entry}
