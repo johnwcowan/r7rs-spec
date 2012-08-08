@@ -1067,6 +1067,7 @@ all.
 \begin{entry}{%
 \proto{exp}{ \vr{z}}{inexact library procedure}
 \proto{log}{ \vr{z}}{inexact library procedure}
+\proto{log}{ \vri{z} \vrii{z}}{inexact library procedure}
 \proto{sin}{ \vr{z}}{inexact library procedure}
 \proto{cos}{ \vr{z}}{inexact library procedure}
 \proto{tan}{ \vr{z}}{inexact library procedure}
@@ -1077,7 +1078,9 @@ all.
 
 These procedures 
 compute the usual transcendental functions.  The {\cf log} procedure
-computes the natural logarithm of \vr{z} (not the base ten logarithm).
+computes the natural logarithm of \vr{z} (not the base ten logarithm)
+if a single argument is given, or the logarithm of \vri{z} to the base
+\vrii{z} if two arguments are given.
 The {\cf asin}, {\cf acos}, and {\cf atan} procedures compute arcsine ($\sin^{-1}$),
 arc-cosine ($\cos^{-1}$), and arctangent ($\tan^{-1}$), respectively.
 The two-argument variant of {\cf atan} computes {\tt (angle
