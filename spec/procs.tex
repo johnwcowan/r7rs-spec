@@ -864,7 +864,10 @@ These procedures return the sum or product of their arguments.
 With two or more arguments, these procedures return the difference or
 quotient of their arguments, associating to the left.  With one argument,
 however, they return the additive or multiplicative inverse of their argument.
+
 It is an error if any argument of {\cf /} other than the first is an exact zero.
+If the first argument is an exact zero, an implementation may return an
+exact zero unless one of the other arguments is a NaN.
 
 \begin{scheme}
 (- 3 4)                 \ev  -1
