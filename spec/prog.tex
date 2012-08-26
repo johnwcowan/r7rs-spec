@@ -557,13 +557,22 @@ and declarations, with the environment growing as imported bindings are
 added to it by each \ide{import} declaration.
 
 When a library is loaded, its outermost expressions are executed
-in textual order.  
-Within a program, each imported library is loaded at least once,
-and, if imported by more than one program or library, may possibly
-be loaded additional times.
+in textual order.
+If a library's definitions are referenced in the expanded form of a
+program or library body, then that library must be loaded before the
+expanded program or library body is evaluated. This rule applies
+transitively.  If a library is imported by more than one program or
+library, it may possibly be loaded additional times.
 
-\todo{Shinn: Mention it may also be loaded (or not in some cases, if
-  the compiler is clever) during batch compilation?}
+Similarly, during the expansion of a library, if a syntax keyword
+imported from a library is needed to expand the library, then the
+imported library must be visited before the expansion of the importing
+library.
+
+Regardless of the number of times that a library is loaded, each
+program or library that imports bindings from a library will be from a
+single loading of that library, regardless of the number of import
+declarations in which it appears.
 
 \subsection{Library example}
 The following example shows
