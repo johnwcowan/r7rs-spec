@@ -3703,14 +3703,16 @@ system on which the Scheme program is running.
 
 \domain{It is an error if \var{proc} does not accept one argument.}
 \todo{consider removing unspecified effect}
+These procedures call \var{proc} with one argument: the
+textual port obtained by opening the named file for input or output
+as if by {\cf open-input-file} or {\cf open-output-file}.  
 For {\cf call-with-input-file},
 an error is signalled satisfying {\cf file-error?} if
 the file named by \var{string} does not already exist; for
 {\cf call-with-output-file},
 the effect is unspecified if the file
-already exists. These procedures call \var{proc} with one argument: the
-textual port obtained by opening the named file for input or output
-as if by {\cf open-input-file} or {\cf open-output-file}.  If the
+already exists.
+If the
 file cannot be opened, an error is signalled satisfying {\cf file-error?}.  If \var{proc} returns,
 then the port is closed automatically and the values yielded by the
 \var{proc} are returned.  If \var{proc} does not return, then 
@@ -3731,7 +3733,9 @@ both {\cf call-with-current-continuation} and {\cf call-with-input-file} or
 \begin{entry}{%
 \proto{call-with-port}{ port proc}{procedure}}
 
-It is an error if \var{proc} does not accept one argument.  The {\cf call-with-port}
+\domain{It is an error if \var{proc} does not accept one argument.}
+
+The {\cf call-with-port}
 procedure calls \var{proc} with \var{port} as an argument.  If
 \var{proc} returns, \var{port} is closed automatically and the values
 returned by \var{proc} are returned.
