@@ -255,11 +255,11 @@ it obeys the same constraints as {\cf eqv?}.
 \proto{equal?}{ \vari{obj} \varii{obj}}{procedure}}
 
 The {\cf equal?} procedure recursively compares the contents of pairs,
-vectors, strings, bytevectors, and records, applying {\cf eqv?} on booleans,
+vectors, strings and bytevectors, applying {\cf eqv?} on booleans,
 symbols, numbers, characters, ports, procedures, and the empty list.
 If two objects are {\cf eqv?}, they must be {\cf equal?} as well.  
-Note that records are {\cf equal?} if their record types are the same
-and their correspondingly named fields are {\cf equal?}.
+%% Note that records are {\cf equal?} if their record types are the same
+%% and their correspondingly named fields are {\cf equal?}.
 In all other cases, {\cf equal?} may return either \schtrue{} or \schfalse{}.
 
 Even if its arguments are
