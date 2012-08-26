@@ -185,8 +185,6 @@ data as programs.
 
 \begin{scheme}
 {\cf environment}     {\cf eval}
-{\cf null-environment}
-{\cf scheme-report-environment}
 \end{scheme}
 
 \textbf{Repl Library}
@@ -279,14 +277,25 @@ The \texttt{(scheme time)} library provides access to time-related values.
 
 \textbf{R5RS Library}
 
-The \texttt{(scheme r5rs)} library provides backwards compatibility with
-the ``Revised$^5$ report''~\cite{R5RS}.
-Note that {\cf transcript-on} and {\cf transcript-off} are not present,
-and that {\cf exact} and {\cf inexact} appear under their \rfivers\ names
-of {\cf inexact->exact} and {\cf exact->inexact} respectively.  In addition,
-if an implementation does not provide a particular library such as the
+The \texttt{(scheme r5rs)} library provides the identifiers present in
+both this report and
+the ``Revised$^5$ report''~\cite{R5RS}, with the following deviations:
+
+\begin{itemize}
+
+\item{The \rfivers\ procedures {\cf transcript-on} and {\cf transcript-off} are not present.}
+
+\item{The {\cf exact} and {\cf inexact} procedures appear under their \rfivers\ names
+{\cf inexact->exact} and {\cf exact->inexact} respectively.}
+
+\item{If an implementation does not provide a particular library such as the
 complex library, the corresponding identifiers will not appear in this
-library either.
+library either.}
+
+\item{The \r5rs\ procedures {\cf scheme-report-environment}
+and {\cf null-environment} appear only in this library and not in any other.}
+
+\end{itemize}
 
 \begin{scheme}
 {\cf *}               {\cf +}               {\cf -}
