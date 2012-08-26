@@ -25,7 +25,8 @@ syntax bindings that are traditionally associated with Scheme.
 {\cf abs}             {\cf and}             {\cf append}
 {\cf apply}           {\cf assoc}           {\cf assq}
 {\cf assv}            {\cf begin}           {\cf binary-port?}
-{\cf boolean=?\ }      {\cf boolean?\ }       {\cf bytevector-copy}
+{\cf boolean=?\ }      {\cf boolean?}
+{\cf bytevector-append}                {\cf bytevector-copy}
 {\cf bytevector-copy!}
 {\cf bytevector-length}
 {\cf bytevector-u8-ref}
@@ -292,7 +293,7 @@ the ``Revised$^5$ report''~\cite{R5RS}, with the following deviations:
 complex library, the corresponding identifiers will not appear in this
 library either.}
 
-\item{The \r5rs\ procedures {\cf scheme-report-environment}
+\item{The \rfivers\ procedures {\cf scheme-report-environment}
 and {\cf null-environment} appear only in this library and not in any other.}
 
 \end{itemize}
@@ -365,8 +366,8 @@ and {\cf null-environment} appear only in this library and not in any other.}
 {\cf string?\ }        {\cf substring}       {\cf symbol->string}
 {\cf symbol?\ }        {\cf tan}             {\cf truncate}
 {\cf values}          {\cf vector}          {\cf vector->list}
-{\cf vector-fill!}    {\cf vector-length}   {\cf vector-ref}
-{\cf vector-set!}     {\cf vector?}
+{\cf vector-append}   {\cf vector-fill!}    {\cf vector-length}
+{\cf vector-ref}      {\cf vector-set!}     {\cf vector?}
 {\cf with-input-from-file}
 {\cf with-output-to-file}              {\cf write}
 {\cf write-char}      {\cf zero?}
