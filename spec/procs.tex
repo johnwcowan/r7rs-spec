@@ -2708,8 +2708,7 @@ If \var{end} is omitted, it is assumed to be the length of the first argument.
 \begin{entry}{%
 \proto{vector-copy}{ vector}{procedure}
 \rproto{vector-copy}{ vector start}{procedure}
-\rproto{vector-copy}{ vector start end}{procedure}
-\rproto{vector-copy}{ vector start end fill}{procedure}}
+\rproto{vector-copy}{ vector start end}{procedure}}
 
 Returns a newly allocated copy of the elements of the given \var{vector}
 between \var{start} (inclusive) and \var{end} (exclusive).
@@ -2718,9 +2717,7 @@ The elements of the new vector are the same (in the sense of
 If \var{start} is omitted, it is assumed to be 0.
 If \var{end} is omitted, it is assumed to be the length of \var{vector}.
 
-If \var{end} is greater than the length of \var{vector}, the
-\var{fill} argument is used to fill the additional elements of the result.
-If \var{fill} is omitted, an implementation-defined value is used.
+It is an error if \var{end} is greater than the length of \var{vector}.
 
 \begin{scheme}
 (define a \#(1 8 2 8)) ; a may be immutable
