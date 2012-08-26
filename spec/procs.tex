@@ -2733,6 +2733,17 @@ c \ev (8 2)
 
 \end{entry}
 
+\begin{entry}{%
+\proto{vector-append}{ \var{vector} \dotsfoo}{procedure}}
+
+Returns a newly allocated vectors whose elements are the concatenation
+of the elements in the given vectors.
+
+\begin{scheme}
+(vector-append \#(a b c) \#(d e f)) \lev \#(a b c d e f)
+\end{scheme}
+
+\end{entry}
 
 \begin{entry}{%
 \proto{vector-fill!}{ vector fill}{procedure}
@@ -2918,6 +2929,18 @@ is false.  The value returned by {\cf bytevector-copy!} is unspecified.
 (define b (bytevector 10 20 30 40 50))
 (bytevector-copy! b 1 a 0 2)
 b \ev \#u8(10 1 2 40 50)
+\end{scheme}
+
+\end{entry}
+
+\begin{entry}{%
+\proto{bytevector-append}{ \var{bytevector} \dotsfoo}{procedure}}
+
+Returns a newly allocated vectors whose elements are the concatenation
+of the elements in the given vectors.
+
+\begin{scheme}
+(bytevector-append \#u8(0 1 2) \#u8(3 4 5)) \lev \#u8(0 1 2 3 4 5)
 \end{scheme}
 
 \end{entry}
