@@ -86,8 +86,8 @@ folding.
 {\cf{}\#!no-fold-case}\sharpbangindex{no-fold-case}}
 
 These directives may appear anywhere comments are permitted (see
-section~\ref{wscommentsection})
-and are treated as comments, except that they affect the reading
+section~\ref{wscommentsection}) but must be followed by a delimiter.
+They are treated as comments, except that they affect the reading
 of subsequent data from the same port. The {\cf{}\#!fold-case} directive causes
 subsequent identifiers and character names to be case-folded
 as if by {\cf string-foldcase} (see section~\ref{stringsection}).
