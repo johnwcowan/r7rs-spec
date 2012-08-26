@@ -404,6 +404,8 @@ A \hyper{library declaration} may be any of:
 
 \item{\tt(include-ci \hyperi{filename} \hyperii{filename} \dotsfoo)}
 
+\item{\tt(include-library-declarations \hyperi{filename} \hyperii{filename} \dotsfoo)}
+
 \item{\tt(cond-expand \hyper{cond-expand clause} \dotsfoo)}
 
 \end{itemize}
@@ -449,7 +451,7 @@ forms modify this set as follows:
 \item \ide{rename} modifies the given \hyper{import set},
   replacing each instance of \hyperi{identifier} with
   \hyperii{identifier}. It is an error if any of the listed
-  identifiers are not found in the original set.
+  identifiers is not found in the original set.
 
 \item \ide{prefix} automatically renames all identifiers in
   the given \hyper{import set}, prefixing each with the specified
@@ -457,12 +459,12 @@ forms modify this set as follows:
 
 \item \ide{only} produces a subset of the given
   \hyper{import set}, including only the listed identifiers (after any
-  renaming).  It is an error if any of the listed identifiers are
+  renaming).  It is an error if any of the listed identifiers is
   not found in the original set.
 
 \item \ide{except} produces a subset of the given
   \hyper{import set}, excluding the listed identifiers (after any
-  renaming). It is an error if any of the listed identifiers are not
+  renaming). It is an error if any of the listed identifiers is not
   found in the original set.
 
 \end{itemize}
@@ -490,6 +492,12 @@ The difference between the two is that \ide{include-ci} reads each file
 as if it began with the {\cf{}\#!fold-case} directive, while \ide{include}
 does not.
 All three may appear at the top level of a program.
+
+The \ide{include-library-declarations} declaration is similar to
+\ide{include} except that the resulting forms are spliced into the
+current library form.  This can be used, for example, to share the
+same \ide{export} declaration among multiple libraries as a simple
+form of library interface.
 
 \begin{note}
 Implementations are encouraged to search for files in the directory
@@ -557,13 +565,22 @@ and declarations, with the environment growing as imported bindings are
 added to it by each \ide{import} declaration.
 
 When a library is loaded, its outermost expressions are executed
-in textual order.  
-Within a program, each imported library is loaded at least once,
-and, if imported by more than one program or library, may possibly
-be loaded additional times.
+in textual order.
+If a library's definitions are referenced in the expanded form of a
+program or library body, then that library must be loaded before the
+expanded program or library body is evaluated. This rule applies
+transitively.  If a library is imported by more than one program or
+library, it may possibly be loaded additional times.
 
-\todo{Shinn: Mention it may also be loaded (or not in some cases, if
-  the compiler is clever) during batch compilation?}
+Similarly, during the expansion of a library, if a syntax keyword
+imported from a library is needed to expand the library, then the
+imported library must be visited before the expansion of the importing
+library.
+
+Regardless of the number of times that a library is loaded, each
+program or library that imports bindings from a library will be from a
+single loading of that library, regardless of the number of import
+declarations in which it appears.
 
 \subsection{Library example}
 The following example shows

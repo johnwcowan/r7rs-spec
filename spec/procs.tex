@@ -59,10 +59,19 @@ The {\cf eqv?} procedure returns \schtrue{} if:
 symbol according to the {\cf symbol=?} procedure
 (section~\ref{symbolsection}).
 
-\item \vari{obj} and \varii{obj} are both numbers, 
-have the same exactness,
-are numerically equal (see {\cf =}, section~\ref{numbersection}),
-and it is not the case that one is {\cf 0.0} and the other is {\cf -0.0}.
+\item \vari{obj} and \varii{obj} are both exact numbers and
+are numerically equal (see {\cf =}).
+
+\item \vari{obj} and \varii{obj} are both inexact real numbers
+conforming to the IEEE 754-2008 standard, and have the same radix,
+precision, maximum exponent, sign, exponent and significand as
+described in that standard.
+
+\item \vari{obj} and \varii{obj} are both inexact real numbers,
+do not conform to IEEE 754-2008, and are numerically equal (see {\cf =}).
+
+\item \vari{obj} and \varii{obj} are both complex numbers whose
+real and imaginary parts are {\cf eqv?}.
 
 \item \vari{obj} and \varii{obj} are both characters and are the same
 character according to the {\cf char=?} procedure
@@ -91,9 +100,23 @@ symbol according to the {\cf symbol=?} procedure
 \item one of \vari{obj} and \varii{obj} is an exact number but the other
 is an inexact number.
 
-\item \vari{obj} and \varii{obj} are numbers for which the {\cf =}
-procedure returns \schfalse{}, and {\cf nan?} returns \schfalse{}
-for both.
+%% \item \vari{obj} and \varii{obj} are numbers for which the {\cf =}
+%% procedure returns \schfalse{}, and {\cf nan?} returns \schfalse{}
+%% for both.
+
+\item \vari{obj} and \varii{obj} are both exact numbers for which
+the {\cf =} procedure returns \schfalse{}.
+
+\item \vari{obj} and \varii{obj} are both inexact real numbers
+conforming to the IEEE 754-2008 standard, and have the same radix,
+precision, maximum exponent, sign, exponent and significand as
+described in that standard.
+
+\item \vari{obj} and \varii{obj} are both inexact real numbers
+not conforming to IEEE 754-2008 for which {\cf =} returns \schfalse{}.
+
+\item \vari{obj} and \varii{obj} are both complex numbers whose
+real or imaginary parts are not {\cf eqv?}.
 
 \item \vari{obj} and \varii{obj} are characters for which the {\cf char=?}
 procedure returns \schfalse{}.
@@ -135,6 +158,8 @@ boolean.
   (eqv? p p))                    \ev  \unspecified
 (eqv? (lambda (x) x)
       (lambda (y) y))    \ev  \unspecified
+(eqv? 0.0 -0.0)          \ev  \unspecified
+(eqv? 1.0e0 1.0f0)       \ev  \unspecified
 (eqv? +nan.0 +nan.0)     \ev  \unspecified%
 \end{scheme}
 
@@ -255,11 +280,11 @@ it obeys the same constraints as {\cf eqv?}.
 \proto{equal?}{ \vari{obj} \varii{obj}}{procedure}}
 
 The {\cf equal?} procedure recursively compares the contents of pairs,
-vectors, strings, bytevectors, and records, applying {\cf eqv?} on booleans,
+vectors, strings and bytevectors, applying {\cf eqv?} on booleans,
 symbols, numbers, characters, ports, procedures, and the empty list.
 If two objects are {\cf eqv?}, they must be {\cf equal?} as well.  
-Note that records are {\cf equal?} if their record types are the same
-and their correspondingly named fields are {\cf equal?}.
+%% Note that records are {\cf equal?} if their record types are the same
+%% and their correspondingly named fields are {\cf equal?}.
 In all other cases, {\cf equal?} may return either \schtrue{} or \schfalse{}.
 
 Even if its arguments are
@@ -2683,8 +2708,7 @@ If \var{end} is omitted, it is assumed to be the length of the first argument.
 \begin{entry}{%
 \proto{vector-copy}{ vector}{procedure}
 \rproto{vector-copy}{ vector start}{procedure}
-\rproto{vector-copy}{ vector start end}{procedure}
-\rproto{vector-copy}{ vector start end fill}{procedure}}
+\rproto{vector-copy}{ vector start end}{procedure}}
 
 Returns a newly allocated copy of the elements of the given \var{vector}
 between \var{start} (inclusive) and \var{end} (exclusive).
@@ -2693,9 +2717,7 @@ The elements of the new vector are the same (in the sense of
 If \var{start} is omitted, it is assumed to be 0.
 If \var{end} is omitted, it is assumed to be the length of \var{vector}.
 
-If \var{end} is greater than the length of \var{vector}, the
-\var{fill} argument is used to fill the additional elements of the result.
-If \var{fill} is omitted, an implementation-defined value is used.
+It is an error if \var{end} is greater than the length of \var{vector}.
 
 \begin{scheme}
 (define a \#(1 8 2 8)) ; a may be immutable
@@ -2708,6 +2730,17 @@ c \ev (8 2)
 
 \end{entry}
 
+\begin{entry}{%
+\proto{vector-append}{ \var{vector} \dotsfoo}{procedure}}
+
+Returns a newly allocated vectors whose elements are the concatenation
+of the elements in the given vectors.
+
+\begin{scheme}
+(vector-append \#(a b c) \#(d e f)) \lev \#(a b c d e f)
+\end{scheme}
+
+\end{entry}
 
 \begin{entry}{%
 \proto{vector-fill!}{ vector fill}{procedure}
@@ -2898,15 +2931,37 @@ b \ev \#u8(10 1 2 40 50)
 \end{entry}
 
 \begin{entry}{%
+\proto{bytevector-append}{ \var{bytevector} \dotsfoo}{procedure}}
+
+Returns a newly allocated vectors whose elements are the concatenation
+of the elements in the given vectors.
+
+\begin{scheme}
+(bytevector-append \#u8(0 1 2) \#u8(3 4 5)) \lev \#u8(0 1 2 3 4 5)
+\end{scheme}
+
+\end{entry}
+
+\begin{entry}{%
 \proto{utf8->string}{ bytevector} {procedure}
-\proto{string->utf8}{ string} {procedure}}
+\proto{utf8->string}{ bytevector start} {procedure}
+\proto{utf8->string}{ bytevector start end} {procedure}
+\proto{string->utf8}{ string} {procedure}
+\proto{string->utf8}{ string start} {procedure}
+\proto{string->utf8}{ string start end} {procedure}}
 
 These procedures translate between strings and bytevectors
 that encode those strings using the UTF-8 encoding.
-The {\cf utf8\coerce{}string} procedure decodes a bytevector
+The {\cf utf8\coerce{}string} procedure decodes the bytes of
+a bytevector between \var{start} (inclusive) and \var{end} (exclusive)
 and returns the corresponding string;
-the {\cf string\coerce{}utf8} procedure
-encodes a string and returns the corresponding bytevector.
+the {\cf string\coerce{}utf8} procedure encodes the characters of a
+string between \var{start} (inclusive) and \var{end} (exclusive)
+and returns the corresponding bytevector.
+If \var{start} is omitted, it is assumed to be 0.
+If \var{end} is omitted, it is assumed to be the length of
+\var{bytevector} or \var{string}, respectively.
+
 It is an error to pass invalid byte sequences
 or byte sequences representing characters which are forbidden in strings
 to {\cf utf8\coerce{}string}.
@@ -3494,6 +3549,17 @@ or one of an implementation-defined set of objects.  Otherwise, it returns
 \end{entry}
 
 \begin{entry}{%
+\proto{read-error?}{ obj}{procedure}
+\proto{file-error?}{ obj}{procedure}}
+
+Error type predicates.  Returns \schtrue{} if \var{obj} is an error
+object raised by the {\cf read} procedure or by the inability to open
+an input or output port on a file, respectively.  Otherwise, it
+returns \schfalse.
+
+\end{entry}
+
+\begin{entry}{%
 \proto{error-object-message}{ error-object}{procedure}}
 
 Returns the message encapsulated by \var{error-object}.
@@ -3533,7 +3599,7 @@ allowed to create new bindings in the environment-specifiers returned by
 \end{entry}
 
 \begin{entry}{%
-\proto{scheme-report-environment}{ version}{eval library procedure}}
+\proto{scheme-report-environment}{ version}{r5rs library procedure}}
 \label{environments}
 
 If \var{version} is equal to {\cf \integerversion},
@@ -3560,7 +3626,7 @@ by {\cf scheme-report-environment} may be immutable.
 \end{entry}
 
 \begin{entry}{%
-\proto{null-environment}{ version}{eval library procedure}}
+\proto{null-environment}{ version}{r5rs library procedure}}
 
 If \var{version} is equal to {\cf \integerversion},
 corresponding to this revision of the Scheme report (the
@@ -3687,10 +3753,11 @@ kind of port, respectively.  Otherwise they return \schfalse.
 
 
 \begin{entry}{%
-\proto{port-open?}{ port}{procedure}}
+\proto{input-port-open?}{ port}{procedure}
+\proto{output-port-open?}{ port}{procedure}}
 
 Returns \schtrue{} if \var{port} is still open and capable of
-performing input or output, and \schfalse{} otherwise.
+performing input or output, respectively, and \schfalse{} otherwise.
 
 
 \end{entry}
@@ -4075,7 +4142,12 @@ within those strings backslash and quotation mark characters are
 escaped by backslashes.  Symbols that contain non-ASCII characters
 are escaped with vertical lines.
 Character objects are written using the {\cf \#\backwhack} notation.
-Shared list structure is represented using datum labels.
+
+If \var{obj} contains cycles which would cause an infinite loop using
+the normal written representation, then at least the objects that form
+part of the cycle must be represented using datum labels as described
+in section~\ref{labelsection}.  Datum labels must not be used if there
+are no cycles.
 
 Implementations may support extended syntax to represent record types or
 other types that do not have datum representations.
@@ -4087,11 +4159,21 @@ returned by {\cf current-output-port}.
 \end{entry}
 
 \begin{entry}{%
+\proto{write-shared}{ obj}{write library procedure}
+\rproto{write-shared}{ obj port}{write library procedure}}
+
+The {\cf write-shared} procedure is the same as {\cf write}, except that
+shared structure must be represented using datum labels for all pairs
+and vectors for which it is possible.
+
+\end{entry}
+
+\begin{entry}{%
 \proto{write-simple}{ obj}{write library procedure}
 \rproto{write-simple}{ obj port}{write library procedure}}
 
 The {\cf write-simple} procedure is the same as {\cf write}, except that shared structure is
-not represented using datum labels.  This may cause {\cf write-simple} not to
+never represented using datum labels.  This may cause {\cf write-simple} not to
 terminate if \var{obj} contains circular structure.
 
 \end{entry}
@@ -4107,6 +4189,11 @@ quotation marks, and no characters are escaped within those strings.
 Symbols are not escaped.  Character
 objects appear in the representation as if written by {\cf write-char}
 instead of by {\cf write}.
+
+The {\cf display} representation of other objects is implementation
+specified, however {\cf display} must always terminate.  Thus if the
+normal {\cf write} representation is used, datum labels may be needed
+to represent cycles as in {\cf write}.
 
 Implementations may support extended syntax to represent record types or
 other types that do not have datum representations.

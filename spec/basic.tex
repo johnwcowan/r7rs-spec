@@ -163,10 +163,13 @@ It is an
 error to attempt to store a new value into a location that is denoted by an
 immutable object.
 
-If an implementation makes it impossible for any program to alter an
-immutable object, it may treat the object as a value (similar to a
-number, boolean, symbol, or the empty list) rather than as a container
-for immutable locations.
+%% If an implementation makes it impossible for any program to alter an
+%% immutable object, it may treat the object as a value (similar to a
+%% number, boolean, symbol, or the empty list) rather than as a container
+%% for immutable locations.
+\todo{Shinn: The previous comment that it is an error to mutate these
+  locations, combined with the following comment that they are only
+  conceptual, makes this note seem unecessary.}
 
 These locations should be understood as conceptual, not physical.
 Hence, they do not necessarily correspond to memory addresses,
