@@ -26,7 +26,7 @@ syntax bindings that are traditionally associated with Scheme.
 .append           apply            assoc
 .assq             assv             begin
 .boolean?         boolean=?
-.bytevector-copy  bytevector-copy!
+.bytevector-copy  bytevector-append  bytevector-copy!
 .bytevector-length bytevector-u8-ref bytevector-u8-set!
 .bytevector?            caar             cadr
 .call-with-current-continuation     call-with-values
@@ -326,7 +326,7 @@ and {\cf null-environment} appear only in this library and not in any other.}
 .string-ci<=? string-ci=? string-ci>? string-ci>=? string-copy
 .string-fill! string-length string-ref string-set! string? string<?
 .string<=? string=? string>? string>=? substring symbol->string symbol?
-.tan truncate values vector vector->list vector-fill! vector-length
+.tan truncate values vector vector-append vector->list vector-fill! vector-length
 .vector-ref vector-set! vector? with-input-from-file
 .with-output-to-file write write-char zero?
 \end{scheme}

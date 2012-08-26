@@ -64,8 +64,10 @@ the implementation on which it is to be used.
 {\cf raise-continuable} or {\cf error}, and can be handled with {\cf
 with-exception-handler} and the {\cf guard} syntax.
 Any object can specify an error condition; the implementation-defined
-conditions signalled by {\cf error} have accessor functions to
+conditions signalled by {\cf error} have a predicate to detect them and accessor functions to
 retrieve the arguments passed to {\cf error}.
+Conditions signalled by {\read} and by file-related procedures
+also have predicates to detect them.
 
 \item New disjoint types supporting access to multiple fields can be
 generated with SRFI 9's {\cf define-record-type}.
@@ -140,6 +142,7 @@ and {\cf exact-integer-sqrt} have been added.
 
 \item The procedures {\cf make-list}, {\cf list-copy}, {\cf list-set!},
 {\cf string-map}, {\cf string-for-each}, {\cf string->vector}, 
+{\cf vector-append},
 {\cf vector-copy}, {\cf vector-map}, {\cf vector-for-each}, 
 {\cf vector->string}, {\cf vector-copy!}, and {\cf string-copy!}
 have been added to round out the sequence operations.

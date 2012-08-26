@@ -131,6 +131,10 @@ and need not be distinct from objects previously used for the same purpose.
 In addition to errors signalled in situations described in this
 report, programmers may signal their own errors and handle signalled errors.
 
+The phrase ``an error is signalled satisfying'' means that an error is
+signalled as above.  Furthermore, if the object that is signalled is
+passed to the specified predicate (such as {\cf file-error?} or {\cf
+read-error?}), the predicate returns \schtrue{}.
 
 \vest If such wording does not appear in the discussion of
 an error, then implementations are not required to detect or report the
