@@ -578,9 +578,11 @@ imported library must be visited before the expansion of the importing
 library.
 
 Regardless of the number of times that a library is loaded, each
-program or library that imports bindings from a library will be from a
+program or library that imports bindings from a library will do so from a
 single loading of that library, regardless of the number of import
 declarations in which it appears.
+That is, {\cf (import (only (foo) a))} followed by {\cf (import (only (foo) b))}
+has the same effect as {\cf (import (only (foo) a b))}.
 
 \subsection{Library example}
 The following example shows
