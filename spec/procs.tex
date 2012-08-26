@@ -2944,14 +2944,24 @@ of the elements in the given vectors.
 
 \begin{entry}{%
 \proto{utf8->string}{ bytevector} {procedure}
-\proto{string->utf8}{ string} {procedure}}
+\proto{utf8->string}{ bytevector start} {procedure}
+\proto{utf8->string}{ bytevector start end} {procedure}
+\proto{string->utf8}{ string} {procedure}
+\proto{string->utf8}{ string start} {procedure}
+\proto{string->utf8}{ string start end} {procedure}}
 
 These procedures translate between strings and bytevectors
 that encode those strings using the UTF-8 encoding.
-The {\cf utf8\coerce{}string} procedure decodes a bytevector
+The {\cf utf8\coerce{}string} procedure decodes the bytes of
+a bytevector between \var{start} (inclusive) and \var{end} (exclusive)
 and returns the corresponding string;
-the {\cf string\coerce{}utf8} procedure
-encodes a string and returns the corresponding bytevector.
+the {\cf string\coerce{}utf8} procedure encodes the characters of a
+string between \var{start} (inclusive) and \var{end} (exclusive)
+and returns the corresponding bytevector.
+If \var{start} is omitted, it is assumed to be 0.
+If \var{end} is omitted, it is assumed to be the length of
+\var{bytevector} or \var{string}, respectively.
+
 It is an error to pass invalid byte sequences
 or byte sequences representing characters which are forbidden in strings
 to {\cf utf8\coerce{}string}.
