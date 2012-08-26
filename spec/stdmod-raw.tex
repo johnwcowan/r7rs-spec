@@ -27,7 +27,6 @@ syntax bindings that are traditionally associated with Scheme.
 .assq             assv             begin
 .boolean?         boolean=?
 .bytevector-copy  bytevector-copy!
-.bytevector-copy-partial
 .bytevector-length bytevector-u8-ref bytevector-u8-set!
 .bytevector?            caar             cadr
 .call-with-current-continuation     call-with-values
@@ -53,7 +52,7 @@ syntax bindings that are traditionally associated with Scheme.
 .floor            for-each         gcd
 .floor/     floor-quotient     floor-remainder
 .truncate/  truncate-quotient  truncate-remainder
-.get-features
+.features
 .guard            if               import
 .inexact          inexact?         infinite?
 .integer->char    integer?         lambda
@@ -113,7 +112,7 @@ syntax bindings that are traditionally associated with Scheme.
 .read-line
 .read-u8                  u8-ready?
 .write-char               write-u8
-.write-bytevector         write-partial-bytevector
+.write-bytevector
 .read-bytevector          read-bytevector!
 .string->utf8             utf8->string
 \end{scheme}
@@ -210,6 +209,7 @@ accessing with the program's calling context.
 .get-environment-variable
 .get-environment-variables
 .command-line
+.emergency-exit
 .exit
 \end{scheme}
 

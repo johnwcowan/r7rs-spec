@@ -468,10 +468,12 @@ forms modify this set as follows:
 \end{itemize}
 
 The top level of a program may also include \ide{import} declarations.
+
 In a library declaration and at the top level, it is an error to import the same
 identifier more than once with different bindings, or to redefine or
 mutate an imported binding with {\cf define}, {\cf define-syntax}
-or {\cf set!}.  However, a REPL should permit these actions.
+or {\cf set!}, or to refer to an identifier before it is imported.
+However, a REPL should permit these actions.
 
 The \ide{begin}, \ide{include}, and \ide{include-ci} declarations are
 used to specify the commands and definitions that make up the body of
@@ -542,12 +544,17 @@ appendix~\ref{stdfeatures}.
 \todo{Shinn: Perhaps make this a separate subsection describing a
   library ``resolution'' phase which runs prior to library expansion.}
 
+One possible implementation of libraries is as follows:
 After all \ide{cond-expand} library declarations are expanded, a new
-environment is constructed for the library.  It consists of all
-bindings imported in the library declaration.  The expressions and
+environment is constructed for the library consisting of all
+imported bindings.  The expressions and
 declarations from all \ide{begin}, \ide{include} and \ide{include-ci}
 declarations are expanded in that environment in the order in which
 they occur in the library declaration.
+Alternatively, \ide{cond-expand} and \ide{import} declarations may be processed
+in left to right order interspersed with the processing of expressions
+and declarations, with the environment growing as imported bindings are
+added to it by each \ide{import} declaration.
 
 When a library is loaded, its outermost expressions are executed
 in textual order.  

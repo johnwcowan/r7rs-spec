@@ -255,10 +255,12 @@ it obeys the same constraints as {\cf eqv?}.
 \proto{equal?}{ \vari{obj} \varii{obj}}{procedure}}
 
 The {\cf equal?} procedure recursively compares the contents of pairs,
-vectors, strings, and bytevectors, applying {\cf eqv?} on booleans,
+vectors, strings, bytevectors, and records, applying {\cf eqv?} on booleans,
 symbols, numbers, characters, ports, procedures, and the empty list.
-If two objects are {\cf eqv?}, they must be {\cf equal?} as well.  In all
-other cases, implementations may return either \schtrue{} or \schfalse{}.
+If two objects are {\cf eqv?}, they must be {\cf equal?} as well.  
+Note that records are {\cf equal?} if their record types are the same
+and their correspondingly named fields are {\cf equal?}.
+In all other cases, {\cf equal?} may return either \schtrue{} or \schfalse{}.
 
 Even if its arguments are
 circular data structures, {\cf equal?}\ must always terminate.
@@ -854,17 +856,18 @@ These procedures return the sum or product of their arguments.
 
 
 \begin{entry}{%
-\proto{-}{ \vri{z} \vrii{z}}{procedure}
-\rproto{-}{ \vr{z}}{procedure}
+\proto{-}{ \vr{z}}{procedure}
 \rproto{-}{ \vri{z} \vrii{z} \dotsfoo}{procedure}
-\proto{/}{ \vri{z} \vrii{z}}{procedure}
-\rproto{/}{ \vr{z}}{procedure}
+\proto{/}{ \vr{z}}{procedure}
 \rproto{/}{ \vri{z} \vrii{z} \dotsfoo}{procedure}}
 
 With two or more arguments, these procedures return the difference or
 quotient of their arguments, associating to the left.  With one argument,
 however, they return the additive or multiplicative inverse of their argument.
+
 It is an error if any argument of {\cf /} other than the first is an exact zero.
+If the first argument is an exact zero, an implementation may return an
+exact zero unless one of the other arguments is a NaN.
 
 \begin{scheme}
 (- 3 4)                 \ev  -1
@@ -1020,6 +1023,7 @@ mode specified by the IEEE 754 IEEE floating-point standard.
 If the argument to one of these procedures is inexact, then the result
 will also be inexact.  If an exact value is needed, the
 result can be passed to the {\cf exact} procedure.
+If the argument is infinite or a NaN, then it is returned.
 \end{note}
 
 \begin{scheme}
@@ -1065,6 +1069,7 @@ all.
 \begin{entry}{%
 \proto{exp}{ \vr{z}}{inexact library procedure}
 \proto{log}{ \vr{z}}{inexact library procedure}
+\proto{log}{ \vri{z} \vrii{z}}{inexact library procedure}
 \proto{sin}{ \vr{z}}{inexact library procedure}
 \proto{cos}{ \vr{z}}{inexact library procedure}
 \proto{tan}{ \vr{z}}{inexact library procedure}
@@ -1075,7 +1080,9 @@ all.
 
 These procedures 
 compute the usual transcendental functions.  The {\cf log} procedure
-computes the natural logarithm of \vr{z} (not the base ten logarithm).
+computes the natural logarithm of \vr{z} (not the base ten logarithm)
+if a single argument is given, or the logarithm of \vri{z} to the base
+\vrii{z} if two arguments are given.
 The {\cf asin}, {\cf acos}, and {\cf atan} procedures compute arcsine ($\sin^{-1}$),
 arc-cosine ($\cos^{-1}$), and arctangent ($\tan^{-1}$), respectively.
 The two-argument variant of {\cf atan} computes {\tt (angle
@@ -2633,6 +2640,7 @@ The {\cf vector->list} procedure returns a newly allocated list of the objects c
 in the elements of \var{vector} between \var{start} (inclusive) and \var{end} (exclusive).
 The {\cf list->vector} procedure returns a newly
 created vector initialized to the elements of the list \var{list}.
+
 In both procedures, order is preserved.
 If \var{start} is omitted, it is assumed to be 0.
 If \var{end} is omitted, it is assumed to be the length of \var{vector}.
@@ -2645,15 +2653,24 @@ If \var{end} is omitted, it is assumed to be the length of \var{vector}.
 \end{entry}
 
 \begin{entry}{%
-\proto{vector->string}{ string}{procedure}
-\proto{string->vector}{ vector}{procedure}}
+\proto{vector->string}{ vector}{procedure}
+\proto{vector->string}{ vector start}{procedure}
+\proto{vector->string}{ vector start end}{procedure}
+\proto{string->vector}{ string}{procedure}
+\proto{string->vector}{ string start}{procedure}
+\proto{string->vector}{ string start end}{procedure}}
 
 The {\cf vector->string} procedure returns a newly allocated string of the objects contained
-in the elements of \var{vector}.
+in the elements of \var{vector}
+between \var{start} (inclusive) and \var{end} (exclusive).
 It is an error if any element is not a character allowed in strings.
 The {\cf string->vector} procedure returns a newly
-created vector initialized to the elements of the string \var{string}.
+created vector initialized to the elements of the string \var{string}
+between \var{start} (inclusive) and \var{end} (exclusive).
+
 In both procedures, order is preserved.
+If \var{start} is omitted, it is assumed to be 0.
+If \var{end} is omitted, it is assumed to be the length of the first argument.
 
 
 \begin{scheme}
@@ -2829,25 +2846,21 @@ The value returned by
 \end{entry}
 
 \begin{entry}{%
-\proto{bytevector-copy}{ bytevector}{procedure}}
-
-Returns a newly allocated bytevector containing the same bytes as
-\var{bytevector}.
-\end{entry}
-
-\begin{entry}{%
-\proto{bytevector-copy-partial}{ bytevector start end}{procedure}}
+\proto{bytevector-copy}{ bytevector}{procedure}
+\rproto{bytevector-copy}{ bytevector start}{procedure}
+\rproto{bytevector-copy}{ bytevector start end}{procedure}}
 
 Returns a newly allocated bytevector containing the bytes in \var{bytevector}
 between \var{start} (inclusive) and \var{end} (exclusive).
+If \var{start} is omitted, it is assumed to be 0.
+If \var{end} is omitted, it is assumed to be the length of \var{bytevector}.
 It is an error if \var{start} is greater than \var{end},
 or \var{start} is less than zero, or \var{end} is greater than
 the length of \var{bytevector}.
 
 \begin{scheme}
 (define a \#u8(1 2 3 4 5))
-(bytevector-copy-partial
-  a 2 4)) \ev \#u8(3 4)
+(bytevector-copy a 2 4)) \ev \#u8(3 4)
 \end{scheme}
 
 \end{entry}
@@ -4148,24 +4161,16 @@ the value returned by {\cf current-output-port}.
 
 \begin{entry}{%
 \proto{write-bytevector}{ bytevector}{procedure}
-\rproto{write-bytevector}{ bytevector port}{procedure}}
-
-Writes the bytes of \var{bytevector} in left-to-right order to the
-binary output \var{port}.
-\var{Port} may be
-omitted, in which case it defaults to the value returned by {\cf
-  current-output-port}.
-
-\end{entry}
-
-\begin{entry}{%
-\proto{write-partial-bytevector}{ bytevector start end}{procedure}
-\rproto{write-partial-bytevector}{ bytevector start end port}{procedure}}
+\rproto{write-bytevector}{ bytevector port}{procedure}
+\rproto{write-bytevector}{ bytevector port start}{procedure}
+\rproto{write-bytevector}{ bytevector port start end}{procedure}}
 
 Writes the bytes of \var{bytevector}
 from \var{start} (inclusive) to \var{end} (exclusive)
 in left-to-right order to the
 binary output \var{port}.
+If \var{start} is omitted, it is assumed to be 0.
+If \var{end} is omitted, it is assumed to be the length of \var{bytevector}.
 \var{Port} may be
 omitted, in which case it defaults to the value returned by {\cf
   current-output-port}.
@@ -4247,17 +4252,35 @@ implementation-dependent.  It is an error to mutate any of these strings.
 \proto{exit}{}{process-context library procedure}
 \rproto{exit}{ obj}{process-context library procedure}}
 
-Runs all outstanding dynamic-wind \var{after} procedures, terminates the running program and communicates an exit value to the
-operating system.  If no argument is supplied, the {\cf exit}
+Runs all outstanding dynamic-wind \var{after} procedures, terminates the
+running program and communicates an exit value to the operating system.
+If no argument is supplied, or if \var{obj} is \schtrue{}, the {\cf
+exit} procedure should communicate to the operating system that the
+program exited normally.  If \var{obj} is \schfalse{}, the {\cf exit}
 procedure should communicate to the operating system that the program
-exited normally.  If \var{obj} is supplied, the exit procedure
-should translate it into an appropriate exit value for the
-operating system. If \var{obj} is \schfalse{}, the exit is assumed to be
-abnormal.
+exited abnormally.  Otherwise, {\cf exit} should translate \var{obj} into
+an appropriate exit value for the operating system, if possible.  In no
+case should {\cf exit} signal an exception or return to its continuation.
 
 \begin{note}
 Because of the requirement to run handlers, this procedure is not just the
 operating system's exit procedure.
+\end{note}
+
+\end{entry}
+
+\begin{entry}{%
+\proto{emergency-exit}{}{process-context library procedure}
+\rproto{emergency-exit}{ obj}{process-context library procedure}}
+
+Terminates the program without running any
+outstanding dynamic-wind \var{after} procedures
+and communicates an exit value to the operating system
+in the same manner as {\cf exit}.
+
+\begin{note}
+The {\cf emergency-exit} procedure corresponds to the {\cf \_exit} procedure
+in Windows and Posix.
 \end{note}
 
 \end{entry}
@@ -4353,13 +4376,13 @@ second. This value is an implementation-specified constant.
 \end{entry}
 
 \begin{entry}{%
-\proto{get-features}{}{procedure}}
+\proto{features}{}{procedure}}
 
 Returns a list of the feature identifiers which {\cf cond-expand}
 treats as true.  It is an error to modify this list.
 
 \begin{scheme}
-(get-features) \ev
+(features) \ev
   (r7rs ratios exact-complex full-unicode
    gnu-linux little-endian 
    fantastic-scheme

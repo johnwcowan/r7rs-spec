@@ -27,7 +27,6 @@ syntax bindings that are traditionally associated with Scheme.
 {\cf assv}            {\cf begin}           {\cf binary-port?}
 {\cf boolean=?\ }      {\cf boolean?\ }       {\cf bytevector-copy}
 {\cf bytevector-copy!}
-{\cf bytevector-copy-partial}
 {\cf bytevector-length}
 {\cf bytevector-u8-ref}
 {\cf bytevector-u8-set!}               {\cf bytevector?}
@@ -57,10 +56,10 @@ syntax bindings that are traditionally associated with Scheme.
 {\cf error-object-message}             {\cf error-object?}
 {\cf even?\ }          {\cf exact}
 {\cf exact-integer-sqrt}               {\cf exact-integer?}
-{\cf exact?\ }         {\cf expt}            {\cf floor}
-{\cf floor-quotient}  {\cf floor-remainder} {\cf floor/}
-{\cf flush-output-port}                {\cf for-each}
-{\cf gcd}             {\cf get-features}
+{\cf exact?\ }         {\cf expt}            {\cf features}
+{\cf floor}           {\cf floor-quotient}  {\cf floor-remainder}
+{\cf floor/}          {\cf flush-output-port}
+{\cf for-each}        {\cf gcd}
 {\cf get-output-bytevector}
 {\cf get-output-string}                {\cf guard}
 {\cf if}              {\cf import}          {\cf inexact}
@@ -114,8 +113,7 @@ syntax bindings that are traditionally associated with Scheme.
 {\cf vector?\ }        {\cf when}
 {\cf with-exception-handler}
 {\cf write-bytevector}                 {\cf write-char}
-{\cf write-partial-bytevector}         {\cf write-u8}
-{\cf zero?}
+{\cf write-u8}        {\cf zero?}
 \end{scheme}
 
 \textbf{Inexact Library}
@@ -206,7 +204,7 @@ The \texttt{(scheme process-context)} library exports procedures for
 accessing with the program's calling context.
 
 \begin{scheme}
-{\cf command-line}    {\cf exit}
+{\cf command-line}    {\cf emergency-exit}  {\cf exit}
 {\cf get-environment-variable}
 {\cf get-environment-variables}
 \end{scheme}
