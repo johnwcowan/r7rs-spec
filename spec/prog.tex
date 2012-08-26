@@ -404,6 +404,8 @@ A \hyper{library declaration} may be any of:
 
 \item{\tt(include-ci \hyperi{filename} \hyperii{filename} \dotsfoo)}
 
+\item{\tt(include-library-declarations \hyperi{filename} \hyperii{filename} \dotsfoo)}
+
 \item{\tt(cond-expand \hyper{cond-expand clause} \dotsfoo)}
 
 \end{itemize}
@@ -490,6 +492,12 @@ The difference between the two is that \ide{include-ci} reads each file
 as if it began with the {\cf{}\#!fold-case} directive, while \ide{include}
 does not.
 All three may appear at the top level of a program.
+
+The \ide{include-library-declarations} declaration is similar to
+\ide{include} except that the resulting forms are spliced into the
+current library form.  This can be used, for example, to share the
+same \ide{export} declaration among multiple libraries as a simple
+form of library interface.
 
 \begin{note}
 Implementations are encouraged to search for files in the directory
