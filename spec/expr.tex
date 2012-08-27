@@ -1019,11 +1019,15 @@ depending on the implementation:
 \end{scheme}
 
 \item Some implementations may implement ``implicit forcing,'' where
-the value of a promise is forced by primitive procedures like \cf{cdr}
-and \cf{+}:
+the value of a promise is forced by procedures
+that operate only on arguments of a certain type, like {\cf cdr}
+and {\cf *}.  However, procedures that operate uniformly on their
+arguments, like {\cf list}, may not force them.
 
 \begin{scheme}
-(+ (delay (* 3 7)) 13)  \ev  34%
+(+ (delay (* 3 7)) 13)  \ev  34
+(car
+  (list (delay (* 3 7)) 13))    \ev {\it{}a promise}
 \end{scheme}
 \end{itemize}
 \end{entry}
