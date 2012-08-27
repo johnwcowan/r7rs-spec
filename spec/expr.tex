@@ -11,7 +11,7 @@ be defined as macros.
 Suitable definitions of some of the derived expressions are
 given in section~\ref{derivedsection}.
 
-The procedures {\cf force}, {\cf make-promise}, and {\cf make-parameter}
+The procedures {\cf force}, {\cf promise?}, {\cf make-promise}, and {\cf make-parameter}
 are also described in this chapter because they are intimately associated
 with the {\cf delay}, {\cf delay-force}, and {\cf parameterize} expression types.
 
@@ -1030,6 +1030,16 @@ arguments, like {\cf list}, may not force them.
   (list (delay (* 3 7)) 13))    \ev {\it{}a promise}
 \end{scheme}
 \end{itemize}
+\end{entry}
+
+\begin{entry}{%
+\proto{promise?} { \var{obj}}{lazy library procedure}}
+
+The {\cf promise?} procedure returns 
+\schtrue{} if its argument is a promise, and \schfalse{} otherwise.  Note
+that promises are not necessarily disjoint from other Scheme types such
+as procedures.
+
 \end{entry}
 
 \begin{entry}{%
