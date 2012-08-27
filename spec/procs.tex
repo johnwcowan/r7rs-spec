@@ -1120,12 +1120,16 @@ arctangent are multiply defined.
 The value of $\log z$ is defined to be the one whose imaginary part
 lies in the range from $-\pi$ (inclusive if {\cf -0.0} is distinguished,
 exclusive otherwise) to $\pi$ (inclusive).
-The value of $\log 0$ is undefined.
+The value of $\log 0$ is mathematically undefined.
 With $\log$ defined this way, the values of $\sin^{-1} z$, $\cos^{-1} z$,
 and $\tan^{-1} z$ are according to the following formul\ae:
 $$\sin^{-1} z = -i \log (i z + \sqrt{1 - z^2})$$
 $$\cos^{-1} z = \pi / 2 - \sin^{-1} z$$
 $$\tan^{-1} z = (\log (1 + i z) - \log (1 - i z)) / (2 i)$$
+
+However, {\cf (log 0.0)} returns {\cf -inf.0} 
+(and {\cf (log -0.0)} returns {\cf -inf.0+$\pi$i}) if the
+implementation supports infinities (and {\cf -0.0}).
 
 The above specification follows~\cite{CLtL}, which in turn
 cites~\cite{Penfield81}; refer to these sources for more detailed
