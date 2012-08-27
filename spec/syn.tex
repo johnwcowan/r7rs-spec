@@ -12,9 +12,10 @@ described informally in previous chapters of this report.
 This section provides a formal syntax for Scheme written in an extended
 BNF.
 
-All spaces in the grammar are for legibility.  Case is insignificant;
-for example, {\cf \#x1A} and {\cf \#X1a} are equivalent.  \meta{empty}
-stands for the empty string.
+All spaces in the grammar are for legibility.  Case is insignificant
+except in the definition of \meta{letter}; for example, {\cf \#x1A}
+and {\\cf \#X1a} are equivalent, but {\cf foo} and {\cf Foo} are distinct.
+\meta{empty} stands for the empty string.
 
 The following extensions to BNF are used to make the description more
 concise:  \arbno{\meta{thing}} means zero or more occurrences of
@@ -67,8 +68,7 @@ containing the corresponding character.
 \meta{delimiter} \: \meta{whitespace} \| \meta{vertical line}
 \> \| ( \| ) \| " \| ;
 \meta{intraline whitespace} \: \meta{space or tab}
-\meta{whitespace} \: \meta{intraline whitespace} \| \meta{newline}
-\> \| \meta{return}
+\meta{whitespace} \: \meta{intraline whitespace} \| \meta{line ending}
 \meta{vertical line} \: |
 \meta{line ending} \: \meta{newline} \| \meta{return} \meta{newline}
 \> \| \meta{return}
@@ -81,7 +81,8 @@ containing the corresponding character.
 \meta{comment text} \: \= $\langle$\rm character sequence not containing
 \>\ \rm {\tt \#|} or {\tt |\#}$\rangle$
 \meta{comment cont} \: \meta{nested comment} \meta{comment text}
-\meta{atmosphere} \: \meta{whitespace} \| \meta{comment}
+\meta{directive} \: \#!fold-case \| \#!no-fold-case
+\meta{atmosphere} \: \meta{whitespace} \| \meta{comment} \| \meta{directive}
 \meta{intertoken space} \: \arbno{\meta{atmosphere}}%
 \end{grammar}
 
@@ -109,7 +110,7 @@ identifiers.
  \>  \| \meta{special subsequent}
 \meta{digit} \: 0 \| 1 \| 2 \| 3 \| 4 \| 5 \| 6 \| 7 \| 8 \| 9
 \meta{hex digit} \: \meta{digit}
- \> \| a \| A \| b \| B \| c \| C \| d \| D \| e \| E \| f \| F
+ \> \| a \| b \| c \| d \| e \| f
 \meta{explicit sign} \: + \| -
 \meta{special subsequent} \: \meta{explicit sign} \| . \| @
 \meta{inline hex escape} \: \backwhack{}x\meta{hex scalar value};
