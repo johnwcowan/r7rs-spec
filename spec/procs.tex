@@ -4054,6 +4054,23 @@ port that has no ready characters.
 \end{entry}
 
 \begin{entry}{%
+\proto{read-string}{ length}{procedure}
+\rproto{read-string}{ length port}{procedure}}
+
+Reads the next \var{length} characters, or as many as are available before the end of file,
+from the textual
+input \var{port} into a newly allocated string in left-to-right order
+and returns the string.
+If no characters are available before the end of file,
+an end-of-file object is returned.
+\var{Port} may be
+omitted, in which case it defaults to the value returned by {\cf
+  current-input-port}.
+
+\end{entry}
+
+
+\begin{entry}{%
 \proto{read-u8}{}{procedure}
 \rproto{read-u8}{ port}{procedure}}
 
@@ -4234,6 +4251,24 @@ character) to the given textual output \var{port} and returns an unspecified
 value.  
 \var{Port} may be omitted, in which case it defaults to the value
 returned by {\cf current-output-port}.
+
+\end{entry}
+
+\begin{entry}{%
+\proto{write-string}{ string}{procedure}
+\rproto{write-string}{ string port}{procedure}
+\rproto{write-string}{ string port start}{procedure}
+\rproto{write-string}{ string port start end}{procedure}}
+
+Writes the characters of \var{string}
+from \var{start} (inclusive) to \var{end} (exclusive)
+in left-to-right order to the
+textual output \var{port}.
+If \var{start} is omitted, it is assumed to be 0.
+If \var{end} is omitted, it is assumed to be the length of \var{string}.
+\var{Port} may be
+omitted, in which case it defaults to the value returned by {\cf
+  current-output-port}.
 
 \end{entry}
 
