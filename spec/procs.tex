@@ -3574,48 +3574,34 @@ Returns a list of the irritants encapsulated by \var{error-object}.
 
 \end{entry}
 
-\section{\tt{Eval}}
+\section{Environments and evaluation}
 
 \begin{entry}{%
-\proto{eval}{ expression environment-specifier}{eval library procedure}}
+\proto{environment}{ \vri{list} \dotsfoo}{eval library procedure}}
+\label{environments}
 
-Evaluates \var{expression} in the specified environment and returns its value.
-It is an error if \var{expression} is not a valid Scheme expression represented as a datum.
-Implementations may extend {\cf eval} to allow non-expression programs
-such as definitions as the first argument,
-with the restriction that {\cf eval} is not
-allowed to create new bindings in the environment-specifiers returned by
-{\cf null-environment} or {\cf scheme-report-environment}.
-
-\begin{scheme}
-(eval '(* 7 3) (scheme-report-environment 7))
-                                                   \ev  21
-
-(let ((f (eval '(lambda (f x) (f x x))
-               (null-environment 7))))
-  (f + 10))
-                                                   \ev  20
-\end{scheme}
+This procedure returns a specifier for the environment that results by
+starting with an empty environment and then importing each \var{list},
+considered as an import set, into it.  (See section~\ref{libraries} for
+a description of import sets.)  The bindings of the environment
+represented by the specifier are immutable.
 
 \end{entry}
 
 \begin{entry}{%
 \proto{scheme-report-environment}{ version}{r5rs library procedure}}
-\label{environments}
 
-If \var{version} is equal to {\cf \integerversion},
-corresponding to this revision of the Scheme report (the
-Revised$^\integerversion$ Report on Scheme),
+If \var{version} is equal to {\cf 5},
+corresponding to \rfivers,
 {\cf scheme-report-environment} returns a specifier for an
 environment that contains only the bindings
-defined either in the base library or in the other libraries
-of this report that the implementation supports.
+defined in the \rfivers\ library.
 Implementations must support this value of \var{version}.
 
 Implementations may also support other values of \var{version}, in which
-case they should return a specifier for an environment containing bindings corresponding to the corresponding version of the report.
+case they should return a specifier for an environment containing bindings corresponding to the specified version of the report.
 If \var{version}
-is neither {\cf \integerversion} nor another value supported by
+is neither {\cf 5} nor another value supported by
 the implementation, an error is signalled.
 
 \todo{consider removing unspecified effect}
@@ -3629,32 +3615,19 @@ by {\cf scheme-report-environment} may be immutable.
 \begin{entry}{%
 \proto{null-environment}{ version}{r5rs library procedure}}
 
-If \var{version} is equal to {\cf \integerversion},
-corresponding to this revision of the Scheme report (the
-Revised$^\integerversion$ Report on Scheme),
+If \var{version} is equal to {\cf 5},
+corresponding to \rfivers,
 the {\cf null-environment} procedure returns
 a specifier for an environment that contains only the
 bindings for all syntactic keywords
-defined either in the base library or in the other libraries
-of this report, provided that the implementation supports them.
+defined in the \rfivers\ library.
 Implementations must support this value of \var{version}.
 
 Implementations may also support other values of \var{version}, in which
-case they should return a specifier for an environment containing bindings corresponding to the corresponding version of the report.
+case they should return a specifier for an environment containing bindings corresponding to the specified version of the report.
 If \var{version}
-is neither {\cf \integerversion} nor another value supported by
+is neither {\cf 5} nor another value supported by
 the implementation, an error is signalled.
-
-\end{entry}
-
-\begin{entry}{%
-\proto{environment}{ \vri{list} \dotsfoo}{eval library procedure}}
-
-This procedure returns a specifier for the environment that results by
-starting with an empty environment and then importing each \var{list},
-considered as an import set, into it.  (See section~\ref{libraries} for
-a description of import sets.)  The bindings of the environment
-represented by the specifier are immutable.
 
 \end{entry}
 
@@ -3666,6 +3639,30 @@ imple\-men\-ta\-tion-defined set of bindings, typically a superset of
 those exported by {\cf(scheme base)}.  The intent is that this procedure
 will return the environment in which the implementation would evaluate
 expressions entered by the user into a REPL.
+
+\end{entry}
+
+\begin{entry}{%
+\proto{eval}{ expr-or-def environment-specifier}{eval library procedure}}
+
+If \var{expr-or-def} is an expression, it is evaluated in the
+specified environment and its values are returned.
+If it is a definition, the specified identifier is defined in the specified
+environment, provided the environment is not immutable.
+Implementations may extend {\cf eval} to allow other objects.
+
+\begin{scheme}
+(eval '(* 7 3) (environment '(scheme base)))
+                                                   \ev  21
+
+(let ((f (eval '(lambda (f x) (f x x))
+               (null-environment 5))))
+  (f + 10))
+                                                   \ev  20
+(eval '(define foo 32)
+      (environment '(scheme base)))
+                                                   \ev {\it{} error is signalled}
+\end{scheme}
 
 \end{entry}
 
