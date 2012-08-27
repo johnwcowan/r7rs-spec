@@ -236,10 +236,10 @@ The {\cf eq?}\ procedure is similar to {\cf eqv?}\ except that in some cases it 
 capable of discerning distinctions finer than those detectable by
 {\cf eqv?}.
 
-\vest On symbols, booleans, the empty list, pairs, procedures,
+\vest On symbols, booleans, the empty list, pairs,
 non-empty
 strings, vectors, bytevectors, and records, {\cf eq?}\ and {\cf eqv?}\ are guaranteed to have the same
-behavior.  On numbers and characters, {\cf eq?}'s behavior is
+behavior.  On numbers, characters, and procedures, {\cf eq?}'s behavior is
 implementation-dependent, but it will always return either true or
 false, and will return true only when {\cf eqv?}\ would also return
 true.  On empty strings, vectors, bytevectors, and records, {\cf eq?} may also behave
@@ -262,7 +262,7 @@ differently from {\cf eqv?}.
 (let ((x '\#()))
   (eq? x x))      \ev  \schtrue
 (let ((p (lambda (x) x)))
-  (eq? p p))      \ev  \schtrue%
+  (eq? p p))      \ev  \unspecified%
 \end{scheme}
 
 
@@ -272,9 +272,6 @@ comparison instead of as some more complicated operation.  One reason is
 that it is not always possible to compute {\cf eqv?}\ of two numbers in
 constant time, whereas {\cf eq?}\ implemented as pointer comparison will
 always finish in constant time.
-In applications using procedures to implement objects with state, 
-{\cf eq?}\ may be used instead of {\cf eqv?}\ since
-it obeys the same constraints as {\cf eqv?}.
 \end{rationale}
 
 \end{entry}
