@@ -65,10 +65,12 @@ are numerically equal (see {\cf =}).
 \item \vari{obj} and \varii{obj} are both inexact real numbers
 conforming to the IEEE 754-2008 standard, and have the same radix,
 precision, maximum exponent, sign, exponent and significand as
-described in that standard.
+described in that standard, provided that 
+they are not both representations of NaNs.
 
 \item \vari{obj} and \varii{obj} are both inexact real numbers,
-do not conform to IEEE 754-2008, and are numerically equal (see {\cf =}).
+do not conform to IEEE 754-2008, and are numerically equal (see {\cf =}),
+provided that they are not both representations of NaNs.
 
 \item \vari{obj} and \varii{obj} are both complex numbers whose
 real and imaginary parts are {\cf eqv?}.
@@ -110,10 +112,12 @@ the {\cf =} procedure returns \schfalse{}.
 \item \vari{obj} and \varii{obj} are both inexact real numbers
 conforming to the IEEE 754-2008 standard, and have different radices,
 precisions, maximum exponents, signs, exponents or significands as
-described in that standard.
+described in that standard, 
+provided that they are not both representations of NaNs.
 
 \item \vari{obj} and \varii{obj} are both inexact real numbers
-not conforming to IEEE 754-2008 for which {\cf =} returns \schfalse{}.
+not conforming to IEEE 754-2008 for which {\cf =} returns \schfalse{},
+provided that they are not both representations of NaNs.
 
 \item \vari{obj} and \varii{obj} are both complex numbers whose
 real or imaginary parts are not {\cf eqv?}.
@@ -158,7 +162,7 @@ boolean.
   (eqv? p p))                    \ev  \unspecified
 (eqv? (lambda (x) x)
       (lambda (y) y))    \ev  \unspecified
-(eqv? 0.0 -0.0)          \ev  \unspecified
+(eqv? 0.0 -0.0)          \ev  \unspecified 
 (eqv? 1.0e0 1.0f0)       \ev  \unspecified
 (eqv? +nan.0 +nan.0)     \ev  \unspecified%
 \end{scheme}
