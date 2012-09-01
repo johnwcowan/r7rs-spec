@@ -280,13 +280,16 @@ always finish in constant time.
 \begin{entry}{%
 \proto{equal?}{ \vari{obj} \varii{obj}}{procedure}}
 
-The {\cf equal?} procedure recursively compares the contents of pairs,
-vectors, strings and bytevectors, applying {\cf eqv?} on booleans,
-symbols, numbers, characters, ports, procedures, and the empty list.
-If two objects are {\cf eqv?}, they must be {\cf equal?} as well.  
+The {\cf equal?} procedure, when applied to pairs, vectors, strings and
+bytevectors, recursively compares them, returning \schtrue{} when the
+unfoldings of its arguments into (possibly infinite) trees are equal
+as ordered trees, and \schfalse{} otherwise.  It returns the same as
+{\cf eqv?} when applied to booleans, symbols, numbers, characters,
+ports, procedures, and the empty list.  If two objects are {\cf eqv?},
+they must be {\cf equal?} as well.  In all other cases, {\cf equal?}
+may return either \schtrue{} or \schfalse{}.
 %% Note that records are {\cf equal?} if their record types are the same
 %% and their correspondingly named fields are {\cf equal?}.
-In all other cases, {\cf equal?} may return either \schtrue{} or \schfalse{}.
 
 Even if its arguments are
 circular data structures, {\cf equal?}\ must always terminate.
@@ -300,6 +303,8 @@ circular data structures, {\cf equal?}\ must always terminate.
 (equal? 2 2)                    \ev  \schtrue
 (equal? (make-vector 5 'a)
         (make-vector 5 'a))     \ev  \schtrue
+(equal? '\#1=(a b . \#1\#)
+        '\#2=(a b a b . \#2\#))    \ev  \schtrue
 (equal? (lambda (x) x)
         (lambda (y) y))  \ev  \unspecified%
 \end{scheme}
@@ -1130,6 +1135,10 @@ $$\tan^{-1} z = (\log (1 + i z) - \log (1 - i z)) / (2 i)$$
 However, {\cf (log 0.0)} returns {\cf -inf.0} 
 (and {\cf (log -0.0)} returns {\cf -inf.0+$\pi$i}) if the
 implementation supports infinities (and {\cf -0.0}).
+
+The range of $\tan^{-1} x~y$ is as in the following table. The
+asterisk (*) indicates that the entry applies to implementations that
+distinguish minus zero.
 
 The above specification follows~\cite{CLtL}, which in turn
 cites~\cite{Penfield81}; refer to these sources for more detailed
@@ -4221,7 +4230,7 @@ to represent cycles as in {\cf write}.
 Implementations may support extended syntax to represent record types or
 other types that do not have datum representations.
 
-The {\cf display} procedure returns an unspecified value
+The {\cf display} procedure returns an unspecified value.
 \var{Port} may be omitted, in which case it defaults to the
 value returned by {\cf current-output-port}.
 
