@@ -1140,6 +1140,31 @@ The range of $\tan^{-1} x~y$ is as in the following table. The
 asterisk (*) indicates that the entry applies to implementations that
 distinguish minus zero.
 
+\begin{center}
+\begin{tabular}{clll}
+& $y$ condition & $x$ condition & range of result $r$\\\hline
+& $y = 0.0$ & $x > 0.0$ & $0.0$\\
+$\ast$ & $y = +0.0$  & $x > 0.0$ & $+0.0$\\
+$\ast$ & $y = -0.0$ & $x > 0.0$ & $-0.0$\\
+& $y > 0.0$ & $x > 0.0$ & $0.0 < r < \frac{\pi}{2}$\\
+& $y > 0.0$ & $x = 0.0$ & $\frac{\pi}{2}$\\
+& $y > 0.0$ & $x < 0.0$ & $\frac{\pi}{2} < r < \pi$\\
+& $y = 0.0$ & $x < 0$ & $\pi$\\
+$\ast$ & $y = +0.0$ & $x < 0.0$ & $\pi$\\
+$\ast$ & $y = -0.0$ & $x < 0.0$ & $-\pi$\\
+&$y < 0.0$ & $x < 0.0$ & $-\pi< r< -\frac{\pi}{2}$\\
+&$y < 0.0$ & $x = 0.0$ & $-\frac{\pi}{2}$\\
+&$y < 0.0$ & $x > 0.0$ & $-\frac{\pi}{2} < r< 0.0$\\
+&$y = 0.0$ & $x = 0.0$ & undefined\\
+$\ast$& $y = +0.0$ & $x = +0.0$ & $+0.0$\\
+$\ast$& $y = -0.0$ & $x = +0.0$& $-0.0$\\
+$\ast$& $y = +0.0$ & $x = -0.0$ & $\pi$\\
+$\ast$& $y = -0.0$ & $x = -0.0$ & $-\pi$\\
+$\ast$& $y = +0.0$ & $x = 0$ & $\frac{\pi}{2}$\\
+$\ast$& $y = -0.0$ & $x = 0$    & $-\frac{\pi}{2}$
+\end{tabular}
+\end{center}
+
 The above specification follows~\cite{CLtL}, which in turn
 cites~\cite{Penfield81}; refer to these sources for more detailed
 discussion of branch cuts, boundary conditions, and implementation of
