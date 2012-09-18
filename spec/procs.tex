@@ -2887,6 +2887,17 @@ element are unspecified.
 \end{entry}
 
 \begin{entry}{%
+\proto{lbytevector}{ \var{byte} \dotsfoo}{procedure}}
+
+Returns a newly allocated bytevector containing its arguments.
+
+\begin{scheme}
+(bytevector 1 3 5 1 3 5)        \ev  \#u8(1 3 5 1 3 5)
+(bytevector)                          \ev  \#u8()%
+\end{scheme}
+\end{entry}
+
+\begin{entry}{%
 \proto{bytevector-length}{ bytevector}{procedure}}
 
 Returns the length of \var{bytevector} in bytes as an exact integer.
