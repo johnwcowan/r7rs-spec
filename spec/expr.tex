@@ -1023,6 +1023,7 @@ and \cf{+}:
 The {\cf eager} procedure returns a promise which when forced will return
 \var{obj}.  It is similar to {\cf delay}, but does not delay
 its argument: it is a procedure rather than syntax.
+If \var{obj} is already a promise, it is returned.
 
 \end{entry}
 
