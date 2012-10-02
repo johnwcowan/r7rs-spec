@@ -925,6 +925,7 @@ If a value which is not a promise has already been computed, that value is
 returned.  Otherwise, the promise is first evaluated, then overwritten
 by the obtained promise or value, and then {\cf force} is again applied
 (iteratively) to the promise.
+If \var{promise} is not a promise, it may be returned unchanged.
 
 \begin{scheme}
 (force (delay (+ 1 2)))   \ev  3
