@@ -6,8 +6,8 @@
 A Scheme program consists of  
 one or more import declarations followed by a sequence of
 expressions and generalized definitions.
-Import declarations specify the libraries on which the program depends;
-a subset of the identifiers exported by the library are made available to
+Import declarations specify the libraries on which a program or library depends;
+a subset of the identifiers exported by the libraries are made available to
 the program.
 Expressions are described in chapter~\ref{expressionchapter}.
 Generalized definitions are either definitions, syntax definitions, or
@@ -17,9 +17,12 @@ are allowed, specifically at the top level of a \hyper{program}
 and at the beginning of a \hyper{body}.
 \mainindex{generalized definition}
 
-In a \hyper{body}, {\tt(begin \hyperi{generalized definition} \dotsfoo)} is equivalent
-to the sequence \hyperi{generalized definition} \dotsfoo. Macros can
-expand into such {\cf begin} forms.
+At the top level of a program {\tt(begin \hyperi{form} \dotsfoo)} is
+equivalent to the sequence of expressions and generalized definitions
+in the \ide{begin}.   
+Similarly, in a \hyper{body}, {\tt(begin \hyperi{generalized definition} \dotsfoo)} is equivalent
+to the sequence \hyperi{generalized definition} \dotsfoo.
+Macros can expand into such {\cf begin} forms.
 
 Import declarations and generalized definitions can be interpreted declaratively.
 They cause bindings to be created in the top level
@@ -31,9 +34,6 @@ Expressions occurring at the top level of a program are
 executed in order when the program is
 invoked or loaded, and typically perform some kind of initialization.
 
-At the top level of a program {\tt(begin \hyperi{form} \dotsfoo)} is
-equivalent to the sequence of expressions and generalized definitions
-in the \ide{begin}.   Macros can expand into such {\cf begin}s.
 
 Programs as well as libraries are typically stored in files, although
 in some implementations they can be entered interactively to a running
@@ -89,6 +89,11 @@ forms modify this set as follows:
 
 \end{itemize}
 
+In a program or library declaration, it is an error to import the same
+identifier more than once with different bindings, or to redefine or
+mutate an imported binding with {\cf define}, {\cf define-syntax}
+or {\cf set!}, or to refer to an identifier before it is imported.
+However, a REPL should permit these actions.
 
 \section{Definitions}
 \label{defines}
@@ -465,57 +470,8 @@ defined within or imported into the library and named by
 using \hyperii{identifier} as the external name.
 
 An \ide{import} declaration provides a way to import the identifiers
-exported by a library.  Each \hyper{import set} names a set of bindings
-from another library and possibly specifies local names for the
-imported bindings. It takes one of the following forms:
-
-\begin{itemize}
-\item {\tt\hyper{library name}}
-\item {\tt(rename \hyper{import set} (\hyperi{identifier} \hyperii{identifier}) \dotsfoo)}
-\item {\tt(prefix \hyper{import set} \hyper{identifier})}
-\item {\tt(only \hyper{import set} \hyper{identifier} \dotsfoo)}
-\item {\tt(except \hyper{import set} \hyper{identifier} \dotsfoo)}
-\end{itemize}
-
-In the first form, all of the identifiers in the named library's {\cf export}
-clauses are imported with the same names (or the exported names if
-exported with \ide{rename}).  The additional \hyper{import set}
-forms modify this set as follows:
-
-\begin{itemize}
-
-\item \ide{rename} modifies the given \hyper{import set},
-  replacing each instance of \hyperi{identifier} with
-  \hyperii{identifier}. It is an error if any of the listed
-  identifiers is not found in the original set.
-
-\item \ide{prefix} automatically renames all identifiers in
-  the given \hyper{import set}, prefixing each with the specified
-  \hyper{identifier}.
-
-\item \ide{only} produces a subset of the given
-  \hyper{import set}, including only the listed identifiers (after any
-  renaming).  It is an error if any of the listed identifiers is
-  not found in the original set.
-
-\item \ide{except} produces a subset of the given
-  \hyper{import set}, excluding the listed identifiers (after any
-  renaming). It is an error if any of the listed identifiers is not
-  found in the original set.
-
-\end{itemize}
-
-The top level of a program may also include \ide{import} declarations.
-
-In a library declaration and at the top level, it is an error to import the same
-=======
-\ide{Import} declarations may also be made at the top level of a
-program.  In a library declaration, it is an error to import the same
->>>>>>> other
-identifier more than once with different bindings, or to redefine or
-mutate an imported binding with {\cf define}, {\cf define-syntax}
-or {\cf set!}, or to refer to an identifier before it is imported.
-However, a REPL should permit these actions.
+exported by another library.  It has the same syntax and semantics
+as an import declaration used in a program or at the REPL.
 
 The \ide{begin}, \ide{include}, and \ide{include-ci} declarations are
 used to specify the commands and definitions that make up the body of
