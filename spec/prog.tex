@@ -474,10 +474,21 @@ exported by another library.  It has the same syntax and semantics
 as an import declaration used in a program or at the REPL.
 
 The \ide{begin}, \ide{include}, and \ide{include-ci} declarations are
-used to specify the commands and definitions that make up the body of
-the library.  \ide{Begin} takes a list of forms to be spliced
-literally, analogous to the top-level \ide{begin}.  
-All three may appear at the top level of a program.
+used to specify the body of
+the library.  They have the same syntax and semantics as the corresponding
+expression types, except that
+\ide{begin} may contain any library declarations rather than
+just expressions.
+
+The \ide{include-library-declarations} declaration is similar to
+\ide{include} except that the resulting forms are spliced directly into the
+current library form.  This can be used, for example, to share the
+same \ide{export} declaration among multiple libraries as a simple
+form of library interface.
+
+The \ide{cond-expand} declaration has the same syntax and semantics as
+the \ide{cond-expand} expression type, except that it may contain any
+library declarations rather than just expressions.
 
 \todo{Shinn: Perhaps make this a separate subsection describing a
   library ``resolution'' phase which runs prior to library expansion.}
@@ -486,15 +497,15 @@ One possible implementation of libraries is as follows:
 After all \ide{cond-expand} library declarations are expanded, a new
 environment is constructed for the library consisting of all
 imported bindings.  The expressions and
-declarations from all \ide{begin}, \ide{include} and \ide{include-ci}
-declarations are expanded in that environment in the order in which
-they occur in the library declaration.
+generalized declarations from all \ide{begin}, \ide{include} and \ide{include-ci}
+library declarations are expanded in that environment in the order in which
+they occur in the library.
 Alternatively, \ide{cond-expand} and \ide{import} declarations may be processed
 in left to right order interspersed with the processing of expressions
 and declarations, with the environment growing as imported bindings are
 added to it by each \ide{import} declaration.
 
-When a library is loaded, its outermost expressions are executed
+When a library is loaded, its top-level expressions are executed
 in textual order.
 If a library's definitions are referenced in the expanded form of a
 program or library body, then that library must be loaded before the
