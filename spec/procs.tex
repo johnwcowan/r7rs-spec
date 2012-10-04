@@ -2456,7 +2456,7 @@ would be the lexicographic ordering on strings induced by the ordering
 are the same up to the length of the shorter string, the shorter string
 would be considered to be lexicographically less than the longer string.
 However, it is also permitted to use the natural ordering imposed by the
-internal representation of strings, or a more complex locale-specific
+implementation's internal representation of strings, or a more complex locale-specific
 ordering.
 
 In all cases, a pair of strings must satisfy exactly one of
@@ -2480,7 +2480,7 @@ procedures without  \hbox{``{\tt -ci}''}.
 These procedures apply the Unicode full string uppercasing, lowercasing,
 and case-folding algorithms to their arguments and return the result.
 The result may differ in length from the argument.  
-If the result is equal to the argument in the sense of {cf string=?}, the argument may be returned.
+If the result is equal to the argument in the sense of {\cf string=?}, the argument may be returned.
 Note that language-sensitive mappings and foldings are not used.  
 
 The Unicode Standard prescribes special treatment of the Greek letter
