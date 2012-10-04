@@ -442,72 +442,7 @@ The \ide{begin}, \ide{include}, and \ide{include-ci} declarations are
 used to specify the commands and definitions that make up the body of
 the library.  \ide{Begin} takes a list of forms to be spliced
 literally, analogous to the top-level \ide{begin}.  
-\ide{Include} and
-\ide{include-ci} both take one or more filenames expressed as string literals,
-apply an implementation-specific algorithm to find corresponding files,
-read all top-level
-forms from the files, and include the results into the library body or program as
-though wrapped in a top-level \ide{begin}.
-The difference between the two is that \ide{include-ci} reads each file
-as if it began with the {\cf{}\#!fold-case} directive, while \ide{include}
-does not.
 All three may appear at the top level of a program.
-
-\begin{note}
-Implementations are encouraged to search for files in the directory
-which contains the including file, and to provide a way for users to
-specify other directories to search.
-\end{note}
-
-\begin{note}
-For portability, \ide{include} and \ide{include-ci} must operate on source files.
-Their operation on other kinds of files necessarily varies among
-implementations.
-\end{note}
-
-The \ide{cond-expand} library declaration,
-provides a way to statically
-expand different library declarations depending on the 
-implementation under which the library is being loaded.  A
-\hyper{cond-expand clause} takes the following form:
-
-{\tt(\hyper{feature requirement} \hyper{library declaration} \dotsfoo)}
-
-The last clause may be an ``else clause,'' which has the form
-
-{\tt(else \hyper{library declaration} \dotsfoo)}
-
-A \hyper{feature requirement} takes one of the following forms:
-
-\begin{itemize}
-\item {\tt\hyper{feature identifier}}
-\item {\tt(library \hyper{library name})}
-\item {\tt(and \hyper{feature requirement} \dotsfoo)}
-\item {\tt(or \hyper{feature requirement} \dotsfoo)}
-\item {\tt(not \hyper{feature requirement})}
-\end{itemize}
-
-Each implementation maintains a list of feature identifiers which are
-present, as well as a list of libraries which can be imported.  The
-value of a \hyper{feature requirement} is determined by replacing
-each \hyper{feature identifier} and {\tt(library \hyper{library name})}
-on the implementation's lists with \schtrue, and all other feature
-identifiers and library names with \schfalse, then evaluating the
-resulting expression as a Scheme boolean expression under the normal
-interpretation of {\cf and}, {\cf or}, and {\cf not}.
-
-A \ide{cond-expand} is then expanded by evaluating the
-\hyper{feature requirement}s of successive \hyper{cond-expand clause}s
-in order, until one of them returns \schtrue.  When a true clause is
-found, the corresponding \hyper{library declaration}s are spliced into
-the current library definition and the remaining clauses are ignored.
-If none of the \hyper{feature requirement}s evaluate to \schtrue, then
-if there is an \ide{else} clause, its \hyper{library declaration}s are
-included.  Otherwise, the \ide{cond-expand} has no effect.
-
-The exact features provided are implementation-defined, but for
-portability a core set of features is given in
-appendix~\ref{stdfeatures}.
 
 \todo{Shinn: Perhaps make this a separate subsection describing a
   library ``resolution'' phase which runs prior to library expansion.}
