@@ -3,14 +3,29 @@
 
 \section{Programs}
 
-A Scheme program consists of a sequence of 
-\defining{program parts}: expressions, definitions, syntax definitions,
-record type definitions, imports, cond-expands, and includes.  A collection of program
-parts may be encapsulated in a library to be reused by multiple
-programs.
+A Scheme program consists of  
+at least one import declaration followed by a sequence of
+expressions, definitions, syntax definitions, and
+record type definitions.
+Import declarations specify the libraries on which the program depends.
 Expressions are described in chapter~\ref{expressionchapter};
-the other program parts, as well as libraries, are the subject of the
+the other parts of a program, as well as libraries, are the subject of the
 rest of the present chapter.
+
+Expressions occurring at the top level of a program are
+interpreted imperatively; they are executed in order when the program is
+invoked or loaded, and typically perform some kind of initialization.
+
+The other parts of a program can be interpreted declaratively.
+They cause bindings to be created in the top level
+environment or modify the value of existing top-level bindings.
+The initial environment of a Scheme program is empty,
+so at least one import declaration is required to introduce initial bindings.
+
+At the top level of a program {\tt(begin \hyperi{form} \dotsfoo)} is
+equivalent to the sequence of expressions, definitions, syntax definitions,
+and record type definitions
+in the \ide{begin}.   Macros can expand into such {\cf begin}s.
 
 Programs and libraries are typically stored in files, although programs
 can be entered interactively to a running Scheme system, and other
@@ -18,24 +33,9 @@ paradigms are possible.
 Implementations which store libraries in files should document the
 mapping from the name of a library to its location in the file system.
 
-Program parts other than expressions that are present
-at the top level of a program can be interpreted declaratively.
-They cause bindings to be created in the top level
-environment or modify the value of existing top-level bindings.
-The initial (or
-``top level'') Scheme environment is empty except for {\cf import},
-so further bindings can only be introduced with {\cf import}.
-
-Expressions occurring at the top level of a program are
-interpreted imperatively; they are executed in order when the program is
-invoked or loaded, and typically perform some kind of initialization.
-
-At the top level of a program {\tt(begin \hyperi{form} \dotsfoo)} is
-equivalent to the sequence of expressions, definitions, and syntax definitions
-in the \ide{begin}.   Macros can expand into such {\cf begin}s.
-
 Implementations may provide an interactive session called a
-\defining{REPL} (Read-Eval-Print Loop), where Scheme program parts can be
+\defining{REPL} (Read-Eval-Print Loop), where import declarations,
+expressions, definitions, syntax definitions, and record type definitions can be
 entered and evaluated one at a time.  For convenience and ease of use,
 the ``top-level'' Scheme environment in a REPL
 must not be not empty, but must start out with a number of variables
@@ -47,6 +47,11 @@ procedure of one argument that computes the absolute value of a
 number, and the variable {\cf +} is bound to a procedure that computes
 sums.  The full list of {\cf(scheme base)} bindings can be found in
 Appendix~\ref{stdlibraries}.
+
+An implementation may provide a mode of operation in which the REPL
+reads its input from a file.  Such a file is not, in general, the same
+as a program, because it can contain import declarations other than at
+the beginning.
 
 
 \section{Definitions}
