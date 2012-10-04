@@ -32,7 +32,7 @@ The former names are still available in the \rfivers\ compatibility library.
 related predicates) is a lexicographical extension of character comparison
 (with {\cf char<?} and the related predicates) has been removed.  The former
 set provide an implementation-defined comparison as in \rfivers; the latter
-set provide comparison by Unicode code point.
+set provide comparison by Unicode scalar value.
 
 \item Support for the \# character in numeric literals is no longer required.
 
@@ -155,7 +155,7 @@ such subset in a way consistent with Unicode.
 Various character and string procedures have been extended accordingly.
 String comparison remains implementation-dependent, and is no longer
 required to be consistent with character comparison, which is based
-on Unicode code points.
+on Unicode scalar values.
 The new {\cf digit-value} procedure has been added to obtain the numerical
 value of a numeric character.
 

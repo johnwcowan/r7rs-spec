@@ -2160,14 +2160,14 @@ Returns \schtrue{} if \var{obj} is a character, otherwise returns \schfalse.
 
 \label{characterequality}
 
-These procedures return \schtrue{} if the Unicode code points corresponding to their arguments are (respectively):
+These procedures return \schtrue{} if the Unicode scalar values corresponding to their arguments are (respectively):
 equal, monotonically increasing, monotonically decreasing,
 monotonically nondecreasing, or monotonically nonincreasing.
 
 These predicates are required to be transitive.
 
 These procedures impose a total ordering on the set of characters which
-is the same as the Unicode code point ordering.  This is true 
+is the same as the Unicode scalar value ordering.  This is true 
 whether or not the implementation uses the Unicode representation internally.
 
 \end{entry}
@@ -2233,7 +2233,7 @@ Given a Unicode character,
 {\cf char\coerce{}integer} returns an exact integer 
 between 0 and {\tt \#xD7FF} or 
 between {\tt \#xE000} and {\tt \#x10FFFF} 
-which is equal to the Unicode code point of that character.
+which is equal to the Unicode scalar value of that character.
 Given a non-Unicode character, 
 it returns an exact integer greater than {\tt \#x10FFFF}.  
 This is true independent of whether the implementation uses
