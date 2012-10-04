@@ -3599,17 +3599,6 @@ or one of an implementation-defined set of objects.  Otherwise, it returns
 \end{entry}
 
 \begin{entry}{%
-\proto{read-error?}{ obj}{procedure}
-\proto{file-error?}{ obj}{procedure}}
-
-Error type predicates.  Returns \schtrue{} if \var{obj} is an error
-object raised by the {\cf read} procedure or by the inability to open
-an input or output port on a file, respectively.  Otherwise, it
-returns \schfalse.
-
-\end{entry}
-
-\begin{entry}{%
 \proto{error-object-message}{ error-object}{procedure}}
 
 Returns the message encapsulated by \var{error-object}.
@@ -3620,6 +3609,18 @@ Returns the message encapsulated by \var{error-object}.
 \proto{error-object-irritants}{ error-object}{procedure}}
 
 Returns a list of the irritants encapsulated by \var{error-object}.
+
+\end{entry}
+
+\begin{entry}{%
+\proto{read-error?}{ obj}{procedure}
+\proto{file-error?}{ obj}{procedure}}
+
+Error type predicates.  Returns \schtrue{} if \var{obj} is an
+object raised by the {\cf read} procedure or by the inability to open
+an input or output port on a file, respectively.  Otherwise, it
+returns \schfalse.
+% Not required to be an error object.
 
 \end{entry}
 
