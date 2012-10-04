@@ -271,6 +271,35 @@ unspecified.
 
 \end{entry}
 
+\subsection{Inclusion}\unsection
+\label{inclusion}
+\begin{entry}{%
+\proto{include}{ \hyperi{string} \hyperii{string} \dotsfoo}{\exprtype}
+\rproto{include-ci}{ \hyperi{string} \hyperii{string} \dotsfoo}{\exprtype}}
+
+\ide{Include} and
+\ide{include-ci} both take one or more filenames expressed as string literals,
+apply an implementation-specific algorithm to find corresponding files,
+read the contents of the files in the specified order as if by repeated applications
+of {\cf read}, and include the results into the surrounding context as
+though wrapped in a top-level \ide{begin}.
+The difference between the two is that \ide{include-ci} reads each file
+as if it began with the {\cf{}\#!fold-case} directive, while \ide{include}
+does not.
+
+\begin{note}
+Implementations are encouraged to search for files in the directory
+which contains the including file, and to provide a way for users to
+specify other directories to search.
+\end{note}
+
+\begin{note}
+For portability, \ide{include} and \ide{include-ci} must operate on source files.
+Their operation on other kinds of files necessarily varies among
+implementations.
+\end{note}
+
+\end{entry}
 
 \section{Derived expression types}
 \label{derivedexps}
@@ -486,6 +515,57 @@ expression is unspecified.
   (display "2"))  \ev  \unspecified
  \>{\em and prints nothing}%
 \end{scheme}
+\end{entry}
+
+\begin{entry}{%
+\proto{cond-expand}{ \hyper{cond-expand clause} \dotsfoo}{\exprtype}}
+
+The \ide{cond-expand} expression type
+provides a way to statically
+expand different expressions depending on the
+implementation.  A
+\hyper{cond-expand clause} takes the following form:
+
+{\tt(\hyper{feature requirement} \hyper{expression} \dotsfoo)}
+
+The last clause may be an ``else clause,'' which has the form
+
+{\tt(else \hyper{expression} \dotsfoo)}
+
+A \hyper{feature requirement} takes one of the following forms:
+
+\begin{itemize}
+\item {\tt\hyper{feature identifier}}
+\item {\tt(library \hyper{library name})}
+\item {\tt(and \hyper{feature requirement} \dotsfoo)}
+\item {\tt(or \hyper{feature requirement} \dotsfoo)}
+\item {\tt(not \hyper{feature requirement})}
+\end{itemize}
+
+Each implementation maintains a list of feature identifiers which are
+present, as well as a list of libraries which can be imported.  The
+value of a \hyper{feature requirement} is determined by replacing
+each \hyper{feature identifier} and {\tt(library \hyper{library name})}
+on the implementation's lists with \schtrue, and all other feature
+identifiers and library names with \schfalse, then evaluating the
+resulting expression as a Scheme boolean expression under the normal
+interpretation of {\cf and}, {\cf or}, and {\cf not}.
+
+A \ide{cond-expand} is then expanded by evaluating the
+\hyper{feature requirement}s of successive \hyper{cond-expand clause}s
+in order, until one of them returns \schtrue.  When a true clause is
+found, the corresponding \hyper{expression}s are spliced into
+the current context as if by {\cf begin} and the remaining clauses are ignored.
+If none of the \hyper{feature requirement}s evaluate to \schtrue, then
+if there is an \ide{else} clause, its \hyper{expression}s are
+included.  Otherwise, the \ide{cond-expand} has no effect.
+Unlike {\cf cond}, {\cf cond-expand} does not depend on the value
+of any variables.
+
+The exact features provided are implementation-defined, but for
+portability a core set of features is given in
+appendix~\ref{stdfeatures}.
+
 \end{entry}
 
 \subsection{Binding constructs}
@@ -935,6 +1015,7 @@ computed value is returned.
 Consequently, a delayed expression is evaluated using the parameter
 values and exception handler of the call to {\cf force} which first
 requested its value.
+If \var{promise} is not a promise, it may be returned unchanged.
 
 \begin{scheme}
 (force (delay (+ 1 2)))   \ev  3
@@ -1048,6 +1129,7 @@ as procedures.
 The {\cf make-promise} procedure returns a promise which, when forced, will return
 \var{obj}.  It is similar to {\cf delay}, but does not delay
 its argument: it is a procedure rather than syntax.
+If \var{obj} is already a promise, it is returned.
 
 \end{entry}
 

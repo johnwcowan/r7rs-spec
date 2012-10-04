@@ -3,63 +3,99 @@
 
 \section{Programs}
 
-A Scheme program consists of a sequence of 
-\defining{program parts}: expressions, definitions, syntax definitions,
-record type definitions, {\cf import}s, {\cf cond-expand}s, and {\cf include}s.  A collection of program
-parts may be encapsulated in a library to be reused by multiple
-programs.
-Expressions are described in chapter~\ref{expressionchapter};
-the other program parts, as well as libraries, are the subject of the
-present chapter.
+A Scheme program consists of  
+one or more import declarations followed by a sequence of
+expressions and generalized definitions.
+Import declarations specify the libraries on which the program depends;
+a subset of the identifiers exported by the library are made available to
+the program.
+Expressions are described in chapter~\ref{expressionchapter}.
+Generalized definitions are either definitions, syntax definitions, or
+record type definitions, all of which are explained in this chapter.
+They are valid in some, but not all, contexts where expressions
+are allowed, specifically at the top level of a \hyper{program}
+and at the beginning of a \hyper{body}.
+\mainindex{generalized definition}
 
-Programs and libraries are typically stored in files, although programs
-can be entered interactively to a running Scheme system, and other
-paradigms are possible.
-Implementations which store libraries in files should document the
-mapping from the name of a library to its location in the file system.
+In a \hyper{body}, {\tt(begin \hyperi{generalized definition} \dotsfoo)} is equivalent
+to the sequence \hyperi{generalized definition} \dotsfoo. Macros can
+expand into such {\cf begin} forms.
 
-Program parts other than expressions that are present
-at the top level of the programs
-cause bindings to be created in the top level
+Import declarations and generalized definitions can be interpreted declaratively.
+They cause bindings to be created in the top level
 environment or modify the value of existing top-level bindings.
-The initial (or
-``top level'') Scheme environment is empty except for {\cf import},
-so further bindings can only be introduced with {\cf import}.
+The initial environment of a program is empty,
+so at least one import declaration is required to introduce initial bindings.
 
 Expressions occurring at the top level of a program are
 executed in order when the program is
 invoked or loaded, and typically perform some kind of initialization.
 
 At the top level of a program {\tt(begin \hyperi{form} \dotsfoo)} is
-equivalent to the sequence of expressions, definitions, and syntax definitions
+equivalent to the sequence of expressions and generalized definitions
 in the \ide{begin}.   Macros can expand into such {\cf begin}s.
 
-Implementations may provide a facility called a
-\defining{REPL} (Read-Eval-Print Loop), where Scheme program parts can be
-entered and evaluated one at a time.
-A REPL may be interactive in nature, or may take its input from a file
-or similar source or send its output to a file or similar destination or both.
-For convenience and ease of use,
-the ``top-level'' Scheme environment in a REPL
-must not be empty, but must start out with 
-at least the identifiers of the base library bound.
-Other libraries may be imported or identifiers bound that are not
-part of any library.
+Programs as well as libraries are typically stored in files, although
+in some implementations they can be entered interactively to a running
+Scheme system.  Other paradigms are possible.
+Implementations which store libraries in files should document the
+mapping from the name of a library to its location in the file system.
+
+\section{Import declarations}
+
+An import declaration takes the following form:
+\begin{scheme}
+(import \hyper{import-set} \dotsfoo)
+\end{scheme}
+
+An \ide{import} declaration provides a way to import identifiers
+exported by a library.  Each \hyper{import set} names a set of bindings
+from a library and possibly specifies local names for the
+imported bindings. It takes one of the following forms:
+
+\begin{itemize}
+\item {\tt\hyper{library name}}
+\item {\tt(only \hyper{import set} \hyper{identifier} \dotsfoo)}
+\item {\tt(except \hyper{import set} \hyper{identifier} \dotsfoo)}
+\item {\tt(prefix \hyper{import set} \hyper{identifier})}
+\item {\tt(rename \hyperi{import set} (\hyperii{$identifier$} \hyper{$identifier$}) \dotsfoo)}
+\end{itemize}
+
+In the first form, all of the identifiers in the named library's export
+clauses are imported with the same names (or the exported names if
+exported with \ide{rename}).  The additional \hyper{import set}
+forms modify this set as follows:
+
+\begin{itemize}
+
+\item \ide{only} produces a subset of the given
+  \hyper{import set}, including only the listed identifiers (after any
+  renaming).  It is an error if any of the listed identifiers are
+  not found in the original set.
+
+\item \ide{except} produces a subset of the given
+  \hyper{import set}, excluding the listed identifiers (after any
+  renaming). It is an error if any of the listed identifiers are not
+  found in the original set.
+
+\item \ide{rename} modifies the given \hyper{import set},
+  replacing each instance of \hyperi{$identifier$} with
+  \hyperii{$identifier$}. It is an error if any of the listed
+  identifiers are not found in the original set.
+
+\item \ide{prefix} automatically renames all identifiers in
+  the given \hyper{import set}, prefixing each with the specified
+  \hyper{identifier}.
+
+\end{itemize}
 
 
 \section{Definitions}
 \label{defines}
-
-Definitions are valid in some, but not all, contexts where expressions
-are allowed.  They are valid only at the top level of a \hyper{program}
-and at the beginning of a \hyper{body}.
 \mainindex{definition}
 
-In a \hyper{body} {\tt(begin \hyperi{definition} \dotsfoo)} is equivalent
-to the sequence of definitions \hyperi{definition} \dotsfoo. Macros can
-expand into such {\cf begin}s.
-
-A definition takes one of the following forms:\mainschindex{define}
+A definition binds one or more identifiers and specifies an initial value for them.
+It takes one of the following forms:\mainschindex{define}
 
 \begin{itemize}
 
@@ -198,9 +234,8 @@ call.
 
 \section{Syntax definitions}
 
-Syntax definitions are valid wherever definitions are.
 \mainindex{syntax definition}
-They have the following form:\mainschindex{define-syntax}
+Syntax definitions have the following form:\mainschindex{define-syntax}
 
 {\tt(define-syntax \hyper{keyword} \hyper{transformer spec})}
 
@@ -270,7 +305,6 @@ The values of a record type are called \defining{records} and are
 aggregations of zero or more \defining{fields}, each of which holds a single location.
 A predicate, a constructor, and field accessors and
 mutators are defined for each record type.
-Record type definitions are valid wherever definitions are.
 
 \begin{entry}{%
 \mainschindex{define-record-type}
@@ -474,6 +508,10 @@ forms modify this set as follows:
 The top level of a program may also include \ide{import} declarations.
 
 In a library declaration and at the top level, it is an error to import the same
+=======
+\ide{Import} declarations may also be made at the top level of a
+program.  In a library declaration, it is an error to import the same
+>>>>>>> other
 identifier more than once with different bindings, or to redefine or
 mutate an imported binding with {\cf define}, {\cf define-syntax}
 or {\cf set!}, or to refer to an identifier before it is imported.
@@ -481,75 +519,9 @@ However, a REPL should permit these actions.
 
 The \ide{begin}, \ide{include}, and \ide{include-ci} declarations are
 used to specify the commands and definitions that make up the body of
-the library.
-The \ide{begin} declaration takes a list of expressions and definitions
-analogous to the top-level \ide{begin}.  
-Both the \ide{include} and
-\ide{include-ci} declarations take one or more filenames expressed as string literals,
-apply an implementation-specific algorithm to find corresponding files,
-read the whole contents of each file,
-and include the results into the library body or program as
-though wrapped in a top-level \ide{begin}.
-The difference between the two is that \ide{include-ci} reads each file
-as if it began with the {\cf{}\#!fold-case} directive, while \ide{include}
-does not.
+the library.  \ide{Begin} takes a list of forms to be spliced
+literally, analogous to the top-level \ide{begin}.  
 All three may appear at the top level of a program.
-
-The \ide{include-library-declarations} declaration is similar to
-\ide{include} except that the resulting forms are spliced into the
-current library form.  This can be used, for example, to share the
-same \ide{export} declaration among multiple libraries as a simple
-form of library interface.
-
-\begin{note}
-Implementations are encouraged to search for files in the directory
-which contains the including file, and to provide a way for users to
-specify other directories to search.
-\end{note}
-
-The \ide{cond-expand} library declaration
-provides a way to statically
-expand different library declarations depending on the 
-implementation under which the library is being loaded.  A
-\hyper{cond-expand clause} takes the following form:
-
-{\tt(\hyper{feature requirement} \hyper{library declaration} \dotsfoo)}
-
-The last clause may be an ``else clause,'' which has the form
-
-{\tt(else \hyper{library declaration} \dotsfoo)}
-
-A \hyper{feature requirement} takes one of the following forms:
-
-\begin{itemize}
-\item {\tt\hyper{feature identifier}}
-\item {\tt(library \hyper{library name})}
-\item {\tt(and \hyper{feature requirement} \dotsfoo)}
-\item {\tt(or \hyper{feature requirement} \dotsfoo)}
-\item {\tt(not \hyper{feature requirement})}
-\end{itemize}
-
-Each implementation maintains a list of feature identifiers which are
-present, as well as a list of libraries which can be imported.  The
-value of a \hyper{feature requirement} is determined by replacing
-each \hyper{feature identifier} and {\tt(library \hyper{library name})}
-on the implementation's lists with \schtrue, and all other feature
-identifiers and library names with \schfalse, then evaluating the
-resulting expression as a Scheme boolean expression under the normal
-interpretation of {\cf and}, {\cf or}, and {\cf not}.
-
-A \ide{cond-expand} is then expanded by evaluating the
-\hyper{feature requirement}s of successive \hyper{cond-expand clause}s
-in order, until one of them returns \schtrue.  When a true clause is
-found, the corresponding \hyper{library declaration}s are spliced into
-the current library definition and the remaining clauses are ignored.
-If none of the \hyper{feature requirement}s evaluate to \schtrue, then
-if there is an \ide{else} clause, its \hyper{library declaration}s are
-included.  Otherwise, the \ide{cond-expand} has no effect.
-
-The exact features provided are implementation-defined, but for
-portability a core set of features is given in
-appendix~\ref{stdfeatures}.
 
 \todo{Shinn: Perhaps make this a separate subsection describing a
   library ``resolution'' phase which runs prior to library expansion.}
@@ -683,3 +655,26 @@ the base library.
 (life grid 80)
 
 \end{scheme}
+
+\section{The REPL}
+
+Implementations may provide an interactive session called a
+\defining{REPL} (Read-Eval-Print Loop), where import declarations,
+expressions, definitions, syntax definitions, and record type definitions can be
+entered and evaluated one at a time.  For convenience and ease of use,
+the ``top-level'' Scheme environment in a REPL
+must not be not empty, but must start out with a number of variables
+bound to locations containing at least the bindings provided by the
+base library.  This library includes the core syntax of Scheme
+and generally useful procedures that manipulate data.  For example, the
+variable {\cf abs} is bound to a
+procedure of one argument that computes the absolute value of a
+number, and the variable {\cf +} is bound to a procedure that computes
+sums.  The full list of {\cf(scheme base)} bindings can be found in
+Appendix~\ref{stdlibraries}.
+
+An implementation may provide a mode of operation in which the REPL
+reads its input from a file.  Such a file is not, in general, the same
+as a program, because it can contain import declarations other than at
+the beginning.
+
