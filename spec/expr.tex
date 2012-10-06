@@ -994,7 +994,7 @@ of {\cf delay-force} will in effect result in a tail call to
 {\cf (force \var{expression})},
 while forcing the result of
 {\cf (delay (force \var{expression}))}
-may not.  Thus
+might not.  Thus
 iterative lazy algorithms that may result in a long series of chains of
 {\cf delay} and {\cf force}
 can be rewritten using {\cf delay-force} to prevent consuming
@@ -1103,7 +1103,7 @@ depending on the implementation:
 the value of a promise is forced by procedures
 that operate only on arguments of a certain type, like {\cf cdr}
 and {\cf *}.  However, procedures that operate uniformly on their
-arguments, like {\cf list}, may not force them.
+arguments, like {\cf list}, must not force them.
 
 \begin{scheme}
 (+ (delay (* 3 7)) 13)  \ev  34
@@ -1181,7 +1181,7 @@ expression in the \hyper{body} are returned as the results of the entire
 If the conversion procedure is not idempotent, the results of
 {\cf (parameterize ((x (x))) ...)},
 which appears to bind the parameter \var{x} to its current value,
-may not be what the user expects.
+might not be what the user expects.
 \end{note}
 
 If an implementation supports multiple threads of execution, then
