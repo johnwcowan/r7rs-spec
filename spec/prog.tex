@@ -11,7 +11,7 @@ a subset of the identifiers exported by the libraries are made available to
 the program.
 Expressions are described in chapter~\ref{expressionchapter}.
 Generalized definitions are either definitions, syntax definitions, or
-record type definitions, all of which are explained in this chapter.
+record-type definitions, all of which are explained in this chapter.
 They are valid in some, but not all, contexts where expressions
 are allowed, specifically at the top level of a \hyper{program}
 and at the beginning of a \hyper{body}.
@@ -301,10 +301,10 @@ errors:
 
 \todo{Shinn: Example using internal define-syntax.}
 
-\section{Record type definitions}
+\section{Record-type definitions}
 \label{usertypes}
 
-\defining{Record type definitions} are used to introduce new data types, called
+\defining{Record-type definitions} are used to introduce new data types, called
 \defining{record types}.
 The values of a record type are called \defining{records} and are
 aggregations of zero or more \defining{fields}, each of which holds a single location.
@@ -627,7 +627,7 @@ the base library.
 
 Implementations may provide an interactive session called a
 \defining{REPL} (Read-Eval-Print Loop), where import declarations,
-expressions, definitions, syntax definitions, and record type definitions can be
+expressions, definitions, syntax definitions, and record-type definitions can be
 entered and evaluated one at a time.  For convenience and ease of use,
 the ``top-level'' Scheme environment in a REPL
 must not be not empty, but must start out with a number of variables
