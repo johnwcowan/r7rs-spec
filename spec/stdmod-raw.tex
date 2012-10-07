@@ -111,13 +111,14 @@ provided as convenient abbreviations.
 .eof-object
 .eof-object?              flush-output-port
 .get-output-string        get-output-bytevector
-.input-port?              newline
+.input-port?              input-port-open?
+.newline
 .open-input-string        open-output-string
 .open-input-bytevector    open-output-bytevector
-.output-port?             peek-char
+.output-port?             output-port-open?
+peek-char
 .peek-u8                  port?
-.port-open?               read-char
-.read-line
+.read-char                read-line
 .read-u8                  u8-ready?
 .write-char               write-u8
 .write-bytevector

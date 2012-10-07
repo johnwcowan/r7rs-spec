@@ -16,6 +16,15 @@ is reserved for use by future standards.
 
 The \texttt{(scheme base)} library exports many of the procedures and
 syntax bindings that are traditionally associated with Scheme.
+The division between the base library and the other standard libraries is
+based on use, not on construction. In particular, some facilities that are
+typically implemented as primitives by a compiler or the run-time system
+rather than in terms of other standard procedures or syntax are
+not part of the base library, but are defined in separate libraries.
+By the same token, some exports of the base library are implementable
+in terms of other exports.  They are redundant in the strict sense of
+the word, but they capture common patterns of usage, and are therefore
+provided as convenient abbreviations.
 
 \begin{scheme}
 {\cf *}               {\cf +}               {\cf -}
@@ -61,7 +70,8 @@ syntax bindings that are traditionally associated with Scheme.
 {\cf get-output-bytevector}
 {\cf get-output-string}                {\cf guard}
 {\cf if}              {\cf import}          {\cf inexact}
-{\cf inexact?\ }       {\cf infinite?\ }      {\cf input-port?}
+{\cf inexact?\ }       {\cf infinite?}
+{\cf input-port-open?\ }                {\cf input-port?}
 {\cf integer->char}   {\cf integer?\ }       {\cf lambda}
 {\cf lcm}             {\cf length}          {\cf let}
 {\cf let*}            {\cf let*-values}     {\cf let-syntax}
@@ -80,38 +90,40 @@ syntax bindings that are traditionally associated with Scheme.
 {\cf open-input-string}
 {\cf open-output-bytevector}
 {\cf open-output-string}               {\cf or}
-{\cf output-port?\ }   {\cf pair?\ }          {\cf parameterize}
-{\cf peek-char}       {\cf peek-u8}         {\cf port-open?}
-{\cf port?\ }          {\cf positive?\ }      {\cf procedure?}
-{\cf quasiquote}      {\cf quote}           {\cf quotient}
-{\cf raise}           {\cf raise-continuable}
-{\cf rational?\ }      {\cf rationalize}     {\cf read-bytevector}
-{\cf read-bytevector!}                 {\cf read-char}
-{\cf read-line}       {\cf read-u8}         {\cf real?}
-{\cf remainder}       {\cf reverse}         {\cf round}
-{\cf set!}            {\cf set-car!}        {\cf set-cdr!}
-{\cf square}          {\cf string}          {\cf string->list}
-{\cf string->number}  {\cf string->symbol}  {\cf string->utf8}
-{\cf string->vector}  {\cf string-append}   {\cf string-copy}
-{\cf string-copy!}    {\cf string-fill!}    {\cf string-for-each}
-{\cf string-length}   {\cf string-map}      {\cf string-ref}
-{\cf string-set!}     {\cf string<=?\ }      {\cf string<?}
-{\cf string=?\ }       {\cf string>=?\ }      {\cf string>?}
-{\cf string?\ }        {\cf substring}       {\cf symbol->string}
-{\cf symbol=?\ }       {\cf symbol?\ }        {\cf syntax-error}
-{\cf syntax-rules}    {\cf textual-port?\ }  {\cf truncate}
-{\cf truncate-quotient}
+{\cf output-port-open?\ }               {\cf output-port?}
+{\cf pair?\ }          {\cf parameterize}    {\cf positive?}
+{\cf procedure?\ }     {\cf quasiquote}      {\cf quote}
+{\cf quotient}        {\cf raise}
+{\cf raise-continuable}                {\cf rational?}
+{\cf rationalize}     {\cf real?\ }          {\cf remainder}
+{\cf reverse}         {\cf round}           {\cf set!}
+{\cf set-car!}        {\cf set-cdr!}        {\cf square}
+{\cf string}          {\cf string->list}    {\cf string->number}
+{\cf string->symbol}  {\cf string->vector}  {\cf string-append}
+{\cf string-copy}     {\cf string-copy!}    {\cf string-fill!}
+{\cf string-for-each} {\cf string-length}   {\cf string-map}
+{\cf string-ref}      {\cf string-set!}     {\cf string<=?}
+{\cf string<?\ }       {\cf string=?\ }       {\cf string>=?}
+{\cf string>?\ }       {\cf string?\ }        {\cf substring}
+{\cf symbol->string}  {\cf symbol=?\ }       {\cf symbol?}
+{\cf syntax-error}    {\cf syntax-rules}    {\cf textual-port?}
+{\cf truncate}        {\cf truncate-quotient}
 {\cf truncate-remainder}               {\cf truncate/}
-{\cf u8-ready?\ }      {\cf unless}          {\cf unquote}
-{\cf unquote-splicing}                 {\cf utf8->string}
-{\cf values}          {\cf vector}          {\cf vector->list}
-{\cf vector->string}  {\cf vector-copy}     {\cf vector-copy!}
-{\cf vector-fill!}    {\cf vector-for-each} {\cf vector-length}
-{\cf vector-map}      {\cf vector-ref}      {\cf vector-set!}
-{\cf vector?\ }        {\cf when}
-{\cf with-exception-handler}
+{\cf unless}          {\cf unquote}
+{\cf unquote-splicing}                 {\cf values}
+{\cf vector}          {\cf vector->list}    {\cf vector->string}
+{\cf vector-copy}     {\cf vector-copy!}    {\cf vector-fill!}
+{\cf vector-for-each} {\cf vector-length}   {\cf vector-map}
+{\cf vector-ref}      {\cf vector-set!}     {\cf vector?}
+{\cf when}            {\cf with-exception-handler}
+{\cf zero?}
+peek-char
+{\cf peek-u8}         {\cf port?\ }          {\cf read-bytevector}
+{\cf read-bytevector!}                 {\cf read-char}
+{\cf read-line}       {\cf read-u8}         {\cf string->utf8}
+{\cf u8-ready?\ }      {\cf utf8->string}
 {\cf write-bytevector}                 {\cf write-char}
-{\cf write-u8}        {\cf zero?}
+{\cf write-u8}
 \end{scheme}
 
 \textbf{Inexact Library}
