@@ -1,7 +1,7 @@
 \section{Derived expression types}
 \label{derivedsection}
 
-This section gives macro definitions for the derived expression types in
+This section gives syntax definitions for the derived expression types in
 terms of the primitive expression types (literal, variable, call, {\cf lambda},
 {\cf if}, and {\cf set!}), except for {\cf quasiquote}.
 
@@ -278,7 +278,7 @@ This could also be accomplished by using an auxiliary macro.
 The following alternative expansion for {\cf begin} does not make use of
 the ability to write more than one expression in the body of a lambda
 expression.  In any case, note that these rules apply only if the body
-of the {\cf begin} contains no definitions.
+of the {\cf begin} contains no generalized definitions.
 
 \begin{scheme}
 (define-syntax begin
@@ -292,7 +292,7 @@ of the {\cf begin} contains no definitions.
          (begin exp2 ...))))))
 \end{scheme}
 
-The following definition
+The following syntax definition
 of {\cf do} uses a trick to expand the variable clauses.
 As with {\cf letrec} above, an auxiliary macro would also work.
 The expression {\cf (if \#f \#f)} is used to obtain an unspecific

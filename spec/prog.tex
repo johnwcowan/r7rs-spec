@@ -271,14 +271,14 @@ Otherwise, it is an {\em internal syntax definition}, and is local to the
 \todo{Shinn: This description is hideous.
 Cowan: But now less hideous than before.}
 
-Macros can expand into definitions in any context that permits
-them. However, it is an error for a definition to define an
+Macros can expand into generalized definitions in any context that permits
+them. However, it is an error for a generalized definition to define an
 identifier whose binding has to be known in order to determine the meaning of the
-definition itself, or of any preceding definition that belongs to the
-same group of internal definitions. Similarly, it is an error for an
-internal definition to define an identifier whose binding has to be known
+generalized definition itself, or of any preceding generalized definition that belongs to the
+same group of internal generalized definitions. Similarly, it is an error for an
+internal generalized definition to define an identifier whose binding has to be known
 in order
-to determine the boundary between the internal definitions and the
+to determine the boundary between the internal generalized definitions and the
 expressions of the body it belongs to. For example, the following are
 errors:
 
@@ -375,7 +375,7 @@ means to identify the record type for use by further language extensions.
 
 \end{itemize}
 
-For instance, the following definition
+For instance, the following record-type definition
 
 \begin{scheme}
 (define-record-type <pare>
@@ -507,7 +507,7 @@ added to it by each \ide{import} declaration.
 
 When a library is loaded, its top-level expressions are executed
 in textual order.
-If a library's definitions are referenced in the expanded form of a
+If a library's generalized definitions are referenced in the expanded form of a
 program or library body, then that library must be loaded before the
 expanded program or library body is evaluated. This rule applies
 transitively.  If a library is imported by more than one program or
@@ -627,7 +627,7 @@ the base library.
 
 Implementations may provide an interactive session called a
 \defining{REPL} (Read-Eval-Print Loop), where import declarations,
-expressions, definitions, syntax definitions, and record-type definitions can be
+expressions and generalized definitions can be
 entered and evaluated one at a time.  For convenience and ease of use,
 the ``top-level'' Scheme environment in a REPL
 must not be not empty, but must start out with a number of variables
