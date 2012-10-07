@@ -16,6 +16,15 @@ is reserved for use by future standards.
 
 The \texttt{(scheme base)} library exports many of the procedures and
 syntax bindings that are traditionally associated with Scheme.
+The division between the base library and the other standard libraries is
+based on use, not on construction. In particular, some facilities that are
+typically implemented as primitives by a compiler or the run-time system
+rather than in terms of other standard procedures or syntax are
+not part of the base library, but are defined in separate libraries.
+By the same token, some exports of the base library are implementable
+in terms of other exports.  They are redundant in the strict sense of
+the word, but they capture common patterns of usage, and are therefore
+provided as convenient abbreviations.
 
 \begin{scheme}
 ._               ...
