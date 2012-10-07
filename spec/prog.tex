@@ -35,7 +35,7 @@ executed in order when the program is
 invoked or loaded, and typically perform some kind of initialization.
 
 
-Programs as well as libraries are typically stored in files, although
+Programs and libraries are typically stored in files, although
 in some implementations they can be entered interactively to a running
 Scheme system.  Other paradigms are possible.
 Implementations which store libraries in files should document the
@@ -99,7 +99,8 @@ However, a REPL should permit these actions.
 \label{defines}
 \mainindex{definition}
 
-A definition binds one or more identifiers and specifies an initial value for them.
+A definition binds one or more identifiers and specifies an initial
+value for each of them.
 It takes one of the following forms:\mainschindex{define}
 
 \begin{itemize}
@@ -644,7 +645,7 @@ sums.  The full list of {\cf(scheme base)} bindings can be found in
 Appendix~\ref{stdlibraries}.
 
 An implementation may provide a mode of operation in which the REPL
-reads its input from a file, sometimes called a defining{script}.  A script is not, in general, the same
+reads its input from a file, sometimes called a \defining{script}.  A script is not, in general, the same
 as a program, because it can contain import declarations in places other than
 the beginning.
 
