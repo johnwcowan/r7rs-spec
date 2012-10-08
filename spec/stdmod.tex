@@ -91,15 +91,19 @@ provided as convenient abbreviations.
 {\cf open-output-bytevector}
 {\cf open-output-string}               {\cf or}
 {\cf output-port-open?\ }               {\cf output-port?}
-{\cf pair?\ }          {\cf parameterize}    {\cf positive?}
+{\cf pair?\ }          {\cf parameterize}    {\cf peek-char}
+{\cf peek-u8}         {\cf port?\ }          {\cf positive?}
 {\cf procedure?\ }     {\cf quasiquote}      {\cf quote}
 {\cf quotient}        {\cf raise}
 {\cf raise-continuable}                {\cf rational?}
-{\cf rationalize}     {\cf real?\ }          {\cf remainder}
-{\cf reverse}         {\cf round}           {\cf set!}
-{\cf set-car!}        {\cf set-cdr!}        {\cf square}
-{\cf string}          {\cf string->list}    {\cf string->number}
-{\cf string->symbol}  {\cf string->vector}  {\cf string-append}
+{\cf rationalize}     {\cf read-bytevector}
+{\cf read-bytevector!}                 {\cf read-char}
+{\cf read-line}       {\cf read-string}     {\cf read-u8}
+{\cf real?\ }          {\cf remainder}       {\cf reverse}
+{\cf round}           {\cf set!}            {\cf set-car!}
+{\cf set-cdr!}        {\cf square}          {\cf string}
+{\cf string->list}    {\cf string->number}  {\cf string->symbol}
+{\cf string->utf8}    {\cf string->vector}  {\cf string-append}
 {\cf string-copy}     {\cf string-copy!}    {\cf string-fill!}
 {\cf string-for-each} {\cf string-length}   {\cf string-map}
 {\cf string-ref}      {\cf string-set!}     {\cf string<=?}
@@ -109,21 +113,16 @@ provided as convenient abbreviations.
 {\cf syntax-error}    {\cf syntax-rules}    {\cf textual-port?}
 {\cf truncate}        {\cf truncate-quotient}
 {\cf truncate-remainder}               {\cf truncate/}
-{\cf unless}          {\cf unquote}
-{\cf unquote-splicing}                 {\cf values}
-{\cf vector}          {\cf vector->list}    {\cf vector->string}
-{\cf vector-copy}     {\cf vector-copy!}    {\cf vector-fill!}
-{\cf vector-for-each} {\cf vector-length}   {\cf vector-map}
-{\cf vector-ref}      {\cf vector-set!}     {\cf vector?}
-{\cf when}            {\cf with-exception-handler}
-{\cf zero?}
-peek-char
-{\cf peek-u8}         {\cf port?\ }          {\cf read-bytevector}
-{\cf read-bytevector!}                 {\cf read-char}
-{\cf read-line}       {\cf read-string}     {\cf read-u8}
-{\cf string->utf8}    {\cf u8-ready?\ }      {\cf utf8->string}
+{\cf u8-ready?\ }      {\cf unless}          {\cf unquote}
+{\cf unquote-splicing}                 {\cf utf8->string}
+{\cf values}          {\cf vector}          {\cf vector->list}
+{\cf vector->string}  {\cf vector-copy}     {\cf vector-copy!}
+{\cf vector-fill!}    {\cf vector-for-each} {\cf vector-length}
+{\cf vector-map}      {\cf vector-ref}      {\cf vector-set!}
+{\cf vector?\ }        {\cf when}
+{\cf with-exception-handler}
 {\cf write-bytevector}                 {\cf write-char}
-{\cf write-string}    {\cf write-u8}
+{\cf write-string}    {\cf write-u8}        {\cf zero?}
 \end{scheme}
 
 \textbf{Inexact Library}
