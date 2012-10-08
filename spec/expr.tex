@@ -257,9 +257,10 @@ unspecified.
 
 \semantics
 \hyper{Expression} is evaluated, and the resulting value is stored in
-the location to which \hyper{variable} is bound.  If \hyper{variable} is not
+the location to which \hyper{variable} is bound.  It is an error if \hyper{variable} is not
 bound either in some region\index{region} enclosing the {\cf set!}\ expression
-or at top level, a Scheme implementation may act as if it were bound at top level.
+or at top level.
+% a Scheme implementation may act as if it were bound at top level.
 The result of the {\cf set!} expression is
 unspecified.
 

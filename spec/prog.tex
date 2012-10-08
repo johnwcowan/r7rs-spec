@@ -155,14 +155,11 @@ unbound\index{unbound} variable.
 (first '(1 2))                      \ev  1%
 \end{scheme}
 
-%Implementations are permitted to provide an initial environment in
-%which all possible variables are bound to locations, most of
-%which contain unspecified values.  Top level definitions in
-%such an implementation are truly equivalent to assignments,
-%unless the identifier is defined as a syntax keyword.
-\todo{JC: Removed this in favor of allowing set! to bind
-an unbound variable, which does not conflict with saying the top-level
-environment of a program or library is empty of bindings.}
+Implementations are permitted to provide an initial environment in
+which all possible variables are bound to locations, most of
+which contain unspecified values.  Top level definitions in
+such an implementation are truly equivalent to assignments,
+unless the identifier is defined as a syntax keyword.
 
 \subsection{Internal definitions}
 \label{internaldefines}
