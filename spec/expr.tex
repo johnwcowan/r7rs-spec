@@ -1136,12 +1136,24 @@ If \var{obj} is already a promise, it is returned.
 
 \subsection{Dynamic bindings}\unsection
 
+The \defining{dynamic extent} of a procedure call is the time between
+when it is initiated and when it returns.  In Scheme, {\cf
+  call-with-current-continuation} (section~\ref{continuations}) allows
+reentering a dynamic extent after its procedure call has returned.
+Thus, the dynamic extent of a call may not be a single, connected time
+period.
+
+This sections introduces \defining{parameter objects}, which can be
+bound to new values for the duration of a dynamic extent.  The set of
+all parameter bindings at a given time is called the \defining{dynamic
+  environment}.
+
 \begin{entry}{%
 \proto{make-parameter}{ init}{procedure}
 \proto{make-parameter}{ init converter}{procedure}}
 \label{make-parameter}
 
-Returns a newly allocated \defining{parameter object}\index{parameterize},
+Returns a newly allocated parameter object,
 which is a procedure that accepts zero arguments and
 returns the value associated with the parameter object.
 Initially, this value is the value of
@@ -1605,7 +1617,7 @@ following
 \#(\hyper{pattern} \ldots)
 \#(\hyper{pattern} \ldots \hyper{pattern} \hyper{ellipsis} \hyper{pattern} \ldots)%
 \end{scheme}
-and a template is either an identifier, a constant, or one of the following
+and a \hyper{template} is either an identifier, a constant, or one of the following
 \begin{scheme}
 (\hyper{element} \ldots)
 (\hyper{element} \hyper{element} \ldots . \hyper{template})
