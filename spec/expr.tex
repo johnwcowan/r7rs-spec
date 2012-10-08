@@ -1319,7 +1319,8 @@ to avoid colliding with the comma at-sign sequence.
           \lev  ((foo 7) . cons)
 `\#(10 5 ,(sqrt 4) ,@(map sqrt '(16 9)) 8) %
           \lev  \#(10 5 2 4 3 8)
-(let ((foo '(foo bar)) (@baz 'baz)) `(list ,@foo , @baz))%
+(let ((foo '(foo bar)) (@baz 'baz))
+  `(list ,@foo , @baz))%
           \lev  (foo bar baz)%
 \end{scheme}
 
