@@ -1640,7 +1640,7 @@ of a macro whose keyword is associated with a transformer specified by
 When a match is found, the macro use is transcribed hygienically
 according to the template.
 
-An identifier appearing within a \hyper{pattern} may be a low line
+An identifier appearing within a \hyper{pattern} may be an underscore
 ({\cf \_}), a literal identifier listed in the list of \hyper{literal}s,
 or the \hyper{ellipsis}.
 All other identifiers appearing within a \hyper{pattern} are
@@ -1656,7 +1656,7 @@ It is an error for the same pattern variable to appear more than once in a
 \hyper{pattern}.
 
 Low lines also match arbitrary input elements but are not pattern variables
-and so cannot be used to refer to those elements.  If a low line appears
+and so cannot be used to refer to those elements.  If an underscore appears
 in the \hyper{literal}s list, then that takes precedence and
 low lines in the \hyper{pattern} match as literals.
 Multiple low lines may appear in a \hyper{pattern}.
@@ -1676,7 +1676,7 @@ case it is matched as a literal.
 More formally, an input expression $E$ matches a pattern $P$ if and only if:
 
 \begin{itemize}
-\item $P$ is a low line ({\cf \_}).
+\item $P$ is an underscore ({\cf \_}).
 
 \item $P$ is a non-literal identifier; or
 
