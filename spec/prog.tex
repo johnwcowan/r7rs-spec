@@ -24,13 +24,14 @@ Similarly, in a \hyper{body}, {\tt(begin \hyperi{definition} \dotsfoo)} is equiv
 to the sequence \hyperi{definition} \dotsfoo.
 Macros can expand into such {\cf begin} forms.
 
-Import declarations and definitions can be interpreted declaratively.
-They cause bindings to be created in the top level
+Import declarations and definitions
+cause bindings to be created in the top level
 environment or modify the value of existing top-level bindings.
 The initial environment of a program is empty,
 so at least one import declaration is required to introduce initial bindings.
 
-Expressions occurring at the top level of a program are
+Expressions occurring at the top level of a program
+do not create any bindings.  They are
 executed in order when the program is
 invoked or loaded, and typically perform some kind of initialization.
 
