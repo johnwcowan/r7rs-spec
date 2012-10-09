@@ -143,6 +143,9 @@ a procedure such as {\cf car}, {\cf vector-ref}, or {\cf string-ref}, is
 equivalent in the sense of \ide{eqv?} % and \ide{eq?} ??
 (section~\ref{equivalencesection})
 to the object last stored in the location before the fetch.
+Note that this means a procedure fetched from one of these locations
+may not be {\cf eqv?} to the procedure stored, though it is guaranteed
+to behave equivalently.
 
 Every location is marked to show whether it is in use.
 No variable or object ever refers to a location that is not in use.
