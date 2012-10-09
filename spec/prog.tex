@@ -5,26 +5,26 @@
 
 A Scheme program consists of  
 one or more import declarations followed by a sequence of
-expressions and generalized definitions.
+expressions and definitions.
 Import declarations specify the libraries on which a program or library depends;
 a subset of the identifiers exported by the libraries are made available to
 the program.
 Expressions are described in chapter~\ref{expressionchapter}.
-Generalized definitions are either definitions, syntax definitions, or
+Definitions are either variable definitions, syntax definitions, or
 record-type definitions, all of which are explained in this chapter.
 They are valid in some, but not all, contexts where expressions
 are allowed, specifically at the top level of a \hyper{program}
 and at the beginning of a \hyper{body}.
-\mainindex{generalized definition}
+\mainindex{definition}
 
 At the top level of a program, {\tt(begin \hyperi{expr-or-def} \dotsfoo)} is
-equivalent to the sequence of expressions and generalized definitions
+equivalent to the sequence of expressions and definitions
 in the \ide{begin}.   
-Similarly, in a \hyper{body}, {\tt(begin \hyperi{generalized definition} \dotsfoo)} is equivalent
-to the sequence \hyperi{generalized definition} \dotsfoo.
+Similarly, in a \hyper{body}, {\tt(begin \hyperi{definition} \dotsfoo)} is equivalent
+to the sequence \hyperi{definition} \dotsfoo.
 Macros can expand into such {\cf begin} forms.
 
-Import declarations and generalized definitions can be interpreted declaratively.
+Import declarations and definitions can be interpreted declaratively.
 They cause bindings to be created in the top level
 environment or modify the value of existing top-level bindings.
 The initial environment of a program is empty,
@@ -91,15 +91,15 @@ forms modify this set as follows:
 
 In a program or library declaration, it is an error to import the same
 identifier more than once with different bindings, or to redefine or
-mutate an imported binding with a generalized definition
+mutate an imported binding with a definition
 or with {\cf set!}, or to refer to an identifier before it is imported.
 However, a REPL should permit these actions.
 
-\section{Definitions}
+\section{Variable definitions}
 \label{defines}
-\mainindex{definition}
+\mainindex{variable definition}
 
-A definition binds one or more identifiers and specifies an initial
+A variable definition binds one or more identifiers and specifies an initial
 value for each of them.
 It takes one of the following forms:\mainschindex{define}
 
@@ -270,14 +270,14 @@ Otherwise, it is an {\em internal syntax definition}, and is local to the
 \todo{Shinn: This description is hideous.
 Cowan: But now less hideous than before.}
 
-Macros can expand into generalized definitions in any context that permits
-them. However, it is an error for a generalized definition to define an
+Macros can expand into definitions in any context that permits
+them. However, it is an error for a definition to define an
 identifier whose binding has to be known in order to determine the meaning of the
-generalized definition itself, or of any preceding generalized definition that belongs to the
-same group of internal generalized definitions. Similarly, it is an error for an
-internal generalized definition to define an identifier whose binding has to be known
+definition itself, or of any preceding generalized definition that belongs to the
+same group of internal definitions. Similarly, it is an error for an
+internal definition to define an identifier whose binding has to be known
 in order
-to determine the boundary between the internal generalized definitions and the
+to determine the boundary between the internal definitions and the
 expressions of the body it belongs to. For example, the following are
 errors:
 
@@ -498,7 +498,7 @@ One possible implementation of libraries is as follows:
 After all \ide{cond-expand} library declarations are expanded, a new
 environment is constructed for the library consisting of all
 imported bindings.  The expressions and
-generalized declarations from all \ide{begin}, \ide{include} and \ide{include-ci}
+declarations from all \ide{begin}, \ide{include} and \ide{include-ci}
 library declarations are expanded in that environment in the order in which
 they occur in the library.
 Alternatively, \ide{cond-expand} and \ide{import} declarations may be processed
@@ -508,7 +508,7 @@ added to it by each \ide{import} declaration.
 
 When a library is loaded, its top-level expressions are executed
 in textual order.
-If a library's generalized definitions are referenced in the expanded form of a
+If a library's definitions are referenced in the expanded form of a
 program or library body, then that library must be loaded before the
 expanded program or library body is evaluated. This rule applies
 transitively.  If a library is imported by more than one program or
@@ -628,7 +628,7 @@ the base library.
 
 Implementations may provide an interactive session called a
 \defining{REPL} (Read-Eval-Print Loop), where import declarations,
-expressions and generalized definitions can be
+expressions and definitions can be
 entered and evaluated one at a time.  For convenience and ease of use,
 the ``top-level'' Scheme environment in a REPL
 must not be not empty, but must start out with a number of variables

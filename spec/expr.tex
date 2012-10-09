@@ -149,7 +149,7 @@ The order of evaluation may be chosen differently for each procedure call.
 
 \syntax
 \hyper{Formals} should be a formal arguments list as described below,
-and \hyper{body} should be a sequence of zero or more generalized definitions
+and \hyper{body} should be a sequence of zero or more definitions
 followed by one or more expressions.
 
 \semantics
@@ -597,7 +597,7 @@ different identifiers to each returned value.
 ((\hyperi{variable} \hyperi{init}) \dotsfoo)\rm,%
 \end{scheme}
 where each \hyper{init} is an expression, and \hyper{body} should be a
-sequence of zero or more generalized definitions followed by a
+sequence of zero or more definitions followed by a
 sequence of one or more expressions as described in section~\ref{lambda}.  It is
 an error for a \hyper{variable} to appear more than once in the list of variables
 being bound.
@@ -635,7 +635,7 @@ See also ``named {\cf let},'' section \ref{namedlet}.
 ((\hyperi{variable} \hyperi{init}) \dotsfoo)\rm,%
 \end{scheme}
 and \hyper{body} should be a sequence of
-zero or more generalized definitions followed by
+zero or more definitions followed by
 one or more expressions as described in section~\ref{lambda}.
 
 \semantics
@@ -665,7 +665,7 @@ The \hyper{variable}s need not be distinct.
 ((\hyperi{variable} \hyperi{init}) \dotsfoo)\rm,%
 \end{scheme}
 and \hyper{body} should be a sequence of
-zero or more generalized definitions followed by
+zero or more definitions followed by
 one or more expressions as described in section~\ref{lambda}. It is an error for a \hyper{variable} to appear more
 than once in the list of variables being bound.
 
@@ -718,7 +718,7 @@ should not be invoked more than once.
 ((\hyperi{variable} \hyperi{init}) \dotsfoo)\rm,%
 \end{scheme}
 and \hyper{body}\index{body} should be a sequence of
-zero or more generalized definitions followed by
+zero or more definitions followed by
 one or more expressions as described in section~\ref{lambda}. It is an error for a \hyper{variable} to appear more
 than once in the list of variables being bound.
 
@@ -763,7 +763,7 @@ referring to the value of the corresponding \hyper{variable} or the
 \end{scheme}
 
 where each \hyper{init} should be an expression, and \hyper{body} should be
-zero or more generalized definitions followed by a sequence of one or
+zero or more definitions followed by a sequence of one or
 more expressions as described in section~\ref{lambda}.  It is an error for a variable to appear more than
 once in the set of \hyper{formals}.
 
@@ -800,7 +800,7 @@ values returned by the corresponding \hyper{init}.
 ((\hyper{formals} \hyper{init}) \dotsfoo)\rm,%
 \end{scheme}
 and \hyper{body} should be a sequence of zero or more
-generalized definitions followed by one or more expressions as described in section~\ref{lambda}.  In each \hyper{formals},
+definitions followed by one or more expressions as described in section~\ref{lambda}.  In each \hyper{formals},
 it is an error if any variable appears more than once.
 
 \semantics
@@ -833,13 +833,13 @@ have slightly different forms and uses:
 
 This form of {\cf begin} may appear as part of a \hyper{body}, or at the
 \hyper{top-level}, or directly nested in a {\cf begin} that is itself of this form.
-It causes the contained expressions and generalized definitions to be evaluated
+It causes the contained expressions and definitions to be evaluated
 exactly as if the enclosing {\cf begin} construct were not present.
 
 \begin{rationale}
 This form is commonly used in the output of
 macros (see section~\ref{macrosection})
-which need to generate multiple generalized definitions and
+which need to generate multiple definitions and
 splice them into the context in which they are expanded.
 \end{rationale}
 
@@ -1510,7 +1510,7 @@ see section~\ref{define-syntax}.
 \end{scheme}
 Each \hyper{keyword} is an identifier,
 each \hyper{transformer spec} is an instance of {\cf syntax-rules}, and
-\hyper{body} should be a sequence of one or more generalized definitions followed
+\hyper{body} should be a sequence of one or more definitions followed
 by one or more expressions.  It is an error
 for a \hyper{keyword} to appear more than once in the list of keywords
 being bound.
