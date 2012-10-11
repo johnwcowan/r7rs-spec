@@ -240,26 +240,27 @@ conventions also imply type restrictions:
 \newcommand{\foo}[1]{\vr{#1}, \vri{#1}, $\ldots$ \vrj{#1}, $\ldots$}
 $$
 \begin{tabular}{ll}
-\var{obj}&any object\\
-\foo{list}&list (see section~\ref{listsection})\\
-\foo{z}&complex number\\
-\foo{x}&real number\\
-\foo{y}&real number\\
-\foo{q}&rational number\\
-\foo{n}&integer\\
-\foo{k}&exact non-negative integer\\
-\vr{string}&string\\
-\vr{pair}&pair\\
-\vr{list}&list\\
 \vr{alist}&association list (list of pairs)\\
-\vr{symbol}&symbol\\
-\vr{char}&character\\
-\vr{letter}&alphabetic character\\
+\vr{boolean}&boolean value (\schtrue{} or \schfalse{})\\
 \vr{byte}&exact non-negative integer $< 256$\\
 \vr{bytevector}&bytevector\\
-\vr{proc}&procedure\\
-\vr{thunk}&zero-argument procedure\\
+\vr{char}&character\\
+\foo{k}&exact non-negative integer\\
+\vr{letter}&alphabetic character\\
+\foo{list}&list (see section~\ref{listsection})\\
+\foo{n}&integer\\
+\var{obj}&any object\\
+\vr{pair}&pair\\
 \vr{port}&port\\
+\vr{proc}&procedure\\
+\foo{q}&rational number\\
+\vr{string}&string\\
+\vr{symbol}&symbol\\
+\vr{thunk}&zero-argument procedure\\
+\vr{vector}&vector\\
+\foo{x}&real number\\
+\foo{y}&real number\\
+\foo{z}&complex number\\
 
 \end{tabular}
 $$
@@ -297,7 +298,7 @@ The value returned by a mutation procedure is unspecified.
 By convention, ``\ide{->}'' appears within the names of procedures that
 take an object of one type and return an analogous object of another type.
 For example, {\cf list->vector} takes a list and returns a vector whose
-elements are the same (in the sense of {cf eqv?}) as those of the list.
+elements are the same (in the sense of {\cf eqv?}) as those of the list.
 
 	
 \todo{Terms that need defining: thunk, command (what else?).}
