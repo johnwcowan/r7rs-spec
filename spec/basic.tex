@@ -57,12 +57,12 @@ environment}
 No object satisfies more than one of the following predicates:
 
 \begin{scheme}
-boolean?          pair?
-symbol?           number?
-char?             string?
-vector?           bytevector?
-port?             procedure?
-null?             eof-object?
+boolean?          bytevector?
+char?             eof-object?
+null?             number?
+pair?             port?
+procedure?        string?
+symbol?           vector?
 \end{scheme}
 
 and all predicates created by {\cf define-record-type}.
