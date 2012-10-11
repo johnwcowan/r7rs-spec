@@ -134,7 +134,7 @@ The representation {\tt -nan.0} is synonymous with {\tt +nan.0}.
 \item The procedures {\cf map} and {\cf for-each} are now required to terminate on
 the shortest list when the inputs have different lengths.
 
-\item The procedures {\cf member} and {\cf assoc} now take an optional third argument
+\item The procedures {\cf member} and {\cf assoc} now take a third argument
 specifying the equality predicate to be used.
 
 \item The procedures {\cf exact-integer?}, {\cf square},
@@ -147,7 +147,7 @@ and {\cf exact-integer-sqrt} have been added.
 {\cf vector->string}, {\cf vector-copy!}, and {\cf string-copy!}
 have been added to round out the sequence operations.
 Some of these support processing of part of a string or vector using
-optional start and end arguments.
+start and end arguments.
 
 \item Implementations may provide any subset of the full Unicode
 repertoire that includes ASCII, but implementations must support any
@@ -274,7 +274,7 @@ in a body may return any number of values.
 \item Because of widespread SRFI 1 support and extensive code
 that uses it, the semantics of {\cf map} and {\cf for-each} have been changed to use
 the SRFI 1 early termination behavior. Likewise
-{\cf assoc} and {\cf member} take an optional {\cf equal?} argument as in SRFI 1,
+{\cf assoc} and {\cf member} take a {\cf equal?} argument as in SRFI 1,
 instead of the separate {\cf assp} and {\cf memp} procedures of \rsixrs.
 
 \item The \rsixrs~{\cf quasiquote} clarifications have been adopted, but the Working Group has not seen

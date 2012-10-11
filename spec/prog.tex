@@ -28,7 +28,7 @@ Import declarations and definitions
 cause bindings to be created in the top level
 environment or modify the value of existing top-level bindings.
 The initial environment of a program is empty,
-so at least one import declaration is required to introduce initial bindings.
+so at least one import declaration is needed to introduce initial bindings.
 
 Expressions occurring at the top level of a program
 do not create any bindings.  They are
@@ -110,7 +110,7 @@ It takes one of the following forms:\mainschindex{define}
 
 \item{\tt(define (\hyper{variable} \hyper{formals}) \hyper{body})}
 
-\hyper{Formals} should be either a
+\hyper{Formals} are either a
 sequence of zero or more variables, or a sequence of one or more
 variables followed by a space-delimited period and another variable (as
 in a lambda expression).  This form is equivalent to
@@ -121,7 +121,7 @@ in a lambda expression).  This form is equivalent to
 
 \item{\tt(define (\hyper{variable} .\ \hyper{formal}) \hyper{body})}
 
-\hyper{Formal} should be a single
+\hyper{Formal} is a single
 variable.  This form is equivalent to
 \begin{scheme}
 (define \hyper{variable}
@@ -159,7 +159,7 @@ unbound\index{unbound} variable.
 \subsection{Internal definitions}
 \label{internaldefines}
 
-Definitions may occur at the
+Definitions can occur at the
 beginning of a \hyper{body} (that is, the body of a \ide{lambda},
 \ide{let}, \ide{let*}, \ide{letrec}, \ide{letrec*},
 \ide{let-values}, \ide{let-values*}, \ide{let-syntax}, \ide{letrec-syntax},
@@ -200,7 +200,7 @@ of any of the definitions that follow it in \hyper{body}.
 It is an error to define the same identifier more than once in the
 same \hyper{body}.
 
-Wherever an internal definition may occur,
+Wherever an internal definition can occur,
 {\tt(begin \hyperi{definition} \dotsfoo)}
 is equivalent to the sequence of definitions
 that form the body of the \ide{begin}.
@@ -239,7 +239,7 @@ Syntax definitions have the following form:\mainschindex{define-syntax}
 {\tt(define-syntax \hyper{keyword} \hyper{transformer spec})}
 
 \hyper{Keyword} is an identifier, and
-the \hyper{transformer spec} should be an instance of \ide{syntax-rules}.
+the \hyper{transformer spec} is an instance of \ide{syntax-rules}.
 If the {\cf define-syntax} occurs at the top level, then the top-level
 syntactic environment is extended by binding the
 \hyper{keyword} to the specified transformer, but existing references
@@ -311,12 +311,12 @@ mutators are defined for each record type.
 \hspace*{4em}{\tt \hyper{constructor} \hyper{pred} \hyper{field} \dotsfoo})}
 
 \syntax
-\hyper{name} and \hyper{pred} should be identifiers.
-The \hyper{constructor} should be of the form
+\hyper{name} and \hyper{pred} are identifiers.
+The \hyper{constructor} is of the form
 \begin{scheme}
 (\hyper{constructor name} \hyper{field name} \dotsfoo)%
 \end{scheme}
-and each \hyper{field} should be either of the form
+and each \hyper{field} is either of the form
 \begin{scheme}
 (\hyper{field name} \hyper{accessor name})%
 \end{scheme}
@@ -427,7 +427,7 @@ It is inadvisable, but not an error, for identifiers in library names to
 contain any of the characters {\cf | \backwhack{} ? * < " : > + [ ] /}
 or control characters after escapes are expanded.
 
-A \hyper{library declaration} may be any of:
+A \hyper{library declaration} is any of:
 
 \begin{itemize}
 
@@ -523,7 +523,7 @@ has the same effect as {\cf (import (only (foo) a b))}.
 
 \subsection{Library example}
 The following example shows
-how a program may be divided into libraries plus a relatively small
+how a program can be divided into libraries plus a relatively small
 main program~\cite{life}.
 If the main program is entered into a REPL, it is not necessary to import
 the base library.

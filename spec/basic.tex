@@ -171,7 +171,7 @@ immutable object.
   locations, combined with the following comment that they are only
   conceptual, makes this note seem unecessary.}
 
-These locations should be understood as conceptual, not physical.
+These locations are to be understood as conceptual, not physical.
 Hence, they do not necessarily correspond to memory addresses,
 and even if they do, the memory address might not be constant.
 
@@ -322,7 +322,7 @@ tail call.
 \end{scheme}%
 
 \begin{note}
-Implementations are allowed, but not required, to
+Implementations may
 recognize that some non-tail calls, such as the call to {\cf h}
 above, can be evaluated as though they were tail calls.
 In the example above, the {\cf let} expression could be compiled

@@ -45,7 +45,7 @@ x   \ev  28%
 
 {\cf (quote \hyper{datum})} evaluates to \hyper{datum}.\mainschindex{'}
 \hyper{Datum}
-may be any external representation of a Scheme object (see
+can be any external representation of a Scheme object (see
 section~\ref{externalreps}).  This notation is used to include literal
 constants in Scheme code.
 
@@ -55,7 +55,7 @@ constants in Scheme code.
 (quote (+ 1 2))               \ev  (+ 1 2)%
 \end{scheme}
 
-{\cf (quote \hyper{datum})} may be abbreviated as
+{\cf (quote \hyper{datum})} can be abbreviated as
 \singlequote\hyper{datum}.  The two notations are equivalent in all
 respects.
 
@@ -114,7 +114,7 @@ procedures in the above examples are the values of the variables {\cf +}
 and {\cf *}.  New procedures are created by evaluating \lambdaexp{}s
 (see section~\ref{lambda}).
 
-Procedure calls may return any number of values (see \ide{values} in
+Procedure calls can return any number of values (see \ide{values} in
 section~\ref{proceduresection}).
 Most of the procedures defined in this report return one
 value or, for procedures such as {\cf apply}, pass on the values returned
@@ -148,8 +148,8 @@ The order of evaluation may be chosen differently for each procedure call.
 \proto{lambda}{ \hyper{formals} \hyper{body}}{\exprtype}}
 
 \syntax
-\hyper{Formals} should be a formal arguments list as described below,
-and \hyper{body} should be a sequence of zero or more definitions
+\hyper{Formals} is a formal arguments list as described below,
+and \hyper{body} is a sequence of zero or more definitions
 followed by one or more expressions.
 
 \semantics
@@ -180,7 +180,7 @@ the results of the procedure call.
 (add4 6)                        \ev  10%
 \end{scheme}
 
-\hyper{Formals} should have one of the following forms:
+\hyper{Formals} have one of the following forms:
 
 \begin{itemize}
 \item {\tt(\hyperi{variable} \dotsfoo)}:
@@ -226,7 +226,7 @@ It is an error for a \hyper{variable} to appear more than once in
 \rproto{if}{ \hyper{test} \hyper{consequent}}{\exprtype}}  %\/ if hyper = italic
 
 \syntax
-\hyper{Test}, \hyper{consequent}, and \hyper{alternate} should be
+\hyper{Test}, \hyper{consequent}, and \hyper{alternate} are
 expressions.
 
 \semantics
@@ -329,7 +329,7 @@ where \hyper{test} is any expression, or
 \begin{scheme}
 (\hyper{test} => \hyper{expression})%
 \end{scheme}
-The last \hyper{clause} may be
+The last \hyper{clause} can be
 an ``else clause,'' which has the form
 \begin{scheme}
 (else \hyperi{expression} \hyperii{expression} \dotsfoo)\rm.%
@@ -381,18 +381,18 @@ the last one are returned.
 \proto{case}{ \hyper{key} \hyperi{clause} \hyperii{clause} \dotsfoo}{\exprtype}}
 
 \syntax
-\hyper{Key} may be any expression.  Each \hyper{clause} should have
+\hyper{Key} can be any expression.  Each \hyper{clause} has
 the form
 \begin{scheme}
 ((\hyperi{datum} \dotsfoo) \hyperi{expression} \hyperii{expression} \dotsfoo)\rm,%
 \end{scheme}
 where each \hyper{datum} is an external representation of some object.
 It is an error if any of the \hyper{datum}s are the same anywhere in the expression.
-Alternatively, a \hyper{clause} may be of the form
+Alternatively, a \hyper{clause} can be of the form
 \begin{scheme}
 ((\hyperi{datum} \dotsfoo) => \hyper{expression})%
 \end{scheme}
-The last \hyper{clause} may be an ``else clause,'' which has one of the forms
+The last \hyper{clause} can be an ``else clause,'' which has one of the forms
 \begin{scheme}
 (else \hyperi{expression} \hyperii{expression} \dotsfoo)
 \end{scheme}
@@ -530,7 +530,7 @@ implementation.  A
 
 {\tt(\hyper{feature requirement} \hyper{expression} \dotsfoo)}
 
-The last clause may be an ``else clause,'' which has the form
+The last clause can be an ``else clause,'' which has the form
 
 {\tt(else \hyper{expression} \dotsfoo)}
 
@@ -592,11 +592,11 @@ different identifiers to each returned value.
 \proto{let}{ \hyper{bindings} \hyper{body}}{\exprtype}}
 
 \syntax
-\hyper{Bindings} should have the form
+\hyper{Bindings} has the form
 \begin{scheme}
 ((\hyperi{variable} \hyperi{init}) \dotsfoo)\rm,%
 \end{scheme}
-where each \hyper{init} is an expression, and \hyper{body} should be a
+where each \hyper{init} is an expression, and \hyper{body} is a
 sequence of zero or more definitions followed by a
 sequence of one or more expressions as described in section~\ref{lambda}.  It is
 an error for a \hyper{variable} to appear more than once in the list of variables
@@ -630,11 +630,11 @@ See also ``named {\cf let},'' section \ref{namedlet}.
 
 \nobreak
 \syntax
-\hyper{Bindings} should have the form
+\hyper{Bindings} has the form
 \begin{scheme}
 ((\hyperi{variable} \hyperi{init}) \dotsfoo)\rm,%
 \end{scheme}
-and \hyper{body} should be a sequence of
+and \hyper{body} is a sequence of
 zero or more definitions followed by
 one or more expressions as described in section~\ref{lambda}.
 
@@ -660,11 +660,11 @@ The \hyper{variable}s need not be distinct.
 \proto{letrec}{ \hyper{bindings} \hyper{body}}{\exprtype}}
 
 \syntax
-\hyper{Bindings} should have the form
+\hyper{Bindings} has the form
 \begin{scheme}
 ((\hyperi{variable} \hyperi{init}) \dotsfoo)\rm,%
 \end{scheme}
-and \hyper{body} should be a sequence of
+and \hyper{body} is a sequence of
 zero or more definitions followed by
 one or more expressions as described in section~\ref{lambda}. It is an error for a \hyper{variable} to appear more
 than once in the list of variables being bound.
@@ -713,11 +713,11 @@ should not be invoked more than once.
 \proto{letrec*}{ \hyper{bindings} \hyper{body}}{\exprtype}}
 
 \syntax
-\hyper{Bindings} should have the form
+\hyper{Bindings} has the form
 \begin{scheme}
 ((\hyperi{variable} \hyperi{init}) \dotsfoo)\rm,%
 \end{scheme}
-and \hyper{body}\index{body} should be a sequence of
+and \hyper{body}\index{body} is a sequence of
 zero or more definitions followed by
 one or more expressions as described in section~\ref{lambda}. It is an error for a \hyper{variable} to appear more
 than once in the list of variables being bound.
@@ -757,12 +757,12 @@ referring to the value of the corresponding \hyper{variable} or the
 \proto{let-values}{ \hyper{mvbindings} \hyper{body}}{\exprtype}}
 
 \syntax
-\hyper{Mvbindings} should have the form
+\hyper{Mvbindings} has the form
 \begin{scheme}
 ((\hyperi{formals} \hyperi{init}) \dotsfoo)\rm,%
 \end{scheme}
 
-where each \hyper{init} should be an expression, and \hyper{body} should be
+where each \hyper{init} is an expression, and \hyper{body} is
 zero or more definitions followed by a sequence of one or
 more expressions as described in section~\ref{lambda}.  It is an error for a variable to appear more than
 once in the set of \hyper{formals}.
@@ -795,11 +795,11 @@ values returned by the corresponding \hyper{init}.
 
 \nobreak
 \syntax
-\hyper{Mvbindings} should have the form
+\hyper{Mvbindings} has the form
 \begin{scheme}
 ((\hyper{formals} \hyper{init}) \dotsfoo)\rm,%
 \end{scheme}
-and \hyper{body} should be a sequence of zero or more
+and \hyper{body} is a sequence of zero or more
 definitions followed by one or more expressions as described in section~\ref{lambda}.  In each \hyper{formals},
 it is an error if any variable appears more than once.
 
@@ -831,7 +831,7 @@ have slightly different forms and uses:
 \begin{entry}{%
 \proto{begin}{ \hyper{expr-or-def} \dotsfoo}{\exprtype}}
 
-This form of {\cf begin} may appear as part of a \hyper{body}, or at the
+This form of {\cf begin} can appear as part of a \hyper{body}, or at the
 \hyper{top-level}, or directly nested in a {\cf begin} that is itself of this form.
 It causes the contained expressions and definitions to be evaluated
 exactly as if the enclosing {\cf begin} construct were not present.
@@ -911,7 +911,7 @@ consists of the entire {\cf do} expression except for the \hyper{init}s.
 It is an error for a \hyper{variable} to appear more than once in the
 list of {\cf do} variables.
 
-\vest A \hyper{step} may be omitted, in which case the effect is the
+\vest A \hyper{step} can be omitted, in which case the effect is the
 same as if {\cf(\hyper{variable} \hyper{init} \hyper{variable})} had
 been written instead of {\cf(\hyper{variable} \hyper{init})}.
 
@@ -974,7 +974,7 @@ invoking the procedure named by \hyper{variable}.
 The {\cf delay} construct is used together with the procedure \ide{force} to
 implement \defining{lazy evaluation} or \defining{call by need}.
 {\tt(delay~\hyper{expression})} returns an object called a
-\defining{promise} which at some point in the future may be asked (by
+\defining{promise} which at some point in the future can be asked (by
 the {\cf force} procedure) to evaluate
 \hyper{expression}, and deliver the resulting value.
 \todo{consider removing unspecified effect}
@@ -997,7 +997,7 @@ of {\cf delay-force} will in effect result in a tail call to
 while forcing the result of
 {\cf (delay (force \var{expression}))}
 might not.  Thus
-iterative lazy algorithms that may result in a long series of chains of
+iterative lazy algorithms that might result in a long series of chains of
 {\cf delay} and {\cf force}
 can be rewritten using {\cf delay-force} to prevent consuming
 unbounded space during evaluation.
@@ -1101,7 +1101,7 @@ depending on the implementation:
 (pair? (delay (cons 1 2)))  \ev  \unspecified%
 \end{scheme}
 
-\item Some implementations may implement ``implicit forcing,'' where
+\item Implementations may implement ``implicit forcing,'' where
 the value of a promise is forced by procedures
 that operate only on arguments of a certain type, like {\cf cdr}
 and {\cf *}.  However, procedures that operate uniformly on their
@@ -1141,7 +1141,7 @@ The \defining{dynamic extent} of a procedure call is the time between
 when it is initiated and when it returns.  In Scheme, {\cf
   call-with-current-continuation} (section~\ref{continuations}) allows
 reentering a dynamic extent after its procedure call has returned.
-Thus, the dynamic extent of a call may not be a single, connected time
+Thus, the dynamic extent of a call might not be a single, connected time
 period.
 
 This sections introduces \defining{parameter objects}, which can be
@@ -1349,7 +1349,7 @@ be rebuilt are always literal. Thus,
 (let ((a 3)) `((1 2) ,a ,4 ,'five 6))
 \end{scheme}
 
-may be equivalent to either of the following expressions:
+may be treated as equivalent to either of the following expressions:
 
 \begin{scheme}
 `((1 2) 3 4 five 6)
@@ -1371,8 +1371,7 @@ The two notations
  {\cf,\hyper{expression}} is identical to {\cf (unquote \hyper{expression})},
  and
  {\cf,@\hyper{expression}} is identical to {\cf (unquote-splicing \hyper{expression})}.
-The external syntax generated by \ide{write} for two-element lists whose
-car is one of these symbols may vary between implementations.
+The \ide{write} procedure may output either format.
 \mainschindex{`}
 
 \begin{scheme}
@@ -1396,7 +1395,7 @@ otherwise than as described above.
 \proto{case-lambda}{ \hyper{clause} \dotsfoo}{case-lambda library syntax}}
 
 \syntax
-Each \hyper{clause} should be of the form
+Each \hyper{clause} is of the form
 (\hyper{formals} \hyper{body}),
 where \hyper{formals} and \hyper{body} have the same syntax
 as in a \lambdaexp.
@@ -1496,7 +1495,7 @@ Implementations may provide macro facilities of other types.
 The {\cf let-syntax} and {\cf letrec-syntax} binding constructs are
 analogous to {\cf let} and {\cf letrec}, but they bind
 syntactic keywords to macro transformers instead of binding variables
-to locations that contain values.  Syntactic keywords may also be
+to locations that contain values.  Syntactic keywords can also be
 bound at top level or elsewhere with {\cf define-syntax};
 see section~\ref{define-syntax}.
 
@@ -1504,13 +1503,13 @@ see section~\ref{define-syntax}.
 \proto{let-syntax}{ \hyper{bindings} \hyper{body}}{\exprtype}}
 
 \syntax
-\hyper{Bindings} should have the form
+\hyper{Bindings} has the form
 \begin{scheme}
 ((\hyper{keyword} \hyper{transformer spec}) \dotsfoo)%
 \end{scheme}
 Each \hyper{keyword} is an identifier,
 each \hyper{transformer spec} is an instance of {\cf syntax-rules}, and
-\hyper{body} should be a sequence of one or more definitions followed
+\hyper{body} is a sequence of one or more definitions followed
 by one or more expressions.  It is an error
 for a \hyper{keyword} to appear more than once in the list of keywords
 being bound.
@@ -1640,7 +1639,7 @@ of a macro whose keyword is associated with a transformer specified by
 When a match is found, the macro use is transcribed hygienically
 according to the template.
 
-An identifier appearing within a \hyper{pattern} may be an underscore
+An identifier appearing within a \hyper{pattern} can be an underscore
 ({\cf \_}), a literal identifier listed in the list of \hyper{literal}s,
 or the \hyper{ellipsis}.
 All other identifiers appearing within a \hyper{pattern} are
@@ -1820,7 +1819,7 @@ with an expansion pass separate from evaluation should signal an error
 as soon as {\cf syntax-error} is expanded.  This can be used as
 a {\cf syntax-rules} \hyper{template} for a \hyper{pattern} that is
 an invalid use of the macro, which can provide more descriptive error
-messages.  \hyper{message} should be a string literal, and \hyper{args}
+messages.  \hyper{message} is a string literal, and \hyper{args}
 arbitrary expressions providing additional information.
 Applications cannot count on being able to catch syntax errors with
 exception handlers or guards.

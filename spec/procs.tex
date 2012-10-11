@@ -204,8 +204,8 @@ procedures.  However, {\cf eqv?} may or may not detect this equivalence.
 \end{scheme}
 
 Since it is an error to modify constant objects (those returned by
-literal expressions), implementations are permitted, though not
-required, to share structure between constants where appropriate.  Thus
+literal expressions), implementations may
+share structure between constants where appropriate.  Thus
 the value of {\cf eqv?} on constants is sometimes
 implementation-dependent.
 
@@ -718,7 +718,7 @@ is unreliable, since any inaccuracy might affect the result.
 
 \begin{note}
 In many implementations the \ide{complex?} procedure will be the same as
-\ide{number?}, but unusual implementations may be able to represent
+\ide{number?}, but unusual implementations may represent
 some irrational numbers exactly or may extend the number system to
 support some kind of non-complex numbers.
 \end{note}
@@ -2479,7 +2479,7 @@ procedures without  \hbox{``{\tt -ci}''}.
 
 These procedures apply the Unicode full string uppercasing, lowercasing,
 and case-folding algorithms to their arguments and return the result.
-The result may differ in length from the argument.  
+In certain cases, the result differs in length from the argument.
 If the result is equal to the argument in the sense of {\cf string=?}, the argument may be returned.
 Note that language-sensitive mappings and foldings are not used.  
 
@@ -3261,7 +3261,7 @@ The escape procedure is a Scheme procedure that, if it is
 later called, will abandon whatever continuation is in effect at that later
 time and will instead use the continuation that was in effect
 when the escape procedure was created.  Calling the escape procedure
-may cause the invocation of \var{before} and \var{after} thunks installed using
+will cause the invocation of \var{before} and \var{after} thunks installed using
 \ide{dynamic-wind}.
 
 The escape procedure accepts the same number of arguments as the continuation to
@@ -3485,7 +3485,7 @@ The system implicitly maintains a current exception handler.
 \index{current exception handler}The program raises an exception by
 invoking the current exception handler, passing it an object
 encapsulating information about the exception.  Any procedure
-accepting one argument may serve as an exception handler and any
+accepting one argument can serve as an exception handler and any
 object may be used to represent an exception.
 
 \begin{entry}{%
@@ -3653,7 +3653,7 @@ defined in the \rfivers\ library.
 Implementations must support this value of \var{version}.
 
 Implementations may also support other values of \var{version}, in which
-case they should return a specifier for an environment containing bindings corresponding to the specified version of the report.
+case they return a specifier for an environment containing bindings corresponding to the specified version of the report.
 If \var{version}
 is neither {\cf 5} nor another value supported by
 the implementation, an error is signalled.
@@ -3678,7 +3678,7 @@ defined in the \rfivers\ library.
 Implementations must support this value of \var{version}.
 
 Implementations may also support other values of \var{version}, in which
-case they should return a specifier for an environment containing bindings corresponding to the specified version of the report.
+case they return a specifier for an environment containing bindings corresponding to the specified version of the report.
 If \var{version}
 is neither {\cf 5} nor another value supported by
 the implementation, an error is signalled.
@@ -4005,7 +4005,7 @@ encountered after the beginning of an object's external representation,
 but the external representation is incomplete and therefore not parsable,
 an error that satisfies {\cf read-error?} is signalled.
 
-\var{Port} may be omitted, in which case it defaults to the
+If {port} is omitted, it defaults to the
 value returned by {\cf current-input-port}.  It is an error to read from
 a closed port.
 \end{entry}
@@ -4017,8 +4017,9 @@ a closed port.
 Returns the next character available from the textual input \var{port},
 updating
 the \var{port} to point to the following character.  If no more characters
-are available, an end-of-file object is returned.  \var{Port} may be
-omitted, in which case it defaults to the value returned by {\cf current-input-port}.
+are available, an end-of-file object is returned.  
+If {port} is omitted, it defaults to the
+value returned by {\cf current-input-port}.
 
 \end{entry}
 
@@ -4030,8 +4031,9 @@ omitted, in which case it defaults to the value returned by {\cf current-input-p
 Returns the next character available from the textual input \var{port},
 {\em without} updating
 the \var{port} to point to the following character.  If no more characters
-are available, an end-of-file object is returned.  \var{Port} may be
-omitted, in which case it defaults to the value returned by {\cf current-input-port}.
+are available, an end-of-file object is returned.  
+If {port} is omitted, it defaults to the
+value returned by {\cf current-input-port}.
 
 \begin{note}
 The value returned by a call to {\cf peek-char} is the same as the
@@ -4061,8 +4063,8 @@ object is returned.  For the purpose of this procedure, an end of line
 consists of either a linefeed character, a carriage return character, or a
 sequence of a carriage return character followed by a linefeed character.
 Implementations may also recognize other end of line characters or sequences.
-\var{Port} may be omitted, in which case it defaults to the value returned
-by {\cf current-input-port}.
+If {port} is omitted, it defaults to the
+value returned by {\cf current-input-port}.
 
 \end{entry}
 
@@ -4093,8 +4095,9 @@ Returns \schtrue{} if a character is ready on the textual input \var{port} and
 returns \schfalse{} otherwise.  If {\cf char-ready} returns \schtrue{} then
 the next {\cf read-char} operation on the given \var{port} is guaranteed
 not to hang.  If the \var{port} is at end of file then {\cf char-ready?}\
-returns \schtrue.  \var{Port} may be omitted, in which case it defaults to
-the value returned by {\cf current-input-port}.
+returns \schtrue.  
+If {port} is omitted, it defaults to the
+value returned by {\cf current-input-port}.
 
 \begin{rationale}
 The {\cf char-ready?} procedure exists to make it possible for a program to
@@ -4117,9 +4120,8 @@ input \var{port} into a newly allocated string in left-to-right order
 and returns the string.
 If no characters are available before the end of file,
 an end-of-file object is returned.
-\var{Port} may be
-omitted, in which case it defaults to the value returned by {\cf
-  current-input-port}.
+If {port} is omitted, it defaults to the
+value returned by {\cf current-input-port}.
 
 \end{entry}
 
@@ -4131,9 +4133,9 @@ omitted, in which case it defaults to the value returned by {\cf
 Returns the next byte available from the binary input \var{port},
 updating the \var{port} to point to the following byte.  
 If no more bytes are
-available, an end-of-file object is returned.  \var{Port} may be
-omitted, in which case it defaults to the value returned by {\cf
-  current-input-port}.
+available, an end-of-file object is returned.  
+If {port} is omitted, it defaults to the
+value returned by {\cf current-input-port}.
 
 \end{entry}
 
@@ -4143,8 +4145,8 @@ omitted, in which case it defaults to the value returned by {\cf
 
 Returns the next byte available from the binary input \var{port},
 {\em without} updating the \var{port} to point to the following
-byte.  If no more bytes are available, an end-of-file object is
-returned.  \var{Port} may be omitted, in which case it defaults to the
+byte.  If no more bytes are available, an end-of-file object is returned.  
+If {port} is omitted, it defaults to the
 value returned by {\cf current-input-port}.
 
 \end{entry}
@@ -4157,9 +4159,9 @@ Returns \schtrue{} if a byte is ready on the binary input \var{port}
 and returns \schfalse{} otherwise.  If {\cf u8-ready?} returns
 \schtrue{} then the next {\cf read-u8} operation on the given
 \var{port} is guaranteed not to hang.  If the \var{port} is at end of
-file then {\cf u8-ready?}\ returns \schtrue.  \var{Port} may be
-omitted, in which case it defaults to the value returned by {\cf
-  current-input-port}.
+file then {\cf u8-ready?}\ returns \schtrue.  
+If {port} is omitted, it defaults to the
+value returned by {\cf current-input-port}.
 
 \end{entry}
 
@@ -4173,9 +4175,8 @@ input \var{port} into a newly allocated bytevector in left-to-right order
 and returns the bytevector.
 If no bytes are available before the end of file,
 an end-of-file object is returned.
-\var{Port} may be
-omitted, in which case it defaults to the value returned by {\cf
-  current-input-port}.
+If {port} is omitted, it defaults to the
+value returned by {\cf current-input-port}.
 
 \end{entry}
 
@@ -4190,9 +4191,8 @@ input \var{port} into \var{bytevector} in left-to-right order
 beginning at the \var{start} position.
 Returns the number of bytes read.
 If no bytes are available, an end-of-file object is returned.
-\var{Port} may be
-omitted, in which case it defaults to the value returned by {\cf
-  current-input-port}.
+If {port} is omitted, it defaults to the
+value returned by {\cf current-input-port}.
 
 \end{entry}
 
@@ -4226,8 +4226,8 @@ Implementations may support extended syntax to represent record types or
 other types that do not have datum representations.
 
 The {\cf write} procedure returns an unspecified value.
-\var{Port} may be omitted, in which case it defaults to the value
-returned by {\cf current-output-port}.
+If {port} is omitted, it defaults to the
+value returned by {\cf current-output-port}.
 
 \end{entry}
 
@@ -4246,7 +4246,7 @@ and vectors for which it is possible.
 \rproto{write-simple}{ obj port}{write library procedure}}
 
 The {\cf write-simple} procedure is the same as {\cf write}, except that shared structure is
-never represented using datum labels.  This may cause {\cf write-simple} not to
+never represented using datum labels.  This can cause {\cf write-simple} not to
 terminate if \var{obj} contains circular structure.
 
 \end{entry}
@@ -4265,14 +4265,14 @@ instead of by {\cf write}.
 
 The {\cf display} representation of other objects is unspecified.
 However, {\cf display} must always terminate.  Thus if the
-normal {\cf write} representation is used, datum labels may be needed
+normal {\cf write} representation is used, datum labels are needed
 to represent cycles as in {\cf write}.
 
 Implementations may support extended syntax to represent record types or
 other types that do not have datum representations.
 
 The {\cf display} procedure returns an unspecified value.
-\var{Port} may be omitted, in which case it defaults to the
+If {port} is omitted, it defaults to the
 value returned by {\cf current-output-port}.
 
 \begin{rationale}
@@ -4290,7 +4290,7 @@ human-readable output.
 Writes an end of line to textual output \var{port}.  Exactly how this
 is done differs
 from one operating system to another.  Returns an unspecified value.
-\var{Port} may be omitted, in which case it defaults to the
+If {port} is omitted, it defaults to the
 value returned by {\cf current-output-port}.
 
 \end{entry}
@@ -4303,7 +4303,7 @@ value returned by {\cf current-output-port}.
 Writes the character \var{char} (not an external representation of the
 character) to the given textual output \var{port} and returns an unspecified
 value.  
-\var{Port} may be omitted, in which case it defaults to the value
+If {port} is omitted, it defaults to the
 returned by {\cf current-output-port}.
 
 \end{entry}
@@ -4320,9 +4320,8 @@ in left-to-right order to the
 textual output \var{port}.
 If \var{start} is omitted, it is assumed to be 0.
 If \var{end} is omitted, it is assumed to be the length of \var{string}.
-\var{Port} may be
-omitted, in which case it defaults to the value returned by {\cf
-  current-output-port}.
+If {port} is omitted, it defaults to the
+value returned by {\cf current-output-port}.
 
 \end{entry}
 
@@ -4332,8 +4331,8 @@ omitted, in which case it defaults to the value returned by {\cf
 
 Writes the \var{byte} to
 the given binary output \var{port} and returns an unspecified value.
-\var{Port} may be omitted, in which case it defaults to
-the value returned by {\cf current-output-port}.
+If {port} is omitted, it defaults to the
+value returned by {\cf current-output-port}.
 
 \end{entry}
 
@@ -4349,9 +4348,8 @@ in left-to-right order to the
 binary output \var{port}.
 If \var{start} is omitted, it is assumed to be 0.
 If \var{end} is omitted, it is assumed to be the length of \var{bytevector}.
-\var{Port} may be
-omitted, in which case it defaults to the value returned by {\cf
-  current-output-port}.
+If {port} is omitted, it defaults to the
+value returned by {\cf current-output-port}.
 
 \end{entry}
 
@@ -4361,8 +4359,8 @@ omitted, in which case it defaults to the value returned by {\cf
 
 Flushes any buffered output from the buffer of output-port to the
 underlying file or device and returns an unspecified value.
-\var{Port} may be omitted, in which case it defaults to
-the value returned by {\cf current-output-port}.
+If {port} is omitted, it defaults to the
+value returned by {\cf current-output-port}.
 
 \end{entry}
 
@@ -4437,8 +4435,8 @@ exit} procedure should communicate to the operating system that the
 program exited normally.  If \var{obj} is \schfalse{}, the {\cf exit}
 procedure should communicate to the operating system that the program
 exited abnormally.  Otherwise, {\cf exit} should translate \var{obj} into
-an appropriate exit value for the operating system, if possible.  In no
-case should {\cf exit} signal an exception or return to its continuation.
+an appropriate exit value for the operating system, if possible, and
+must not signal an exception or return to its continuation.
 
 \begin{note}
 Because of the requirement to run handlers, this procedure is not just the
@@ -4511,7 +4509,7 @@ Time (TAI) scale.  The value 0.0 represents midnight
 on January 1, 1970 TAI (equivalent to ten seconds before midnight Universal Time)
 and the value 1.0 represents one TAI
 second later.  Neither high accuracy nor high precision are required; in particular,
-returning Coordinated Universal Time plus a suitable constant may be
+returning Coordinated Universal Time plus a suitable constant might be
 the best an implementation can do.
 \end{entry}
 
