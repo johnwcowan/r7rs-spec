@@ -63,7 +63,7 @@ provided as convenient abbreviations.
 .features
 .guard            if               import
 .include          include-ci
-.inexact          inexact?         infinite?
+.inexact          inexact?
 .integer->char    integer?         lambda
 .lcm              length           let*
 .let-syntax       letrec*          letrec-syntax
@@ -126,18 +126,34 @@ provided as convenient abbreviations.
 .write-string             write-u8
 .read-bytevector          read-bytevector!
 .string->utf8             utf8->string
+.file-error?              read-error?
 \end{scheme}
 
-\textbf{Inexact Library}
+\textbf{Case-Lambda Library}
 
-The \texttt{(scheme inexact)} library exports procedures which are
-typically only useful with inexact values.
+The \texttt{(scheme case-lambda)} library exports the {\cf case-lambda}
+syntax.
 
 \begin{scheme}
-.exp     log      sqrt
-.sin     cos      tan
-.asin    acos     atan
-.finite? nan?
+.case-lambda
+\end{scheme}
+
+\textbf{Char Library}
+
+The \texttt{(scheme char)} library provides procedures for dealing
+with Unicode character operations.
+
+\begin{scheme}
+.char-alphabetic?
+.char-ci=?       char-ci<?       char-ci>?
+.char-ci<=?      char-ci>=?      char-upcase
+.char-downcase   char-foldcase   char-lower-case?
+.char-numeric?   char-upper-case?
+.char-whitespace?                 string-ci=?
+.string-ci<?     string-ci>?     string-ci<=?
+.string-ci>=?    string-upcase   string-downcase
+.string-foldcase
+.digit-value
 \end{scheme}
 
 \textbf{Complex Library}
@@ -148,23 +164,6 @@ typically only useful with non-real numbers.
 \begin{scheme}
 .angle   magnitude   imag-part   real-part
 .make-polar           make-rectangular
-\end{scheme}
-
-\textbf{Lazy Library}
-
-The \texttt{(scheme lazy)} library exports procedures and syntax keywords for lazy evaluation.
-
-\begin{scheme}
-.delay   delay-force   force   make-promise
-\end{scheme}
-
-\textbf{Case-Lambda Library}
-
-The \texttt{(scheme case-lambda)} library exports the {\cf case-lambda}
-syntax.
-
-\begin{scheme}
-.case-lambda
 \end{scheme}
 
 \textbf{CxR Library}
@@ -201,13 +200,46 @@ data as programs.
 .environment
 \end{scheme}
 
-\textbf{Repl Library}
+\textbf{File Library}
 
-The \texttt{(scheme repl)} library exports the {\cf
-  interaction-environment} procedure.
+The \texttt{(scheme file)} library provides procedures for accessing
+files.
 
 \begin{scheme}
-.interaction-environment
+.call-with-input-file    call-with-output-file
+.delete-file             file-exists?
+.open-input-file         open-output-file
+.open-binary-input-file  open-binary-output-file
+.with-input-from-file    with-output-to-file
+\end{scheme}
+
+\textbf{Inexact Library}
+
+The \texttt{(scheme inexact)} library exports procedures which are
+typically only useful with inexact values.
+
+\begin{scheme}
+.exp     log      sqrt
+.sin     cos      tan
+.asin    acos     atan
+.finite? infinite? nan?
+\end{scheme}
+
+\textbf{Lazy Library}
+
+The \texttt{(scheme lazy)} library exports procedures and syntax keywords for lazy evaluation.
+
+\begin{scheme}
+.delay   delay-force   force   make-promise   promise?
+\end{scheme}
+
+\textbf{Load Library}
+
+The \texttt{(scheme load)} library exports procedures for loading
+Scheme expressions from files.
+
+\begin{scheme}
+.load
 \end{scheme}
 
 \textbf{Process-Context Library}
@@ -223,28 +255,6 @@ accessing with the program's calling context.
 .exit
 \end{scheme}
 
-\textbf{Load Library}
-
-The \texttt{(scheme load)} library exports procedures for loading
-Scheme expressions from files.
-
-\begin{scheme}
-.load
-\end{scheme}
-
-\textbf{File Library}
-
-The \texttt{(scheme file)} library provides procedures for accessing
-files.
-
-\begin{scheme}
-.call-with-input-file    call-with-output-file
-.delete-file             file-exists?
-.open-input-file         open-output-file
-.open-binary-input-file  open-binary-output-file
-.with-input-from-file    with-output-to-file
-\end{scheme}
-
 \textbf{Read Library}
 
 The \texttt{(scheme read)} library provides procedures for reading
@@ -254,31 +264,13 @@ Scheme objects.
 .read
 \end{scheme}
 
-\textbf{Write Library}
+\textbf{Repl Library}
 
-The \texttt{(scheme write)} library provides procedures for writing
-Scheme objects.
-
-\begin{scheme}
-.write  write-shared write-simple  display
-\end{scheme}
-
-\textbf{Char Library}
-
-The \texttt{(scheme char)} library provides procedures for dealing
-with Unicode character operations.
+The \texttt{(scheme repl)} library exports the {\cf
+  interaction-environment} procedure.
 
 \begin{scheme}
-.char-alphabetic?
-.char-ci=?       char-ci<?       char-ci>?
-.char-ci<=?      char-ci>=?      char-upcase
-.char-downcase   char-foldcase   char-lower-case?
-.char-numeric?   char-upper-case?
-.char-whitespace?                 string-ci=?
-.string-ci<?     string-ci>?     string-ci<=?
-.string-ci>=?    string-upcase   string-downcase
-.string-foldcase
-.digit-value
+.interaction-environment
 \end{scheme}
 
 \textbf{Time Library}
@@ -289,6 +281,15 @@ The \texttt{(scheme time)} library provides access to time-related values.
 .current-second
 .current-jiffy
 .jiffies-per-second
+\end{scheme}
+
+\textbf{Write Library}
+
+The \texttt{(scheme write)} library provides procedures for writing
+Scheme objects.
+
+\begin{scheme}
+.write  write-shared write-simple  display
 \end{scheme}
 
 \textbf{R5RS Library}

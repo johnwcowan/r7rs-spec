@@ -64,28 +64,28 @@ provided as convenient abbreviations.
 {\cf even?\ }          {\cf exact}
 {\cf exact-integer-sqrt}               {\cf exact-integer?}
 {\cf exact?\ }         {\cf expt}            {\cf features}
-{\cf floor}           {\cf floor-quotient}  {\cf floor-remainder}
-{\cf floor/}          {\cf flush-output-port}
-{\cf for-each}        {\cf gcd}
-{\cf get-output-bytevector}
+{\cf file-error?\ }    {\cf floor}           {\cf floor-quotient}
+{\cf floor-remainder} {\cf floor/}
+{\cf flush-output-port}                {\cf for-each}
+{\cf gcd}             {\cf get-output-bytevector}
 {\cf get-output-string}                {\cf guard}
 {\cf if}              {\cf import}          {\cf include}
 {\cf include-ci}      {\cf inexact}         {\cf inexact?}
-{\cf infinite?\ }      {\cf input-port-open?}
-{\cf input-port?\ }    {\cf integer->char}   {\cf integer?}
-{\cf lambda}          {\cf lcm}             {\cf length}
-{\cf let}             {\cf let*}            {\cf let*-values}
-{\cf let-syntax}      {\cf let-values}      {\cf letrec}
-{\cf letrec*}         {\cf letrec-syntax}   {\cf list}
-{\cf list->string}    {\cf list->vector}    {\cf list-copy}
-{\cf list-ref}        {\cf list-set!}       {\cf list-tail}
-{\cf list?\ }          {\cf make-bytevector} {\cf make-list}
-{\cf make-parameter}  {\cf make-string}     {\cf make-vector}
-{\cf map}             {\cf max}             {\cf member}
-{\cf memq}            {\cf memv}            {\cf min}
-{\cf modulo}          {\cf negative?\ }      {\cf newline}
-{\cf not}             {\cf null?\ }          {\cf number->string}
-{\cf number?\ }        {\cf numerator}       {\cf odd?}
+{\cf input-port-open?\ }                {\cf input-port?}
+{\cf integer->char}   {\cf integer?\ }       {\cf lambda}
+{\cf lcm}             {\cf length}          {\cf let}
+{\cf let*}            {\cf let*-values}     {\cf let-syntax}
+{\cf let-values}      {\cf letrec}          {\cf letrec*}
+{\cf letrec-syntax}   {\cf list}            {\cf list->string}
+{\cf list->vector}    {\cf list-copy}       {\cf list-ref}
+{\cf list-set!}       {\cf list-tail}       {\cf list?}
+{\cf make-bytevector} {\cf make-list}       {\cf make-parameter}
+{\cf make-string}     {\cf make-vector}     {\cf map}
+{\cf max}             {\cf member}          {\cf memq}
+{\cf memv}            {\cf min}             {\cf modulo}
+{\cf negative?\ }      {\cf newline}         {\cf not}
+{\cf null?\ }          {\cf number->string}  {\cf number?}
+{\cf numerator}       {\cf odd?}
 {\cf open-input-bytevector}
 {\cf open-input-string}
 {\cf open-output-bytevector}
@@ -98,43 +98,58 @@ provided as convenient abbreviations.
 {\cf raise-continuable}                {\cf rational?}
 {\cf rationalize}     {\cf read-bytevector}
 {\cf read-bytevector!}                 {\cf read-char}
-{\cf read-line}       {\cf read-string}     {\cf read-u8}
-{\cf real?\ }          {\cf remainder}       {\cf reverse}
-{\cf round}           {\cf set!}            {\cf set-car!}
-{\cf set-cdr!}        {\cf square}          {\cf string}
-{\cf string->list}    {\cf string->number}  {\cf string->symbol}
-{\cf string->utf8}    {\cf string->vector}  {\cf string-append}
-{\cf string-copy}     {\cf string-copy!}    {\cf string-fill!}
-{\cf string-for-each} {\cf string-length}   {\cf string-map}
-{\cf string-ref}      {\cf string-set!}     {\cf string<=?}
-{\cf string<?\ }       {\cf string=?\ }       {\cf string>=?}
-{\cf string>?\ }       {\cf string?\ }        {\cf substring}
-{\cf symbol->string}  {\cf symbol=?\ }       {\cf symbol?}
-{\cf syntax-error}    {\cf syntax-rules}    {\cf textual-port?}
-{\cf truncate}        {\cf truncate-quotient}
+{\cf read-error?\ }    {\cf read-line}       {\cf read-string}
+{\cf read-u8}         {\cf real?\ }          {\cf remainder}
+{\cf reverse}         {\cf round}           {\cf set!}
+{\cf set-car!}        {\cf set-cdr!}        {\cf square}
+{\cf string}          {\cf string->list}    {\cf string->number}
+{\cf string->symbol}  {\cf string->utf8}    {\cf string->vector}
+{\cf string-append}   {\cf string-copy}     {\cf string-copy!}
+{\cf string-fill!}    {\cf string-for-each} {\cf string-length}
+{\cf string-map}      {\cf string-ref}      {\cf string-set!}
+{\cf string<=?\ }      {\cf string<?\ }       {\cf string=?}
+{\cf string>=?\ }      {\cf string>?\ }       {\cf string?}
+{\cf substring}       {\cf symbol->string}  {\cf symbol=?}
+{\cf symbol?\ }        {\cf syntax-error}    {\cf syntax-rules}
+{\cf textual-port?\ }  {\cf truncate}
+{\cf truncate-quotient}
 {\cf truncate-remainder}               {\cf truncate/}
 {\cf u8-ready?\ }      {\cf unless}          {\cf unquote}
 {\cf unquote-splicing}                 {\cf utf8->string}
 {\cf values}          {\cf vector}          {\cf vector->list}
-{\cf vector->string}  {\cf vector-copy}     {\cf vector-copy!}
-{\cf vector-fill!}    {\cf vector-for-each} {\cf vector-length}
-{\cf vector-map}      {\cf vector-ref}      {\cf vector-set!}
-{\cf vector?\ }        {\cf when}
+{\cf vector->string}  {\cf vector-append}   {\cf vector-copy}
+{\cf vector-copy!}    {\cf vector-fill!}    {\cf vector-for-each}
+{\cf vector-length}   {\cf vector-map}      {\cf vector-ref}
+{\cf vector-set!}     {\cf vector?\ }        {\cf when}
 {\cf with-exception-handler}
 {\cf write-bytevector}                 {\cf write-char}
 {\cf write-string}    {\cf write-u8}        {\cf zero?}
 \end{scheme}
 
-\textbf{Inexact Library}
+\textbf{Case-Lambda Library}
 
-The \texttt{(scheme inexact)} library exports procedures which are
-typically only useful with inexact values.
+The \texttt{(scheme case-lambda)} library exports the {\cf case-lambda}
+syntax.
 
 \begin{scheme}
-{\cf acos}            {\cf asin}            {\cf atan}
-{\cf cos}             {\cf exp}             {\cf finite?}
-{\cf log}             {\cf nan?\ }           {\cf sin}
-{\cf sqrt}            {\cf tan}
+{\cf case-lambda}
+\end{scheme}
+
+\textbf{Char Library}
+
+The \texttt{(scheme char)} library provides procedures for dealing
+with Unicode character operations.
+
+\begin{scheme}
+{\cf char-alphabetic?\ }                {\cf char-ci<=?}
+{\cf char-ci<?\ }      {\cf char-ci=?\ }      {\cf char-ci>=?}
+{\cf char-ci>?\ }      {\cf char-downcase}   {\cf char-foldcase}
+{\cf char-lower-case?\ }                {\cf char-numeric?}
+{\cf char-upcase}     {\cf char-upper-case?}
+{\cf char-whitespace?\ }                {\cf digit-value}
+{\cf string-ci<=?\ }   {\cf string-ci<?\ }    {\cf string-ci=?}
+{\cf string-ci>=?\ }   {\cf string-ci>?\ }    {\cf string-downcase}
+{\cf string-foldcase} {\cf string-upcase}
 \end{scheme}
 
 \textbf{Complex Library}
@@ -146,24 +161,6 @@ typically only useful with non-real numbers.
 {\cf angle}           {\cf imag-part}       {\cf magnitude}
 {\cf make-polar}      {\cf make-rectangular}
 {\cf real-part}
-\end{scheme}
-
-\textbf{Lazy Library}
-
-The \texttt{(scheme lazy)} library exports procedures and syntax keywords for lazy evaluation.
-
-\begin{scheme}
-{\cf delay}           {\cf delay-force}     {\cf force}
-{\cf make-promise}
-\end{scheme}
-
-\textbf{Case-Lambda Library}
-
-The \texttt{(scheme case-lambda)} library exports the {\cf case-lambda}
-syntax.
-
-\begin{scheme}
-{\cf case-lambda}
 \end{scheme}
 
 \textbf{CxR Library}
@@ -201,35 +198,6 @@ data as programs.
 {\cf environment}     {\cf eval}
 \end{scheme}
 
-\textbf{Repl Library}
-
-The \texttt{(scheme repl)} library exports the {\cf
-  interaction-environment} procedure.
-
-\begin{scheme}
-{\cf interaction-environment}
-\end{scheme}
-
-\textbf{Process-Context Library}
-
-The \texttt{(scheme process-context)} library exports procedures for
-accessing with the program's calling context.
-
-\begin{scheme}
-{\cf command-line}    {\cf emergency-exit}  {\cf exit}
-{\cf get-environment-variable}
-{\cf get-environment-variables}
-\end{scheme}
-
-\textbf{Load Library}
-
-The \texttt{(scheme load)} library exports procedures for loading
-Scheme expressions from files.
-
-\begin{scheme}
-{\cf load}
-\end{scheme}
-
 \textbf{File Library}
 
 The \texttt{(scheme file)} library provides procedures for accessing
@@ -245,6 +213,47 @@ files.
 {\cf with-output-to-file}
 \end{scheme}
 
+\textbf{Inexact Library}
+
+The \texttt{(scheme inexact)} library exports procedures which are
+typically only useful with inexact values.
+
+\begin{scheme}
+{\cf acos}            {\cf asin}            {\cf atan}
+{\cf cos}             {\cf exp}             {\cf finite?}
+{\cf infinite?\ }      {\cf log}             {\cf nan?}
+{\cf sin}             {\cf sqrt}            {\cf tan}
+\end{scheme}
+
+\textbf{Lazy Library}
+
+The \texttt{(scheme lazy)} library exports procedures and syntax keywords for lazy evaluation.
+
+\begin{scheme}
+{\cf delay}           {\cf delay-force}     {\cf force}
+{\cf make-promise}    {\cf promise?}
+\end{scheme}
+
+\textbf{Load Library}
+
+The \texttt{(scheme load)} library exports procedures for loading
+Scheme expressions from files.
+
+\begin{scheme}
+{\cf load}
+\end{scheme}
+
+\textbf{Process-Context Library}
+
+The \texttt{(scheme process-context)} library exports procedures for
+accessing with the program's calling context.
+
+\begin{scheme}
+{\cf command-line}    {\cf emergency-exit}  {\cf exit}
+{\cf get-environment-variable}
+{\cf get-environment-variables}
+\end{scheme}
+
 \textbf{Read Library}
 
 The \texttt{(scheme read)} library provides procedures for reading
@@ -252,6 +261,24 @@ Scheme objects.
 
 \begin{scheme}
 {\cf read}
+\end{scheme}
+
+\textbf{Repl Library}
+
+The \texttt{(scheme repl)} library exports the {\cf
+  interaction-environment} procedure.
+
+\begin{scheme}
+{\cf interaction-environment}
+\end{scheme}
+
+\textbf{Time Library}
+
+The \texttt{(scheme time)} library provides access to time-related values.
+
+\begin{scheme}
+{\cf current-jiffy}   {\cf current-second}
+{\cf jiffies-per-second}
 \end{scheme}
 
 \textbf{Write Library}
@@ -262,32 +289,6 @@ Scheme objects.
 \begin{scheme}
 {\cf display}         {\cf write}           {\cf write-shared}
 {\cf write-simple}
-\end{scheme}
-
-\textbf{Char Library}
-
-The \texttt{(scheme char)} library provides procedures for dealing
-with Unicode character operations.
-
-\begin{scheme}
-{\cf char-alphabetic?\ }                {\cf char-ci<=?}
-{\cf char-ci<?\ }      {\cf char-ci=?\ }      {\cf char-ci>=?}
-{\cf char-ci>?\ }      {\cf char-downcase}   {\cf char-foldcase}
-{\cf char-lower-case?\ }                {\cf char-numeric?}
-{\cf char-upcase}     {\cf char-upper-case?}
-{\cf char-whitespace?\ }                {\cf digit-value}
-{\cf string-ci<=?\ }   {\cf string-ci<?\ }    {\cf string-ci=?}
-{\cf string-ci>=?\ }   {\cf string-ci>?\ }    {\cf string-downcase}
-{\cf string-foldcase} {\cf string-upcase}
-\end{scheme}
-
-\textbf{Time Library}
-
-The \texttt{(scheme time)} library provides access to time-related values.
-
-\begin{scheme}
-{\cf current-jiffy}   {\cf current-second}
-{\cf jiffies-per-second}
 \end{scheme}
 
 \textbf{R5RS Library}
@@ -392,8 +393,8 @@ and {\cf null-environment} appear only in this library and not in any other.}
 {\cf string?\ }        {\cf substring}       {\cf symbol->string}
 {\cf symbol?\ }        {\cf tan}             {\cf truncate}
 {\cf values}          {\cf vector}          {\cf vector->list}
-{\cf vector-append}   {\cf vector-fill!}    {\cf vector-length}
-{\cf vector-ref}      {\cf vector-set!}     {\cf vector?}
+{\cf vector-fill!}    {\cf vector-length}   {\cf vector-ref}
+{\cf vector-set!}     {\cf vector?}
 {\cf with-input-from-file}
 {\cf with-output-to-file}              {\cf write}
 {\cf write-char}      {\cf zero?}
