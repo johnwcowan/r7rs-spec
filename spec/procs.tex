@@ -3285,8 +3285,8 @@ to them in any event.
 \vest The escape procedure that is passed to \var{proc} has
 unlimited extent just like any other procedure in Scheme.  It can be stored
 in variables or data structures and can be called as many times as desired.
-However, like the {\cf raise} and {\cf error} procedures, it does not
-return to its caller.
+However, like the {\cf raise} and {\cf error} procedures, it never
+returns to its caller.
 
 \vest The following examples show only the simplest ways in which
 {\cf call-with-current-continuation} is used.  If all real uses were as
@@ -3344,20 +3344,20 @@ The {\cf call-with-current-continuation} procedure allows Scheme programmers to 
 that by creating a procedure that acts just like the current
 continuation.
 
-\vest Most programming languages incorporate one or more special-purpose
-escape constructs with names like {\tt exit}, \hbox{{\cf return}}, or
-even {\tt goto}.  In 1965, however, Peter Landin~\cite{Landin65}
-invented a general purpose escape operator called the J-operator.  John
-Reynolds~\cite{Reynolds72} described a simpler but equally powerful
-construct in 1972.  The {\cf catch} syntax described by Sussman
-and Steele in the 1975 report on Scheme is exactly the same as
-Reynolds's construct, though its name came from a less general construct
-in MacLisp.  Several Scheme implementors noticed that the full power of
-\ide{catch} could be provided by a procedure instead of by a
-special syntactic construct, and the name
-{\cf call-with-current-continuation} was coined in 1982.  This name is
-descriptive, but opinions differ on the merits of such a long name, and
-some people prefer the name \ide{call/cc} instead.
+% \vest Most programming languages incorporate one or more special-purpose
+% escape constructs with names like {\tt exit}, \hbox{{\cf return}}, or
+% even {\tt goto}.  In 1965, however, Peter Landin~\cite{Landin65}
+% invented a general purpose escape operator called the J-operator.  John
+% Reynolds~\cite{Reynolds72} described a simpler but equally powerful
+% construct in 1972.  The {\cf catch} syntax described by Sussman
+% and Steele in the 1975 report on Scheme is exactly the same as
+% Reynolds's construct, though its name came from a less general construct
+% in MacLisp.  Several Scheme implementors noticed that the full power of
+% \ide{catch} could be provided by a procedure instead of by a
+% special syntactic construct, and the name
+% {\cf call-with-current-continuation} was coined in 1982.  This name is
+% descriptive, but opinions differ on the merits of such a long name, and
+% some people prefer the name \ide{call/cc} instead.
 \end{rationale}
 
 %% \begin{note}
