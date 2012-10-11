@@ -1274,7 +1274,32 @@ exceptions.
          ((assq 'b condition)))
   (raise (list (cons 'b 23))))
 \ev (b . 23)
+
+(let ((events '()))
+   (guard (c
+           (\#t \#f))
+     (guard (c
+             ((dynamic-wind
+                  (lambda () (set! events (cons 'c events)))
+                  (lambda () \#f)
+                  (lambda () (set! events (cons 'd events))))
+              \#f))
+       (dynamic-wind
+           (lambda () (set! events (cons 'a events)))
+           (lambda () (raise 'error))
+           (lambda () (set! events (cons 'b events))))))
+   (reverse events))
+       \ev (a b c d a b).
 \end{scheme}
+
+In the final example, the dynamic extent of the cond-clauses is that of
+the {\cf guard} which contains them, whereas the dynamic extent of the
+re-raise is the same as the original raise.  This means that the first
+raise will trigger the {\cf a} and {\cf b} setters, and then the {\cf c}
+and {\cf d} setters will trigger. At this point, since the result is
+\schfalse, the implementation should re-raise the object from the original
+calling extent, thus triggering the {\cf a} and {\cf b} setters again,
+before finally returning without re-entering again.
 
 \end{entry}
 
