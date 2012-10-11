@@ -42,7 +42,7 @@ provided as convenient abbreviations.
 .call-with-port
 .call/cc          case
 .car              cdr
-.caar    cadr     cdar    cddr
+.cdar    cddr
 .ceiling          char->integer    char<=?
 .char<?
 .char=?           char>=?          char>?
@@ -98,7 +98,7 @@ provided as convenient abbreviations.
 .symbol?          syntax-error
 .syntax-rules     truncate         values
 .unquote          unquote-splicing
-.vector-copy      vector-copy!
+.vector-append    vector-copy      vector-copy!
 .vector->list     vector->string   vector-fill!
 .vector-for-each  vector-length    vector-map
 .vector-ref       vector-set!      vector?
@@ -183,11 +183,12 @@ two-level compositions are included in the base library.  See
 section~\ref{listsection}.
 
 \begin{scheme}
-.caaar
-.caadr
-\ldots
-.cdddar
-.cddddr
+.caaaar caaadr caadar caaddr
+.cadaar cadadr caddar cadddr
+.cdaaar cdaadr cdadar cdaddr
+.cddaar cddadr cdddar cddddr
+.caaar caadr cadar caddr
+.cdaar cdadr cddar cdddr
 \end{scheme}
 
 \textbf{Eval Library}
@@ -259,7 +260,7 @@ The \texttt{(scheme write)} library provides procedures for writing
 Scheme objects.
 
 \begin{scheme}
-.write  write-simple  display
+.write  write-shared write-simple  display
 \end{scheme}
 
 \textbf{Char Library}
@@ -314,7 +315,15 @@ and {\cf null-environment} appear only in this library and not in any other.}
 
 \begin{scheme}
 .- * / + < <= = > >= abs acos and angle append apply asin assoc assq
-.assv atan begin boolean? call-with-current-continuation
+.assv atan begin boolean?
+.caaaar caaadr caadar caaddr
+.cadaar cadadr caddar cadddr
+.cdaaar cdaadr cdadar cdaddr
+.cddaar cddadr cdddar cddddr
+.caaar caadr cadar caddr
+.cdaar cdadr cddar cdddr
+.caar cadr cdar cddr
+.call-with-current-continuation call-with-input-file call-with-output-file
 .call-with-values car case cdr ceiling char->integer char-alphabetic?
 .char-ci<? char-ci<=? char-ci=? char-ci>? char-ci>=? char-downcase
 .char-lower-case? char-numeric? char-ready? char-upcase
@@ -337,7 +346,7 @@ and {\cf null-environment} appear only in this library and not in any other.}
 .string-ci<=? string-ci=? string-ci>? string-ci>=? string-copy
 .string-fill! string-length string-ref string-set! string? string<?
 .string<=? string=? string>? string>=? substring symbol->string symbol?
-.tan truncate values vector vector-append vector->list vector-fill! vector-length
+.tan truncate values vector vector->list vector-fill! vector-length
 .vector-ref vector-set! vector? with-input-from-file
 .with-output-to-file write write-char zero?
 \end{scheme}

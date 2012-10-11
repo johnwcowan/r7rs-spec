@@ -40,14 +40,14 @@ provided as convenient abbreviations.
 {\cf bytevector-length}
 {\cf bytevector-u8-ref}
 {\cf bytevector-u8-set!}               {\cf bytevector?}
-{\cf caar}            {\cf caar}            {\cf cadr}
-{\cf cadr}            {\cf call-with-current-continuation}
-{\cf call-with-port}  {\cf call-with-values}
-{\cf call/cc}         {\cf car}             {\cf case}
-{\cf cdar}            {\cf cddr}            {\cf cdr}
-{\cf ceiling}         {\cf char->integer}   {\cf char-ready?}
-{\cf char<=?\ }        {\cf char<?\ }         {\cf char=?}
-{\cf char>=?\ }        {\cf char>?\ }         {\cf char?}
+{\cf caar}            {\cf cadr}
+{\cf call-with-current-continuation}   {\cf call-with-port}
+{\cf call-with-values}                 {\cf call/cc}
+{\cf car}             {\cf case}            {\cf cdar}
+{\cf cddr}            {\cf cdr}             {\cf ceiling}
+{\cf char->integer}   {\cf char-ready?\ }    {\cf char<=?}
+{\cf char<?\ }         {\cf char=?\ }         {\cf char>=?}
+{\cf char>?\ }         {\cf char?}
 {\cf close-input-port}
 {\cf close-output-port}                {\cf close-port}
 {\cf complex?\ }       {\cf cond}            {\cf cond-expand}
@@ -182,9 +182,14 @@ two-level compositions are included in the base library.  See
 section~\ref{listsection}.
 
 \begin{scheme}
-{\cf caaar}           {\cf caadr}
-\ldots
-{\cf cdddar}          {\cf cddddr}
+{\cf caaaar}          {\cf caaadr}          {\cf caaar}
+{\cf caadar}          {\cf caaddr}          {\cf caadr}
+{\cf cadaar}          {\cf cadadr}          {\cf cadar}
+{\cf caddar}          {\cf cadddr}          {\cf caddr}
+{\cf cdaaar}          {\cf cdaadr}          {\cf cdaar}
+{\cf cdadar}          {\cf cdaddr}          {\cf cdadr}
+{\cf cddaar}          {\cf cddadr}          {\cf cddar}
+{\cf cdddar}          {\cf cddddr}          {\cf cdddr}
 \end{scheme}
 
 \textbf{Eval Library}
@@ -255,7 +260,8 @@ The \texttt{(scheme write)} library provides procedures for writing
 Scheme objects.
 
 \begin{scheme}
-{\cf display}         {\cf write}           {\cf write-simple}
+{\cf display}         {\cf write}           {\cf write-shared}
+{\cf write-simple}
 \end{scheme}
 
 \textbf{Char Library}
@@ -314,12 +320,24 @@ and {\cf null-environment} appear only in this library and not in any other.}
 {\cf angle}           {\cf append}          {\cf apply}
 {\cf asin}            {\cf assoc}           {\cf assq}
 {\cf assv}            {\cf atan}            {\cf begin}
-{\cf boolean?\ }       {\cf call-with-current-continuation}
+{\cf boolean?\ }       {\cf caaaar}          {\cf caaadr}
+{\cf caaar}           {\cf caadar}          {\cf caaddr}
+{\cf caadr}           {\cf caar}            {\cf cadaar}
+{\cf cadadr}          {\cf cadar}           {\cf caddar}
+{\cf cadddr}          {\cf caddr}           {\cf cadr}
+{\cf call-with-current-continuation}
+{\cf call-with-input-file}
+{\cf call-with-output-file}
 {\cf call-with-values}                 {\cf car}
-{\cf case}            {\cf cdr}             {\cf ceiling}
-{\cf char->integer}   {\cf char-alphabetic?}
-{\cf char-ci<=?\ }     {\cf char-ci<?\ }      {\cf char-ci=?}
-{\cf char-ci>=?\ }     {\cf char-ci>?\ }      {\cf char-downcase}
+{\cf case}            {\cf cdaaar}          {\cf cdaadr}
+{\cf cdaar}           {\cf cdadar}          {\cf cdaddr}
+{\cf cdadr}           {\cf cdar}            {\cf cddaar}
+{\cf cddadr}          {\cf cddar}           {\cf cdddar}
+{\cf cddddr}          {\cf cdddr}           {\cf cddr}
+{\cf cdr}             {\cf ceiling}         {\cf char->integer}
+{\cf char-alphabetic?\ }                {\cf char-ci<=?}
+{\cf char-ci<?\ }      {\cf char-ci=?\ }      {\cf char-ci>=?}
+{\cf char-ci>?\ }      {\cf char-downcase}
 {\cf char-lower-case?\ }                {\cf char-numeric?}
 {\cf char-ready?\ }    {\cf char-upcase}
 {\cf char-upper-case?}
