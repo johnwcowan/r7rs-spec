@@ -3285,6 +3285,8 @@ to them in any event.
 \vest The escape procedure that is passed to \var{proc} has
 unlimited extent just like any other procedure in Scheme.  It can be stored
 in variables or data structures and can be called as many times as desired.
+However, like the {\cf raise} and {\cf error} procedures, it does not
+return to its caller.
 
 \vest The following examples show only the simplest ways in which
 {\cf call-with-current-continuation} is used.  If all real uses were as
@@ -3323,6 +3325,8 @@ the power of {\cf call-with-current-continuation}.
 structured, non-local exits from loops or procedure bodies, but in fact
 {\cf call-with-current-continuation} is useful for implementing a
 wide variety of advanced control structures.
+In fact, {\cf raise} and {\cf guard} provide a more structured mechanism
+for non-local exits.
 
 \vest Whenever a Scheme expression is evaluated there is a
 \defining{continuation} wanting the result of the expression.  The continuation
@@ -3365,6 +3369,12 @@ some people prefer the name \ide{call/cc} instead.
 \todo{Shinn: I'm not sure we want to say anything about this, and
   ``scripting'' is not relevant to the issue.}
 
+\begin{note}
+The interactions of \callcc{} with {\cf parameterize} and exception
+handlers are defined by the formal semantics, but are hard to understand
+in complex cases.  In addition, in some implementations \callcc{} consumes
+an amount of memory that depends on the number of active continuations.
+\end{note}
 \end{entry}
 
 \begin{entry}{%
