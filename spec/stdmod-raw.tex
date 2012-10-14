@@ -109,24 +109,23 @@ provided as convenient abbreviations.
 .close-input-port
 .close-output-port        current-error-port
 .current-input-port       current-output-port
-.eof-object
-.eof-object?              flush-output-port
+.eof-object               eof-object?
+.file-error?              flush-output-port
 .get-output-string        get-output-bytevector
 .input-port?              input-port-open?
 .newline
-.open-input-string        open-output-string
-.open-input-bytevector    open-output-bytevector
+.open-input-string        open-input-bytevector
+.open-output-string       open-output-bytevector
 .output-port?             output-port-open?
 .peek-char
 .peek-u8                  port?
-.read-char                read-line
-.read-string
-.read-u8                  u8-ready?
+.read-bytevector          read-bytevector!
+.read-char                read-error?
+.read-line                read-string
+.read-u8                  string->utf8
+.utf8->string             u8-ready?
 .write-bytevector         write-char
 .write-string             write-u8
-.read-bytevector          read-bytevector!
-.string->utf8             utf8->string
-.file-error?              read-error?
 \end{scheme}
 
 \textbf{Case-Lambda Library}
@@ -219,10 +218,10 @@ The \texttt{(scheme inexact)} library exports procedures which are
 typically only useful with inexact values.
 
 \begin{scheme}
-.exp     log      sqrt
-.sin     cos      tan
-.asin    acos     atan
-.finite? infinite? nan?
+.acos      asin atan
+.cos       exp  finite?
+.infinite? log  nan?
+.sin       sqrt tan
 \end{scheme}
 
 \textbf{Lazy Library}
