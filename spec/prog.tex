@@ -49,7 +49,7 @@ An import declaration takes the following form:
 (import \hyper{import-set} \dotsfoo)
 \end{scheme}
 
-An \ide{import} declaration provides a way to import identifiers
+An import declaration provides a way to import identifiers
 exported by a library.  Each \hyper{import set} names a set of bindings
 from a library and possibly specifies local names for the
 imported bindings. It takes one of the following forms:
@@ -240,6 +240,9 @@ Syntax definitions have the following form:\mainschindex{define-syntax}
 
 \hyper{Keyword} is an identifier, and
 the \hyper{transformer spec} is an instance of \ide{syntax-rules}.
+Like variable definitions, syntax definitions may appear at top level or
+nested within a \ide{body}.
+
 If the {\cf define-syntax} occurs at the top level, then the top-level
 syntactic environment is extended by binding the
 \hyper{keyword} to the specified transformer, but existing references
@@ -247,7 +250,7 @@ to any top-level binding for \hyper{keyword} remain unchanged.
 This also means that if a syntax keyword is used before
 it is defined, it is an error; any definition from an outer scope will not
 be applied.
-Otherwise, it is an {\em internal syntax definition}, and is local to the
+Otherwise, it is an \defining{internal syntax definition}, and is local to the
 \hyper{body} in which it is defined.
 
 \begin{scheme}
@@ -293,13 +296,12 @@ errors:
     (plus foo x)))%
 \end{scheme}
 
-\todo{Shinn: Example using internal define-syntax.}
-
 \section{Record-type definitions}
 \label{usertypes}
 
 \defining{Record-type definitions} are used to introduce new data types, called
 \defining{record types}.
+Like other definitions, they may appear either at top level or in a \ide{body}.
 The values of a record type are called \defining{records} and are
 aggregations of zero or more \defining{fields}, each of which holds a single location.
 A predicate, a constructor, and field accessors and
@@ -515,7 +517,7 @@ imported library must be visited before the expansion of the importing
 library.
 
 Regardless of the number of times that a library is loaded, each
-program or library that imports bindings from a library will do so from a
+program or library that imports bindings from a library must do so from a
 single loading of that library, regardless of the number of import
 declarations in which it appears.
 That is, {\cf (import (only (foo) a))} followed by {\cf (import (only (foo) b))}
