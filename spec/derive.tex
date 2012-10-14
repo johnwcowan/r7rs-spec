@@ -5,6 +5,8 @@ This section gives syntax definitions for the derived expression types in
 terms of the primitive expression types (literal, variable, call, {\cf lambda},
 {\cf if}, and {\cf set!}), except for {\cf quasiquote}.
 
+Conditional derived syntax types:
+
 \begin{scheme}
 (define-syntax \ide{cond}
   (syntax-rules (else =>)
@@ -102,6 +104,8 @@ terms of the primitive expression types (literal, variable, call, {\cf lambda},
      (if (not test)
          (begin result1 result2 ...)))))
 \end{scheme}
+
+Binding constructs:
 
 \begin{scheme}
 (define-syntax \ide{let}
@@ -546,5 +550,62 @@ macro, here called {\cf guard-aux}.
                           args)
                          (cl . rest))))))
            (cl (params body0 ...) ...)))))))
+
 \end{scheme}
 
+This definition of {\cf cond-expand} does not interact with the 
+{\cf features} procedure.  It requires that each feature identifier provided
+by the implementation be explicitly mentioned.
+
+\begin{scheme}
+(define-syntax cond-expand
+  ;; Extend this to mention all feature ids
+  (syntax-rules (and or not else r7rs)
+    ((cond-expand)
+      (syntax-error "Unfulfilled cond-expand"))
+    ((cond-expand (else body ...))
+     (begin body ...))
+    ((cond-expand ((and) body ...) more-clauses ...)
+     (begin body ...))
+    ((cond-expand ((and req1 req2 ...) body ...)
+                  more-clauses ...)
+     (cond-expand
+       (req1
+         (cond-expand
+           ((and req2 ...) body ...)
+           more-clauses ...))
+       more-clauses ...))
+    ((cond-expand ((or) body ...) more-clauses ...)
+     (cond-expand more-clauses ...))
+    ((cond-expand ((or req1 req2 ...) body ...)
+                  more-clauses ...)
+     (cond-expand
+       (req1
+        (begin body ...))
+       (else
+        (cond-expand
+           ((or req2 ...) body ...)
+           more-clauses ...))))
+    ((cond-expand ((not req) body ...)
+                  more-clauses ...)
+     (cond-expand
+       (req
+         (cond-expand more-clauses ...))
+       (else body ...)))
+    ((cond-expand (r7rs body ...)
+                  more-clauses ...)
+       (begin body ...))
+    ;; Add clauses here for each
+    ;; supported feature identifier.
+    ;; Samples:
+    ;; ((cond-expand (exact-closed body ...)
+    ;;               more-clauses ...)
+    ;;   (begin body ...))
+    ;; ((cond-expand (ieee-float body ...)
+    ;;               more-clauses ...)
+    ;;   (begin body ...))
+    ((cond-expand (feature-id body ...)
+                  more-clauses ...)
+       (cond-expand more-clauses ...))))
+
+\end{scheme}
