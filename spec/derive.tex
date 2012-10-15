@@ -559,8 +559,8 @@ by the implementation be explicitly mentioned.
 
 \begin{scheme}
 (define-syntax cond-expand
-  ;; Extend this to mention all feature ids
-  (syntax-rules (and or not else r7rs)
+  ;; Extend this to mention all feature ids and libraries
+  (syntax-rules (and or not else r7rs library scheme base)
     ((cond-expand)
       (values))
     ((cond-expand (else body ...))
@@ -604,7 +604,16 @@ by the implementation be explicitly mentioned.
     ;; ((cond-expand (ieee-float body ...)
     ;;               more-clauses ...)
     ;;   (begin body ...))
+    ((cond-expand ((library (scheme base))
+                   body ...)
+                  more-clauses ...)
+      (begin body ...))
+    ;; Add clauses here for each library
     ((cond-expand (feature-id body ...)
+                  more-clauses ...)
+       (cond-expand more-clauses ...))
+    ((cond-expand ((library (name ...))
+                   body ...)
                   more-clauses ...)
        (cond-expand more-clauses ...))))
 
