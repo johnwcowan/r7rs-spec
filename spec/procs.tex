@@ -3650,7 +3650,7 @@ This procedure returns a specifier for the environment that results by
 starting with an empty environment and then importing each \var{list},
 considered as an import set, into it.  (See section~\ref{libraries} for
 a description of import sets.)  The bindings of the environment
-represented by the specifier are immutable.
+represented by the specifier are immutable, as is the environment itself.
 
 \end{entry}
 
@@ -3671,10 +3671,10 @@ is neither {\cf 5} nor another value supported by
 the implementation, an error is signalled.
 
 \todo{consider removing unspecified effect}
-The effect of assigning (through the use of {\cf eval}) a variable
-bound in a {\cf scheme-report-environment}
-(for example {\cf car}) is unspecified.  Thus the environments specified
-by {\cf scheme-report-environment} may be immutable.
+The effect of defining or assigning (through the use of {\cf eval})
+an identifier bound in a {\cf scheme-report-environment} (for example
+{\cf car}) is unspecified.  Thus both the environment and the bindings
+it contains may be immutable.
 
 \end{entry}
 
@@ -3690,10 +3690,15 @@ defined in the \rfivers\ library.
 Implementations must support this value of \var{version}.
 
 Implementations may also support other values of \var{version}, in which
-case they return a specifier for an environment containing bindings corresponding to the specified version of the report.
+case they return a specifier for an environment containing appropriate bindings corresponding to the specified version of the report.
 If \var{version}
 is neither {\cf 5} nor another value supported by
 the implementation, an error is signalled.
+
+The effect of defining or assigning (through the use of {\cf eval})
+an identifier bound in a {\cf scheme-report-environment} (for example
+{\cf car}) is unspecified.  Thus both the environment and the bindings
+it contains may be immutable.
 
 \end{entry}
 
