@@ -1321,8 +1321,7 @@ as well as being compatible with \rsixrs.
 \proto{number->string}{ z}{procedure}
 \rproto{number->string}{ z radix}{procedure}}
 
-It is an error if \vr{radix} is not one of 2, 8, 10, or 16.  If omitted,
-\vr{radix} defaults to 10.
+\domain{It is an error if \vr{radix} is not one of 2, 8, 10, or 16.}
 The procedure {\cf number\coerce{}string} takes a
 number and a radix and returns as a string an external representation of
 the given number in the given radix such that
@@ -1335,6 +1334,7 @@ the given number in the given radix such that
                         radix)))
 \end{scheme}
 is true.  It is an error if no possible result makes this expression true.
+If omitted, \vr{radix} defaults to 10.
 
 If \vr{z} is inexact, the radix is 10, and the above expression
 can be satisfied by a result that contains a decimal point,
@@ -1369,8 +1369,8 @@ allows for infinities, NaNs, and unusual representations.
 
 Returns a number of the maximally precise representation expressed by the
 given \vr{string}.
-It is an error if \vr{radix} is not 2, 8, 10,
-or 16.  If supplied, \vr{radix} is a default radix that will be overridden
+\domain{It is an error if \vr{radix} is not 2, 8, 10, or 16.}
+If supplied, \vr{radix} is a default radix that will be overridden
 if an explicit radix prefix is present in \vr{string} (e.g. {\tt "\#o177"}).  If \vr{radix}
 is not supplied, then the default radix is 10.  If \vr{string} is not
 a syntactically valid notation for a number, or would result in a
@@ -1737,9 +1737,9 @@ otherwise returns \schfalse.
 \begin{entry}{%
 \proto{list?}{ obj}{procedure}}
 
+\domain{By definition, all lists have finite length and are terminated by
+the empty list.}
 Returns \schtrue{} if \var{obj} is a list.  Otherwise, it returns \schfalse{}.
-By definition, all lists have finite length and are terminated by
-the empty list.
 
 \begin{scheme}
         (list? '(a b c))     \ev  \schtrue
@@ -1839,8 +1839,9 @@ in reverse order.
 \begin{entry}{%
 \proto{list-tail}{ list \vr{k}}{procedure}}
 
+\domain{It is an error if \var{list} has fewer than \vr{k} elements.}
 Returns the sublist of \var{list} obtained by omitting the first \vr{k}
-elements.  It is an error if \var{list} has fewer than \vr{k} elements.
+elements.
 The {\cf list-tail} procedure could be defined by
 
 \begin{scheme}
@@ -1856,10 +1857,10 @@ The {\cf list-tail} procedure could be defined by
 \begin{entry}{%
 \proto{list-ref}{ list \vr{k}}{procedure}}
 
+\domain{The \var{list} argument may be circular, but
+it is an error if \var{list} has fewer than \vr{k} elements.}
 Returns the \vr{k}th element of \var{list}.  (This is the same
 as the car of {\tt(list-tail \var{list} \vr{k})}.)
-The \var{list} argument may be circular, but
-it is an error if \var{list} has fewer than \vr{k} elements.
 
 \begin{scheme}
 (list-ref '(a b c d) 2)                 \ev  c
@@ -2520,11 +2521,12 @@ characters in the given strings.
 \proto{string->list}{ string start end}{procedure}
 \proto{list->string}{ list}{procedure}}
 
+\domain{It is an error if any element of \var{list} is not a character.}
 {\cf string\coerce{}list} returns a newly allocated list of the
 characters of \var{string} between \var{start} (inclusive) and \var{end} (exclusive).
 {\cf list\coerce{}string}
 returns a newly allocated string formed from the elements in the list
-\var{list}.  It is an error if any element is not a character.
+\var{list}.
 In both procedures, order is preserved.
 If \var{start} is omitted, it is assumed to be 0.
 If \var{end} is omitted, it is assumed to be the length of \var{string}.
