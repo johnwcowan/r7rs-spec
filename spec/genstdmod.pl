@@ -19,6 +19,7 @@ while (<>) {
     $list .= "$1\n";
   } else {
     if (length($list)) {
+      $list = "" unless defined($list);
       if ($list_only) {
         print "$_\n" for sort split(/\s+/, $list);
       } else {
