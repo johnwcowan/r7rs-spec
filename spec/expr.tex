@@ -520,13 +520,13 @@ expression is unspecified.
 \end{entry}
 
 \begin{entry}{%
-\proto{cond-expand}{ \hyper{cond-expand clause} \dotsfoo}{\exprtype}}
+\proto{cond-expand}{ \hyperi{ce-clause} \hyperii{ce-clause} \dotsfoo}{\exprtype}}
 
 The \ide{cond-expand} expression type
 provides a way to statically
 expand different expressions depending on the
 implementation.  A
-\hyper{cond-expand clause} takes the following form:
+\hyper{ce-clause} takes the following form:
 
 {\tt(\hyper{feature requirement} \hyper{expression} \dotsfoo)}
 
@@ -554,7 +554,7 @@ resulting expression as a Scheme boolean expression under the normal
 interpretation of {\cf and}, {\cf or}, and {\cf not}.
 
 A \ide{cond-expand} is then expanded by evaluating the
-\hyper{feature requirement}s of successive \hyper{cond-expand clause}s
+\hyper{feature requirement}s of successive \hyper{ce-clause}s
 in order, until one of them returns \schtrue.  When a true clause is
 found, the corresponding \hyper{expression}s are spliced into
 the current context as if by {\cf begin} and the remaining clauses are ignored.

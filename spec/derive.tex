@@ -562,7 +562,7 @@ by the implementation be explicitly mentioned.
   ;; Extend this to mention all feature ids and libraries
   (syntax-rules (and or not else r7rs library scheme base)
     ((cond-expand)
-      (values))
+     (syntax-error "Unfulfilled cond-expand"))
     ((cond-expand (else body ...))
      (begin body ...))
     ((cond-expand ((and) body ...) more-clauses ...)
