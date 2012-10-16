@@ -82,7 +82,13 @@ containing the corresponding character.
 \meta{comment text} \: \= $\langle$\rm character sequence not containing
 \>\ \rm {\tt \#|} or {\tt |\#}$\rangle$
 \meta{comment cont} \: \meta{nested comment} \meta{comment text}
-\meta{directive} \: \#!fold-case \| \#!no-fold-case
+\meta{directive} \: \#!fold-case \| \#!no-fold-case%
+\end{grammar}
+
+Note that each \meta{directive} must be followed by a \meta{delimiter}
+or the end of file.
+
+\begin{grammar}%
 \meta{atmosphere} \: \meta{whitespace} \| \meta{comment} \| \meta{directive}
 \meta{intertoken space} \: \arbno{\meta{atmosphere}}%
 \end{grammar}
