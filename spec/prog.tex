@@ -234,7 +234,7 @@ call.
 \section{Syntax definitions}
 
 \mainindex{syntax definition}
-Syntax definitions have the following form:\mainschindex{define-syntax}
+Syntax definitions have this form:\mainschindex{define-syntax}
 
 {\tt(define-syntax \hyper{keyword} \hyper{transformer spec})}
 
@@ -628,8 +628,7 @@ Implementations may provide an interactive session called a
 expressions and definitions can be
 entered and evaluated one at a time.  For convenience and ease of use,
 the ``top-level'' Scheme environment in a REPL
-must not be not empty, but must start out with a number of variables
-bound to locations containing at least the bindings provided by the
+must not be empty, but must start out with at least the bindings provided by the
 base library.  This library includes the core syntax of Scheme
 and generally useful procedures that manipulate data.  For example, the
 variable {\cf abs} is bound to a
