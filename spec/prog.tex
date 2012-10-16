@@ -637,9 +637,9 @@ number, and the variable {\cf +} is bound to a procedure that computes
 sums.  The full list of {\cf(scheme base)} bindings can be found in
 Appendix~\ref{stdlibraries}.
 
-Implementations are permitted to provide an initial REPL environment in
-which all possible variables are bound to locations, most of
-which contain unspecified values.  Top level REPL definitions in
+Implementations are permitted to provide an initial REPL environment 
+which behaves as if all possible variables were bound to locations, most of
+which contained unspecified values.  Top level REPL definitions in
 such an implementation are truly equivalent to assignments,
 unless the identifier is defined as a syntax keyword.
 
