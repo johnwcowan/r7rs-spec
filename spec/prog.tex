@@ -245,8 +245,8 @@ nested within a \ide{body}.
 
 If the {\cf define-syntax} occurs at the top level, then the top-level
 syntactic environment is extended by binding the
-\hyper{keyword} to the specified transformer, but existing references
-to any top-level binding for \hyper{keyword} remain unchanged.
+\hyper{keyword} to the specified transformer, but previous expansions
+of any top-level binding for \hyper{keyword} remain unchanged.
 This also means that if a syntax keyword is used before
 it is defined, it is an error; any definition from an outer scope will not
 be applied.
