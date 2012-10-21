@@ -3359,23 +3359,23 @@ continuation.
 % {\cf call-with-current-continuation} was coined in 1982.  This name is
 % descriptive, but opinions differ on the merits of such a long name, and
 % some people prefer the name \ide{call/cc} instead.
+\todo{Shinn: Expand this history before restoring, possibly relegating to an appendix.}
 \end{rationale}
 
 %% \begin{note}
-%% The {\cf call/cc} procedure is capable of capturing continuations originating
-%% outside of Scheme when using Scheme as a scripting
-%% language embedded in some host language. It is not always practical
-%% or even meaningful to restore these continuations.
+%% The {\cf call/cc} procedure is capable of capturing continuations
+%% originating outside of Scheme when Scheme is embedded in some host
+%% language. It is not always practical or even meaningful to restore
+%% these continuations.
 %% \end{note}
-\todo{Shinn: I'm not sure we want to say anything about this, and
-  ``scripting'' is not relevant to the issue.}
+\todo{Shinn: I'm not sure we want to say anything about this.}
 
-\begin{note}
-The interactions of \callcc{} with {\cf parameterize} and exception
-handlers are defined by the formal semantics, but are hard to understand
-in complex cases.  In addition, in some implementations \callcc{} consumes
-an amount of memory that depends on the number of active continuations.
-\end{note}
+%% \begin{note}
+%% The interactions of \callcc{} with {\cf dynamic-wind} are defined by
+%% the formal semantics, but are hard to understand in complex cases.  In
+%% addition, in some implementations \callcc{} consumes an amount of
+%% memory that depends on the number of active continuations.
+%% \end{note}
 \end{entry}
 
 \begin{entry}{%
