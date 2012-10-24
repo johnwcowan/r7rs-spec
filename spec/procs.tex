@@ -2554,14 +2554,14 @@ If \var{end} is omitted, it is assumed to be the length of \var{string}.
 \proto{string-fill!}{ string fill start}{procedure}
 \proto{string-fill!}{ string fill start end}{procedure}}
 
+\domain{It is an error if \var{fill} is not a character or is forbidden in strings,
+or if \var{start} is greater than \var{end}.}
 The {\cf string-fill!} procedure stores \var{fill}
 in the elements of \var{string}
 between \var{start} (inclusive) and \var{end} (exclusive).
 If \var{start} is omitted, it is assumed to be 0.
 If \var{end} is omitted, it is assumed to be the length of \var{string}.
 
-It is an error if \var{fill} is not a character or is forbidden in strings,
-or if \var{start} is greater than \var{end}.
 In any case, an unspecified value is returned.
 
 \end{entry}
@@ -2571,6 +2571,13 @@ In any case, an unspecified value is returned.
 \proto{string-copy!}{ to at from start}{procedure}
 \proto{string-copy!}{ to at from start end}{procedure}}
 
+\domain{It is an error if \var{start} is greater than \var{end},
+or \var{start} is less than zero, or \var{end} is greater than
+the length of \var{from},
+or \var{at} is less than zero or greater than the length of \var{to}.
+It is also an error if the inequality
+\texttt{({\cf >=} ({\cf -} ({\cf string-length} \var{to}) \var{at}) ({\cf -} \var{end} \var{start}))}
+is false.}
 Copies the characters of string \var{from} between \var{start} and \var{end}
 to bytevector \var{to}, starting at \var{at}.  The order in which characters are
 copied is unspecified, except that if the source and destination overlap,
@@ -2581,13 +2588,7 @@ such circumstances.
 If \var{start} is omitted, it is assumed to be 0.
 If \var{end} is omitted, it is assumed to be the length of \var{from}.
 
-It is an error if \var{start} is greater than \var{end},
-or \var{start} is less than zero, or \var{end} is greater than
-the length of \var{from},
-or \var{at} is less than zero or greater than the length of \var{to}.
-It is also an error if the inequality
-\texttt{({\cf >=} ({\cf -} ({\cf string-length} \var{to}) \var{at}) ({\cf -} \var{end} \var{start}))}
-is false.  The value returned by {\cf string-copy!} is unspecified.
+The value returned by {\cf string-copy!} is unspecified.
 
 \begin{scheme}
 (define a "12345")
@@ -2726,10 +2727,10 @@ If \var{end} is omitted, it is assumed to be the length of \var{vector}.
 \proto{string->vector}{ string start}{procedure}
 \proto{string->vector}{ string start end}{procedure}}
 
+\domain{It is an error if any element is not a character allowed in strings.}
 The {\cf vector->string} procedure returns a newly allocated string of the objects contained
 in the elements of \var{vector}
 between \var{start} (inclusive) and \var{end} (exclusive).
-It is an error if any element is not a character allowed in strings.
 The {\cf string->vector} procedure returns a newly
 created vector initialized to the elements of the string \var{string}
 between \var{start} (inclusive) and \var{end} (exclusive).
@@ -2751,6 +2752,7 @@ If \var{end} is omitted, it is assumed to be the length of the first argument.
 \rproto{vector-copy}{ vector start}{procedure}
 \rproto{vector-copy}{ vector start end}{procedure}}
 
+\domain{It is an error if \var{end} is greater than the length of \var{vector}.}
 Returns a newly allocated copy of the elements of the given \var{vector}
 between \var{start} (inclusive) and \var{end} (exclusive).
 The elements of the new vector are the same (in the sense of
@@ -2758,7 +2760,6 @@ The elements of the new vector are the same (in the sense of
 If \var{start} is omitted, it is assumed to be 0.
 If \var{end} is omitted, it is assumed to be the length of \var{vector}.
 
-It is an error if \var{end} is greater than the length of \var{vector}.
 
 \begin{scheme}
 (define a \#(1 8 2 8)) ; a may be immutable
@@ -2788,13 +2789,13 @@ of the elements in the given vectors.
 \proto{vector-fill!}{ vector fill start}{procedure}
 \proto{vector-fill!}{ vector fill start end}{procedure}}
 
+\domain{It is an error if \var{start} is greater than \var{end}.}
 The {\cf vector-fill!} procedure stores \var{fill}
 in the elements of \var{vector}
 between \var{start} (inclusive) and \var{end} (exclusive).
 If \var{start} is omitted, it is assumed to be 0.
 If \var{end} is omitted, it is assumed to be the length of \var{vector}.
 
-It is an error if \var{start} is greater than \var{end}.
 In any case, an unspecified value is returned.
 
 \begin{scheme}
@@ -2810,6 +2811,13 @@ a \lev \#(1 2 smash smash 5)
 \proto{vector-copy!}{ to at from start}{procedure}
 \proto{vector-copy!}{ to at from start end}{procedure}}
 
+domain{It is an error if \var{start} is greater than \var{end},
+or \var{start} is less than zero, or \var{end} is greater than
+the length of \var{from},
+or \var{at} is less than zero or greater than the length of \var{to}.
+It is also an error if the inequality
+\texttt{({\cf >=} ({\cf -} ({\cf vector-length} \var{to}) \var{at}) ({\cf -} \var{end} \var{start}))}
+is false.}
 Copies the elements of vector \var{from} between \var{start} (inclusive) and \var{end} (exclusive)
 to vector \var{to}, starting at \var{at}.  The order in which elements are
 copied is unspecified, except that if the source and destination overlap,
@@ -2820,13 +2828,7 @@ such circumstances.
 If \var{start} is omitted, it is assumed to be 0.
 If \var{end} is omitted, it is assumed to be the length of \var{from}.
 
-It is an error if \var{start} is greater than \var{end},
-or \var{start} is less than zero, or \var{end} is greater than
-the length of \var{from},
-or \var{at} is less than zero or greater than the length of \var{to}.
-It is also an error if the inequality
-\texttt{({\cf >=} ({\cf -} ({\cf vector-length} \var{to}) \var{at}) ({\cf -} \var{end} \var{start}))}
-is false.  The value returned by {\cf vector-copy!} is unspecified.
+The value returned by {\cf vector-copy!} is unspecified.
 
 \begin{scheme}
 (define a (vector 1 2 3 4 5))
@@ -2934,13 +2936,13 @@ The value returned by
 \rproto{bytevector-copy}{ bytevector start}{procedure}
 \rproto{bytevector-copy}{ bytevector start end}{procedure}}
 
+\domain{It is an error if \var{start} is greater than \var{end},
+or \var{start} is less than zero, or \var{end} is greater than
+the length of \var{bytevector}.}
 Returns a newly allocated bytevector containing the bytes in \var{bytevector}
 between \var{start} (inclusive) and \var{end} (exclusive).
 If \var{start} is omitted, it is assumed to be 0.
 If \var{end} is omitted, it is assumed to be the length of \var{bytevector}.
-It is an error if \var{start} is greater than \var{end},
-or \var{start} is less than zero, or \var{end} is greater than
-the length of \var{bytevector}.
 
 \begin{scheme}
 (define a \#u8(1 2 3 4 5))
@@ -2954,6 +2956,13 @@ the length of \var{bytevector}.
 \proto{bytevector-copy!}{ to at from start}{procedure}
 \proto{bytevector-copy!}{ to at from start end}{procedure}}
 
+\domain{It is an error if \var{start} is greater than \var{end},
+or \var{start} is less than zero, or \var{end} is greater than
+the length of \var{from},
+or \var{at} is less than zero or greater than the length of \var{to}.
+It is also an error if the inequality
+\texttt{({\cf >=} ({\cf -} ({\cf bytevector-length} \var{to}) \var{at}) ({\cf -} \var{end} \var{start}))}
+is false.}
 Copies the bytes of bytevector \var{from} between \var{start} (inclusive) and \var{end} (exclusive)
 to bytevector \var{to}, starting at \var{at}.  The order in which bytes are
 copied is unspecified, except that if the source and destination overlap,
@@ -2964,13 +2973,7 @@ such circumstances.
 If \var{start} is omitted, it is assumed to be 0.
 If \var{end} is omitted, it is assumed to be the length of \var{from}.
 
-It is an error if \var{start} is greater than \var{end},
-or \var{start} is less than zero, or \var{end} is greater than
-the length of \var{from},
-or \var{at} is less than zero or greater than the length of \var{to}.
-It is also an error if the inequality
-\texttt{({\cf >=} ({\cf -} ({\cf bytevector-length} \var{to}) \var{at}) ({\cf -} \var{end} \var{start}))}
-is false.  The value returned by {\cf bytevector-copy!} is unspecified.
+The value returned by {\cf bytevector-copy!} is unspecified.
 
 \begin{scheme}
 (define a (bytevector 1 2 3 4 5))
@@ -3001,6 +3004,9 @@ of the elements in the given bytevectors.
 \proto{string->utf8}{ string start} {procedure}
 \proto{string->utf8}{ string start end} {procedure}}
 
+\domain{It is an error to pass invalid byte sequences
+or byte sequences representing characters which are forbidden in strings
+to {\cf utf8\coerce{}string}.}
 These procedures translate between strings and bytevectors
 that encode those strings using the UTF-8 encoding.
 The {\cf utf8\coerce{}string} procedure decodes the bytes of
@@ -3013,9 +3019,6 @@ If \var{start} is omitted, it is assumed to be 0.
 If \var{end} is omitted, it is assumed to be the length of
 \var{bytevector} or \var{string}, respectively.
 
-It is an error to pass invalid byte sequences
-or byte sequences representing characters which are forbidden in strings
-to {\cf utf8\coerce{}string}.
 
 \begin{scheme}
 (utf8->string \#u8(\#x41)) \ev "A"
@@ -3996,9 +3999,13 @@ order they were output.
 \subsection{Input}
 \label{inputsection}
 
+If \var{port} is omitted from any input procedure, it defaults to the
+value returned by {\cf (current-input-port)}.
+It is an error to attempt an input operation on a closed port.
+
 \noindent \hbox{ }  %???
 \vspace{-5ex}
-\todo{The input routines have some things in common, maybe explain here.}
+
 
 \begin{entry}{%
 \proto{read}{}{read library procedure}
@@ -4023,9 +4030,6 @@ encountered after the beginning of an object's external representation,
 but the external representation is incomplete and therefore not parsable,
 an error that satisfies {\cf read-error?} is signalled.
 
-If {port} is omitted, it defaults to the
-value returned by {\cf current-input-port}.  It is an error to read from
-a closed port.
 \end{entry}
 
 \begin{entry}{%
@@ -4036,8 +4040,6 @@ Returns the next character available from the textual input \var{port},
 updating
 the \var{port} to point to the following character.  If no more characters
 are available, an end-of-file object is returned.  
-If {port} is omitted, it defaults to the
-value returned by {\cf current-input-port}.
 
 \end{entry}
 
@@ -4050,8 +4052,6 @@ Returns the next character available from the textual input \var{port},
 {\em without} updating
 the \var{port} to point to the following character.  If no more characters
 are available, an end-of-file object is returned.  
-If {port} is omitted, it defaults to the
-value returned by {\cf current-input-port}.
 
 \begin{note}
 The value returned by a call to {\cf peek-char} is the same as the
@@ -4081,8 +4081,6 @@ object is returned.  For the purpose of this procedure, an end of line
 consists of either a linefeed character, a carriage return character, or a
 sequence of a carriage return character followed by a linefeed character.
 Implementations may also recognize other end of line characters or sequences.
-If {port} is omitted, it defaults to the
-value returned by {\cf current-input-port}.
 
 \end{entry}
 
@@ -4114,8 +4112,6 @@ returns \schfalse{} otherwise.  If {\cf char-ready} returns \schtrue{} then
 the next {\cf read-char} operation on the given \var{port} is guaranteed
 not to hang.  If the \var{port} is at end of file then {\cf char-ready?}\
 returns \schtrue.  
-If {port} is omitted, it defaults to the
-value returned by {\cf current-input-port}.
 
 \begin{rationale}
 The {\cf char-ready?} procedure exists to make it possible for a program to
@@ -4138,8 +4134,6 @@ input \var{port} into a newly allocated string in left-to-right order
 and returns the string.
 If no characters are available before the end of file,
 an end-of-file object is returned.
-If {port} is omitted, it defaults to the
-value returned by {\cf current-input-port}.
 
 \end{entry}
 
@@ -4152,8 +4146,6 @@ Returns the next byte available from the binary input \var{port},
 updating the \var{port} to point to the following byte.  
 If no more bytes are
 available, an end-of-file object is returned.  
-If {port} is omitted, it defaults to the
-value returned by {\cf current-input-port}.
 
 \end{entry}
 
@@ -4164,8 +4156,6 @@ value returned by {\cf current-input-port}.
 Returns the next byte available from the binary input \var{port},
 {\em without} updating the \var{port} to point to the following
 byte.  If no more bytes are available, an end-of-file object is returned.  
-If {port} is omitted, it defaults to the
-value returned by {\cf current-input-port}.
 
 \end{entry}
 
@@ -4178,8 +4168,6 @@ and returns \schfalse{} otherwise.  If {\cf u8-ready?} returns
 \schtrue{} then the next {\cf read-u8} operation on the given
 \var{port} is guaranteed not to hang.  If the \var{port} is at end of
 file then {\cf u8-ready?}\ returns \schtrue.  
-If {port} is omitted, it defaults to the
-value returned by {\cf current-input-port}.
 
 \end{entry}
 
@@ -4193,8 +4181,6 @@ input \var{port} into a newly allocated bytevector in left-to-right order
 and returns the bytevector.
 If no bytes are available before the end of file,
 an end-of-file object is returned.
-If {port} is omitted, it defaults to the
-value returned by {\cf current-input-port}.
 
 \end{entry}
 
@@ -4209,8 +4195,6 @@ input \var{port} into \var{bytevector} in left-to-right order
 beginning at the \var{start} position.
 Returns the number of bytes read.
 If no bytes are available, an end-of-file object is returned.
-If {port} is omitted, it defaults to the
-value returned by {\cf current-input-port}.
 
 \end{entry}
 
@@ -4218,7 +4202,10 @@ value returned by {\cf current-input-port}.
 \subsection{Output}
 \label{outputsection}
 
-% We've got to put something here to fix the indentation!!
+If \var{port} is omitted from any output procedure, it defaults to the
+value returned by {\cf (current-output-port)}.
+It is an error to attempt an output operation on a closed port.
+
 \noindent \hbox{}
 \vspace{-5ex}
 
@@ -4244,8 +4231,6 @@ Implementations may support extended syntax to represent record types or
 other types that do not have datum representations.
 
 The {\cf write} procedure returns an unspecified value.
-If {port} is omitted, it defaults to the
-value returned by {\cf current-output-port}.
 
 \end{entry}
 
