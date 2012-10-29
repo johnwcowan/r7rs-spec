@@ -812,7 +812,7 @@ Otherwise it returns \schfalse{}.
 
 These procedures return \schtrue{} if their arguments are (respectively):
 equal, monotonically increasing, monotonically decreasing,
-monotonically nondecreasing, or monotonically nonincreasing,
+monotonically non-decreasing, or monotonically non-increasing,
 and \schfalse{} otherwise.
 If any of the arguments are {\cf +nan.0}, all the predicates return \schfalse{}.
 They do not distinguish between inexact zero and inexact negative zero.
@@ -2163,7 +2163,7 @@ Returns \schtrue{} if \var{obj} is a character, otherwise returns \schfalse.
 
 These procedures return \schtrue{} if the Unicode scalar values corresponding to their arguments are (respectively):
 equal, monotonically increasing, monotonically decreasing,
-monotonically nondecreasing, or monotonically nonincreasing.
+monotonically non-decreasing, or monotonically non-increasing.
 
 These predicates are required to be transitive.
 
@@ -2446,7 +2446,7 @@ returns \schfalse.  Specifically, these procedures behave as if
 
 These procedures return \schtrue{} if their arguments are (respectively):
 equal, monotonically increasing, monotonically decreasing,
-monotonically nondecreasing, or monotonically nonincreasing.
+monotonically non-decreasing, or monotonically non-increasing.
 
 These predicates are required to be transitive.
 
@@ -4014,7 +4014,7 @@ It is an error to attempt an input operation on a closed port.
 \rproto{read}{ port}{read library procedure}}
 
 The {\cf read} procedure converts external representations of Scheme objects into the
-objects themselves.  That is, it is a parser for the nonterminal
+objects themselves.  That is, it is a parser for the non-terminal
 \meta{datum} (see sections~\ref{datum} and
 \ref{listsection}).  It returns the next
 object parsable from the given textual input \var{port}, updating
