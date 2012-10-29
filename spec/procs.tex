@@ -1376,7 +1376,7 @@ is not supplied, then the default radix is 10.  If \vr{string} is not
 a syntactically valid notation for a number, or would result in a
 number that the implementation cannot represent, then {\cf string->number}
 returns \schfalse{}.
-An error is never signalled due to the content of \vr{string}.
+An error is never signaled due to the content of \vr{string}.
 
 \begin{scheme}
 (string->number "100")        \ev  100
@@ -3496,7 +3496,7 @@ For the concept of Scheme exceptions, see section \ref{errorsituations}.
 See also \ref{guard} for the {\cf guard} syntax.
 
 \defining{Exception handler}s are one-argument procedures that determine the
-action the program takes when an exceptional situation is signalled.
+action the program takes when an exceptional situation is signaled.
 The system implicitly maintains a current exception handler
 in the dynamic environment.
 
@@ -3674,7 +3674,7 @@ Implementations may also support other values of \var{version}, in which
 case they return a specifier for an environment containing bindings corresponding to the specified version of the report.
 If \var{version}
 is neither {\cf 5} nor another value supported by
-the implementation, an error is signalled.
+the implementation, an error is signaled.
 
 \todo{consider removing unspecified effect}
 The effect of defining or assigning (through the use of {\cf eval})
@@ -3699,7 +3699,7 @@ Implementations may also support other values of \var{version}, in which
 case they return a specifier for an environment containing appropriate bindings corresponding to the specified version of the report.
 If \var{version}
 is neither {\cf 5} nor another value supported by
-the implementation, an error is signalled.
+the implementation, an error is signaled.
 
 The effect of defining or assigning (through the use of {\cf eval})
 an identifier bound in a {\cf scheme-report-environment} (for example
@@ -3738,7 +3738,7 @@ Implementations may extend {\cf eval} to allow other objects.
                                                    \ev  20
 (eval '(define foo 32)
       (environment '(scheme base)))
-                                                   \ev {\it{} error is signalled}
+                                                   \ev {\it{} error is signaled}
 \end{scheme}
 
 \end{entry}
@@ -3782,13 +3782,13 @@ These procedures call \var{proc} with one argument: the
 textual port obtained by opening the named file for input or output
 as if by {\cf open-input-file} or {\cf open-output-file}.  
 For {\cf call-with-input-file},
-an error that satisfies {\cf file-error?} is signalled if
+an error that satisfies {\cf file-error?} is signaled if
 the file named by \var{string} does not already exist; for
 {\cf call-with-output-file},
 the effect is unspecified if the file
 already exists.
 If the
-file cannot be opened, an error that satisfies {\cf file-error?} is signalled.  If \var{proc} returns,
+file cannot be opened, an error that satisfies {\cf file-error?} is signaled.  If \var{proc} returns,
 then the port is closed automatically and the values yielded by the
 \var{proc} are returned.  If \var{proc} does not return, then 
 the port must not be closed automatically unless it is possible to
@@ -3861,7 +3861,7 @@ are system-defined textual ports.
 \proto{with-output-to-file}{ string thunk}{file library procedure}}
 
 \domain{For {\cf with-input-from-file},
-an error that satisfies {\cf file-error?} is signalled if the file named by \var{string} does not already exist; for
+an error that satisfies {\cf file-error?} is signaled if the file named by \var{string} does not already exist; for
 {\cf with-output-to-file},
 the effect is unspecified if the file
 already exists.}
@@ -3890,7 +3890,7 @@ dynamically with {\cf parameterize}.
  
 Takes a \var{string} for an existing file and returns a textual
 input port or binary input port capable of delivering data from the
-file.  If the file cannot be opened, an error that satisfies {\cf file-error?} is signalled.
+file.  If the file cannot be opened, an error that satisfies {\cf file-error?} is signaled.
 
 \end{entry}
 
@@ -3902,7 +3902,7 @@ file.  If the file cannot be opened, an error that satisfies {\cf file-error?} i
 Takes a \var{string} naming an output file to be created and returns a
 textual output port or binary output port capable of writing
 data to a new file by that name.  If the file cannot be opened,
-an error that satisfies {\cf file-error?} is signalled.
+an error that satisfies {\cf file-error?} is signaled.
 \todo{consider removing unspecified effect}
 If a file with the given name already exists,
 the effect is unspecified.
@@ -4030,7 +4030,7 @@ object is returned.  The port remains open, and further attempts
 to read will also return an end-of-file object.  If an end of file is
 encountered after the beginning of an object's external representation,
 but the external representation is incomplete and therefore not parsable,
-an error that satisfies {\cf read-error?} is signalled.
+an error that satisfies {\cf read-error?} is signaled.
 
 \end{entry}
 
@@ -4417,7 +4417,7 @@ and \schfalse{} otherwise.
 It is an error if \var{filename} is not a string. The {\cf delete-file} procedure deletes the
 named file if it exists and can be deleted, and returns an unspecified
 value.  If the file does not exist or cannot be deleted, an error
-that satisfies {\cf file-error?} is signalled.
+that satisfies {\cf file-error?} is signaled.
 
 \end{entry}
 

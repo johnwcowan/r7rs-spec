@@ -61,13 +61,13 @@ controlled exposure and renaming of identifiers.
 The contents of a library can be made conditional on the features of
 the implementation on which it is to be used.
 
-\item Exceptions can now be signalled explicitly with {\cf raise},
+\item Exceptions can now be signaled explicitly with {\cf raise},
 {\cf raise-continuable} or {\cf error}, and can be handled with {\cf
 with-exception-handler} and the {\cf guard} syntax.
 Any object can specify an error condition; the implementation-defined
-conditions signalled by {\cf error} have a predicate to detect them and accessor functions to
+conditions signaled by {\cf error} have a predicate to detect them and accessor functions to
 retrieve the arguments passed to {\cf error}.
-Conditions signalled by {\cf read} and by file-related procedures
+Conditions signaled by {\cf read} and by file-related procedures
 also have predicates to detect them.
 
 \item New disjoint types supporting access to multiple fields can be
@@ -249,7 +249,7 @@ must follow the definition; the {\cf even}/{\cf odd} example given in
 \rsixrs\ is not allowed.
 
 \item The \rsixrs\ exception system was incorporated as-is, but the condition
-types have been left unspecified.  Specific errors that must be signalled
+types have been left unspecified.  Specific errors that must be signaled
 in \rsixrs\ remain errors in \rsevenrs, allowing implementations to provide
 their own extensions.  There is no discussion of safety.
 

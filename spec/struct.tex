@@ -123,16 +123,16 @@ not conflict with the lexical syntax described in this report.
 
 \mainindex{error}
 When speaking of an error situation, this report uses the phrase ``an
-error is signalled'' to indicate that implementations must detect and
+error is signaled'' to indicate that implementations must detect and
 report the error.
-An error is signalled by raising a non-continuable exception, as if by
+An error is signaled by raising a non-continuable exception, as if by
 the procedure {\cf raise} as described in section~\ref{exceptionsection}.  The object raised is implementation-dependent
 and need not be distinct from objects previously used for the same purpose.
-In addition to errors signalled in situations described in this
-report, programmers can signal their own errors and handle signalled errors.
+In addition to errors signaled in situations described in this
+report, programmers can signal their own errors and handle signaled errors.
 
-The phrase ``an error that satisfies {\em predicate} is signalled'' means that an error is
-signalled as above.  Furthermore, if the object that is signalled is
+The phrase ``an error that satisfies {\em predicate} is signaled'' means that an error is
+signaled as above.  Furthermore, if the object that is signaled is
 passed to the specified predicate (such as {\cf file-error?} or {\cf
 read-error?}), the predicate returns \schtrue{}.
 
@@ -162,7 +162,7 @@ or if an arithmetic operation would produce an exact number that is
 too large for the implementation to represent.
 
 \vest If the value of an expression is said to be ``unspecified,'' then
-the expression must evaluate to some object without signalling an error,
+the expression must evaluate to some object without signaling an error,
 but the value depends on the implementation; this report explicitly does
 not say what value is returned. \mainindex{unspecified}
 
