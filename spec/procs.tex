@@ -1118,7 +1118,7 @@ The {\cf asin}, {\cf acos}, and {\cf atan} procedures compute arcsine ($\sin^{-1
 arc-cosine ($\cos^{-1}$), and arctangent ($\tan^{-1}$), respectively.
 The two-argument variant of {\cf atan} computes {\tt (angle
 (make-rectangular \vr{x} \vr{y}))} (see below), even in implementations
-that don't support the complex library.
+that don't support complex numbers.
 
 In general, the mathematical functions log, arcsine, arc-cosine, and
 arctangent are multiply defined.
@@ -1136,9 +1136,9 @@ However, {\cf (log 0.0)} returns {\cf -inf.0}
 (and {\cf (log -0.0)} returns {\cf -inf.0+$\pi$i}) if the
 implementation supports infinities (and {\cf -0.0}).
 
-The range of $\tan^{-1} x~y$ is as in the following table. The
-asterisk (*) indicates that the entry applies to implementations that
-distinguish minus zero.
+The range of \texttt{({\cf atan} \var{y} \var{x})} is as in the
+following table. The asterisk (*) indicates that the entry applies to
+implementations that distinguish minus zero.
 
 \begin{center}
 \begin{tabular}{clll}
