@@ -2547,6 +2547,7 @@ inverses so far as {\cf equal?}\ is concerned.
 \proto{string-copy}{ string start}{procedure}
 \proto{string-copy}{ string start end}{procedure}}
 
+\domain{It is an error if \var{start} is greater than \var{end}, or \var{start} is less than zero, or \var{end} is greater than the length of \var{string}.}
 Returns a newly allocated copy of the part of the given \var{string}
 between \var{start} (inclusive) and \var{end} (exclusive).
 If \var{start} is omitted, it is assumed to be 0.
@@ -2560,8 +2561,10 @@ If \var{end} is omitted, it is assumed to be the length of \var{string}.
 \proto{string-fill!}{ string fill start}{procedure}
 \proto{string-fill!}{ string fill start end}{procedure}}
 
-\domain{It is an error if \var{fill} is not a character or is forbidden in strings,
-or if \var{start} is greater than \var{end}.}
+\domain{It is an error if \var{fill} is not a character or is forbidden
+in strings.  It is also an error if \var{start} is greater than \var{end}, or \var{start}
+is less than zero, or \var{end} is greater than or equal to the length
+of \var{string}.}
 The {\cf string-fill!} procedure stores \var{fill}
 in the elements of \var{string}
 between \var{start} (inclusive) and \var{end} (exclusive).
@@ -2733,7 +2736,7 @@ If \var{end} is omitted, it is assumed to be the length of \var{vector}.
 \proto{string->vector}{ string start}{procedure}
 \proto{string->vector}{ string start end}{procedure}}
 
-\domain{It is an error if any element is a character forbidden in strings.}
+\domain{It is an error if any element is not a character, or is a character forbidden in strings.}
 The {\cf vector->string} procedure returns a newly allocated string of the objects contained
 in the elements of \var{vector}
 between \var{start} (inclusive) and \var{end} (exclusive).
@@ -2758,7 +2761,7 @@ If \var{end} is omitted, it is assumed to be the length of the first argument.
 \rproto{vector-copy}{ vector start}{procedure}
 \rproto{vector-copy}{ vector start end}{procedure}}
 
-\domain{It is an error if \var{end} is greater than the length of \var{vector}.}
+\domain{It is an error if \var{start} is greater than \var{end}, or \var{start} is less than zero, or \var{end} is greater than the length of \var{vector}.}
 Returns a newly allocated copy of the elements of the given \var{vector}
 between \var{start} (inclusive) and \var{end} (exclusive).
 The elements of the new vector are the same (in the sense of
@@ -2795,7 +2798,9 @@ of the elements in the given vectors.
 \proto{vector-fill!}{ vector fill start}{procedure}
 \proto{vector-fill!}{ vector fill start end}{procedure}}
 
-\domain{It is an error if \var{start} is greater than \var{end}.}
+\domain{It is an error if \var{start} is greater than \var{end}, or \var{start}
+is less than zero, or \var{end} is greater than or equal to the length
+of \var{vector}.}
 The {\cf vector-fill!} procedure stores \var{fill}
 in the elements of \var{vector}
 between \var{start} (inclusive) and \var{end} (exclusive).
@@ -2915,6 +2920,7 @@ Returns the length of \var{bytevector} in bytes as an exact integer.
 \begin{entry}{%
 \proto{bytevector-u8-ref}{ bytevector k}{procedure}}
 
+\domain{It is an error if \vr{k} is not a valid index of \var{bytevector}.}
 Returns the \var{k}th byte of \var{bytevector}.
 
 \begin{scheme}
@@ -2926,6 +2932,7 @@ Returns the \var{k}th byte of \var{bytevector}.
 \begin{entry}{%
 \proto{bytevector-u8-set!}{ bytevector k byte}{procedure}}
 
+\domain{It is an error if \vr{k} is not a valid index of \var{bytevector}.}
 Stores \var{byte} as the \var{k}th byte of \var{bytevector}.
 The value returned by
 {\cf bytevector-u8-set!} is unspecified.
@@ -3010,9 +3017,8 @@ of the elements in the given bytevectors.
 \proto{string->utf8}{ string start} {procedure}
 \proto{string->utf8}{ string start end} {procedure}}
 
-\domain{It is an error to pass invalid byte sequences
-or byte sequences representing characters which are forbidden in strings
-to {\cf utf8\coerce{}string}.}
+\domain{It is an error for \var{bytevector} to contain invalid byte sequences
+or byte sequences representing characters which are forbidden in strings.}
 These procedures translate between strings and bytevectors
 that encode those strings using the UTF-8 encoding.
 The {\cf utf8\coerce{}string} procedure decodes the bytes of
@@ -3186,6 +3192,8 @@ the values returned by earlier returns are not mutated.
 \begin{entry}{%
 \proto{for-each}{ proc \vari{list} \varii{list} \dotsfoo}{procedure}}
 
+\domain{It is an error if \var{proc} does not
+accept as many arguments as there are {\it list}s.}
 The arguments to {\cf for-each} are like the arguments to {\cf map}, but
 {\cf for-each} calls \var{proc} for its side effects rather than for its
 values.  Unlike {\cf map}, {\cf for-each} is guaranteed to call \var{proc} on
@@ -3211,6 +3219,8 @@ It is an error for \var{proc} to mutate any of the lists.
 \begin{entry}{%
 \proto{string-for-each}{ proc \vari{string} \varii{string} \dotsfoo}{procedure}}
 
+\domain{It is an error if \var{proc} does not
+accept as many arguments as there are {\it string}s.}
 The arguments to {\cf string-for-each} are like the arguments to {\cf
 string-map}, but {\cf string-for-each} calls \var{proc} for its side
 effects rather than for its values.  Unlike {\cf string-map}, {\cf
@@ -3234,6 +3244,8 @@ It is an error for \var{proc} to mutate any of the strings.
 \begin{entry}{%
 \proto{vector-for-each}{ proc \vari{vector} \varii{vector} \dotsfoo}{procedure}}
 
+\domain{It is an error if \var{proc} does not
+accept as many arguments as there are {\it vector}s.}
 The arguments to {\cf vector-for-each} are like the arguments to {\cf
 vector-map}, but {\cf vector-for-each} calls \var{proc} for its side
 effects rather than for its values.  Unlike {\cf vector-map}, {\cf
@@ -3777,22 +3789,12 @@ Ports can be used to access files, devices, and similar things on the host
 system on which the Scheme program is running.
 
 \begin{entry}{%
-\proto{call-with-input-file}{ string proc}{file library procedure}
-\proto{call-with-output-file}{ string proc}{file library procedure}}
+\proto{call-with-port}{ port proc}{procedure}}
 
 \domain{It is an error if \var{proc} does not accept one argument.}
-\todo{consider removing unspecified effect}
-These procedures call \var{proc} with one argument: the
-textual port obtained by opening the named file for input or output
-as if by {\cf open-input-file} or {\cf open-output-file}.  
-For {\cf call-with-input-file},
-an error that satisfies {\cf file-error?} is signaled if
-the file named by \var{string} does not already exist; for
-{\cf call-with-output-file},
-the effect is unspecified if the file
-already exists.
-If the
-file cannot be opened, an error that satisfies {\cf file-error?} is signaled.  If \var{proc} returns,
+The {\cf call-with-port}
+procedure calls \var{proc} with \var{port} as an argument.  
+If \var{proc} returns,
 then the port is closed automatically and the values yielded by the
 \var{proc} are returned.  If \var{proc} does not return, then 
 the port must not be closed automatically unless it is possible to
@@ -3804,21 +3806,21 @@ Because Scheme's escape procedures have unlimited extent, it  is
 possible to escape from the current continuation but later to escape back in. 
 If implementations were permitted to close the port on any escape from the
 current continuation, then it would be impossible to write portable code using
-both {\cf call-with-current-continuation} and {\cf call-with-input-file} or
-{\cf call-with-output-file}.
+both {\cf call-with-current-continuation} and {\cf call-with-port}.
 \end{rationale} 
+
 \end{entry}
 
 \begin{entry}{%
-\proto{call-with-port}{ port proc}{procedure}}
+\proto{call-with-input-file}{ string proc}{file library procedure}
+\proto{call-with-output-file}{ string proc}{file library procedure}}
 
 \domain{It is an error if \var{proc} does not accept one argument.}
-
-The {\cf call-with-port}
-procedure calls \var{proc} with \var{port} as an argument.  If
-\var{proc} returns, \var{port} is closed automatically and the values
-returned by \var{proc} are returned.
-
+These procedures obtain a
+textual port obtained by opening the named file for input or output
+as if by {\cf open-input-file} or {\cf open-output-file}.  
+The port and \var{proc} are then passed to a procedure equivalent
+to {\cf call-with-port}.
 \end{entry}
 
 \begin{entry}{%
@@ -3864,17 +3866,11 @@ are system-defined textual ports.
 \proto{with-input-from-file}{ string thunk}{file library procedure}
 \proto{with-output-to-file}{ string thunk}{file library procedure}}
 
-\domain{For {\cf with-input-from-file},
-an error that satisfies {\cf file-error?} is signaled if the file named by \var{string} does not already exist; for
-{\cf with-output-to-file},
-the effect is unspecified if the file
-already exists.}
-\todo{consider removing unspecified effect}
 The file is opened for input or output
 as if by {\cf open-input-file} or {\cf open-output-file}, 
-and the new port is made the default value returned by
+and the new port is made to be the value returned by
 {\cf current-input-port} or {\cf current-output-port}
-(and is used by {\tt (read)}, {\tt (write \var{obj})}, and so forth).
+(as used by {\tt (read)}, {\tt (write \var{obj})}, and so forth).
 The \var{thunk} is then called with no arguments.  When the \var{thunk} returns,
 the port is closed and the previous default is restored.
 It is an error if \var{thunk} does not accept zero arguments.
@@ -3893,8 +3889,8 @@ dynamically with {\cf parameterize}.
 \proto{open-binary-input-file}{ string}{file library procedure}}
  
 Takes a \var{string} for an existing file and returns a textual
-input port or binary input port capable of delivering data from the
-file.  If the file cannot be opened, an error that satisfies {\cf file-error?} is signaled.
+input port or binary input port that is capable of delivering data from the
+file.  If the file does not exist or cannot be opened, an error that satisfies {\cf file-error?} is signaled.
 
 \end{entry}
 
@@ -3904,12 +3900,13 @@ file.  If the file cannot be opened, an error that satisfies {\cf file-error?} i
 \proto{open-binary-output-file}{ string}{file library procedure}}
 
 Takes a \var{string} naming an output file to be created and returns a
-textual output port or binary output port capable of writing
-data to a new file by that name.  If the file cannot be opened,
-an error that satisfies {\cf file-error?} is signaled.
+textual output port or binary output port that is capable of writing
+data to a new file by that name.
 \todo{consider removing unspecified effect}
 If a file with the given name already exists,
 the effect is unspecified.
+If the file cannot be opened,
+an error that satisfies {\cf file-error?} is signaled.
 
 \end{entry}
 
@@ -4055,7 +4052,7 @@ are available, an end-of-file object is returned.
 \rproto{peek-char}{ port}{procedure}}
 
 Returns the next character available from the textual input \var{port},
-{\em without} updating
+but {\em without} updating
 the \var{port} to point to the following character.  If no more characters
 are available, an end-of-file object is returned.  
 
@@ -4131,10 +4128,10 @@ port that has no ready characters.
 \end{entry}
 
 \begin{entry}{%
-\proto{read-string}{ length}{procedure}
-\rproto{read-string}{ length port}{procedure}}
+\proto{read-string}{ k}{procedure}
+\rproto{read-string}{ k port}{procedure}}
 
-Reads the next \var{length} characters, or as many as are available before the end of file,
+Reads the next \var{k} characters, or as many as are available before the end of file,
 from the textual
 input \var{port} into a newly allocated string in left-to-right order
 and returns the string.
@@ -4160,7 +4157,7 @@ available, an end-of-file object is returned.
 \rproto{peek-u8}{ port}{procedure}}
 
 Returns the next byte available from the binary input \var{port},
-{\em without} updating the \var{port} to point to the following
+but {\em without} updating the \var{port} to point to the following
 byte.  If no more bytes are available, an end-of-file object is returned.  
 
 \end{entry}
@@ -4178,10 +4175,10 @@ file then {\cf u8-ready?}\ returns \schtrue.
 \end{entry}
 
 \begin{entry}{%
-\proto{read-bytevector}{ length}{procedure}
-\rproto{read-bytevector}{ length port}{procedure}}
+\proto{read-bytevector}{ k}{procedure}
+\rproto{read-bytevector}{ k port}{procedure}}
 
-Reads the next \var{length} bytes, or as many as are available before the end of file,
+Reads the next \var{k} bytes, or as many as are available before the end of file,
 from the binary
 input \var{port} into a newly allocated bytevector in left-to-right order
 and returns the bytevector.
@@ -4194,6 +4191,9 @@ an end-of-file object is returned.
 \proto{read-bytevector!}{ bytevector start end}{procedure}
 \rproto{read-bytevector!}{ bytevector start end port}{procedure}}
 
+\domain{It is an error if \var{start} is greater than \var{end}, or \var{start}
+is less than zero, or \var{end} is greater than or equal to the length
+of \var{bytevector}.}
 Reads the next $end - start$ bytes, or as many as are available
 before the end of file,
 from the binary
@@ -4299,8 +4299,6 @@ human-readable output.
 Writes an end of line to textual output \var{port}.  Exactly how this
 is done differs
 from one operating system to another.  Returns an unspecified value.
-If {port} is omitted, it defaults to the
-value returned by {\cf current-output-port}.
 
 \end{entry}
 
@@ -4312,8 +4310,6 @@ value returned by {\cf current-output-port}.
 Writes the character \var{char} (not an external representation of the
 character) to the given textual output \var{port} and returns an unspecified
 value.  
-If {port} is omitted, it defaults to the
-returned by {\cf current-output-port}.
 
 \end{entry}
 
@@ -4323,14 +4319,15 @@ returned by {\cf current-output-port}.
 \rproto{write-string}{ string port start}{procedure}
 \rproto{write-string}{ string port start end}{procedure}}
 
+\domain{It is an error if \var{start} is greater than \var{end}, or \var{start}
+is less than zero, or \var{end} is greater than or equal to the length
+of \var{string}.}
 Writes the characters of \var{string}
 from \var{start} (inclusive) to \var{end} (exclusive)
 in left-to-right order to the
 textual output \var{port}.
 If \var{start} is omitted, it is assumed to be 0.
 If \var{end} is omitted, it is assumed to be the length of \var{string}.
-If {port} is omitted, it defaults to the
-value returned by {\cf current-output-port}.
 
 \end{entry}
 
@@ -4340,8 +4337,6 @@ value returned by {\cf current-output-port}.
 
 Writes the \var{byte} to
 the given binary output \var{port} and returns an unspecified value.
-If {port} is omitted, it defaults to the
-value returned by {\cf current-output-port}.
 
 \end{entry}
 
@@ -4351,14 +4346,15 @@ value returned by {\cf current-output-port}.
 \rproto{write-bytevector}{ bytevector port start}{procedure}
 \rproto{write-bytevector}{ bytevector port start end}{procedure}}
 
+\domain{It is an error if \var{start} is greater than \var{end}, or \var{start}
+is less than zero, or \var{end} is greater than or equal to the length
+of \var{bytevector}.}
 Writes the bytes of \var{bytevector}
 from \var{start} (inclusive) to \var{end} (exclusive)
 in left-to-right order to the
 binary output \var{port}.
 If \var{start} is omitted, it is assumed to be 0.
 If \var{end} is omitted, it is assumed to be the length of \var{bytevector}.
-If {port} is omitted, it defaults to the
-value returned by {\cf current-output-port}.
 
 \end{entry}
 
@@ -4368,8 +4364,6 @@ value returned by {\cf current-output-port}.
 
 Flushes any buffered output from the buffer of output-port to the
 underlying file or device and returns an unspecified value.
-If {port} is omitted, it defaults to the
-value returned by {\cf current-output-port}.
 
 \end{entry}
 
@@ -4385,6 +4379,7 @@ deserve description here.
 \proto{load}{ filename}{load library procedure}
 \rproto{load}{ filename environment-specifier}{load library procedure}}
 
+\domain{It is an error if \var{filename} is not a string.}
 An implementation-dependent operation is used to transform
 \var{filename} into the name of an existing file
 containing Scheme source code.  The {\cf load} procedure reads
@@ -4409,7 +4404,8 @@ implementations.
 \begin{entry}{%
 \proto{file-exists?}{ filename}{file library procedure}}
 
-It is an error if \var{filename} is not a string. The {\cf file-exists?} procedure returns
+\domain{It is an error if \var{filename} is not a string.}
+The {\cf file-exists?} procedure returns
 \schtrue{} if the named file exists at the time the procedure is called,
 and \schfalse{} otherwise.
 
@@ -4418,7 +4414,8 @@ and \schfalse{} otherwise.
 \begin{entry}{%
 \proto{delete-file}{ filename}{file library procedure}}
 
-It is an error if \var{filename} is not a string. The {\cf delete-file} procedure deletes the
+\domain{It is an error if \var{filename} is not a string.}
+The {\cf delete-file} procedure deletes the
 named file if it exists and can be deleted, and returns an unspecified
 value.  If the file does not exist or cannot be deleted, an error
 that satisfies {\cf file-error?} is signaled.
@@ -4444,7 +4441,9 @@ exit} procedure should communicate to the operating system that the
 program exited normally.  If \var{obj} is \schfalse{}, the {\cf exit}
 procedure should communicate to the operating system that the program
 exited abnormally.  Otherwise, {\cf exit} should translate \var{obj} into
-an appropriate exit value for the operating system, if possible, and
+an appropriate exit value for the operating system, if possible.
+
+The {\cf exit} procedure
 must not signal an exception or return to its continuation.
 
 \begin{note}
