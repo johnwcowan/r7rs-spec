@@ -465,17 +465,21 @@ and the mathematically expected results are representable as exact integers
 within the implementation:
 
 \begin{scheme}
--                   *                  +
-abs                 ceiling            denominator
-exact-integer-sqrt  expt               floor
-floor/              floor-quotient     floor-remainder
-gcd                 lcm                max
-min                 modulo             numerator
-quotient            rationalize        remainder
-round               square             truncate
-truncate/           truncate-quotient  truncate-remainder
+-                     *
++                     abs
+ceiling               denominator
+exact-integer-sqrt    expt
+floor                 floor/
+floor-quotient        floor-remainder
+gcd                   lcm
+max                   min
+modulo                numerator
+quotient              rationalize
+remainder             round
+square                truncate
+truncate/             truncate-quotient
+truncate-remainder
 \end{scheme}
-exact-integer-sqrt  square
 
 \vest It is recommended, but not required, that implementations support
 \tupe{exact} \tupe{integer}s and \tupe{exact} \tupe{rational}s of
