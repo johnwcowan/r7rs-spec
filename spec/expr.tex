@@ -342,7 +342,7 @@ A {\cf cond} expression is evaluated by evaluating the \hyper{test}
 expressions of successive \hyper{clause}s in order until one of them
 evaluates to a true value\index{true} (see
 section~\ref{booleansection}).  When a \hyper{test} evaluates to a true
-value, then the remaining \hyper{expression}s in its \hyper{clause} are
+value, the remaining \hyper{expression}s in its \hyper{clause} are
 evaluated in order, and the results of the last \hyper{expression} in the
 \hyper{clause} are returned as the results of the entire {\cf cond}
 expression.
@@ -559,7 +559,7 @@ in order, until one of them returns \schtrue.  When a true clause is
 found, the corresponding \hyper{expression}s are spliced into
 the current context as if by {\cf begin} and the remaining clauses are ignored.
 If none of the \hyper{feature requirement}s evaluate to \schtrue, then
-if there is an \ide{else} clause, its \hyper{expression}s are
+if there is an else clause, its \hyper{expression}s are
 included.  Otherwise, the \ide{cond-expand} has no effect.
 Unlike {\cf cond}, {\cf cond-expand} does not depend on the value
 of any variables.
@@ -1252,7 +1252,7 @@ that binding, evaluates the clauses as if they were the clauses of a
 {\cf cond} expression. That implicit {\cf cond} expression is evaluated with the
 continuation and dynamic environment of the {\cf guard} expression. If every
 \hyper{cond clause}'s \hyper{test} evaluates to \schfalse{} and there
-is no {\cf else} clause, then
+is no else clause, then
 {\cf raise-continuable} is invoked on the raised object within the dynamic
 environment of the original call to {\cf raise}
 or {\cf raise-continuable}, except that the current
