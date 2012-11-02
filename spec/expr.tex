@@ -1247,7 +1247,8 @@ Each \hyper{cond clause} is as in the specification of {\cf cond}.
 
 \semantics
 The \hyper{body} is evaluated with an exception
-handler that binds the raised object to \hyper{variable} and, within the scope of
+handler that binds the raised object (see \ide{raise} in section~\ref{exceptionsection})
+to \hyper{variable} and, within the scope of
 that binding, evaluates the clauses as if they were the clauses of a
 {\cf cond} expression. That implicit {\cf cond} expression is evaluated with the
 continuation and dynamic environment of the {\cf guard} expression. If every
