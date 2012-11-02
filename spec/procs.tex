@@ -3017,7 +3017,7 @@ of the elements in the given bytevectors.
 \proto{string->utf8}{ string start} {procedure}
 \proto{string->utf8}{ string start end} {procedure}}
 
-\domain{It is an error for \var{bytevector} to contain invalid byte sequences
+\domain{It is an error for \var{bytevector} to contain invalid UTF-8 byte sequences
 or byte sequences representing characters which are forbidden in strings.}
 These procedures translate between strings and bytevectors
 that encode those strings using the UTF-8 encoding.
