@@ -846,7 +846,7 @@ splice them into the context in which they are expanded.
 \end{entry}
 
 \begin{entry}{%
-\proto{begin}{ \hyperi{expression} \hyperii{expression} \dotsfoo}{\exprtype}}
+\rproto{begin}{ \hyperi{expression} \hyperii{expression} \dotsfoo}{\exprtype}}
 
 This form of {\cf begin} can be used as an ordinary expression.
 The \hyper{expression}s are evaluated sequentially from left to right,
@@ -1006,7 +1006,6 @@ unbounded space during evaluation.
 
 \begin{entry}{%
 \proto{force}{ promise}{lazy library procedure}}
-\label{force}
 
 The {\cf force} procedure forces the value of a \var{promise} created
 by \ide{delay}, \ide{delay-force}, or \ide{make-promise}.\index{promise}
@@ -1151,8 +1150,7 @@ all parameter bindings at a given time is called the \defining{dynamic
 
 \begin{entry}{%
 \proto{make-parameter}{ init}{procedure}
-\proto{make-parameter}{ init converter}{procedure}}
-\label{make-parameter}
+\rproto{make-parameter}{ init converter}{procedure}}
 
 Returns a newly allocated parameter object,
 which is a procedure that accepts zero arguments and
@@ -1232,7 +1230,6 @@ procedure in the call chain explicitly.
 
 
 \subsection{Exception handling}\unsection
-\label{guard}
 
 \begin{entry}{%
 \pproto{(guard (\hyper{variable}}{\exprtype}
@@ -1808,7 +1805,6 @@ which would result in an invalid procedure call.
 \end{entry}
 
 \subsection{Signaling errors in macro transformers}
-\label{syntax-error}
 
 
 \begin{entry}{%

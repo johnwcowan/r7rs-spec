@@ -1103,7 +1103,7 @@ all.
 \begin{entry}{%
 \proto{exp}{ \vr{z}}{inexact library procedure}
 \proto{log}{ \vr{z}}{inexact library procedure}
-\proto{log}{ \vri{z} \vrii{z}}{inexact library procedure}
+\rproto{log}{ \vri{z} \vrii{z}}{inexact library procedure}
 \proto{sin}{ \vr{z}}{inexact library procedure}
 \proto{cos}{ \vr{z}}{inexact library procedure}
 \proto{tan}{ \vr{z}}{inexact library procedure}
@@ -1895,7 +1895,7 @@ The value returned by {\cf list-set!}\ is unspecified.  % <!>
 \proto{memq}{ obj list}{procedure}
 \proto{memv}{ obj list}{procedure}
 \proto{member}{ obj list}{procedure}
-\proto{member}{ obj list compare}{procedure}}
+\rproto{member}{ obj list compare}{procedure}}
 
 These procedures return the first sublist of \var{list} whose car is
 \var{obj}, where the sublists of \var{list} are the non-empty lists
@@ -1927,7 +1927,7 @@ returned.  The {\cf memq} procedure uses {\cf eq?}\ to compare \var{obj} with th
 \proto{assq}{ obj alist}{procedure}
 \proto{assv}{ obj alist}{procedure}
 \proto{assoc}{ obj alist}{procedure}
-\proto{assoc}{ obj alist compare}{procedure}}
+\rproto{assoc}{ obj alist compare}{procedure}}
 
 \domain{It is an error if \var{alist} (for ``association list'') is not a list of
 pairs.}
@@ -2521,8 +2521,8 @@ characters in the given strings.
 
 \begin{entry}{%
 \proto{string->list}{ string}{procedure}
-\proto{string->list}{ string start}{procedure}
-\proto{string->list}{ string start end}{procedure}
+\rproto{string->list}{ string start}{procedure}
+\rproto{string->list}{ string start end}{procedure}
 \proto{list->string}{ list}{procedure}}
 
 \domain{It is an error if any element of \var{list} is not a character.}
@@ -2543,8 +2543,8 @@ inverses so far as {\cf equal?}\ is concerned.
 
 \begin{entry}{%
 \proto{string-copy}{ string}{procedure}
-\proto{string-copy}{ string start}{procedure}
-\proto{string-copy}{ string start end}{procedure}}
+\rproto{string-copy}{ string start}{procedure}
+\rproto{string-copy}{ string start end}{procedure}}
 
 \domain{It is an error if \var{start} is greater than \var{end}, or \var{start} is less than zero, or \var{end} is greater than the length of \var{string}.}
 Returns a newly allocated copy of the part of the given \var{string}
@@ -2557,8 +2557,8 @@ If \var{end} is omitted, it is assumed to be the length of \var{string}.
 
 \begin{entry}{%
 \proto{string-fill!}{ string fill}{procedure}
-\proto{string-fill!}{ string fill start}{procedure}
-\proto{string-fill!}{ string fill start end}{procedure}}
+\rproto{string-fill!}{ string fill start}{procedure}
+\rproto{string-fill!}{ string fill start end}{procedure}}
 
 \domain{It is an error if \var{fill} is not a character or is forbidden
 in strings.  It is also an error if \var{start} is greater than \var{end}, or \var{start}
@@ -2576,8 +2576,8 @@ In any case, an unspecified value is returned.
 
 \begin{entry}{%
 \proto{string-copy!}{ to at from}{procedure}
-\proto{string-copy!}{ to at from start}{procedure}
-\proto{string-copy!}{ to at from start end}{procedure}}
+\rproto{string-copy!}{ to at from start}{procedure}
+\rproto{string-copy!}{ to at from start end}{procedure}}
 
 \domain{It is an error if \var{start} is greater than \var{end},
 or \var{start} is less than zero, or \var{end} is greater than
@@ -2707,8 +2707,8 @@ The value returned by {\cf vector-set!}\ is unspecified.  % <!>
 
 \begin{entry}{%
 \proto{vector->list}{ vector}{procedure}
-\proto{vector->list}{ vector start}{procedure}
-\proto{vector->list}{ vector start end}{procedure}
+\rproto{vector->list}{ vector start}{procedure}
+\rproto{vector->list}{ vector start end}{procedure}
 \proto{list->vector}{ list}{procedure}}
 
 The {\cf vector->list} procedure returns a newly allocated list of the objects contained
@@ -2729,11 +2729,11 @@ If \var{end} is omitted, it is assumed to be the length of \var{vector}.
 
 \begin{entry}{%
 \proto{vector->string}{ vector}{procedure}
-\proto{vector->string}{ vector start}{procedure}
-\proto{vector->string}{ vector start end}{procedure}
+\rproto{vector->string}{ vector start}{procedure}
+\rproto{vector->string}{ vector start end}{procedure}
 \proto{string->vector}{ string}{procedure}
-\proto{string->vector}{ string start}{procedure}
-\proto{string->vector}{ string start end}{procedure}}
+\rproto{string->vector}{ string start}{procedure}
+\rproto{string->vector}{ string start end}{procedure}}
 
 \domain{It is an error if any element is not a character, or is a character forbidden in strings.}
 The {\cf vector->string} procedure returns a newly allocated string of the objects contained
@@ -2794,8 +2794,8 @@ of the elements in the given vectors.
 
 \begin{entry}{%
 \proto{vector-fill!}{ vector fill}{procedure}
-\proto{vector-fill!}{ vector fill start}{procedure}
-\proto{vector-fill!}{ vector fill start end}{procedure}}
+\rproto{vector-fill!}{ vector fill start}{procedure}
+\rproto{vector-fill!}{ vector fill start end}{procedure}}
 
 \domain{It is an error if \var{start} is greater than \var{end}, or \var{start}
 is less than zero, or \var{end} is greater than or equal to the length
@@ -2818,8 +2818,8 @@ a \lev \#(1 2 smash smash 5)
 
 \begin{entry}{%
 \proto{vector-copy!}{ to at from}{procedure}
-\proto{vector-copy!}{ to at from start}{procedure}
-\proto{vector-copy!}{ to at from start end}{procedure}}
+\rproto{vector-copy!}{ to at from start}{procedure}
+\rproto{vector-copy!}{ to at from start end}{procedure}}
 
 domain{It is an error if \var{start} is greater than \var{end},
 or \var{start} is less than zero, or \var{end} is greater than
@@ -2965,8 +2965,8 @@ If \var{end} is omitted, it is assumed to be the length of \var{bytevector}.
 
 \begin{entry}{%
 \proto{bytevector-copy!}{ to at from}{procedure}
-\proto{bytevector-copy!}{ to at from start}{procedure}
-\proto{bytevector-copy!}{ to at from start end}{procedure}}
+\rproto{bytevector-copy!}{ to at from start}{procedure}
+\rproto{bytevector-copy!}{ to at from start end}{procedure}}
 
 \domain{It is an error if \var{start} is greater than \var{end},
 or \var{start} is less than zero, or \var{end} is greater than
@@ -3010,11 +3010,11 @@ of the elements in the given bytevectors.
 
 \begin{entry}{%
 \proto{utf8->string}{ bytevector} {procedure}
-\proto{utf8->string}{ bytevector start} {procedure}
-\proto{utf8->string}{ bytevector start end} {procedure}
+\rproto{utf8->string}{ bytevector start} {procedure}
+\rproto{utf8->string}{ bytevector start end} {procedure}
 \proto{string->utf8}{ string} {procedure}
-\proto{string->utf8}{ string start} {procedure}
-\proto{string->utf8}{ string start end} {procedure}}
+\rproto{string->utf8}{ string start} {procedure}
+\rproto{string->utf8}{ string start end} {procedure}}
 
 \domain{It is an error for \var{bytevector} to contain invalid UTF-8 byte sequences
 or byte sequences representing characters which are forbidden in strings.}
