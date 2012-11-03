@@ -4187,7 +4187,9 @@ an end-of-file object is returned.
 \end{entry}
 
 \begin{entry}{%
-\proto{read-bytevector!}{ bytevector start end}{procedure}
+\proto{read-bytevector!}{ bytevector}{procedure}
+\rproto{read-bytevector!}{ bytevector start}{procedure}
+\rproto{read-bytevector!}{ bytevector start end}{procedure}
 \rproto{read-bytevector!}{ bytevector start end port}{procedure}}
 
 \domain{It is an error if \var{start} is greater than \var{end}, or \var{start}
@@ -4197,7 +4199,9 @@ Reads the next $end - start$ bytes, or as many as are available
 before the end of file,
 from the binary
 input \var{port} into \var{bytevector} in left-to-right order
-beginning at the \var{start} position.
+beginning at the \var{start} position.  If \var{end} is not supplied,
+reads until the end of \var{bytevector} has been reached.  If
+\var{start} is not supplied, reads beginning at position 0.
 Returns the number of bytes read.
 If no bytes are available, an end-of-file object is returned.
 
