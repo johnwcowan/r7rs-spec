@@ -87,7 +87,7 @@ themselves; they need not be quoted.
 \schtrue   \ev  \schtrue%
 \end{scheme}
 
-As noted in section~\ref{storagemodel}, it is an error to alter a constant
+As noted in section~\ref{storagemodel}, it is an error to attempt to alter a constant
 (i.e.~the value of a literal expression) using a mutation procedure like
 {\cf set-car!}\ or {\cf string-set!}.
 
@@ -98,8 +98,8 @@ As noted in section~\ref{storagemodel}, it is an error to alter a constant
 \begin{entry}{%
 \pproto{(\hyper{operator} \hyperi{operand} \dotsfoo)}{\exprtype}}
 
-A procedure call is written by simply enclosing in parentheses
-expressions for the procedure to be called and the arguments to be
+A procedure call is written by enclosing in parentheses an
+expression for the procedure to be called followed by expressions for the arguments to be
 passed to it.  The operator and operand expressions are evaluated (in an
 unspecified order) and the resulting procedure is passed the resulting
 arguments.\mainindex{call}\mainindex{procedure call}
@@ -109,7 +109,7 @@ arguments.\mainindex{call}\mainindex{procedure call}
 \end{scheme}
 
 A number of procedures are available as the values of variables in the
-initial environment; for example, the addition and multiplication
+initial environment.  For example, the addition and multiplication
 procedures in the above examples are the values of the variables {\cf +}
 and {\cf *}.  New procedures are created by evaluating \lambdaexp{}s
 (see section~\ref{lambda}).
@@ -342,7 +342,7 @@ A {\cf cond} expression is evaluated by evaluating the \hyper{test}
 expressions of successive \hyper{clause}s in order until one of them
 evaluates to a true value\index{true} (see
 section~\ref{booleansection}).  When a \hyper{test} evaluates to a true
-value, then the remaining \hyper{expression}s in its \hyper{clause} are
+value, the remaining \hyper{expression}s in its \hyper{clause} are
 evaluated in order, and the results of the last \hyper{expression} in the
 \hyper{clause} are returned as the results of the entire {\cf cond}
 expression.
@@ -413,7 +413,7 @@ returned as the results of the {\cf case} expression.
 
 If the result of
 evaluating \hyper{key} is different from every \hyper{datum}, then if
-there is an else clause its expressions are evaluated and the
+there is an else clause, its expressions are evaluated and the
 results of the last are the results of the {\cf case} expression;
 otherwise the result of the {\cf case} expression is unspecified.
 
@@ -449,7 +449,7 @@ any expression evaluates to \schfalse{} (see
 section~\ref{booleansection}), then \schfalse{} is returned.  Any remaining
 expressions are not evaluated.  If all the expressions evaluate to
 true values, the value of the last expression is returned.  If there
-are no expressions then \schtrue{} is returned.
+are no expressions, then \schtrue{} is returned.
 
 \begin{scheme}
 (and (= 2 2) (> 2 1))           \ev  \schtrue
@@ -469,7 +469,7 @@ The \hyper{test} expressions are evaluated from left to right, and the value of 
 first expression that evaluates to a true value (see
 section~\ref{booleansection}) is returned.  Any remaining expressions
 are not evaluated.  If all expressions evaluate to \schfalse{}
-or if there are no expressions, \schfalse{} is returned.
+or if there are no expressions, then \schfalse{} is returned.
 
 \begin{scheme}
 (or (= 2 2) (> 2 1))            \ev  \schtrue
@@ -555,11 +555,11 @@ interpretation of {\cf and}, {\cf or}, and {\cf not}.
 
 A \ide{cond-expand} is then expanded by evaluating the
 \hyper{feature requirement}s of successive \hyper{ce-clause}s
-in order, until one of them returns \schtrue.  When a true clause is
+in order until one of them returns \schtrue.  When a true clause is
 found, the corresponding \hyper{expression}s are spliced into
-the current context as if by {\cf begin} and the remaining clauses are ignored.
+the current context as if by {\cf begin}, and the remaining clauses are ignored.
 If none of the \hyper{feature requirement}s evaluate to \schtrue, then
-if there is an \ide{else} clause, its \hyper{expression}s are
+if there is an else clause, its \hyper{expression}s are
 included.  Otherwise, the \ide{cond-expand} has no effect.
 Unlike {\cf cond}, {\cf cond-expand} does not depend on the value
 of any variables.
@@ -754,10 +754,10 @@ referring to the value of the corresponding \hyper{variable} or the
 \end{scheme}
 
 \begin{entry}{%
-\proto{let-values}{ \hyper{mvbindings} \hyper{body}}{\exprtype}}
+\proto{let-values}{ \hyper{mv-bindings} \hyper{body}}{\exprtype}}
 
 \syntax
-\hyper{Mvbindings} has the form
+\hyper{Mv-bindings} has the form
 \begin{scheme}
 ((\hyperi{formals} \hyperi{init}) \dotsfoo)\rm,%
 \end{scheme}
@@ -791,11 +791,11 @@ values returned by the corresponding \hyper{init}.
 
 
 \begin{entry}{%
-\proto{let*-values}{ \hyper{mvbindings} \hyper{body}}{\exprtype}}\nobreak
+\proto{let*-values}{ \hyper{mv-bindings} \hyper{body}}{\exprtype}}\nobreak
 
 \nobreak
 \syntax
-\hyper{Mvbindings} has the form
+\hyper{Mv-bindings} has the form
 \begin{scheme}
 ((\hyper{formals} \hyper{init}) \dotsfoo)\rm,%
 \end{scheme}
@@ -846,7 +846,7 @@ splice them into the context in which they are expanded.
 \end{entry}
 
 \begin{entry}{%
-\proto{begin}{ \hyperi{expression} \hyperii{expression} \dotsfoo}{\exprtype}}
+\rproto{begin}{ \hyperi{expression} \hyperii{expression} \dotsfoo}{\exprtype}}
 
 This form of {\cf begin} can be used as an ordinary expression.
 The \hyper{expression}s are evaluated sequentially from left to right,
@@ -936,7 +936,7 @@ been written instead of {\cf(\hyper{variable} \hyper{init})}.
 \semantics
 ``Named {\cf let}'' is a variant on the syntax of \ide{let} which provides
 a more general looping construct than {\cf do} and can also be used to express
-recursions.
+recursion.
 It has the same syntax and semantics as ordinary {\cf let}
 except that \hyper{variable} is bound within \hyper{body} to a procedure
 whose formal arguments are the bound variables and whose body is
@@ -1006,7 +1006,6 @@ unbounded space during evaluation.
 
 \begin{entry}{%
 \proto{force}{ promise}{lazy library procedure}}
-\label{force}
 
 The {\cf force} procedure forces the value of a \var{promise} created
 by \ide{delay}, \ide{delay-force}, or \ide{make-promise}.\index{promise}
@@ -1108,7 +1107,7 @@ and {\cf *}.  However, procedures that operate uniformly on their
 arguments, like {\cf list}, must not force them.
 
 \begin{scheme}
-(+ (delay (* 3 7)) 13)  \ev  34
+(+ (delay (* 3 7)) 13)  \ev  \unspecified
 (car
   (list (delay (* 3 7)) 13))    \ev {\it{}a promise}
 \end{scheme}
@@ -1141,7 +1140,7 @@ The \defining{dynamic extent} of a procedure call is the time between
 when it is initiated and when it returns.  In Scheme, {\cf
   call-with-current-continuation} (section~\ref{continuations}) allows
 reentering a dynamic extent after its procedure call has returned.
-Thus, the dynamic extent of a call might not be a single, connected time
+Thus, the dynamic extent of a call might not be a single, continuous time
 period.
 
 This sections introduces \defining{parameter objects}, which can be
@@ -1151,14 +1150,13 @@ all parameter bindings at a given time is called the \defining{dynamic
 
 \begin{entry}{%
 \proto{make-parameter}{ init}{procedure}
-\proto{make-parameter}{ init converter}{procedure}}
-\label{make-parameter}
+\rproto{make-parameter}{ init converter}{procedure}}
 
 Returns a newly allocated parameter object,
 which is a procedure that accepts zero arguments and
 returns the value associated with the parameter object.
 Initially, this value is the value of
-{\cf (converter \var{init})}, or of \var{init}
+{\cf (\var{converter} \var{init})}, or of \var{init}
 if the conversion procedure \var{converter} is not specified.
 The associated value can be temporarily changed
 using {\cf parameterize}, which is described below.
@@ -1232,7 +1230,6 @@ procedure in the call chain explicitly.
 
 
 \subsection{Exception handling}\unsection
-\label{guard}
 
 \begin{entry}{%
 \pproto{(guard (\hyper{variable}}{\exprtype}
@@ -1247,12 +1244,13 @@ Each \hyper{cond clause} is as in the specification of {\cf cond}.
 
 \semantics
 The \hyper{body} is evaluated with an exception
-handler that binds the raised object to \hyper{variable} and, within the scope of
+handler that binds the raised object (see \ide{raise} in section~\ref{exceptionsection})
+to \hyper{variable} and, within the scope of
 that binding, evaluates the clauses as if they were the clauses of a
 {\cf cond} expression. That implicit {\cf cond} expression is evaluated with the
 continuation and dynamic environment of the {\cf guard} expression. If every
 \hyper{cond clause}'s \hyper{test} evaluates to \schfalse{} and there
-is no {\cf else} clause, then
+is no else clause, then
 {\cf raise-continuable} is invoked on the raised object within the dynamic
 environment of the original call to {\cf raise}
 or {\cf raise-continuable}, except that the current
@@ -1654,7 +1652,7 @@ are used to refer to elements of the input in the template.
 It is an error for the same pattern variable to appear more than once in a
 \hyper{pattern}.
 
-Low lines also match arbitrary input elements but are not pattern variables
+Underscores also match arbitrary input elements but are not pattern variables
 and so cannot be used to refer to those elements.  If an underscore appears
 in the \hyper{literal}s list, then that takes precedence and
 underscores in the \hyper{pattern} match as literals.
@@ -1807,7 +1805,6 @@ which would result in an invalid procedure call.
 \end{entry}
 
 \subsection{Signaling errors in macro transformers}
-\label{syntax-error}
 
 
 \begin{entry}{%

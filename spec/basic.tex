@@ -9,7 +9,7 @@
 An identifier\index{identifier} names either a type of syntax or
 a location where a value can be stored.  An identifier that names a type
 of syntax is called a {\em syntactic keyword}\mainindex{syntactic keyword}
-and is said to be {\em bound} to that syntax.  An identifier that names a
+and is said to be {\em bound} to a transformer for that syntax.  An identifier that names a
 location is called a {\em variable}\mainindex{variable} and is said to be
 {\em bound} to that location.  The set of all visible
 bindings\mainindex{binding} in effect at some point in a program is
@@ -70,8 +70,7 @@ and all predicates created by {\cf define-record-type}.
 These predicates define the types {\em boolean}, {\em pair}, {\em
 symbol}, {\em number}, {\em char} (or {\em character}), {\em string}, {\em
 vector}, {\em bytevector}, {\em port}, {\em procedure}, 
-{\em eof-object}, and the empty list
-object.
+{\em eof-object}, the empty list object, and all record types.
 \mainindex{type}\schindex{boolean?}\schindex{pair?}\schindex{symbol?}
 \schindex{number?}\schindex{char?}\schindex{string?}\schindex{vector?}
 \schindex{bytevector?}\schindex{port?}\schindex{procedure?}\index{empty list}
