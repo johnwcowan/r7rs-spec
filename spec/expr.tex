@@ -1691,18 +1691,18 @@ More formally, an input expression $E$ matches a pattern $P$ if and only if:
       respectively, and whose $n$th tail matches $P_{n+1}$; or
 
 \item $P$ is of the form
-      {\cf ($P_1$ $\dots$ $P_{e-1}$ $P_{e}$ \meta{ellipsis} $P_{m+1}$ \dotsfoo{} $P_n$)}
+      {\cf ($P_1$ $\dots$ $P_k$ $P_e$ \meta{ellipsis} $P_{m+1}$ \dotsfoo{} $P_n$)}
       where $E$ is
-      a proper list of $n$ elements, the first $e-1$ of which match
-      $P_1$ through $P_{e-1}$, respectively,
+      a proper list of $n$ elements, the first $k$ of which match
+      $P_1$ through $P_k$, respectively,
       whose next $m-k$ elements each match $P_e$,
       whose remaining $n-m$ elements match $P_{m+1}$ through $P_n$; or
 
 \item $P$ is of the form
-      {\cf ($P_1$ $\dots$ $P_{e-1}$ $P_{e}$ \meta{ellipsis} $P_{m+1}$ \dotsfoo{} $P_n$ . $P_x$)}
+      {\cf ($P_1$ $\dots$ $P_k$ $P_{e}$ \meta{ellipsis} $P_{m+1}$ \dotsfoo{} $P_n$ . $P_x$)}
       where $E$ is
-      an list or improper list of $n$ elements, the first $e-1$ of which match
-      $P_1$ through $P_{e-1}$,
+      an list or improper list of $n$ elements, the first $k$ of which match
+      $P_1$ through $P_k$,
       whose next $m-k$ elements each match $P_e$,
       whose remaining $n-m$ elements match $P_{m+1}$ through $P_n$,
       and whose $n$th and final cdr matches $P_x$; or
@@ -1712,9 +1712,9 @@ More formally, an input expression $E$ matches a pattern $P$ if and only if:
       of $n$ elements that match $P_1$ through $P_n$; or
 
 \item $P$ is of the form
-      {\cf \#($P_1$ $\dots$ $P_{e-1}$ $P_{e}$ \meta{ellipsis} $P_{m+1}$ \dotsfoo $P_n$)}
+      {\cf \#($P_1$ $\dots$ $P_k$ $P_{e}$ \meta{ellipsis} $P_{m+1}$ \dotsfoo $P_n$)}
       where $E$ is a vector of $n$
-      elements the first $e-1$ of which match $P_1$ through $P_{e-1}$,
+      elements the first $k$ of which match $P_1$ through $P_k$,
       whose next $m-k$ elements each match $P_e$,
       and whose remaining $n-m$ elements match $P_{m+1}$ through $P_n$; or
 
