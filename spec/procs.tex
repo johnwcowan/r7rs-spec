@@ -2736,7 +2736,7 @@ If \var{end} is omitted, it is assumed to be the length of \var{vector}.
 \rproto{string->vector}{ string start}{procedure}
 \rproto{string->vector}{ string start end}{procedure}}
 
-\domain{It is an error if any element is not a character, or is a character forbidden in strings.}
+\domain{It is an error if any element of \var{vector} is not a character, or is a character forbidden in strings.}
 The {\cf vector->string} procedure returns a newly allocated string of the objects contained
 in the elements of \var{vector}
 between \var{start} (inclusive) and \var{end} (exclusive).
