@@ -4437,7 +4437,7 @@ implementation-dependent.  It is an error to mutate any of these strings.
 \rproto{exit}{ obj}{process-context library procedure}}
 
 Runs all outstanding dynamic-wind \var{after} procedures, terminates the
-running program and communicates an exit value to the operating system.
+running program, and communicates an exit value to the operating system.
 If no argument is supplied, or if \var{obj} is \schtrue{}, the {\cf
 exit} procedure should communicate to the operating system that the
 program exited normally.  If \var{obj} is \schfalse{}, the {\cf exit}
