@@ -40,7 +40,7 @@ produces a new system state.
         (*1/2 (scale-vector (/ 1 2)))
         (*1/6 (scale-vector (/ 1 6))))
     (lambda (y)
-      ;; y {\rm{}is a system state}
+      ;; y is a system state
       (let* ((k0 (*h (f y)))
              (k1 (*h (f (add-vectors y (*1/2 k0)))))
              (k2 (*h (f (add-vectors y (*1/2 k1)))))
