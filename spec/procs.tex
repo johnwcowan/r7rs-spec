@@ -1980,6 +1980,7 @@ It is an error if \var{obj} is a circular list.
 (define b (list-copy a))
 (set-car! b 3)        ; b is mutable
 b \ev (3 8 2 8)
+a \ev (1 8 2 8)
 \end{scheme}
 
 \end{entry}
@@ -2001,8 +2002,14 @@ and~\ref{identifiersyntax}.
 a literal expression, or read using the {\cf read} procedure, and
 subsequently written out using the {\cf write} procedure, will read back
 in as the identical symbol (in the sense of {\cf eqv?}).
-This is not true in implementations that have ``uninterned symbols''
-(see \ref{symbolsection}).
+
+\begin{note}
+Some implementations have values known as ``uninterned symbols,''
+which defeat write/read invariance, and also violate the rule that two
+symbols are the same if and only if their names are spelled the same.
+This report does not specify the behavior of
+implementation-dependent extensions.
+\end{note}
 
 
 \begin{entry}{%
@@ -2027,12 +2034,8 @@ Returns \schtrue{} if all the arguments are symbols and all have the same
 names in the sense of {\cf string=?}.
 
 \begin{note}
-Some implementations have values known as ``uninterned symbols,''
-which defeat write/read invariance, and also violate the rule that two
-symbols are the same if and only if their names are spelled the same.
 The definition above assumes that none of the arguments
-are uninterned symbols.  This report does not specify the behavior of
-implementation-dependent extensions.
+are uninterned symbols.
 \end{note}
 
 \end{entry}
