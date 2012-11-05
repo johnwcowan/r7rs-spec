@@ -2159,11 +2159,11 @@ Returns \schtrue{} if \var{obj} is a character, otherwise returns \schfalse.
 
 
 \begin{entry}{%
-\proto{char=?}{ \vri{char} \vrii{char} \dotsfoo}{procedure}
-\proto{char<?}{ \vri{char} \vrii{char} \dotsfoo}{procedure}
-\proto{char>?}{ \vri{char} \vrii{char} \dotsfoo}{procedure}
-\proto{char<=?}{ \vri{char} \vrii{char} \dotsfoo}{procedure}
-\proto{char>=?}{ \vri{char} \vrii{char} \dotsfoo}{procedure}}
+\proto{char=?}{ \vri{char} \vrii{char} \vriii{char} \dotsfoo}{procedure}
+\proto{char<?}{ \vri{char} \vrii{char} \vriii{char} \dotsfoo}{procedure}
+\proto{char>?}{ \vri{char} \vrii{char} \vriii{char} \dotsfoo}{procedure}
+\proto{char<=?}{ \vri{char} \vrii{char} \vriii{char} \dotsfoo}{procedure}
+\proto{char>=?}{ \vri{char} \vrii{char} \vriii{char} \dotsfoo}{procedure}}
 
 \label{characterequality}
 
@@ -2181,11 +2181,11 @@ whether or not the implementation uses the Unicode representation internally.
 
 
 \begin{entry}{%
-\proto{char-ci=?}{ \vri{char} \vrii{char} \dotsfoo}{char library procedure}
-\proto{char-ci<?}{ \vri{char} \vrii{char} \dotsfoo}{char library procedure}
-\proto{char-ci>?}{ \vri{char} \vrii{char} \dotsfoo}{char library procedure}
-\proto{char-ci<=?}{ \vri{char} \vrii{char} \dotsfoo}{char library procedure}
-\proto{char-ci>=?}{ \vri{char} \vrii{char} \dotsfoo}{char library procedure}}
+\proto{char-ci=?}{ \vri{char} \vrii{char} \vriii{char} \dotsfoo}{char library procedure}
+\proto{char-ci<?}{ \vri{char} \vrii{char} \vriii{char} \dotsfoo}{char library procedure}
+\proto{char-ci>?}{ \vri{char} \vrii{char} \vriii{char} \dotsfoo}{char library procedure}
+\proto{char-ci<=?}{ \vri{char} \vrii{char} \vriii{char} \dotsfoo}{char library procedure}
+\proto{char-ci>=?}{ \vri{char} \vrii{char} \vriii{char} \dotsfoo}{char library procedure}}
 
 These procedures are similar to {\cf char=?}\ et cetera, but they treat
 upper case and lower case letters as the same.  For example, {\cf
