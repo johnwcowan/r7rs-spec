@@ -2585,9 +2585,8 @@ In any case, an unspecified value is returned.
 or \var{start} is less than zero, or \var{end} is greater than
 the length of \var{from},
 or \var{at} is less than zero or greater than the length of \var{to}.
-It is also an error if the inequality
-\texttt{({\cf >=} ({\cf -} ({\cf string-length} \var{to}) \var{at}) ({\cf -} \var{end} \var{start}))}
-is false.}
+It is also an error if \\
+\texttt{({\cf >} ({\cf -} ({\cf string-length} \var{to}) \var{at}) ({\cf -} \var{end} \var{start}))}.}
 Copies the characters of string \var{from} between \var{start} and \var{end}
 to bytevector \var{to}, starting at \var{at}.  The order in which characters are
 copied is unspecified, except that if the source and destination overlap,
