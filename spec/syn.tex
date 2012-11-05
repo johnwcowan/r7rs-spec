@@ -145,8 +145,8 @@ identifiers.
 \meta{string} \: " \arbno{\meta{string element}} "
 \meta{string element} \: \meta{any character other than \doublequote{} or \backwhack}
  \> \| \backwhack{}a \| \backwhack{}b \| \backwhack{}t \| \backwhack{}n \| \backwhack{}r \| \backwhack\doublequote{} \| \backwhack\backwhack 
- \>  \| \backwhack{}\meta{intraline whitespace}\meta{line ending}
- \>  \> \meta{intraline whitespace}
+ \>  \| \backwhack{}\arbno{\meta{intraline whitespace}}\meta{line ending}
+ \>  \> \arbno{\meta{intraline whitespace}}
  \>  \| \meta{inline hex escape}
 \meta{bytevector} \: \#u8(\arbno{\meta{byte}})
 \meta{byte} \: \meta{any exact integer between 0 and 255}%
