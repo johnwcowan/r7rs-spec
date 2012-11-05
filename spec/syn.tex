@@ -229,9 +229,8 @@ successfully parses.  Note that any string that parses as an
 \meta{simple datum} \: \meta{boolean} \| \meta{number}
 \>  \| \meta{character} \| \meta{string} \|  \meta{symbol} \| \meta{bytevector}
 \meta{symbol} \: \meta{identifier}
-\meta{compound datum} \: \meta{list} \| \meta{vector}
+\meta{compound datum} \: \meta{list} \| \meta{vector} \| \meta{abbreviation}
 \meta{list} \: (\arbno{\meta{datum}}) \| (\atleastone{\meta{datum}} .\ \meta{datum})
-\>    \| \meta{abbreviation}
 \meta{abbreviation} \: \meta{abbrev prefix} \meta{datum}
 \meta{abbrev prefix} \: ' \| ` \| , \| ,@
 \meta{vector} \: \#(\arbno{\meta{datum}})
