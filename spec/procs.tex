@@ -3801,7 +3801,7 @@ operation.
 
 \begin{rationale}
 Because Scheme's escape procedures have unlimited extent, it  is
-possible to escape from the current continuation but later to escape back in. 
+possible to escape from the current continuation but later to resume it. 
 If implementations were permitted to close the port on any escape from the
 current continuation, then it would be impossible to write portable code using
 both {\cf call-with-current-continuation} and {\cf call-with-port}.
