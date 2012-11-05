@@ -2324,7 +2324,7 @@ Examples:
 \begin{scheme}
 "The word \backwhack{}"recursion\backwhack{}" has many meanings."
 "Another example:\backwhack{}ntwo lines of text"
-"Here's a text \backwhack{} 
+"Here's text \backwhack{} 
    containing just one line"
 "\backwhack{}x03B1; is named GREEK SMALL LETTER ALPHA."%
 \end{scheme}
@@ -2344,9 +2344,8 @@ the length of \var{string}, then the entire string is referred to.
 It is an error if \var{start} is greater than \var{end}.
 
 \vest Some of the procedures that operate on strings ignore the
-difference between upper and lower case.  The versions that ignore case
-have \hbox{``{\cf -ci}''} (for ``case insensitive'') embedded in their
-names.
+difference between upper and lower case.  The names of the versions that ignore case
+end with \hbox{``{\cf -ci}''} (for ``case insensitive'').
 
 Implementations may forbid certain characters from appearing in strings.
 However, with the exception of {\tt \#\backwhack{}null}, ASCII characters may
