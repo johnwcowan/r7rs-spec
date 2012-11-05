@@ -2043,7 +2043,7 @@ are uninterned symbols.
 \begin{entry}{%
 \proto{symbol->string}{ symbol}{procedure}}
 
-Returns the name of \var{symbol} as a string that does not contain escapes.
+Returns the name of \var{symbol} as a string, but without adding escapes.
 It is an error
 to apply mutation procedures like \ide{string-set!} to strings returned
 by this procedure.
