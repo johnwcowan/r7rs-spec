@@ -119,7 +119,9 @@ define-values}, {\cf let-values}, and {\cf let*-values}.
 Standard forms which introduce a body now permit passing zero or more than
 one value to the continuations of all non-final forms of the body.
 
-\item The {\cf case} conditional now supports a {\tt =>} syntax analogous to {\cf cond}.
+\item The {\cf case} conditional now supports {\tt =>} syntax
+analogous to {\cf cond} not only in regular clauses but in the {\cf
+else} clause as well.
 
 \item To support dispatching on the number of arguments passed to a
 procedure, {\cf case-lambda} has been added in its own library.
@@ -133,7 +135,8 @@ respectively.  Support for them is not required.
 The representation {\tt -nan.0} is synonymous with {\tt +nan.0}.
 
 \item The procedures {\cf map} and {\cf for-each} are now required to terminate on
-the shortest list when the inputs have different lengths.
+the shortest list when the inputs have different lengths.  They must
+also detect cycles.
 
 \item The procedures {\cf member} and {\cf assoc} now take an optional third argument
 specifying the equality predicate to be used.
@@ -294,7 +297,7 @@ convincing enough examples of multiple-argument {\cf unquote} and
 This section enumerates the incompatibilities between \rsevenrs\ and
 the \rsixrs~\cite{R6RS} Standard Libraries.
 
-{\em This list is not authoritative, and is very likely to be incomplete.}
+{\em This list is not authoritative, and is likely to be incomplete.}
 
 \begin{itemize}
 
@@ -311,9 +314,7 @@ a period of adoption, experimentation, and usage before incorporation
 into a standard.  The Working Group was
 unhappy with the redundant
 provision of both the new system and the \rfivers{}-compatible ``simple I/O''
-system, which
-relegated \rfivers\ code to being a second-class
-citizen.
+system.
 However, binary I/O was added using binary ports that are
 at least potentially disjoint from
 textual ports and use their own parallel set of procedures.

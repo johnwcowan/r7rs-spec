@@ -135,7 +135,7 @@ Binding constructs:
 The following {\cf letrec} macro uses the symbol {\cf <undefined>}
 in place of an expression which returns something that when stored in
 a location makes it an error to try to obtain the value stored in the
-location (no such expression is defined in Scheme).
+location.  (No such expression is defined in Scheme.)
 A trick is used to generate the temporary names needed to avoid
 specifying the order in which the values are evaluated.
 This could also be accomplished by using an auxiliary macro.

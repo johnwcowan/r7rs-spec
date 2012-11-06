@@ -3,8 +3,8 @@
 use warnings;
 use strict;
 
-use constant COLUMNS => 3;
-use constant COLUMN_WIDTH => 16;
+use constant COLUMNS => 2;
+use constant COLUMN_WIDTH => 24;
 
 my $list;
 
