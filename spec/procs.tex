@@ -4486,7 +4486,7 @@ The procedure {\cf get-environment-variable} returns the value
 of the environment variable \var{name},
 or \schfalse{} if the named
 environment variable is not found.  It may
-use locale-setting information to encode the name and decode the value
+use locale information to encode the name and decode the value
 of the environment variable.  It is an error if
 {\cf get-environment-variable} can't decode the value.
 It is also an error to mutate the resulting string.
