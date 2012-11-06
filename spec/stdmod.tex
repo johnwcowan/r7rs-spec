@@ -326,24 +326,13 @@ Scheme objects.
 \textbf{R5RS Library}
 
 The \texttt{(scheme r5rs)} library provides the identifiers present in
-both this report and
-the ``Revised$^5$ report''~\cite{R5RS}, with the following deviations:
-
-\begin{itemize}
-
-\item{The \rfivers\ procedures {\cf transcript-on} and {\cf transcript-off} are not present.}
-
-\item{The {\cf exact} and {\cf inexact} procedures appear under their \rfivers\ names
-{\cf inexact->exact} and {\cf exact->inexact}, respectively.}
-
-\item{If an implementation does not provide a particular library such as the
+\rfivers, except that
+{\cf transcript-on} and {\cf transcript-off} are not present, and
+the {\cf exact} and {\cf inexact} procedures appear under their \rfivers\ names
+{\cf inexact->exact} and {\cf exact->inexact}, respectively.
+However, if an implementation does not provide a particular library such as the
 complex library, the corresponding identifiers will not appear in this
-library either.}
-
-\item{The \rfivers\ procedures {\cf scheme-report-environment}
-and {\cf null-environment} appear only in this library and not in any other.}
-
-\end{itemize}
+library either.
 
 \begin{scheme}
 {\cf *}                       {\cf +}
