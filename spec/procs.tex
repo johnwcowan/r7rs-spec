@@ -2754,6 +2754,33 @@ c \ev (8 2)%
 \end{entry}
 
 \begin{entry}{%
+\proto{vector-copy!}{ to at from}{procedure}
+\rproto{vector-copy!}{ to at from start}{procedure}
+\rproto{vector-copy!}{ to at from start end}{procedure}}
+
+\domain{It is an error if \var{at} is less than zero or greater than the length of \var{to}.
+It is also an error if {\cf (- (vector-length \var{to}) \var{at})}
+is less than {\cf (- \var{end} \var{start})}.}
+Copies the elements of vector \var{from} between \var{start} and \var{end}
+to vector \var{to}, starting at \var{at}.  The order in which elements are
+copied is unspecified, except that if the source and destination overlap,
+copying takes place as if the source is first copied into a temporary
+vector and then into the destination.  This can be achieved without
+allocating storage by making sure to copy in the correct direction in
+such circumstances.
+
+The value returned by {\cf vector-copy!} is unspecified.
+
+\begin{scheme}
+(define a (vector 1 2 3 4 5))
+(define b (vector 10 20 30 40 50))
+(vector-copy! b 1 a 0 2)
+b \ev \#(10 1 2 40 50)%
+\end{scheme}
+
+\end{entry}
+
+\begin{entry}{%
 \proto{vector-append}{ \var{vector} \dotsfoo}{procedure}}
 
 Returns a newly allocated vector whose elements are the concatenation
@@ -2780,33 +2807,6 @@ In any case, an unspecified value is returned.
 (define a (vector 1 2 3 4 5))
 (vector-fill! a 'smash 2 4)
 a \lev \#(1 2 smash smash 5)%
-\end{scheme}
-
-\end{entry}
-
-\begin{entry}{%
-\proto{vector-copy!}{ to at from}{procedure}
-\rproto{vector-copy!}{ to at from start}{procedure}
-\rproto{vector-copy!}{ to at from start end}{procedure}}
-
-\domain{It is an error if \var{at} is less than zero or greater than the length of \var{to}.
-It is also an error if {\cf (- (vector-length \var{to}) \var{at})}
-is less than {\cf (- \var{end} \var{start})}.}
-Copies the elements of vector \var{from} between \var{start} and \var{end}
-to vector \var{to}, starting at \var{at}.  The order in which elements are
-copied is unspecified, except that if the source and destination overlap,
-copying takes place as if the source is first copied into a temporary
-vector and then into the destination.  This can be achieved without
-allocating storage by making sure to copy in the correct direction in
-such circumstances.
-
-The value returned by {\cf vector-copy!} is unspecified.
-
-\begin{scheme}
-(define a (vector 1 2 3 4 5))
-(define b (vector 10 20 30 40 50))
-(vector-copy! b 1 a 0 2)
-b \ev \#(10 1 2 40 50)%
 \end{scheme}
 
 \end{entry}
