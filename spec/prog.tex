@@ -541,7 +541,7 @@ the base library.
       (let ((grid (make-vector n)))
         (do ((i 0 (+ i 1)))
             ((= i n) grid)
-          (let ((v (make-vector m \schfalse{})))
+          (let ((v (make-vector m \sharpfalse{})))
             (vector-set! grid i v)))))
     (define (rows grid)
       (vector-length grid))
