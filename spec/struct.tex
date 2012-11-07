@@ -166,7 +166,7 @@ the expression must evaluate to some object without signaling an error,
 but the value depends on the implementation; this report explicitly does
 not say what value is returned. \mainindex{unspecified}
 
-Finally, the words and phrases ``must,'' ``must not,'' ``shall,''
+\vest Finally, the words and phrases ``must,'' ``must not,'' ``shall,''
 ``shall not,'' ``should,'' ``should not,'' ``may,'' ``required,''
 ``recommended,'' and ``optional,'' although not capitalized in this
 report, are to be interpreted as described in RFC~2119~\cite{rfc2119}.
@@ -263,11 +263,31 @@ $$
 \foo{x}&real number\\
 \foo{y}&real number\\
 \foo{z}&complex number\\
-
 \end{tabular}
 $$
 
+The names \vr{start} and \vr{end} imply are used as indexes into a string,
+vector, or bytevector.  Their use implies the following:
 
+\begin{itemize}
+
+\item{It is an error if \var{start} is greater than \var{end}.}
+
+\item{It is an error if \var{end} is greater than the length of the
+string, vector, or bytevector.}
+
+\item{If \var{start} is omitted, it is assumed to be zero.}
+
+\item{If \var{end} is omitted, it assumed to be the length of the string,
+vector, or bytevector.}
+
+\item{The index \var{start} is always inclusive and the index \var{end} is always
+exclusive.  As an example, consider a string.  If
+\var{start} and \var{end} are the same, an empty
+substring is referred to, and if \var{start} is zero and \var{end} is
+the length of \var{string}, then the entire string is referred to.}
+
+\end{itemize}
 
 \subsection{Evaluation examples}
 
