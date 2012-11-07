@@ -1059,7 +1059,7 @@ because {\cf force} will in effect force such sequences iteratively.
              (stream-filter p? t))))))
 
 (head (tail (tail (stream-filter odd? integers))))
-                               \ev 5
+                               \ev 5%
 \end{scheme}
 
 The following examples are not intended to illustrate good programming
@@ -1109,7 +1109,7 @@ arguments, like {\cf list}, must not force them.
 \begin{scheme}
 (+ (delay (* 3 7)) 13)  \ev  \unspecified
 (car
-  (list (delay (* 3 7)) 13))    \ev {\it{}a promise}
+  (list (delay (* 3 7)) 13))    \ev {\it{}a promise}%
 \end{scheme}
 \end{itemize}
 \end{entry}
@@ -1224,7 +1224,7 @@ procedure in the call chain explicitly.
 (radix 16)                                   \ev \unspecified
 
 (parameterize ((radix 0))
-  (f 12))                                    \ev \scherror
+  (f 12))                                    \ev \scherror%
 \end{scheme}
 \end{entry}
 
@@ -1271,8 +1271,7 @@ exceptions.
          ((assq 'a condition) => cdr)
          ((assq 'b condition)))
   (raise (list (cons 'b 23))))
-\ev (b . 23)
-
+\ev (b . 23)%
 \end{scheme}
 \end{entry}
 
@@ -1344,7 +1343,7 @@ during the evaluation of the expression. Portions that do not need to
 be rebuilt are always literal. Thus,
 
 \begin{scheme}
-(let ((a 3)) `((1 2) ,a ,4 ,'five 6))
+(let ((a 3)) `((1 2) ,a ,4 ,'five 6))%
 \end{scheme}
 
 may be treated as equivalent to either of the following expressions:
@@ -1354,13 +1353,13 @@ may be treated as equivalent to either of the following expressions:
 
 (let ((a 3))
   (cons '(1 2)
-        (cons a (cons 4 (cons 'five '(6))))))
+        (cons a (cons 4 (cons 'five '(6))))))%
 \end{scheme}
 
 However, it is not equivalent to this expression:
 
 \begin{scheme}
-(let ((a 3)) (list (list 1 2) a 4 'five 6))
+(let ((a 3)) (list (list 1 2) a 4 'five 6))%
 \end{scheme}
 
 The two notations
@@ -1422,7 +1421,7 @@ the \hyper{formals} of any \hyper{clause}.
               ((< e b) r)))))
 
 (range 3)    \ev (0 1 2)
-(range 3 5)  \ev (3 4)
+(range 3 5)  \ev (3 4)%
 \end{scheme}
 
 \end{entry}

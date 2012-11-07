@@ -739,7 +739,7 @@ is true.
 \begin{scheme}
 (exact? 3.0)           \ev  \schfalse
 (exact? \#e3.0)         \ev  \schtrue
-(inexact? 3.)          \ev  \schtrue
+(inexact? 3.)          \ev  \schtrue%
 \end{scheme}
 
 \end{entry}
@@ -754,7 +754,7 @@ otherwise returns \schfalse{}.
 \begin{scheme}
 (exact-integer? 32) \ev \schtrue{}
 (exact-integer? 32.0) \ev \schfalse{}
-(exact-integer? 32/5) \ev \schfalse{}
+(exact-integer? 32/5) \ev \schfalse{}%
 \end{scheme}
 \end{entry}
 
@@ -770,7 +770,7 @@ Otherwise it returns \schfalse{}.
 \begin{scheme}
 (finite? 3)         \ev  \schtrue
 (finite? +inf.0)       \ev  \schfalse
-(finite? 3.0+inf.0i)   \ev  \schfalse
+(finite? 3.0+inf.0i)   \ev  \schfalse%
 \end{scheme}
 \end{entry}
 
@@ -786,7 +786,7 @@ Otherwise it returns \schfalse{}.
 (infinite? 3)         \ev  \schfalse
 (infinite? +inf.0)       \ev  \schtrue
 (infinite? +nan.0)       \ev  \schfalse
-(infinite? 3.0+inf.0i)   \ev  \schtrue
+(infinite? 3.0+inf.0i)   \ev  \schtrue%
 \end{scheme}
 \end{entry}
 
@@ -801,7 +801,7 @@ Otherwise it returns \schfalse{}.
 (nan? +nan.0)          \ev  \schtrue
 (nan? 32)              \ev  \schfalse
 (nan? +nan.0+5.0i)     \ev  \schtrue
-(nan? 1+2i)            \ev  \schfalse
+(nan? 1+2i)            \ev  \schfalse%
 \end{scheme}
 \end{entry}
 
@@ -919,7 +919,7 @@ exact zero unless one of the other arguments is a NaN.
 
 The {\cf abs} procedure returns the absolute value of its argument.  
 \begin{scheme}
-(abs -7)                \ev  7
+(abs -7)                \ev  7%
 \end{scheme}
 \end{entry}
 
@@ -943,7 +943,7 @@ division operators, there are three procedures defined as follows:
 \begin{scheme}
 (\hyper{operator}/ \vri{n} \vrii{n})             \ev \vr{n_q} \vr{n_r}
 (\hyper{operator}-quotient \vri{n} \vrii{n})     \ev \vr{n_q}
-(\hyper{operator}-remainder \vri{n} \vrii{n})    \ev \vr{n_r}
+(\hyper{operator}-remainder \vri{n} \vrii{n})    \ev \vr{n_r}%
 \end{scheme}
 
 The remainder \vr{n_r} is determined by the choice of integer
@@ -975,7 +975,7 @@ Examples:
 (truncate/ -5 2)     \ev -2 -1
 (truncate/ 5 -2)     \ev -2 1
 (truncate/ -5 -2)    \ev 2 -1
-(truncate/ -5.0 -2)  \ev 2.0 -1.0
+(truncate/ -5.0 -2)  \ev 2.0 -1.0%
 \end{scheme}
 
 \end{entry}
@@ -1184,7 +1184,7 @@ Returns the square of \vr{z}.
 This is equivalent to \texttt{({\cf *} \var{z} \var{z})}.
 \begin{scheme}
 (square 42)       \ev 1764
-(square 2.0)     \ev 4.0
+(square 2.0)     \ev 4.0%
 \end{scheme}
 
 %% Removing this since it's inaccurate and not reflective of the
@@ -1206,7 +1206,7 @@ either a positive real part, or a zero real part and a non-negative imaginary
 part.
 
 \begin{scheme}
-(sqrt -1) \ev +i
+(sqrt -1) \ev +i%
 \end{scheme}
 \end{entry}
 
@@ -1219,7 +1219,7 @@ $\var{k} = s^2 + r$ and $\var{k} < (s+1)^2$.
 
 \begin{scheme}
 (exact-integer-sqrt 4) \ev 2 0
-(exact-integer-sqrt 5) \ev 2 1
+(exact-integer-sqrt 5) \ev 2 1%
 \end{scheme}
 \end{entry}
 
@@ -1256,7 +1256,7 @@ Then all of
 (real-part \vr{z})                  \ev \vri{x}
 (imag-part \vr{z})                  \ev \vrii{x}
 (magnitude \vr{z})                  \ev $|\vriii{x}|$
-(angle \vr{z})                      \ev $x_{angle}$
+(angle \vr{z})                      \ev $x_{angle}$%
 \end{scheme}
 are true, where $-\pi \le x_{angle} \le \pi$ with $x_{angle} = \vriv{x} + 2\pi n$
 for some integer $n$.
@@ -1334,7 +1334,7 @@ the given number in the given radix such that
   (eqv? number
         (string->number (number->string number
                                         radix)
-                        radix)))
+                        radix)))%
 \end{scheme}
 is true.  It is an error if no possible result makes this expression true.
 If omitted, \vr{radix} defaults to 10.
@@ -1384,7 +1384,7 @@ An error is never signaled due to the content of \vr{string}.
 \begin{scheme}
 (string->number "100")        \ev  100
 (string->number "100" 16)     \ev  256
-(string->number "1e2")        \ev  100.0
+(string->number "1e2")        \ev  100.0%
 \end{scheme}
 
 \begin{note}
@@ -1698,7 +1698,7 @@ These procedures are compositions of {\cf car} and {\cf cdr} as follows:
 (define (cadr x) (car (cdr x)))
 (define (cdar x) (cdr (car x)))
 (define (cddr x) (cdr (cdr x)))
-(define (caar x) (car (car x)))
+(define (caar x) (car (car x)))%
 \end{scheme}
 
 \end{entry}
@@ -1765,7 +1765,7 @@ argument is given, then each element is initialized to \var{fill}.
 Otherwise the initial contents of each element is unspecified.
 
 \begin{scheme}
-(make-list 2 3)   \ev   (3 3)
+(make-list 2 3)   \ev   (3 3)%
 \end{scheme}
 
 \end{entry}
@@ -1980,7 +1980,7 @@ It is an error if \var{obj} is a circular list.
 (define b (list-copy a))
 (set-car! b 3)        ; b is mutable
 b \ev (3 8 2 8)
-a \ev (1 8 2 8)
+a \ev (1 8 2 8)%
 \end{scheme}
 
 \end{entry}
@@ -2227,7 +2227,7 @@ or \schfalse{} on any other character.
 \begin{scheme}
 (digit-value \#\backwhack{}3) \ev 3
 (digit-value \#\backwhack{}x0664) \ev 4
-(digit-value \#\backwhack{}x0EA6) \ev 0
+(digit-value \#\backwhack{}x0EA6) \ev 0%
 \end{scheme}
 \end{entry}
 
@@ -2505,7 +2505,7 @@ choose to change $\Sigma$ to $\sigma$ in all cases.
 
 \domain{It is an error if \var{start} and \var{end} 
 are not exact integers satisfying the inequality
-$$0 \leq \var{start} \leq \var{end} \leq \hbox{\tt(string-length \var{string})\rm.}$$}
+$0 \leq \var{start} \leq \var{end} \leq \hbox{\tt(string-length \var{string})\rm.}$}
 The {\cf substring} procedure returns a newly allocated string formed from the characters of
 \var{string} beginning with index \var{start} (inclusive) and ending with index
 \var{end} (exclusive).
@@ -2603,7 +2603,7 @@ The value returned by {\cf string-copy!} is unspecified.
 (define a "12345")
 (define b (string-copy "abcde"))
 (string-copy! b 1 a 0 2)
-b \ev "a12de"
+b \ev "a12de"%
 \end{scheme}
 
 \end{entry}
@@ -2776,7 +2776,7 @@ If \var{end} is omitted, it is assumed to be the length of \var{vector}.
 (vector-set! b 0 3)   ; b is mutable
 b \ev (3 8 2 8)
 (define c (vector-copy b 1 3))
-c \ev (8 2)
+c \ev (8 2)%
 \end{scheme}
 
 \end{entry}
@@ -2788,7 +2788,7 @@ Returns a newly allocated vector whose elements are the concatenation
 of the elements of the given vectors.
 
 \begin{scheme}
-(vector-append \#(a b c) \#(d e f)) \lev \#(a b c d e f)
+(vector-append \#(a b c) \#(d e f)) \lev \#(a b c d e f)%
 \end{scheme}
 
 \end{entry}
@@ -2812,7 +2812,7 @@ In any case, an unspecified value is returned.
 \begin{scheme}
 (define a (vector 1 2 3 4 5))
 (vector-fill! a 'smash 2 4)
-a \lev \#(1 2 smash smash 5)
+a \lev \#(1 2 smash smash 5)%
 \end{scheme}
 
 \end{entry}
@@ -2844,7 +2844,7 @@ The value returned by {\cf vector-copy!} is unspecified.
 (define a (vector 1 2 3 4 5))
 (define b (vector 10 20 30 40 50))
 (vector-copy! b 1 a 0 2)
-b \ev \#(10 1 2 40 50)
+b \ev \#(10 1 2 40 50)%
 \end{scheme}
 
 \end{entry}
@@ -2894,7 +2894,7 @@ are initialized to \var{byte}, otherwise the contents of each
 element are unspecified.
 
 \begin{scheme}
-(make-bytevector 2 12) \ev \#u8(12 12)
+(make-bytevector 2 12) \ev \#u8(12 12)%
 \end{scheme}
 
 \end{entry}
@@ -2924,7 +2924,7 @@ Returns the \var{k}th byte of \var{bytevector}.
 
 \begin{scheme}
 (bytevector-u8-ref '\#u8(1 1 2 3 5 8 13 21)
-            5)  \lev  8
+            5)  \lev  8%
 \end{scheme}
 \end{entry}
 
@@ -2939,7 +2939,7 @@ The value returned by
 \begin{scheme}
 (let ((bv (bytevector 1 2 3 4)
   (bytevector-u8-set! bv 1 3)
-  bv) \lev \#u8(1 3 3 4)
+  bv) \lev \#u8(1 3 3 4)%
 \end{scheme}
 \end{entry}
 
@@ -2958,7 +2958,7 @@ If \var{end} is omitted, it is assumed to be the length of \var{bytevector}.
 
 \begin{scheme}
 (define a \#u8(1 2 3 4 5))
-(bytevector-copy a 2 4)) \ev \#u8(3 4)
+(bytevector-copy a 2 4)) \ev \#u8(3 4)%
 \end{scheme}
 
 \end{entry}
@@ -2990,7 +2990,7 @@ The value returned by {\cf bytevector-copy!} is unspecified.
 (define a (bytevector 1 2 3 4 5))
 (define b (bytevector 10 20 30 40 50))
 (bytevector-copy! b 1 a 0 2)
-b \ev \#u8(10 1 2 40 50)
+b \ev \#u8(10 1 2 40 50)%
 \end{scheme}
 
 \end{entry}
@@ -3002,7 +3002,7 @@ Returns a newly allocated bytevector whose elements are the concatenation
 of the elements in the given bytevectors.
 
 \begin{scheme}
-(bytevector-append \#u8(0 1 2) \#u8(3 4 5)) \lev \#u8(0 1 2 3 4 5)
+(bytevector-append \#u8(0 1 2) \#u8(3 4 5)) \lev \#u8(0 1 2 3 4 5)%
 \end{scheme}
 
 \end{entry}
@@ -3032,7 +3032,7 @@ If \var{end} is omitted, it is assumed to be the length of
 
 \begin{scheme}
 (utf8->string \#u8(\#x41)) \ev "A"
-(string->utf8 "$\lambda$") \ev \#u8(\#xCE \#xBB)
+(string->utf8 "$\lambda$") \ev \#u8(\#xCE \#xBB)%
 \end{scheme}
 
 \end{entry}
@@ -3402,7 +3402,7 @@ The {\tt values} procedure might be defined as follows:
 \begin{scheme}
 (define (values . things)
   (call-with-current-continuation 
-    (lambda (cont) (apply cont things))))
+    (lambda (cont) (apply cont things))))%
 \end{scheme}
 
 \end{entry}
@@ -3421,7 +3421,7 @@ continuation of the call to {\tt call-with-values}.
                   (lambda (a b) b))
                                                    \ev  5
 
-(call-with-values * -)                             \ev  -1
+(call-with-values * -)                             \ev  -1%
 \end{scheme}
 
 \end{entry}
@@ -3495,7 +3495,7 @@ extent of a call to \var{before} or \var{after} is unspecified.
         (c 'talk2)
         (reverse path))))
     \lev (connect talk1 disconnect
-               connect talk2 disconnect)
+               connect talk2 disconnect)%
 \end{scheme}
 \end{entry}
 
@@ -3598,7 +3598,7 @@ the call to {\cf raise-continuable}.
     (+ (raise-continuable "should be a number")
        23)))
    {\it prints:} should be a number
-   \ev 65
+   \ev 65%
 \end{scheme}
 
 \begin{entry}{%
@@ -3618,7 +3618,7 @@ The procedure {\cf error-object?} must return \schtrue{} on such objects.
         (else
           (error
             "null-list?: argument out of domain"
-            l))))
+            l))))%
 \end{scheme}
 
 \end{entry}
@@ -3750,7 +3750,7 @@ Implementations may extend {\cf eval} to allow other objects.
                                                    \ev  20
 (eval '(define foo 32)
       (environment '(scheme base)))
-                                                   \ev {\it{} error is signaled}
+                                                   \ev {\it{} error is signaled}%
 \end{scheme}
 
 \end{entry}
@@ -3964,7 +3964,7 @@ If the result string is modified, the effect is unspecified.
     (display "by piece.")
     (newline)
     (get-output-string (current-output-port)))
-\lev "piece by piece by piece.\backwhack{}n"
+\lev "piece by piece by piece.\backwhack{}n"%
 \end{scheme}
 
 \end{entry}
@@ -4490,7 +4490,7 @@ of the environment variable.  It is an error if
 It is also an error to mutate the resulting string.
 
 \begin{scheme}
-(get-environment-variable "PATH") \lev "/usr/local/bin:/usr/bin:/bin"
+(get-environment-variable "PATH") \lev "/usr/local/bin:/usr/bin:/bin"%
 \end{scheme}
 
 \end{entry}
@@ -4504,7 +4504,7 @@ variable and the cdr is its value, both as strings.  The order of the list is un
 It is an error to mutate any of these strings or the alist itself.
 
 \begin{scheme}
-(get-environment-variables) \lev (("USER" . "root") ("HOME" . "/"))
+(get-environment-variables) \lev (("USER" . "root") ("HOME" . "/"))%
 \end{scheme}
 
 \end{entry}
@@ -4555,7 +4555,7 @@ second. This value is an implementation-specified constant.
         (start (current-jiffy)))
     (length list)
     (/ (- (current-jiffy) start)
-       (jiffies-per-second))))
+       (jiffies-per-second))))%
 \end{scheme}
 \end{entry}
 
@@ -4572,7 +4572,7 @@ example of what {\cf features} might return:
    gnu-linux little-endian 
    fantastic-scheme
    fantastic-scheme-1.0
-   space-ship-control-system)
+   space-ship-control-system)%
 \end{scheme}
 \end{entry}
 
