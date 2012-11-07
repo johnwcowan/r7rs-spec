@@ -2559,25 +2559,6 @@ If \var{end} is omitted, it is assumed to be the length of \var{string}.
 
 
 \begin{entry}{%
-\proto{string-fill!}{ string fill}{procedure}
-\rproto{string-fill!}{ string fill start}{procedure}
-\rproto{string-fill!}{ string fill start end}{procedure}}
-
-\domain{It is an error if \var{fill} is not a character or is forbidden
-in strings.  It is also an error if \var{start} is greater than \var{end}, or \var{start}
-is less than zero, or \var{end} is greater than or equal to the length
-of \var{string}.}
-The {\cf string-fill!} procedure stores \var{fill}
-in the elements of \var{string}
-between \var{start} (inclusive) and \var{end} (exclusive).
-If \var{start} is omitted, it is assumed to be 0.
-If \var{end} is omitted, it is assumed to be the length of \var{string}.
-
-In any case, an unspecified value is returned.
-
-\end{entry}
-
-\begin{entry}{%
 \proto{string-copy!}{ to at from}{procedure}
 \rproto{string-copy!}{ to at from start}{procedure}
 \rproto{string-copy!}{ to at from start end}{procedure}}
@@ -2606,6 +2587,26 @@ The value returned by {\cf string-copy!} is unspecified.
 (string-copy! b 1 a 0 2)
 b \ev "a12de"%
 \end{scheme}
+
+\end{entry}
+
+
+\begin{entry}{%
+\proto{string-fill!}{ string fill}{procedure}
+\rproto{string-fill!}{ string fill start}{procedure}
+\rproto{string-fill!}{ string fill start end}{procedure}}
+
+\domain{It is an error if \var{fill} is not a character or is forbidden
+in strings.  It is also an error if \var{start} is greater than \var{end}, or \var{start}
+is less than zero, or \var{end} is greater than or equal to the length
+of \var{string}.}
+The {\cf string-fill!} procedure stores \var{fill}
+in the elements of \var{string}
+between \var{start} (inclusive) and \var{end} (exclusive).
+If \var{start} is omitted, it is assumed to be 0.
+If \var{end} is omitted, it is assumed to be the length of \var{string}.
+
+In any case, an unspecified value is returned.
 
 \end{entry}
 
