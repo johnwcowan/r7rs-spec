@@ -43,6 +43,7 @@ Implementations which store libraries in files should document the
 mapping from the name of a library to its location in the file system.
 
 \section{Import declarations}
+\mainschindex{import}
 
 An import declaration takes the following form:
 \begin{scheme}
@@ -468,8 +469,9 @@ defined within or imported into the library and named by
 using \hyperii{identifier} as the external name.
 
 An \ide{import} declaration provides a way to import the identifiers
-exported by another library.  It has the same syntax and semantics
-as an import declaration used in a program or at the REPL.
+exported by another library.  It has the same syntax and semantics as
+an import declaration used in a program or at the REPL (see section
+\ref{import}).
 
 The \ide{begin}, \ide{include}, and \ide{include-ci} declarations are
 used to specify the body of
