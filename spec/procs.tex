@@ -823,14 +823,14 @@ They do not distinguish between inexact zero and inexact negative zero.
 These predicates are required to be transitive.
 
 \begin{note}
-The traditional implementations of these predicates in Lisp-like
-languages, which involve converting all arguments to inexact numbers
-if any argument is inexact, are not transitive.  For example, let
+The implementation approach
+of converting all arguments to inexact numbers
+if any argument is inexact is not transitive.  For example, let
 {\cf big} be {\cf (expt 2 1000)}, and assume that {\cf big} is exact and that
 inexact numbers are represented by 64-bit IEEE floating point numbers.
 Then {\cf (= (- big 1) (inexact big))} and
-{\cf (= (inexact big) (+ big 1))} would both be true in a traditional
-implementation of {\cf =}, because of the limitations of IEEE
+{\cf (= (inexact big) (+ big 1))} would both be true with this approach,
+because of the limitations of IEEE
 representations of large integers, whereas {\cf (= (- big 1) (+ big 1))}
 is false.  Converting inexact values to exact equivalents will avoid
 this problem, though special care must be taken with infinities.
