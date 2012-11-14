@@ -413,10 +413,11 @@ un\-quo\-ta\-tion $D$} takes precedence.
 \subsection{Programs and definitions}
 
 \begin{grammar}%
-\meta{program} \: \arbno{\meta{command or definition}}
+\meta{program} \:
+\> \atleastone{\meta{import declaration}}
+\> \atleastone{\meta{command or definition}}
 \meta{command or definition} \: \meta{command}
 \> \| \meta{definition}
-\> \| (import \atleastone{\meta{import set}})
 \> \| (begin \atleastone{\meta{command or definition}})
 \meta{definition} \: (define \meta{identifier} \meta{expression})
 \>   \| (define (\meta{identifier} \meta{def formals}) \meta{body})
@@ -446,12 +447,13 @@ un\-quo\-ta\-tion $D$} takes precedence.
 \meta{library name} \: (\atleastone{\meta{library name part}})
 \meta{library name part} \: \meta{identifier} \| \meta{uinteger 10}
 \meta{library declaration} \: (export \arbno{\meta{export spec}})
-\> \| (import \arbno{\meta{import set}})
-\> \| (begin \arbno{\meta{command or definition}})
+\> \| \meta{import declaration}
+\> \| (begin \arbno{\meta{library declaration}})
 \> \| \meta{includer}
 \> \| (cond-expand \atleastone{\meta{cond-expand clause}})
 \> \| (cond-expand \atleastone{\meta{cond-expand clause}}
 \hbox to 1\wd0{\hfill}\ (else \arbno{\meta{library declaration}}))
+\meta{import declaration} \: (import \atleastone{\meta{import set}})
 \meta{export spec} \: \meta{identifier}
 \> \| (rename \meta{identifier} \meta{identifier})
 \meta{import set} \: \meta{library name}
