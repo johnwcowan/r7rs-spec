@@ -6,7 +6,7 @@
 \label{builtinchapter}
 
 \mainindex{initial environment}
-\mainindex{top level environment}
+\mainindex{global environment}
 \mainindex{procedure}
 
 This chapter describes Scheme's built-in procedures.  
@@ -18,11 +18,11 @@ with them in section~\ref{force}.  In the same way, the procedure
 {\cf parameterize}, and is described with it in section~\ref{make-parameter}.
 
 \todo{consider removing unspecified effect}
-A program may use a top-level variable definition to bind any variable.  It may
+A program may use a global variable definition to bind any variable.  It may
 subsequently alter any such binding by an assignment (see
 section~\ref{assignment}).  These operations do not modify the behavior of
 any procedure defined in this report or imported from a library
-(see section~\ref{libraries}).  Altering any top-level binding that has
+(see section~\ref{libraries}).  Altering any global binding that has
 not been introduced by a definition has an unspecified effect on the
 behavior of the procedures defined in this chapter.
 
@@ -3287,12 +3287,12 @@ for non-local exits.
 \vest Whenever a Scheme expression is evaluated there is a
 \defining{continuation} wanting the result of the expression.  The continuation
 represents an entire (default) future for the computation.  If the expression is
-evaluated at top level, for example, then the continuation might take the
+evaluated at the REPL, for example, then the continuation might take the
 result, print it on the screen, prompt for the next input, evaluate it, and
 so on forever.  Most of the time the continuation includes actions
 specified by user code, as in a continuation that will take the result,
 multiply it by the value stored in a local variable, add seven, and give
-the answer to the top level continuation to be printed.  Normally these
+the answer to the REPL's continuation to be printed.  Normally these
 ubiquitous continuations are hidden behind the scenes and programmers do not
 think much about them.  On rare occasions, however, a programmer
 needs to deal with continuations explicitly.

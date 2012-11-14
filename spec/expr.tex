@@ -259,8 +259,7 @@ unspecified.
 \hyper{Expression} is evaluated, and the resulting value is stored in
 the location to which \hyper{variable} is bound.  It is an error if \hyper{variable} is not
 bound either in some region\index{region} enclosing the {\cf set!}\ expression
-or at top level.
-% a Scheme implementation may act as if it were bound at top level.
+or else globally.
 The result of the {\cf set!} expression is
 unspecified.
 
@@ -283,8 +282,7 @@ Both \ide{include} and
 \ide{include-ci} take one or more filenames expressed as string literals,
 apply an implementation-specific algorithm to find corresponding files,
 read the contents of the files in the specified order as if by repeated applications
-of {\cf read}, and include the results into the surrounding context as
-though wrapped in a top-level \ide{begin}.
+of {\cf read}, and splice the results into the surrounding context.
 The difference between the two is that \ide{include-ci} reads each file
 as if it began with the {\cf{}\#!fold-case} directive, while \ide{include}
 does not.
@@ -829,10 +827,11 @@ Both of Scheme's sequencing constructs are named {\cf begin}, but the two
 have slightly different forms and uses:
 
 \begin{entry}{%
-\proto{begin}{ \hyper{expr-or-def} \dotsfoo}{\exprtype}}
+\proto{begin}{ \hyper{expression or definition} \dotsfoo}{\exprtype}}
 
 This form of {\cf begin} can appear as part of a \hyper{body}, or at the
-\hyper{top-level}, or directly nested in a {\cf begin} that is itself of this form.
+outermost level of a \hyper{program}, or at the REPL, or directly nested
+in a {\cf begin} that is itself of this form.
 It causes the contained expressions and definitions to be evaluated
 exactly as if the enclosing {\cf begin} construct were not present.
 
@@ -1468,7 +1467,7 @@ Two mechanisms are provided to prevent unintended conflicts:
 \item If a macro transformer inserts a binding for an identifier
 (variable or keyword), the identifier will in effect be renamed
 throughout its scope to avoid conflicts with other identifiers.
-Note that a \ide{define} at top level may or may not introduce a binding;
+Note that a global variable definition may or may not introduce a binding;
 see section~\ref{defines}.
 
 \item If a macro transformer inserts a free reference to an
@@ -1493,7 +1492,7 @@ The {\cf let-syntax} and {\cf letrec-syntax} binding constructs are
 analogous to {\cf let} and {\cf letrec}, but they bind
 syntactic keywords to macro transformers instead of binding variables
 to locations that contain values.  Syntactic keywords can also be
-bound at top level or elsewhere with {\cf define-syntax};
+bound globally or locally with {\cf define-syntax};
 see section~\ref{define-syntax}.
 
 \begin{entry}{%
@@ -1783,7 +1782,7 @@ the following is not an error.
 
 The macro transformer for {\cf cond} recognizes {\cf =>}
 as a local variable, and hence an expression, and not as the
-top-level identifier {\cf =>}, which the macro transformer treats
+base identifier {\cf =>}, which the macro transformer treats
 as a syntactic keyword.  Thus the example expands into
 
 \begin{scheme}
