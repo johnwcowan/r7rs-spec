@@ -254,6 +254,7 @@ from their libraries, and that none of them have been redefined or shadowed.
 \>  \| \meta{derived expression}
 \>  \| \meta{macro use}
 \>  \| \meta{macro block}
+\>  \| \meta{includer}
 
 \meta{literal} \: \meta{quotation} \| \meta{self-evaluating}
 \meta{self-evaluating} \: \meta{boolean} \| \meta{number} \| \meta{vector}
@@ -334,6 +335,9 @@ from their libraries, and that none of them have been redefined or shadowed.
 \>  \| (letrec-syntax (\arbno{\meta{syntax spec}}) \meta{body})
 \meta{syntax spec} \: (\meta{keyword} \meta{transformer spec})
 
+\meta{includer} \:
+\> \| (include \atleastone{\meta{string}})
+\> \| (include-ci \atleastone{\meta{string}})
 \end{grammar}
 
 \subsection{Quasiquotations}
@@ -444,8 +448,7 @@ un\-quo\-ta\-tion $D$} takes precedence.
 \meta{library declaration} \: (export \arbno{\meta{export spec}})
 \> \| (import \arbno{\meta{import set}})
 \> \| (begin \arbno{\meta{command or definition}})
-\> \| (include \atleastone{\meta{string}})
-\> \| (include-ci \atleastone{\meta{string}})
+\> \| \meta{includer}
 \> \| (cond-expand \atleastone{\meta{cond-expand clause}})
 \> \| (cond-expand \atleastone{\meta{cond-expand clause}}
 \hbox to 1\wd0{\hfill}\ (else \arbno{\meta{library declaration}}))
