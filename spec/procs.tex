@@ -282,6 +282,7 @@ always finish in constant time.
 The {\cf equal?} procedure, when applied to pairs, vectors, strings and
 bytevectors, recursively compares them, returning \schtrue{} when the
 unfoldings of its arguments into (possibly infinite) trees are equal
+(in the sense of {\cf equal?})
 as ordered trees, and \schfalse{} otherwise.  It returns the same as
 {\cf eqv?} when applied to booleans, symbols, numbers, characters,
 ports, procedures, and the empty list.  If two objects are {\cf eqv?},
