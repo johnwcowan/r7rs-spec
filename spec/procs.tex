@@ -3569,6 +3569,9 @@ The procedure {\cf error-object?} must return \schtrue{} on such objects.
 Returns \schtrue{} if \var{obj} is an object created by {\cf error} 
 or one of an implementation-defined set of objects.  Otherwise, it returns
 \schfalse.  
+The objects used to signal errors, including those which satisfy the
+predicates {\cf file-error?} and {\cf read-error?}, may or may not
+satisfy {\cf error-object?}.
 
 \end{entry}
 
