@@ -282,7 +282,9 @@ Both \ide{include} and
 \ide{include-ci} take one or more filenames expressed as string literals,
 apply an implementation-specific algorithm to find corresponding files,
 read the contents of the files in the specified order as if by repeated applications
-of {\cf read}, and splice the results into the surrounding context.
+of {\cf read},
+and effectively replace the {\cf include} or {\cf include-ci} expression
+with a {\cf begin} expression containing what was read from the files.
 The difference between the two is that \ide{include-ci} reads each file
 as if it began with the {\cf{}\#!fold-case} directive, while \ide{include}
 does not.
