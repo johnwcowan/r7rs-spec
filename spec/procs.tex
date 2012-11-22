@@ -111,13 +111,15 @@ is an inexact number.
 the {\cf =} procedure returns \schfalse{}.
 
 \item \vari{obj} and \varii{obj} are both inexact real numbers
-conforming to the IEEE 754-2008 standard, and have different radices,
+implemented in the style of
+the IEEE 754-2008 standard, and have different radices,
 precisions, maximum exponents, signs, exponents or significands as
 described in that standard, 
 provided that they are not both representations of NaNs.
 
 \item \vari{obj} and \varii{obj} are both inexact real numbers
-not conforming to IEEE 754-2008 for which {\cf =} returns \schfalse{},
+not implemented in the style of
+IEEE 754-2008 for which {\cf =} returns \schfalse{},
 provided that they are not both representations of NaNs.
 
 \item \vari{obj} and \varii{obj} are both complex numbers whose
@@ -645,7 +647,7 @@ NaN may also be written {\cf -nan.0}.
 The use of signs in the written representation does not necessarily
 reflect the underlying sign of the NaN value, if any.
 Implementations are not required to support these numbers, but if they do,
-they must do so in conformance with IEEE 754.  However, implementations
+they must do so in general conformance with IEEE 754.  However, implementations
 are not required to support signaling NaNs, nor to provide a way to distinguish
 between different NaNs.
 
