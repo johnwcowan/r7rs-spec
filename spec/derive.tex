@@ -222,7 +222,7 @@ This could also be accomplished by using an auxiliary macro.
 (define-syntax \ide{let*-values}
   (syntax-rules ()
     ((let*-values () body0 body1 ...)
-     (begin body0 body1 ...))
+     (let () body0 body1 ...))
 
     ((let*-values (binding0 binding1 ...)
          body0 body1 ...)
