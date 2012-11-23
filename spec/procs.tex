@@ -2568,7 +2568,8 @@ copied is unspecified, except that if the source and destination overlap,
 copying takes place as if the source is first copied into a temporary
 string and then into the destination.  This can be achieved without
 allocating storage by making sure to copy in the correct direction in
-such circumstances.
+such circumstances.  If omitted \var{start} defaults to zero and \var{end}
+defaults to {\cf (min (+ start (- (string-length to) at)) (string-length from))}.
 
 \begin{scheme}
 (define a "12345")
@@ -2772,7 +2773,8 @@ copied is unspecified, except that if the source and destination overlap,
 copying takes place as if the source is first copied into a temporary
 vector and then into the destination.  This can be achieved without
 allocating storage by making sure to copy in the correct direction in
-such circumstances.
+such circumstances.  If omitted \var{start} defaults to zero and \var{end}
+defaults to {\cf (min (+ start (- (vector-length to) at)) (vector-length from))}.
 
 \begin{scheme}
 (define a (vector 1 2 3 4 5))
@@ -2932,7 +2934,8 @@ copied is unspecified, except that if the source and destination overlap,
 copying takes place as if the source is first copied into a temporary
 bytevector and then into the destination.  This can be achieved without
 allocating storage by making sure to copy in the correct direction in
-such circumstances.
+such circumstances.  If omitted \var{start} defaults to zero and \var{end}
+defaults to {\cf (min (+ start (- (bytevector-length to) at)) (bytevector-length from))}.
 
 \begin{scheme}
 (define a (bytevector 1 2 3 4 5))
