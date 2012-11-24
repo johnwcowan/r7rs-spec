@@ -158,11 +158,15 @@ effect when the \lambdaexp{} was evaluated is remembered as part of the
 procedure.  When the procedure is later called with some actual
 arguments, the environment in which the \lambdaexp{} was evaluated will
 be extended by binding the variables in the formal argument list to
-fresh locations, the corresponding actual argument values will be stored
-in those locations, and the body of the \lambdaexp{}
-will be evaluated in the extended environment.
+fresh locations, and the corresponding actual argument values will be stored
+in those locations.
 A \defining{fresh} location is one that is distinct from every previously
 existing location.
+
+Then, the expressions in the
+body of the lambda expression (which may contain definitions
+and thus represent a {\cf letrec*} form, see section~\ref{letrecstar})
+are evaluated sequentially in the extended environment.
 The results of the last expression in the body will be returned as
 the results of the procedure call.
 
@@ -658,7 +662,6 @@ The \hyper{variable}s need not be distinct.
 
 \begin{entry}{%
 \proto{letrec}{ \hyper{bindings} \hyper{body}}{\exprtype}}
-
 \syntax
 \hyper{Bindings} has the form
 \begin{scheme}
@@ -711,6 +714,7 @@ should not be invoked more than once.
 
 \begin{entry}{%
 \proto{letrec*}{ \hyper{bindings} \hyper{body}}{\exprtype}}
+\label{letrecstar}
 
 \syntax
 \hyper{Bindings} has the form
