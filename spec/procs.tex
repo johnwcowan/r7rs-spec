@@ -173,7 +173,7 @@ boolean.
 The next set of examples shows the use of {\cf eqv?}\ with procedures
 that have local state.  The {\cf gen-counter} procedure must return a distinct
 procedure every time, since each procedure has its own internal counter.
-The {\cf gen-loser} procedure, however, returns equivalent procedures each time, since
+The {\cf gen-loser} procedure, however, returns operationally equivalent procedures each time, since
 the local state does not affect the value or side effects of the
 procedures.  However, {\cf eqv?} may or may not detect this equivalence.
 
@@ -396,7 +396,7 @@ complex numbers}.
 
 \vest If two implementations produce \tupe{exact} results for a
 computation that did not involve \tupe{inexact} intermediate results,
-the two ultimate results will be mathematically equivalent.  This is
+the two ultimate results will be mathematically equal.  This is
 generally not true of computations involving \tupe{inexact} numbers
 since approximate methods such as floating-point arithmetic may be used,
 but it is the duty of each implementation to make the result as close as
@@ -837,7 +837,7 @@ Then {\cf (= (- big 1) (inexact big))} and
 {\cf (= (inexact big) (+ big 1))} would both be true with this approach,
 because of the limitations of IEEE
 representations of large integers, whereas {\cf (= (- big 1) (+ big 1))}
-is false.  Converting inexact values to exact equivalents will avoid
+is false.  Converting inexact values to exact numbers that are the same (in the sense of {\cf =}) to them will avoid
 this problem, though special care must be taken with infinities.
 \end{note}
 
@@ -1303,7 +1303,8 @@ For inexact arguments, the result is the same as the argument. For exact
 complex numbers, the result is a complex number whose real and imaginary
 parts are the result of applying {\cf inexact} to the real
 and imaginary parts of the argument, respectively.
-If an \tupe{exact} argument has no reasonably close \tupe{inexact} equivalent,
+If an \tupe{exact} argument has no reasonably close \tupe{inexact} equivalent
+(in the sense of {\cf =}),
 then a violation of an implementation restriction may be reported.
 
 The procedure {\cf exact} returns an \tupe{exact} representation of
@@ -1316,6 +1317,7 @@ complex arguments, the result is a complex number whose real and
 imaginary parts are the result of applying {\cf exact} to the
 real and imaginary parts of the argument, respectively.
 If an \tupe{inexact} argument has no reasonably close \tupe{exact} equivalent,
+(in the sense of {\cf =}),
 then a violation of an implementation restriction may be reported.
 
 These procedures implement the natural one-to-one correspondence between
