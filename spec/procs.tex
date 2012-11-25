@@ -584,7 +584,8 @@ Negative zero is an inexact real value written {\cf -0.0} and is normally distin
 is not required to distinguish negative zero.  If it does, however, the
 behavior of the transcendental functions is sensitive to the distinction
 in accordance with IEEE 754.
-Specifically, in a Scheme implementing complex numbers and negative zero,
+Specifically, in a Scheme implementing both complex numbers and negative zero,
+the branch cut of the complex logarithm function is such that
 {\cf (imag-part (log -1.0-0.0i))} is $-\pi$ rather than $\pi$.
 
 Furthermore, the negation of negative zero is ordinary zero and vice
