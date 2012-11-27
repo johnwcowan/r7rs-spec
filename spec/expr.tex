@@ -160,13 +160,12 @@ arguments, the environment in which the \lambdaexp{} was evaluated will
 be extended by binding the variables in the formal argument list to
 fresh locations, and the corresponding actual argument values will be stored
 in those locations.
-A \defining{fresh} location is one that is distinct from every previously
-existing location.
-
-Then, the expressions in the
+(A \defining{fresh} location is one that is distinct from every previously
+existing location.)
+Next, the expressions in the
 body of the lambda expression (which may contain definitions
-and thus represent a {\cf letrec*} form, see section~\ref{letrecstar})
-are evaluated sequentially in the extended environment.
+and thus represent a {\cf letrec*} form --- see section~\ref{letrecstar})
+will be evaluated sequentially in the extended environment.
 The results of the last expression in the body will be returned as
 the results of the procedure call.
 
