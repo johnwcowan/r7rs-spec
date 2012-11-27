@@ -84,7 +84,7 @@ The formal syntax of Scheme is described in section~\ref{BNF}.
 \subsection{Base and optional features}
 \label{qualifiers}
 
-Every identifier defined in this report appears in one of several
+Every identifier defined in this report appears in one or more of several
 \defining{libraries}.  Identifiers defined in the \defining{base library}
 are not marked specially in the body of the report.  
 This library includes the core syntax of Scheme
@@ -93,7 +93,7 @@ variable {\cf abs} is bound to a
 procedure of one argument that computes the absolute value of a
 number, and the variable {\cf +} is bound to a procedure that computes
 sums.  The full list 
-all the standard libraries and the features they provide is given in
+all the standard libraries and the identifiers they export is given in
 Appendix~\ref{stdlibraries}.
 
 All implementations of Scheme:
@@ -217,7 +217,7 @@ indicates one or more occurrences of a \hyper{thing}.
 If \var{category} is ``auxiliary syntax,'' then the entry describes a
 syntax binding that occurs only as part of specific surrounding
 expressions. Any use as an independent syntactic construct or
-identifier is an error.
+variable is an error.
 
 If \var{category} is ``procedure,'' then the entry describes a procedure, and
 the header line gives a template for a call to the procedure.  Argument
@@ -237,7 +237,7 @@ indicate that the {\tt make-vector} procedure must be defined to take
 either one or two arguments.
 
 \label{typeconventions}
-It is an error for an operation to be presented with an argument that it
+It is an error for an procedure to be presented with an argument that it
 is not specified to handle.  For succinctness, we follow the convention
 that if an argument name is also the name of a type listed in
 section~\ref{disjointness}, then it is an error if that argument is not of the named type.
