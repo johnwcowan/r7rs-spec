@@ -41,9 +41,6 @@ as exponent markers is no longer required.
 
 \item The procedures {\cf transcript-on} and {\cf transcript-off} have been removed.
 
-\item The {\cf write} procedure is now required to produce datum labels on
-circular structure.
-
 \end{itemize}
 
 \subsection*{Other language changes since \rfivers}
@@ -110,9 +107,10 @@ and write bytes to and from bytevectors.
 
 \item There are now I/O procedures specific to strings and bytevectors.
 
-\item The \rfivers\ procedure {\cf write} has been renamed {\cf write-simple}.
-The new procedure {\cf write-shared} uses datum labels to report all
-shared and circular structure.
+\item The {\cf write} procedure now generates datum labels when applied to
+circular objects.  The new procedure {\cf write-simple} never generates
+labels; {\cf write-shared} generates labels for all shared and circular
+structure.
 
 \item The \rsixrs\ procedure {\cf eof-object} has been added.
 
