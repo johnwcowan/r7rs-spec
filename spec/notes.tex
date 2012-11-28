@@ -41,6 +41,9 @@ as exponent markers is no longer required.
 
 \item The procedures {\cf transcript-on} and {\cf transcript-off} have been removed.
 
+\item The {\cf write} procedure is now required to produce datum labels on
+circular structure.
+
 \end{itemize}
 
 \subsection*{Other language changes since \rfivers}
@@ -48,9 +51,7 @@ as exponent markers is no longer required.
 This section enumerates the additional differences between this report and
 the ``Revised$^5$ report''~\cite{R5RS}.
 
-{\em This list is not authoritative, but has been verified as closely
-as possible.  It may be incomplete.}
-
+{\em This list is not authoritative, but is believed to be correct and complete.}
 
 \begin{itemize}
 
@@ -63,6 +64,7 @@ Libraries can be imported into other libraries or main programs, with
 controlled exposure and renaming of identifiers.
 The contents of a library can be made conditional on the features of
 the implementation on which it is to be used.
+There is an \r5rs\ compatibility library.
 
 \item Exceptions can now be signaled explicitly with {\cf raise},
 {\cf raise-continuable} or {\cf error}, and can be handled with {\cf
@@ -78,6 +80,8 @@ generated with SRFI 9's {\cf define-record-type}.
 
 \item Parameter objects can be created with {\cf make-parameter}, and
 dynamically rebound with {\cf parameterize}.
+The procedures {\cf current-input-port} and {\cf current-output-port} are now
+parameter objects, as is the newly introduced {\cf current-error-port}.
 
 \item {\em Bytevectors}, homogeneous vectors of integers in the range
 $[0, 255]$, have been added as a new disjoint type.
@@ -90,18 +94,29 @@ Bytevectors have a datum representation and evaluate to themselves.
 \item The procedure {\cf read-line} is provided to make line-oriented textual input
 simpler.
 
+\item The procedure {\cf flush-output-port} is provided to allow minimal
+control of output port buffering.
+
 \item {\em Ports} can now be designated as {\em textual} or {\em
 binary} ports, with new procedures for reading and writing binary
 data.
 The new predicates {\cf input-port-open?} and {\cf output-port-open?} return whether a port is open or closed.
+The new procedure {cf close-port} now closes a port; if the port
+has both input and output sides, both are closed.
 
 \item {\em String ports} have been added as a way to read and write
 characters to and from strings, and {\em bytevector ports} to read
 and write bytes to and from bytevectors.
 
-\item The procedures {\cf current-input-port} and {\cf current-output-port} are now
-parameter objects, as is the newly introduced {\cf
-current-error-port}.
+\item There are now I/O procedures specific to strings and bytevectors.
+
+\item The \rfivers\ procedure {\cf write} has been renamed {\cf write-simple}.
+The new procedure {\cf write-shared} uses datum labels to report all
+shared and circular structure.
+
+\item The \rsixrs\ procedure {\cf eof-object} has been added.
+
+\item Syntax definitions are now allowed wherever variable definitions are.
 
 \item The {\cf syntax-rules} construct now allows
 the ellipsis symbol to be specified explicitly instead of the default
@@ -131,6 +146,13 @@ procedure, {\cf case-lambda} has been added in its own library.
 
 \item The convenience conditionals {\cf when} and {\cf unless} have been added.
 
+\item The behavior of {\cf eq?} and {\cf eqv?} on procedures is now unspecified.
+
+\item The behavior of {\cf eqv?} on inexact numbers has been modified
+and clarified.
+
+\item The \rsixrs\ procedures {\cf boolean=?} and {\cf symbol=?} have been added.
+
 \item Positive infinity, negative infinity, NaN, and negative inexact zero have been added
 to the numeric tower as inexact values with the written
 representations {\tt +inf.0}, {\tt -inf.0}, {\tt +nan.0}, and {\cf -0.0}
@@ -143,8 +165,12 @@ the shortest list when the inputs have different lengths.
 \item The procedures {\cf member} and {\cf assoc} now take an optional third argument
 specifying the equality predicate to be used.
 
-\item The procedures {\cf exact-integer?}, {\cf square},
-and {\cf exact-integer-sqrt} have been added.
+\item The numeric procedures {\cf finite?}, {\cf infinite?}, {\cf nan?},
+{\cf exact-integer?}, {\cf square}, and {\cf exact-integer-sqrt}
+have been added.
+
+\item The procedures {\cf -}, {\cf /}, and the character and string comparison
+procedures are now required to support an arbitrary number of arguments.
 
 \item The procedures {\cf make-list}, {\cf list-copy}, {\cf list-set!},
 {\cf string-map}, {\cf string-for-each}, {\cf string->vector}, 
@@ -152,8 +178,11 @@ and {\cf exact-integer-sqrt} have been added.
 {\cf vector-copy}, {\cf vector-map}, {\cf vector-for-each}, 
 {\cf vector->string}, {\cf vector-copy!}, and {\cf string-copy!}
 have been added to round out the sequence operations.
-Some of these support processing of part of a string or vector using
+
+\item Some string and vector procedures support processing of part of a string or vector using
 optional \var{start} and \var{end} arguments.
+
+\item Some list procedures are now defined on circular lists.
 
 \item Implementations may provide any subset of the full Unicode
 repertoire that includes ASCII, but implementations must support any
@@ -179,7 +208,7 @@ sequences, and the list of named characters has been extended.
 \item The procedures {\cf file-exists?}\ and {\cf delete-file} are available in the
 {\tt (scheme file)} library.
 
-\item An interface to the system environment and command line is
+\item An interface to the system environment, command line, and process exit status is
 available in the {\tt (scheme process-context)} library.
 
 \item Procedures for accessing time-related values are available in the
@@ -190,6 +219,9 @@ with new and clearer names.
 
 \item The {\cf load} procedure now accepts a second argument specifying the environment to
 load into.
+
+\item The {\cf call-with-current-continuation} procedure now has the synonym
+{\cf call/cc}.
 
 \item The semantics of read-eval-print loops are now partly prescribed,
 requiring the redefinition of procedures, but not syntax keywords, to have retroactive effect.
