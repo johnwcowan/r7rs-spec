@@ -157,6 +157,9 @@ representations {\tt +inf.0}, {\tt -inf.0}, {\tt +nan.0}, and {\cf -0.0}
 respectively.  Support for them is not required.
 The representation {\tt -nan.0} is synonymous with {\tt +nan.0}.
 
+\item The {\cf log} procedure now accepts a second argument specifying
+the logarithm base.
+
 \item The procedures {\cf map} and {\cf for-each} are now required to terminate on
 the shortest list when the inputs have different lengths.
 
@@ -312,9 +315,6 @@ that uses it, the semantics of {\cf map} and {\cf for-each} have been changed to
 the SRFI 1 early termination behavior. Likewise
 {\cf assoc} and {\cf member} take an optional {\cf equal?} argument as in SRFI 1,
 instead of the separate {\cf assp} and {\cf memp} procedures of \rsixrs.
-
-\item The {\cf log} procedure now accepts a second argument specifying
-the logarithm base.
 
 \item The \rsixrs~{\cf quasiquote} clarifications have been adopted, but the Working Group has not seen
 convincing enough examples of multiple-argument {\cf unquote} and
