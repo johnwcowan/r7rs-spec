@@ -481,7 +481,7 @@ macro, here called {\cf guard-aux}.
                       (guard-aux
                         (handler-k
                           (lambda ()
-                            (raise condition)))
+                            (raise-continuable condition)))
                         clause ...))))))))
           (lambda ()
             (call-with-values
