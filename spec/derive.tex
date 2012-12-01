@@ -507,7 +507,7 @@ macro, here called {\cf guard-aux}.
            (result temp)
            (guard-aux reraise clause1 clause2 ...))))
     ((guard-aux reraise (test))
-     test)
+     (or test reraise))
     ((guard-aux reraise (test) clause1 clause2 ...)
      (let ((temp test))
        (if temp
