@@ -123,6 +123,7 @@ or strings that denote distinct locations.
 (eqv? 'a 'a)                     \ev  \schtrue
 (eqv? 'a 'b)                     \ev  \schfalse
 (eqv? 2 2)                       \ev  \schtrue
+(eqv? 2 2.0)                     \ev  \schtrue
 (eqv? '() '())                   \ev  \schtrue
 (eqv? 100000000 100000000)       \ev  \schtrue
 (eqv? (cons 1 2) (cons 1 2))     \ev  \schfalse
@@ -145,10 +146,12 @@ boolean.
   (eqv? p p))                    \ev  \unspecified
 (eqv? (lambda (x) x)
       (lambda (y) y))    \ev  \unspecified
-(eqv? 0.0 -0.0)          \ev  \unspecified 
 (eqv? 1.0e0 1.0f0)       \ev  \unspecified
 (eqv? +nan.0 +nan.0)     \ev  \unspecified%
 \end{scheme}
+
+Note that {\cf (eqv? 0.0 -0.0)} will return \schfalse{} if negative zero
+is distinguished, and \schtrue{} if negative zero is not distinguished.
 
 The next set of examples shows the use of {\cf eqv?}\ with procedures
 that have local state.  The {\cf gen-counter} procedure must return a distinct
@@ -565,7 +568,7 @@ or if there are multiple values: if there are multiple NaN
 values, or just one, they are all equivalent in terms of Scheme
 computation.
 
-Negative zero is an inexact real value written {\cf -0.0} and is normally distinct
+Negative zero is an inexact real value written {\cf -0.0} and is distinct
 (in the sense of {\cf eqv?}) from {\cf 0.0}.  A Scheme implementation
 is not required to distinguish negative zero.  If it does, however, the
 behavior of the transcendental functions is sensitive to the distinction
