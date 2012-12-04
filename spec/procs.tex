@@ -62,19 +62,13 @@ symbol according to the {\cf symbol=?} procedure
 \item \vari{obj} and \varii{obj} are both exact numbers and
 are numerically equal (see {\cf =}).
 
-\item \vari{obj} and \varii{obj} are both inexact real numbers
-implemented in the style of
-the IEEE 754-2008 standard, and have the same radix,
-precision, maximum exponent, sign, exponent and significand as
-described in that standard, but are not both representations of NaNs.
-
-\item \vari{obj} and \varii{obj} are both inexact real numbers,
-are not implemented in the style of
-IEEE 754-2008, and are numerically equal (see {\cf =}),
-but are not both representations of NaNs.
-
-\item \vari{obj} and \varii{obj} are both complex numbers whose
-real and imaginary parts are {\cf eqv?}, respectively.
+\item \vari{obj} and \varii{obj} are both inexact real numbers such that
+neither one is NaN,
+they are numerically equal (in the sense of {\cf =}),
+and they yield the same results (in the sense of {\cf eqv?})
+when passed as arguments to any other procedure
+that can be defined as a finite composition of Scheme's standard
+arithmetic procedures.
 
 \item \vari{obj} and \varii{obj} are both characters and are the same
 character according to the {\cf char=?} procedure
@@ -103,27 +97,13 @@ symbol according to the {\cf symbol=?} procedure
 \item one of \vari{obj} and \varii{obj} is an exact number but the other
 is an inexact number.
 
-%% \item \vari{obj} and \varii{obj} are numbers for which the {\cf =}
-%% procedure returns \schfalse{}, and {\cf nan?} returns \schfalse{}
-%% for both.
-
-\item \vari{obj} and \varii{obj} are both exact numbers for which
-the {\cf =} procedure returns \schfalse{}.
-
-\item \vari{obj} and \varii{obj} are both inexact real numbers
-implemented in the style of
-the IEEE 754-2008 standard, and have different radices,
-precisions, maximum exponents, signs, exponents or significands as
-described in that standard, 
-provided that they are not both representations of NaNs.
-
-\item \vari{obj} and \varii{obj} are both inexact real numbers
-not implemented in the style of
-IEEE 754-2008 for which {\cf =} returns \schfalse{},
-provided that they are not both representations of NaNs.
-
-\item \vari{obj} and \varii{obj} are both complex numbers whose
-real or imaginary parts are not {\cf eqv?}, respectively.
+\item \vari{obj} and \varii{obj} are both inexact real numbers such that
+neither one is NaN and either
+they are numerically unequal (in the sense of {\cf =}),
+or they do not yield the same results (in the sense of {\cf eqv?})
+when passed as arguments to any other procedure
+that can be defined as a finite composition of Scheme's standard
+arithmetic procedures.
 
 \item \vari{obj} and \varii{obj} are characters for which the {\cf char=?}
 procedure returns \schfalse{}.
@@ -228,6 +208,12 @@ are equivalent to each other, and can decide whether or not to
 merge representations of equivalent objects by using the same pointer or
 bit pattern to represent both.
 \end{rationale}
+
+\begin{note}
+If inexact numbers are represented as IEEE binary floating-point numbers,
+then an implementation of {\cf eqv?} that simply compares equal-sized
+inexact numbers for bitwise equality is correct by the above definition.
+\end{note}
 
 \end{entry}
 
@@ -441,13 +427,13 @@ are still quite useful.
 any type, subject to the requirements of this section.  The supported
 range for \tupe{exact} numbers of any type may be different from the
 supported range for \tupe{inexact} numbers of that type.  For example,
-an implementation that uses IEEE double-precision floating-point numbers to represent all its
+an implementation that uses IEEE binary double-precision floating-point numbers to represent all its
 \tupe{inexact} \tupe{real} numbers may also
 support a practically unbounded range of \tupe{exact} \tupe{integer}s
 and \tupe{rational}s
 while limiting the range of \tupe{inexact} \tupe{real}s (and therefore
 the range of \tupe{inexact} \tupe{integer}s and \tupe{rational}s)
-to the dynamic range of the IEEE double format.
+to the dynamic range of the IEEE binary double format.
 Furthermore,
 the gaps between the representable \tupe{inexact} \tupe{integer}s and
 \tupe{rational}s are
@@ -674,7 +660,7 @@ using an \tupe{exact} notation is indeed represented as an \tupe{exact}
 number.  Some examples also assume that certain numerical constants written
 using an \tupe{inexact} notation can be represented without loss of
 accuracy; the \tupe{inexact} constants were chosen so that this is
-likely to be true in implementations that use IEEE doubles to represent
+likely to be true in implementations that use IEEE binary doubles to represent
 inexact numbers.
 
 \todo{Scheme provides the usual set of operations for manipulating
@@ -833,7 +819,7 @@ The implementation approach
 of converting all arguments to inexact numbers
 if any argument is inexact is not transitive.  For example, let
 {\cf big} be {\cf (expt 2 1000)}, and assume that {\cf big} is exact and that
-inexact numbers are represented by 64-bit IEEE floating point numbers.
+inexact numbers are represented by 64-bit IEEE binary floating point numbers.
 Then {\cf (= (- big 1) (inexact big))} and
 {\cf (= (inexact big) (+ big 1))} would both be true with this approach,
 because of the limitations of IEEE
