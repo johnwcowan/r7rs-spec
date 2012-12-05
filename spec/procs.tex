@@ -123,13 +123,14 @@ or strings that denote distinct locations.
 (eqv? 'a 'a)                     \ev  \schtrue
 (eqv? 'a 'b)                     \ev  \schfalse
 (eqv? 2 2)                       \ev  \schtrue
-(eqv? 2 2.0)                     \ev  \schtrue
+(eqv? 2 2.0)                     \ev  \schfalse
 (eqv? '() '())                   \ev  \schtrue
 (eqv? 100000000 100000000)       \ev  \schtrue
+(eqv? 0.0 +nan.0)                \ev  \schfalse
 (eqv? (cons 1 2) (cons 1 2))     \ev  \schfalse
 (eqv? (lambda () 1)
       (lambda () 2))             \ev  \schfalse
-(eqv? \#f 'nil)                  \ev  \schfalse
+(eqv? \#f 'nil)                  \ev  \schfalse%
 \end{scheme}
 
 The following examples illustrate cases in which the above rules do
