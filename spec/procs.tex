@@ -60,7 +60,7 @@ symbol according to the {\cf symbol=?} procedure
 (section~\ref{symbolsection}).
 
 \item \vari{obj} and \varii{obj} are both exact numbers and
-are numerically equal (see {\cf =}).
+are numerically equal (in the sense of {\cf =}).
 
 \item \vari{obj} and \varii{obj} are both inexact real numbers such that
 they are not both NaN,
@@ -97,8 +97,11 @@ symbol according to the {\cf symbol=?} procedure
 \item one of \vari{obj} and \varii{obj} is an exact number but the other
 is an inexact number.
 
-\item \vari{obj} and \varii{obj} are both inexact real numbers such that
-they are not both NaN and either
+\item \vari{obj} and \varii{obj} are both exact numbers and
+are numerically unequal (in the sense of {\cf =}).
+
+\item \vari{obj} and \varii{obj} are both inexact real numbers such that:
+(a) they are not both NaN, and (b) either
 they are numerically unequal (in the sense of {\cf =}),
 or they do not yield the same results (in the sense of {\cf eqv?})
 when passed as arguments to any other procedure
