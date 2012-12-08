@@ -557,8 +557,8 @@ A NaN is regarded as an inexact real (but not rational) number
 so indeterminate that it might represent any real value, including
 positive or negative infinity, and might even be greater than positive
 infinity or less than negative infinity.
-Additionally, in implementations that do not support non-real numbers, it
-represents the non-real value of {\cf (sqrt -1.0)} or {\cf (asin 2.0)}.
+%% Additionally, in implementations that do not support non-real numbers, it
+%% represents the non-real value of {\cf (sqrt -1.0)} or {\cf (asin 2.0)}.
 
 A NaN always compares false to any number, including a NaN.  
 An arithmetic operation where one operand is NaN returns NaN, unless the
@@ -566,11 +566,11 @@ implementation can prove that the result would be the same if the NaN
 were replaced by any rational number.  Dividing zero by zero results in
 NaN unless both zeros are exact.
 
-IEEE 754 specifies multiple NaN values.  Scheme generally does
-not care if there is a single value (bit pattern) for NaN,
-or if there are multiple values: if there are multiple NaN
-values, or just one, they are all equivalent in terms of Scheme
-computation.
+%% IEEE 754 specifies multiple NaN values.  Scheme generally does
+%% not care if there is a single value (bit pattern) for NaN,
+%% or if there are multiple values: if there are multiple NaN
+%% values, or just one, they are all equivalent in terms of Scheme
+%% computation.
 
 Negative zero is an inexact real value written {\cf -0.0} and is distinct
 (in the sense of {\cf eqv?}) from {\cf 0.0}.  A Scheme implementation
