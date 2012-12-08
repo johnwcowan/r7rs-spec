@@ -62,13 +62,12 @@ symbol according to the {\cf symbol=?} procedure
 \item \vari{obj} and \varii{obj} are both exact numbers and
 are numerically equal (in the sense of {\cf =}).
 
-\item \vari{obj} and \varii{obj} are both inexact real numbers such that
-they are not both NaN,
+\item \vari{obj} and \varii{obj} are both inexact numbers such that
 they are numerically equal (in the sense of {\cf =}),
 and they yield the same results (in the sense of {\cf eqv?})
 when passed as arguments to any other procedure
 that can be defined as a finite composition of Scheme's standard
-arithmetic procedures.
+arithmetic procedures which does not result in a NaN value.
 
 \item \vari{obj} and \varii{obj} are both characters and are the same
 character according to the {\cf char=?} procedure
