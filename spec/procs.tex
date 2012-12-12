@@ -3480,17 +3480,14 @@ in the dynamic environment used for the invocation of \var{thunk}.
         \ev exception
  \>{\em and prints}  condition: an error%
 
-(call-with-current-continuation
- (lambda (k)
-   (with-exception-handler
-    (lambda (x)
-     (display "something went wrong")
-     (newline)
-     'dont-care)
-    (lambda ()
-     (+ 1 (raise 'an-error))))))
-         \ev \unspecified
- \>{\em and prints}  something went wrong%
+(with-exception-handler
+ (lambda (x)
+  (display "something went wrong")
+  (newline)
+  'dont-care)
+ (lambda ()
+  (+ 1 (raise 'an-error))))
+ \>{\em prints}  something went wrong%
 \end{scheme}
 
 After printing, the second example then raises another exception.
