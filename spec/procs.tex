@@ -3478,13 +3478,11 @@ in the dynamic environment used for the invocation of \var{thunk}.
    (lambda ()
     (+ 1 (raise 'an-error))))))
         \ev exception
- \>{\em and prints}  condition: an error%
+ \>{\em and prints}  condition: an error
 
 (with-exception-handler
  (lambda (x)
-  (display "something went wrong")
-  (newline)
-  'dont-care)
+  (display "something went wrong\backwhack{}n"))
  (lambda ()
   (+ 1 (raise 'an-error))))
  \>{\em prints}  something went wrong%
