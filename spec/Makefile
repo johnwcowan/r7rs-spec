@@ -7,7 +7,7 @@ clean:
 	rm -f *~
 
 cleaner: clean
-	rm -f *.pdf *.aux *.log *.idx *.toc
+	rm -f *.pdf *.aux *.log *.idx *.toc *.out
 
 DIFF_SOURCES=basic.tex derive.tex example.tex expr.tex \
 	lex.tex procs.tex prog.tex struct.tex
