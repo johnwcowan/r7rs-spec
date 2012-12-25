@@ -39,6 +39,9 @@ set provide comparison by Unicode scalar value.
 \item Support for the letters {\cf s}, {\cf f}, {\cf d}, and {\cf l}
 as exponent markers is no longer required.
 
+\item Implementations of {\cf string\coerce{}number} are no longer permitted
+to return \schfalse{} when the argument contains an explicit radix prefix.
+
 \item The procedures {\cf transcript-on} and {\cf transcript-off} have been removed.
 
 \end{itemize}
