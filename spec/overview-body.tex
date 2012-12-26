@@ -436,14 +436,13 @@ any Scheme programmer can add new expression types.
 
 \chapter{Syntactic data and datum values}
 
-A subset of the Scheme objects is called \textit{datum
-  values}. 
+\textit{Datum values} constitute a subset of Scheme objects.
 These include booleans, numbers, characters, symbols,
-and strings as well as lists and vectors whose elements are data.  Each
+and strings as well as lists, vectors, and bytevectors whose elements are datum values.  Each
 datum value may be represented in textual form as a
 \textit{syntactic datum}, which can be written out
 and read back in without loss of information.
-A datum value may be represented by several different syntactic data.
+A datum value may be represented by any of several different syntactic datums.
 Moreover, each datum value
 can be trivially translated to a literal expression in a program by
 prepending a {\cf\singlequote} to a corresponding syntactic datum:
