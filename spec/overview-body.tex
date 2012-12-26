@@ -1,10 +1,10 @@
 \chapter*{Overview of Scheme}
 
-This paper gives an overview of the semantics
-of the small language of \rsevenrs.
+This paper gives an overview of 
+the small language of \rsevenrs.
 The purpose of this overview is to explain
 enough about the basic concepts of the language to facilitate
-understanding of the \rsevenrs{} report, which are
+understanding of the \rsevenrs{} report, which is
 organized as a reference manual.  Consequently, this overview is
 not a complete introduction to the language, nor is it precise
 in all respects or normative in any way.
@@ -64,7 +64,7 @@ Scheme's model of arithmetic provides a rich set of numerical types
 and operations on them.  Furthermore, it distinguishes \textit{exact}
 and \textit{inexact} numbers: Essentially, an exact number
 object corresponds to a number exactly, and an inexact number
-is the result of a computation that involved rounding or other errors.
+is the result of a computation that involved rounding or other approximations.
 
 \chapter{Basic types}
 
@@ -111,6 +111,8 @@ Unlike strings, two symbols whose names are spelled the same
 way are never distinguishable.  Symbols are useful for many applications;
 for instance, they may be used the way enumerated values are used in
 other languages.
+
+In \rsevenrs, unlike \rfivers, symbols and identifiers are case-sensitive.
 
 \paragraph{Characters}
 
@@ -244,7 +246,7 @@ where an expression can occur.  Moreover, a definition has no value.
 Bindings follow the lexical structure of the program:  When several
 bindings with the same name exist, a variable refers to the binding
 that is closest to it, starting with its occurrence in the program
-and going from inside to outside, and referring to a outermost
+and going from inside to outside, and referring to an outermost
 binding if no
 local binding can be found along the way:
 
@@ -258,23 +260,6 @@ local binding can be found along the way:
   (let ((y 44))
     (+ x y))) \ev 67%
 \end{scheme}
-
-\chapter{Forms}
-
-While definitions are not expressions, compound expressions and
-definitions exhibit similar syntactic structure:
-%
-\begin{scheme}
-(define x 23)
-(* x 2)%
-\end{scheme}
-%
-While the first line contains a definition, and the second an
-expression, this distinction depends on the bindings for {\cf define}
-and {\cf *}.  At the purely syntactical level, both are
-\textit{forms}, and \textit{form} is the general name for
-a syntactic part of a Scheme program.  In particular, {\cf 23} is a
-\textit{subform} of the form {\cf (define x 23)}.
 
 \chapter{Procedures}
 
@@ -292,7 +277,7 @@ A procedure is, slightly simplified, an abstraction of an
 expression over objects.  In the example, the first definition defines a procedure
 called {\cf f}.  (Note the parentheses around {\cf f x}, which
 indicate that this is a procedure definition.)  The expression {\cf (f
-  23)} is a procedure call, meaning,
+  23)} is a procedure call meaning,
 roughly, ``evaluate {\cf (+ x 42)} (the body of the procedure) with
 {\cf x} bound to 23''.
 
@@ -362,8 +347,6 @@ Procedure calls can generally be distinguished from these
 looking for a syntactic keyword in the first position of an
 form: if the first position does not contain a syntactic keyword, the expression
 is a procedure call.  
-(So-called \textit{identifier macros} allow creating other kinds of
-expression types, but are comparatively rare.)
 The set of syntactic keywords of Scheme is
 fairly small, which usually makes this task fairly simple.
 It is possible, however, to create new bindings for syntactic keywords.
@@ -448,7 +431,8 @@ the example gets translated to:
 
 The ability to create new syntactic keywords makes Scheme extremely
 flexible and expressive, allowing many of the features
-built into other languages to be derived forms in Scheme.
+built into other languages to be implemented directly in Scheme:
+any Scheme programmer can add new expression types.
 
 \chapter{Syntactic data and datum values}
 
@@ -473,7 +457,8 @@ prepending a {\cf\singlequote} to a corresponding syntactic datum:
 \end{scheme}
 
 The {\cf\singlequote} shown in the previous examples
-is not needed for representations of numbers or booleans.
+is not needed for representations of literal constants other than
+symbols and lists.
 The syntactic datum {\cf foo} represents a
 symbol with name ``foo'', and {\cf 'foo} is a literal expression with
 that symbol as its value.  {\cf (1 2 3)} is a syntactic datum that 
@@ -561,9 +546,10 @@ on a separate line:
     (newline)))%
 \end{scheme}
 
-\chapter{Top-level programs}
+\chapter{Programs}
 
-A Schemeprogram is invoked via a \textit{ program}.  Like a library, a top-level
+Libraries are invoked by other libraries, but ultimately by a Scheme
+\textit{program}.  Like a library, a
 program contains imports, definitions and expressions, and specifies
 an entry point for execution.  Thus a program defines, via
 the transitive closure of the libraries it imports, a Scheme program.
@@ -623,13 +609,13 @@ Undefined variable: sin
 > ; True is true ...
 > \#t
 \#t
-> ; 100\!/99\! = 100 ...
+> ; 100!/99! = 100 ...
 > (define (fact n)
     (if (= n 0) 1 (* n (fact (- n 1)))))
 > (/ (fact 100) (fact 99))
 100
 > ; If it returns the *right* complex number,
-     so much the better ...
+> ; so much the better ...
 > (define (atanh x)
     (/ (- (log (+ 1 x))
           (log (- 1 x)))
