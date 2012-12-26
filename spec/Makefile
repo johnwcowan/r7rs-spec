@@ -1,7 +1,7 @@
 
 .PHONY: all clean cleaner checkindex
 
-all: r7rs.pdf
+all: r7rs.pdf overview.pdf
 
 clean:
 	rm -f *~
@@ -30,6 +30,10 @@ intro-ebook.tex: intro.tex
 	sed 's/\\clearextrapart{\(.*\)}/\1/g' $< > $@
 
 r7rs.pdf: $(SOURCES) stdmod.tex
+	pdflatex $<
+	pdflatex $<
+
+overview.pdf: overview.tex overview-body.tex
 	pdflatex $<
 	pdflatex $<
 
