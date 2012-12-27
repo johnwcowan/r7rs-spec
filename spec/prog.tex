@@ -486,7 +486,7 @@ form of library interface.
 
 The \ide{cond-expand} declaration has the same syntax and semantics as
 the \ide{cond-expand} expression type, except that it expands to
-library declarations rather than just expressions.
+library declarations rather than expressions.
 
 \todo{Shinn: Perhaps make this a separate subsection describing a
   library ``resolution'' phase which runs prior to library expansion.}
@@ -499,7 +499,7 @@ from all \ide{begin}, \ide{include} and \ide{include-ci}
 library declarations are expanded in that environment in the order in which
 they occur in the library.
 Alternatively, \ide{cond-expand} and \ide{import} declarations may be processed
-in left to right order interspersed with the processing other
+in left to right order interspersed with the processing of other
 declarations, with the environment growing as imported bindings are
 added to it by each \ide{import} declaration.
 
