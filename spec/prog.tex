@@ -476,9 +476,7 @@ an import declaration used in a program or at the REPL (see section
 The \ide{begin}, \ide{include}, and \ide{include-ci} declarations are
 used to specify the body of
 the library.  They have the same syntax and semantics as the corresponding
-expression types, except that
-\ide{begin} may contain any library declarations rather than
-just expressions.
+expression types, splicing their expressions into the library body.
 
 The \ide{include-library-declarations} declaration is similar to
 \ide{include} except that the contents of the file are spliced directly into the
@@ -487,7 +485,7 @@ same \ide{export} declaration among multiple libraries as a simple
 form of library interface.
 
 The \ide{cond-expand} declaration has the same syntax and semantics as
-the \ide{cond-expand} expression type, except that it may contain any
+the \ide{cond-expand} expression type, except that it expands to
 library declarations rather than just expressions.
 
 \todo{Shinn: Perhaps make this a separate subsection describing a
@@ -496,13 +494,13 @@ library declarations rather than just expressions.
 One possible implementation of libraries is as follows:
 After all \ide{cond-expand} library declarations are expanded, a new
 environment is constructed for the library consisting of all
-imported bindings.  The expressions and
-declarations from all \ide{begin}, \ide{include} and \ide{include-ci}
+imported bindings.  The expressions
+from all \ide{begin}, \ide{include} and \ide{include-ci}
 library declarations are expanded in that environment in the order in which
 they occur in the library.
 Alternatively, \ide{cond-expand} and \ide{import} declarations may be processed
-in left to right order interspersed with the processing of expressions
-and declarations, with the environment growing as imported bindings are
+in left to right order interspersed with the processing other
+declarations, with the environment growing as imported bindings are
 added to it by each \ide{import} declaration.
 
 When a library is loaded, its expressions are executed
