@@ -540,9 +540,10 @@ on a separate line:
   (export hello-world)
   (import (scheme base)
           (scheme display))
-  (define (hello-world)
-    (display "Hello World")
-    (newline)))%
+  (begin
+    (define (hello-world)
+      (display "Hello World")
+      (newline))))%
 \end{scheme}
 
 \chapter{Programs}
