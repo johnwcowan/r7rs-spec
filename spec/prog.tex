@@ -23,6 +23,7 @@ in the \ide{begin}.
 Similarly, in a \hyper{body}, {\tt(begin \hyperi{definition} \dotsfoo)} is equivalent
 to the sequence \hyperi{definition} \dotsfoo.
 Macros can expand into such {\cf begin} forms.
+For the formal definition, see~\ref{sequencing}.
 
 Import declarations and definitions
 cause bindings to be created in the global
@@ -430,6 +431,7 @@ It is inadvisable, but not an error, for identifiers in library names to
 contain any of the characters {\cf | \backwhack{} ? * < " : > + [ ] /}
 or control characters after escapes are expanded.
 
+\label{librarydeclarations}
 A \hyper{library declaration} is any of:
 
 \begin{itemize}
@@ -477,6 +479,8 @@ The \ide{begin}, \ide{include}, and \ide{include-ci} declarations are
 used to specify the body of
 the library.  They have the same syntax and semantics as the corresponding
 expression types, splicing their expressions into the library body.
+This form of {\cf begin} is analogous to, but not the same as, the
+two types of {\cf begin} defined in section~\ref{sequencing}.
 
 The \ide{include-library-declarations} declaration is similar to
 \ide{include} except that the contents of the file are spliced directly into the
