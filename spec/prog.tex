@@ -515,10 +515,10 @@ expanded program or library body is evaluated. This rule applies
 transitively.  If a library is imported by more than one program or
 library, it may possibly be loaded additional times.
 
-Similarly, during the expansion of a library, if a syntax keyword
-imported from a library is needed to expand the library, then the
-imported library must be visited before the expansion of the importing
-library.
+Similarly, during the expansion of a library {\cf foo}, if a syntax
+keyword imported from another library {\cf (bar)} is needed to expand the
+library, then the syntax definition of the keyword must be imported from
+{\cf (bar)} before the expansion of {\cf (foo)}.
 
 Regardless of the number of times that a library is loaded, each
 program or library that imports bindings from a library must do so from a
