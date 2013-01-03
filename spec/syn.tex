@@ -447,8 +447,9 @@ un\-quo\-ta\-tion $D$} takes precedence.
 \meta{library name part} \: \meta{identifier} \| \meta{uinteger 10}
 \meta{library declaration} \: (export \arbno{\meta{export spec}})
 \> \| \meta{import declaration}
-\> \| (begin \arbno{\meta{library declaration}})
+\> \| (begin \arbno{\meta{command or definition}})
 \> \| \meta{includer}
+\> \| (include-library-declarations \atleastone{\meta{string}})
 \> \| (cond-expand \atleastone{\meta{cond-expand clause}})
 \> \| (cond-expand \atleastone{\meta{cond-expand clause}}
 \hbox to 1\wd0{\hfill}\ (else \arbno{\meta{library declaration}}))
