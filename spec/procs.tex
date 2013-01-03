@@ -2891,7 +2891,7 @@ Returns the \var{k}th byte of \var{bytevector}.
 \domain{It is an error if \vr{k} is not a valid index of \var{bytevector}.}
 Stores \var{byte} as the \var{k}th byte of \var{bytevector}.
 \begin{scheme}
-(let ((bv (bytevector 1 2 3 4)
+(let ((bv (bytevector 1 2 3 4)))
   (bytevector-u8-set! bv 1 3)
   bv) \lev \#u8(1 3 3 4)%
 \end{scheme}
