@@ -1214,7 +1214,7 @@ procedure in the call chain explicitly.
   (make-parameter
    10
    (lambda (x)
-     (if (and (integer? x) (<= 2 x 16))
+     (if (and (exact-integer? x) (<= 2 x 16))
          x
          (error "invalid radix")))))
 
