@@ -1177,10 +1177,11 @@ implementation-dependent.
 \syntax
 Both \hyperi{param} and \hyperi{value} are expressions.
 
+\domain{It is an error if the value of any \hyper{param} expression is not a parameter object.}
 \semantics
 A {\cf parameterize} expression is used to change the values returned by
 specified parameter objects during the evaluation of the body.
-\domain{It is an error if the value of any \hyper{param} expression is not a parameter object.}
+
 The \hyper{param} and \hyper{value} expressions
 are evaluated in an unspecified order.  The \hyper{body} is
 evaluated in a dynamic environment in which calls to the
