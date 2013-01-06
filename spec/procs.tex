@@ -155,41 +155,41 @@ boolean.
 Note that {\cf (eqv? 0.0 -0.0)} will return \schfalse{} if negative zero
 is distinguished, and \schtrue{} if negative zero is not distinguished.
 
-The next set of examples shows the use of {\cf eqv?}\ with procedures
-that have local state.  The {\cf gen-counter} procedure must return a distinct
-procedure every time, since each procedure has its own internal counter.
-The {\cf gen-loser} procedure, however, returns operationally equivalent procedures each time, since
-the local state does not affect the value or side effects of the
-procedures.  However, {\cf eqv?} may or may not detect this equivalence.
+%% The next set of examples shows the use of {\cf eqv?}\ with procedures
+%% that have local state.  The {\cf gen-counter} procedure must return a distinct
+%% procedure every time, since each procedure has its own internal counter.
+%% The {\cf gen-loser} procedure, however, returns operationally equivalent procedures each time, since
+%% the local state does not affect the value or side effects of the
+%% procedures.  However, {\cf eqv?} may or may not detect this equivalence.
 
-\begin{scheme}
-(define gen-counter
-  (lambda ()
-    (let ((n 0))
-      (lambda () (set! n (+ n 1)) n))))
-(let ((g (gen-counter)))
-  (eqv? g g))           \ev  \unspecified
-(eqv? (gen-counter) (gen-counter))
-                        \ev  \schfalse
-(define gen-loser
-  (lambda ()
-    (let ((n 0))
-      (lambda () (set! n (+ n 1)) 27))))
-(let ((g (gen-loser)))
-  (eqv? g g))           \ev  \unspecified
-(eqv? (gen-loser) (gen-loser))
-                        \ev  \unspecified
+%% \begin{scheme}
+%% (define gen-counter
+%%   (lambda ()
+%%     (let ((n 0))
+%%       (lambda () (set! n (+ n 1)) n))))
+%% (let ((g (gen-counter)))
+%%   (eqv? g g))           \ev  \unspecified
+%% (eqv? (gen-counter) (gen-counter))
+%%                         \ev  \schfalse
+%% (define gen-loser
+%%   (lambda ()
+%%     (let ((n 0))
+%%       (lambda () (set! n (+ n 1)) 27))))
+%% (let ((g (gen-loser)))
+%%   (eqv? g g))           \ev  \unspecified
+%% (eqv? (gen-loser) (gen-loser))
+%%                         \ev  \unspecified
 
-(letrec ((f (lambda () (if (eqv? f g) 'both 'f)))
-         (g (lambda () (if (eqv? f g) 'both 'g))))
-  (eqv? f g))
-                        \ev  \unspecified
+%% (letrec ((f (lambda () (if (eqv? f g) 'both 'f)))
+%%          (g (lambda () (if (eqv? f g) 'both 'g))))
+%%   (eqv? f g))
+%%                         \ev  \unspecified
 
-(letrec ((f (lambda () (if (eqv? f g) 'f 'both)))
-         (g (lambda () (if (eqv? f g) 'g 'both))))
-  (eqv? f g))
-                        \ev  \schfalse%
-\end{scheme}
+%% (letrec ((f (lambda () (if (eqv? f g) 'f 'both)))
+%%          (g (lambda () (if (eqv? f g) 'g 'both))))
+%%   (eqv? f g))
+%%                         \ev  \schfalse%
+%% \end{scheme}
 
 Since it is an error to modify constant objects (those returned by
 literal expressions), implementations may
