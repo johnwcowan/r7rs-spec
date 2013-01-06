@@ -1523,13 +1523,13 @@ the \hyper{keyword}s, bound to the specified transformers.
 Each binding of a \hyper{keyword} has \hyper{body} as its region.
 
 \begin{scheme}
-(let-syntax ((when (syntax-rules ()
-                     ((when test stmt1 stmt2 ...)
+(let-syntax ((given-that (syntax-rules ()
+                     ((given-that test stmt1 stmt2 ...)
                       (if test
                           (begin stmt1
                                  stmt2 ...))))))
   (let ((if \schtrue))
-    (when if (set! if 'now))
+    (given-that if (set! if 'now))
     if))                           \ev  now
 
 (let ((x 'outer))
