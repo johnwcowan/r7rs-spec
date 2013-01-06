@@ -317,6 +317,8 @@ representations of objects.
 By convention, \ide{?} is the final character of the names
 of procedures that always return a boolean value.
 Such procedures are called predicates.
+Predicates are generally understood to be side-effect free, except that they
+may raise an exception when passed the wrong type of argument.
 
 Similarly, \ide{!} is the final character of the names
 of procedures that store values into previously
