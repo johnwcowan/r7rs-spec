@@ -29,16 +29,17 @@ string literals.  Any character, including whitespace characters, but
 excluding the backslash and vertical line characters,
 may appear verbatim in such an identifier.
 In addition, characters may be
-specified using an \meta{inline hex escape}.  For example, the
+specified using either an \meta{inline hex escape} or
+the same escapes
+available in strings.
+
+For example, the
 identifier \verb+|H\x65;llo|+ is the same identifier as
 \verb+Hello+, and in an implementation that supports the appropriate
 Unicode character the identifier \verb+|\x3BB;|+ is the same as the
 identifier $\lambda$.
-
-It is also possible to include the backslash and vertical line characters,
-as well as any other character,
-in an identifier written with vertical lines.  This is done with the same escapes
-available in strings.  For example,  \verb+|\t\t|+ and \verb+|\x9;\x9;|+ are the same.
+What is more, \verb+|\t\t|+ and \verb+|\x9;\x9;|+ are the
+same.
 Note that \verb+||+ is a valid identifier that is different from any other
 identifier.
 
