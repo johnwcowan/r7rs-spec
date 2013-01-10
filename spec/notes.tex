@@ -229,75 +229,47 @@ requiring the redefinition of procedures, but not syntax keywords, to have retro
 
 \end{itemize}
 
-\subsection*{Incompatibilities with the main \rsixrs\ document}
+\subsection*{Incompatibilities with \rsixrs}
 This section enumerates the incompatibilities between \rsevenrs~and
-the ``Revised$^6$ report''~\cite{R6RS}.
+the ``Revised$^6$ report''~\cite{R6RS} and its accompanying Standard Libraries document.
 
 {\em This list is not authoritative, and may be incomplete.}
 
 \begin{itemize}
-\item The syntax of the library system was deliberately chosen to be
-syntactically different from \rsixrs, using {\cf define-library} instead of
-{\cf library} in order to allow easy disambiguation between \rsixrs\
-and \rsevenrs\ libraries.
+\item \rsevenrs\ libraries begin with the keyword {\cf define-library}
+rather than {\cf library} in order to make them syntactically
+distinguishable from \rsixrs\ libraries.
+In \rsevenrs\ terms, the body of an \rsixrs\ library consists
+of a single export declaration followed by a single import declaration,
+followed by commands and definitions.  In \rsevenrs, commands and
+definitions are not permitted directly within the body: they must be wrapped in a {\cf begin}
+library declaration.
 
-\item The library system does not support phase distinctions, which
-are unnecessary in the absence of low-level macros (see below),
-nor does it support versioning, which is an important feature but deserves more
-experimentation before being standardized.
-
-\item Putting an extra level of indirection around the library body
-allows room for extensibility. The \rsixrs\ syntax provides two positional
-forms which must be present and must have the correct keywords,
-{\cf export} and {\cf import}, which does not allow for unambiguous
-extensions. The Working Group considers extensibility to be important,
-and so chose a syntax which provides
-a clear separation between the library declarations and the Scheme code
-which makes up the body.
-
-\item The {\cf include} library declaration
-makes it easier to include separate files, 
-and the {\cf include-ci} variant allows legacy 
-case-insensitive code to be incorporated.
-
-\item The {\cf cond-expand} library declaration based on SRFI 0 allows for a more
-flexible alternative to the \rsixrs\ {\cf .impl.sls} file naming
-convention.
-The list of identifiers that {\cf cond-expand} treats as true is
-available at run time using the {\cf features} procedure.
-
-\item Since the \rsevenrs\ library system is straightforward, we expect
-that \rsixrs\ implementations will be able to support the {\cf define-library}
-syntax in addition to their {\cf library} syntax.
+\item There is no direct \rsixrs\ equivalent of the {\cf include}, {\cf include-ci},
+{\cf include-library-declarations}, or {\cf cond-expand} library declarations.
+On the other hand, the \rsevenrs\ library syntax does not support phase or version specifications.
 
 \item The grouping of standardized identifiers into libraries is different from the \rsixrs\
-approach. In particular, procedures which are optional either expressly
-or by implication in \rfivers\ have been removed from the base library.
-Only the base library is an absolute requirement.
+approach. In particular, procedures which are optional in \rfivers\, either expressly
+or by implication, have been removed from the base library.
+Only the base library itself is an absolute requirement.
 
-\item Identifier syntax is not provided. This is a useful feature in
-some situations, but the existence of such macros means that neither
-programmers nor other macros can look at an identifier in an evaluated
-position and know it is a reference --- this in a sense makes all macros
-slightly weaker. Individual implementations are encouraged to continue
-experimenting with this and other extensions before further standardization is done.
+\item No form of identifier syntax is provided. 
 
 \item Internal syntax definitions are allowed, but all references to syntax
 must follow the definition; the {\cf even}/{\cf odd} example given in
 \rsixrs\ is not allowed.
 
 \item The \rsixrs\ exception system was incorporated as-is, but the condition
-types have been left unspecified.  Specific errors that must be signaled
-in \rsixrs\ remain errors in \rsevenrs, allowing implementations to provide
-their own extensions.  There is no discussion of safety.
+types have been left unspecified.  In particular, where \rsixrs\ requires
+a condition of a specified type to be signaled, \rsevenrs\ says only
+``it is an error'', leaving the question of signaling open.
 
 \item Full Unicode support is not required.
 Normalization is not provided.
 Character comparisons are
 defined by Unicode, but string comparisons are implementation-dependent,
-and therefore need not be the lexicographic mapping of the corresponding
-character comparisons (an incompatibility with \rfivers). Non-Unicode
-characters are permitted.
+Non-Unicode characters are permitted.
 
 \item The full numeric tower is optional as in \rfivers, but optional support for IEEE
 infinities, NaN, and {\mbox -0.0} was adopted from \rsixrs. Most clarifications on
@@ -306,77 +278,33 @@ numeric results were also adopted, but the \rsixrs\ procedures {\cf real-valued?
 The \rsixrs\ division operators {\cf div}, {\cf mod}, {\cf div-and-mod}, {\cf
 div0}, {\cf mod0} and {\cf div0-and-mod0} are not provided.
 
-\item When a result is unspecified, it is still required to be a single value,
-in the interests of \rfivers\ compatibility. However, non-final expressions
+\item When a result is unspecified, it is still required to be a single value.
+However, non-final expressions
 in a body may return any number of values.
 
-\item Because of widespread SRFI 1 support and extensive code
-that uses it, the semantics of {\cf map} and {\cf for-each} have been changed to use
+\item The semantics of {\cf map} and {\cf for-each} have been changed to use
 the SRFI 1 early termination behavior. Likewise
 {\cf assoc} and {\cf member} take an optional {\cf equal?} argument as in SRFI 1,
 instead of the separate {\cf assp} and {\cf memp} procedures of \rsixrs.
 
-\item The \rsixrs~{\cf quasiquote} clarifications have been adopted, but the Working Group has not seen
-convincing enough examples of multiple-argument {\cf unquote} and
-{\cf unquote-splicing}, so they are not provided.
+\item The \rsixrs~{\cf quasiquote} clarifications have been adopted, with the
+exception of multiple-argument {\cf unquote} and
+{\cf unquote-splicing}.
 
 \item The \rsixrs~method of specifying mantissa widths was not adopted.
 
-\end{itemize}
+\item String ports are compatible with SRFI 6 rather than \rsixrs.
 
-\subsection*{Incompatibilities with the \rsixrs\ Standard Libraries document}
-
-This section enumerates the incompatibilities between \rsevenrs\ and
-the \rsixrs~\cite{R6RS} Standard Libraries.
-
-{\em This list is not authoritative, and is likely to be incomplete.}
-
-\begin{itemize}
-
-\item The low-level macro system and {\cf syntax-case} were not adopted. There
-are two general families of macro systems in widespread use --- the
-{\cf syntax-case} family and the {\cf syntactic-closures} family --- and they have
-neither been shown to be equivalent in power nor capable of implementing each
-other. Given this situation,
-low-level macros have been left to the large language.
-
-\item The new I/O system from \rsixrs{} was not adopted. 
-Historically, standardization reflects technologies that have undergone
-a period of adoption, experimentation, and usage before incorporation
-into a standard.  The Working Group was
-unhappy with the redundant
-provision of both the new system and the \rfivers{}-compatible ``simple I/O''
-system.
-However, binary I/O was added using binary ports that are
-at least potentially disjoint from
-textual ports and use their own parallel set of procedures.
-
-\item String ports are compatible with SRFI 6 rather than \rsixrs; analogous
-bytevector ports are also provided.
-
-\item The Working Group felt that the \rsixrs{} records system was overly complex, and the two layers
-poorly integrated. The Working Group spent a lot of time debating this, but in the
-end decided to simply use a generative version of SRFI 9, which has
-near-universal support among implementations. The Working Group hopes to provide a more
-powerful records system in the large language.
-
-\item \rsixrs{}-style bytevectors are included, but provide only the ``u8'' procedures in the small
-language.  The lexical syntax uses {\cf \#u8} for compatibility
+\item \rsixrs{}-style bytevectors are included, but 
+only the unsigned byte ({\cf u8}) procedures have been provided.
+The lexical syntax uses {\cf \#u8} for compatibility
 with SRFI 4, rather than the \rsixrs~{\cf \#vu8} style.
-With a library system, it's easier to change names than reader syntax.
 
-\item The utility macros {\cf when} and {\cf unless} are provided, but since it would be
-meaningless to try to use their result, it is left unspecified.
+\item The utility macros {\cf when} and {\cf unless} are provided, but 
+their result is left unspecified.
 
-\item The Working Group could not agree on a single design for hash tables and left them for
-the large language. 
-
-\item Sorting, bitwise arithmetic, and enumerations were not considered to be
-sufficiently useful to include in the small language.  They will probably be
-included in the large language.
-
-\item Pair and string mutation are too well-established to be relegated to
-separate libraries.
+\item The remaining features of the Standard Libraries document were
+left to future standardization efforts.
 
 \end{itemize}
 
