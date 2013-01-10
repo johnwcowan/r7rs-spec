@@ -21,18 +21,16 @@ All standard identifiers are entirely in lower case.
 
 \item The {\cf syntax-rules} construct now recognizes {\em \_} (underscore) 
 as a wildcard, which means it cannot be used as a syntax variable.
-It can still be used as a literal, however.
+It can still be used as a literal.
 
 \item The \rfivers\ procedures {\cf exact->inexact} and {\cf inexact->exact}
 have been renamed to their \rsixrs\ names, {\cf inexact} and {\cf exact},
 respectively, as these names are shorter and more correct.
-The former names are still available in the \rfivers\ compatibility library.
+The former names are still available in the \rfivers\ library.
 
 \item The guarantee that string comparison (with {\cf string<?} and the
 related predicates) is a lexicographical extension of character comparison
-(with {\cf char<?} and the related predicates) has been removed.  The former
-set provide an implementation-defined comparison as in \rfivers; the latter
-set provide comparison by Unicode scalar value.
+(with {\cf char<?} and the related predicates) has been removed.  
 
 \item Support for the \# character in numeric literals is no longer required.
 
@@ -64,7 +62,7 @@ Libraries can be imported into other libraries or main programs, with
 controlled exposure and renaming of identifiers.
 The contents of a library can be made conditional on the features of
 the implementation on which it is to be used.
-There is an \r5rs\ compatibility library.
+There is an \rfivers\ compatibility library.
 
 \item Exceptions can now be signaled explicitly with {\cf raise},
 {\cf raise-continuable} or {\cf error}, and can be handled with {\cf
@@ -83,9 +81,9 @@ dynamically rebound with {\cf parameterize}.
 The procedures {\cf current-input-port} and {\cf current-output-port} are now
 parameter objects, as is the newly introduced {\cf current-error-port}.
 
-\item {\em Bytevectors}, homogeneous vectors of integers in the range
+\item {\em Bytevectors}, vectors of exact integers in the range
 $[0, 255]$, have been added as a new disjoint type.
-A subset of the procedures available for vectors is provided.  Bytevectors
+A subset of the vector procedures is provided.  Bytevectors
 can be converted to and from strings in accordance with the UTF-8 character encoding.
 Bytevectors have a datum representation and evaluate to themselves.
 
@@ -161,7 +159,7 @@ The representation {\tt -nan.0} is synonymous with {\tt +nan.0}.
 the logarithm base.
 
 \item The procedures {\cf map} and {\cf for-each} are now required to terminate on
-the shortest list when the inputs have different lengths.
+the shortest argument list.
 
 \item The procedures {\cf member} and {\cf assoc} now take an optional third argument
 specifying the equality predicate to be used.
@@ -189,9 +187,9 @@ optional \var{start} and \var{end} arguments.
 repertoire that includes ASCII, but implementations must support any
 such subset in a way consistent with Unicode.
 Various character and string procedures have been extended accordingly.
-String comparison remains implementation-dependent, and is no longer
+String comparison is no longer
 required to be consistent with character comparison, which is based
-on Unicode scalar values.
+solely on Unicode scalar values.
 The new {\cf digit-value} procedure has been added to obtain the numerical
 value of a numeric character.
 
