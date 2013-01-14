@@ -108,7 +108,6 @@ identifiers.
  \>  \| \meta{vertical line} \arbno{\meta{symbol element}} \meta{vertical line}
  \>  \| \meta{peculiar identifier}
 \meta{initial} \: \meta{letter} \| \meta{special initial}
- \> \| \meta{inline hex escape}
 \meta{letter} \: a \| b \| c \| ... \| z
 \> \| A \| B \| C \| ... \| Z
 \meta{special initial} \: ! \| \$ \| \% \| \verb"&" \| * \| / \| : \| < \| =
@@ -121,6 +120,7 @@ identifiers.
 \meta{special subsequent} \: \meta{explicit sign} \| . \| @
 \meta{inline hex escape} \: \backwhack{}x\meta{hex scalar value};
 \meta{hex scalar value} \: \atleastone{\meta{hex digit}}
+\meta{mnemonic escape} \: \backwhack{}a \| \backwhack{}b \| \backwhack{}t \| \backwhack{}n \| \backwhack{}r
 \meta{peculiar identifier} \: \meta{explicit sign}
  \> \| \meta{explicit sign} \meta{sign subsequent} \arbno{\meta{subsequent}}
  \> \| \meta{explicit sign} . \meta{dot subsequent} \arbno{\meta{subsequent}}
@@ -130,7 +130,7 @@ identifiers.
 \meta{sign subsequent} \: \meta{initial} \| \meta{explicit sign} \| @
 \meta{symbol element} \:
  \> \meta{any character other than \meta{vertical line} or \backwhack}
- \> \| \meta{string element} \| \doublequote{} \| \backwhack{}|
+ \> \| \meta{inline hex escape} \| \meta{mnemonic escape} \| \backwhack{}|
 
 \meta{boolean} \: \schtrue{} \| \schfalse{} \| \sharptrue{} \| \sharpfalse{}
 \label{charactersyntax}
@@ -142,7 +142,7 @@ identifiers.
 \todo{Explain what happens in the ambiguous case.}
 \meta{string} \: " \arbno{\meta{string element}} "
 \meta{string element} \: \meta{any character other than \doublequote{} or \backwhack}
- \> \| \backwhack{}a \| \backwhack{}b \| \backwhack{}t \| \backwhack{}n \| \backwhack{}r \| \backwhack\doublequote{} \| \backwhack\backwhack 
+ \> \| \meta{mnemonic escape} \| \backwhack\doublequote{} \| \backwhack\backwhack 
  \>  \| \backwhack{}\arbno{\meta{intraline whitespace}}\meta{line ending}
  \>  \> \arbno{\meta{intraline whitespace}}
  \>  \| \meta{inline hex escape}
