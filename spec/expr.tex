@@ -752,10 +752,10 @@ referring to the value of the corresponding \hyper{variable} or the
 \end{scheme}
 
 \begin{entry}{%
-\proto{let-values}{ \hyper{mv-bindings} \hyper{body}}{\exprtype}}
+\proto{let-values}{ \hyper{mv binding spec} \hyper{body}}{\exprtype}}
 
 \syntax
-\hyper{Mv-bindings} has the form
+\hyper{Mv binding spec} has the form
 \begin{scheme}
 ((\hyperi{formals} \hyperi{init}) \dotsfoo)\rm,%
 \end{scheme}
@@ -789,11 +789,11 @@ values returned by the corresponding \hyper{init}.
 
 
 \begin{entry}{%
-\proto{let*-values}{ \hyper{mv-bindings} \hyper{body}}{\exprtype}}\nobreak
+\proto{let*-values}{ \hyper{mv binding spec} \hyper{body}}{\exprtype}}\nobreak
 
 \nobreak
 \syntax
-\hyper{Mv-bindings} has the form
+\hyper{Mv binding spec} has the form
 \begin{scheme}
 ((\hyper{formals} \hyper{init}) \dotsfoo)\rm,%
 \end{scheme}
