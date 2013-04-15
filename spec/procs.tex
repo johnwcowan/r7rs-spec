@@ -18,7 +18,7 @@ with them in section~\ref{force}.  In the same way, the procedure
 {\cf parameterize}, and is described with it in section~\ref{make-parameter}.
 
 \todo{consider removing unspecified effect}
-A program may use a global variable definition to bind any variable.  It may
+A program can use a global variable definition to bind any variable.  It may
 subsequently alter any such binding by an assignment (see
 section~\ref{assignment}).  These operations do not modify the behavior of
 any procedure defined in this report or imported from a library
@@ -356,7 +356,7 @@ different representations denote the same integer.
 Scheme's numerical operations treat numbers as abstract data, as
 independent of their representation as possible.  Although an implementation
 of Scheme may use multiple internal representations of
-numbers, this should not be apparent to a casual programmer writing
+numbers, this ought not to be apparent to a casual programmer writing
 simple programs.
 
 \subsection{Exactness}
@@ -381,7 +381,7 @@ if it was
 derived using \tupe{inexact} ingredients, or if it was derived using
 \tupe{inexact} operations. Thus \tupe{inexact}ness is a contagious
 property of a number.
-In particular, an \defining{exact complex number} must have an exact real part
+In particular, an \defining{exact complex number} has an exact real part
 and an exact imaginary part; all other complex numbers are \defining{inexact
 complex numbers}.
 
@@ -605,7 +605,7 @@ A
 numerical constant can be specified to be either \tupe{exact} or
 \tupe{inexact} by a prefix.  The prefixes are {\cf \#e}\sharpindex{e}
 for \tupe{exact}, and {\cf \#i}\sharpindex{i} for \tupe{inexact}.  An exactness
-prefix may appear before or after any radix prefix that is used.  If
+prefix can appear before or after any radix prefix that is used.  If
 the written representation of a number has no exactness prefix, the
 constant is
 \tupe{inexact} if it contains a decimal point or an
@@ -618,10 +618,10 @@ the precision of a constant.  For this purpose,
 implementations may accept numerical constants
 written with an exponent marker that indicates the
 desired precision of the \tupe{inexact}
-representation.  The letter {\cf s}, {\cf f},
+representation.  If so, the letter {\cf s}, {\cf f},
 {\cf d}, or {\cf l}, meaning \var{short}, \var{single},
 \var{double}, or \var{long} precision, respectively,
-may be used in place of {\cf e}.
+can be used in place of {\cf e}.
 The default precision has at least as much precision
 as \var{double}, but
 implementations may allow this default to be set by the user.
@@ -1427,7 +1427,7 @@ As a consequence, the \rfivers\ permission to return \schfalse{} when
 
 The standard boolean objects for true and false are written as
 \schtrue{} and \schfalse.\sharpindex{t}\sharpindex{f}  
-Alternatively, they may be written \sharptrue~and \sharpfalse,
+Alternatively, they can be written \sharptrue~and \sharpfalse,
 respectively.  What really
 matters, though, are the objects that the Scheme conditional expressions
 ({\cf if}, {\cf cond}, {\cf and}, {\cf or}, {\cf when}, {\cf unless}, {\cf do}) treat as
@@ -1806,7 +1806,7 @@ Returns the length of \var{list}.
 \begin{entry}{%
 \proto{append}{ list \dotsfoo}{procedure}}
 
-\domain{The last argument, if there is one, may be of any type.}
+\domain{The last argument, if there is one, can be of any type.}
 Returns a list consisting of the elements of the first \var{list}
 followed by the elements of the other \var{list}s.
 If there are no arguments, the empty list is returned.
@@ -1864,7 +1864,7 @@ The {\cf list-tail} procedure could be defined by
 \begin{entry}{%
 \proto{list-ref}{ list \vr{k}}{procedure}}
 
-\domain{The \var{list} argument may be circular, but
+\domain{The \var{list} argument can be circular, but
 it is an error if \var{list} has fewer than \vr{k} elements.}
 Returns the \vr{k}th element of \var{list}.  (This is the same
 as the car of {\tt(list-tail \var{list} \vr{k})}.)
@@ -2135,8 +2135,8 @@ Case is significant in \sharpsign\backwhack\hyper{character}, and in
 but not in {\cf\sharpsign\backwhack{}x}\meta{hex scalar value}.  
 If \hyper{character} in
 \sharpsign\backwhack\hyper{character} is alphabetic, then any character
-immediately following \hyper{character} must be a delimiter character such as a
-space or parenthesis.  This rule resolves the ambiguous case where, for
+immediately following \hyper{character} cannot be one that can appear in an identifier.
+This rule resolves the ambiguous case where, for
 example, the sequence of characters ``{\tt\sharpsign\backwhack space}''
 could be taken to be either a representation of the space character or a
 representation of the character ``{\tt\sharpsign\backwhack s}'' followed
@@ -3033,7 +3033,7 @@ The {\cf map} procedure applies \var{proc} element-wise to the elements of the
 \var{list}s and returns a list of the results, in order.
 If more than one \var{list} is given and not all lists have the same length,
 {\cf map} terminates when the shortest list runs out.
-The \var{list}s may be circular, but it is an error if they are all circular.
+The \var{list}s can be circular, but it is an error if all of them are circular.
 It is an error for \var{proc} to mutate any of the lists.
 The dynamic order in which \var{proc} is applied to the elements of the
 \var{list}s is unspecified.  If multiple returns occur from {\cf map},
@@ -3135,7 +3135,7 @@ the elements of the \var{list}s in order from the first element(s) to the
 last, and the value returned by {\cf for-each} is unspecified.
 If more than one \var{list} is given and not all lists have the same length,
 {\cf for-each} terminates when the shortest list runs out.
-The \var{list}s may be circular, but it is an error if they are all circular.
+The \var{list}s can be circular, but it is an error if all of them are circular.
 
 It is an error for \var{proc} to mutate any of the lists.
 
@@ -3453,7 +3453,7 @@ in the dynamic environment.
 invoking the current exception handler, passing it an object
 encapsulating information about the exception.  Any procedure
 accepting one argument can serve as an exception handler and any
-object may be used to represent an exception.
+object can be used to represent an exception.
 
 \begin{entry}{%
 \proto{with-exception-handler}{ \var{handler} \var{thunk}}{procedure}}
@@ -4457,7 +4457,7 @@ should be very likely that a compactly represented integer will suffice
 as the returned value.  Any particular jiffy size will be inappropriate
 for some implementations: a microsecond is too long for a very fast
 machine, while a much smaller unit would force many implementations to
-return integers which must be allocated for most calls, rendering 
+return integers which have to be allocated for most calls, rendering 
 {\cf current-jiffy} less useful for accurate timing measurements.
 \end{rationale}
 

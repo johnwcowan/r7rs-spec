@@ -15,7 +15,7 @@ the ``Revised$^5$ report''~\cite{R5RS}.
 \item Case sensitivity is now the default in symbols and character names.
 This means that code written under the assumption that symbols could be
 written {\cf FOO} or {\cf Foo} in some contexts and {\cf foo} in other contexts
-must either be changed, be marked with the new {\cf \#!fold-case} directive,
+can either be changed, be marked with the new {\cf \#!fold-case} directive,
 or be included in a library using the {\cf include-ci} library declaration.
 All standard identifiers are entirely in lower case.
 
@@ -231,7 +231,7 @@ requiring the redefinition of procedures, but not syntax keywords, to have retro
 This section enumerates the incompatibilities between \rsevenrs~and
 the ``Revised$^6$ report''~\cite{R6RS} and its accompanying Standard Libraries document.
 
-{\em This list is not authoritative, and may be incomplete.}
+{\em This list is not authoritative, and is possibly incomplete.}
 
 \begin{itemize}
 \item \rsevenrs\ libraries begin with the keyword {\cf define-library}
@@ -240,7 +240,7 @@ distinguishable from \rsixrs\ libraries.
 In \rsevenrs\ terms, the body of an \rsixrs\ library consists
 of a single export declaration followed by a single import declaration,
 followed by commands and definitions.  In \rsevenrs, commands and
-definitions are not permitted directly within the body: they must be wrapped in a {\cf begin}
+definitions are not permitted directly within the body: they have to be be wrapped in a {\cf begin}
 library declaration.
 
 \item There is no direct \rsixrs\ equivalent of the {\cf include}, {\cf include-ci},
@@ -254,8 +254,8 @@ Only the base library itself is an absolute requirement.
 
 \item No form of identifier syntax is provided. 
 
-\item Internal syntax definitions are allowed, but all references to syntax
-must follow the definition; the {\cf even}/{\cf odd} example given in
+\item Internal syntax definitions are allowed, but uses of a syntax form
+cannot appear before its definition; the {\cf even}/{\cf odd} example given in
 \rsixrs\ is not allowed.
 
 \item The \rsixrs\ exception system was incorporated as-is, but the condition
@@ -278,7 +278,7 @@ div0}, {\cf mod0} and {\cf div0-and-mod0} are not provided.
 
 \item When a result is unspecified, it is still required to be a single value.
 However, non-final expressions
-in a body may return any number of values.
+in a body can return any number of values.
 
 \item The semantics of {\cf map} and {\cf for-each} have been changed to use
 the SRFI 1 early termination behavior. Likewise

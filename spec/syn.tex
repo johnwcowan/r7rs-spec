@@ -31,7 +31,7 @@ numbers, etc.) are formed from sequences of characters.  The following
 sections describe how expressions and programs are formed from sequences
 of tokens.
 
-\meta{Intertoken space} may occur on either side of any token, but not
+\meta{Intertoken space} can occur on either side of any token, but not
 within a token.
 
 \vest Identifiers that do not begin with a vertical line are
@@ -85,8 +85,8 @@ containing the corresponding character.
 \meta{directive} \: \#!fold-case \| \#!no-fold-case%
 \end{grammar}
 
-Note that each \meta{directive} must be followed by a \meta{delimiter}
-or the end of file.
+Note that it is ungrammatical to follow a \meta{directive} with anything
+but a \meta{delimiter} or the end of file.
 
 \begin{grammar}%
 \meta{atmosphere} \: \meta{whitespace} \| \meta{comment} \| \meta{directive}
@@ -165,7 +165,7 @@ and $16$.  There are no rules for \meta{decimal $2$}, \meta{decimal
 $8$}, and \meta{decimal $16$}, which means that numbers containing
 decimal points or exponents are always in decimal radix.
 Although not shown below, all alphabetic characters used in the grammar
-of numbers may appear in either upper or lower case.
+of numbers can appear in either upper or lower case.
 \begin{grammar}%
 \meta{num $R$} \: \meta{prefix $R$} \meta{complex $R$}
 \meta{complex $R$} \: %

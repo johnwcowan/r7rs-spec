@@ -163,8 +163,8 @@ in those locations.
 (A \defining{fresh} location is one that is distinct from every previously
 existing location.)
 Next, the expressions in the
-body of the lambda expression (which may contain definitions
-and thus represent a {\cf letrec*} form --- see section~\ref{letrecstar})
+body of the lambda expression (which, if it contains definitions,
+represents a {\cf letrec*} form --- see section~\ref{letrecstar})
 will be evaluated sequentially in the extended environment.
 The results of the last expression in the body will be returned as
 the results of the procedure call.
@@ -700,8 +700,8 @@ call where a {\cf lambda} expression binds the \hyper{variable}s to the values
 of the \hyper{init}s.
 In the most common uses of {\cf letrec}, all the \hyper{init}s are
 \lambdaexp{}s and the restriction is satisfied automatically.
-Another restriction is that the continuation of a \hyper{init}
-should not be invoked more than once.
+Another restriction is that it is an error to invoke the continuation
+of a \hyper{init} more than once.
 
 \end{entry}
 
@@ -1305,7 +1305,7 @@ without intervening whitespace by a commercial at-sign (\atsign),\mainschindex{,
 expression does not evaluate to a list; the opening and closing parentheses
 of the list are then ``stripped away'' and the elements of the list are
 inserted in place of the comma at-sign expression sequence.  A comma
-at-sign should only appear within a list or vector \hyper{qq template}.
+at-sign normally appears only within a list or vector \hyper{qq template}.
 
 \begin{note}
 In order to unquote an identifier beginning with {\cf @}, it is necessary
@@ -1328,7 +1328,7 @@ to avoid colliding with the comma at-sign sequence.
           \lev  (foo bar baz)%
 \end{scheme}
 
-Quasiquote expressions may be nested.  Substitutions are made only for
+Quasiquote expressions can be nested.  Substitutions are made only for
 unquoted components appearing at the same nesting level
 as the outermost quasiquote.  The nesting level increases by one inside
 each successive quasiquotation, and decreases by one inside each
@@ -1465,8 +1465,8 @@ the scope within which a macro is defined, and
 \item a pattern language for specifying macro transformers.
 \end{itemize}
 
-The syntactic keyword of a macro may shadow variable bindings, and local
-variable bindings may shadow syntactic bindings.  \index{keyword}  
+The syntactic keyword of a macro can shadow variable bindings, and local
+variable bindings can shadow syntactic bindings.  \index{keyword}  
 Two mechanisms are provided to prevent unintended conflicts:
 
 \begin{itemize}
@@ -1661,7 +1661,7 @@ Underscores also match arbitrary input elements but are not pattern variables
 and so cannot be used to refer to those elements.  If an underscore appears
 in the \hyper{literal}s list, then that takes precedence and
 underscores in the \hyper{pattern} match as literals.
-Multiple underscores may appear in a \hyper{pattern}.
+Multiple underscores can appear in a \hyper{pattern}.
 
 Identifiers that appear in \texttt{(\hyper{literal} \dotsfoo)} are
 interpreted as literal

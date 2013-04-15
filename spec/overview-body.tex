@@ -109,7 +109,7 @@ A symbol is an object representing a string,
 the symbol's \textit{name}.
 Unlike strings, two symbols whose names are spelled the same
 way are never distinguishable.  Symbols are useful for many applications;
-for instance, they may be used the way enumerated values are used in
+for instance, they can be used the way enumerated values are used in
 other languages.
 
 In \rsevenrs, unlike \rfivers, symbols and identifiers are case-sensitive.
@@ -439,10 +439,10 @@ any Scheme programmer can add new expression types.
 \textit{Datum values} constitute a subset of Scheme objects.
 These include booleans, numbers, characters, symbols,
 and strings as well as lists, vectors, and bytevectors whose elements are datum values.  Each
-datum value may be represented in textual form as a
+datum value can be represented in textual form as a
 \textit{syntactic datum}, which can be written out
 and read back in without loss of information.
-A datum value may be represented by any of several different syntactic datums.
+There is in general more than one syntactic datum corresponding to each datum value.
 Moreover, each datum value
 can be trivially translated to a literal expression in a program by
 prepending a {\cf\singlequote} to a corresponding syntactic datum:
@@ -492,7 +492,7 @@ in the expression
 %
 adds 1 to it.  Normally these ubiquitous continuations are hidden
 behind the scenes and programmers do not think much about them.  On
-rare occasions, however, a programmer may need to deal with
+rare occasions, however, a programmer needs to deal with
 continuations explicitly.  The {\cf call-with-current-continuation}
 procedure allows
 Scheme programmers to do that by creating a procedure that reinstates

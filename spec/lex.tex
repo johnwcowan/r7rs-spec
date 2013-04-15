@@ -27,8 +27,8 @@ Alternatively, an identifier can be represented by a sequence of zero or more
 characters enclosed within vertical lines ({\cf $|$}), analogous to
 string literals.  Any character, including whitespace characters, but
 excluding the backslash and vertical line characters,
-may appear verbatim in such an identifier.
-In addition, characters may be
+can appear verbatim in such an identifier.
+In addition, characters can be
 specified using either an \meta{inline hex escape} or
 the same escapes
 available in strings.
@@ -86,7 +86,7 @@ folding.
 {\cf{}\#!fold-case}\sharpbangindex{fold-case}\\
 {\cf{}\#!no-fold-case}\sharpbangindex{no-fold-case}}
 
-These directives may appear anywhere comments are permitted (see
+These directives can appear anywhere comments are permitted (see
 section~\ref{wscommentsection}) but must be followed by a delimiter.
 They are treated as comments, except that they affect the reading
 of subsequent data from the same port. The {\cf{}\#!fold-case} directive causes
@@ -153,7 +153,7 @@ section~\ref{numbersection}.
 \begin{description}{}{}
 
 \item[{\tt.\ + -}]
-These are used in numbers, and may also occur anywhere in an identifier.
+These are used in numbers, and can also occur anywhere in an identifier.
 A delimited plus or minus sign by itself
 is also an identifier.
 A delimited period (not occurring within a number or identifier) is used
@@ -245,7 +245,7 @@ structures with shared or circular substructure.
 
 The scope of a datum label is the portion of the outermost datum in which it appears
 that is to the right of the label.
-Consequently, a reference \texttt{\#\hyper{n}\#} may occur only after a label
+Consequently, a reference \texttt{\#\hyper{n}\#} can occur only after a label
 \texttt{\#\hyper{n}=}; it is an error to attempt a forward reference.  In
 addition, it is an error if the reference appears as the labelled object itself
 (as in \texttt{\#\hyper{n}= \#\hyper{n}\#}),
