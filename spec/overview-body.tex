@@ -117,8 +117,8 @@ In \rsevenrs, unlike \rfivers, symbols and identifiers are case-sensitive.
 \paragraph{Characters}
 
 Scheme characters mostly correspond to textual characters.
-More precisely, they are isomorphic to the \textit{scalar values} of
-the Unicode standard.
+More precisely, they are isomorphic to a subset of the \textit{scalar values} of
+the Unicode standard, with possible implementation-dependent extensions.
 
 \paragraph{Strings}
 
@@ -150,7 +150,7 @@ Records are structured values, and are
 aggregations of zero or more \textit{fields}, each of which holds a single location.
 Records are organized into \textit{record types}.
 A predicate, a constructor, and field accessors and
-mutators are defined for each record type.
+mutators can be defined for each record type.
 
 \paragraph{Ports}
 
@@ -331,21 +331,21 @@ Whereas {\cf (+ 23 42)}, {\cf (f 23)}, and {\cf ((lambda (x) (+ x 42))
   23)} are all examples of procedure calls, {\cf lambda} and {\cf
   let} expressions are not.  This is because {\cf let}, even though
 it is an identifier, is not a variable, but is instead a \textit{syntactic
-  keyword}.  A form that has a
+  keyword}.  A list that has a
 syntactic keyword as its first subexpression obeys special rules determined by
 the keyword.  The {\cf define} identifier in a definition is also a
 syntactic keyword.  Hence, definitions are also not procedure calls.
 
 The rules for the {\cf lambda} keyword specify that the first
-subform is a list of parameters, and the remaining subforms are the body of
-the procedure.  In {\cf let} expressions, the first subform is a list
-of binding specifications, and the remaining subforms constitute a body of
+sublist is a list of parameters, and the remaining sublists are the body of
+the procedure.  In {\cf let} expressions, the first sublist is a list
+of binding specifications, and the remaining sublists constitute a body of
 expressions.
 
-Procedure calls can generally be distinguished from these
+Procedure calls can be distinguished from these
 \textit{expression types} by
-looking for a syntactic keyword in the first position of an
-form: if the first position does not contain a syntactic keyword, the expression
+looking for a syntactic keyword in the first position of a list:
+if the first position does not contain a syntactic keyword, the expression
 is a procedure call.  
 The set of syntactic keywords of Scheme is
 fairly small, which usually makes this task fairly simple.
@@ -372,7 +372,7 @@ expression.  The expression {\cf (set! x 42)} is an assignment, saying
 ``replace the object in the location referenced by {\cf x} with 42''.
 Thus, the previous value of {\cf x}, 23, is replaced by 42.
 
-\chapter{Derived forms and macros}
+\chapter{Derived syntax expressions and macros}
 
 Many of the expression types specified 
 as part of the \rsevenrs{} small language
@@ -389,10 +389,10 @@ expressions are equivalent:
 ((lambda (x y) (+ x y)) 23 42) \lev 65%
 \end{scheme}
 
-Special forms like {\cf let} expressions are called \textit{derived
-  forms} because their semantics can be
-derived from that of other kinds of forms by a syntactic
-transformation.  Some procedure definitions are also derived forms.  The
+Syntax expressions like {\cf let} expressions are called \textit{derived}
+because their semantics can be
+derived from that of other kinds of expressions by a syntactic
+transformation.  Some procedure definitions are also derived expressions.  The
 following two definitions are equivalent:
 
 \begin{scheme}
@@ -405,7 +405,7 @@ following two definitions are equivalent:
 \end{scheme}
 
 In Scheme, it is possible for a program to create its own derived
-forms by binding syntactic keywords to macros:
+expressions by binding syntactic keywords to macros:
 
 \begin{scheme}
 (define-syntax def
@@ -421,7 +421,7 @@ forms by binding syntactic keywords to macros:
 The {\cf define-syntax} construct specifies that a parenthesized
 structure matching the pattern {\cf (def f (p ...) body)}, where {\cf
   f}, {\cf p}, and {\cf body} are pattern variables, is translated to
-{\cf (define (f p ...) body)}.  Thus, the {\cf def} form appearing in
+{\cf (define (f p ...) body)}.  Thus, the {\cf def} expression appearing in
 the example gets translated to:
 
 \begin{scheme}
@@ -439,7 +439,7 @@ any Scheme programmer can add new expression types.
 \textit{Datum values} constitute a subset of Scheme objects.
 These include booleans, numbers, characters, symbols,
 and strings as well as lists, vectors, and bytevectors whose elements are datum values.  Each
-datum value can be represented in textual form as a
+datum value can be represented textually as a
 \textit{syntactic datum}, which can be written out
 and read back in without loss of information.
 There is in general more than one syntactic datum corresponding to each datum value.
@@ -466,8 +466,8 @@ expression with this list as its value.  Likewise, {\cf \#(1 2 3)}
 is a syntactic datum that represents a vector with elements 1, 2 and 3, and
 {\cf '\#(1 2 3)} is the corresponding literal.
 
-The syntactic data are a superset of the Scheme forms.  Thus, data
-can be used to represent Scheme forms as data objects.  In
+Syntactic datums are a superset of Scheme expressions.  Thus, data
+can be used to represent Scheme expressions as data objects.  In
 particular, symbols can be used to represent identifiers.
 
 \begin{scheme}
