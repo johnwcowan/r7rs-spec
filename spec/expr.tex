@@ -221,6 +221,11 @@ It is an error for a \hyper{variable} to appear more than once in
 
 \end{entry}
 
+Each procedure created as the result of evaluating a \lambdaexp{} is
+(conceptually) tagged
+with a storage location, in order to make \ide{eqv?} and
+\ide{eq?} work on procedures (see section~\ref{equivalencesection}).
+
 
 \subsection{Conditionals}\unsection
 

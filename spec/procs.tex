@@ -78,6 +78,9 @@ character according to the {\cf char=?} procedure
 \item \vari{obj} and \varii{obj} are pairs, vectors, bytevectors, records,
 or strings that denote the same location in the store
 (section~\ref{storagemodel}).
+
+\item \vari{obj} and \varii{obj} are procedures whose location tags are
+equal (section~\ref{lambda}).
 \end{itemize}
 
 The {\cf eqv?} procedure returns \schfalse{} if:
@@ -131,6 +134,8 @@ or strings that denote distinct locations.
 (eqv? (cons 1 2) (cons 1 2))     \ev  \schfalse
 (eqv? (lambda () 1)
       (lambda () 2))             \ev  \schfalse
+(let ((p (lambda (x) x)))
+  (eqv? p p))                    \ev  \schtrue
 (eqv? \#f 'nil)                  \ev  \schfalse%
 \end{scheme}
 
@@ -144,8 +149,6 @@ boolean.
 (eqv? '\#() '\#())         \ev  \unspecified
 (eqv? (lambda (x) x)
       (lambda (x) x))    \ev  \unspecified
-(let ((p (lambda (x) x)))
-  (eqv? p p))                    \ev  \unspecified
 (eqv? (lambda (x) x)
       (lambda (y) y))    \ev  \unspecified
 (eqv? 1.0e0 1.0f0)       \ev  \unspecified
@@ -155,41 +158,41 @@ boolean.
 Note that {\cf (eqv? 0.0 -0.0)} will return \schfalse{} if negative zero
 is distinguished, and \schtrue{} if negative zero is not distinguished.
 
-%% The next set of examples shows the use of {\cf eqv?}\ with procedures
-%% that have local state.  The {\cf gen-counter} procedure must return a distinct
-%% procedure every time, since each procedure has its own internal counter.
-%% The {\cf gen-loser} procedure, however, returns operationally equivalent procedures each time, since
-%% the local state does not affect the value or side effects of the
-%% procedures.  However, {\cf eqv?} may or may not detect this equivalence.
+The next set of examples shows the use of {\cf eqv?}\ with procedures
+that have local state.  The {\cf gen-counter} procedure must return a distinct
+procedure every time, since each procedure has its own internal counter.
+The {\cf gen-loser} procedure, however, returns operationally equivalent procedures each time, since
+the local state does not affect the value or side effects of the
+procedures.  However, {\cf eqv?} may or may not detect this equivalence.
 
-%% \begin{scheme}
-%% (define gen-counter
-%%   (lambda ()
-%%     (let ((n 0))
-%%       (lambda () (set! n (+ n 1)) n))))
-%% (let ((g (gen-counter)))
-%%   (eqv? g g))           \ev  \unspecified
-%% (eqv? (gen-counter) (gen-counter))
-%%                         \ev  \schfalse
-%% (define gen-loser
-%%   (lambda ()
-%%     (let ((n 0))
-%%       (lambda () (set! n (+ n 1)) 27))))
-%% (let ((g (gen-loser)))
-%%   (eqv? g g))           \ev  \unspecified
-%% (eqv? (gen-loser) (gen-loser))
-%%                         \ev  \unspecified
+\begin{scheme}
+(define gen-counter
+  (lambda ()
+    (let ((n 0))
+      (lambda () (set! n (+ n 1)) n))))
+(let ((g (gen-counter)))
+  (eqv? g g))           \ev  \unspecified
+(eqv? (gen-counter) (gen-counter))
+                        \ev  \schfalse
+(define gen-loser
+  (lambda ()
+    (let ((n 0))
+      (lambda () (set! n (+ n 1)) 27))))
+(let ((g (gen-loser)))
+  (eqv? g g))           \ev  \unspecified
+(eqv? (gen-loser) (gen-loser))
+                        \ev  \unspecified
 
-%% (letrec ((f (lambda () (if (eqv? f g) 'both 'f)))
-%%          (g (lambda () (if (eqv? f g) 'both 'g))))
-%%   (eqv? f g))
-%%                         \ev  \unspecified
+(letrec ((f (lambda () (if (eqv? f g) 'both 'f)))
+         (g (lambda () (if (eqv? f g) 'both 'g))))
+  (eqv? f g))
+                        \ev  \unspecified
 
-%% (letrec ((f (lambda () (if (eqv? f g) 'f 'both)))
-%%          (g (lambda () (if (eqv? f g) 'g 'both))))
-%%   (eqv? f g))
-%%                         \ev  \schfalse%
-%% \end{scheme}
+(letrec ((f (lambda () (if (eqv? f g) 'f 'both)))
+         (g (lambda () (if (eqv? f g) 'g 'both))))
+  (eqv? f g))
+                        \ev  \schfalse%
+\end{scheme}
 
 Since it is an error to modify constant objects (those returned by
 literal expressions), implementations may
@@ -233,7 +236,7 @@ capable of discerning distinctions finer than those detectable by
 \vest On symbols, booleans, the empty list, pairs,
 non-empty
 strings, vectors, bytevectors, and records, {\cf eq?}\ and {\cf eqv?}\ are guaranteed to have the same
-behavior.  On numbers, characters, and procedures, {\cf eq?}'s behavior is
+behavior.  On numbers and characters, {\cf eq?}'s behavior is
 implementation-dependent, but it will always return either true or
 false, and will return true only when {\cf eqv?}\ would also return
 true.  On empty strings, vectors, bytevectors, and records, {\cf eq?} may also behave
@@ -248,7 +251,7 @@ differently from {\cf eqv?}.
 (eq? '() '())                   \ev  \schtrue
 (eq? 2 2)                       \ev  \unspecified
 (eq? \#\backwhack{}A \#\backwhack{}A) \ev  \unspecified
-(eq? car car)                   \ev  \unspecified
+(eq? car car)                   \ev  \schtrue
 (let ((n (+ 2 3)))
   (eq? n n))      \ev  \unspecified
 (let ((x '(a)))
@@ -256,7 +259,7 @@ differently from {\cf eqv?}.
 (let ((x '\#()))
   (eq? x x))      \ev  \schtrue
 (let ((p (lambda (x) x)))
-  (eq? p p))      \ev  \unspecified%
+  (eq? p p))      \ev  \schtrue%
 \end{scheme}
 
 
