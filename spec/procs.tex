@@ -2172,15 +2172,13 @@ Returns \schtrue{} if \var{obj} is a character, otherwise returns \schfalse.
 
 \label{characterequality}
 
-These procedures return \schtrue{} if the Unicode scalar values corresponding to their arguments are (respectively):
+These procedures return \schtrue{} if 
+the results of passing their arguments to {\cf char\coerce{}integer}
+are respectively
 equal, monotonically increasing, monotonically decreasing,
 monotonically non-decreasing, or monotonically non-increasing.
 
 These predicates are required to be transitive.
-
-These procedures impose a total ordering on the set of characters which
-is the same as the Unicode scalar value ordering.  This is true 
-whether or not the implementation uses the Unicode representation internally.
 
 \end{entry}
 
