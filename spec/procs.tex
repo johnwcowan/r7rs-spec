@@ -2348,10 +2348,19 @@ Implementations may forbid certain characters from appearing in strings.
 However, with the exception of {\tt \#\backwhack{}null}, ASCII characters must
 not be forbidden.
 For example, an implementation might support the entire Unicode repertoire,
-but only allow characters U+0001 to U+00FF (the Latin-1 repertoire) in
-strings.  It is an error to pass such a forbidden character to
-{\cf make-string}, {\cf string}, {\cf string-set!}, or {\cf string-fill!}.
+but only allow characters U+0001 to U+00FF (the Latin-1 repertoire) in strings.
 
+It is an error to pass such a forbidden character to
+{\cf make-string}, {\cf string}, {\cf string-set!}, or {\cf string-fill!},
+as part of the list passed to {\cf list\coerce{}string},
+or as part of the vector passed to {\cf vector\coerce{}string}
+(see \ref{vectortostring}),
+or in UTF-8 encoded form within a bytevector passed to
+{\cf utf8\coerce{}string} (see \ref{utf8tostring}).
+It is also an error for a procedure passed to {\cf string-map}
+(see \ref{stringmap}) to return a forbidden character,
+or for {\cf read-string} (see \ref{readstring})
+to attempt to read one.
 
 \begin{entry}{%
 \proto{string?}{ obj}{procedure}}
@@ -2364,6 +2373,8 @@ Returns \schtrue{} if \var{obj} is a string, otherwise returns \schfalse.
 \proto{make-string}{ \vr{k}}{procedure}
 \rproto{make-string}{ \vr{k} char}{procedure}}
 
+\domain{It is an error if \var{char} is forbidden in strings.}
+
 The {\cf make-string} procedure returns a newly allocated string of
 length \vr{k}.  If \var{char} is given, then all the characters of the string
 are initialized to \var{char}, otherwise the contents of the
@@ -2373,6 +2384,8 @@ string are unspecified.
 
 \begin{entry}{%
 \proto{string}{ char \dotsfoo}{procedure}}
+
+\domain{It is an error if any of the \var{char}s are forbidden in strings.}
 
 Returns a newly allocated string composed of the arguments.
 It is analogous to {\cf list}.
@@ -2398,7 +2411,8 @@ There is no requirement for this procedure to execute in constant time.
 \begin{entry}{%
 \proto{string-set!}{ string k char}{procedure}}
 
-\domain{It is an error if \vr{k} is not a valid index of \var{string}.}
+\domain{It is an error if \vr{k} is not a valid index of \var{string}.
+It is also an error if \var{char} is forbidden in strings.}
 The {\cf string-set!} procedure stores \var{char} in element \vr{k} of \var{string}.
 There is no requirement for this procedure to execute in constant time.
 
@@ -2523,7 +2537,8 @@ characters in the given strings.
 \rproto{string->list}{ string start end}{procedure}
 \proto{list->string}{ list}{procedure}}
 
-\domain{It is an error if any element of \var{list} is not a character.}
+\domain{It is an error if any element of \var{list} is not a character
+or is forbidden in strings.}
 The {\cf string\coerce{}list} procedure returns a newly allocated list of the
 characters of \var{string} between \var{start} and \var{end}.
 {\cf list\coerce{}string}
@@ -2581,6 +2596,7 @@ b \ev "a12de"%
 
 \domain{It is an error if \var{fill} is not a character or is forbidden
 in strings.}
+
 The {\cf string-fill!} procedure stores \var{fill}
 in the elements of \var{string}
 between \var{start} and \var{end}.
@@ -2710,6 +2726,7 @@ In both procedures, order is preserved.
 \proto{string->vector}{ string}{procedure}
 \rproto{string->vector}{ string start}{procedure}
 \rproto{string->vector}{ string start end}{procedure}}
+\label{vectortostring}
 
 \domain{It is an error if any element of \var{vector} between \var{start}
 and \var{end} is not a character, or is a character forbidden in strings.}
@@ -2949,6 +2966,7 @@ of the elements in the given bytevectors.
 
 \end{entry}
 
+\label{utf8tostring}
 \begin{entry}{%
 \proto{utf8->string}{ bytevector} {procedure}
 \rproto{utf8->string}{ bytevector start} {procedure}
@@ -3059,6 +3077,7 @@ the values returned by earlier returns are not mutated.
 
 \begin{entry}{%
 \proto{string-map}{ proc \vari{string} \varii{string} \dotsfoo}{procedure}}
+\label{stringmap}
 
 \domain{It is an error if \var{proc} does not
 accept as many arguments as there are {\it string}s
@@ -3071,6 +3090,9 @@ The dynamic order in which \var{proc} is applied to the elements of the
 \var{string}s is unspecified.
 If multiple returns occur from {\cf string-map},
 the values returned by earlier returns are not mutated.
+
+It is an error if any of the characters returned by \var{proc}
+is forbidden in strings.
 
 \begin{scheme}
 (string-map char-foldcase "AbdEgH") \lev  "abdegh"
@@ -4061,6 +4083,7 @@ port that has no ready characters.
 \begin{entry}{%
 \proto{read-string}{ k}{procedure}
 \rproto{read-string}{ k port}{procedure}}
+\label{readstring}
 
 Reads the next \var{k} characters, or as many as are available before the end of file,
 from the textual
@@ -4068,6 +4091,7 @@ input \var{port} into a newly allocated string in left-to-right order
 and returns the string.
 If no characters are available before the end of file,
 an end-of-file object is returned.
+It is an error if any of the characters read are forbidden in strings.
 
 \end{entry}
 
