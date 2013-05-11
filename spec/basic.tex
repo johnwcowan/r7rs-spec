@@ -144,11 +144,21 @@ to the object last stored in the location before the fetch.
 
 Every location is marked to show whether it is in use.
 No variable or object ever refers to a location that is not in use.
-Whenever this report speaks of storage being allocated for a variable
+
+Whenever this report speaks of storage being newly allocated for a variable
 or object, what is meant is that an appropriate number of locations are
 chosen from the set of locations that are not in use, and the chosen
 locations are marked to indicate that they are now in use before the variable
 or object is made to denote them.
+Notwithstanding this,
+it is understood that the empty list cannot be newly allocated, because
+it is a unique object.  It is also understood that empty strings, empty
+vectors, and empty bytevectors, which contain no locations, may or may
+not be newly allocated.
+(which is unique), empty strings, empty vectors, and empty bytevectors
+that an empty list is newly allocated (there is only one empty-list object).
+It is also understood that the phrases "newly allocated string", "newly
+allocated vector", and "newly allocated bytevector"
 
 Every object that denotes locations is 
 either mutable\index{mutable} or
