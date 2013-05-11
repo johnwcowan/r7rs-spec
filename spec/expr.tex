@@ -1330,7 +1330,7 @@ to avoid colliding with the comma at-sign sequence.
           \lev  \#(10 5 2 4 3 8)
 (let ((foo '(foo bar)) (@baz 'baz))
   `(list ,@foo , @baz))%
-          \lev  (foo bar baz)%
+          \lev  (list foo bar baz)%
 \end{scheme}
 
 Quasiquote expressions can be nested.  Substitutions are made only for

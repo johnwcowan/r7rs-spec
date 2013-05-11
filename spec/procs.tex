@@ -2074,8 +2074,8 @@ require escaping when written, but does not interpret escapes in its input.
 \begin{scheme}
 (string->symbol "mISSISSIppi")  \lev%
   mISSISSIppi
-(eq? 'bitBlt (string->symbol "bitBlt"))     \lev  \schtrue
-(eq? 'LollyPop
+(eqv? 'bitBlt (string->symbol "bitBlt"))     \lev  \schtrue
+(eqv? 'LollyPop
      (string->symbol
        (symbol->string 'LollyPop)))  \lev  \schtrue
 (string=? "K. Harper, M.D."
