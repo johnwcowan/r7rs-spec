@@ -2572,7 +2572,7 @@ between \var{start} and \var{end}.
 It is also an error if {\cf (- (string-length \var{to}) \var{at})}
 is less than {\cf (- \var{end} \var{start})}.}
 Copies the characters of string \var{from} between \var{start} and \var{end}
-to bytevector \var{to}, starting at \var{at}.  The order in which characters are
+to string \var{to}, starting at \var{at}.  The order in which characters are
 copied is unspecified, except that if the source and destination overlap,
 copying takes place as if the source is first copied into a temporary
 string and then into the destination.  This can be achieved without
@@ -2622,7 +2622,7 @@ element is indexed by one less than the length of the vector.
 Vectors are written using the notation {\tt\#(\var{obj} \dotsfoo)}.
 For example, a vector of length 3 containing the number zero in element
 0, the list {\cf(2 2 2 2)} in element 1, and the string {\cf "Anna"} in
-element 2 can be written as following:
+element 2 can be written as follows:
 
 \begin{scheme}
 \#(0 (2 2 2 2) "Anna")%
@@ -2842,7 +2842,7 @@ bytevector, starting at index zero as with vectors.
 Bytevectors are written using the notation {\tt\#u8(\var{byte} \dotsfoo)}.
 For example, a bytevector of length 3 containing the byte 0 in element
 0, the byte 10 in element 1, and the byte 5 in
-element 2 can be written as following:
+element 2 can be written as follows:
 
 \begin{scheme}
 \#u8(0 10 5)%
