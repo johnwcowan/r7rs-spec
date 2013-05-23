@@ -3248,21 +3248,21 @@ will cause the invocation of \var{before} and \var{after} thunks installed using
 
 The escape procedure accepts the same number of arguments as the continuation to
 the original call to \callcc.
-Except for continuations created by the {\cf call-with-values}
+Most continuations take only one value.
+Continuations created by the {\cf call-with-values}
 procedure (including the initialization expressions of
 {\cf define-values}, {\cf let-values}, and {\cf let*-values} expressions),
-all continuations take exactly one value.  
-\todo{consider removing unspecified effect}
-The effect of passing no value or more than one value to continuations
-that were not created by {\tt call-with-values} is unspecified.
-
-However, the continuations of all non-final expressions within a sequence
+take the number of values that the consumer expects.
+The continuations of all non-final expressions within a sequence
 of expressions, such as in {\cf lambda}, {\cf case-lambda}, {\cf begin},
 {\cf let}, {\cf let*}, {\cf letrec}, {\cf letrec*}, {\cf let-values}, 
 {\cf let*-values}, {\cf let-syntax}, {\cf letrec-syntax}, {\cf parameterize},
 {\cf guard}, {\cf case}, {\cf cond}, {\cf when}, and {\cf unless} expressions,
 take an arbitrary number of values because they discard the values passed
 to them in any event.
+The effect of passing no values or more than one value to continuations
+that were not created in one of these ways is unspecified.
+
 
 \vest The escape procedure that is passed to \var{proc} has
 unlimited extent just like any other procedure in Scheme.  It can be stored
