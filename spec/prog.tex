@@ -106,7 +106,8 @@ However, a REPL should permit these actions.
 
 A variable definition binds one or more identifiers and specifies an initial
 value for each of them.
-It takes one of the following forms:\mainschindex{define}
+The simplest kind of variable definition
+takes one of the following forms:\mainschindex{define}
 
 \begin{itemize}
 
@@ -146,7 +147,7 @@ has essentially the same effect as the assignment expression
 \end{scheme}
 if \hyper{variable} is bound to a non-syntax value.  However, if
 \hyper{variable} is not bound, 
-or is bound to a {\em syntax definition} (see below),
+or is a syntactic keyword,
 then the definition will bind
 \hyper{variable} to a new location before performing the assignment,
 whereas it would be an error to perform a {\cf set!}\ on an
@@ -171,7 +172,7 @@ beginning of a \hyper{body} (that is, the body of a \ide{lambda},
 such a body might not be apparent until after expansion of other syntax.
 Such definitions are known as {\em internal definitions}\mainindex{internal
 definition} as opposed to the global definitions described above.
-The variable defined by an internal definition is local to the
+The variables defined by internal definitions are local to the
 \hyper{body}.  That is, \hyper{variable} is bound rather than assigned,
 and the region of the binding is the entire \hyper{body}.  For example,
 
@@ -214,6 +215,7 @@ that form the body of the \ide{begin}.
 The construct {\cf define-values} introduces new definitions like
 {\cf define}, but can create multiple definitions from a single
 expression returning multiple values.
+As a result, it is a kind of definition.
 It is allowed wherever {\cf define} is allowed.
 
 \begin{entry}{%
