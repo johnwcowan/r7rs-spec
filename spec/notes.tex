@@ -82,7 +82,7 @@ The procedures {\cf current-input-port} and {\cf current-output-port} are now
 parameter objects, as is the newly introduced {\cf current-error-port}.
 
 \item {\em Bytevectors}, vectors of exact integers in the range
-$[0, 255]$, have been added as a new disjoint type.
+from 0 to 255 inclusive, have been added as a new disjoint type.
 A subset of the vector procedures is provided.  Bytevectors
 can be converted to and from strings in accordance with the UTF-8 character encoding.
 Bytevectors have a datum representation and evaluate to themselves.
@@ -166,8 +166,12 @@ specifying the equality predicate to be used.
 {\cf exact-integer?}, {\cf square}, and {\cf exact-integer-sqrt}
 have been added.
 
-\item The procedures {\cf -}, {\cf /}, and the character and string comparison
+\item The {\cf -} and {\cf /}
 procedures are now required to support an arbitrary number of arguments.
+
+\item The character and string comparison
+procedures are now required to support an arbitrary number of arguments
+not less than two.
 
 \item The procedures {\cf make-list}, {\cf list-copy}, {\cf list-set!},
 {\cf string-map}, {\cf string-for-each}, {\cf string->vector}, 

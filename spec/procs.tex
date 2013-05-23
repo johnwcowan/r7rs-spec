@@ -2829,7 +2829,7 @@ a \lev \#(1 2 smash smash 5)%
 
 \defining{Bytevectors} represent blocks of binary data.
 They are fixed-length sequences of bytes, where
-a \defining{byte} is an exact integer in the range $[0, 255]$.
+a \defining{byte} is an exact integer in the range from 0 to 255 inclusive.
 A bytevector is typically more space-efficient than a vector
 containing the same values.
 
@@ -3505,7 +3505,7 @@ in the dynamic environment used for the invocation of \var{thunk}.
    (lambda ()
     (+ 1 (raise 'an-error))))))
         \ev exception
- \>{\em and prints}  condition: an error
+ \>{\em and prints}  condition: an-error
 
 (with-exception-handler
  (lambda (x)
