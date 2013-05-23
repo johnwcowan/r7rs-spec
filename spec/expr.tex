@@ -558,11 +558,11 @@ interpretation of {\cf and}, {\cf or}, and {\cf not}.
 A \ide{cond-expand} is then expanded by evaluating the
 \hyper{feature requirement}s of successive \hyper{ce-clause}s
 in order until one of them returns \schtrue.  When a true clause is
-found, the corresponding \hyper{expression}s are spliced into
-the current context as if by {\cf begin}, and the remaining clauses are ignored.
+found, the corresponding \hyper{expression}s are expanded to a
+{\cf begin}, and the remaining clauses are ignored.
 If none of the \hyper{feature requirement}s evaluate to \schtrue, then
 if there is an else clause, its \hyper{expression}s are
-included.  Otherwise, the \ide{cond-expand} has no effect.
+included.  Otherwise, the behavior of the \ide{cond-expand} is unspecified.
 Unlike {\cf cond}, {\cf cond-expand} does not depend on the value
 of any variables.
 
