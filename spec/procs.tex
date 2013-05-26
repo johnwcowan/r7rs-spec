@@ -171,7 +171,7 @@ procedures.  However, {\cf eqv?} may or may not detect this equivalence.
     (let ((n 0))
       (lambda () (set! n (+ n 1)) n))))
 (let ((g (gen-counter)))
-  (eqv? g g))           \ev  \unspecified
+  (eqv? g g))           \ev  \schtrue
 (eqv? (gen-counter) (gen-counter))
                         \ev  \schfalse
 (define gen-loser
@@ -179,7 +179,7 @@ procedures.  However, {\cf eqv?} may or may not detect this equivalence.
     (let ((n 0))
       (lambda () (set! n (+ n 1)) 27))))
 (let ((g (gen-loser)))
-  (eqv? g g))           \ev  \unspecified
+  (eqv? g g))           \ev  \schtrue
 (eqv? (gen-loser) (gen-loser))
                         \ev  \unspecified
 
