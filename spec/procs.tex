@@ -2349,7 +2349,8 @@ Implementations may forbid certain characters from appearing in strings.
 However, with the exception of {\tt \#\backwhack{}null}, ASCII characters must
 not be forbidden.
 For example, an implementation might support the entire Unicode repertoire,
-but only allow characters U+0001 to U+00FF (the Latin-1 repertoire) in strings.
+but only allow characters U+0001 to U+00FF (the Latin-1 repertoire
+without {\tt \#\backwhack{}null}) in strings.
 
 It is an error to pass such a forbidden character to
 {\cf make-string}, {\cf string}, {\cf string-set!}, or {\cf string-fill!},
@@ -2947,7 +2948,7 @@ b \ev \#u8(10 1 2 40 50)%
 \end{scheme}
 
 \begin{note}
-This procedure appears in R6RS, but places the source before the destination,
+This procedure appears in \rsixrs, but places the source before the destination,
 contrary to other such procedures in Scheme.
 \end{note}
 
@@ -3365,7 +3366,7 @@ The {\tt values} procedure might be defined as follows:
 \begin{entry}{%
 \proto{call-with-values}{ producer consumer}{procedure}}
 
-Calls its \var{producer} argument with no values and
+Calls its \var{producer} argument with no arguments and
 a continuation that, when passed some values, calls the
 \var{consumer} procedure with those values as arguments.
 The continuation for the call to \var{consumer} is the
@@ -4070,7 +4071,7 @@ accept characters from interactive ports without getting stuck waiting for
 input.  Any input editors associated with such ports must ensure that
 characters whose existence has been asserted by {\cf char-ready?}\ cannot
 be removed from the input.  If {\cf char-ready?}\ were to return \schfalse{} at end of
-file, a port at end-of-file would be indistinguishable from an interactive
+file, a port at end of file would be indistinguishable from an interactive
 port that has no ready characters.
 \end{rationale}
 \end{entry}
