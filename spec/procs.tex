@@ -2355,12 +2355,12 @@ It is an error to pass such a forbidden character to
 {\cf make-string}, {\cf string}, {\cf string-set!}, or {\cf string-fill!},
 as part of the list passed to {\cf list\coerce{}string},
 or as part of the vector passed to {\cf vector\coerce{}string}
-(see \ref{vectortostring}),
+(see section~\ref{vectortostring}),
 or in UTF-8 encoded form within a bytevector passed to
-{\cf utf8\coerce{}string} (see \ref{utf8tostring}).
+{\cf utf8\coerce{}string} (see section~\ref{utf8tostring}).
 It is also an error for a procedure passed to {\cf string-map}
-(see \ref{stringmap}) to return a forbidden character,
-or for {\cf read-string} (see \ref{readstring})
+(see section~\ref{stringmap}) to return a forbidden character,
+or for {\cf read-string} (see section~\ref{readstring})
 to attempt to read one.
 
 \begin{entry}{%
@@ -3470,7 +3470,7 @@ extent of a call to \var{before} or \var{after} is unspecified.
 
 This section describes Scheme's exception-handling and
 exception-raising procedures.
-For the concept of Scheme exceptions, see section \ref{errorsituations}.
+For the concept of Scheme exceptions, see section~\ref{errorsituations}.
 See also \ref{guard} for the {\cf guard} syntax.
 
 \defining{Exception handler}s are one-argument procedures that determine the
