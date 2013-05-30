@@ -2374,8 +2374,6 @@ Returns \schtrue{} if \var{obj} is a string, otherwise returns \schfalse.
 \proto{make-string}{ \vr{k}}{procedure}
 \rproto{make-string}{ \vr{k} char}{procedure}}
 
-\domain{It is an error if \var{char} is forbidden in strings.}
-
 The {\cf make-string} procedure returns a newly allocated string of
 length \vr{k}.  If \var{char} is given, then all the characters of the string
 are initialized to \var{char}, otherwise the contents of the
@@ -2385,8 +2383,6 @@ string are unspecified.
 
 \begin{entry}{%
 \proto{string}{ char \dotsfoo}{procedure}}
-
-\domain{It is an error if any of the \var{char}s is forbidden in strings.}
 
 Returns a newly allocated string composed of the arguments.
 It is analogous to {\cf list}.
@@ -2412,8 +2408,7 @@ There is no requirement for this procedure to execute in constant time.
 \begin{entry}{%
 \proto{string-set!}{ string k char}{procedure}}
 
-\domain{It is an error if \vr{k} is not a valid index of \var{string}.
-It is also an error if \var{char} is forbidden in strings.}
+\domain{It is an error if \vr{k} is not a valid index of \var{string}.}
 The {\cf string-set!} procedure stores \var{char} in element \vr{k} of \var{string}.
 There is no requirement for this procedure to execute in constant time.
 
@@ -2538,8 +2533,7 @@ characters in the given strings.
 \rproto{string->list}{ string start end}{procedure}
 \proto{list->string}{ list}{procedure}}
 
-\domain{It is an error if any element of \var{list} is not a character
-or is forbidden in strings.}
+\domain{It is an error if any element of \var{list} is not a character.}
 The {\cf string\coerce{}list} procedure returns a newly allocated list of the
 characters of \var{string} between \var{start} and \var{end}.
 {\cf list\coerce{}string}
@@ -2595,8 +2589,7 @@ b \ev "a12de"%
 \rproto{string-fill!}{ string fill start}{procedure}
 \rproto{string-fill!}{ string fill start end}{procedure}}
 
-\domain{It is an error if \var{fill} is not a character or is forbidden
-in strings.}
+\domain{It is an error if \var{fill} is not a character.}
 
 The {\cf string-fill!} procedure stores \var{fill}
 in the elements of \var{string}
@@ -2730,7 +2723,7 @@ In both procedures, order is preserved.
 \label{vectortostring}
 
 \domain{It is an error if any element of \var{vector} between \var{start}
-and \var{end} is not a character, or is a character forbidden in strings.}
+and \var{end} is not a character.}
 The {\cf vector->string} procedure returns a newly allocated string of the objects contained
 in the elements of \var{vector}
 between \var{start} and \var{end}.
@@ -2981,8 +2974,7 @@ of the elements in the given bytevectors.
 \rproto{string->utf8}{ string start} {procedure}
 \rproto{string->utf8}{ string start end} {procedure}}
 
-\domain{It is an error for \var{bytevector} to contain invalid UTF-8 byte sequences
-or byte sequences representing characters which are forbidden in strings.}
+\domain{It is an error for \var{bytevector} to contain invalid UTF-8 byte sequences.}
 These procedures translate between strings and bytevectors
 that encode those strings using the UTF-8 encoding.
 The {\cf utf8\coerce{}string} procedure decodes the bytes of
@@ -3096,9 +3088,6 @@ The dynamic order in which \var{proc} is applied to the elements of the
 \var{string}s is unspecified.
 If multiple returns occur from {\cf string-map},
 the values returned by earlier returns are not mutated.
-
-It is an error if any of the characters returned by \var{proc}
-is forbidden in strings.
 
 \begin{scheme}
 (string-map char-foldcase "AbdEgH") \lev  "abdegh"
@@ -4097,7 +4086,6 @@ input \var{port} into a newly allocated string in left-to-right order
 and returns the string.
 If no characters are available before the end of file,
 an end-of-file object is returned.
-It is an error if any of the characters read is forbidden in strings.
 
 \end{entry}
 
