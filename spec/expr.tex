@@ -524,6 +524,7 @@ expression is unspecified.
 \begin{entry}{%
 \proto{cond-expand}{ \hyperi{ce-clause} \hyperii{ce-clause} \dotsfoo}{\exprtype}}
 
+\syntax
 The \ide{cond-expand} expression type
 provides a way to statically
 expand different expressions depending on the
@@ -546,6 +547,7 @@ A \hyper{feature requirement} takes one of the following forms:
 \item {\tt(not \hyper{feature requirement})}
 \end{itemize}
 
+\semantics
 Each implementation maintains a list of feature identifiers which are
 present, as well as a list of libraries which can be imported.  The
 value of a \hyper{feature requirement} is determined by replacing
@@ -588,7 +590,7 @@ effect while their initial values are being computed, thus allowing
 mutually recursive definitions.
 The {\cf let-values} and {\cf let*-values} constructs are analogous to {\cf let} and {\cf let*}
 respectively, but are designed to handle multiple-valued expressions, binding
-different identifiers to each returned value.
+different identifiers to the returned values.
 
 \begin{entry}{%
 \proto{let}{ \hyper{bindings} \hyper{body}}{\exprtype}}

@@ -212,10 +212,9 @@ that form the body of the \ide{begin}.
 
 \subsection{Multiple-value definitions}
 
-The construct {\cf define-values} introduces new definitions like
-{\cf define}, but can create multiple definitions from a single
+Another kind of definition is provided by {\cf define-values}, 
+which creates multiple definitions from a single
 expression returning multiple values.
-As a result, it is a kind of definition.
 It is allowed wherever {\cf define} is allowed.
 
 \begin{entry}{%
@@ -230,6 +229,9 @@ to the return values in the same way that the \hyper{formals} in a
 call.
 
 \begin{scheme}
+(define-values (x y) (integer-sqrt 17))
+(list x y) \ev (4 1)
+
 (let ()
   (define-values (x y) (values 1 2))
   (+ x y))     \ev 3%
@@ -481,7 +483,7 @@ an import declaration used in a program or at the REPL (see section~\ref{import}
 The \ide{begin}, \ide{include}, and \ide{include-ci} declarations are
 used to specify the body of
 the library.  They have the same syntax and semantics as the corresponding
-expression types, splicing their expressions into the library body.
+expression types.
 This form of {\cf begin} is analogous to, but not the same as, the
 two types of {\cf begin} defined in section~\ref{sequencing}.
 
@@ -644,9 +646,9 @@ number, and the variable {\cf +} is bound to a procedure that computes
 sums.  The full list of {\cf(scheme base)} bindings can be found in
 Appendix~\ref{stdlibraries}.
 
-Implementations are permitted to provide an initial REPL environment 
-which behaves as if all possible variables were bound to locations, most of
-which contained unspecified values.  Top level REPL definitions in
+Implementations may provide an initial REPL environment 
+which behaves as if all possible variables are bound to locations, most of
+which contain unspecified values.  Top level REPL definitions in
 such an implementation are truly equivalent to assignments,
 unless the identifier is defined as a syntax keyword.
 
