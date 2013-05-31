@@ -38,7 +38,8 @@ related predicates) is a lexicographical extension of character comparison
 as exponent markers is no longer required.
 
 \item Implementations of {\cf string\coerce{}number} are no longer permitted
-to return \schfalse{} when the argument contains an explicit radix prefix.
+to return \schfalse{} when the argument contains an explicit radix prefix,
+and must be compatible with {\cf read} and the syntax of numbers in programs.
 
 \item The procedures {\cf transcript-on} and {\cf transcript-off} have been removed.
 
