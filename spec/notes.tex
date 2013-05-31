@@ -75,7 +75,7 @@ Conditions signaled by {\cf read} and by file-related procedures
 also have predicates to detect them.
 
 \item New disjoint types supporting access to multiple fields can be
-generated with SRFI 9's {\cf define-record-type}.
+generated with the {\cf define-record-type} of SRFI 9~\cite{srfi9}
 
 \item Parameter objects can be created with {\cf make-parameter}, and
 dynamically rebound with {\cf parameterize}.
@@ -285,7 +285,7 @@ However, non-final expressions
 in a body can return any number of values.
 
 \item The semantics of {\cf map} and {\cf for-each} have been changed to use
-the SRFI 1 early termination behavior. Likewise
+the SRFI 1~\cite{srfi1} early termination behavior. Likewise
 {\cf assoc} and {\cf member} take an optional {\cf equal?} argument as in SRFI 1,
 instead of the separate {\cf assp} and {\cf memp} procedures of \rsixrs.
 
@@ -295,12 +295,12 @@ exception of multiple-argument {\cf unquote} and
 
 \item The \rsixrs~method of specifying mantissa widths was not adopted.
 
-\item String ports are compatible with SRFI 6 rather than \rsixrs.
+\item String ports are compatible with SRFI 6~\cite{srfi6} rather than \rsixrs.
 
 \item \rsixrs{}-style bytevectors are included, but 
 only the unsigned byte ({\cf u8}) procedures have been provided.
 The lexical syntax uses {\cf \#u8} for compatibility
-with SRFI 4, rather than the \rsixrs~{\cf \#vu8} style.
+with SRFI 4~\cite{srfi4}, rather than the \rsixrs~{\cf \#vu8} style.
 
 \item The utility macros {\cf when} and {\cf unless} are provided, but 
 their result is left unspecified.
