@@ -707,8 +707,6 @@ call where a {\cf lambda} expression binds the \hyper{variable}s to the values
 of the \hyper{init}s.
 In the most common uses of {\cf letrec}, all the \hyper{init}s are
 \lambdaexp{}s and the restriction is satisfied automatically.
-Another restriction is that it is an error to invoke the continuation
-of an \hyper{init} more than once.
 
 \end{entry}
 
@@ -742,6 +740,8 @@ If it is not possible to evaluate each \hyper{init} without assigning or
 referring to the value of the corresponding \hyper{variable} or the
 \hyper{variable} of any of the bindings that follow it in
 \hyper{bindings}, it is an error.
+Another restriction is that it is an error to invoke the continuation
+of an \hyper{init} more than once.
 
 \begin{scheme}
 (letrec* ((p
