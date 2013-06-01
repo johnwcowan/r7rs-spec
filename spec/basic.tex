@@ -241,6 +241,8 @@ expression.
 \begin{grammar}%
 (l\=ambda \meta{formals}
   \>\arbno{\meta{definition}} \arbno{\meta{expression}} \meta{tail expression})
+
+(case-lambda \arbno{(\meta{formals} \meta{tail body})})
 \end{grammar}%
 
 \item If one of the following expressions is in a tail context,
@@ -281,8 +283,6 @@ are shown here.
 
 (let-syntax (\arbno{\meta{syntax spec}}) \meta{tail body})
 (letrec-syntax (\arbno{\meta{syntax spec}}) \meta{tail body})
-
-(case-lambda \arbno{(\meta{formals} \meta{tail body})})
 
 (begin \meta{tail sequence})
 
