@@ -103,11 +103,13 @@ is an inexact number.
 are numerically unequal (in the sense of {\cf =}).
 
 \item \vari{obj} and \varii{obj} are both inexact numbers such that either
-they are not both NaN and are numerically unequal (in the sense of {\cf =}),
+they are numerically unequal (in the sense of {\cf =}),
 or they do not yield the same results (in the sense of {\cf eqv?})
 when passed as arguments to any other procedure
 that can be defined as a finite composition of Scheme's standard
-arithmetic procedures which does not result in a NaN value.
+arithmetic procedures, provided it does not result in a NaN value.
+As an exception, the behavior of {\cf eqv?} is unspecified
+when both \vari{obj} and \varii{obj} are NaN.
 
 \item \vari{obj} and \varii{obj} are characters for which the {\cf char=?}
 procedure returns \schfalse{}.
