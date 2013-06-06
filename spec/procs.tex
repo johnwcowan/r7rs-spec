@@ -236,7 +236,7 @@ capable of discerning distinctions finer than those detectable by
 \vest On symbols, booleans, the empty list, pairs,
 non-empty
 strings, vectors, bytevectors, and records, {\cf eq?}\ and {\cf eqv?}\ are guaranteed to have the same
-behavior.  On numbers and characters, {\cf eq?}'s behavior is
+behavior.  On numbers, characters, and procedures, {\cf eq?}'s behavior is
 implementation-dependent, but it will always return either true or
 false, and will return true only when {\cf eqv?}\ would also return
 true.  On empty strings, vectors, bytevectors, and records, {\cf eq?} may also behave
