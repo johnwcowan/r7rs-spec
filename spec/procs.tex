@@ -210,14 +210,12 @@ implementation-dependent.
   (eqv? x x))                    \ev  \schtrue%
 \end{scheme}
 
-\begin{rationale} 
 The above definition of {\cf eqv?} allows implementations latitude in
-their treatment of procedures and literals:  implementations are free
-either to detect or to fail to detect that two procedures or two literals
+their treatment of procedures and literals:  implementations may
+either detect or fail to detect that two procedures or two literals
 are equivalent to each other, and can decide whether or not to
 merge representations of equivalent objects by using the same pointer or
 bit pattern to represent both.
-\end{rationale}
 
 \begin{note}
 If inexact numbers are represented as IEEE binary floating-point numbers,
@@ -2106,7 +2104,7 @@ or \sharpsign\backwhack\hyper{character name} or
 
 The following character names must be supported
 by all implementations with the given values.  
-Implementations are free to add other names
+Implementations may add other names
 provided they cannot be interpreted as hex scalar values preceded by {\cf x}.
 
 $$
