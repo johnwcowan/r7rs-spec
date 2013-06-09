@@ -1,0 +1,68 @@
+﻿<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<html>
+  <head>
+    <title>SRFI ?: Boxes</title>
+  </head>
+
+  <body>
+
+<H1>Title</H1>
+
+Boxes
+
+<H1>Author</H1>
+
+John Cowan
+
+<H1>Abstract</H1>
+
+his is a trivial module, providing objects with a single mutable state. Several Schemes have something like it, sometimes called cells. Boxes are a disjoint type.  A box is like a single-element vector, normally used as minimal mutable storage.  These procedures implement the box data type. A box is a cell containing a single mutable field.  SISC supports boxes, a container for a Scheme value. Boxing is often used to implement call-by-reference semantics.  Boxes are single-cell objects that are primarily useful for providing an "extra level of indirection." This extra level of indirection is typically used to allow more than one body of code or data structure to share a reference, or pointer, to an object. For example, boxes may be used to implement call-by-reference semantics in an interpreter for a language employing this parameter passing discipline.  A box is a cell containing a single, mutable or immutable, field. The boxed value may be any Scheme type, including a variable or a location.  Cells are data structures similar to pairs except that they have only one element. They are useful for managing state.  These hold a single value and are useful when a simple indirection is required. The system uses these to hold the values of lexical variables that may be set!.  
+
+<H1>Issues</H1>
+
+??? Optional section that may point out things to be resolved.  This
+    will not appear in the final SRFI.
+
+<H1>Rationale</H1>
+
+??? detailed rationale
+
+<H1>Specification</H1>
+
+??? detailed specification
+
+<H1>Implementation</H1>
+
+??? explanation of how it meets the reference implementation requirement, and the code, if possible
+
+<A HREF="srfi minus ???-reference.scm">Source for the reference implementation.</A>
+
+<H1>Copyright</H1>
+Copyright (C) ??? (199?). All Rights Reserved. 
+<p>
+Permission is hereby granted, free of charge, to any person obtaining a
+copy of this software and associated documentation files (the "Software"),
+to deal in the Software without restriction, including without limitation
+the rights to use, copy, modify, merge, publish, distribute, sublicense,
+and/or sell copies of the Software, and to permit persons to whom the
+Software is furnished to do so, subject to the following conditions:</p>
+<p>
+The above copyright notice and this permission notice shall be included in
+all copies or substantial portions of the Software.</p>
+<p>
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL
+THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
+FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
+DEALINGS IN THE SOFTWARE.</p>
+
+    <hr/>
+    <address>Editor: <a href="mailto:srfi-editors at srfi dot schemers dot org">Dave Mason</a></address>
+<!-- Created: Tue Sep 29 19:20:08 EDT 1998 -->
+<!-- hhmts start -->
+Last modified: Sun Jan 28 14:21:14 MET 2007
+<!-- hhmts end -->
+  </body>
+</html>

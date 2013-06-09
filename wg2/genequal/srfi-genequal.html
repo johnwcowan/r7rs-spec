@@ -1,0 +1,206 @@
+﻿<!DOCTYPE HTML PUBLIC "" "-//W3C//DTD HTML 3.2 Final//EN">
+<html>
+  <head>
+    <title>SRFI xxx: Generalized equality</title>
+  </head>
+  <body>
+  
+  <H1>Title</H1>
+  
+  <p>Generalized equality</p>
+  
+  <H1>Author</H1>
+  
+  <p>John Cowan</p>
+  
+  <H1>Abstract</H1>
+  
+  <p>Generalized equality is a small framework that allows the creation of predicates that behave like <tt>equal?</tt>, but can be extended selectively to handle objects of both explicit and implicit types in the precise way desired by the application.</p>
+  
+  <H1>Issues</H1>
+
+<p>None for this draft.</p>
+
+<H1>Rationale</H1>
+
+<p>Scheme's standard <code>equal?</code> predicate is intended to determine structurally defined equality, as distinct from identity.  In all Lisp systems, such predicates descend recursively into certain types of compound objects, comparing their leaf nodes using some simpler predicate such as <tt>eqv?</tt>.  However, the exact details vary between systems and are essentially arbitrary.</p>
+
+<ul>
+<li><p>In <a href="http://www.schemers.org/Documents/Standards/R5RS/HTML/r5rs-Z-H-9.html#%_sec_6.1">R5RS</a> and earlier Scheme standards, the only compound types are pairs, strings, and vectors, and <tt>equal?</tt> descends into all of them.  Different implementations extended this behavior in different ways for their non-standard record types and other implementation types.</p></li>
+
+<li><p>In <a href="http://www.r6rs.org/final/html/r6rs/r6rs-Z-H-14.html#node_idx_436">R6RS</a>, <code>equal?</code> is defined to descend into pairs, strings, vectors, and bytevectors only, using <code>eqv?</code> for all other nodes.  R6RS specifies that two records are <code>eqv?</code> iff they contain the same locations.  In R7RS-small, the same four types are descended into, but the behavior of <code>eqv?</code> on records containing distinct locations is unspecified.  R7RS specifically requires that if two objects are <code>eqv?</code>, they are also <code>equal?</code>.</p></li>
+
+<li><p>In Common Lisp, there are two corresponding functions:  <a href="http://clhs.lisp.se/Body/f_equal.htm"><code>equal</code></a>, which descends into pairs, arrays (including strings), and pathnames only; and <a href="http://clhs.lisp.se/Body/f_equalp.htm"><code>equalp</code></a>, which also descends into structures and hash tables, and compares characters (and therefore strings) case-insensitively.</p></li>
+
+<li><p>Henry Baker's 1990 paper <a href="http://home.pipeline.com/~hbaker1/ObjectIdentity.html">"Equal Rights for Functional Objects"</a> proposes <a><code>egal</code></a>, which descends into immutable structures only, comparing all mutable structures with <code>eqv?</code>.  This is extremely self-consistent, but doesn't allow testing contingent equality (in which two pieces of state just happen to contain the same value at present), as <code>equal?</code> does.  <code>Egal</code> appears in Clojure under the name of <code>#equiv</code>.</p></li>
+
+<li><p>In Java, the <a href="http://docs.oracle.com/javase/6/docs/api/java/lang/Object.html#equals(java.lang.Object)"><code>equals</code></a> generic function allows an equality method to be provided for each class in the system, typically testing contingent equality.  However, this puts the class programmer entirely in control, leaving no flexibility for the user of the class, who is stuck with the class's idea of equality.  <a href="http://cdr.eurolisp.org/document/8/cleqcmp.html">CDR 2</a>, a proposal for Common Lisp by Marco Antoniotti, proposes essentially the same thing, as does Kent Pitman in his 1993 paper <a href="http://www.nhplace.com/kent/PS/EQUAL.html">"The Best of Intentions"</a>.</p></li>
+</ul>
+
+<p>But it may often be the case that none of these predicates is <em>exactly</em> what the user wants.  During the R7RS-small development process, there was a proposal (eventually rejected) for an <code>equal=?</code> predicate, which would be just like <code>equal?</code> except that it would compare numbers with <code>=</code> rather than <code>eqv?</code>.  Examples could be multiplied indefinitely.</p>
+
+<p>What is more, as Pitman points out, the implicit type of a Lisp object is not always the same as its explicit type, particularly in older code.  For example, it is common to treat a list with a particular symbol in the car as a pseudo-record, and indeed Common Lisp supports defining accessors, mutators, and predicates for this sort of thing, though CLOS object dispatch does not recognize such implicit types.</p>
+
+<p>The generalized equality framework proposed in this SRFI allows precise control of all comparisons made, not only at the top level of objects, but also in their components, and it allows the specification of which components, if any, are to be recursively compared.  The procedure <code>generalized-equal?</code> is invoked with two objects to compare for equality and a list of <em>comparators</em>, which are standard or user-written procedures representing partial equality functions.  The comparators are tested in the order given until one provides a definitive result.  If none of them can handle the objects passed, comparison descends into pairs, strings, vectors, and bytevectors, recursively calling <code>generalized-equal?</code> with the same list of comparators.  Anything left over is compared with <code>eqv?</code>.  The same one-way consistency with <code>eqv?</code> is imposed as in R7RS.</p>
+
+<p>Two convenience routines are provided to make it easy to write comparators for atomic values given a type-discriminating predicate and a type-specific equality predicate, and to generate curried versions of <code>generalized-equal?</code> with a specific list of comparators.  It is the programmer's responsibility to ensure that such equivalence predicates are symmetric, reflexive, and transitive if they are to be used in wider contexts.</p>
+
+<p>Because of the difficulties in determining when a data structure is or is not self-referential in the general case, <code>generalized-equal?</code> is <em>not</em> required to terminate in all cases, as <code>equal?</code> is in R6RS and R7RS.</p>
+
+<H1>Specification</H1>
+
+<p>The procedures in this SRFI are in the <code>(scheme genequal)</code> and <code>(srfi xxx)</code> libraries (or <code>(srfi :xxx)</code> on R6RS).  However, the sample implementation currently places them in the <code>genequal</code> library instead.</p>
+
+<p><tt>(generalized-equal? </tt><em>obj1 obj2</em><tt> . </tt><em>comparator-list</em><tt>)</tt></p>
+
+<p>
+
+Compares <em>obj1</em> and <em>obj2</em> for equality in the sense of the comparators provided in <tt>comparator-list</tt>.  A <em>comparator</em> is a procedure that is given two arguments to compare.  It returns <tt>#t</tt> if its arguments are to be considered equal, <tt>#f</tt> if they are to be considered unequal, and the symbol <tt>pass</tt> if it cannot decide.  It is an error for a comparator to return anything else.  The third argument passed to a comparator is <em>comparator-list</em>, to be used in recursive calls to <tt>generalized-equal?</tt>.
+
+</p>
+
+<p>
+
+The following algorithm is used to determine generalized equality:
+
+</p>
+
+<blockquote><p>
+
+First, if <em>x</em> and <em>y</em> are the same in the sense of <tt>eqv?</tt>, the result is <tt>#t</tt>.  This keeps <tt>generalized-equal?</tt> consistent with <tt>eqv?</tt>, as <tt>equal?</tt> is.
+
+</p><p>
+
+Next, each element of <em>comparator-list</em>  is invoked on <em>obj1</em> and <em>obj2</em>, passing <em>comparator-list</em> as its third argument.  If the comparator returns <tt>#t</tt> or <tt>#f</tt>, that is the result.
+
+</p><p>
+
+If all comparators in <em>comparator-list</em> have been invoked with a <tt>pass</tt> result, then <tt>generalized-equal?</tt> behaves as if it had been invoked on the comparators <tt>list-comparator</tt>, <tt>string-comparator</tt>, <tt>vector-comparator</tt>, and <tt>bytevector-comparator</tt> defined below, plus additional implementation-defined comparators, if any.  If all of these return <tt>pass</tt>, then <tt>generalized-equal?</tt> returns <tt>#f</tt>, as <tt>eqv?</tt> would.
+
+</p></blockquote>
+
+<p>
+
+When <tt>generalized-equal?</tt> is invoked with an empty comparator list, it returns what <tt>equal?</tt> returns, except possibly on implementation-defined object types that are not record types, and for the fact that <tt>generalized-equal?</tt> is not required to return when handed circular data structures.  When it is invoked with <tt>numeric-comparator</tt>, <tt>char-ci-comparator</tt>, <tt>string-ci-comparator</tt>, and a comparator that descends into hash tables, it returns what Common Lisp's <tt>equalp</tt> returns.
+
+</p>
+
+<p><tt>(make-atomic-comparator </tt><em>type-predicate compare-predicate</em><tt>)</tt></p>
+
+<p>
+
+Returns a comparator that invokes <em>type-predicate</em> on its first and its second arguments.  If they both return <tt>#t</tt>, then they are assumed to be of the same type, and <em>compare-predicate</em> is invoked on the first and second arguments together.  If the result is <tt>#t</tt> or <tt>#f</tt>, then the comparator returns <tt>#t</tt> or <tt>#f</tt> respectively.  If they are not of the same type, a third value is returned.  The resulting comparator always ignores its third argument.
+
+</p>
+
+<p><tt>(make-specific-equality . </tt><em>comparator-list</em><tt>)</tt></p>
+
+<p>
+
+Return a curried version of <tt>generalized-equal?</tt> that accepts two arguments to be compared using the comparators in <em>comparator-list</em>.
+
+</p>
+
+<h2 id="Standardcomparators">Standard comparators</h2>
+
+<p><tt>(numeric-comparator </tt><em>obj1 obj2 comparator-list</em><tt>)</tt></p>
+
+<p>
+
+A comparator that returns <tt>#t</tt> if <em>obj1</em> and <em>obj2</em> are numbers that are equal in the sense of <tt>=</tt>, <tt>#f</tt> if they are numbers that are not equal in the sense of <tt>=</tt>, and <tt>pass</tt> otherwise.  The <em>comparator-list</em> argument is ignored.
+
+</p>
+
+<p><tt>(char-ci-comparator </tt><em>obj1</em><em>obj2 comparator-list</em><tt>)</tt></p>
+
+<p>
+
+A comparator that returns <tt>#t</tt> if <em>obj1</em> and <em>obj2</em> are characters that are equal in the sense of <tt>char-ci=?</tt>, <tt>#f</tt> if they are characters that are not equal in the sense of <tt>char-ci=?</tt>, and <tt>pass</tt> otherwise.  The <em>comparator-list</em> argument is ignored.
+
+</p>
+
+<p><tt>(list-comparator </tt><em>obj1 obj2 comparator-list</em><tt>)</tt></p>
+
+<p>
+
+A comparator that returns <tt>#t</tt> if <em>obj1</em> and <em>obj2</em> are lists of the same length whose elements are equal in the sense of <tt>generalized-equal?</tt> when passed <em>comparator-list</em>, <tt>#f</tt> if they are lists that are not equal in that sense, and <tt>pass</tt> otherwise.
+
+</p>
+
+<p><tt>(string-comparator </tt><em>obj1 obj2 comparator-list</em><tt>)</tt></p>
+
+<p>
+
+A comparator that returns <tt>#t</tt> if <em>obj1</em> and <em>obj2</em> are strings that are equal in the sense of <tt>string=?</tt>, <tt>#f</tt> if they are strings that are not equal in the sense of <tt>string=?</tt>, and <tt>pass</tt> otherwise.  The <em>comparator-list</em> argument is ignored.
+
+</p>
+
+<p><tt>(string-ci-comparator </tt><em>obj1 obj2 comparator-list</em><tt>)</tt></p>
+
+<p>
+
+A comparator that returns <tt>#t</tt> if <em>obj1</em> and <em>obj2</em> are strings that are equal in the sense of <tt>string-ci=?</tt>, <tt>#f</tt> if they are strings that are not equal in the sense of <tt>string-ci=?</tt>, and <tt>pass</tt> otherwise.  The <em>comparator-list</em> argument is ignored.
+
+</p>
+
+<p><tt>(vector-comparator </tt><em>obj1 obj2 comparator-list</em><tt>)</tt></p>
+
+<p>
+
+A comparator that returns <tt>#t</tt> if <em>obj1</em> and <em>obj2</em> are vectors of the same length whose elements are equal in the sense of <tt>generalized-equal?</tt> when passed <em>comparator-list</em>, <tt>#f</tt> if they are vectors that are not equal in that sense, and <tt>pass</tt> otherwise.
+
+</p>
+
+<p><tt>(bytevector-comparator </tt><em>obj1 obj2 comparator-list</em><tt>)</tt></p>
+
+<p>
+
+A comparator that returns <tt>#t</tt> if <em>obj1</em> and <em>obj2</em> are bytevectors of the same length whose elements are equal in the sense of <tt>=</tt>, <tt>#f</tt> if they are bytevectors that are not equal in that sense, and <tt>pass</tt> otherwise.  The <em>comparator-list</em> argument is ignored.
+
+</p>
+
+<p>
+
+When used by an implementation that doesn't provide bytevectors, this procedure always returns <tt>pass</tt>.
+
+</p>
+
+
+
+<H1>Implementation</H1>
+
+<p>A sample implementation is <a href="genequal.tar.gz">here</a>.  The file <code>genequal-impl.scm</code> is the basic code file, in pure R5RS with R7RS-small bytevectors.  The file <code>count.scm</code> provides macros for conveniently looping over bytevectors.  The file <code>srfi-4-shim.scm</code> is a minimal implementation of R7RS-small bytevectors on top of SRFI 4's u8vectors, just sufficient for this implementation, and may be useful for R5RS systems that do not provide R7RS bytevectors.  Alternatively, the <code>bytevector-comparator</code> procedure can simply be stubbed out to return <code>pass</code> unconditionally.</p>
+
+<p>Two library definition files are provided:  <code>genequal.sld</code> provides an R7RS library named <code>(genequal)</code> that exports the public procedures of this SRFI (the extension <code>.sld</code> is used by Chibi for library definition files).  <code>genequal.scm</code> is equivalent, but uses Chicken module syntax.</p>
+
+<p>The file <code>genequal-test.scm</code> is a test suite for this library.  It uses Chicken's <code>test</code> egg, which is also provided on Chibi as an R7RS library named <code>(chibi test)</code>.</p>
+
+<H1>Copyright</H1>
+Copyright (C) John Cowan (2013). All Rights Reserved. 
+<p>
+Permission is hereby granted, free of charge, to any person obtaining a
+copy of this software and associated documentation files (the "Software"),
+to deal in the Software without restriction, including without limitation
+the rights to use, copy, modify, merge, publish, distribute, sublicense,
+and/or sell copies of the Software, and to permit persons to whom the
+Software is furnished to do so, subject to the following conditions:</p>
+<p>
+The above copyright notice and this permission notice shall be included in
+all copies or substantial portions of the Software.</p>
+<p>
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL
+THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
+FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
+DEALINGS IN THE SOFTWARE.</p>
+
+    <hr/>
+    <address>Editor: <a href="mailto:srfi-editors at srfi dot schemers dot org">Dave Mason</a></address>
+<!-- Created: Tue Sep 29 19:20:08 EDT 1998 -->
+<!-- hhmts start -->
+Last modified: Sun Jan 28 14:21:14 MET 2007
+<!-- hhmts end -->
+  </body>
+</html>
