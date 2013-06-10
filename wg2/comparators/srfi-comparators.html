@@ -289,17 +289,17 @@ The equality procedures of these comparators are <tt>eq?</tt>, <tt>eqv?</tt>, an
 <tt>(make-compare=/&gt; </tt><em>eq-pred gt-pred</em><tt>)</tt>
 </p>
 <p>
-These procedures return a compare procedure given a less-than predicate, a greater-than predicate, a less-than-or-equal-to predicate, a greater-than-or-equal-to predicate, or the combination of an equality predicate and either a less-than or a greater-than predicate.  The first four invoke the predicate twice; the last two invoke the equality predicate before the ordering predicate.
+These procedures return a compare procedure given a less-than predicate, a greater-than predicate, a less-than-or-equal-to predicate, a greater-than-or-equal-to predicate, or the combination of an equality predicate and either a less-than or a greater-than predicate.
 </p>
 <p>
 They are based on the SRFI 67 <tt>compare-by</tt> procedures, but don't accept comparand arguments.
 </p>
 <h3 id="Primitiveapplicators">Primitive applicators</h3>
 <p>
-<tt>(comparator-type-check </tt><em>comparator obj<sub>1</sub> obj<sub>2</sub></em><tt>)</tt>
+<tt>(comparator-type-check </tt><em>comparator obj</em><tt>)</tt>
 </p>
 <p>
-Invokes the type check procedure of <em>comparator</em> on <em>obj<sub>1</sub></em> and <em>obj<sub>2</sub></em> and returns what it returns.
+Invokes the type check procedure of <em>comparator</em> on <em>obj</em> and returns what it returns.
 </p>
 <p>
 <tt>(comparator-equal? </tt><em>comparator obj<sub>1</sub> obj<sub>2</sub></em><tt>)</tt>
