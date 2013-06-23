@@ -231,13 +231,13 @@ inexact numbers for bitwise equality is correct by the above definition.
 
 The {\cf eq?}\ procedure is similar to {\cf eqv?}\ except that in some cases it is
 capable of discerning distinctions finer than those detectable by
-{\cf eqv?}.  It must always return \schfalse{} when eqv? also
-would, but may return \schfalse{} in some cases where eqv? would return \schtrue{}.
+{\cf eqv?}.  It must always return \schfalse{} when {\cf eq?}\ also
+would, but may return \schfalse{} in some cases where {\cf eq?}\ would return \schtrue{}.
 
 \vest On symbols, booleans, the empty list, pairs, records,
 non-empty
 strings, vectors, and bytevectors, {\cf eq?}\ and {\cf eqv?}\ are guaranteed to have the same
-behavior.  On procedures, {\cf eq?} must return true if the arguments' location
+behavior.  On procedures, {\cf eq?}\ must return true if the arguments' location
 tags are equal.  On numbers and characters, {\cf eq?}'s behavior is
 implementation-dependent, but it will always return either true or
 false.  On empty strings, empty vectors, and empty bytevectors, {\cf eq?} may also behave
