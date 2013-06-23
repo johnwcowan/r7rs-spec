@@ -235,9 +235,9 @@ capable of discerning distinctions finer than those detectable by
 would, but may return \schfalse{} in some cases where eqv? would return \schtrue{}.
 
 \vest On symbols, booleans, the empty list, pairs, records,
-and non-empty
+non-empty
 strings, vectors, and bytevectors, {\cf eq?}\ and {\cf eqv?}\ are guaranteed to have the same
-behavior.  On procedures eq? must return true if the arguments' location
+behavior.  On procedures, {\cf eq?} must return true if the arguments' location
 tags are equal.  On numbers and characters, {\cf eq?}'s behavior is
 implementation-dependent, but it will always return either true or
 false.  On empty strings, empty vectors, and empty bytevectors, {\cf eq?} may also behave
