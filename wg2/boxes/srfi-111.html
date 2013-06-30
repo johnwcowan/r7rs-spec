@@ -75,7 +75,7 @@ subscribe to the list.  You can access previous messages via
 
 <h2>Procedures</h2>
 
-<p>The following procedures implement the box type (which is disjoint from all other Scheme types), and are exported by the <code>(scheme boxes)</code> and <code>(srfi 111)</code> libraries.  In R6RS systems, the latter library name is replaced by <code>(srfi :111)</code>.</p>
+<p>The following procedures implement the box type (which is disjoint from all other Scheme types), and are exported by the <code>(srfi 111)</code> library (or <code>(srfi :111)</code> on R6RS).</p>
 
 <p><code>(box <i>value</i>)</code></p>
 
@@ -102,7 +102,7 @@ subscribe to the list.  You can access previous messages via
 <p>Here is a definition as an R7RS library:</p>
 
 <pre>
-(define-library (scheme boxes)
+(define-library (srfi 111)
   (import (scheme base))
   (export box box? unbox set-box!)
   
@@ -118,7 +118,7 @@ subscribe to the list.  You can access previous messages via
 <p>Here is a translation into R6RS Scheme:</p>
 
 <pre>
-(library (scheme boxes)
+(library (srfi :111)
   (export box box? unbox set-box!)
   (import (rnrs base) (rnrs records syntactic))
   
