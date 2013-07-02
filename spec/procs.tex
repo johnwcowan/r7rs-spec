@@ -234,8 +234,8 @@ capable of discerning distinctions finer than those detectable by
 {\cf eqv?}.  It must always return \schfalse{} when {\cf eq?}\ also
 would, but may return \schfalse{} in some cases where {\cf eq?}\ would return \schtrue{}.
 
-\vest On symbols, booleans, the empty list, pairs, records,
-non-empty
+\vest On symbols, booleans, the empty list, pairs, and records,
+and also on non-empty
 strings, vectors, and bytevectors, {\cf eq?}\ and {\cf eqv?}\ are guaranteed to have the same
 behavior.  On procedures, {\cf eq?}\ must return true if the arguments' location
 tags are equal.  On numbers and characters, {\cf eq?}'s behavior is
