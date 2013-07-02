@@ -34,7 +34,7 @@ subscribe to the list.  You can access previous messages via
       <li>Draft: 2013/06/01-2013/08/01</li>
     </ul>
 
-<H1>Abstract</H1><p><em>Sets</em> and <em>bags</em> (also known as multisets) are unordered mutable collections that can contain any Scheme object.  Sets enforce the constraint that no two elements can be the same in the sense of the set's associated <em>equivalence procedure</em>; bags do not.  <em>Integer sets</em> are a variant of sets that can only contain non-negative exact integers that are less than a maximum value specified when the integer set is created, and that always treat numerical equality as their equivalence procedure.  <em>Enumeration sets</em> are another variant that can only contain symbols chosen from a set of symbols represented by an <em>enumeration type</em>; the equivalence procedure for them is <em>eq?</em>.
+<H1>Abstract</H1><p><em>Sets</em> and <em>bags</em> (also known as multisets) are unordered mutable collections that can contain any Scheme object.  Sets enforce the constraint that no two elements can be the same in the sense of the set's associated <em>equality predicate</em>; bags do not.  <em>Integer sets</em> are a variant of sets that can only contain non-negative exact integers that are less than a maximum value specified when the integer set is created, and that always treat numerical equality as their equality predicate.  <em>Enumeration sets</em> are another variant that can only contain symbols chosen from a set of symbols represented by an <em>enumeration type</em>; the equality predicate for them is <em>eq?</em>.
 
 </p><H1>Issues</H1><ol><li>R6RS provides <tt>define-enumeration</tt> to help set up enum-types.  Is this worth having?  Possible syntax is:
 
@@ -44,47 +44,43 @@ subscribe to the list.  You can access previous messages via
 
 This would bind <tt>&lt;type-name&gt;</tt> to the enum-type, and <tt>constructor</tt> to a curried version of <tt>make-enum-set</tt> that already knows what type to use.
 
-</p></blockquote></li><li><p>Should there be a mechanism to convert between integer sets and integers as bitvectors, as defined in SRFI 33, SRFI 60, and R6RS?</p></li><li><p>(resolved)</p></li><li><p>How about <tt>set-intern!</tt>, which is like <tt>set-value</tt> but adds the element to the set if it's not already there?</p></li><li><p>Should there be a lexical syntax for sets?  If so, how do we incorporate the equivalence procedure, which has no printed representation?  Perhaps we only need to support the big five, or perhaps not even <code>eq?</code> as it is implementation-dependent.</p></li><li><p>(resolved)</p></li><li><p>(resolved)</p></li><li><p>Should we switch to unique enum objects rather than symbols?</p></li><li><p>(resolved)</p></li><li><p>Should set operations include an operation that adds an element to a set, returning a newly allocated set, but which does not require wrapping the new element in a set that is going to be thrown away immediately?  In other words, should there be a functional analog to <code>set-add!</code>?</p></li>
+</p></blockquote></li><li><p>Should there be a mechanism to convert between integer sets and integers as bitvectors, as defined in SRFI 33, SRFI 60, and R6RS?</p></li><li><p>(resolved)</p></li><li><p>How about <tt>set-intern!</tt>, which is like <tt>set-value</tt> but adds the element to the set if it's not already there?</p></li><li><p>Should there be a lexical syntax for sets?  If so, how do we incorporate the equality predicate, which has no printed representation?  Perhaps we only need to support the big five, or perhaps not even <code>eq?</code> as it is implementation-dependent.</p></li><li><p>(resolved)</p></li><li><p>(resolved)</p></li><li><p>Should we switch to unique enum objects rather than symbols?</p></li><li><p>(resolved)</p></li><li><p>Should set operations include an operation that adds an element to a set, returning a newly allocated set, but which does not require wrapping the new element in a set that is going to be thrown away immediately?  In other words, should there be a functional analog to <code>set-add!</code>?</p></li>
 
-<li><p>There are two constructors, <code>make-set</code> and <code>set</code> (and likewise
-for the other types).  This follows the general pattern of
-<code>(make-){list,string,vector}</code> from R7RS-small.  However, the <code>make-</code>
-constructors construct an object of specified size with either undefined
-contents or a repeated fill element; neither of these concepts makes any
-sense for sets, and only minimal sense for bags.</p>
-
-<p>So it would seem reasonable to only have <code>set</code> as the constructor.
-Nevertheless, Schemers expect to find a <code>make-</code> constructor, and so I
-have provided one that always constructs an empty set, though <code>set</code>
-can do that just as well.  Should we keep the status quo, eliminate
-<code>make-set</code>, eliminate <code>set</code>, or cause it to be an alias for <code>set</code>?</p></li>
+<li><p>(resolved)</p>
+<li><p>Should we stick to just comparators, or also allow equality predicates?</p></li></li>
 </ol>
 
 
-<H1>Rationale</H1><p>Sets are a standard part of the libraries of many high-level programming languages, including Smalltalk, <a href="http://docs.oracle.com/javase/6/docs/api/java/util/Set.html">Java</a>, and <a href="http://www.cplusplus.com/reference/set/set/">C++</a>.  <a href="http://docs.racket-lang.org/reference/sets.html">Racket</a> provides general sets similar to those of this proposal, though with fewer procedures, and there is a Chicken egg called <code>sets</code> (unfortunately undocumented), which provides a minimal set of procedures.</p><p>Bags are useful for counting anything from a fixed set of possibilities, e.g. the number of each type of error in a log file or the number of uses of each word in a lexicon drawn from a body of documents.  Although other data structures can serve the same purpose, using bags clearly expresses the programmer's intent and can be optimized.</p><p>Although sets subsume both integer sets and enumeration sets, providing them separately allows for increased implementation efficiency.  There are two Chicken eggs that provide integer sets: <a href="http://wiki.call-cc.org/eggref/4/iset#integer-sets"><code>iset</code></a>, which is conceptually similar to the integer sets described here, but using bignums rather than bytevectors; and <a href="http://wiki.call-cc.org/eggref/4/cis"><code>cis</code></a>, which uses lists of integer intervals.</p><p>The design of enumeration sets is founded on <a class="ext-link" href="http://www.r6rs.org/final/html/r6rs-lib/r6rs-lib-Z-H-15.html">R6RS enumerations</a>, but with the addition of reified enumeration types along the lines suggested by <a class="ext-link" href="http://www.r6rs.org/formal-comments/comment-262.txt">R6RS Formal Comment #262</a>.  The prefix <tt>enum</tt> is used in all cases instead of using both <tt>enum</tt> and <tt>enumeration</tt> as R6RS does.  Approximate mappings are shown below.
-</p><p>Insofar as possible, the names in this SRFI are harmonized with the names used for ordered collections (lists, strings, vectors, and bytevectors) in Scheme.  However, <code>size</code> is used instead of <code>length</code> to express the number of elements in the collection, because <code>length</code> implies order.</p><H1>Specification</H1><p>The procedures in this SRFI are in the <code>(scheme sets)</code> and <code>(srfi xxx)</code> libraries (or <code>(srfi :xxx)</code> on R6RS).  However, the sample implementation currently places them in the <code>(sets)</code> library instead.</p><p>
+<H1>Rationale</H1>
 
-Sets, bags, integer sets, enumeration sets, and enumeration types are mutually disjoint, and disjoint from other types of Scheme objects.
+<p>Sets are a standard part of the libraries of many high-level programming languages, including Smalltalk, <a href="http://docs.oracle.com/javase/6/docs/api/java/util/Set.html">Java</a>, and <a href="http://www.cplusplus.com/reference/set/set/">C++</a>.  <a href="http://docs.racket-lang.org/reference/sets.html">Racket</a> provides general sets similar to those of this proposal, though with fewer procedures, and there is a Chicken egg called <code>sets</code> (unfortunately undocumented), which provides a minimal set of procedures.</p><p>Bags are useful for counting anything from a fixed set of possibilities, e.g. the number of each type of error in a log file or the number of uses of each word in a lexicon drawn from a body of documents.  Although other data structures can serve the same purpose, using bags clearly expresses the programmer's intent and can be optimized.</p>
 
-</p><h2 id="Setprocedures">Set procedures</h2><p>
+<p>Although sets subsume both integer sets and enumeration sets, providing them separately allows for increased implementation efficiency.  There are two Chicken eggs that provide integer sets: <a href="http://wiki.call-cc.org/eggref/4/iset#integer-sets"><code>iset</code></a>, which is conceptually similar to the integer sets described here, but using bignums rather than bytevectors; and <a href="http://wiki.call-cc.org/eggref/4/cis"><code>cis</code></a>, which uses lists of integer intervals.</p><p>The design of enumeration sets is founded on <a class="ext-link" href="http://www.r6rs.org/final/html/r6rs-lib/r6rs-lib-Z-H-15.html">R6RS enumerations</a>, but with the addition of reified enumeration types along the lines suggested by <a class="ext-link" href="http://www.r6rs.org/formal-comments/comment-262.txt">R6RS Formal Comment #262</a>.  The prefix <tt>enum</tt> is used in all cases instead of using both <tt>enum</tt> and <tt>enumeration</tt> as R6RS does.  Approximate mappings are shown below.
+</p>
 
-It is an error for a single procedure to be invoked on sets with different equivalence procedures.
+<p>Insofar as possible, the names in this SRFI are harmonized with the names used for ordered collections (lists, strings, vectors, and bytevectors) in Scheme.  However, <code>size</code> is used instead of <code>length</code> to express the number of elements in the collection, because <code>length</code> implies order.</p>
 
-</p><h3>Constructors</h3><p><tt>(make-set </tt><em>equivalence</em><tt>)</tt></p><p>
+<H1>Specification</H1>
 
-Returns a newly allocated empty set.  <em>equivalence</em> is the equivalence procedure for the set.  If it is coarser than <tt>equal</tt> (in the sense of R7RS-small 6.1), the implementation may signal an error; however, <tt>string-ci=?</tt> must be supported.
+<p>The procedures in this SRFI are in the <code>(srfi 111)</code> library (or <code>(srfi :111)</code> on R6RS).  However, the sample implementation currently places them in the <code>(sets)</code> library instead.</p>
 
-</p><p><tt>(set </tt><em>equivalence</em><tt> </tt><em>element</em><tt> ...)</tt></p><p>
+<p>Sets, bags, integer sets, enumeration sets, and enumeration types are mutually disjoint, and disjoint from other types of Scheme objects.
+</p>
+<h2 id="Setprocedures">Set procedures</h2><p>
 
-Returns a newly allocated set with equivalence procedure <em>equivalence</em> and containing the <em>elements</em>.
+It is an error for a single procedure to be invoked on sets with different comparators.
+
+</p><h3>Constructors</h3><p><tt>(set </tt><em>comparator</em><tt>)</tt></p><p>
+
+Returns a newly allocated empty set.  The <em>comparator</em> argument is either a SRFI 114 comparator or else a procedure, in which case it is the equality predicate for the set.  Any comparator with an equality predicate and a corresponding hash function may be used.  Implementations must accept the equality predicates <code>eq?</code>, <code>eqv?</code>, <code>equal</code>, <code>string=?</code>, and <code>string-ci=?</code>, and may accept others.  The <em>elements</em> are used to initialize the set.
 
 </p><p><tt>(set-copy </tt><em>set</em><tt>)</tt></p><p>
 
-Returns a newly allocated set containing the elements of <em>set</em>, with the same equivalence procedure.
+Returns a newly allocated set containing the elements of <em>set</em>, and using the same comparator or equality procedure.
 
 </p><p><tt>(set-empty-copy </tt><em>set</em><tt>)</tt></p><p>
 
-Returns a newly allocated set containing no elements with the same equivalence procedure as <em>set</em>.
+Returns a newly allocated set containing no elements, and using the same comparator or equality procedure as <em>set</em>.
 
 </p><h3>Predicates</h3><p><tt>(set? </tt><em>obj</em><tt>)</tt></p><p>
 
@@ -102,9 +98,9 @@ Adds <em>element</em> to <em>set</em> unless it is already a member.  Returns an
 
 Deletes <em>element</em> from <em>set</em> if it is a member.  Returns <tt>#t</tt> if the element was a member, <tt>#f</tt> if not.
 
-</p><h3>Mapping and folding</h3><p><tt>(set-map </tt><em>equivalence</em><tt> </tt><em>proc</em><tt> </tt><em>set</em><tt>)</tt></p><p>
+</p><h3>Mapping and folding</h3><p><tt>(set-map </tt><em>comparator</em><tt> </tt><em>proc</em><tt> </tt><em>set</em><tt>)</tt></p><p>
 
-Applies <em>proc</em> to each element of <em>set</em> in arbitrary order and returns a newly allocated set with the equivalence predicate <em>equivalence</em> which contains the results of the applications.  For example:
+Applies <em>proc</em> to each element of <em>set</em> in arbitrary order and returns a newly allocated set, created as if by <code>set</code>, which contains the results of the applications.  For example:
 
 <blockquote>
 (set-map string-ci=? symbol->string (set eq? 'foo 'bar 'baz))
@@ -119,13 +115,13 @@ Applies <em>proc</em> to <em>set</em> in arbitrary order, discarding the returne
 
 Invokes <em>proc</em> on each member of <em>set</em> in arbitrary order, passing the result of the previous invocation as a second argument.  For the first invocation, <em>nil</em> is used as the second argument.  Returns the result of the last invocation.
 
-</p><p><tt>(set-unfold </tt><em>equivalence continue? mapper successor seed</em><code>)</code></p><p><p>Create a new set as if by <code>make-set</code>.  If the result of applying the predicate <em>continue?</em> to <em>seed</em> is <code>#f</code>, return the set.  Otherwise, apply the procedure <em>mapper</em> to <code>seed</code>.  The value that <em>mapper</em> returns is added to the set.  Then get a new seed by applying the procedure <em>successor</em> to <em>seed</em>, and repeat this algorithm.</p><h3>Conversion</h3><tt>(set-&gt;list </tt><em>set</em><tt>)</tt></p><p>
+</p><p><tt>(set-unfold </tt><em>comparator continue? mapper successor seed</em><code>)</code></p><p><p>Create a newly allocated set as if by <code>set</code>.  If the result of applying the predicate <em>continue?</em> to <em>seed</em> is <code>#f</code>, return the set.  Otherwise, apply the procedure <em>mapper</em> to <code>seed</code>.  The value that <em>mapper</em> returns is added to the set.  Then get a new seed by applying the procedure <em>successor</em> to <em>seed</em>, and repeat this algorithm.</p><h3>Conversion</h3><tt>(set-&gt;list </tt><em>set</em><tt>)</tt></p><p>
 
 Returns a newly allocated list containing the members of <em>set</em> in unspecified order.  However, repeated calls to this procedure will return a list in the same order until the set is mutated.
 
-</p><p><tt>(list-&gt;set </tt><em>equivalence list</em><tt>)</tt></p><p>
+</p><p><tt>(list-&gt;set </tt><em>comparator list</em><tt>)</tt></p><p>
 
-Returns a newly allocated set with equivalence predicate <em>equivalence</em> containing the elements of <em>list</em>.
+Returns a newly allocated set, created as if by <code>set</code>, that contains the elements of <em>list</em>.
 
 </p><h3>Subsets</h3><p><tt>(set=? </tt><em>set</em> ...<tt>)</tt>
 
@@ -163,15 +159,15 @@ Returns the number of elements in <em>set</em>.
 
 </p><p><tt>(set-filter </tt><em>predicate</em><tt> </tt><em>set</em><tt>)</tt></p><p>
 
-Returns a newly allocated set with the same equivalence predicate as <em>set</em> containing just the elements of <em>set</em> that satisfy <em>predicate</em>.
+Returns a newly allocated set, created as if by <code>set-empty-copy</code>, containing just the elements of <em>set</em> that satisfy <em>predicate</em>.
 
 </p><p><tt>(set-remove </tt><em>predicate</em><tt> </tt><em>set</em><tt>)</tt></p><p>
 
-Returns a newly allocated set with the same equivalence predicate as <em>set</em> containing just the elements of <em>set</em> that do not satisfy <em>predicate</em>.
+Returns a newly allocated set, created as if by <code>set-empty-copy</code>, containing just the elements of <em>set</em> that do not satisfy <em>predicate</em>.
 
 </p><p><tt>(set-partition </tt><em>predicate</em><tt> </tt><em>set</em><tt>)</tt></p><p>
 
-Returns two values, a newly allocated set with the same equivalence predicate as <em>set</em> containing just the elements of <em>set</em> that satisfy <em>predicate</em>, and another newly allocated set with the same equivalence predicate as <em>set</em> containing just the elements of <em>set</em> that do not satisfy <em>predicate</em>.
+Returns two values, a newly allocated set, created as if by <code>set-empty-copy</code>, containing just the elements of <em>set</em> that satisfy <em>predicate</em>, and another newly allocated set, created as if by <code>set-empty-copy</code>,  containing just the elements of <em>set</em> that do not satisfy <em>predicate</em>.
 
 </p><p><tt>(set-count </tt><em>predicate</em><tt> </tt><em>set</em><tt>)</tt></p><p>
 
@@ -210,11 +206,11 @@ The same as <tt>set-union</tt>, <tt>set-intersection</tt>, <tt>set-difference</t
 
 </p><h3>Set value</h3><p><tt>(set-value </tt><em>set</em><tt> </tt><em>element</em><tt>)</tt></p><p>
 
-Returns the element of <em>set</em> that is equal, in the sense of the equivalence predicate, to <em>element</em>.  If <em>element</em> is not a member of the set, it is returned.
+Returns the element of <em>set</em> that is equal, in the sense of the equality predicate, to <em>element</em>.  If <em>element</em> is not a member of the set, it is returned.
 
 </p><h2 id="Bagprocedures">Bag procedures</h2><p>
 
-Bags are like sets, but can contain the same object more than once.  However, if two elements that are equal in the sense of the equivalence procedure, but not in the sense of <code>eqv?</code>, are both included, it is not guaranteed that they will remain distinct when retrieved from the bag.  It is an error for a single procedure to be invoked on bags with different equivalence procedures.
+Bags are like sets, but can contain the same object more than once.  However, if two elements that are equal in the sense of the equality procedure, but not in the sense of <code>eqv?</code>, are both included, it is not guaranteed that they will remain distinct when retrieved from the bag.  It is an error for a single procedure to be invoked on bags with different comparators.
 
 </p><p>
 
@@ -242,7 +238,7 @@ The <code>bag->set</code> procedure returns a newly allocated set containing the
 
 </p><h2 id="Integersetprocedures">Integer set procedures</h2><p>
 
-The elements of an integer set are non-negative exact integers less than the set's <em>limit</em>, which is specified when it is created.  Except as noted below, the procedures for creating and manipulating integer sets are the same as those for sets, except that <tt>set</tt> is replaced by <tt>integer-set</tt> in their names, and references to equivalence predicates are replaced by limits, as the equivalence function is always <tt>=</tt>.  Wherever a newly allocated integer set is returned, it has the same limit as the source sets.  It is an error for a single procedure to be invoked on integer sets with different limits.
+The elements of an integer set are non-negative exact integers less than the set's <em>limit</em>, which is specified when it is created.  Except as noted below, the procedures for creating and manipulating integer sets are the same as those for sets, except that <tt>set</tt> is replaced by <tt>integer-set</tt> in their names, and references to comparators are replaced by limits, as the equality predicate is always <tt>=</tt>.  Wherever a newly allocated integer set is returned, it has the same limit as the source sets.  It is an error for a single procedure to be invoked on integer sets with different limits.
 
 </p><p>
 
@@ -316,21 +312,21 @@ Returns <tt>#t</tt> if the values of the <em>symbols</em> are equal (which impli
 
 </p><h3>Enum-set procedures</h3><p><tt>(make-enum-set </tt><em>enum-type</em><tt>)</tt></p><p>
 
-Returns a newly allocated enumeration set.  The possible elements of the set are the symbols in <em>enum-type</em>.  The set is empty.  The approximate R6RS equivalents are <tt>enum-set-constructor</tt> and <tt>make-enumeration</tt>.
+Returns a newly allocated enumeration set.  The possible elements of the set are the symbols in <em>enum-type</em>.  The set is empty.  The approximate R6RS equals are <tt>enum-set-constructor</tt> and <tt>make-enumeration</tt>.
 
 </p><p><tt>(make-universal-enum-set </tt><em>enum-type</em><tt>)</tt></p><p>
 
-Returns a newly allocated enumeration set.  The possible elements of the set are the symbols in <em>enum-type</em>.  The set contains all possible elements.  The approximate R6RS equivalent is <tt>enum-set-universe</tt>.
+Returns a newly allocated enumeration set.  The possible elements of the set are the symbols in <em>enum-type</em>.  The set contains all possible elements.  The approximate R6RS equal is <tt>enum-set-universe</tt>.
 
 </p><p><tt>(enum-set </tt><em>enum-type</em><tt> </tt><em>element</em> ...<tt>)</tt>
 
 </p><p>
 
-Returns a newly allocated enumeration set.  The possible elements of the set are the symbols in <em>enum-type</em>. The set is initialized to contain the <em>elements</em>.  There is no R6RS equivalent.
+Returns a newly allocated enumeration set.  The possible elements of the set are the symbols in <em>enum-type</em>. The set is initialized to contain the <em>elements</em>.  There is no R6RS equal.
 
 </p><p><tt>(list-&gt;enum-set </tt><em>enum-type</em><tt> </tt><em>list</em><tt>)</tt></p><p>
 
-Returns a newly allocated enumeration set.  The possible elements of the set are the symbols in <em>enum-type</em>. The set is initialized to contain the elements of <em>list</em>.  There is no R6RS equivalent.
+Returns a newly allocated enumeration set.  The possible elements of the set are the symbols in <em>enum-type</em>. The set is initialized to contain the elements of <em>list</em>.  There is no R6RS equal.
 
 </p><p><tt>(enum-set-complement </tt><em>enum-set</em><tt>)</tt></p><p>
 
@@ -352,7 +348,7 @@ Returns and deletes the smallest or largest symbol in symbol index order in <em>
 
 Returns a newly allocated enumeration set of type <em>enum-type</em>.  Its elements are the symbols belonging to <em>enum-set</em>, ignoring any symbols which are not in <em>enum-type</em>.  This procedure is also in R6RS, but uses a second enum-set in place of <em>enum-type</em>.
 
-</p><H1>Implementation</H1><p>Sets and bags are implemented as a thin veneer over hashtables, and integer sets over bytevectors.  For clarity, the integer set implementation stores  just one value into each bytevector element rather than the eight that would be possible.  In turn, enumeration types are implemented over a hashtable from symbols to indexes, and enumeration sets over integer sets.</p><p>A sample implementation is <a href="sets.tar.gz">here</a>.  The files <code>sets-impl.scm</code>, <code>bags-impl.scm</code>, <code>isets-impl.scm</code>, and <code>enums-impl.scm</code> are the basic code libraries for sets, bags, integer sets, and enumeration sets respectively.  Each is divided into a section that makes use of the underlying collection and a section that doesn't.  The file <code>count.scm</code> provides macros for conveniently looping over the bytevectors that underlie integer sets and enumeration sets. The file <code>srfi-4-shim.scm</code> is a minimal implementation of R7RS bytevectors on top of SRFI 4's u8vectors, just sufficient for this implementation, and may be useful for R5RS systems that do not provide R7RS bytevectors.</p><p>Two library definition files are provided:  <code>sets.sld</code> provides an R7RS library named <code>(sets)</code> that exports the public procedures of this SRFI (the extension <code>.sld</code> is used by Chibi for library definition files).  <code>sets.scm</code> is equivalent, but uses Chicken module syntax.</p><p>The file <code>sets-test.scm</code> is a test suite for this library.  It uses Chicken's <code>test</code> egg, which is also provided on Chibi as an R7RS library named <code>(chibi test)</code>.</p>
+</p><H1>Implementation</H1><p>Sets and bags are implemented as a thin veneer over hashtables, and integer sets over bytevectors.  For clarity, the integer set implementation stores  just one value into each bytevector element rather than the eight that would be possible.  In turn, enumeration types are implemented over a hashtable from symbols to indexes, and enumeration sets over integer sets.</p><p>A sample implementation is <a href="sets.tar.gz">here</a>.  The files <code>sets-impl.scm</code>, <code>bags-impl.scm</code>, <code>isets-impl.scm</code>, and <code>enums-impl.scm</code> are the basic code libraries for sets, bags, integer sets, and enumeration sets respectively.  Each is divided into a section that makes use of the underlying collection and a section that doesn't.  The file <code>count.scm</code> provides macros for conveniently looping over the bytevectors that underlie integer sets and enumeration sets. The file <code>srfi-4-shim.scm</code> is a minimal implementation of R7RS bytevectors on top of SRFI 4's u8vectors, just sufficient for this implementation, and may be useful for R5RS systems that do not provide R7RS bytevectors.</p><p>Two library definition files are provided:  <code>sets.sld</code> provides an R7RS library named <code>(sets)</code> that exports the public procedures of this SRFI (the extension <code>.sld</code> is used by Chibi for library definition files).  <code>sets.scm</code> is equal, but uses Chicken module syntax.</p><p>The file <code>sets-test.scm</code> is a test suite for this library.  It uses Chicken's <code>test</code> egg, which is also provided on Chibi as an R7RS library named <code>(chibi test)</code>.</p>
 
 <H1>Copyright</H1>
 
