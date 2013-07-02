@@ -19,15 +19,9 @@ can either be changed, be marked with the new {\cf \#!fold-case} directive,
 or be included in a library using the {\cf include-ci} library declaration.
 All standard identifiers are entirely in lower case.
 
-\item Escape sequences are now recognized in string, symbol, and character
-literals.
-
 \item The {\cf syntax-rules} construct now recognizes {\em \_} (underscore) 
 as a wildcard, which means it cannot be used as a syntax variable.
 It can still be used as a literal.
-
-\item When applied to procedures, {\cf eq?} and {\cf eqv?} are permitted to
-return different answers.
 
 \item The \rfivers\ procedures {\cf exact->inexact} and {\cf inexact->exact}
 have been renamed to their \rsixrs\ names, {\cf inexact} and {\cf exact},
@@ -160,6 +154,9 @@ procedure, {\cf case-lambda} has been added in its own library.
 
 \item The behavior of {\cf eqv?} on inexact numbers now conforms to the
 \rsixrs\ definition.
+
+\item When applied to procedures, {\cf eq?} and {\cf eqv?} are permitted to
+return different answers.
 
 \item The \rsixrs\ procedures {\cf boolean=?} and {\cf symbol=?} have been added.
 
