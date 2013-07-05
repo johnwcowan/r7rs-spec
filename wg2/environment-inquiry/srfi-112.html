@@ -46,8 +46,9 @@ subscribe to the list.  You can access previous messages via
     <p>However, a program using just the <code>features</code> procedure cannot report to its user "I am executing on X Scheme" for every value of X, because it does not know which symbol in the feature list represents the implementation name, nor does it have a comprehensive list of implementation names.  Similarly, there are other properties that the feature list may allow testing for but not reporting on, such as the underlying OS, the C memory model, and the CPU architecture.  For the sake of logging and debugging, it is necessary or at least extremely useful to provide a standard way for Scheme applications, as well as Scheme users at the REPL, to report these things.  In the Common Lisp world, bugs are often reported in a REPL transcript beginning with a call to <code>lisp-implementation-version</code>.</p>
     <h2>Specification</h2>
     <p>The following procedures take no arguments and return either a string, or <code>#f</code> if the implementation cannot provide an appropriate and relevant result.  It is an error to mutate the returned string.  The procedures in this proposal are in the <code>(srfi 112)</code> library (or <code>(srfi :112)</code> on R6RS).</p>
-    <p>Because users are expected to use the values of these procedures for reporting rather than testing, no atttempt is made to standardize the string values they return</p>
+    <p>Because users are expected to use the values of these procedures for reporting rather than testing, no attempt is made to standardize the string values they return</p>
     <p>Procedures are provided rather than strings against the possibility that a Scheme process might migrate from machine to machine. This need not happen only in a distributed environment; consider, for example, dumping a core image file containing a compiler and then shipping it to another site.</p>
+    <p>Posix and Common Lisp equivalents or near-equivalents are provided.  On Windows, some of this information is available using the <code>GetSystemInfo</code> and <i>GetComputerName</i> APIs.</p>
     <p>
       <code>(implementation-name)</code>
     </p>

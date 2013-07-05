@@ -172,7 +172,7 @@ Returns a comparator which bundles the <em>type-test, equality, compare</em>, an
 <tt>(make-inexact-comparator </tt><em>epsilon rounding nan-handling</em><tt>)</tt>
 </p>
 <p>
-Returns a comparator that compares inexact numbers as follows:  if after rounding to the nearest <em>epsilon</em> they are the same, they compare equal; otherwise they compare as specified by <tt>&lt;</tt>.  The direction of rounding is specified by the <em>rounding</em> argument, which is one of the symbols <tt>floor</tt>, <tt>ceiling</tt>, <tt>truncate</tt>, or <tt>round</tt>.
+Returns a comparator that compares inexact numbers as follows:  if after rounding to the nearest <em>epsilon</em> they are the same, they compare equal; otherwise they compare as specified by <tt>&lt;</tt>.  The direction of rounding is specified by the <em>rounding</em> argument, which is either a procedure accepting two arguments (the number and <em>epsilon</em>, or else one of the symbols <tt>floor</tt>, <tt>ceiling</tt>, <tt>truncate</tt>, or <tt>round</tt>.
 </p>
 <p>
 The argument <i>nan-handling</i> specifies how to compare NaN arguments to non-NaN arguments.  If it is a procedure, the procedure is invoked if either argument is a NaN.  If it is the symbol <tt>min</tt>, NaN values precede all other values; if it is the symbol <tt>max</tt>, they follow all other values, and if it is the symbol<tt>error</tt>, an error is signaled if a NaN value is compared.
@@ -282,9 +282,13 @@ Returns a comparator that behaves exactly like <em>comparator</em>, except that 
 This is a comparator that accepts any two Scheme values (with the exception of circular structure) and orders them in some implementation-defined way, subject to the following:
 </p>
 <ul><li><p>When applied to booleans, characters, strings, and numbers, its behavior must be the same as <tt>boolean-comparator</tt>, <tt>character-comparator</tt>, <tt>string-comparator</tt>, and <tt>number-comparator</tt> respectively, except that NaN values must be accepted and treated as either preceding or following all numeric values.  The same should be true for any pair of objects of the same type if a standard comparator is defined for that type.
-</p></li><li><p>When applied to lists, vectors, and bytevectors, its behavior must be the same as <tt>(make-list-comparator default-comparator)</tt>, <tt>(make-vector-comparator default-comparator)</tt>, and <tt>(make-bytevector-comparator default-comparator)</tt> respectively.  The same should be true for any pair of sequences of the same type if an element-wise comparator is defined for that type.
-</p></li><li><p>When applied to any other pair of objects, the implementation should FIXME FIXME</p></li><li><p>All objects of a disjoint type should compare either greater than or less than all values of every other disjoint type.  In other words, type trumps structure.
-</p></li></ul><h3 id="Standardconveniencecomparators">Standard convenience comparators</h3>
+</p></li>
+<li><p>When applied to lists, vectors, and bytevectors, its behavior must be the same as <tt>(make-list-comparator default-comparator)</tt>, <tt>(make-vector-comparator default-comparator)</tt>, and <tt>(make-bytevector-comparator default-comparator)</tt> respectively.  The same should be true for any pair of sequences of the same type if an element-wise comparator is defined for that type.
+</p></li>
+<li><p>All objects of a disjoint type should compare either greater than or less than all values of every other disjoint type.  In other words, type should trump structure.
+</p>
+</li></ul>
+<h3 id="Standardconveniencecomparators">Standard convenience comparators</h3>
 <p>
 <tt>list-comparator</tt>
 </p>

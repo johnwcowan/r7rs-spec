@@ -93,7 +93,7 @@ subscribe to the list.  You can access previous messages via
 
 <p>Mutator.  Changes <i>box</i> to hold <i>value</i>.</p>
 
-<p>The behavior of boxes with the equivalence predicates <code>eq?</code>, <code>eqv?</code>, and <code>equal?</code> is the same as if they were implemented with records: that is, two boxes are <i>eqv?</i> iff they are the product of the same call to <code>box</code> and not otherwise, and <code>eq?</code> and <code>equal?</code> have the same behavior as <code>eqv?</code>.</p>
+<p>The behavior of boxes with the equivalence predicates <code>eq?</code>, <code>eqv?</code>, and <code>equal?</code> is the same as if they were implemented with records.  That is, two boxes are both <code>eq?</code> and <code>eqv?</code> iff they are the product of the same call to <code>box</code> and not otherwise, and while they must be <code>equal?</code> if they are <code>eqv?</code>, the converse is implementation-dependent.</p>
 
 <p></p>
 
