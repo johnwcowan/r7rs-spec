@@ -40,45 +40,51 @@ This proposal is a rewrite of <a href="http://srfi.schemers.org/srfi-67/srfi-67.
 </p>
 <h2 id="Issues">Issues</h2>
 <ol>
-<li><p>Should the hash procedure accept an optional second argument, such that its result must be less than this argument?</p></li>
+<li><p>Should the hash function accept an optional second argument, such that its result must be less than this argument?</p></li>
 <li><p>(resolved)</p></li>
 <li><p>(resolved)</p></li>
 </ol>
 <h2 id="Rationale">Rationale</h2>
 <p>
-The four procedures above have complex dependencies on one another, and it is inconvenient to have to pass them all to other procedures that might or might not make use of all of them.  For example, a set implementation naturally requires only an equality procedure, but if it is implemented using a hash table, an appropriate hash procedure is also required if the implementation does not provide one; alternatively, if it is implemented using a tree, a compare procedure is required.  By passing a comparator rather than a bare equality procedure, the set implementation can make use of whatever procedures are available and useful to it.
+The four procedures above have complex dependencies on one another, and it is inconvenient to have to pass them all to other procedures that might or might not make use of all of them.  For example, a set implementation naturally requires only an equality predicate, but if it is implemented using a hash table, an appropriate hash function is also required if the implementation does not provide one; alternatively, if it is implemented using a tree, a comparison procedure is required.  By passing a comparator rather than a bare equality predicate, the set implementation can make use of whatever procedures are available and useful to it.
 </p>
 <p>This SRFI could not have been written without the work of Sebastian Egner and Jens Axel Søgaard on SRFI 67; much of the credit for this SRFI is due to them, but none of the blame.</p>
 <h2 id="Specification">Specification</h2>
 
-<p>The procedures in this SRFI are in the <code>(srfi 114)</code> library (or <code>(srfi :114)</code> on R6RS).  However, the sample implementation currently places them in the <code>(comparators)</code> library instead.</p>
+<p>The procedures in this SRFI are in the <code>(srfi 114)</code> library (or <code>(srfi :114)</code> on R6RS).</p>
 
 <h3 id="Definitions">Definitions</h3>
 <p>
 A <em>comparator</em> is an object of a disjoint type.  It is a bundle of procedures that are useful for comparing two objects either for equality or for ordering.  There are four procedures in the bundle:
 </p>
-<ul><li>The <em>type test</em> procedure returns <tt>#t</tt> if its argument has the correct type to be passed as an argument to the other three procedures, and <tt>#f</tt> otherwise.
-</li></ul><ul><li>The <em>equality</em> procedure returns <tt>#t</tt> if the two objects are the same in the sense of the comparator, and <tt>#f</tt> otherwise.  It is the programmer's responsibility to ensure that it is reflexive, symmetric, transitive, and can handle any arguments that satisfy the type test procedure.
-</li></ul><ul><li>The <em>compare</em> procedure returns -1, 0, or 1 if the first object precedes the second, is equal to the second, or follows the second, respectively, in a total order defined by the comparator.  It is the programmer's responsibility to ensure that it is reflexive, weakly antisymmetric, transitive, can handle any arguments that satisfy the type test procedure, and returns 0 iff the equality procedure returns <tt>#t</tt>.  Compare procedures are compatible with the compare procedures of <a class="ext-link" href="http://srfi.schemers.org/srfi-67/srfi-67.html">SRFI 67</a>; see SRFI 67 for the rationale for adopting this return convention.
-</li></ul><ul><li>The <em>hash</em> procedure takes one argument, and returns an exact non-negative integer.  It is the programmer's responsibility to ensure that it can handle any argument that satisfies the type test procedure, and that it returns the same value on two objects if the equality procedure says they are the same (but not necessarily the converse).
-</li></ul><p>
-It is also the programmer's responsibility to ensure that all four procedures provide the same result whenever they are applied to the same object(s), unless the object(s) have been mutated since the last invocation.  In particular, they must not depend in any way on memory addresses in implementations where the garbage collector can move objects in memory.  It is recommended but not required that the equality and compare procedures of a comparator terminate on circular structures.
+<ul><li><p>The <em>type test predicate</em> returns <tt>#t</tt> if its argument has the correct type to be passed as an argument to the other three procedures, and <tt>#f</tt> otherwise.</p>
+</li>
+<li><p>The <em>equality predicate</em> returns <tt>#t</tt> if the two objects are the same in the sense of the comparator, and <tt>#f</tt> otherwise.  It is the programmer's responsibility to ensure that it is reflexive, symmetric, transitive, and can handle any arguments that satisfy the type test predicate.</p>
+</li>
+<li><p>The <em>comparison procedure</em> returns -1, 0, or 1 if the first object precedes the second, is equal to the second, or follows the second, respectively, in a total order defined by the comparator.  It is the programmer's responsibility to ensure that it is reflexive, weakly antisymmetric, transitive, can handle any arguments that satisfy the type test predicate, and returns 0 iff the equality predicate returns <tt>#t</tt>.  Comparison procedures are compatible with the <i>compare procedures</i> of <a class="ext-link" href="http://srfi.schemers.org/srfi-67/srfi-67.html">SRFI 67</a>; see SRFI 67 for the rationale for adopting this return convention.</p>
+</li>
+<li><p>The <em>hash function</em> takes one argument, and returns an exact non-negative integer.  It is the programmer's responsibility to ensure that it can handle any argument that satisfies the type test predicate, and that it returns the same value on two objects if the equality predicate says they are the same (but not necessarily the converse).</p>
+</li></ul>
+<p>
+It is also the programmer's responsibility to ensure that all four procedures provide the same result whenever they are applied to the same object(s) (in the sense of <tt>eqv?</tt>), unless the object(s) have been mutated since the last invocation.  In particular, they must not depend in any way on memory addresses in implementations where the garbage collector can move objects in memory.
 </p>
+<h3>Limitations</h3>
+<p>The comparator objects defined in this SRFI are not applicable to procedures, to circular structure, or (with the exception of comparators created by <tt>make-inexact-comparator</tt>) to NaNs.  Attempts to pass any of these objects to any procedure defined here, or to any procedure that is part of a comparator, is an error.</p>
 <h3>Index</h3>
 <ul>
-<li><p><a href="#Predicates">Predicates</a>: <code>comparator?</code></p></li>
-<li><p><a href="#Standardatomiccomparators">Standard atomic comparators</a>: <code>boolean-comparator, char-comparator, char-ci-comparator, string-comparator, string-ci-comparator, symbol-comparator, exact-integer-comparator, integer-comparator, rational-comparator, real-comparator, complex-comparator, number-comparator</code></p></li>
-<li><p><a href="#Comparatorconstructors">Comparator constructors</a>: <code>make-comparator, make-inexact-comparator, make-vector-comparator, make-bytevector-comparator, make-list-comparator, make-vectorwise-comparator, make-listwise-comparator, make-car-comparator, make-cdr-comparator, make-pair-comparator, make-improper-list-comparator, make-selecting-comparator, make-refining-comparator, make-debug-comparator</code></p></li>
+<li><p><a href="#Predicate">Predicate</a>: <code>comparator?</code></p></li>
+<li><p><a href="#Standardcomparators">Standard comparators</a>: <code>boolean-comparator, char-comparator, char-ci-comparator, string-comparator, string-ci-comparator, symbol-comparator, exact-integer-comparator, integer-comparator, rational-comparator, real-comparator, complex-comparator, number-comparator, list-comparator, vector-comparator, bytevector-comparator</code></p></li>
 <li><p><a href="#Thedefaultcomparator">The default comparator</a>: <code>default-comparator</code></p></li>
-<li><p><a href="#Standardconveniencecomparators">Standard convenience comparators</a>: <code>list-comparator, vector-comparator, bytevector-comparator, eq-comparator, eqv-comparator, equal-comparator</code></p></li>
-<li><p><a href="#Accessors">Accessors</a>: <code>comparator-type-test-procedure, comparator-equality-predicate, comparator-compare-procedure, comparator-hash-function</code></p></li>
+<li><p><a href="#Comparatorconstructors">Comparator constructors</a>: <code>make-comparator, make-inexact-comparator, make-vector-comparator, make-bytevector-comparator, make-list-comparator, make-vectorwise-comparator, make-listwise-comparator, make-car-comparator, make-cdr-comparator, make-pair-comparator, make-improper-list-comparator, make-selecting-comparator, make-refining-comparator, make-reverse-comparator, make-debug-comparator</code></p></li>
+<li><p><a href="#Wrappedequalitypredicates">Wrapped equality predicates</a>: <code>eq-comparator, eqv-comparator, equal-comparator</code></p></li>
+<li><p><a href="#Accessors">Accessors</a>: <code>comparator-type-test-procedure, comparator-equality-predicate, comparator-comparison-procedure, comparator-hash-function</code></p></li>
 <li><p><a href="#Primitiveapplicators">Primitive applicators</a>: <code>comparator-test-type, comparator-check-type, comparator-equal?, comparator-compare, comparator-hash</code></p></li>
-<li><p><a href="#Compareprocedureconstructors">Compare procedure constructors</a>: <code>make-compare&lt;?, make-compare>?, make-compare&lt;=?, make-compare>=?, make-compare=/&lt; make-compare=/></code></p></li>
+<li><p><a href="#Comparisonprocedureconstructors">Comparison procedure constructors</a>: <code>make-comparison&lt;?, make-comparison>, make-comparison&lt;=, make-comparison>=, make-comparison=/&lt; make-comparison=/></code></p></li>
 <li><p><a href="#Comparisonsyntax">Comparison syntax</a>: <code>if3, if=?, if&lt;?, if>?, if&lt;=?, if>=?, if-not=?</code></p></li>
 <li><p><a href="#Binarycomparisonpredicates">Binary comparison predicates</a>: <code>=?, &lt;? , >?, &lt;=, >=?, not=?</code></p></li>
 <li><p><a href="#Intervalcomparisonpredicates">Interval (ternary) comparison predicates</a>: <code>in-open-interval?, in-closed-interval?, in-open-closed-interval?, in-closed-open-interval?</code></p></li>
 <li><p><a href="#Chaincomparisonpredicates">Chain (multiple argument) comparison predicates</a>: <code>chain=?, chain&lt;?, chain>?, chain&lt;=?, chain>=?</code></p></li>
-<li><p><a href="#Minmaxcomparisonpredicates">Min/max comparison predicates</a>: <code>comparator-min, comparator-max</code></p></li>
+<li><p><a href="#Minmaxcomparisonprocedures">Min/max comparison procedures</a>: <code>comparator-min, comparator-max</code></p></li>
 </ul>
 <h3 id="Predicates">Predicates</h3>
 <p>
@@ -87,7 +93,7 @@ It is also the programmer's responsibility to ensure that all four procedures pr
 <p>
 Returns <tt>#t</tt> if <em>obj</em> is a comparator, and <tt>#f</tt> otherwise.
 </p>
-<h3 id="Standardatomiccomparators">Standard atomic comparators</h3>
+<h3 id="Standardcomparators">Standard comparators</h3>
 <p>
 The following comparators are analogous to the standard compare procedures of <a href="http://srfi.schemers.org/srfi-67/srfi-67.html">SRFI 67</a>.  They all provide appropriate hash functions as well.
 </p>
@@ -101,7 +107,7 @@ Compares booleans using the total order <tt>#f</tt> &lt; <tt>#t</tt>.
 <tt>char-comparator</tt>
 </p>
 <p>
-Compares characters using the total order implied by <tt>char&lt;?</tt>.
+Compares characters using the total order implied by <tt>char&lt;?</tt>.  On R6RS and R7RS systems, this is Unicode codepoint order.
 </p>
 <p>
 <tt>char-ci-comparator</tt>
@@ -125,7 +131,7 @@ Compares strings using the total order implied by <tt>string-ci&lt;?</tt>.  Note
 <tt>symbol-comparator</tt>
 </p>
 <p>
-Compares symbols using the total order implied by applying <tt>symbol-&gt;string</tt> to the symbols and comparing them using the total order implied by <tt>string&lt;?</tt>.  It is not a requirement that the hash procedure of <tt>symbol-comparator</tt> be consistent with the hash procedure of <tt>string-comparator</tt>, however.
+Compares symbols using the total order implied by applying <tt>symbol-&gt;string</tt> to the symbols and comparing them using the total order implied by <tt>string&lt;?</tt>.  It is not a requirement that the hash function of <tt>symbol-comparator</tt> be consistent with the hash function of <tt>string-comparator</tt>, however.
 </p>
 <p>
 <tt>exact-integer-comparator</tt>
@@ -146,14 +152,42 @@ Compares symbols using the total order implied by applying <tt>symbol-&gt;string
 <tt>number-comparator</tt>
 </p>
 <p>
-These comparators compare exact integers, integers, rational numbers, real numbers, complex numbers, and any numbers using the total order implied by <tt>&lt;</tt>.  They must be compatible with the R5RS numerical tower in the following sense: If S is a subtype of the numerical type T and the two objects are members of both S and T, then the equality and compare procedures (but not necessarily the hash procedure) of S-comparator and T-comparator compute the same results on those objects.
+These comparators compare exact integers, integers, rational numbers, real numbers, complex numbers, and any numbers using the total order implied by <tt>&lt;</tt>.  They must be compatible with the R5RS numerical tower in the following sense: If S is a subtype of the numerical type T and the two objects are members of both S and T, then the equality predicate and comparison procedures (but not necessarily the hash function) of S-comparator and T-comparator compute the same results on those objects.
 </p>
 <p>
 Since non-real numbers cannot be compared with <tt>&lt;</tt>, the following least-surprising ordering is defined: If the real parts are &lt; or &gt;, so are the complex numbers; otherwise, the complex numbers are ordered by their imaginary parts.  This can still produce surprising results if one real part is exact and the other is inexact.
 </p>
 <p>
-It is an error to pass a NaN to any of these comparators.
+<tt>list-comparator</tt>
 </p>
+<p>This comparator compares lists lexicographically, as follows:</p>
+<ul>
+<li>The empty list compares equal to itself.</li>
+<li>The empty list compares less than any non-empty list.</li>
+<li>Two non-empty lists are compared by comparing their cars.  If the cars are not equal when compared using <tt>default-comparator</tt> (see below), then the result is the result of that comparison.  Otherwise, the cdrs are compared using <tt>list-comparator</tt>.</li></ul>
+<p>
+<tt>vector-comparator</tt>
+</p>
+<p>
+<tt>bytevector-comparator</tt>
+</p>
+<p>
+These comparators compare vectors and bytevectors by comparing their lengths.  A shorter argument is always less than a longer one.  If the lengths are equal, then each element is compared in turn using <tt>default-comparator</tt> until a pair of unequal elements is found, in which case the result is the result of that comparison.  If all elements are equal, the arguments are equal.
+</p>
+<h3 id="Thedefaultcomparator">The default comparator</h3>
+<p>
+<tt>default-comparator</tt>
+</p>
+<p>
+This is a comparator that accepts any two Scheme values (with the exceptions listed in the Limitations section) and orders them in some implementation-defined way, subject to the following conditions:
+</p>
+<ul><li>When applied to booleans, characters, strings, symbols, numbers, lists, vectors, or bytevectors, its behavior must be the same as <tt>boolean-comparator</tt>, <tt>character-comparator</tt>, <tt>string-comparator</tt>, <tt>symbol-comparator</tt>, <tt>number-comparator</tt>, <tt>list-comparator</tt>, <tt>vector-comparator</tt>, and <tt>bytevector-comparator</tt>respectively.  The same should be true when applied to an object or objects of a type for which a standard comparator is defined.</li>
+<li><p>Given disjoint types <i>a</i> and <i>b</i>, one of three conditions must hold:</p>
+<ul>
+<li>All objects of type <i>a</i> compare less than all objects of type <i>b</i>.</li>
+<li>All objects of type <i>a</i> compare greater than all objects of type <i>b</i>.</li>
+<li>All objects of either type <i>a</i> or type <i>b</i> compare equal to each other.  This is not permitted for any of the standard types mentioned above.</li>
+</ul></li></ul>
 <h3 id="Comparatorconstructors">Comparator constructors</h3>
 <p>
 Most of the following comparator constructors are close analogues of the standard compare procedures of <a href="http://srfi.schemers.org/srfi-67/srfi-67.html">SRFI 67</a>.  They all provide appropriate hash functions as well.  Note that comparator constructors are allowed to cache their results: they need not return a newly allocated object, since comparators are purely functional.
@@ -165,26 +199,20 @@ Most of the following comparator constructors are close analogues of the standar
 Returns a comparator which bundles the <em>type-test, equality, compare</em>, and <em>hash</em> procedures provided.  As a convenience, <tt>#f</tt> is accepted in place of any procedure, as follows:
 </p>
 <ul><li>If <em>type-test</em> is <tt>#f</tt>, a type-test procedure that accepts any arguments is provided.
-</li><li>If <em>equality</em> is <tt>#f</tt>, an equality procedure is provided that returns <tt>#t</tt> iff <em>compare</em> returns 0.
-</li><li>If <em>compare</em> or <em>hash</em> is <tt>#f</tt>, a procedure is provided that signals an error on application.
-</li></ul>
+</li>
+<li>If <em>equality</em> is <tt>#f</tt>, an equality predicate is provided that returns <tt>#t</tt> iff <em>compare</em> returns 0.
+</li>
+<li>If <em>compare</em> or <em>hash</em> is <tt>#f</tt>, a procedure is provided that signals an error on application.
+</li>
+</ul>
 <p>
 <tt>(make-inexact-comparator </tt><em>epsilon rounding nan-handling</em><tt>)</tt>
 </p>
 <p>
-Returns a comparator that compares inexact numbers as follows:  if after rounding to the nearest <em>epsilon</em> they are the same, they compare equal; otherwise they compare as specified by <tt>&lt;</tt>.  The direction of rounding is specified by the <em>rounding</em> argument, which is either a procedure accepting two arguments (the number and <em>epsilon</em>, or else one of the symbols <tt>floor</tt>, <tt>ceiling</tt>, <tt>truncate</tt>, or <tt>round</tt>.
+Returns a comparator that compares inexact real numbers as follows:  if after rounding to the nearest <em>epsilon</em> they are the same, they compare equal; otherwise they compare as specified by <tt>&lt;</tt>.  The direction of rounding is specified by the <em>rounding</em> argument, which is either a procedure accepting two arguments (the number and <em>epsilon</em>, or else one of the symbols <tt>floor</tt>, <tt>ceiling</tt>, <tt>truncate</tt>, or <tt>round</tt>.
 </p>
 <p>
-The argument <i>nan-handling</i> specifies how to compare NaN arguments to non-NaN arguments.  If it is a procedure, the procedure is invoked if either argument is a NaN.  If it is the symbol <tt>min</tt>, NaN values precede all other values; if it is the symbol <tt>max</tt>, they follow all other values, and if it is the symbol<tt>error</tt>, an error is signaled if a NaN value is compared.
-</p>
-<p>
-<tt>(make-vector-comparator </tt><em>element-comparator</em><tt>)</tt>
-</p>
-<p>
-<tt>(make-bytevector-comparator </tt><em>element-comparator</em><tt>)</tt>
-</p>
-<p>
-Returns a comparator which compares two vectors (or bytevectors) as follows: shorter objects precede longer ones, and objects of the same size are compared lexicographically: that is, the first elements are compared using <em>element-comparator</em>, and if they are not equal that is the result; otherwise, the second elements are compared, and so on until non-equal elements are found.  If all elements are equal, the objects are equal.
+The argument <i>nan-handling</i> specifies how to compare NaN arguments to non-NaN arguments.  If it is a procedure, the procedure is invoked if either argument is a NaN.  If it is the symbol <tt>min</tt>, NaN values precede all other values; if it is the symbol <tt>max</tt>, they follow all other values, and if it is the symbol <tt>error</tt>, an error is signaled if a NaN value is compared.  If both arguments are NaNs, however, they always compare as equal.
 </p>
 <p>
 If the implementation does not support bytevectors, the result of invoking <tt>make-bytevector-comparator</tt> is a comparator whose type testing procedure always returns <tt>#f</tt>.
@@ -193,34 +221,25 @@ If the implementation does not support bytevectors, the result of invoking <tt>m
 <tt>(make-list-comparator </tt><em>element-comparator</em><tt>)</tt>
 </p>
 <p>
-Returns a comparator which compares two lists as follows: the empty list precedes all other lists, and other lists are compared lexicographically.
+<tt>(make-vector-comparator </tt><em>element-comparator</em><tt>)</tt>
+</p>
+<p>
+<tt>(make-bytevector-comparator </tt><em>element-comparator</em><tt>)</tt>
+</p>
+<p>
+These procedures return comparators which compare two lists, vectors, or bytevectors in the same way as <tt>list-comparator</tt>, <tt>vector-comparator</tt>, and <tt>bytevector-comparator</tt> respectively, but using <i>element-comparator</i> rather than <tt>default-comparator</tt>.
+</p>
+<p><tt>(make-listwise-comparator </tt><em>type-test element-comparator empty? head tail</em><tt>)</tt>
+</p>
+<p>
+Returns a comparator which compares two objects that satisfy <em>type-test</em> as if they were lists, using the <em>empty?</em> procedure to determine if an object is empty, and the <em>head</em> and <em>tail</em> procedures to access particular elements.
 </p>
 <p>
 <tt>(make-vectorwise-comparator </tt><em>type-test element-comparator length ref</em><tt>)</tt>
 </p>
 <p>
-Returns a comparator which compares two objects that satisfy <em>type-test</em> as if they were vectors, using the <em>length</em> procedure to determine the length of the object, and the <em>ref</em> procedure to access a particular element.  The <tt>make-vector-comparator</tt> procedure may be defined thus:
-</p>
-<pre class="wiki">(define (make-vector-comparator element-comparator)
-  (make-vectorwise-comparator
-    (lambda (x y) (and (vector? x) (vector? y)))
-    element-comparator
-    vector-length
-    vector-ref))
-</pre><p>
-<tt>(make-listwise-comparator </tt><em>type-test element-comparator empty? head tail</em><tt>)</tt>
-</p>
+Returns a comparator which compares two objects that satisfy <em>type-test</em> as if they were vectors, using the <em>length</em> procedure to determine the length of the object, and the <em>ref</em> procedure to access a particular element.</p>
 <p>
-Returns a comparator which compares two objects that satisfy <em>type-test</em> as if they were lists, using the <em>empty?</em> procedure to determine if an object is empty, and the <em>head</em> and <em>tail</em> procedures to access particular elements.  The <tt>make-list-comparator</tt> procedure may be defined thus:
-</p>
-<pre class="wiki">(define (make-list-comparator element-comparator)
-  (make-listwise-comparator
-    (lambda (x y) (and (list? x) (list? y)))
-    element-comparator
-    null?
-    car
-    cdr))
-</pre><p>
 <tt>(make-car-comparator </tt><em>comparator</em><tt>)</tt>
 </p>
 <p>
@@ -236,7 +255,7 @@ Returns a comparator that compares pairs on their cdrs alone using <em>comparato
 <tt>(make-pair-comparator </tt><em>car-comparator cdr-comparator</em><tt>)</tt>
 </p>
 <p>
-Returns a comparator that compares pairs first on their cars using <em>car-comparator</em>.  If the cars are equal, compares the cdrs using <em>cdr-comparator</em>.
+Returns a comparator that compares pairs first on their cars using <em>car-comparator</em>.  If the cars are equal, it compares the cdrs using <em>cdr-comparator</em>.
 </p>
 <p>
 <tt>(make-improper-list-comparator </tt><em>comparator</em><tt>)</tt>
@@ -251,10 +270,10 @@ Returns a comparator that compares arbitrary objects as follows:  the empty list
 Returns a comparator whose procedures make use of the <em>comparators</em> as follows:
 </p>
 <p>
-The type test procedure passes its argument to the type test procedures of <em>comparators</em> in the sequence given.  If any of them returns <tt>#t</tt>, so does the type test procedure; otherwise, it returns <tt>#f</tt>.
+The type test predicate passes its argument to the type test predicates of <em>comparators</em> in the sequence given.  If any of them returns <tt>#t</tt>, so does the type test predicate; otherwise, it returns <tt>#f</tt>.
 </p>
 <p>
-The arguments of the equality, compare, and hash procedures are passed to the type test procedure of each <em>comparator</em> in sequence.  The first comparator whose type test procedure is satisfied is used when comparing those arguments.  All other comparators are ignored.  If no type test procedure is satisfied, an error is signaled; to avoid this, make sure that the type test procedure of the final comparator accepts any argument.
+The arguments of the equality, compare, and hash functions are passed to the type test predicate of each <em>comparator</em> in sequence.  The first comparator whose type test predicate is satisfied is used when comparing those arguments.  All other comparators are ignored.  If no type test predicate is satisfied, an error is signaled; to avoid this, make sure that the type test predicate of the final comparator accepts any argument.
 </p>
 <p>
 This procedure is analogous to the expression types <tt>select-compare</tt> and <tt>cond-compare</tt> from <a href="http://srfi.schemers.org/srfi-67/srfi-67.html">SRFI 67</a>.
@@ -263,7 +282,8 @@ This procedure is analogous to the expression types <tt>select-compare</tt> and 
 <tt>(make-refining-comparator </tt><em>comparator<sub>1</sub> comparator<sub>2</sub></em> ...<tt>)</tt>
 </p>
 <p>
-Returns a comparator that makes use of the <em>comparators</em> in the same way as <tt>make-selecting-comparator</tt>, except that its compare procedure and hash function can look past the first comparator whose type test predicate is satisfied.  If the compare procedure of that comparator returns 0, then the next comparator whose type test procedure is satisfied is tried instead.  If there are no more such comparators, then the compare procedure returns 0.  The hash procedure applies all the hash functions of the comparators whose type test predicates are satisfied, and returns a value which depends, in an implementation-defined way, on all their values.  If no type test procedure is satisfied, an error is signaled; to avoid this, make sure that the type test procedure of the final comparator is satisfied by any arguments.
+Returns a comparator that makes use of the <em>comparators</em> in the same way as <tt>make-selecting-comparator</tt>, except that its comparison procedure and hash function can look past the first comparator whose type test predicate is satisfied.  If the comparison procedure of that comparator returns 0, then the next comparator whose type test predicate is satisfied is tried instead.  If there are no more such comparators, then the comparison procedure returns 0.  The equality predicate is defined in the same way.</p>
+<p>The hash function returns a value which depends, in an implementation-defined way, on the results of invoking the hash functions of the comparators whose type test predicates are satisfied.  In particular, it may depend solely on the first or last such hash function.  If no type test predicate is satisfied, an error is signaled; to avoid this, make sure that the type test predicate of the final comparator is satisfied by any arguments.
 </p>
 <p>
 This procedure is analogous to the expression type <tt>refine-compare</tt> from <a href="http://srfi.schemers.org/srfi-67/srfi-67.html">SRFI 67</a>.
@@ -272,35 +292,9 @@ This procedure is analogous to the expression type <tt>refine-compare</tt> from 
 <tt>(make-debug-comparator </tt><em>comparator</em><tt>)</tt>
 </p>
 <p>
-Returns a comparator that behaves exactly like <em>comparator</em>, except that it verifies all the programmer responsibilities (except stability) whenever its procedures are invoked, and an error is signaled if any of them are violated.  Transitivity is not tested on the first call to a debug comparator, because it requires three arguments; it is tested on all future calls using an arbitrarily chosen argument from the previous invocation.  Note that this may cause unexpected storage leaks. 
+Returns a comparator that behaves exactly like <em>comparator</em>, except that it verifies all the programmer responsibilities (except stability) whenever any of its procedures are invoked, and an error is signaled if any of them are violated.  Transitivity is not tested on the first call to a debug comparator, because it requires three arguments; it is tested on all future calls using an arbitrarily chosen argument from the previous invocation.  Note that this may cause unexpected storage leaks. 
 </p>
-<h3 id="Thedefaultcomparator">The default comparator</h3>
-<p>
-<tt>default-comparator</tt>
-</p>
-<p>
-This is a comparator that accepts any two Scheme values (with the exception of circular structure) and orders them in some implementation-defined way, subject to the following:
-</p>
-<ul><li><p>When applied to booleans, characters, strings, and numbers, its behavior must be the same as <tt>boolean-comparator</tt>, <tt>character-comparator</tt>, <tt>string-comparator</tt>, and <tt>number-comparator</tt> respectively, except that NaN values must be accepted and treated as either preceding or following all numeric values.  The same should be true for any pair of objects of the same type if a standard comparator is defined for that type.
-</p></li>
-<li><p>When applied to lists, vectors, and bytevectors, its behavior must be the same as <tt>(make-list-comparator default-comparator)</tt>, <tt>(make-vector-comparator default-comparator)</tt>, and <tt>(make-bytevector-comparator default-comparator)</tt> respectively.  The same should be true for any pair of sequences of the same type if an element-wise comparator is defined for that type.
-</p></li>
-<li><p>All objects of a disjoint type should compare either greater than or less than all values of every other disjoint type.  In other words, type should trump structure.
-</p>
-</li></ul>
-<h3 id="Standardconveniencecomparators">Standard convenience comparators</h3>
-<p>
-<tt>list-comparator</tt>
-</p>
-<p>
-<tt>vector-comparator</tt>
-</p>
-<p>
-<tt>bytevector-comparator</tt>
-</p>
-<p>
-These comparators compare lists, vectors, and bytevectors in the same way that the results of applying <tt>make-list-comparator</tt>, <tt>make-vector-comparator</tt>, and <tt>make-bytevector-comparator</tt> do when applied to <tt>default-comparator</tt>.
-</p>
+<h3 id="Wrappedequalitypredicates">Wrapped equality predicates</h3>
 <p>
 <tt>eq-comparator</tt>
 </p>
@@ -311,85 +305,85 @@ These comparators compare lists, vectors, and bytevectors in the same way that t
 <tt>equal-comparator</tt>
 </p>
 <p>
-The equality procedures of these comparators are <tt>eq?</tt>, <tt>eqv?</tt>, and <tt>equal?</tt> respectively.  When applied to non-equal objects, they compare objects the same way as <tt>default-comparator</tt> does.
+The equality predicates of these comparators are <tt>eq?</tt>, <tt>eqv?</tt>, and <tt>equal?</tt> respectively.  When applied to non-equal objects, their behavior is implementation-defined.  The type test predicates always return <tt>#t</tt>.  The comparison predicates and hash functions have implementation-defined behavior, which may include signaling an error.
 </p>
 <h3 id="Accessors">Accessors</h3>
 <p>
 <tt>(comparator-type-test-procedure </tt><em>comparator</em><tt>)</tt>
 </p>
 <p>
-Returns the type test procedure of <em>comparator</em>.
+Returns the type test predicate of <em>comparator</em>.
 </p>
 <p>
 <tt>(comparator-equality-predicate </tt><em>comparator</em><tt>)</tt>
 </p>
 <p>
-Returns the equality procedure of <em>comparator</em>.
+Returns the equality predicate of <em>comparator</em>.
 </p>
 <p>
-<tt>(comparator-compare-procedure </tt><em>comparator</em><tt>)</tt>
+<tt>(comparator-comparison-procedure </tt><em>comparator</em><tt>)</tt>
 </p>
 <p>
-Returns the compare procedure of <em>comparator</em>.
+Returns the comparison procedure of <em>comparator</em>.
 </p>
 <p>
 <tt>(comparator-hash-function </tt><em>comparator</em><tt>)</tt>
 </p>
 <p>
-Returns the hash procedure of <em>comparator</em>.
+Returns the hash function of <em>comparator</em>.
 </p>
 <h3 id="Primitiveapplicators">Primitive applicators</h3>
 <p>
 <tt>(comparator-test-type </tt><em>comparator obj</em><tt>)</tt>
 </p>
 <p>
-Invokes the type test procedure of <em>comparator</em> on <em>obj</em> and returns what it returns.
+Invokes the type test predicate of <em>comparator</em> on <em>obj</em> and returns what it returns.
 </p>
 <p>
 <tt>(comparator-check-type </tt><em>comparator obj</em><tt>)</tt>
 </p>
 <p>
-Invokes the type test procedure of <em>comparator</em> on <em>obj</em> and returns true if it returns true and signals an error otherwise.
+Invokes the type test predicate of <em>comparator</em> on <em>obj</em> and returns true if it returns true and signals an error otherwise.
 </p>
 <p>
 <tt>(comparator-equal? </tt><em>comparator obj<sub>1</sub> obj<sub>2</sub></em><tt>)</tt>
 </p>
 <p>
-Invokes the equality procedure of <em>comparator</em> on <em>obj<sub>1</sub></em> and <em>obj<sub>2</sub></em> and returns what it returns.
+Invokes the equality predicate of <em>comparator</em> on <em>obj<sub>1</sub></em> and <em>obj<sub>2</sub></em> and returns what it returns.
 </p>
 <p>
 <tt>(comparator-compare </tt><em>comparator obj<sub>1</sub> obj<sub>2</sub></em><tt>)</tt>
 </p>
 <p>
-Invokes the compare procedure of <em>comparator</em> on <em>obj<sub>1</sub></em> and <em>obj<sub>2</sub></em> and returns what it returns.
+Invokes the comparison procedure of <em>comparator</em> on <em>obj<sub>1</sub></em> and <em>obj<sub>2</sub></em> and returns what it returns.
 </p>
 <p>
 <tt>(comparator-hash </tt><em>comparator obj</em><tt>)</tt>
 </p>
 <p>
-Invokes the hash procedure of <em>comparator</em> on <em>obj</em> and returns what it returns.
+Invokes the hash function of <em>comparator</em> on <em>obj</em> and returns what it returns.
 </p>
-<h3 id="Compareprocedureconstructors">Compare procedure constructors</h3>
+<h3 id="Comparisonprocedureconstructors">Comparison procedure constructors</h3>
 <p>
-<tt>(make-compare&lt; </tt><em>lt-pred</em><tt>)</tt>
-</p>
-<p>
-<tt>(make-compare&gt; </tt><em>gt-pred</em><tt>)</tt>
+<tt>(make-  comparison&lt; </tt><em>lt-pred</em><tt>)</tt>
 </p>
 <p>
-<tt>(make-compare&lt;= </tt><em>le-pred</em><tt>)</tt>
+<tt>(make-comparison&gt; </tt><em>gt-pred</em><tt>)</tt>
 </p>
 <p>
-<tt>(make-compare&gt;= </tt><em>ge-pred</em><tt>)</tt>
+<tt>(make-comparison&lt;= </tt><em>le-pred</em><tt>)</tt>
 </p>
 <p>
-<tt>(make-compare=/&lt; </tt><em>eq-pred lt-pred</em><tt>)</tt>
+<tt>(make-comparison&gt;= </tt><em>ge-pred</em><tt>)</tt>
 </p>
 <p>
-<tt>(make-compare=/&gt; </tt><em>eq-pred gt-pred</em><tt>)</tt>
+<tt>(make-comparison=/&lt; </tt><em>eq-pred lt-pred</em><tt>)</tt>
 </p>
 <p>
-These procedures return a compare procedure given a less-than predicate, a greater-than predicate, a less-than-or-equal-to predicate, a greater-than-or-equal-to predicate, or the combination of an equality predicate and either a less-than or a greater-than predicate.
+<tt>(make-comparison=/&gt; </tt><em>eq-pred gt-pred</em><tt>)</tt>
+</p>
+<p>
+These procedures return a comparison procedure given a less-than predicate, a greater-than predicate, a less-than-or-equal-to predicate, a greater-than-or-equal-to predicate, or the combination of an equality predicate and either a less-than or a greater-than predicate.
 </p>
 <p>
 They are based on the <a href="http://srfi.schemers.org/srfi-67/srfi-67.html">SRFI 67</a> <tt>compare-by</tt> procedures, but don't accept comparand arguments.
@@ -402,7 +396,7 @@ The following expression types allow the convenient use of comparators.  They co
 <tt>(if3 </tt><em>&lt;expr&gt; &lt;less&gt; &lt;equal&gt; &lt;greater&gt;</em><tt>)</tt>
 </p>
 <p>
-The expression <em>&lt;expr&gt;</em> is evaluated; it will typically, but not necessarily, be a call on <tt>comparator-compare</tt>.  If the result is -1, <em>&lt;less&gt;</em> is evaluated and its value(s) are returned; if the result is 0, <em>&lt;equal&gt;</em> is evaluated and its value(s) are returned; if the result is 1, <em>&lt;greater&gt;</em> is evaluated and its value(s) are returned.  Otherwise an error is signaled.
+The expression <em>&lt;expr&gt;</em> is evaluated; it will typically, but not necessarily, be a call on a comparison procedure.  If the result is -1, <em>&lt;less&gt;</em> is evaluated and its value(s) are returned; if the result is 0, <em>&lt;equal&gt;</em> is evaluated and its value(s) are returned; if the result is 1, <em>&lt;greater&gt;</em> is evaluated and its value(s) are returned.  Otherwise an error is signaled.
 </p>
 <p>
 <tt>(if=? </tt><em>&lt;expr&gt; &lt;consequent&gt;</em> [ <em>&lt;alternate&gt;</em> ]<tt>)</tt>
@@ -448,7 +442,7 @@ The following procedures allow the convenient use of comparators in situations w
 <tt>(not=? </tt> [ <em>comparator </em> ] [ <em>obj<sub>1</sub> obj<sub>2</sub></em> ] <tt>)</tt>
 </p>
 <p>
-If <em>obj<sub>1</sub></em> and <em>obj<sub>2</sub></em> are provided, then these procedures return <code>#t</code> if comparing <em>obj<sub>1</sub></em> and <em>obj<sub>2</sub></em> using the equality or compare procedures of <em>comparator</em> shows that the objects bear the specified relation to one another, and <tt>#f</tt> otherwise.  If <em>obj<sub>1</sub></em> and <em>obj<sub>2</sub></em> are not provided, then a predicate is returned which, when applied to two arguments, will produce results consistent with the three-argument version.</p>
+If <em>obj<sub>1</sub></em> and <em>obj<sub>2</sub></em> are provided, then these procedures return <code>#t</code> if comparing <em>obj<sub>1</sub></em> and <em>obj<sub>2</sub></em> using the equality or comparison procedures of <em>comparator</em> shows that the objects bear the specified relation to one another, and <tt>#f</tt> otherwise.  If <em>obj<sub>1</sub></em> and <em>obj<sub>2</sub></em> are not provided, then a predicate is returned which, when applied to two arguments, will produce results consistent with the three-argument version.</p>
 <p>If <em>comparator</em> is omitted, <em>default-comparator</em> is used.
 </p>
 <h3 id="Intervalcomparisonpredicates">Interval (ternary) comparison predicates</h3>
@@ -471,27 +465,29 @@ If <em>obj<sub>1</sub></em> and <em>obj<sub>2</sub></em> are provided, then thes
 <p>Returns <code>#t</code> if <em>obj<sub>1</sub></em> is less than or equal to <em>obj<sub>2</sub></em>, which is less than <em>obj<sub>3</sub></em>, and <code>#f</code> otherwise.</p>
 <h3 id="Chaincomparisonpredicates">Chain (multiple argument) comparison predicates</h3>
 <p>
-<tt>(chain=? </tt><em>comparator object</em> ...<tt>)</tt>
+<tt>(chain=? </tt><em>comparator object<sub>1</sub> object<sub>2</sub> object<sub>3</sub></em> ...<tt>)</tt>
 </p>
 <p>
-<tt>(chain&lt;? </tt><em>comparator object</em> ...<tt>)</tt>
+<tt>(chain&lt;? </tt><em>comparator object<sub>1</sub> object<sub>2</sub> object<sub>3</sub></em> ...<tt>)</tt>
 </p>
 <p>
-<tt>(chain&gt;? </tt><em>comparator object</em> ...<tt>)</tt>
+<tt>(chain&gt;? </tt><em>comparator object<sub>1</sub> object<sub>2</sub> object<sub>3</sub></em> ...<tt>)</tt>
 </p>
 <p>
-<tt>(chain&lt;=? </tt><em>comparator object</em> ...<tt>)</tt>
+<tt>(chain&lt;=? </tt><em>comparator object<sub>1</sub> object<sub>2</sub> object<sub>3</sub></em> ...<tt>)</tt>
 </p>
 <p>
-<tt>(chain&gt;=? </tt><em>comparator object</em> ...<tt>)</tt>
+<tt>(chain&gt;=? </tt><em>comparator object<sub>1</sub> object<sub>2</sub> object<sub>3</sub></em> ...<tt>)</tt>
 </p>
 <p>
-These procedures are analogous to the number, character, and string comparison procedures of Scheme.  They apply the compare procedure of <em>comparator</em> to the <em>objects</em> as follows.  If the specified relation returns <tt>#t</tt> for all <em>object<sub>i</sub></em> and <em>object<sub>j</sub></em> where <em>n</em> is the number of objects and 1 &lt;= <em>i &lt; j &lt;= n</em>, then the procedures return <tt>#t</tt>, but otherwise <tt>#f</tt>.  In particular this applies where <em>n</em> is 0 or 1.  Note that the comparator must be provided; otherwise, if the first argument is a comparator, it would be ambiguous whether it is a comparator to be used, or a comparator to be compared using <code>default-comparator</code>.
+These procedures are analogous to the number, character, and string comparison procedures of Scheme.  They apply the comparison procedure of <em>comparator</em> to the <em>objects</em> as follows.  If the specified relation returns <tt>#t</tt> for all <em>object<sub>i</sub></em> and <em>object<sub>j</sub></em> where <em>n</em> is the number of objects and 1 &lt;= <em>i &lt; j &lt;= n</em>, then the procedures return <tt>#t</tt>, but otherwise <tt>#f</tt>.</p>
+
+<p>The reason why there is no default for the comparator is that if the first argument were a comparator, it would be ambiguous whether it is a comparator to be used, or a comparator to be compared using <code>default-comparator</code>.  
 </p>
 <p>
 The order in which the values are compared is unspecified.  Because the relations are transitive, it suffices to compare each object with its successor.
 </p>
-<h3 id="Minmaxcomparisonpredicates">Min/max comparison predicates</h3>
+<h3 id="Minmaxcomparisonprocedures">Min/max comparison procedures</h3>
 <p>
 <tt>(comparator-min </tt><em>comparator object<sub>1</sub> object<sub>2</sub></em> ...<tt>)</tt>
 </p>
@@ -499,7 +495,7 @@ The order in which the values are compared is unspecified.  Because the relation
 <tt>(comparator-max </tt><em>comparator object<sub>1</sub> object<sub>2</sub></em> ...<tt>)</tt>
 </p>
 <p>
-These procedures are analogous to <tt>min</tt> and <tt>max</tt> respectively.  They apply the compare procedure of <em>comparator</em> to the <em>objects</em> to find and return a minimal (or maximal) object.  The order in which the values are compared is unspecified.
+These procedures are analogous to <tt>min</tt> and <tt>max</tt> respectively.  They apply the comparison procedure of <em>comparator</em> to the <em>objects</em> to find and return a minimal (or maximal) object.  The order in which the values are compared is unspecified.
 </p>
 <p>
 Note:  The <a href="http://srfi.schemers.org/srfi-67/srfi-67.html">SRFI 67</a> procedures <tt>pairwise-not=?</tt> and <tt>kth-largest</tt> involve sorting their arguments, and are not provided by this proposal in order to avoid an otherwise unnecessary implementation dependency.  They are easily provided by a sorting package that makes use of comparators.

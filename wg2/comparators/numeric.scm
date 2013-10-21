@@ -1,20 +1,21 @@
-;;;; Numeric comparator
+;;; Numeric comparison procedures
 
-;;; This definition of numeric-comparator assumes a full R5RS/R7RS tower.
-
-(define (numeric-hash n)
-  (abs (truncate (exact (+ (real-part n) (imag-part n))))))
-
-(define (numeric-compare x y)
+;; Comparison procedure for real numbers only
+(define (real-compare a b)
   (cond
-    ((and (nan? x) (nan? y)) 0)
-    ((nan? x) -1)
-    ((nan? y) 1)
-    ((= x y) 0)
-    ((and (real? x) (real? y) (< x y)) -1)
-    ((and (real? x) (real? y)) 1)
-    ((< (real-part x) (real-part y)) -1)
-    ((> (real-part x) (real-part y)) 1)
-    ((< (imag-part x) (imag-part y)) -1)
-    ((> (imag-part x) (imag-part y)) 1)
-    (else (error "numeric-compare: crash" x y))))
+    ((< a b) -1)
+    ((> a b) 1)
+    (else 0)))
+
+;;; This definition of complex-compare assumes a full R5RS/R7RS tower.
+
+(define (complex-compare a b)
+  (let ((real-result (real-compare (real-part a) (real-part b))))
+    (if (= real-result 0)
+      (real-compare (imag-part a) (imag-part b))
+      real-result)))
+
+;;; But if there are no complex numbers, then use this:
+
+;(define complex-compare real-compare)
+
