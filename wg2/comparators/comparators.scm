@@ -1,3 +1,5 @@
+;;;; Standard comparators and comparator constructors
+
 ;;; Standard atomic comparators
 
 (define (boolean-compare a b)
@@ -28,7 +30,8 @@
 
 (define string-compare (make-comparison=/< string=? string<?))
 
-(define (string-hash obj) 'FIXME)
+(define (string-hash obj)
+  (make-vectorwise-hash char-hash string-length string-ref))
 
 (define string-comparator
   (make-comparator string? string=? string-compare string-hash))
@@ -164,7 +167,7 @@
     pair?
     #f
     (lambda (a b)
-       (comparator-comparison-procedure comparator (car a) (car b)))
+       (comparator-compare comparator (car a) (car b)))
     (lambda (obj) (comparator-hash-function comparator))))
 
 (define (make-cdr-comparator comparator)
@@ -172,6 +175,26 @@
     pair?
     #f
     (lambda (a b)
-       (comparator-comparison-procedure comparator (cdr a) (cdr b)))
+       (comparator-compare comparator (cdr a) (cdr b)))
     (lambda (obj) (comparator-hash-function comparator obj))))
+
+(define (make-pair-comparison car-comparator cdr-comparator)
+  (lambda (a b)
+    (let ((result (comparator-compare car-comparator (car a) (car b))))
+      (if (= result 0)
+        (comparator-compare cdr-comparator (cdr a) (cdr b))
+        result))))
+
+(define (make-pair-hash car-comparator cdr-comparator)
+  (lambda (obj)
+    (+
+      (comparator-hash car-comparator (car obj))
+      (comparator-hash cdr-comparator (cdr obj)))))
+
+(define (make-pair-comparator car-comparator cdr-comparator)
+  (make-comparator
+    pair?
+    #f
+    (make-pair-comparison car-comparator cdr-comparator)
+    (make-pair-hash car-comparator cdr-comparator)))
 

@@ -18,11 +18,11 @@
 (define (dyadic-symbol=? x y)
   (string=? (symbol->string x) (symbol->string y)))
 
-;(define inexact exact->inexact)
+(define inexact exact->inexact)
 
-;(define exact inexact->exact)
+(define exact inexact->exact)
 
-;(define (exact-integer? x) (and (integer? x) (exact? x)))
+(define (exact-integer? x) (and (integer? x) (exact? x)))
 
 (define bytevector? u8vector?)
 

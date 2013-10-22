@@ -187,7 +187,9 @@ This is a comparator that accepts any two Scheme values (with the exceptions lis
 <li>All objects of type <i>a</i> compare less than all objects of type <i>b</i>.</li>
 <li>All objects of type <i>a</i> compare greater than all objects of type <i>b</i>.</li>
 <li>All objects of either type <i>a</i> or type <i>b</i> compare equal to each other.  This is not permitted for any of the standard types mentioned above.</li>
-</ul></li></ul>
+</ul>
+</li>
+<li><p>The following ordering between types must hold: the empty list precedes pairs, which precede booleans, which precede characters, which precede strings, which precede symbols, which precede vectors, which precede bytevectors, which precede all other objects.</p></li></ul>
 <h3 id="Comparatorconstructors">Comparator constructors</h3>
 <p>
 Most of the following comparator constructors are close analogues of the standard compare procedures of <a href="http://srfi.schemers.org/srfi-67/srfi-67.html">SRFI 67</a>.  They all provide appropriate hash functions as well.  Note that comparator constructors are allowed to cache their results: they need not return a newly allocated object, since comparators are purely functional.
@@ -261,7 +263,7 @@ Returns a comparator that compares pairs first on their cars using <em>car-compa
 <tt>(make-improper-list-comparator </tt><em>comparator</em><tt>)</tt>
 </p>
 <p>
-Returns a comparator that compares arbitrary objects as follows:  the empty list precedes all pairs, which precede all other objects.  Pairs are compared using <em>comparator</em> on their cars, and if they compare equal, on their cdrs.  Other objects are compared using <em>comparator</em>.
+Returns a comparator that compares arbitrary objects as follows:  the empty list precedes all pairs, which precede all other objects.  Pairs are compared using <em>comparator</em> on their cars, and if they compare equal, on their cdrs.  All other objects are compared using <em>comparator</em> directly.
 </p>
 <p>
 <tt>(make-selecting-comparator </tt><em>comparator<sub>1</sub> comparator<sub>2</sub></em> ...<tt>)</tt>
@@ -289,10 +291,14 @@ Returns a comparator that makes use of the <em>comparators</em> in the same way 
 This procedure is analogous to the expression type <tt>refine-compare</tt> from <a href="http://srfi.schemers.org/srfi-67/srfi-67.html">SRFI 67</a>.
 </p>
 <p>
+<tt>(make-reverse-comparator </tt><em>comparator</em><tt>)</tt>
+</p>
+<p>Returns a comparator that behaves like <em>comparator</em>, except that the compare procedure returns 1, 0, and -1 instead of -1, 0, and 1 respectively.  This allows ordering in reverse.</p>
+<p>
 <tt>(make-debug-comparator </tt><em>comparator</em><tt>)</tt>
 </p>
 <p>
-Returns a comparator that behaves exactly like <em>comparator</em>, except that it verifies all the programmer responsibilities (except stability) whenever any of its procedures are invoked, and an error is signaled if any of them are violated.  Transitivity is not tested on the first call to a debug comparator, because it requires three arguments; it is tested on all future calls using an arbitrarily chosen argument from the previous invocation.  Note that this may cause unexpected storage leaks. 
+Returns a comparator that behaves exactly like <em>comparator</em>, except that whenever any of its procedures are invoked, it verifies all the programmer responsibilities (except stability), and an error is signaled if any of them are violated.  Because it requires three arguments, transitivity is not tested on the first call to a debug comparator; it is tested on all future calls using an arbitrarily chosen argument from the previous invocation.  Note that this may cause unexpected storage leaks. 
 </p>
 <h3 id="Wrappedequalitypredicates">Wrapped equality predicates</h3>
 <p>
