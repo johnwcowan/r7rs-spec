@@ -284,8 +284,8 @@ Except as noted below, the procedures for creating and manipulating enumeration 
 
 </p>
 <h3>Syntax</h3>
-<p><tt>(define-enumeration </tt> &lt;type-name&gt;<tt> (</tt>&lt;constructor&gt; &lt;symbol&gt; ...<tt>) </tt><tt>)</tt></p>
-<p>Creates an enumeration type whose members are &lt;symbol&gt;s.  The identifier &lt;type-name&gt; is bound to the enumeration type.  The identifier &lt;constructor&gt; is bound to a procedure similar to <tt>enum-set</tt>, except that it does not accept an <em>enum-type</em> argument.</p>
+<p><tt>(define-enumeration-type </tt> &lt;type-name&gt;<tt> (</tt>&lt;constructor&gt; &lt;symbol&gt; ...<tt>) </tt> &lt;predicate&gt;<tt>)</tt></p>
+<p>Creates an enumeration type whose members are &lt;symbol&gt;s.  The identifier &lt;type-name&gt; is bound to the enumeration type.  The identifier &lt;constructor&gt; is bound to a procedure similar to <tt>enum-set</tt>, except that it does not accept an <em>enum-type</em> argument.  Finally, the identifier &lt;predicate&gt; is bound to a predicate which is true if its argument is an enumeration set whose type is the declared type, and false otherwise.  The syntax is reminiscent of <tt>define-record-type</tt>.</p>
 
 <h3>Enum-type procedures</h3><p><tt>(make-enum-type </tt><em>enum-list</em><tt>)</tt></p><p>
 
