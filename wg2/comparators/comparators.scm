@@ -2,7 +2,7 @@
 
 ;;; Standard atomic comparators
 
-(define (boolean-compare a b)
+(define (boolean-comparison a b)
   (cond
     ((and a b) 0)
     (a 1)
@@ -12,65 +12,124 @@
 (define (boolean-hash obj) (if obj 1 0))
 
 (define boolean-comparator
-  (make-comparator boolean? boolean=? boolean-compare boolean-hash))
+  (make-comparator boolean? boolean=? boolean-comparison boolean-hash))
 
-(define char-compare (make-comparison=/< char=? char<?))
+(define char-comparison (make-comparison=/< char=? char<?))
 
 (define (char-hash obj) (abs (char->integer obj)))
 
 (define char-comparator
-  (make-comparator char? char=? char-compare char-hash))
+  (make-comparator char? char=? char-comparison char-hash))
 
-(define char-ci-compare (make-comparison=/< char-ci=? char-ci<?))
+(define char-ci-comparison (make-comparison=/< char-ci=? char-ci<?))
 
 (define (char-ci-hash obj) (abs (char->integer (char-foldcase obj))))
 
 (define char-ci-comparator
-  (make-comparator char? char-ci=? char-ci-compare char-ci-hash))
+  (make-comparator char? char-ci=? char-ci-comparison char-ci-hash))
 
-(define string-compare (make-comparison=/< string=? string<?))
+(define string-comparison (make-comparison=/< string=? string<?))
 
 (define (string-hash obj)
   (make-vectorwise-hash char-hash string-length string-ref))
 
 (define string-comparator
-  (make-comparator string? string=? string-compare string-hash))
+  (make-comparator string? string=? string-comparison string-hash))
 
-(define string-ci-compare (make-comparison=/< string-ci=? string-ci<?))
+(define string-ci-comparison (make-comparison=/< string-ci=? string-ci<?))
 
 (define (string-ci-hash obj) (string-hash (string-foldcase obj)))
 
 (define string-ci-comparator
-  (make-comparator string? string-ci=? string-ci-compare string-ci-hash))
+  (make-comparator string? string-ci=? string-ci-comparison string-ci-hash))
 
 (define (symbol<? a b) (string<? (symbol->string a) (symbol->string b)))
 
-(define symbol-compare (make-comparison=/< symbol=? symbol<?))
+(define symbol-comparison (make-comparison=/< symbol=? symbol<?))
 
 (define (symbol-hash obj) (string-hash (symbol->string obj)))
 
 (define symbol-comparator
-  (make-comparator symbol? symbol=? symbol-compare symbol-hash))
+  (make-comparator symbol? symbol=? symbol-comparison symbol-hash))
+
+;; Comparison procedure for real numbers only
+(define (real-comparison a b)
+  (cond
+    ((< a b) -1)
+    ((> a b) 1)
+    (else 0)))
 
 (define (number-hash obj) (exact (abs obj)))
 
 (define number-comparator
-  (make-comparator number? = complex-compare number-hash))
+  (make-comparator number? = complex-comparison number-hash))
 
 (define complex-comparator
-  (make-comparator complex? = complex-compare number-hash))
+  (make-comparator complex? = complex-comparison number-hash))
 
 (define real-comparator
-  (make-comparator real? = real-compare number-hash))
+  (make-comparator real? = real-comparison number-hash))
 
 (define rational-comparator
-  (make-comparator rational? = real-compare number-hash))
+  (make-comparator rational? = real-comparison number-hash))
 
 (define integer-comparator
-  (make-comparator integer? = real-compare number-hash))
+  (make-comparator integer? = real-comparison number-hash))
 
 (define exact-integer-comparator
-  (make-comparator exact-integer? = real-compare number-hash))
+  (make-comparator exact-integer? = real-comparison number-hash))
+
+;;; Inexact real comparator
+
+;; Test procedure for inexact reals
+(define (inexact-real? obj) (and (number? obj) (inexact? obj) (real? obj)))
+
+;; Return an appropriately rounded number
+(define (rounded x symbol)
+  (cond
+    ((eq? symbol 'round) (round x))
+    ((eq? symbol 'ceiling) (ceiling x))
+    ((eq? symbol 'floor) (floor x))
+    ((eq? symbol 'truncate) (truncate x))
+    (else (error "invalid rounding specification" symbol))))
+
+;; Return a number appropriately rounded to epsilon
+(define (rounded-to x epsilon symbol)
+  (rounded (/ x epsilon) symbol))
+
+;; Returns result of comparing a NaN with a non-NaN
+(define (nan-comparison nan-handling which)
+  (cond
+    ((eq? nan-handling 'error)
+     (error "Attempt to compare NaN with non-NaN"))
+    ((eq? nan-handling 'min)
+     (if (eq? which 'a-nan) -1 1))
+    ((eq? nan-handling 'max)
+     (if (eq? which 'a-nan) 1 -1))
+    (else
+     (error "Invalid nan-handling specification"))))
+
+(define (make-inexact-real-comparison epsilon rounding nan-handling)
+  (lambda (a b)
+    (let ((a-nan? (nan? a)) (b-nan? (nan? b)))
+      (cond
+        ((and a-nan? b-nan?) 0)
+        (a-nan? (nan-comparison nan-handling 'a-nan))
+        (b-nan? (nan-comparison nan-handling 'b-nan))
+        (else (real-comparison
+                (rounded-to a epsilon rounding)
+                (rounded-to b epsilon rounding)))))))
+
+;; Return 0 for NaN, number-hash otherwise
+(define (inexact-real-hash obj)
+  (if (nan? obj) 0 (number-hash obj)))
+
+(define (make-inexact-real-comparator epsilon rounding nan-handling)
+  (make-comparator
+    inexact-real?
+    #f
+    (inexact-real-comparison epsilon rounding nan-handling)
+    inexact-real-hash))
 
 ;;; Sequence comparator constructors and comparators
 ;;; The hash functions are based on Java's String.hash(), but
@@ -79,7 +138,7 @@
 (define limit (expt 2 20))
 
 ;; Makes a comparison procedure that works listwise
-(define (make-listwise-compare comparison null? car cdr)
+(define (make-listwise-comparison comparison null? car cdr)
   (lambda (a b)
     (let ((a-null? (null? a)) (b-null? (null? b)))
       (cond
@@ -100,7 +159,7 @@
           (loop (cdr obj) sum))))))
 
 ;; Makes a comparison procedure that works vectorwise
-(define (make-vectorwise-compare comparison length ref)
+(define (make-vectorwise-comparison comparison length ref)
   (lambda (a b)
     (let ((a-length (length a)) (b-length (length b)))
       (cond
@@ -130,7 +189,7 @@
   (make-comparator
     test
     #f
-    (make-listwise-compare
+    (make-listwise-comparison
       (comparator-comparison-procedure comparator) null? car cdr)
     (make-listwise-hash
       (comparator-hash-function comparator) null? car cdr)))
@@ -139,7 +198,7 @@
   (make-comparator
     test
     #f
-    (make-vectorwise-compare
+    (make-vectorwise-comparison
       (comparator-comparison-procedure comparator) length ref)
     (make-vectorwise-hash
       (comparator-hash-function comparator) length ref)))
@@ -197,4 +256,62 @@
     #f
     (make-pair-comparison car-comparator cdr-comparator)
     (make-pair-hash car-comparator cdr-comparator)))
+
+;; Compute type index for inexact list comparisons
+(define (improper-list-type obj)
+  (cond
+    ((null? obj) 0)
+    ((pair? obj) 1)
+    (else 2)))
+
+(define (make-improper-list-comparison comparator)
+  (let ((pair-comparison (make-pair-comparison comparator comparator)))
+    (lambda (a b)
+      (let* ((a-type (improper-list-type a))
+            (b-type (improper-list-type b))
+            (result (real-comparison a-type b-type)))
+        (cond
+           ((not (= result 0)) result)
+           ((null? a) 0)
+           ((pair? a) (pair-comparison a b))
+           (else (comparison-compare comparator a b))))))
+
+(define (make-improper-list-hash comparator)
+  (lambda (obj)
+    (cond
+      ((null? obj) 0)
+      ((pair? obj) (+ (comparator-hash comparator (car obj))
+                      (comparator-hash comparator (cdr obj))))
+      (else (comparator-hash comparator obj)))))
+
+(define (make-improper-list-comparator comparator)
+  (make-comparator
+    #f
+    #f
+    (make-improper-list-comparison comparator)
+    (make-improper-list-hash comparator)))
+
+;;; Wrapped equality predicates
+;;; These comparators don't have comparison functions.
+
+(define eq-comparator
+  (make-comparator
+    #f
+    eq?
+    #f
+    (comparator-hash-function default-comparator)))
+
+(define eqv-comparator
+  (make-comparator
+    #f
+    eqv?
+    #f
+    (comparator-hash-function default-comparator)))
+
+(define equal-comparator
+  (make-comparator
+    #f
+    equal?
+    #f
+    (comparator-hash-function default-comparator)))
 
