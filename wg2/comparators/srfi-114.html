@@ -73,7 +73,7 @@ It is also the programmer's responsibility to ensure that all four procedures pr
 <h3>Index</h3>
 <ul>
 <li><p><a href="#Predicate">Predicate</a>: <code>comparator?</code></p></li>
-<li><p><a href="#Standardcomparators">Standard comparators</a>: <code>boolean-comparator, char-comparator, char-ci-comparator, string-comparator, string-ci-comparator, symbol-comparator, exact-integer-comparator, integer-comparator, rational-comparator, real-comparator, complex-comparator, number-comparator, list-comparator, vector-comparator, bytevector-comparator</code></p></li>
+<li><p><a href="#Standardcomparators">Standard comparators</a>: <code>boolean-comparator, char-comparator, char-ci-comparator, string-comparator, string-ci-comparator, symbol-comparator, exact-integer-comparator, integer-comparator, rational-comparator, real-comparator, complex-comparator, number-comparator, pair-comparator, list-comparator, vector-comparator, bytevector-comparator</code></p></li>
 <li><p><a href="#Thedefaultcomparator">The default comparator</a>: <code>default-comparator</code></p></li>
 <li><p><a href="#Comparatorconstructors">Comparator constructors</a>: <code>make-comparator, make-inexact-real-comparator, make-vector-comparator, make-bytevector-comparator, make-list-comparator, make-vectorwise-comparator, make-listwise-comparator, make-car-comparator, make-cdr-comparator, make-pair-comparator, make-improper-list-comparator, make-selecting-comparator, make-refining-comparator, make-reverse-comparator, make-debug-comparator</code></p></li>
 <li><p><a href="#Wrappedequalitypredicates">Wrapped equality predicates</a>: <code>eq-comparator, eqv-comparator, equal-comparator</code></p></li>
@@ -158,6 +158,10 @@ These comparators compare exact integers, integers, rational numbers, real numbe
 Since non-real numbers cannot be compared with <tt>&lt;</tt>, the following least-surprising ordering is defined: If the real parts are &lt; or &gt;, so are the complex numbers; otherwise, the complex numbers are ordered by their imaginary parts.  This can still produce surprising results if one real part is exact and the other is inexact.
 </p>
 <p>
+<tt>pair-comparator</tt>
+</p>
+<p>This comparator compares pairs using <tt>default-comparator</tt> (see below) on their cars.  If the cars are not equal, that value is returned.  If they are equal, <tt>default-comparator</tt> is used on their cdrs and that value is returned.</p>
+<p>
 <tt>list-comparator</tt>
 </p>
 <p>This comparator compares lists lexicographically, as follows:</p>
@@ -172,7 +176,7 @@ Since non-real numbers cannot be compared with <tt>&lt;</tt>, the following leas
 <tt>bytevector-comparator</tt>
 </p>
 <p>
-These comparators compare vectors and bytevectors by comparing their lengths.  A shorter argument is always less than a longer one.  If the lengths are equal, then each element is compared in turn using <tt>default-comparator</tt> until a pair of unequal elements is found, in which case the result is the result of that comparison.  If all elements are equal, the arguments are equal.
+These comparators compare vectors and bytevectors by comparing their lengths.  A shorter argument is always less than a longer one.  If the lengths are equal, then each element is compared in turn using <tt>default-comparator</tt> (see below) until a pair of unequal elements is found, in which case the result is the result of that comparison.  If all elements are equal, the arguments are equal.
 </p>
 <h3 id="Thedefaultcomparator">The default comparator</h3>
 <p>
@@ -182,7 +186,7 @@ These comparators compare vectors and bytevectors by comparing their lengths.  A
 This is a comparator that accepts any two Scheme values (with the exceptions listed in the Limitations section) and orders them in some implementation-defined way, subject to the following conditions:
 </p>
 <ul><li><p>The following ordering between types must hold: the empty list precedes pairs, which precede booleans, which precede characters, which precede strings, which precede symbols, which precede vectors, which precede bytevectors, which precede all other objects.  This ordering is compatible with SRFI 67.</p></li>
-<li>When applied to booleans, characters, strings, symbols, numbers, pairs, vectors, or bytevectors, its behavior must be the same as <tt>boolean-comparator</tt>, <tt>character-comparator</tt>, <tt>string-comparator</tt>, <tt>symbol-comparator</tt>, <tt>number-comparator</tt>, <tt>pair-comparator</tt>, <tt>vector-comparator</tt>, and <tt>bytevector-comparator</tt>respectively.  The same should be true when applied to an object or objects of a type for which a standard comparator is defined.</li>
+<li>When applied to booleans, characters, strings, symbols, numbers, pairs, vectors, or bytevectors, its behavior must be the same as <tt>boolean-comparator</tt>, <tt>character-comparator</tt>, <tt>string-comparator</tt>, <tt>symbol-comparator</tt>, <tt>number-comparator</tt>, <tt>pair-comparator</tt>, <tt>vector-comparator</tt>, and <tt>bytevector-comparator</tt> respectively.  The same should be true when applied to an object or objects of a type for which a standard comparator is defined.</li>
 <li><p>Given disjoint types <i>a</i> and <i>b</i>, one of three conditions must hold:</p>
 <ul>
 <li>All objects of type <i>a</i> compare less than all objects of type <i>b</i>.</li>
@@ -312,7 +316,7 @@ Returns a comparator that behaves exactly like <em>comparator</em>, except that 
 <tt>equal-comparator</tt>
 </p>
 <p>
-The equality predicates of these comparators are <tt>eq?</tt>, <tt>eqv?</tt>, and <tt>equal?</tt> respectively.  When applied to non-equal objects, their behavior is implementation-defined.  The type test predicates always return <tt>#t</tt>.  The comparison predicates and hash functions have implementation-defined behavior, which may include signaling an error.
+The equality predicates of these comparators are <tt>eq?</tt>, <tt>eqv?</tt>, and <tt>equal?</tt> respectively.  When their comparison procedures are applied to non-equal objects, their behavior is implementation-defined.  The type test predicates always return <tt>#t</tt>.
 </p>
 <h3 id="Accessors">Accessors</h3>
 <p>

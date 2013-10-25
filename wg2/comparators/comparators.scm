@@ -257,6 +257,9 @@
     (make-pair-comparison car-comparator cdr-comparator)
     (make-pair-hash car-comparator cdr-comparator)))
 
+(define pair-comparator
+  (make-pair-comparator default-comparator default-comparator))
+
 ;; Compute type index for inexact list comparisons
 (define (improper-list-type obj)
   (cond
@@ -274,7 +277,7 @@
            ((not (= result 0)) result)
            ((null? a) 0)
            ((pair? a) (pair-comparison a b))
-           (else (comparison-compare comparator a b))))))
+           (else (comparator-compare comparator a b)))))))
 
 (define (make-improper-list-hash comparator)
   (lambda (obj)
@@ -314,4 +317,44 @@
     equal?
     #f
     (comparator-hash-function default-comparator)))
+
+;;; Comparators constructed from other comparators
+
+(define (select-comparator obj comparators)
+  (cond
+    ((null? comparators) #f)
+    ((comparator-test-type (car comparators) obj) (car comparators))
+    (else (select-comparator obj (cdr comparators)))))
+
+(define (selected-type-test . comparators)
+  (lambda (obj)
+    (if (select-comparator obj comparators) #t #f)))
+
+(define (selected-equality-predicate comparators)
+  (lambda (a b)
+    (let ((comparator (select-comparator obj comparators)))
+      (if comparator
+        (comparator-equal? comparator a b)
+        (error "no comparator can be selected")))))
+
+(define (selected-comparison-procedure comparators)
+  (lambda (a b)
+    (let ((comparator (select-comparator obj comparators)))
+      (if comparator
+        (comparator-compare compare a b)
+        (error "no comparator can be selected")))))
+
+(define (selected-hash-function comparators)
+  (lambda (obj)
+    (let ((comparator (select-comparator obj comparators)))
+      (if comparator
+        (comparator-hash compare obj)
+        (error "no comparator can be selected")))))
+
+(define (make-selecting-comparator . comparators)
+  (make-comparator
+    (selected-type-test comparators)
+    (selected-equality-predicate comparators)
+    (selected-comparison-procedure comparators)
+    (selected-hash-function comparators)))
 
