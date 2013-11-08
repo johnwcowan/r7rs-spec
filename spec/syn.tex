@@ -376,6 +376,11 @@ un\-quo\-ta\-tion $D$} takes precedence.
 
 \subsection{Transformers}
 
+\begin{note}
+Though this grammar does not say so, a top-level {\tt syntax-rules}
+pattern must be a list pattern, not a vector pattern or an identifier pattern.
+\end{note}
+
 \begin{grammar}%
 \meta{transformer spec} \:
 \> (syntax-rules (\arbno{\meta{identifier}}) \arbno{\meta{syntax rule}})
