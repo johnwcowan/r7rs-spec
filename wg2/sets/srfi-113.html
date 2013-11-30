@@ -34,7 +34,7 @@ subscribe to the list.  You can access previous messages via
       <li>Draft: 2013/06/01-2013/08/01</li>
     </ul>
 
-<H1>Abstract</H1><p><em>Sets</em> and <em>bags</em> (also known as multisets) are unordered mutable collections that can contain any Scheme object.  Sets enforce the constraint that no two elements can be the same in the sense of the set's associated <em>equality predicate</em>; bags do not.  <em>Integer sets</em> are a variant of sets that can only contain non-negative exact integers that are less than a maximum value specified when the integer set is created, and that always treat numerical equality as their equality predicate.  Likewise, <em>character sets</em> are sets that can only contain characters.  <em>Enumeration sets</em> are another variant that can only contain symbols chosen from a set of symbols represented by an <em>enumeration type</em>; the equality predicate for them is <em>eq?</em>.
+<H1>Abstract</H1><p><em>Sets</em> and <em>bags</em> (also known as multisets) are unordered mutable collections that can contain any Scheme object.  Sets enforce the constraint that no two elements can be the same in the sense of the set's associated <em>equality predicate</em>; bags do not.  <em>Integer sets</em> are a variant of sets that can only contain non-negative exact integers that are less than a maximum value specified when the integer set is created, and that always treat numerical equality as their equality predicate.  Likewise, <em>character sets</em> are sets that can only contain characters; their equality predicate is <code>char=?</code>.  Finally, <em>enumeration sets</em> are another variant that can only contain symbols chosen from a set of symbols represented by an <em>enumeration type</em>; the equality predicate for them is <em>eq?</em>.
 
 </p>
 <H1>Issues</H1><ol>
@@ -76,7 +76,7 @@ subscribe to the list.  You can access previous messages via
 
 <p>The procedures in this SRFI are in the <code>(srfi 113)</code> library (or <code>(srfi :113)</code> on R6RS).  However, the sample implementation currently places them in the <code>(sets)</code> library instead.</p>
 
-<p>Sets, bags, integer sets, enumeration sets, and enumeration types are mutually disjoint, and disjoint from other types of Scheme objects.
+<p>Sets, bags, integer sets, enumeration sets, and enumeration types are mutually disjoint, and disjoint from other types of Scheme objects.  Character sets belong to the type defined by <a href="http://srfi.schemers.org/srfi-14/srfi-14.html">SRFI 14</a>, but are disjoint from all other types.
 </p>
 
 <p>It is an error for any procedure defined in this SRFI to be invoked on sets or bags with different comparators.</p>
@@ -400,7 +400,22 @@ Returns and deletes the smallest or largest symbol in symbol index order in <em>
 
 Returns a newly allocated enumeration set of type <em>enum-type</em>.  Its elements are the symbols belonging to <em>enum-set</em>, ignoring any symbols which are not in <em>enum-type</em>.  This procedure is also in R6RS, but uses a second enum-set in place of <em>enum-type</em>.
 
-</p><H1>Implementation</H1><p>Sets and bags are implemented as a thin veneer over hashtables, and integer sets over bytevectors.  For clarity, the integer set implementation stores  just one value into each bytevector element rather than the eight that would be possible.  In turn, enumeration types are implemented over a hashtable from symbols to indexes, and enumeration sets over integer sets.</p><p>A sample implementation is <a href="sets.tar.gz">here</a>.  The files <code>sets-impl.scm</code>, <code>bags-impl.scm</code>, <code>isets-impl.scm</code>, <code>csets-impl.scm</code>and <code>enums-impl.scm</code> are the basic code libraries for sets, bags, integer sets, character sets (layered on top of SRFI 14), and enumeration sets respectively.  Each is divided into a section that makes use of the underlying collection and a section that doesn't.  The file <code>count.scm</code> provides macros for conveniently looping over the bytevectors that underlie integer sets and enumeration sets. The file <code>srfi-4-shim.scm</code> is a minimal implementation of R7RS bytevectors on top of SRFI 4's u8vectors, just sufficient for this implementation, and may be useful for R5RS systems that do not provide R7RS bytevectors.</p><p>Two library definition files are provided:  <code>sets.sld</code> provides an R7RS library named <code>(sets)</code> that exports the public procedures of this SRFI (the extension <code>.sld</code> is used by Chibi for library definition files).  <code>sets.scm</code> is equal, but uses Chicken module syntax.</p><p>The file <code>sets-test.scm</code> is a test suite for this library.  It uses Chicken's <code>test</code> egg, which is also provided on Chibi as an R7RS library named <code>(chibi test)</code>.</p>
+</p>
+<H1>Implementation</H1>
+<p>Sets and bags are implemented as a thin veneer over hashtables, and integer sets over bytevectors.  Character sets just are SRFI 14 character sets.  For clarity, the integer set implementation stores  just one value into each bytevector element rather than the eight that would be possible.  In turn, enumeration types are implemented over a hashtable from symbols to indexes, and enumeration sets over integer sets.</p>
+<p>The <a href="comparators.tar.gz">sample implementation</a> contains the following files:</p>
+<ul><li><code>sets-impl.scm</code> - implementation of sets</li>
+<li><code>bags-impl.scm</code> - implementation of bags</li>
+<li><code>isets-impl.scm</code> - implementation of integer sets</li>
+<li><code>csets-impl.scm</code> - implementation of character sets</li>
+<li><code>enums-impl.scm</code> - implementation of enums and enum types</li>
+<li><code>count.scm</code> - macros for conveniently looping over bytevectors</li>
+<li><code>srfi-4-shim.scm</code> - a trivial implementation of bytevectors on top of <a href="http://srfi.schemers.org/srfi-4/srfi-4.html">SRFI 4</a> u8vectors</li>
+<li><code>sets.sld</code> - an R7RS library</li>
+<li><code>sets.scm</code> - a Chicken library</li></ul>
+
+<p> Each <code>*-impl</code> file is divided into a section that makes use of the underlying collection and a section that doesn't.</p>
+<p>The file <code>sets-test.scm</code> is a test suite for this library.  It uses Chicken's <code>test</code> egg, which is also provided on Chibi as an R7RS library named <code>(chibi test)</code>.</p>
 
 <H1>Copyright</H1>
 

@@ -678,7 +678,9 @@ than once in the list of variables being bound.
 The \hyper{variable}s are bound to fresh locations holding unspecified
 values, the \hyper{init}s are evaluated in the resulting environment (in
 some unspecified order), each \hyper{variable} is assigned to the result
-of the corresponding \hyper{init}, the \hyper{body} is evaluated in the
+of the corresponding \hyper{init}
+interleaving evaluations and assignments,
+the \hyper{body} is evaluated in the
 resulting environment, and the values of the last expression in
 \hyper{body} are returned.  Each binding of a \hyper{variable} has the
 entire {\cf letrec} expression as its region\index{region}, making it possible to

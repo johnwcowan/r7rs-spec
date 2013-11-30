@@ -75,19 +75,23 @@
 ;;; Definition of comparator records with accessors and basic comparator
 
 (define-record-type comparator
-  (make-raw-comparator type-test equality comparison hash)
+  (make-raw-comparator type-test equality comparison hash comparison? hash?)
   comparator?
   (type-test comparator-type-test-procedure)
   (equality comparator-equality-predicate)
   (comparison comparator-comparison-procedure)
-  (hash comparator-hash-function))
+  (hash comparator-hash-function)
+  (comparison? comparator-comparison-procedure?)
+  (hash? comparator-hash-function))
 
 (define (make-comparator type-test equality comparison hash)
   (make-raw-comparator
-    (if type-test type-test (lambda (x) #t))
-    (if equality equality (lambda (x y) (eqv? (comparison x y) 0)))
+    (if (eq? type-test #t) (lambda (x) #t) type-test)
+    (if (eq? equality #t) (lambda (x y) (eqv? (comparison x y) 0)) equality)
     (if comparison comparison (lambda (x y) (error "comparison not supported")))
-    (if hash hash (lambda (x y) (error "hashing not supported")))))
+    (if hash hash (lambda (x y) (error "hashing not supported")))
+    (if comparison #t #f)
+    (if hash #t #f)))
 
 ;; Primitive applicators
 
@@ -154,80 +158,29 @@
 
 ;;; Dummy definition of default-comparator for testing
 
-(define default-comparator
+#;(define default-comparator
   (make-comparator
     number?
-    #f
+    #t
     (make-comparison=/< = <)
     (lambda (a) (abs a))))
 
-;;; Binary comparison predicates
+;;; Comparison predicate constructors
 
-(define =?
-  (case-lambda
-    ((comparator a b)
-      (comparator-equal? comparator a b))
-    ((a b)
-      (=? default-comparator a b))
-    ((comparator)
-      (lambda (a b) (=? comparator a b)))
-    (()
-      (lambda (a b) (=? a b)))))
+(define (make= comparator)
+  (lambda args (apply =? comparator args)))
 
-(define <?
-  (case-lambda
-    ((comparator a b)
-      (eqv? (comparator-compare comparator a b) -1))
-    ((a b)
-      (<? default-comparator a b))
-    ((comparator)
-      (lambda (a b) (<? comparator a b)))
-    (()
-      (lambda (a b) (<? a b)))))
+(define (make< comparator)
+  (lambda args (apply <? comparator args)))
 
-(define >?
-  (case-lambda
-    ((comparator a b)
-      (eqv? (comparator-compare comparator a b) 1))
-    ((a b)
-      (>? default-comparator a b))
-    ((comparator)
-      (lambda (a b) (>? comparator a b)))
-    (()
-      (lambda (a b) (>? a b)))))
+(define (make> comparator)
+  (lambda args (apply >? comparator args)))
 
-(define <=?
-  (case-lambda
-    ((comparator a b)
-      (not (eqv? (comparator-compare comparator a b) 1)))
-    ((a b)
-      (<=? default-comparator a b))
-    ((comparator)
-      (lambda (a b) (<=? comparator a b)))
-    (()
-      (lambda (a b) (<=? a b)))))
+(define (make<= comparator)
+  (lambda args (apply <=? comparator args)))
 
-(define >=?
-  (case-lambda
-    ((comparator a b)
-      (not (eqv? (comparator-compare comparator a b) -1)))
-    ((a b)
-      (>=? default-comparator a b))
-    ((comparator)
-      (lambda (a b) (>=? comparator a b)))
-    (()
-      (lambda (a b) (>=? a b)))))
-
-(define not=?
-  (case-lambda
-    ((comparator a b)
-      (not (comparator-equal? comparator a b)))
-    ((a b)
-      (not=? default-comparator a b))
-    ((comparator)
-      (lambda (a b) (not=? comparator a b)))
-    (()
-      (lambda (a b) (not=? a b)))))
+(define (make>= comparator)
+  (lambda args (apply >=? comparator args)))
 
 ;;; Interval (ternary) comparison predicates
 
@@ -259,34 +212,59 @@
     ((a b c)
       (in-open-interval? default-comparator a b c))))
 
-;;; Chain (multiple argument) comparison predicates
+;;; Comparison predicates
+
+(define (=? maybe-comp . args)
+  (if (comparator? maybe-comp)
+    (apply chain=? maybe-comp args)
+    (apply chain=? default-comparator maybe-comp args)))
+
+(define (<? maybe-comp . args)
+  (if (comparator? maybe-comp)
+    (apply chain<? maybe-comp args)
+    (apply chain<? default-comparator maybe-comp args)))
+
+(define (>? maybe-comp . args)
+  (if (comparator? maybe-comp)
+    (apply chain>? maybe-comp args)
+    (apply chain>? default-comparator maybe-comp args)))
+
+(define (<=? maybe-comp . args)
+  (if (comparator? maybe-comp)
+    (apply chain<=? maybe-comp args)
+    (apply chain<=? default-comparator maybe-comp args)))
+
+(define (>=? maybe-comp . args)
+  (if (comparator? maybe-comp)
+    (apply chain>=? maybe-comp args)
+    (apply chain>=? default-comparator maybe-comp args)))
 
 (define (chain=? comparator a b . objs)
-  (if (null? objs)
-    (=? comparator a b)
-    (and (=? comparator a b) (apply chain=? comparator b objs))))
+  (and (comparator-equal? comparator a b)
+       (null? objs)
+       (apply chain=? comparator b objs)))
 
 (define (chain<? comparator a b . objs)
-  (if (null? objs)
-    (<? comparator a b)
-    (and (<? comparator a b) (apply chain<? comparator b objs))))
+  (and (eqv? (comparator-compare comparator a b) -1)
+       (null? objs)
+       (apply chain<? comparator b objs)))
 
 (define (chain>? comparator a b . objs)
-  (if (null? objs)
-    (>? comparator a b)
-    (and (>? comparator a b) (apply chain>? comparator b objs))))
+  (and (eqv? (comparator-compare comparator a b) 1)
+       (null? objs)
+       (apply chain>? comparator b objs)))
 
 (define (chain<=? comparator a b . objs)
-  (if (null? objs)
-    (<=? comparator a b)
-    (and (<=? comparator a b) (apply chain<=? comparator b objs))))
+  (and (not (eqv? (comparator-compare comparator a b) 1))
+       (null? objs)
+       (apply chain<=? comparator b objs)))
 
-(define (chain>=? comparator a b . objs)
-  (if (null? objs)
-    (>=? comparator a b)
-    (and (>=? comparator a b) (apply chain>=? comparator b objs))))
+(define (chain=>? comparator a b . objs)
+  (and (not (eqv? (comparator-compare comparator a b) -1))
+       (null? objs)
+       (apply =>? comparator b objs)))
 
-;;; Minimum and maximum comparison predicates
+;;; Minimum and maximum comparison predicate
 
 (define comparator-min
   (case-lambda
