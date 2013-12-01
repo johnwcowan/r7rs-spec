@@ -60,9 +60,9 @@ subscribe to the list.  You can access previous messages via
 
 <p>Sets are a standard part of the libraries of many high-level programming languages, including Smalltalk, <a href="http://docs.oracle.com/javase/6/docs/api/java/util/Set.html">Java</a>, and <a href="http://www.cplusplus.com/reference/set/set/">C++</a>.  <a href="http://docs.racket-lang.org/reference/sets.html">Racket</a> provides general sets similar to those of this proposal, though with fewer procedures, and there is a Chicken egg called <code>sets</code> (unfortunately undocumented), which provides a minimal set of procedures.</p><p>Bags are useful for counting anything from a fixed set of possibilities, e.g. the number of each type of error in a log file or the number of uses of each word in a lexicon drawn from a body of documents.  Although other data structures can serve the same purpose, using bags clearly expresses the programmer's intent and can be optimized.</p>
 
-<p>Although general sets subsume all other types of sets, providing a few types separately allows for increased implementation efficiency.  There are two Chicken eggs that provide integer sets: <a href="http://wiki.call-cc.org/eggref/4/iset#integer-sets"><code>iset</code></a>, which is conceptually similar to the integer sets described here, but using bignums rather than bytevectors; and <a href="http://wiki.call-cc.org/eggref/4/cis"><code>cis</code></a>, which uses lists of integer intervals.</p>
+<p>Although general sets subsume all other types of sets, providing a few types separately allows for increased implementation efficiency.  In particular, sets whose elements are restricted to non-negative exact integers within a small range are provided.  There are two Chicken eggs that provide integer sets: <a href="http://wiki.call-cc.org/eggref/4/iset#integer-sets"><code>iset</code></a>, which is conceptually similar to the integer sets described here, but using bignums rather than bytevectors; and <a href="http://wiki.call-cc.org/eggref/4/cis"><code>cis</code></a>, which uses lists of integer intervals.</p>
 
-<p>Character sets are already specified by <a href="http://srfi.schemers.org/srfi-14/srfi-14.html">SRFI 14</a>, the interface is not as complete as this SRFI, so an overlay of procedures is provided here.</p>
+<p>Character sets are already specified by <a href="http://srfi.schemers.org/srfi-14/srfi-14.html">SRFI 14</a>,  The interface is not as complete as this SRFI, so an overlay of procedures is provided here.</p>
 
 <p>The design of enumeration sets is founded on <a class="ext-link" href="http://www.r6rs.org/final/html/r6rs-lib/r6rs-lib-Z-H-15.html">R6RS enumerations</a>, but with the addition of reified enumeration types along the lines suggested by <a class="ext-link" href="http://www.r6rs.org/formal-comments/comment-262.txt">R6RS Formal Comment #262</a>.  The prefix <code>enum</code> is used in all cases instead of using both <code>enum</code> and <code>enumeration</code> as R6RS does.  Approximate mappings are shown below.
 </p>
@@ -81,21 +81,29 @@ subscribe to the list.  You can access previous messages via
 
 <p>It is an error for any procedure defined in this SRFI to be invoked on sets or bags with different comparators.</p>
 
+<p>Procedures whose names end with <code>!</code> are linear update procedures in the sense of <a href="http://srfi.schemers.org/srfi-1/srfi-1.html#LinearUpdateProcedures">SRFI 1</a>.  This means that an implementation may legally implement these procedures as pure, side-effect-free functions, or it may implement them using side effects, depending upon the details of what is the most efficient or simple to implement in terms of the underlying representation.  Furthermore, if the implementations of all linear update procedures on a given type of set are pure, then the procedures which are said to return new sets are not required to actually allocate them: they may return already existing objects.  See SRFI 1 for the rationale.</p>
+
 <h2 id="Setprocedures">Set procedures</h2><h3>Constructors</h3><p><code>(set </code><em>comparator element</em> ...<code>)</code></p><p>
 
-Returns a newly allocated set.  The <em>comparator</em> argument is either a SRFI 114 comparator or else a procedure, in which case it is the equality predicate for the set.  Any comparator with an equality predicate and a corresponding hash function may be used.  Implementations must accept the equality predicates <code>eq?</code>, <code>eqv?</code>, <code>equal</code>, <code>string=?</code>, and <code>string-ci=?</code>, and may accept others.  The <em>elements</em> are used to initialize the set.
+Returns a new set.  The <em>comparator</em> argument is either a SRFI 114 comparator or else a procedure, in which case it is the equality predicate for the set.  Any comparator with an equality predicate and a corresponding hash function may be used.  Implementations must accept the equality predicates <code>eq?</code>, <code>eqv?</code>, <code>equal</code>, <code>string=?</code>, and <code>string-ci=?</code>, and may accept others.  The <em>elements</em> are used to initialize the set.
 
 </p>
-<p><code>(set-adjoin </code><em>set element</em> ...<code>)</code></p>
-<p>Returns a newly allocated set containing the the elemets of <em>set</em> and using the same comparator or equality predicate, and in addition the <em>elements</em>.</p>
+
+<p><code>(set-add </code><em>set element</em> ...<code>)</code></p>
+
+<p>Returns a new set containing the elements of <em>set</em>, and in addition the specified <em>elements</em>.  The new set uses the same comparator or equality predicate as <em>set</em>.  It is an error to pass an element to this procedure that does not return <code>#t</code> when passed to the type test procedure of the comparator with which <em>set</em> was defined.</p>
+
+<p><code>(set-delete </code><em>set element</em> ...<code>)</code></p>
+
+<p>Returns a new set containing the the elements of <em>set</em> with the possible exception of the <em>elements</em>, if they are present in <em>set</em>.  The new set uses the same comparator or equality predicate.</p>
 <p><code>(set-copy </code><em>set</em><code>)</code></p>
 <p>
 
-Returns a newly allocated set containing the elements of <em>set</em>, and using the same comparator or equality predicate.
+Returns a new set containing the elements of <em>set</em>, and using the same comparator or equality predicate.
 
 </p><p><code>(set-empty-copy </code><em>set</em><code>)</code></p><p>
 
-Returns a newly allocated set containing no elements, and using the same comparator or equality predicate as <em>set</em>.
+Returns a new set containing no elements, and using the same comparator or equality predicate as <em>set</em>.
 
 </p><h3>Predicates</h3><p><code>(set? </code><em>obj</em><code>)</code></p><p>
 
@@ -110,27 +118,26 @@ Returns <code>#t</code> if <em>element</em> is a member of <em>set</em> and <cod
 
 Returns the element of <em>set</em> that is equal, in the sense of <em>set's</em> equality predicate, to <em>element</em>.  If <em>element</em> is not a member of <em>set</em>, it is returned.
 
-</p><h3>Mutators</h3><p><code>(set-add! </code><em>set</em><code> </code><em>element</em><code>)</code></p>
+</p><h3>Mutators</h3>
+
+<p><code>(set-add! </code><em>set</em><code> </code><em>element</em> ...<code>)</code></p>
 
 <p>
 
-Adds <em>element</em> to <em>set</em> unless it is already a member, and returns <em>set</em>.  It is an error to add an element to <em>set</em> that does not return <code>#t</code> when passed to the type test procedure of the comparator with which <em>set</em> was defined.
+Returns a set containing the elements of <em>set</em>, and in addition the specified <em>elements</em>.  The set uses the same comparator or equality predicate as <em>set</em>.  It is an error to pass an element to this procedure that does not return <code>#t</code> when passed to the type test procedure of the comparator with which <em>set</em> was defined.
 
 </p>
-<p><code>(set-adjoin! </code><em>set element</em> ...<code>)</code></p>
-<p>Returns <em>set</em> after adding the <em>elements</em> to it.</p>
+<p><code>(set-delete! </code><em>set</em><code> </code><em>element</em> ...<code>)</code></p><p>
 
-<p><code>(set-delete! </code><em>set</em><code> </code><em>element</em><code>)</code></p><p>
-
-Deletes <em>element</em> from <em>set</em> if it is a member.  Returns <em>set</em>.
+Returns a set containing the the elements of <em>set</em> with the possible exception of the <em>elements</em>, if they are present in <em>set</em>.  The new set uses the same comparator or equality predicate..
 
 </p><p><code>(set-intern! </code><em>set</em><code> </code><em>element</em><code>)</code></p><p>
 
-Returns the element of <em>set</em> that is equal, in the sense of <em>set's</em> equality predicate, to <em>element</em>.  If <em>element</em> is not a member of <em>set</em>, it is added to <em>set</em> and returned.
+Returns two values.  If there is an element of <em>set</em> that is equal, in the sense of <em>set's</em> equality predicate, to <em>element</em>, then that element is returned as the first value and <em>set</em> is returned as the second value.  If there is no such element, then the first value is <em>element</em> and the second value is the result of <code>(set-add! </code><em>set element</em><code>)</code>.</p>
 
-</p><h3>Mapping and folding</h3><p><code>(set-map </code><em>comparator</em><code> </code><em>proc</em><code> </code><em>set</em><code>)</code></p><p>
+<h3>Mapping and folding</h3><p><code>(set-map </code><em>comparator</em><code> </code><em>proc</em><code> </code><em>set</em><code>)</code></p><p>
 
-Applies <em>proc</em> to each element of <em>set</em> in arbitrary order and returns a newly allocated set, created as if by <code>set</code>, which contains the results of the applications.  For example:
+Applies <em>proc</em> to each element of <em>set</em> in arbitrary order and returns a new set, created as if by <code>set</code>, which contains the results of the applications.  For example:
 
 <pre>
 (set-map string-ci=? symbol->string (set eq? 'foo 'bar 'baz))
@@ -145,13 +152,20 @@ Applies <em>proc</em> to <em>set</em> in arbitrary order, discarding the returne
 
 Invokes <em>proc</em> on each member of <em>set</em> in arbitrary order, passing the result of the previous invocation as a second argument.  For the first invocation, <em>nil</em> is used as the second argument.  Returns the result of the last invocation.
 
-</p><p><code>(set-unfold </code><em>comparator continue? mapper successor seed</em><code>)</code></p><p><p>Create a newly allocated set as if by <code>set</code>.  If the result of applying the predicate <em>continue?</em> to <em>seed</em> is <code>#f</code>, return the set.  Otherwise, apply the procedure <em>mapper</em> to <em>seed</em>.  The value that <em>mapper</em> returns is added to the set.  Then get a new seed by applying the procedure <em>successor</em> to <em>seed</em>, and repeat this algorithm.</p><h3>Conversion</h3><code>(set-&gt;list </code><em>set</em><code>)</code></p><p>
+</p><p><code>(set-unfold </code><em>comparator continue? mapper successor seed</em><code>)</code></p>
+
+<p>Create a new set as if by <code>set</code>.  If the result of applying the predicate <em>continue?</em> to <em>seed</em> is <code>#f</code>, return the set.  Otherwise, apply the procedure <em>mapper</em> to <em>seed</em>.  The value that <em>mapper</em> returns is added to the set.  Then get a new seed by applying the procedure <em>successor</em> to <em>seed</em>, and repeat this algorithm.</p>
+
+<h3>Conversion</h3>
+
+<p><code>(set-&gt;list </code><em>set</em><code>)</code></p>
+<p>
 
 Returns a newly allocated list containing the members of <em>set</em> in unspecified order.  However, repeated calls to this procedure will return a list in the same order until the set is mutated.
 
 </p><p><code>(list-&gt;set </code><em>comparator list</em><code>)</code></p><p>
 
-Returns a newly allocated set, created as if by <code>set</code>, that contains the elements of <em>list</em>.
+Returns a new set, created as if by <code>set</code>, that contains the elements of <em>list</em>.
 
 </p><p><code>(list-&gt;set! </code><em>set list</em><code>)</code></p><p>
 
@@ -196,19 +210,19 @@ Returns the number of elements in <em>set</em> as an exact integer.
 
 </p><p><code>(set-filter </code><em>predicate</em><code> </code><em>set</em><code>)</code></p><p>
 
-Returns a newly allocated set, created as if by <code>set-empty-copy</code>, containing just the elements of <em>set</em> that satisfy <em>predicate</em>.
+Returns a new set, created as if by <code>set-empty-copy</code>, containing just the elements of <em>set</em> that satisfy <em>predicate</em>.
 
 </p><p><code>(set-filter! </code><em>predicate</em><code> </code><em>set</em><code>)</code></p><p>
 
-Returns <em>set</em> with the elements that do not satisfy <em>predicate</em> removed.
+Returns a set containing just the elements of <em>set</em> that satisfy <em>predicate</em>.
 
 </p><p><code>(set-remove </code><em>predicate</em><code> </code><em>set</em><code>)</code></p><p>
 
-Returns a newly allocated set, created as if by <code>set-empty-copy</code>, containing just the elements of <em>set</em> that do not satisfy <em>predicate</em>.
+Returns a new set, created as if by <code>set-empty-copy</code>, containing just the elements of <em>set</em> that do not satisfy <em>predicate</em>.
 
 </p><p><code>(set-partition </code><em>predicate</em><code> </code><em>set</em><code>)</code></p><p>
 
-Returns two values: a newly allocated set, created as if by <code>set-empty-copy</code>, containing just the elements of <em>set</em> that satisfy <em>predicate</em>, and another newly allocated set, created as if by <code>set-empty-copy</code>,  containing just the elements of <em>set</em> that do not satisfy <em>predicate</em>.
+Returns two values: a new set, created as if by <code>set-empty-copy</code>, containing just the elements of <em>set</em> that satisfy <em>predicate</em>, and another new set, created as if by <code>set-empty-copy</code>,  containing just the elements of <em>set</em> that do not satisfy <em>predicate</em>.
 
 </p><p><code>(set-count </code><em>predicate</em><code> </code><em>set</em><code>)</code></p><p>
 
@@ -233,7 +247,7 @@ Returns <code>#t</code> if every element of <em>set</em> satisfies <em>predicate
 
 </p><p><code>(set-xor </code><em>set<sub>1</sub></em><code> </code><em>set<sub>2</sub></em><code>)</code></p><p>
 
-Returns a newly allocated set that is the union, intersection, asymmetric difference, or symmetric difference of the <em>sets</em>.  Asymmetric difference is extended to more than two sets by taking the difference between the first set and the union of the others.  Symmetric difference is not extended beyond two sets.  Elements in the result set are drawn from the first set in which they appear.
+Returns a new set that is the union, intersection, asymmetric difference, or symmetric difference of the <em>sets</em>.  Asymmetric difference is extended to more than two sets by taking the difference between the first set and the union of the others.  Symmetric difference is not extended beyond two sets.  Elements in the result set are drawn from the first set in which they appear.
 
 </p><p><code>(set-union! </code><em>set<sub>1</sub></em><code> </code><em>set<sub>2</sub></em> ...<code>)</code>
 
@@ -243,14 +257,20 @@ Returns a newly allocated set that is the union, intersection, asymmetric differ
 
 </p><p><code>(set-xor! </code><em>set<sub>1</sub></em><code> </code><em>set<sub>2</sub></em><code>)</code></p><p>
 
-The same as <code>set-union</code>, <code>set-intersection</code>, <code>set-difference</code>, and <code>set-xor</code> respectively, but may mutate the <em>set<sub>1</sub></em> argument.
+The same as <code>set-union</code>, <code>set-intersection</code>, <code>set-difference</code>, and <code>set-xor</code> respectively, except that they may mutate the <em>set<sub>1</sub></em> argument.
 
 </p>
 
 <h2 id="Bagprocedures">Bag procedures</h2><p>
 
-Bags are like sets, but can contain the same object more than once.  The procedures for creating and manipulating bags are the same as those for sets, except that <code>set</code> is replaced by <code>bag</code> in their names,.  If two elements in a bag are equal in the sense of the equality predicate, the implementation may in fact store just one of them.  There are no procedures <code>bag-xor</code> or <code>bag-xor!</code>.
-</p><p><code>(bag-element-count </code><em>bag</em><code> </code><em>element</em><code>)</code></p><p>
+Bags are like sets, but can contain the same object more than once.  The procedures for creating and manipulating bags are the same as those for sets, except that <code>set</code> is replaced by <code>bag</code> in their names.  If two elements in a bag are equal in the sense of the equality predicate, the implementation may in fact store just one of them.</p>
+
+<p>There are no procedures <code>bag-xor</code> or <code>bag-xor!</code>.
+</p>
+
+<h3>Additional procedures</h3>
+
+<p><code>(bag-element-count </code><em>bag</em><code> </code><em>element</em><code>)</code></p><p>
 
 Returns an exact integer representing the number of times that <em>element</em> appears in <em>bag</em>.
 
@@ -262,20 +282,24 @@ Applies <em>proc</em> to each unique element of <em>bag</em> in arbitrary order,
 
 Invokes <em>proc</em> on each unique element of <em>bag</em> in arbitrary order, passing the number of occurrences as a second argument and the result of the previous invocation as a third argument.  For the first invocation, <em>nil</em> is used as the third argument.  Returns the result of the last invocation.
 
-</p><p><code>(bag-increment! </code><em>bag<code> </code>element<code> </code>count</em><code>)</code></p><p><code>(bag-decrement! </code><em>bag<code> </code>element<code> </code>count</em><code>)</code></p><p>
+</p><p><code>(bag-increment! </code><em>bag<code> </code>element<code> </code>n</em><code>)</code></p><p><code>(bag-decrement! </code><em>bag<code> </code>element<code> </code>n</em><code>)</code></p><p>
 
-Increases or decreases the element count of <em>element</em> in <em>bag</em> by the exact integer <em>count</em>.
+Returns a bag containing the elements of <em>bag</em>, but with <em>n</em> more or fewer copies of <em>element</em>.
 
 </p><p><code>(bag->set </code><em>bag</em><code>)</code></p><p><code>(set->bag </code><em>set</em><code>)</code></p><p>
 
-The <code>bag->set</code> procedure returns a newly allocated set containing the unique elements of <em>bag</em>.  The <code>set->bag</code> procedure returns a newly allocated bag containing the elements of <em>set</em>.  The comparator or equality predicate of the result is the same as the comparator or equality predicate of the argument.
+The <code>bag->set</code> procedure returns a new set containing the unique elements of <em>bag</em>.  The <code>set->bag</code> procedure returns a new bag containing the elements of <em>set</em>.  The comparator or equality predicate of the result is the same as the comparator or equality predicate of the argument.
 
 </p><h2 id="Charactersetprocedures">Character set procedures</h2>
 <p>
 
-The elements of a character set are characters.  Except as noted below, the procedures for creating and manipulating character sets are the same as those for sets, except that <code>set</code> is replaced by <code>char-set</code> in their names, and there are no comparator arguments, as the equality predicate is always <code>char=?</code>.  There is no <code>char-set-intern!</code> procedure.</p>
+The elements of a character set are characters.  Except as noted below, the procedures for creating and manipulating character sets are the same as those for sets, except that <code>set</code> is replaced by <code>char-set</code> in their names, and there are no comparator arguments, as the equality predicate is always <code>char=?</code>.</p>
 
-<p>The character sets of this SRFI belong to the same type as the character sets of <a href="http://srfi.schemers.org/srfi-14/srfi-14.html">SRFI 14</a>, at least in implementations that support both SRFIs.  SRFI 14 character sets are permitted to be implemented using immutable objects, and if so, they can be cached by the implementation.  Consequently, the procedures <code>char-set-add!</code>, <code>char-set-adjoin!</code>, <code>char-set-delete!</code>, <code>char-set-union!</code>, <code>char-set-intersection!</code>, <code>char-set-difference!</code>, <code>char-set-xor!</code>, and <code>char-set-complement!</code> do not necessarily mutate their arguments; they are permitted to return either newly allocated or cached character sets instead.  An implementation may legally implement these procedures as pure, side-effect-free functions, or it may implement them using side effects, depending upon the details of what is the most efficient or simple to implement in terms of the underlying representation.</p>
+<p>There is no <code>char-set-intern!</code> procedure.</p>
+
+<p>The character sets of this SRFI belong to the same type as the character sets of <a href="http://srfi.schemers.org/srfi-14/srfi-14.html">SRFI 14</a>, at least in implementations that support both SRFIs.</p>
+
+<h3>Additional procedures</h3>
 
 <p><code>(char-set </code><em>element</em> ...<code>)</code></p><p>
 
@@ -287,11 +311,11 @@ Returns a character set containing all possible elements.
 
 </p><p><code>(char-set-complement </code><em>char-set</em><code>)</code></p><p>
 
-Returns a character set that is the complement of <em>char-set</em>.
+Returns a new character set that is the complement of <em>char-set</em>.
 
 </p><p><code>(char-set-complement! </code><em>char-set</em><code>)</code></p><p>
 
-Returns a character set that is the complement of <em>char-set</em>, possibly mutating it in the process.
+Returns a character set that is the complement of <em>char-set</em>, possibly mutating <em>char-set</em> in the process.
 
 </p><p><code>(char-set-min </code><em>char-set</em><code>)</code></p><p><code>(char-set-max </code><em>char-set</em><code>)</code></p><p>
 
@@ -299,44 +323,48 @@ Returns the smallest or largest integer in <em>integer-set</em>, or <code>#f</co
 
 </p><h2 id="Integersetprocedures">Integer set procedures</h2><p>
 
-The elements of an integer set are non-negative exact integers less than the set's <em>limit</em>, which is specified when it is created.  Except as noted below, the procedures for creating and manipulating integer sets are the same as those for sets, except that <code>set</code> is replaced by <code>integer-set</code> in their names, and references to comparators are replaced by limits, as the equality predicate is always <code>=</code>.  Wherever a newly allocated integer set is returned, it has the same limit as the source sets.  It is an error for a single procedure to be invoked on integer sets with different limits.
+The elements of an integer set are non-negative exact integers less than the set's <em>limit</em>, which is specified when it is created.  Except as noted below, the procedures for creating and manipulating integer sets are the same as those for sets, except that <code>set</code> is replaced by <code>integer-set</code> in their names, and references to comparators are replaced by limits, as the equality predicate is always <code>=</code>.  Wherever an integer set is returned, it has the same limit as the source sets.  It is an error for a single procedure to be invoked on integer sets with different limits.</p>
 
-</p><p><code>(integer-set </code><em>limit element</em> ...<code>)</code></p><p>
+<p>There is no <code>integer-set-intern!</code> procedure.</p>
 
-Returns a newly allocated integer set.  The possible elements of the set are the exact integers from 0 to <em>limit</em> - 1, where <em>limit</em> is an exact non-negative integer.  The set contains the <em>elements</em>.
+<h3>Additional procedures</h3>
+
+<p><code>(integer-set </code><em>limit element</em> ...<code>)</code></p><p>
+
+Returns a new integer set.  The possible elements of the set are the exact integers from 0 to <em>limit</em> - 1, where <em>limit</em> is an exact non-negative integer.  The set contains the <em>elements</em>.
 
 </p><p><code>(make-universal-integer-set </code><em>limit</em><code>)</code></p><p>
 
-Returns a newly allocated integer set.  The possible elements of the set are the exact integers from 0 to <em>limit</em> - 1, where <em>limit</em> is an exact non-negative integer.  The set contains all possible elements.
+Returns a new integer set.  The possible elements of the set are the exact integers from 0 to <em>limit</em> - 1, where <em>limit</em> is an exact non-negative integer.  The set contains all possible elements.
 
 </p><p><code>(integer-set-complement </code><em>integer-set</em><code>)</code></p><p>
 
-Returns a newly allocated integer set that is the complement of <em>integer-set</em>.
+Returns a new integer set that is the complement of <em>integer-set</em>.
 
 </p><p><code>(integer-set-complement! </code><em>integer-set</em><code>)</code></p><p>
 
-Mutates <em>integer-set</em> to its complement.
+Returns a character set that is the complement of <em>char-set</em>, possibly mutating <em>char-set</em> in the process.
 
 </p><p><code>(integer-set-min </code><em>integer-set</em><code>)</code></p><p><code>(integer-set-max </code><em>integer-set</em><code>)</code></p><p>
 
 Returns the smallest or largest integer in <em>integer-set</em>, or <code>#f</code> if there is none.
 
-</p><p><code>(integer-set-delete-min! </code><em>integer-set</em><code>)</code></p><p><code>(integer-set-delete-max! </code><em>integer-set</em><code>)</code></p><p>
+</p>
 
-Returns and deletes the smallest or largest integer in <em>integer-set</em>, or <code>#f</code> if there is none.
+<h2 id="Enumerationsets">Enumeration sets</h2><p>
 
-</p><h2 id="Enumerationsets">Enumeration sets</h2><p>
-
-Except as noted below, the procedures for creating and manipulating enumeration sets are the same as those for sets, except that <code>set</code> is replaced by <code>enum-set</code> in their names.  Wherever a newly allocated enumeration set is returned, it has the same enumeration type as the source sets.  It is an error for a single procedure to be invoked on enumeration sets with different enumeration types.
+Except as noted below, the procedures for creating and manipulating enumeration sets are the same as those for sets, except that <code>set</code> is replaced by <code>enum-set</code> in their names.  Wherever a new enumeration set is returned, it has the same enumeration type as the source sets.  It is an error for a single procedure to be invoked on enumeration sets with different enumeration types.
 
 </p>
 <h3>Syntax</h3>
 <p><code>(define-enumeration-type </code> &lt;type-name&gt;<code> (</code>&lt;constructor&gt; &lt;symbol&gt; ...<code>) </code> &lt;predicate&gt;<code>)</code></p>
 <p>Creates an enumeration type whose members are &lt;symbol&gt;s.  The identifier &lt;type-name&gt; is bound to the enumeration type.  The identifier &lt;constructor&gt; is bound to a procedure similar to <code>enum-set</code>, except that it does not accept an <em>enum-type</em> argument.  Finally, the identifier &lt;predicate&gt; is bound to a predicate which is true if its argument is an enumeration set whose type is the declared type, and false otherwise.  The syntax is reminiscent of <code>define-record-type</code>.</p>
 
+<p>There is no <code>enum-set-intern!</code> procedure.</p>
+
 <h3>Enum-type procedures</h3><p><code>(make-enum-type </code><em>enum-list</em><code>)</code></p><p>
 
-Returns a newly allocated enumeration type suitable for constructing enumeration sets whose members are symbols.  The elements of <em>enum-list</em> are either symbols or else pairs where the car is a symbol and the cdr is an exact integer called the <em>value</em> of the symbol.  If the element is a symbol, the value is greater by 1 than the value of the previous element, or 0 if there is no previous element.  Values are normally distinct, but <code>make-enum-type</code> intentionally does not enforce this, for compatibility with C/C++ external routines.  The symbols are said to be <em>in the enumeration type</em>.  In R6RS the function of this procedure is provided as part of <code>make-enumeration</code>, but the values (called indexes) are assigned from 0 on up.
+Returns an enumeration type suitable for constructing enumeration sets whose members are symbols.  The elements of <em>enum-list</em> are either symbols or else pairs where the car is a symbol and the cdr is an exact integer called the <em>value</em> of the symbol.  If the element is a symbol, the value is greater by 1 than the value of the previous element, or 0 if there is no previous element.  Values are normally distinct, but <code>make-enum-type</code> intentionally does not enforce this, for compatibility with C/C++ external routines.  The symbols are said to be <em>in the enumeration type</em>.  In R6RS the function of this procedure is provided as part of <code>make-enumeration</code>, but the values (called indexes) are assigned from 0 on up.
 
 </p><p><code>(enum-type? </code><em>obj</em><code>)</code></p><p>
 
@@ -370,35 +398,33 @@ Returns <code>#t</code> if the values of the <em>symbols</em> are equal (which i
 
 </p><h3>Enum-set procedures</h3><p><code>(enum-set </code><em>enum-type symbol</em> ... <code>)</code></p><p>
 
-Returns a newly allocated enumeration set.  The possible elements of the set are the symbols in <em>enum-type</em>.  The set is initialized to contain the <em>symbols</em>.  The approximate R6RS equivalents are <code>enum-set-constructor</code> and <code>make-enumeration</code>.
+Returns a new enumeration set.  The possible elements of the set are the symbols in <em>enum-type</em>.  The set is initialized to contain the <em>symbols</em>.  The approximate R6RS equivalents are <code>enum-set-constructor</code> and <code>make-enumeration</code>.
 
 </p><p><code>(make-universal-enum-set </code><em>enum-type</em><code>)</code></p><p>
 
-Returns a newly allocated enumeration set.  The possible elements of the set are the symbols in <em>enum-type</em>.  The set contains all possible elements.  The approximate R6RS equivalent is <code>enum-set-universe</code>.
+Returns a new enumeration set.  The possible elements of the set are the symbols in <em>enum-type</em>.  The set contains all possible elements.  The approximate R6RS equivalent is <code>enum-set-universe</code>.
 
 </p><p><code>(list-&gt;enum-set </code><em>enum-type</em><code> </code><em>list</em><code>)</code></p><p>
 
-Returns a newly allocated enumeration set.  The possible elements of the set are the symbols in <em>enum-type</em>. The set is initialized to contain the elements of <em>list</em>.  There is no R6RS equivalent.
+Returns a new enumeration set.  The possible elements of the set are the symbols in <em>enum-type</em>. The set is initialized to contain the elements of <em>list</em>.  There is no R6RS equivalent.
 
 </p><p><code>(enum-set-complement </code><em>enum-set</em><code>)</code></p><p>
 
-Returns a newly allocated enumeration set that is the complement of <em>enum-set</em>.  This procedure is also in R6RS.
+Returns a new enumeration set that is the complement of <em>enum-set</em>.  This procedure is also in R6RS.
 
 </p><p><code>(enum-set-complement! </code><em>enum-set</em><code>)</code></p><p>
 
-Mutates <em>enum-set</em> to its complement.  This procedure is also in R6RS.
+Returns an enumeration set that is the complement of <em>enum-set</em>, possibly mutating <em>enum-set</em> in the process.  This procedure is also in R6RS, where it is required to mutate its argument.
 
 </p><p><code>(enum-set-min </code><em>integer-set</em><code>)</code></p><p><code>(enum-set-max </code><em>integer-set</em><code>)</code></p><p>
 
 Returns the smallest or largest symbol in symbol index order in <em>enum-set</em>, or <code>#f</code> if there is none.
 
-</p><p><code>(enum-set-delete-min! </code><em>enum-set</em><code>)</code></p><p><code>(enum-set-delete-max! </code><em>enum-set</em><code>)</code></p><p>
+</p>
 
-Returns and deletes the smallest or largest symbol in symbol index order in <em>enum-set</em>, or <code>#f</code> if there is none.
+<p><code>(enum-set-projection </code><em>enum-set</em><code> </code><em>enum-type</em><code>)</code></p><p>
 
-</p><p><code>(enum-set-projection </code><em>enum-set</em><code> </code><em>enum-type</em><code>)</code></p><p>
-
-Returns a newly allocated enumeration set of type <em>enum-type</em>.  Its elements are the symbols belonging to <em>enum-set</em>, ignoring any symbols which are not in <em>enum-type</em>.  This procedure is also in R6RS, but uses a second enum-set in place of <em>enum-type</em>.
+Returns a new enumeration set of type <em>enum-type</em>.  Its elements are the symbols belonging to <em>enum-set</em>, ignoring any symbols which are not in <em>enum-type</em>.  This procedure is also in R6RS, but uses a second enum-set in place of <em>enum-type</em>.
 
 </p>
 <H1>Implementation</H1>
