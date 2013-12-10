@@ -57,10 +57,11 @@ subscribe to the list.  You can access previous messages via
 
 <p>Insofar as possible, the names in this SRFI are harmonized with the names used for ordered collections (lists, strings, vectors, and bytevectors) in Scheme.  However, <code>size</code> is used instead of <code>length</code> to express the number of elements in the collection, because <code>length</code> implies order.</p>
 
-
 <p>Sets do not have a lexical syntax representation.  It's possible to use <a href="http://srfi.schemers.org/srfi-108/srfi-108.html">SRFI 108</a> quasi-literal constructors to create them in code, but this SRFI does not standardize how that is done.</p>
 
 <p>The interface to general sets and bags depends on SRFI 114 comparators, despite that SRFI having a higher number than this one (for hysterical raisins).  Comparators conveniently package the equality predicate of the set with the hash function or comparison procedure needed to implement the set efficiently.</p>
+
+<p>During the discussion of this SRFI, a new expression type <code>enumeration-case</code> similar to <code>case</code> was proposed. It would dispatch based on a member of an enumeration set, with enumeration-specific error checking?  Specifically, an error would be signaled if the cases are not exhaustive, or if any clause datum is not a member of the enumeration set.  Unfortunately, due to phasing problems, <code>enumeration-case</code> would only work with enumerations defined using <code>define-enumeration</code>, and it would be awkward to implement it with <code>syntax-rules</code> only.  Therefore, it was not included.</p>
 
 <H1>Specification</H1>
 
@@ -415,7 +416,7 @@ Returns the first symbol whose value in <em>enum-type</em> is <em>value</em>, or
 
 </p><p>
 
-Returns <code>#t</code> if the values of the <em>symbols</em> are equal (which implies that the symbols themselves are <code>eq?</code>), monotonically increasing, monotonically decreasing, monotonically nondecreasing, and monotonically nonincreasing respectively, and <code>#f</code> otherwise.
+Returns <code>#t</code> if the values of the <em>symbols</em> are equal (which does not necessarily mean that the symbols themselves are <code>eq?</code>), monotonically increasing, monotonically decreasing, monotonically nondecreasing, and monotonically nonincreasing respectively, and <code>#f</code> otherwise.
 
 </p><h3>Enum-set procedures</h3><p><code>(enum-set </code><em>enum-type symbol</em> ... <code>)</code></p><p>
 
@@ -437,7 +438,7 @@ Returns a new enumeration set that is the complement of <em>enum-set</em>.  This
 
 Returns an enumeration set that is the complement of <em>enum-set</em>, possibly mutating <em>enum-set</em> in the process.  This procedure is also in R6RS, where it is required to mutate its argument.
 
-</p><p><code>(enum-set-min </code><em>integer-set</em><code>)</code></p><p><code>(enum-set-max </code><em>integer-set</em><code>)</code></p><p>
+</p><p><code>(enum-set-min </code><em>enum-set</em><code>)</code></p><p><code>(enum-set-max </code><em>enum-set</em><code>)</code></p><p>
 
 Returns the smallest or largest symbol in symbol index order in <em>enum-set</em>, or <code>#f</code> if there is none.
 
