@@ -747,19 +747,29 @@ Another restriction is that it is an error to invoke the continuation
 of an \hyper{init} more than once.
 
 \begin{scheme}
-(letrec* ((p
-           (lambda (x)
-             (+ 1 (q (- x 1)))))
-          (q
-           (lambda (y)
-             (if (zero? y)
-                 0
-                 (+ 1 (p (- y 1))))))
-          (x (p 5))
-          (y x))
-  y)
-                \ev  5%
+;; Returns the arithmetic, geometric, and
+;; harmonic means of a nested list of numbers
+(define (means ton)
+  (letrec*
+     ((mean
+        (lambda (f g)
+          (f (/ (sum g ton) n))))
+      (sum
+        (lambda (g ton)
+          (if (null? ton)
+            (+)
+            (if (number? ton)
+                (g ton)
+                (+ (sum g (car ton))
+                   (sum g (cdr ton)))))))
+      (n (sum (lambda (x) 1) ton)))
+    (values (mean values values)
+            (mean exp log)
+            (mean / /))))
 \end{scheme}
+
+Evaluating {\cf (means '(3 (1 4)))} returns three values:
+8/3, 2.28942848510666 (approximately), and 36/19.
 
 \begin{entry}{%
 \proto{let-values}{ \hyper{mv binding spec} \hyper{body}}{\exprtype}}

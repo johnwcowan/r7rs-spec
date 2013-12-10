@@ -81,8 +81,8 @@
   (equality comparator-equality-predicate)
   (comparison comparator-comparison-procedure)
   (hash comparator-hash-function)
-  (comparison? comparator-comparison-procedure?)
-  (hash? comparator-hash-function))
+  (comparison? comparator-has-comparison-procedure?)
+  (hash? comparator-has-hash-function?))
 
 (define (make-comparator type-test equality comparison hash)
   (make-raw-comparator
@@ -214,55 +214,30 @@
 
 ;;; Comparison predicates
 
-(define (=? maybe-comp . args)
-  (if (comparator? maybe-comp)
-    (apply chain=? maybe-comp args)
-    (apply chain=? default-comparator maybe-comp args)))
+(define (=? comparator a b . objs)
+  (if (comparator-equal? comparator a b)
+    (if (null? objs) #t (apply =? comparator b objs))
+    #f))
 
-(define (<? maybe-comp . args)
-  (if (comparator? maybe-comp)
-    (apply chain<? maybe-comp args)
-    (apply chain<? default-comparator maybe-comp args)))
+(define (<? comparator a b . objs)
+  (if (eqv? (comparator-compare comparator a b) -1)
+    (if (null? objs) #t (apply <? comparator b objs))
+    #f))
 
-(define (>? maybe-comp . args)
-  (if (comparator? maybe-comp)
-    (apply chain>? maybe-comp args)
-    (apply chain>? default-comparator maybe-comp args)))
+(define (>? comparator a b . objs)
+  (if (eqv? (comparator-compare comparator a b) 1)
+    (if (null? objs) #t (apply >? comparator b objs))
+    #f))
 
-(define (<=? maybe-comp . args)
-  (if (comparator? maybe-comp)
-    (apply chain<=? maybe-comp args)
-    (apply chain<=? default-comparator maybe-comp args)))
+(define (<=? comparator a b . objs)
+  (if (not (eqv? (comparator-compare comparator a b) 1))
+    (if (null? objs) #t (apply <=? comparator b objs))
+    #f))
 
-(define (>=? maybe-comp . args)
-  (if (comparator? maybe-comp)
-    (apply chain>=? maybe-comp args)
-    (apply chain>=? default-comparator maybe-comp args)))
-
-(define (chain=? comparator a b . objs)
-  (and (comparator-equal? comparator a b)
-       (null? objs)
-       (apply chain=? comparator b objs)))
-
-(define (chain<? comparator a b . objs)
-  (and (eqv? (comparator-compare comparator a b) -1)
-       (null? objs)
-       (apply chain<? comparator b objs)))
-
-(define (chain>? comparator a b . objs)
-  (and (eqv? (comparator-compare comparator a b) 1)
-       (null? objs)
-       (apply chain>? comparator b objs)))
-
-(define (chain<=? comparator a b . objs)
-  (and (not (eqv? (comparator-compare comparator a b) 1))
-       (null? objs)
-       (apply chain<=? comparator b objs)))
-
-(define (chain=>? comparator a b . objs)
-  (and (not (eqv? (comparator-compare comparator a b) -1))
-       (null? objs)
-       (apply =>? comparator b objs)))
+(define (>=? comparator a b . objs)
+  (if (not (eqv? (comparator-compare comparator a b) -1))
+    (if (null? objs) #t (apply >=? comparator b objs))
+    #f))
 
 ;;; Minimum and maximum comparison predicate
 

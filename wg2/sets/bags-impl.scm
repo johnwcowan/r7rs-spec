@@ -30,7 +30,7 @@
     0))
 
 ;; Return #t if an element e is a member of a bag b.
-(define (bag-member? b e)
+(define (bag-contains? b e)
   (hash-table-ref/default
     (bag-dict (bag-check b))
     e
@@ -221,7 +221,7 @@
     (lambda (return)
       (bag-for-each
         (lambda (e)
-          (if (and (bag-member? b2 e)
+          (if (and (bag-contains? b2 e)
                    (<= (bag-element-count b1 e) (bag-element-count b2 e)))
             #t
             (return #f)))
@@ -274,7 +274,7 @@
   (bag-check-equalities b1 b2)
   (bag-for-each
     (lambda (e)
-      (if (bag-member? b2 e) #t (bag-delete! b1 e)))
+      (if (bag-contains? b2 e) #t (bag-delete! b1 e)))
     b1)
   b1)
 

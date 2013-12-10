@@ -112,14 +112,14 @@
   (enum-check es)
   (let ((count 0) (enum-is (enum-is es)))
     (count-up (i 0 (enum-limit es))
-      (if (integer-set-member? enum-is i)
+      (if (integer-set-contains? enum-is i)
         (set! count (+ count 1))))
     count))
 
 ;; Return #t if an element e is a member of an enum-set es.
-(define (enum-set-member? es e)
+(define (enum-set-contains? es e)
   (let ((i (enum-set-index (enum-check es) e)))
-    (if i (integer-set-member? (enum-is es) i) #f)))
+    (if i (integer-set-contains? (enum-is es) i) #f)))
 
 ;; Add a new element.
 (define (enum-set-add! es e)
@@ -299,7 +299,7 @@
     (lambda (return)
       (enum-set-for-each
         (lambda (e)
-          (if (enum-set-member? is2 e) #t (return #f)))
+          (if (enum-set-contains? is2 e) #t (return #f)))
         is1)
       #t)))
 
@@ -349,7 +349,7 @@
   (enum-check-types is1 is2)
   (enum-set-for-each
     (lambda (e)
-      (if (enum-set-member? is2 e) #t (enum-set-delete! is1 e)))
+      (if (enum-set-contains? is2 e) #t (enum-set-delete! is1 e)))
     is1)
   is1)
 
