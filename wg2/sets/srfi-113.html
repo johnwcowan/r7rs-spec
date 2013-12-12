@@ -34,13 +34,14 @@ subscribe to the list.  You can access previous messages via
       <li>Draft: 2013/06/01-2013/08/01</li>
     </ul>
 
-<H1>Abstract</H1><p><em>Sets</em> and <em>bags</em> (also known as multisets) are unordered mutable collections that can contain any Scheme object.  Sets enforce the constraint that no two elements can be the same in the sense of the set's associated <em>equality predicate</em>; bags do not.  <em>Integer sets</em> are a variant of sets that can only contain non-negative exact integers that are less than a maximum value specified when the integer set is created, and that always treat numerical equality as their equality predicate.  Likewise, <em>character sets</em> are sets that can only contain characters; their equality predicate is <code>char=?</code>.  Finally, <em>enumeration sets</em> are another variant that can only contain symbols chosen from a set of symbols represented by an <em>enumeration type</em>; the equality predicate for them is <code>symbol=?</code> (or <code>eq?</code> in Schemes that do not have <code>symbol=?</code>).
+<H1>Abstract</H1><p><em>Sets</em> and <em>bags</em> (also known as multisets) are unordered mutable collections that can contain any Scheme object.  Sets enforce the constraint that no two elements can be the same in the sense of the set's associated <em>equality predicate</em>; bags do not.  <em>Integer sets</em> are a variant of sets that can only contain non-negative exact integers that are less than a maximum value specified when the integer set is created, and that always treat numerical equality as their equality predicate.  Likewise, <em>character sets</em> are sets that can only contain characters; their equality predicate is <code>char=?</code>.  Finally, <em>enumeration sets</em> are another variant that can only contain objects (either symbols or specialized objects called <em>individuals</em>) chosen from an <em>enumeration type</em>; the equality predicate for them is <code>eq?</code>.
 
 </p>
 <H1>Issues</H1><ol>
 <li value="15"><p>Should we provide comparators for the various types in this SRFI?</p></li>
 <li><p>What provisions should we have for controlling which element of a set is preserved when a new element equal to an existing element is added?</p></li>
-<li value="18"><p>How can we provide unique objects (a la Java) as an alternative to symbols in enumeration sets?</p></li>
+<li><p>(resolved)</p></li>
+<li><p>(resolved)</p></li>
 </ol>
 
 
@@ -61,7 +62,7 @@ subscribe to the list.  You can access previous messages via
 
 <p>The interface to general sets and bags depends on SRFI 114 comparators, despite that SRFI having a higher number than this one (for hysterical raisins).  Comparators conveniently package the equality predicate of the set with the hash function or comparison procedure needed to implement the set efficiently.</p>
 
-<p>During the discussion of this SRFI, a new expression type <code>enumeration-case</code> similar to <code>case</code> was proposed. It would dispatch based on a member of an enumeration set, with enumeration-specific error checking?  Specifically, an error would be signaled if the cases are not exhaustive, or if any clause datum is not a member of the enumeration set.  Unfortunately, due to phasing problems, <code>enumeration-case</code> would only work with enumerations defined using <code>define-enumeration</code>, and it would be awkward to implement it with <code>syntax-rules</code> only.  Therefore, it was not included.</p>
+<p>During the discussion of this SRFI, a new expression type <code>enumeration-case</code> similar to <code>case</code> was proposed. It would dispatch based on a member of an enumeration set, with enumeration-specific error checking?  Specifically, an error would be signaled if the cases are not exhaustive, or if any clause datum is not a member of the enumeration set.  Unfortunately, due to phasing problems, <code>enumeration-case</code> would only work with enumerations defined using <code>define-enum</code>, and it would be awkward to implement it with <code>syntax-rules</code> only.  Therefore, it was not included.</p>
 
 <H1>Specification</H1>
 
@@ -334,6 +335,7 @@ Returns the smallest or largest character in <em>char-set</em>, or <code>#f</cod
 <p><code>(char-set-add-ranges! </code><em>char-set </em>( <em>low high</em> )<code>) ...</code></p>
 
 <p>These procedures convert from Unicode code point ranges to character sets.  The <code>ranges->char-set</code> procedure returns a new character set containing the characters whose Unicode code points fall between <em>low</em> (inclusive) and <em>high</em> (exclusive) for each <em>low-high</em> pair.  The <code>char-set-add-strng</code> procedure returns a new character set containg all the characters of <em>char-set</em> and of the specified ranges.  The <code>char-set-add-string!</code> procedure returns a character set containing all the characters of <em>char-set</em> and the specified ranges, possibly mutating <em>char-set</em> in the process.</p>
+
 <p><code>(char-set->string </code><em>char-set</em><code>)</code></p>
 <p><code>(string->char-set </code><em>char-set</em><code>)</code></p>
 <p><code>(char-set-add-string </code><em>char-set string</em><code>)</code></p>
@@ -376,59 +378,95 @@ The <code>integer-set->integer</code> procedure returns a non-negative exact int
 
 <h2 id="Enumerationsets">Enumeration sets</h2><p>
 
-Except as noted below, the procedures for creating and manipulating enumeration sets are the same as those for sets, except that <code>set</code> is replaced by <code>enum-set</code> in their names.  Wherever a new enumeration set is returned, it has the same enumeration type as the source sets.  It is an error for a single procedure to be invoked on enumeration sets with different enumeration types.
+Except as noted below, the procedures for creating and manipulating enumeration sets are the same as those for sets, except that <code>set</code> is replaced by <code>enum-set</code> in their names.  Wherever a new enumeration set is returned, it has the same enumeration type as the source sets.  It is an error for a single procedure to be invoked on enumeration sets with different enumeration types.</p>
 
-</p>
-<h3>Syntax</h3>
-<p><code>(define-enumeration-type </code> &lt;type-name&gt;<code> (</code>&lt;constructor&gt; &lt;symbol&gt; ...<code>) </code> &lt;predicate&gt;<code>)</code></p>
-<p>Creates an enumeration type whose members are the &lt;symbol&gt;s, which must be distinct.  The identifier &lt;type-name&gt; is bound to the enumeration type.  The identifier &lt;constructor&gt; is bound to a procedure similar to <code>enum-set</code>, except that it does not accept an <em>enum-type</em> argument.  Finally, the identifier &lt;predicate&gt; is bound to a predicate which is true if its argument is an enumeration set whose type is the declared type, and false otherwise.  The syntax is reminiscent of <code>define-record-type</code>.</p>
+<h3>Enumeration type and item procedures</h3>
 
+<p><code>(make-enum-type/individuals </code><em>enum-list</em><code>)</code></p>
+<p><code>(make-enum-type/symbols </code><em>enum-list</em><code>)</code></p>
 
-<h3>Enum-type procedures</h3><p><code>(make-enum-type </code><em>enum-list</em><code>)</code></p><p>
+<p>Returns an enumeration type suitable for constructing enumeration sets.  Each element of <em>enum-list</em> is either a symbol or else a pair where the car is a symbol and the cdr is an exact integer called the <em>value</em> of the symbol.  If the element is a symbol, the value is greater by 1 than the value of the previous element (but if there is no previous element, the value is 0).  It is an error if the symbols are not distinct.  Values are normally distinct, but these procedures intentionally do not enforce this, for compatibility with C/C++ enums.</p>
 
-Returns an enumeration type suitable for constructing enumeration sets whose members are symbols.  The elements of <em>enum-list</em> are either symbols or else pairs where the car is a symbol and the cdr is an exact integer called the <em>value</em> of the symbol.  If the element is a symbol, the value is greater by 1 than the value of the previous element; if there is no previous element, the value is 0.  It is an error if the symbols are not distinct.  Values are normally distinct, but <code>make-enum-type</code> intentionally does not enforce this, for compatibility with C/C++ external routines.  The symbols are said to be <em>in the enumeration type</em>.  In R6RS the function of this procedure is provided as part of <code>make-enumeration</code>, but the values (called indexes) are assigned from 0 on up.
+<p>The <code>make-enum-type/individuals</code> procedure returns an enumeration type that contains newly allocated objects called <em>individuals</em>.  These objects must be disjoint (in the sense of <code>eq?</code>) from one another and from all other Scheme objects.  When the <code>make-enum-type/symbols</code> procedure is used, the objects belonging to the enumeration type are the symbols themselves.  A symbol, unlike an individual, may be contained in more than one enumeration type.  Symbols and individuals that are contained in an enumeration set are collectively known as <em>enumeration items</em>.</p>
 
-</p><p><code>(enum-type? </code><em>obj</em><code>)</code></p><p>
+<p>In R6RS the function <code>make-enum-type/symbols</code> is provided as part of <code>make-enumeration</code>, but the values (called indexes) are assigned from 0 on up.</p>
 
-Returns <code>#t</code> if <em>obj</em> is an enumeration type, and <code>#f</code> otherwise.
+<p><code>(enum-type? </code><em>obj</em><code>)</code></p>
+
+<p>Returns <code>#t</code> if <em>obj</em> is an enumeration type, and <code>#f</code> otherwise.</p>
+
+<p><code>(enum-type/individuals? </code><em>obj</em><code>)</code></p><p>
+
+Returns <code>#t</code> if <em>obj</em> is an enumeration type containing individuals, and <code>#f</code> otherwise.</p>
+
+<p><code>(enum-type/symbols? </code><em>obj</em><code>)</code></p><p>
+
+Returns <code>#t</code> if <em>obj</em> is an enumeration type containing symbols, and <code>#f</code> otherwise.
+
+</p><p><code>(enum-type->list </code><em>enum-type</em><code>)</code></p><p>
+
+<p>Returns a list of all the enumeration items containe in <em>enum-type</em> in arbitrary order.  It is an error to mutate this list.</p>
 
 </p><p><code>(enum-type->alist </code><em>enum-type</em><code>)</code></p><p>
 
-Return a newly allocated alist mapping the symbols in <em>enum-type</em> to their values.
+Return an alist mapping the names of the enumeration items contained in <em>enum-type</em> to their values.  It is an error to mutate this alist.
 
-</p><p><code>(enum-type-symbol-value </code><em>enum-type symbol</em><code>)</code></p><p>
+</p><p><code>(enum-type-contains? </code><em>enum-type enum-item</em><code>)</code></p><p>
 
-Return the value of <em>symbol</em> in <em>enum-type</em>, or <code>#f</code> if it is not in <em>enum-type</em>.  A loose R6RS analogue is the procedure returned by <code>enum-type-indexer</code> when applied to an enum-set belonging to <code>enum-type</code>.
+If <em>enum-item</em> is contained in <em>enum-type</em>, then return <code>#t</code>; otherwise return <code>#f</code>.  <em>Enum-type</em> can only be omitted if <em>enum-value</em> is an individual.  A loose R6RS analogue is the procedure returned by <code>enum-type-indexer</code> when applied to an enum-set belonging to <code>enum-type</code>.
 
-</p><p><code>(enum-type-symbol </code><em>enum-type value</em><code>)</code></p><p>
+</p><p><code>(enum-type-find </code><em>enum-type predicate</em><code>)</code></p><p>
 
-Returns the first symbol whose value in <em>enum-type</em> is <em>value</em>, or <code>#f</code> if there is none.
+Returns an enumeration item contained in <em>enum-type</em> such that <em>predicate</em> returns true when invoked with two arguments, the name and the value of the enumeration item.</p>
 
-</p><p><code>(enum-value=? </code><em>enum-type symbol</em> ...<code>)</code>
+<p><code>(enum-item-type </code><em>enum-item</em><code>)</code></p><p>
 
-</p><p><code>(enum-value&lt;? </code><em>enum-type symbol</em> ...<code>)</code>
+If <em>enum-item</em> is an individual, returns the enumeration type that contains that individual.  If <em>enum-item</em> is a symbol, an error is signaled.</p>
 
-</p><p><code>(enum-value&gt;? </code><em>enum-type symbol</em> ...<code>)</code>
+<p><code>(enum-item-name </code><em>enum-item</em><code>)</code></p><p>
 
-</p><p><code>(enum-value&lt;=? </code><em>enum-type symbol</em> ...<code>)</code>
+If <em>enum-item</em> is an individual, returns the name of that individual.  If <em>enum-item</em> is a symbol, returns <em>enum-item</em>.</p>
 
-</p><p><code>(enum-value&gt;=? </code><em>enum-type symbol</em> ...<code>)</code>
+<p><code>(enum-item-value </code><em>enum-type enum-item</em><code>)</code></p><p>
 
-</p><p>
+Returns the value of <em>enum-item</em> in <em>enum-type</em>.  If <em>enum-item</em> is not contained in <em>enum-type</em>, returns <code>#f</code>.</p>
 
-Returns <code>#t</code> if the values of the <em>symbols</em> are equal (which does not necessarily mean that the symbols themselves are <code>eq?</code>), monotonically increasing, monotonically decreasing, monotonically nondecreasing, and monotonically nonincreasing respectively, and <code>#f</code> otherwise.
+<p><code>(enum-value=? </code> [ <em>enum-type</em> ] <em>enum-item</em> ...<code>)</code></p>
 
-</p><h3>Enum-set procedures</h3><p><code>(enum-set </code><em>enum-type symbol</em> ... <code>)</code></p><p>
+<p><code>(enum-value&lt;? </code> [ <em>enum-type</em> ] <em>enum-item</em> ...<code>)</code></p>
 
-Returns a new enumeration set.  The possible elements of the set are the symbols in <em>enum-type</em>.  The set is initialized to contain the <em>symbols</em>.  The approximate R6RS equivalents are <code>enum-set-constructor</code> and <code>make-enumeration</code>.
+<p><code>(enum-value&gt;? </code> [ <em>enum-type</em> ] <em>enum-item</em> ...<code>)</code></p>
+
+<p><code>(enum-value&lt;=? </code> [ <em>enum-type</em> ] <em>enum-item</em> ...<code>)</code></p>
+
+<p><code>(enum-value&gt;=? </code> [ <em>enum-type</em> ] <em>enum-item</em> ...<code>)</code></p>
+
+<p>Returns <code>#t</code> if the values of the <em>enum-items</em> are equal, monotonically increasing, monotonically decreasing, monotonically nondecreasing, and monotonically nonincreasing respectively, and <code>#f</code> otherwise.  <em>Enum-type</em> can only be omitted if the <em>enum-items</em> are individuals.
+
+</p>
+
+<h3>Enumeration type syntax</h3>
+
+<p><code>(define-enum-type/individuals </code> &lt;type-name&gt;<code> (</code>&lt;constructor&gt; &lt;symbol&gt; ...<code>) </code> &lt;predicate&gt;<code>)</code></p>
+<p><code>(define-enum-type/symbols </code> &lt;type-name&gt;<code> (</code>&lt;constructor&gt; &lt;symbol&gt; ...<code>) </code> &lt;predicate&gt;<code>)</code></p>
+
+<p>Creates an enumeration type whose members are denoted by the &lt;symbol&gt;s, which must be distinct.  The identifier &lt;type-name&gt; is bound to the enumeration type.  The identifier &lt;constructor&gt; is bound to a procedure similar to <code>enum-set</code>, except that it does not accept an <em>enum-type</em> argument.  The identifiers equivalent to the &lt;symbols&gt; are bound to the members of the enumeration type.  Finally, the identifier &lt;predicate&gt; is bound to a predicate which is true if its argument is an enumeration set whose type is the declared type, and false otherwise.  The syntax is intentionally reminiscent of <code>define-record-type</code>.</p>
+
+<p>The <code>define-enum-type/symbol</code> variant uses the symbols themselves as enumeration values; the <code>define-enum-type/individual</code> variant provides newly allocated individuals whose names are the symbols.</p>
+
+<h3>Enumeration set procedures</h3>
+
+<p><code>(enum-set </code><em>enum-type enum-itme</em> ... <code>)</code></p><p>
+
+Returns a new enumeration set.  The possible elements of the set are the enumeration items in <em>enum-type</em>.  The set is initialized to contain the <em>enum-items</em>.  The approximate R6RS equivalents are <code>enum-set-constructor</code> and <code>make-enumeration</code>.
 
 </p><p><code>(make-universal-enum-set </code><em>enum-type</em><code>)</code></p><p>
 
-Returns a new enumeration set.  The possible elements of the set are the symbols in <em>enum-type</em>.  The set contains all possible elements.  The approximate R6RS equivalent is <code>enum-set-universe</code>.
+Returns a new enumeration set.  The possible elements of the set are the enumeration items in <em>enum-type</em>.  The set is initialized to contain all the <em>enum-items</em> contained in <em>enum-type</em>.  The approximate R6RS equivalent is <code>enum-set-universe</code>.
 
 </p><p><code>(list-&gt;enum-set </code><em>enum-type list</em><code>)</code></p><p>
 
-Returns a new enumeration set.  The possible elements of the set are the symbols in <em>enum-type</em>. The set is initialized to contain the elements of <em>list</em>.  There is no R6RS equivalent.
+Returns a new enumeration set.  The possible elements of the set are the enumeration items in <em>enum-type</em>. The set is initialized to contain the elements of <em>list</em>.  There is no R6RS equivalent.
 
 </p><p><code>(enum-set-complement </code><em>enum-set</em><code>)</code></p><p>
 
@@ -440,17 +478,15 @@ Returns an enumeration set that is the complement of <em>enum-set</em>, possibly
 
 </p><p><code>(enum-set-min </code><em>enum-set</em><code>)</code></p><p><code>(enum-set-max </code><em>enum-set</em><code>)</code></p><p>
 
-Returns the smallest or largest symbol in symbol index order in <em>enum-set</em>, or <code>#f</code> if there is none.
-
-</p>
+Returns the smallest or largest enumeration item in value order in <em>enum-set</em>, or <code>#f</code> if there is none.  If there is more than one eligible enumeration item, any one may be returned.</p>
 
 <p><code>(enum-set-projection </code><em>enum-set enum-type</em><code>)</code></p><p>
 
-Returns a new enumeration set of type <em>enum-type</em>.  Its elements are the symbols belonging to <em>enum-set</em>, ignoring any symbols which are not in <em>enum-type</em>.  This procedure is also in R6RS, but uses a second enum-set in place of <em>enum-type</em>.
+Returns a new enumeration set of type <em>enum-type</em>.  Its elements are the enumeration items contained in <em>enum-set</em>, ignoring any items which are not contained in <em>enum-type</em>.  This procedure is also in R6RS, but uses a second enum-set in place of <em>enum-type</em>.
 
 </p>
 <H1>Implementation</H1>
-<p>Sets and bags are implemented as a thin veneer over hash tables, and integer sets over bytevectors.  Character sets just are SRFI 14 character sets.  For clarity, the integer set implementation stores  just one value into each bytevector element rather than the eight that would be possible.  In turn, enumeration types are implemented over a hash table from symbols to indexes, and enumeration sets over integer sets.</p>
+<p>Sets and bags are implemented as a thin veneer over hash tables, and integer sets over bytevectors.  Character sets just are SRFI 14 character sets.  For clarity, the integer set implementation stores  just one value into each bytevector element rather than the eight that would be possible.  In turn, enumeration types are implemented over a mapping from symbols to indexes, and enumeration sets over integer sets.</p>
 <p>The <a href="sets.tar.gz">sample implementation</a> contains the following files:</p>
 <ul><li><code>sets-impl.scm</code> - implementation of sets</li>
 <li><code>bags-impl.scm</code> - implementation of bags</li>
