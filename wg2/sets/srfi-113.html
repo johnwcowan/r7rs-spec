@@ -101,6 +101,10 @@ Returns a new set containing no elements, and using the same comparator as <em>s
 
 Returns <code>#t</code> if <em>obj</em> is a set, and <code>#f</code> otherwise.
 
+</p><p><code>(set-empty? </code><em>set</em><code>)</code></p><p>
+
+Returns <code>#t</code> if <em>set</em> has no elements and <code>#f</code> otherwise.
+
 </p><p><code>(set-contains? </code><em>set element</em><code>)</code></p><p>
 
 Returns <code>#t</code> if <em>element</em> is a member of <em>set</em> and <code>#f</code> otherwise.
@@ -269,12 +273,14 @@ Returns a new set that is the union, intersection, asymmetric difference, or sym
 The same as <code>set-union</code>, <code>set-intersection</code>, <code>set-difference</code>, and <code>set-xor</code> respectively, except that they may mutate the <em>set<sub>1</sub></em> argument.
 
 </p>
+<p><code>(set-intersects? </code><em>set<sub>1</sub> set<sub>2</sub></em><code>)</code></p>
+<p>Returns <code>#t</code> if <em>set<sub>1</sub></em> and <em>set<sub>2</sub></em> have a non-empty intersection, and <code>#f</code> otherwise.</p>
 
 <h2 id="Bagprocedures">Bag procedures</h2><p>
 
 Bags are like sets, but can contain the same object more than once.  The procedures for creating and manipulating bags are the same as those for sets, except that <code>set</code> is replaced by <code>bag</code> in their names.  If two elements in a bag are equal in the sense of the equality predicate, the implementation may in fact store just one of them.</p>
 
-<p>There are no procedures <code>bag-xor</code> or <code>bag-xor!</code>.
+<p>Note: There are no procedures <code>bag-xor</code> or <code>bag-xor!</code>.
 </p>
 
 <h3>Additional procedures</h3>
