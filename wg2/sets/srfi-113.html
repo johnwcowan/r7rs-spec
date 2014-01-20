@@ -273,8 +273,8 @@ Returns a new set that is the union, intersection, asymmetric difference, or sym
 The same as <code>set-union</code>, <code>set-intersection</code>, <code>set-difference</code>, and <code>set-xor</code> respectively, except that they may mutate the <em>set<sub>1</sub></em> argument.
 
 </p>
-<p><code>(set-intersects? </code><em>set<sub>1</sub> set<sub>2</sub></em><code>)</code></p>
-<p>Returns <code>#t</code> if <em>set<sub>1</sub></em> and <em>set<sub>2</sub></em> have a non-empty intersection, and <code>#f</code> otherwise.</p>
+<p><code>(set-disjoint? </code><em>set<sub>1</sub> set<sub>2</sub></em><code>)</code></p>
+<p>Returns <code>#t</code> if <em>set<sub>1</sub></em> and <em>set<sub>2</sub></em> have an empty intersection, and <code>#f</code> otherwise.</p>
 
 <h2 id="Bagprocedures">Bag procedures</h2><p>
 
@@ -391,11 +391,11 @@ Except as noted below, the procedures for creating and manipulating enumeration 
 <p><code>(make-enum-type/individuals </code><em>enum-list</em><code>)</code></p>
 <p><code>(make-enum-type/symbols </code><em>enum-list</em><code>)</code></p>
 
-<p>Returns an enumeration type suitable for constructing enumeration sets.  Each element of <em>enum-list</em> is either a symbol or else a pair where the car is a symbol and the cdr is an exact integer called the <em>value</em> of the symbol.  If the element is a symbol, the value is greater by 1 than the value of the previous element (but if there is no previous element, the value is 0).  It is an error if the symbols are not distinct.  Values are normally distinct, but these procedures intentionally do not enforce this, for compatibility with C/C++ enums.</p>
+<p>Returns an enumeration type suitable for constructing enumeration sets.  Each element of <em>enum-list</em> is either a symbol or else a pair where the car is a symbol and the cdr is an exact integer called the <em>value</em>.  If the element is a symbol, the value is greater by 1 than the value of the previous element (but if there is no previous element, the value is 0).  It is an error if the symbols are not distinct.  Values are normally distinct, but these procedures intentionally do not enforce this, for compatibility with C/C++ enums.</p>
 
 <p>The <code>make-enum-type/individuals</code> procedure returns an enumeration type that contains newly allocated objects called <em>individuals</em>.  These objects must be disjoint (in the sense of <code>eq?</code>) from one another and from all other Scheme objects.  When the <code>make-enum-type/symbols</code> procedure is used, the objects belonging to the enumeration type are the symbols themselves.  A symbol, unlike an individual, may be contained in more than one enumeration type.  Symbols and individuals that are contained in an enumeration set are collectively known as <em>enumeration items</em>.</p>
 
-<p>In R6RS the function <code>make-enum-type/symbols</code> is provided as part of <code>make-enumeration</code>, but the values (called indexes) are assigned from 0 on up.</p>
+<p>In R6RS the function <code>make-enum-type/symbols</code> is provided as part of <code>make-enumeration</code>, but the values (called indexes) are automatically assigned from 0 on up.</p>
 
 <p><code>(enum-type? </code><em>obj</em><code>)</code></p>
 
