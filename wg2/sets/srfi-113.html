@@ -99,7 +99,7 @@ subscribe to the list.  You can access previous messages via
 <h2 id="Index">Index</h2>
 
 <ul><li><p><a href="#Constructors">Constructors</a>: <code>set</code>, <code>set-adjoin</code>, <code>set-delete</code>, <code>set-unfold</code></p>
-</li><li><p><a href="#Predicates">Predicates</a>: <code>set?</code>, <code>set-contains?</code>, <code>set-empty?</code></p>
+</li><li><p><a href="#Predicates">Predicates</a>: <code>set?</code>, <code>set-contains?</code>, <code>set-empty?</code>, <code>set-disjoint?</code></p>
 </li><li><p><a href="#Accessor">Accessor</a>: <code>set-value</code></p>
 </li><li><p><a href="#Linearupdateprocedures">Linear update procedures</a>: <code>set-adjoin!</code>, <code>set-delete!</code>, <code>set-intern!</code></p>
 </li><li><p><a href="#Thewholeset">The whole set</a>: <code>set-size</code>, <code>set-find</code>, <code>set-count</code>, <code>hash-table-any?</code>, <code>hash-table-every?</code></p>
@@ -145,6 +145,10 @@ subscribe to the list.  You can access previous messages via
 <p><code>(set-empty? </code><em>set</em><code>)</code></p>
 
 <p>Returns <code>#t</code> if <em>set</em> has no elements and <code>#f</code> otherwise.</p>
+
+<p><code>(set-disjoint? </code><em>set<sub>1</sub> set<sub>2</sub></em><code>)</code></p>
+
+<p>Returns <code>#t</code> if <em>set<sub>1</sub></em> and <em>set<sub>2</sub></em> have no elements in common and <code>#f</code> otherwise.</p>
 
 <h3 id="Accessor">Accessor</h3>
 
