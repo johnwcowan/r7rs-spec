@@ -25,7 +25,7 @@
   (hash-table-size (set-dict (set-check s))))
 
 ;; Return #t if an element e is a member of a set s.
-(define (set-member? s e)
+(define (set-contains? s e)
   (hash-table-ref/default
     (set-dict (set-check s))
     e
@@ -168,7 +168,7 @@
     (lambda (return)
       (set-for-each
         (lambda (e)
-          (if (set-member? s2 e) #t (return #f)))
+          (if (set-contains? s2 e) #t (return #f)))
         s1)
       #t)))
 
@@ -218,7 +218,7 @@
   (set-check-equalities s1 s2)
   (set-for-each
     (lambda (e)
-      (if (set-member? s2 e) #t (set-delete! s1 e)))
+      (if (set-contains? s2 e) #t (set-delete! s1 e)))
     s1)
   s1)
 

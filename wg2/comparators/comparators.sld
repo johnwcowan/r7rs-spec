@@ -1,10 +1,11 @@
-(module comparators ()
-  (import scheme chicken)
-  (import srfi-4)
-  (import numbers)
-  (import srfi-13)
-  (export comparator? comparator-has-comparison-procedure? 
-          comparator-has-hash-function?)
+(define-library (comparators)
+  (import (scheme base))
+  (import (scheme char))
+  (import (scheme case-lambda))
+  (import (scheme complex))
+  (import (scheme inexact))
+  (export comparator? comparator-comparison-procedure? 
+          comparator-hash-function?)
   (export boolean-comparator char-comparator char-ci-comparator 
           string-comparator string-ci-comparator symbol-comparator
           exact-integer-comparator integer-comparator rational-comparator
@@ -32,7 +33,6 @@
   (export in-open-interval? in-closed-interval? in-open-closed-interval? 
           in-closed-open-interval?)
   (export comparator-min comparator-max)
-  (include "r7rs-shim.scm")
   (include "basics.scm")
   (include "default.scm")
   (include "constructors.scm")

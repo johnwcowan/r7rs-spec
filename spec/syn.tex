@@ -111,7 +111,7 @@ identifiers.
 \meta{letter} \: a \| b \| c \| ... \| z
 \> \| A \| B \| C \| ... \| Z
 \meta{special initial} \: ! \| \$ \| \% \| \verb"&" \| * \| / \| : \| < \| =
- \>  \| > \| ? \| \verb"^" \| \verb"_" \| \verb"~"
+ \>  \| > \| ? \| @ \| \verb"^" \| \verb"_" \| \verb"~"
 \meta{subsequent} \: \meta{initial} \| \meta{digit}
  \>  \| \meta{special subsequent}
 \meta{digit} \: 0 \| 1 \| 2 \| 3 \| 4 \| 5 \| 6 \| 7 \| 8 \| 9
@@ -142,7 +142,7 @@ identifiers.
 \todo{Explain what happens in the ambiguous case.}
 \meta{string} \: " \arbno{\meta{string element}} "
 \meta{string element} \: \meta{any character other than \doublequote{} or \backwhack}
- \> \| \meta{mnemonic escape} \| \backwhack\doublequote{} \| \backwhack\backwhack 
+ \> \| \meta{mnemonic escape} \| \backwhack\doublequote{} \| \backwhack\backwhack{} \| \backwhack|
  \>  \| \backwhack{}\arbno{\meta{intraline whitespace}}\meta{line ending}
  \>  \> \arbno{\meta{intraline whitespace}}
  \>  \| \meta{inline hex escape}
@@ -376,6 +376,11 @@ un\-quo\-ta\-tion $D$} takes precedence.
 
 \subsection{Transformers}
 
+\begin{note}
+Though this grammar does not say so, a top-level {\tt syntax-rules}
+pattern must be a list pattern, not a vector pattern or an identifier pattern.
+\end{note}
+
 \begin{grammar}%
 \meta{transformer spec} \:
 \> (syntax-rules (\arbno{\meta{identifier}}) \arbno{\meta{syntax rule}})
@@ -396,6 +401,7 @@ un\-quo\-ta\-tion $D$} takes precedence.
 \>  \| \meta{character}
 \>  \| \meta{boolean}
 \>  \| \meta{number}
+\>  \| \meta{bytevector}
 \meta{template} \: \meta{pattern identifier}
 \>  \| (\arbno{\meta{template element}})
 \>  \| (\atleastone{\meta{template element}} .\ \meta{template})

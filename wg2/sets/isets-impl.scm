@@ -37,7 +37,7 @@
     count))
 
 ;; Return #t if an element e is a member of the integer-set is.
-(define (integer-set-member? is n)
+(define (integer-set-contains? is n)
   (if (and (number? n) (exact? n) (>= n 0) (< n (limit (iset-check is))))
     (= 1 (bytevector-u8-ref (bv is) n))
     #f))
@@ -221,7 +221,7 @@
     (lambda (return)
       (integer-set-for-each
         (lambda (e)
-          (if (integer-set-member? is2 e) #t (return #f)))
+          (if (integer-set-contains? is2 e) #t (return #f)))
         is1)
       #t)))
 
@@ -271,7 +271,7 @@
   (iset-check-limits is1 is2)
   (integer-set-for-each
     (lambda (e)
-      (if (integer-set-member? is2 e) #t (integer-set-delete! is1 e)))
+      (if (integer-set-contains? is2 e) #t (integer-set-delete! is1 e)))
     is1)
   is1)
 

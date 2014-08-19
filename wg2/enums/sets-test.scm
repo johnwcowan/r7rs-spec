@@ -7,7 +7,7 @@
 
 (test-group "sets"
 (test-group "sets/simple"
-  (define nums (make-set =))
+  (define nums (set =))
   ;; nums is now {}
   (define syms (set eq? 'a 'b 'c 'd))
   ;; syms is now {a, b, c, d}
@@ -39,8 +39,8 @@
   (test 2 (set-size nums))
   (set! nums2 (set-map = (lambda (x) (* 10 x)) nums))
   ;; nums2 is now {30, 40}
-  (test-assert (set-member? nums2 30))
-  (test-assert (not (set-member? nums2 3)))
+  (test-assert (set-contains? nums2 30))
+  (test-assert (not (set-contains? nums2 3)))
   (set-for-each (lambda (x) (set! total (+ total x))) nums2)
   (test 70 total)
   (test 10 (set-fold + 3 nums))
@@ -56,8 +56,8 @@
   (set! syms2 (list->set eq? '(e f)))
   ;; syms2 is now {e, f}
   (test 2 (set-size syms2))
-  (test-assert (set-member? syms2 'e))
-  (test-assert (set-member? syms2 'f))
+  (test-assert (set-contains? syms2 'e))
+  (test-assert (set-contains? syms2 'f))
 ) ; end sets/simple
 
 (test-group "sets/subsets"
@@ -159,8 +159,8 @@
 
 (test-group "sets/value"
   (define bucket (set string-ci=? "abc" "def"))
-  (test-assert (set-member? bucket "abc"))
-  (test-assert (set-member? bucket "ABC"))
+  (test-assert (set-contains? bucket "abc"))
+  (test-assert (set-contains? bucket "ABC"))
   (test "def" (set-value bucket "DEF"))
 ) ; end sets/value
 
@@ -168,7 +168,7 @@
 
 (test-group "bags"
 (test-group "bags/simple"
-  (define nums (make-bag =))
+  (define nums (bag =))
   ;; nums is now {}
   (define syms (bag eq? 'a 'b 'c 'd))
   ;; syms is now {a, b, c, d}
@@ -199,8 +199,8 @@
   (test 2 (bag-size nums))
   (set! nums2 (bag-map = (lambda (x) (* 10 x)) nums))
   ;; nums2 is now {30, 40}
-  (test-assert (bag-member? nums2 30))
-  (test-assert (not (bag-member? nums2 3)))
+  (test-assert (bag-contains? nums2 30))
+  (test-assert (not (bag-contains? nums2 3)))
   (bag-for-each (lambda (x) (set! total (+ total x))) nums2)
   (test 70 total)
   (test 10 (bag-fold + 3 nums))
@@ -216,8 +216,8 @@
   (set! syms2 (list->bag eq? '(e f)))
   ;; syms2 is now {e, f}
   (test 2 (bag-size syms2))
-  (test-assert (bag-member? syms2 'e))
-  (test-assert (bag-member? syms2 'f))
+  (test-assert (bag-contains? syms2 'e))
+  (test-assert (bag-contains? syms2 'f))
 ) ; end bags/simple
 
 (test-group "bags/elemcount"
@@ -381,7 +381,7 @@
 
 (test-group "isets"
 (test-group "isets/simple"
-  (define nums (make-integer-set 10))
+  (define nums (integer-set 10))
   ;; nums is now {}
   (define bignums (integer-set 100 1 2 3 4))
   ;; bignums is now {1, 2, 3, 4}
@@ -413,8 +413,8 @@
   (test 2 (integer-set-size nums))
   (set! nums2 (integer-set-map 100 (lambda (x) (* 10 x)) nums))
   ;; nums2 is now {30, 40}
-  (test-assert (integer-set-member? nums2 30))
-  (test-assert (not (integer-set-member? nums2 3)))
+  (test-assert (integer-set-contains? nums2 30))
+  (test-assert (not (integer-set-contains? nums2 3)))
   (integer-set-for-each (lambda (x) (set! total (+ total x))) nums2)
   (test 70 total)
   (test 10 (integer-set-fold + 3 nums))
@@ -430,8 +430,8 @@
   (set! bignums2 (list->integer-set 100 '(5 6)))
   ;; bignums2 is now {e, f}
   (test 2 (integer-set-size bignums2))
-  (test-assert (integer-set-member? bignums2 5))
-  (test-assert (integer-set-member? bignums2 6))
+  (test-assert (integer-set-contains? bignums2 5))
+  (test-assert (integer-set-contains? bignums2 6))
 ) ; end isets/simple
 
 (test-group "isets/subisets"
@@ -539,8 +539,8 @@
   (define bottom (integer-set 10 0 1 2 3 4))
   (define top (integer-set 10 5 6 7 8 9))
   (define top2 (integer-set 10 5 6 7 8 9))
-  (test-assert (not (integer-set-member? top 10)))
-  (test-assert (not (integer-set-member? top -10)))
+  (test-assert (not (integer-set-contains? top 10)))
+  (test-assert (not (integer-set-contains? top -10)))
   (parameterize ((current-test-comparator integer-set=?))
     (test top (integer-set-complement bottom))
     (test bottom (integer-set-complement top))
@@ -550,7 +550,7 @@
   (test-error (integer-set-add! top 1.5))
   (test-error (integer-set-add! top2 10))
   (test-error (integer-set-add! top2 -1))
-  (test-assert (not (integer-set-member? top 10)))
+  (test-assert (not (integer-set-contains? top 10)))
   (test 0 (integer-set-min bottom))
   (test 0 (integer-set-delete-min! bottom))
   ;; bottom is now {1, 2, 3, 4}
@@ -559,7 +559,7 @@
   (test 4 (integer-set-delete-max! bottom))
   ;; bottom is now {1, 2, 3}
   (test 3 (integer-set-max bottom))
-  (define empty (make-integer-set 10))
+  (define empty (integer-set 10))
   (test #f (integer-set-min empty))
   (test #f (integer-set-delete-min! empty))
   (test #f (integer-set-max empty))
@@ -577,7 +577,7 @@
   (string->symbol (string-append (symbol->string s1) (symbol->string s2))))
 
 (test-group "enums/simple"
-  (define capsyms (make-enum-set capsym-type))
+  (define capsyms (enum-set capsym-type))
   ;; capsyms is now {}
   (define syms (enum-set sym-type 'a 'b 'c 'd))
   ;; syms is now {a, b, c, d}
@@ -610,8 +610,8 @@
   (set! capsyms2
     (enum-set-map sym-type (lambda (x) (symbol-downcase x)) capsyms))
   ;; capsyms2 is now {c, d} (and is of enum-type sym-type)
-  (test-assert (enum-set-member? capsyms2 'c))
-  (test-assert (not (enum-set-member? capsyms2 'C)))
+  (test-assert (enum-set-contains? capsyms2 'c))
+  (test-assert (not (enum-set-contains? capsyms2 'C)))
   (enum-set-for-each (lambda (x) (set! total (symbol-append total x))) capsyms2)
   (test total 'zcd)
   (test 'DCXYZ (enum-set-fold symbol-append 'XYZ capsyms))
@@ -627,8 +627,8 @@
   (set! syms2 (list->enum-set sym-type '(e f)))
   ;; syms2 is now {e, f}
   (test 2 (enum-set-size syms2))
-  (test-assert (enum-set-member? syms2 'e))
-  (test-assert (enum-set-member? syms2 'f))
+  (test-assert (enum-set-contains? syms2 'e))
+  (test-assert (enum-set-contains? syms2 'f))
 ) ; end enums/simple
 
 (test-group "enums/types"
@@ -759,7 +759,7 @@
   (define bottom (enum-set ten 'a 'b 'c 'd 'e))
   (define top (enum-set ten 'f 'g 'h 'i 'j))
   (define top2 (enum-set ten 'f 'g 'h 'i 'j))
-  (test-assert (not (enum-set-member? top 'k)))
+  (test-assert (not (enum-set-contains? top 'k)))
   (parameterize ((current-test-comparator enum-set=?))
     (test top (enum-set-complement bottom))
     (test bottom (enum-set-complement top))
@@ -767,7 +767,7 @@
     (test bottom top2))
   (test-error (enum-set-add! top2 10))
   (test-error (enum-set-add! top2 'z))
-  (test-assert (not (enum-set-member? top 10)))
+  (test-assert (not (enum-set-contains? top 10)))
   (test 'a (enum-set-min bottom))
   (test 'a (enum-set-delete-min! bottom))
   ;; bottom is now {b, c, d, e}
@@ -776,7 +776,7 @@
   (test 'e (enum-set-delete-max! bottom))
   ;; bottom is now {b, c, d}
   (test 'd (enum-set-max bottom))
-  (define empty (make-enum-set ten))
+  (define empty (enum-set ten))
   (test #f (enum-set-min empty))
   (test #f (enum-set-delete-min! empty))
   (test #f (enum-set-max empty))

@@ -77,8 +77,8 @@ themselves; they need not be quoted.
 145932     \ev  145932
 '"abc"     \ev  "abc"
 "abc"      \ev  "abc"
-'\#\space   \ev  \#\space
-\#\space   \ev  \#\space
+'\#\backwhack{}a   \ev  \#\backwhack{}a
+\#\backwhack{}a   \ev  \#\backwhack{}a
 '\#(a 10)  \ev  \#(a 10)
 \#(a 10)  \ev  \#(a 10)
 '\#u8(64 65)  \ev  \#u8(64 65)
@@ -729,7 +729,9 @@ than once in the list of variables being bound.
 \semantics
 The \hyper{variable}s are bound to fresh locations,
 each \hyper{variable} is assigned in left-to-right order to the
-result of evaluating the corresponding \hyper{init}, the \hyper{body} is
+result of evaluating the corresponding \hyper{init}
+(interleaving evaluations and assignments),
+the \hyper{body} is
 evaluated in the resulting environment, and the values of the last
 expression in \hyper{body} are returned.
 Despite the left-to-right evaluation and assignment order, each binding of
@@ -745,19 +747,29 @@ Another restriction is that it is an error to invoke the continuation
 of an \hyper{init} more than once.
 
 \begin{scheme}
-(letrec* ((p
-           (lambda (x)
-             (+ 1 (q (- x 1)))))
-          (q
-           (lambda (y)
-             (if (zero? y)
-                 0
-                 (+ 1 (p (- y 1))))))
-          (x (p 5))
-          (y x))
-  y)
-                \ev  5%
+;; Returns the arithmetic, geometric, and
+;; harmonic means of a nested list of numbers
+(define (means ton)
+  (letrec*
+     ((mean
+        (lambda (f g)
+          (f (/ (sum g ton) n))))
+      (sum
+        (lambda (g ton)
+          (if (null? ton)
+            (+)
+            (if (number? ton)
+                (g ton)
+                (+ (sum g (car ton))
+                   (sum g (cdr ton)))))))
+      (n (sum (lambda (x) 1) ton)))
+    (values (mean values values)
+            (mean exp log)
+            (mean / /))))
 \end{scheme}
+
+Evaluating {\cf (means '(3 (1 4)))} returns three values:
+8/3, 2.28942848510666 (approximately), and 36/19.
 
 \begin{entry}{%
 \proto{let-values}{ \hyper{mv binding spec} \hyper{body}}{\exprtype}}
@@ -1263,7 +1275,7 @@ that binding, evaluates the clauses as if they were the clauses of a
 continuation and dynamic environment of the {\cf guard} expression. If every
 \hyper{cond clause}'s \hyper{test} evaluates to \schfalse{} and there
 is no else clause, then
-{\cf raise-continuable} is invoked on the raised object within the dynamic
+{\cf raise} is invoked on the raised object within the dynamic
 environment of the original call to {\cf raise}
 or {\cf raise-continuable}, except that the current
 exception handler is that of the {\cf guard} expression.
@@ -1520,7 +1532,7 @@ see section~\ref{define-syntax}.
 \end{scheme}
 Each \hyper{keyword} is an identifier,
 each \hyper{transformer spec} is an instance of {\cf syntax-rules}, and
-\hyper{body} is a sequence of one or more definitions followed
+\hyper{body} is a sequence of zero or more definitions followed
 by one or more expressions.  It is an error
 for a \hyper{keyword} to appear more than once in the list of keywords
 being bound.
@@ -1596,11 +1608,11 @@ introduced by the {\cf letrec-syntax} expression.
 A \hyper{transformer spec} has one of the following forms:
 
 \begin{entry}{%
-\pproto{(syntax-rules (\hyper{literal} \dotsfoo)}{\exprtype}
+\pproto{(syntax-rules (\hyper{pattern literal} \dotsfoo)}{\exprtype}
 {\tt\obeyspaces%
 \hspace*{1em}\hyper{syntax rule} \dotsfoo)\\
 }
-\pproto{(syntax-rules \hyper{ellipsis} (\hyper{literal} \dotsfoo)}{\exprtype}
+\pproto{(syntax-rules \hyper{ellipsis} (\hyper{pattern literal} \dotsfoo)}{\exprtype}
 {\tt\obeyspaces%
 \hspace*{1em}\hyper{syntax rule} \dotsfoo)}\\
 \pproto{\_}{\auxiliarytype}
@@ -1608,7 +1620,7 @@ A \hyper{transformer spec} has one of the following forms:
 \mainschindex{_}
 
 \syntax
-It is an error if any of the \hyper{literal}s, or the \hyper{ellipsis} in the second form,
+It is an error if any of the \hyper{pattern literal}s, or the \hyper{ellipsis} in the second form,
 is not an identifier.
 It is also an error if
 \hyper{syntax rule} is not of the form
@@ -1651,7 +1663,7 @@ When a match is found, the macro use is transcribed hygienically
 according to the template.
 
 An identifier appearing within a \hyper{pattern} can be an underscore
-({\cf \_}), a literal identifier listed in the list of \hyper{literal}s,
+({\cf \_}), a literal identifier listed in the list of \hyper{pattern literal}s,
 or the \hyper{ellipsis}.
 All other identifiers appearing within a \hyper{pattern} are
 {\em pattern variables}.
@@ -1667,11 +1679,11 @@ It is an error for the same pattern variable to appear more than once in a
 
 Underscores also match arbitrary input elements but are not pattern variables
 and so cannot be used to refer to those elements.  If an underscore appears
-in the \hyper{literal}s list, then that takes precedence and
+in the \hyper{pattern literal}s list, then that takes precedence and
 underscores in the \hyper{pattern} match as literals.
 Multiple underscores can appear in a \hyper{pattern}.
 
-Identifiers that appear in \texttt{(\hyper{literal} \dotsfoo)} are
+Identifiers that appear in \texttt{(\hyper{pattern literal} \dotsfoo)} are
 interpreted as literal
 identifiers to be matched against corresponding elements of the input.
 An element in the input matches a literal identifier if and only if it is an
@@ -1680,7 +1692,7 @@ occurrence in the macro definition have the same lexical binding, or
 the two identifiers are the same and both have no lexical binding.
 
 A subpattern followed by \hyper{ellipsis} can match zero or more elements of
-the input, unless \hyper{ellipsis} appears in the \hyper{literal}s, in which
+the input, unless \hyper{ellipsis} appears in the \hyper{pattern literal}s, in which
 case it is matched as a literal.
 
 More formally, an input expression $E$ matches a pattern $P$ if and only if:

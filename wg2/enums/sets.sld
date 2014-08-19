@@ -3,25 +3,25 @@
   (import (scheme write))
   (import (srfi 69))
   (export
-    set? make-set set-size set-member? set-add! set-delete! set-for-each
-    set-fold set-unfold set set-copy set-empty-copy set-map
+    set? set set-size set-contains? set-add! set-delete! set-for-each
+    set-fold set-unfold set-copy set-empty-copy set-map
     set->list list->set set-filter set-partition set-remove set-count
     set-every? set-any? set-find set=? set<? set<=? set>? set>=? set-union
     set-intersection set-difference set-xor
     set-union! set-intersection! set-difference! set-xor! set-value)
   (export
-    bag? make-bag bag-size bag-member? bag-add! bag-delete! bag-for-each
+    bag? bag bag-size bag-contains? bag-add! bag-delete! bag-for-each
     bag-fold bag-unfold bag-element-count
-    bag-increment! bag-decrement! bag bag-copy bag-empty-copy bag-map
+    bag-increment! bag-decrement! bag-copy bag-empty-copy bag-map
     bag->list list->bag bag-filter bag-partition bag-remove bag-count
     bag-every? bag-any? bag-find bag=? bag<? bag<=? bag>? bag>=? bag-union
     bag-intersection bag-difference
     bag-union! bag-intersection! bag-difference! bag-for-each-unique
     bag-fold-unique bag->set set->bag)
   (export
-    integer-set? make-integer-set integer-set-size integer-set-member?
+    integer-set? integer-set integer-set-size integer-set-contains?
     integer-set-add! integer-set-delete! integer-set-for-each
-    integer-set-fold integer-set-unfold integer-set
+    integer-set-fold integer-set-unfold
     integer-set-copy integer-set-empty-copy integer-set-map
     integer-set->list list->integer-set integer-set-filter
     integer-set-partition integer-set-remove integer-set-count
@@ -34,9 +34,9 @@
     integer-set-complement integer-set-complement! integer-set-min
     integer-set-delete-min! integer-set-max integer-set-delete-max!)
   (export
-    enum-set? make-enum-set enum-set-size
-    enum-set-member? enum-set-add! enum-set-delete! enum-set-for-each
-    enum-set-fold enum-set-unfold enum-set enum-set-copy
+    enum-set? enum-set enum-set-size
+    enum-set-contains? enum-set-add! enum-set-delete! enum-set-for-each
+    enum-set-fold enum-set-unfold enum-set-copy
     enum-set-empty-copy enum-set-map enum-set->list list->enum-set
     enum-set-filter enum-set-partition enum-set-remove enum-set-count
     enum-set-every? enum-set-any? enum-set-find enum-set-find enum-set=?

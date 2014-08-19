@@ -1498,7 +1498,7 @@ The {\cf boolean?} predicate returns \schtrue{} if \var{obj} is either \schtrue{
 \begin{entry}{%
 \proto{boolean=?}{ \vari{boolean} \varii{boolean} \variii{boolean} \dotsfoo}{procedure}}
 
-Returns \schtrue{} if all the arguments are booleans and all 
+Returns \schtrue{} if all the arguments 
 are \schtrue{} or all are \schfalse{}.
 
 \end{entry}
@@ -2283,7 +2283,7 @@ language-sensitive folding is not used.  If the argument is an uppercase
 letter, the result will be either a lowercase letter
 or the same as the argument if the lowercase letter does not exist or
 is not supported by the implementation.
-See UAX \#29~\cite{uax29} (part of the Unicode Standard) for details.
+See UAX \#44~\cite{uax44} (part of the Unicode Standard) for details.
 
 Note that many Unicode lowercase characters do not have uppercase
 equivalents.
@@ -2501,7 +2501,7 @@ Note that language-sensitive mappings and foldings are not used.
 
 The Unicode Standard prescribes special treatment of the Greek letter
 $\Sigma$, whose normal lower-case form is $\sigma$ but which becomes
-$\varsigma$ at the end of a word.  See UAX \#29~\cite{uax29} (part of
+$\varsigma$ at the end of a word.  See UAX \#44~\cite{uax44} (part of
 the Unicode Standard) for details.  However, implementations of {\cf
 string-downcase} are not required to provide this behavior, and may
 choose to change $\Sigma$ to $\sigma$ in all cases.

@@ -49,13 +49,13 @@ Conditional derived syntax types:
        (else result1 result2 ...))
      (begin result1 result2 ...))
     ((case key
-       ((atoms ...) result1 result2 ...))
-     (if (memv key '(atoms ...))
-         (begin result1 result2 ...)))
-    ((case key
        ((atoms ...) => result))
      (if (memv key '(atoms ...))
          (result key)))
+    ((case key
+       ((atoms ...) result1 result2 ...))
+     (if (memv key '(atoms ...))
+         (begin result1 result2 ...)))
     ((case key
        ((atoms ...) => result)
        clause clauses ...)
@@ -531,7 +531,7 @@ macro, here called {\cf guard-aux}.
     ((case-lambda (params body0 ...) ...)
      (lambda args
        (let ((len (length args)))
-         (let-syntax
+         (letrec-syntax
              ((cl (syntax-rules ::: ()
                     ((cl)
                      (error "no matching clause"))
