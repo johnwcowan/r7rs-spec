@@ -81,8 +81,8 @@
   (equality comparator-equality-predicate)
   (comparison comparator-comparison-procedure)
   (hash comparator-hash-function)
-  (comparison? comparator-has-comparison-procedure?)
-  (hash? comparator-has-hash-function?))
+  (comparison? comparator-comparison-procedure?)
+  (hash? comparator-hash-function?))
 
 (define (make-comparator type-test equality comparison hash)
   (make-raw-comparator

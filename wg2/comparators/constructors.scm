@@ -30,27 +30,11 @@
 
 (define string-comparison (make-comparison=/< string=? string<?))
 
-(define (string-hash obj)
-  (make-vectorwise-hash char-hash string-length string-ref))
-
-(define string-comparator
-  (make-comparator string? string=? string-comparison string-hash))
-
 (define string-ci-comparison (make-comparison=/< string-ci=? string-ci<?))
-
-(define (string-ci-hash obj) (string-hash (string-foldcase obj)))
-
-(define string-ci-comparator
-  (make-comparator string? string-ci=? string-ci-comparison string-ci-hash))
 
 (define (symbol<? a b) (string<? (symbol->string a) (symbol->string b)))
 
 (define symbol-comparison (make-comparison=/< symbol=? symbol<?))
-
-(define (symbol-hash obj) (string-hash (symbol->string obj)))
-
-(define symbol-comparator
-  (make-comparator symbol? symbol=? symbol-comparison symbol-hash))
 
 ;; Comparison procedure for real numbers only
 (define (real-comparison a b)
@@ -94,6 +78,7 @@
 ;; Return an appropriately rounded number
 (define (rounded x symbol)
   (cond
+    ((procedure? symbol) (symbol x))
     ((eq? symbol 'round) (round x))
     ((eq? symbol 'ceiling) (ceiling x))
     ((eq? symbol 'floor) (floor x))
@@ -105,16 +90,16 @@
   (rounded (/ x epsilon) symbol))
 
 ;; Returns result of comparing a NaN with a non-NaN
-(define (nan-comparison nan-handling a b)
+(define (nan-comparison nan-handling which other)
   (cond
+    ((procedure? nan-handling)
+     (nan-handling other))
     ((eq? nan-handling 'error)
      (error "Attempt to compare NaN with non-NaN"))
     ((eq? nan-handling 'min)
-     (if (nan? a) -1 1))
+     (if (eq? which 'a-nan) -1 1))
     ((eq? nan-handling 'max)
-     (if (nan? a) 1 -1))
-    ((procedure? nan-handling)
-     (nan-handling a b))
+     (if (eq? which 'a-nan) 1 -1))
     (else
      (error "Invalid nan-handling specification"))))
 
@@ -123,7 +108,8 @@
     (let ((a-nan? (nan? a)) (b-nan? (nan? b)))
       (cond
         ((and a-nan? b-nan?) 0)
-        ((or a-nan? b-nan?) (nan-comparison nan-handling a b))
+        (a-nan? (nan-comparison nan-handling 'a-nan b))
+        (b-nan? (nan-comparison nan-handling 'b-nan a))
         (else (real-comparison
                 (rounded-to a epsilon rounding)
                 (rounded-to b epsilon rounding)))))))
@@ -163,7 +149,7 @@
       (if (null? obj)
         0
         (let* ((prod (modulo (* result 33) limit))
-               (sum (modulo (+ prod (hash (car obj))))))
+               (sum (+ prod (hash (car obj)))))
           (loop (cdr obj) sum))))))
 
 ;; Makes a comparison procedure that works vectorwise
@@ -194,6 +180,21 @@
                (sum (modulo (+ prod (hash (ref obj index))) limit)))
           (loop (- index 1) sum))))))
 
+(define string-hash
+  (make-vectorwise-hash char-hash string-length string-ref))
+
+(define string-comparator
+  (make-comparator string? string=? string-comparison string-hash))
+
+(define (string-ci-hash obj) (string-hash (string-foldcase obj)))
+
+(define string-ci-comparator
+  (make-comparator string? string-ci=? string-ci-comparison string-ci-hash))
+
+(define (symbol-hash obj) (string-hash (symbol->string obj)))
+
+(define symbol-comparator
+  (make-comparator symbol? symbol=? symbol-comparison symbol-hash))
 
 (define (make-listwise-comparator test comparator null? car cdr)
   (make-comparator
