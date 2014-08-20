@@ -114,7 +114,7 @@ subscribe to the list.  You can access previous messages via
 </li><li><p><a href="#Copyingandconversion">Copying and conversion</a>: <code>set-copy</code>, <code>set-&gt;list</code>, <code>list-&gt;set</code>, <code>list-&gt;set!</code></p>
 </li><li><p><a href="#Subsets">Subsets</a>: <code>set=?</code>, <code>set&lt;?</code>, <code>set&gt;?</code>, <code>set&lt;=?</code>, <code>set&gt;=?</code></p>
 </li><li><p><a href="#Settheoryoperations">Set theory operations</a>: <code>set-union</code>, <code>set-intersection</code>, <code>set-difference</code>, <code>set-xor</code>, <code>set-union!</code>, <code>set-intersection!</code>, <code>set-difference!</code>, <code>set-xor!</code>, <code>set-cartesian-product</code></p>
-</li><li><p><a href="#Additionalbagprocedures">Additional bag procedures</a>: <code>bag-sum</code>, <code>bag-product</code>, <code>bag-element-count</code>, <code>bag-for-each-unique</code>, <code>bag-fold-unique</code>, <code>bag-increment!</code>, <code>bag-decrement!</code>, <code>bag-&gt;set</code>, <code>set-&gt;bag</code>, <code>set-&gt;bag!</code></p>
+</li><li><p><a href="#Additionalbagprocedures">Additional bag procedures</a>: <code>bag-sum</code>, <code>bag-sum!</code>, <code>bag-product</code>, <code>bag-product!</code>, <code>bag-element-count</code>, <code>bag-for-each-unique</code>, <code>bag-fold-unique</code>, <code>bag-increment!</code>, <code>bag-decrement!</code>, <code>bag-&gt;set</code>, <code>set-&gt;bag</code>, <code>set-&gt;bag!</code></p>
 </li>
 
 </ul>
@@ -418,9 +418,9 @@ Linear update procedures that return a bag with the same elements as <em>bag</em
 
 The <code>bag-&gt;set</code> procedure returns a newly allocated set containing the unique elements (in the sense of the equality predicate) of <em>bag</em>.  The <code>set-&gt;bag</code> procedure returns a newly allocated bag containing the elements of <em>set</em>.  The <code>set-&gt;bag!</code> procedure returns a bag containing the elements of both <em>bag</em> and <em>set</em>.  In all cases, the comparator of the result is the same as the comparator of the argument or arguments.
 
-</p><p><code>(bag-&gt;alist </code><em>bag</em><code>)</code></p><p><code>(alist-&gt;bag </code><em>alist comparator</em><code>)</code></p><p><code>(alist-&gt;bag! </code><em>bag alist</em><code>)</code></p><p>
+</p><p><code>(bag-&gt;alist </code><em>bag</em><code>)</code></p><p><code>(alist-&gt;bag </code><em>comparator alist</em><code>)</code></p><p>
 
-The <code>bag-&gt;alist</code> procedure returns a newly allocated alist whose keys are the unique elements of <em>bag</em> and whose values are the number of occurrences of each element.  The <code>alist-&gt;bag</code> returning a newly allocated bag based on <em>comparator</em>, where the keys of <em>alist</em> specify the elements and the corresponding values of <em>alist</em> specify how many times they occur.  The <code>alist-&gt;bag!</code> procedure returns a bag that contains the elements of <em>bag</em> and additional elements from <em>alist</em>.</p>
+The <code>bag-&gt;alist</code> procedure returns a newly allocated alist whose keys are the unique elements of <em>bag</em> and whose values are the number of occurrences of each element.  The <code>alist-&gt;bag</code> returning a newly allocated bag based on <em>comparator</em>, where the keys of <em>alist</em> specify the elements and the corresponding values of <em>alist</em> specify how many times they occur.</p>
 
 <h1>Implementation</h1>
 
