@@ -1183,19 +1183,30 @@
     bag))
 
 (define (alist->bag alist comparator)
-  (let ((result (bag comparator)))
+  (let* ((result (bag comparator))
+         (ht (sob-hash-table result)))
     (for-each
       (lambda (assoc)
-        (sob-increment! result (car assoc) (cdr assoc)))
+        (let ((element (car assoc)))
+          (if (not (hash-table-contains? ht element))
+              (sob-increment! result element (cdr assoc)))))
       alist)
     result))
 
 (define (alist->bag! bag alist)
   (check-bag bag)
-  (for-each
-    (lambda (assoc)
-      (sob-increment! bag (car assoc) (cdr assoc)))
-    alist))
+  (let ((ht (sob-hash-table bag)))
+    (for-each
+      (lambda (assoc)
+        (let ((elem (car assoc)))
+          (sob-decrement! bag elem (hash-table-ref/default ht elem 0))))
+      alist)
+    (sob-cleanup! bag)
+    (for-each
+      (lambda (assoc)
+        (if (not (hash-table-contains? ht (car assoc)))
+          (sob-increment! bag (car assoc) (cdr assoc))))
+      alist)))
 
 ;;; Set/bag printer (for debugging)
 

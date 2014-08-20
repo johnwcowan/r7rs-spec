@@ -113,8 +113,8 @@ subscribe to the list.  You can access previous messages via
 </li><li><p><a href="#Mappingandfolding">Mapping and folding</a>: <code>set-map</code>, <code>set-for-each</code>, <code>set-fold</code>, <code>set-filter</code>, <code>set-filter!</code>, <code>set-remove</code>, <code>set-remove!</code>, <code>set-partition</code>, <code>set-partition!</code></p>
 </li><li><p><a href="#Copyingandconversion">Copying and conversion</a>: <code>set-copy</code>, <code>set-&gt;list</code>, <code>list-&gt;set</code>, <code>list-&gt;set!</code></p>
 </li><li><p><a href="#Subsets">Subsets</a>: <code>set=?</code>, <code>set&lt;?</code>, <code>set&gt;?</code>, <code>set&lt;=?</code>, <code>set&gt;=?</code></p>
-</li><li><p><a href="#Settheoryoperations">Set theory operations</a>: <code>set-union</code>, <code>set-intersection</code>, <code>set-difference</code>, <code>set-xor</code>, <code>set-union!</code>, <code>set-intersection!</code>, <code>set-difference!</code>, <code>set-xor!</code></p>
-</li><li><p><a href="#Additionalbagprocedures">Additional bag procedures</a>: <code>bag-element-count</code>, <code>bag-for-each-unique</code>, <code>bag-fold-unique</code>, <code>bag-increment!</code>, <code>bag-decrement!</code>, <code>bag-&gt;set</code>, <code>set-&gt;bag</code>, <code>set-&gt;bag!</code></p>
+</li><li><p><a href="#Settheoryoperations">Set theory operations</a>: <code>set-union</code>, <code>set-intersection</code>, <code>set-difference</code>, <code>set-xor</code>, <code>set-union!</code>, <code>set-intersection!</code>, <code>set-difference!</code>, <code>set-xor!</code>, <code>set-cartesian-product</code></p>
+</li><li><p><a href="#Additionalbagprocedures">Additional bag procedures</a>: <code>bag-sum</code>, <code>bag-product</code>, <code>bag-element-count</code>, <code>bag-for-each-unique</code>, <code>bag-fold-unique</code>, <code>bag-increment!</code>, <code>bag-decrement!</code>, <code>bag-&gt;set</code>, <code>set-&gt;bag</code>, <code>set-&gt;bag!</code></p>
 </li>
 
 </ul>
@@ -352,6 +352,9 @@ Return a newly allocated set that is the union, intersection, asymmetric differe
 
 <p>Linear update procedures returning a set that is the union, intersection, asymmetric difference, or symmetric difference of the <em>sets</em>.  Asymmetric difference is extended to more than two sets by taking the difference between the first set and the union of the others.  Symmetric difference is not extended beyond two sets.  Elements in the result set are drawn from the first set in which they appear.</p>
 
+<p><code>(set-cartesian-product </code><em>set<sub>1</sub> set<sub>2</sub></em> ... <code>)</code></p><p>
+
+Return the cartesian product of the <em>sets</em>.  The result is a set of lists constituting every possible combination of elements of the arguments, where the first element of each list is drawn from <em>set<sub>1</sub></em>, the second element from <em>set<sub>2</sub></em>, and so on.  Note that there is no linear-update version of this procedure.</p>
 
 <h2 id="Bagprocedures">Bag procedures</h2><p>
 
@@ -375,7 +378,23 @@ The procedures for creating and manipulating bags are the same as those for sets
 
 <h3 id="Additionalbagprocedures">Additional bag procedures</h3>
 
-<p><code>(bag-unique-size </code><em>bag</em><code>)</code></p><p>
+<p><code>(bag-sum </code><em>set<sub>1</sub> set<sub>2</sub></em> ... <code>)</code></p>
+
+<p><code>(bag-sum! </code><em>bag<sub>1</sub> bag<sub>2</sub></em> ... <code>)</code></p><p>
+
+The <code>bag-sum</code> procedure returns a newly allocated bag containing all the unique elements in all the <em>bags</em>, such that the count of each unique element in the result is equal to the sum of the counts of that element in the arguments.  It differs from <code>bag-union</code> by treating identical elements as potentially distinct rather than attempting to match them up.
+
+</p><p>The <code>bag-sum!</code> procedure is equivalent except that it is linear-update.
+
+<p><code>(bag-product </code><em>n bag</em><code>)</code></p>
+
+<p><code>(bag-product! </code><em>n bag</em><code>)</code></p>
+
+The <code>bag-product</code> procedure returns a newly allocated bag containing all the unique elements in <em>bag</em>, where the count of each unique element in the bag is equal to the count of that element in <code>bag</code> multiplied by <em>n</em>.
+
+</p><p>The <code>bag-product!</code> procedure is equivalent except that it is linear-update.
+
+</p><p><code>(bag-unique-size </code><em>bag</em><code>)</code></p><p>
 
 Returns the number of unique elements of <em>bag</em>.
 
