@@ -1,0 +1,2491 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0//EN" "http://www.w3.org/TR/REC-html40/strict.dtd">
+<html lang="en-US"><head><meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1"/>
+    <meta name="keywords" content="Scheme, programming language, list processing, SRFI, underage lesbian threesomes"/>
+    <title>SRFI 116: Immutable List Library</title>
+
+    <!-- Should have a media=all to get, for example, printing to work.
+      == But my Netscape will completely ignore the tag if I do that.
+      -->
+    <style type="text/css">
+	   /* A little general layout hackery for headers and the title. */
+           body { margin-left: +7%;
+	          font-family: "Helvetica", sans-serif;
+		  }
+           /* Netscape workaround: */
+	   td, th { font-family: "Helvetica", sans-serif; }
+
+	   code, pre { font-family: "courier new", "courier"; }
+
+           h1 { margin-left: -5%; }
+	   h1, h2 { clear: both; }
+	   h1, h2, h3, h4, h5, h6 { color: blue }
+	   div.title-text { font-size: large; font-weight: bold; }
+
+	   div.indent { margin-left: 2em; }	  /* General indentation */
+	   pre.code-example { margin-left: 2em; } /* Indent code examples. */
+
+	   /* This stuff is for definition lists of defined procedures.
+           ** A proc-def2 is used when you want a stack of procs to go
+	   ** with one <dd> ... </dd> body. In this case, make the first
+	   ** proc a proc-def1, following ones proc-defi's, and the last one
+           ** a proc-defn.
+           **
+           ** Unfortunately, Netscape has huge bugs with respect to style
+           ** sheets and dl list rendering. We have to set truly random
+           ** values here to get the rendering to come out. The proper values
+           ** are in the following style sheet, for Internet Explorer.
+	   ** In the following settings, the *comments* say what the 
+           ** setting *really* causes Netscape to do.
+	   **
+           ** Ugh. Professional coders sacrifice their self-respect,
+           ** that others may live.
+           */
+	   /* m-t ignored; m-b sets top margin space. */
+	   dt.proc-def1 { margin-top: 0ex; margin-bottom: 3ex; }
+	   dt.proc-defi { margin-top: 0ex; margin-bottom: 0ex; }
+	   dt.proc-defn { margin-top: 0ex; margin-bottom: 0ex; }
+
+	   /* m-t works weird depending on whether or not the last line
+           ** of the previous entry was a pre. Set to zero.
+           */
+	   dt.proc-def  { margin-top: 0ex; margin-bottom: 3ex; }
+
+	   /* m-b sets space between dd and dt; m-t ignored. */
+	   dd.proc-def { margin-bottom: 0.5ex; margin-top: 0ex; } 
+
+
+	   /* Boldface the name of a procedure when it's being defined. */
+	   code.proc-def { font-weight: bold; font-size: 110%}
+
+	   /* For the index of procedures. 
+           ** Same hackery as for dt.proc-def, above.
+           */
+	   /* m-b sets space between dd and dt; m-t ignored. */
+	   dd.proc-index  { margin-bottom: 0ex; margin-top: 0ex; } 
+	   /* What the fuck? */
+	   pre.proc-index { margin-top: -2ex; }
+
+	   /* Pull the table of contents back flush with the margin.
+	   ** Both NS and IE screw this up in different ways.
+	   */
+	   #toc-table { margin-top: -2ex; margin-left: -5%; }
+
+	   
+	   /* Spread out bibliographic lists. */
+	   /* More Netscape-specific lossage; see the following stylesheet
+	   ** for the proper values (used by IE).
+           */
+	   dt.biblio { margin-bottom: 1ex; }
+
+	   /* Links to draft copies (e.g., not at the official SRFI site)
+	   ** are colored in red, so people will use them during the 
+	   ** development process and kill them when the document's done.
+	   */
+           a.draft { color: red; }
+    </style>
+
+    <style type="text/css" media="all">
+	   /* Nastiness: Here, I'm using a bug to work around a bug.
+	   ** Netscape rendering bugs mean you need bogus dt and dd
+	   ** margin settings — settings which screw up IE's proper rendering.
+	   ** Fortunately, Netscape has *another* bug: it will ignore this
+	   ** media=all style sheet. So I am placing the (proper) IE values
+	   ** here. Perhaps, one day, when these rendering bugs are fixed,
+	   ** this gross hackery can be removed.
+	   */
+	   dt.proc-def1 { margin-top: 3ex; margin-bottom: 0ex; }
+	   dt.proc-defi { margin-top: 0ex; margin-bottom: 0ex; }
+	   dt.proc-defn { margin-top: 0ex; margin-bottom: 0.5ex; }
+	   dt.proc-def  { margin-top: 3ex; margin-bottom: 0.5ex; }
+
+	   pre { margin-top: 1ex; }
+
+	   dd.proc-def { margin-bottom: 2ex; margin-top: 0.5ex; } 
+
+	   /* For the index of procedures. 
+           ** Same hackery as for dt.proc-def, above.
+           */
+	   dd.proc-index { margin-top: 0ex; } 
+	   pre.proc-index { margin-top: 0ex; }
+
+	   /* Spread out bibliographic lists. */
+	   dt.biblio { margin-top: 3ex; margin-bottom: 0ex; }
+	   dd.biblio { margin-bottom: 1ex; }
+    </style>
+  </head>
+
+<body>
+
+<!--========================================================================-->
+<h1>Title</h1><div class="title-text">
+Immutable List Library
+</div>
+
+<!--========================================================================-->
+<h1>Author</h1>
+
+John Cowan
+
+    <address>
+      <a href="http://www.ccil.org/~cowan">http://www.ccil.org/~cowan</a><br/>
+      <a href="mailto:cowan@ccil.org">cowan@ccil.org</a>
+    </address>
+
+<!--========================================================================-->
+<h1>Status</h1>
+
+This SRFI is currently in ``draft'' status.  To see an explanation of each status that a SRFI can hold, see <a href="http://srfi.schemers.org/srfi-process.html">here</a>.
+You can access the discussion via <a href="http://srfi.schemers.org/srfi-116/mail-archive/maillist.html">the archive of the mailing list</a>.
+<p>
+</p><ul>
+    <li>Received: </li>
+</ul>
+
+<!--========================================================================-->
+<h1>Table of contents</h1>
+
+<ul id="toc-table">
+<li><a href="#Abstract">Abstract</a>
+</li><li><a href="#Rationale">Rationale</a>
+</li><li><a href="#ProcedureIndex">Procedure index</a>
+</li><li><a href="#GeneralDiscussion">General discussion</a></li>
+  <ul>
+  <li><a href="#ImproperIlists">Improper ilists</a>
+  </li></ul>
+<li><a href="#TheProcedures">The procedures</a>
+  <ul>
+  <li><a href="#Constructors">Constructors</a>
+  </li><li><a href="#Predicates">Predicates</a>
+  </li><li><a href="#Selectors">Selectors</a>
+  </li><li><a href="#Miscellaneous">Miscellaneous: length, append, reverse, zip &amp; count</a>
+  </li><li><a href="#FoldUnfoldMap">Fold, unfold, and map</a>
+  </li><li><a href="#FilteringPartitioning">Filtering &amp; partitioning</a>
+  </li><li><a href="#Searching">Searching</a>
+  </li><li><a href="#Deletion">Deletion</a>
+  </li><li><a href="#ImmutableassociationLists">Immutable association lists</a>
+  </li><li><a href="#SetOperationsOnIlists">Set operations on ilists</a>
+  </li><li><a href="#Replacers">Replacers</a>
+  </li><li><a href="#Conversion">Conversion</a>
+  </li><li><a href="#ProcedureApplication">Procedure application</a>
+  </li></ul>
+</li><li><a href="#Acknowledgements">Acknowledgements</a>
+</li><li><a href="#ReferencesLinks">References &amp; links</a>
+</li><li><a href="#Copyright">Copyright</a>
+</li></ul>
+
+
+<!--========================================================================-->
+<h1><a name="Abstract">Abstract</a></h1>
+<p>
+Scheme currently does not provide immutable pairs corresponding to its existing mutable pairs, although most uses of pairs do not exploit their mutability.  The <a href="http://www.racket-lang.org">Racket</a> system takes the radical approach of making Scheme's pairs immutable, and providing a minimal library of mutable pairs with procedures named <code>mpair?, mcons, mcar, mcdr, set-mcar!, set-mcdr!</code>.  This SRFI takes the opposite approach of leaving Scheme's pairs unchanged and providing a full set of routines for creating and dealing with immutable pairs.  The sample implementation is portable and efficient.</p>
+<!--========================================================================-->
+<h1><a name="Rationale">Rationale</a></h1>
+<p>
+Rather than attempting to design this library from scratch, I have chosen the conservative option of modifying <a href="http://srfi.schemers.org/srfi-1/srfi-1.html">SRFI 1</a>.  By discarding the linear-update procedures ending in <code>!</code>, dropping references to circular lists, and inserting an <code>i</code> at a judicious place in each identifier (usually at the beginning) the library remains fairly rich.  I have added a few procedures for conversion between ordinary pairs and immutable pairs and for applying a procedure to an immutable list of arguments.
+</p><p>
+Because "icons" means something else in both ordinary English and computer jargon, the basic constructor and its immediate relatives are named <code>ipair</code>, <code>xipair</code> and <code>ipair*</code> instead.
+</p><p>
+In the prose, immutable pairs and lists are known as ipairs and ilists throughout.
+</p><p>
+The sample implementation of this SRFI is derived from the sample implementation of SRFI 1, but with a few easy modernizations.  It depends on SRFI 9 (or R7RS) records.
+
+
+<!--========================================================================-->
+</p><h1><a name="ProcedureIndex">Procedure Index</a></h1>
+<p>
+Here is a short list of the procedures provided by this SRFI.  To interpret the examples, pretend that they are executed on a Scheme that reads quoted list syntax as immutable lists and prints immutable pairs and lists with the syntax of mutable ones.  Although it may be reasonable for <code>display</code> to work this way, <code>write</code> and certainly <code>read</code> should not.
+
+</p><div class="indent">
+<dl>
+<dt class="proc-index"> Constructors
+</dt><dd class="proc-index">
+<pre class="proc-index"><a href="#ipair">ipair</a> <a href="#ilist">ilist</a>
+<a href="#xipair">xipair</a> <a href="#ipair*">ipair*</a> <a href="#make-ilist">make-ilist</a> <a href="#ilist-tabulate">ilist-tabulate</a> 
+<a href="#iiota">iiota</a>
+</pre>
+
+</dd><dt class="proc-index"> Predicates
+</dt><dd class="proc-index">
+<pre class="proc-index"><a href="#ipair-p">ipair?</a>
+<a href="#proper-ilist-p">proper-ilist?</a>/<a href="#ilist-p">ilist?</a> <a href="#dotted-ilist-p">dotted-ilist?</a> 
+<a href="#not-ipair-p">not-ipair?</a> <a href="#null-ilist-p">null-ilist?</a>
+<a href="#ilist=">ilist=</a>
+</pre>
+
+</dd><dt class="proc-index"> Selectors
+</dt><dd class="proc-index">
+<pre class="proc-index"><a href="#icar">icar</a> <a href="#icdr">icdr</a> ... <a href="#icddadr">icddadr</a> <a href="#icddddr">icddddr</a> <a href="#ilist-ref">ilist-ref</a>
+<a href="#icar+icdr">icar+icdr</a>
+<a href="#itake">itake</a>       <a href="#idrop">idrop</a>/<a href="#ilist-tail">ilist-tail</a>
+<a href="#itake-right">itake-right</a> <a href="#idrop-right">idrop-right</a>
+<a href="#isplit-at">isplit-at</a>   
+<a href="#ilast">ilast</a> <a href="#last-ipair">last-ipair</a>
+</pre>
+
+</dd><dt class="proc-index"> Miscellaneous: length, append, concatenate, reverse, zip &amp; count
+</dt><dd class="proc-index">
+<pre class="proc-index"><a href="#ilength">ilength</a> 
+<a href="#iappend">iappend</a>  <a href="#iconcatenate">iconcatenate</a>  <a href="#ireverse">ireverse</a>  <a href="#iappend-reverse">iappend-reverse</a>
+<a href="#izip">izip</a> <a href="#iunzip1">iunzip1</a> <a href="#iunzip2">iunzip2</a> <a href="#iunzip3">iunzip3</a> <a href="#iunzip4">iunzip4</a> <a href="#iunzip5">iunzip5</a>
+<a href="#icount">icount</a>
+</pre>
+
+</dd><dt class="proc-index"> Fold, unfold &amp; map
+</dt><dd class="proc-index">
+<pre class="proc-index"><a href="#imap">imap</a> <a href="#ifor-each">ifor-each</a>
+<a href="#ifold">ifold</a>       <a href="#iunfold">iunfold</a>       <a href="#ipair-fold">ipair-fold</a>       <a href="#ireduce">ireduce</a> 
+<a href="#ifold-right">ifold-right</a> <a href="#iunfold-right">iunfold-right</a> <a href="#ipair-fold-right">ipair-fold-right</a> <a href="#ireduce-right">ireduce-right</a> 
+<a href="#iappend-map">iappend-map</a>
+<a href="#ipair-for-each">ipair-for-each</a> <a href="#ifilter-map">ifilter-map</a> <a href="#imap-in-order">imap-in-order</a>
+</pre>
+
+</dd><dt class="proc-index"> Filtering &amp; partitioning
+</dt><dd class="proc-index">
+<pre class="proc-index"><a href="#ifilter">ifilter</a>  <a href="#ipartition">ipartition</a>  <a href="#iremove">iremove</a>
+
+</pre>
+
+</dd><dt class="proc-index"> Searching
+</dt><dd class="proc-index">
+<pre class="proc-index"><a href="#imember">imember</a> <a href="#imemq">imemq</a> <a href="#imemv">imemv</a>
+<a href="#ifind">ifind</a> <a href="#ifind-tail">ifind-tail</a> 
+<a href="#iany">iany</a> <a href="#ievery">ievery</a>
+<a href="#ilist-index">ilist-index</a>
+<a href="#itake-while">itake-while</a> <a href="#idrop-while">idrop-while</a>
+<a href="#ispan">ispan</a> <a href="#ibreak">ibreak</a>
+</pre>
+
+</dd><dt class="proc-index"> Deleting
+</dt><dd class="proc-index">
+<pre class="proc-inde x"><a href="#idelete">idelete</a>  <a href="#idelete-duplicates">idelete-duplicates</a> 
+
+</pre>
+
+</dd><dt class="proc-index"> Immutable association lists
+</dt><dd class="proc-index">
+<pre class="proc-index"><a href="#iassoc">iassoc</a> <a href="#iassq">iassq</a> <a href="#iassv">iassv</a>
+<a href="#ialist-cons">ialist-cons</a> 
+<a href="#ialist-delete">ialist-delete</a>
+</pre>
+
+</dd><dt class="proc-index"> Set operations on ilists
+</dt><dd class="proc-index">
+<pre class="proc-index"><a href="#ilset&lt;=">ilset&lt;=</a> <a href="#ilset=">ilset=</a> <a href="#ilset-adjoin">ilset-adjoin</a>
+<a href="#ilset-union">ilset-union</a>			
+<a href="#ilset-intersection">ilset-intersection</a>		
+<a href="#ilset-difference">ilset-difference</a>		        
+<a href="#ilset-xor">ilset-xor</a>			
+<a href="#ilset-diff+intersection">ilset-diff+intersection</a>	        
+</pre>
+
+</dd><dt class="proc-index"> Replacement
+</dt><dd class="proc-index">
+<pre class="proc-index"><a href="#replace-icar">replace-icar</a> <a href="#replace-icdr">replace-icdr</a>
+</pre>
+
+</dd><dt class="proc-index"> Conversion
+</dt><dd class="proc-index">
+<pre class="proc-index"><a href="#pair->ipair">pair->ipair</a>  <a href="#ipair->pair">ipair->pair</a>
+<a href="#list->ilist">list->ilist</a>  <a href="#ilist->list">ilist->list</a>
+<a href="#tree->itree">tree->itree</a>  <a href="#itree->tree">itree->tree</a>
+<a href="#gtree->itree">gtree->itree</a> <a href="#gtree->tree">gtree->tree</a>
+</pre>
+
+</dd><dt class="proc-index"> Procedure application
+</dt><dd class="proc-index">
+<pre class="proc-index"><a href="#iapply">iapply</a>
+</pre>
+
+</dd></dl>
+</div>
+
+
+<!--========================================================================-->
+<h1><a name="GeneralDiscussion">General discussion</a></h1>
+<p>
+
+A set of general criteria guided the design of the SRFI-1 library that underlies this library.
+They are reproduced here.
+
+</p><p>
+List-filtering procedures such as <code>ifilter</code> or <code>idelete</code> do not disorder
+lists. Elements appear in the answer list in the same order as they appear in
+the argument list. This constrains implementation, but seems like a desirable
+feature, since in many uses of lists, order matters.  (In particular,
+disordering an association list is definitely a bad idea.)
+</p><p>
+Contrariwise, although the sample implementations of the list-filtering
+procedures share longest common tails between argument and answer lists,
+it is not part of the spec.
+</p><p>
+Because ilists are an inherently sequential data structure (unlike, say,
+vectors), inspection procedures such as <code>ifind</code>, <code>ifind-tail</code>, <code>ifor-each</code>, <code>iany</code>
+and <code>ievery</code> commit to a left-to-right traversal order of their argument list.
+</p><p>
+However, constructors, such as <code><code>ilist-tabulate</code></code> and the mapping
+procedures (<code>iappend-map</code>, <code>ipair-for-each</code>, <code>ifilter-map</code>,
+<code>imap-in-order</code>), do <em>not</em> specify the dynamic order in which their procedural
+argument is applied to its various values.
+</p><p>
+Predicates return useful true values wherever possible.  Thus <code>iany</code> must return
+the true value produced by its predicate, and <code>ievery</code>  returns the final true
+value produced by applying its predicate argument to the last element of its
+argument list.
+</p><p>
+No special status is accorded Scheme's built-in equality predicate.
+Any functionality provided in terms of <code>eq?</code>, <code>eqv?</code>, <code>equal?</code> is also
+available using a client-provided equality predicate.
+</p><p>
+These procedures are <em>not</em> generic as between ordinary pairs/lists and immutable pairs/lists;
+they are specific to immutable lists.  Like Olin, I prefer to keep the library simple and focused.
+However, there are a few conversions between mutable and immutable lists provided.
+<!--========================================================================-->
+</p>
+
+
+<!--========================================================================-->
+<h2><a name="ImproperIlists">Improper Lists</a></h2>
+<p>
+
+Scheme does not properly have a list type, just as C does not have a string
+type. Rather, Scheme has a binary-tuple type, from which one can build binary
+trees. There is an <em>interpretation</em> of Scheme values that allows one to
+treat these trees as lists.  The same interpretation is applied to immutable pairs.
+
+</p><p>Because the empty list, written as <code>()</code>, is already immutable, it is shared between mutable and immutable lists as the termination marker.  It is the only Scheme object that is both a mutable list and an immutable list.
+
+</p><p>Users should note that dotted lists, whether mutable or immutable, are not commonly
+used, and are considered by many Scheme programmers to be an ugly artifact of
+Scheme's lack of a true list type.
+Dotted ilists are <em>not</em> fully supported by this SRFI. Most procedures are
+defined only on proper ilists — that is, <code>()</code>-terminated ilists.  The
+procedures that will also handle dotted ilists are specifically
+marked. While this design decision restricts the domain of possible arguments
+one can pass to these procedures, it has the benefit of allowing the
+procedures to catch the error cases where programmers inadvertently pass
+scalar values to an ilist procedure by accident, 
+<em>e.g.</em>, by switching the arguments to a procedure call.</p>
+
+
+
+<!--========================================================================-->
+<h1><a name="TheProcedures">The procedures</a></h1>
+<p>
+The templates given below obey the following conventions for procedure formals:
+</p><table>
+<tbody><tr valign="baseline"><th align="left"> <var>ilist</var>	
+    </th><td> A proper (<code>()</code>-terminated) ilist
+</td></tr><tr valign="baseline"><th align="left"> <var>dilist</var>
+    </th><td> A proper or dotted ilist
+</td></tr><tr valign="baseline"><th align="left"> <var>ipair</var>
+    </th><td> An immutable pair
+</td></tr><tr valign="baseline">
+    <th align="left"> <var>x</var>, <var>y</var>, <var>d</var>, <var>a</var>
+    </th><td> Any value
+</td></tr><tr valign="baseline"><th align="left"> <var>object</var>, <var>value</var>
+    </th><td> Any value
+</td></tr><tr valign="baseline"><th align="left"> <var>n</var>, <var>i</var>
+    </th><td> A natural number (an integer &gt;= 0)
+</td></tr><tr valign="baseline"><th align="left"> <var>proc</var>
+    </th><td> A procedure
+</td></tr><tr valign="baseline"><th align="left"> <var>pred</var>
+    </th><td> A procedure whose return value is treated as a boolean
+</td></tr><tr valign="baseline"><th align="left"> <var>=</var>
+    </th><td> A boolean procedure taking two arguments
+</td></tr></tbody></table>
+
+<p>
+It is an error to pass a dotted ilist to a procedure not
+defined to accept such an argument.
+
+<!--========================================================================-->
+</p><h2><a name="Constructors">Constructors</a></h2>
+<p>
+
+</p><dl>
+
+<!--
+==== ipair
+============================================================================-->
+<dt class="proc-def">
+<a name="ipair"></a>
+<code class="proc-def">ipair</code> <var>a d -&gt; ipair</var>
+</dt><dd class="proc-def">
+    
+    The primitive constructor.  Returns a newly allocated ipair whose icar is 
+    <var>a</var> and whose icdr is <var>d</var>.  
+    The ipair is guaranteed to be different (in the sense of <code>eqv?</code>)
+    from every existing object.
+<pre class="code-example">(ipair 'a '())        =&gt; (a)
+(ipair '(a) '(b c d)) =&gt; ((a) b c d)
+(ipair "a" '(b c))    =&gt; ("a" b c)
+(ipair 'a 3)          =&gt; (a . 3)
+(ipair '(a b) 'c)     =&gt; ((a b ) . c)
+</pre>
+
+<!--
+==== ilist
+============================================================================-->
+</dd><dt class="proc-def">
+<a name="ilist"></a>
+<code class="proc-def">ilist</code> <var>object ... -&gt; ilist</var>
+</dt><dd class="proc-def">
+    
+    Returns a newly allocated ilist of its arguments.
+<pre class="code-example">(ilist 'a (+ 3 4) 'c) =&gt;  (a 7 c)
+(ilist)               =&gt;  ()
+</pre>
+
+<!--
+==== xipair
+============================================================================-->
+</dd><dt class="proc-def">
+<a name="xipair"></a>
+<code class="proc-def">xipair</code> <var>d a -&gt; ipair</var>
+</dt><dd class="proc-def">
+<pre>(lambda (d a) (ipair a d))
+</pre>
+    Of utility only as a value to be conveniently passed to higher-order 
+    procedures.
+
+<pre class="code-example">(xipair '(b c) 'a) =&gt; (a b c)
+</pre>
+
+    The name stands for "eXchanged Immutable PAIR."
+
+<!--
+==== ipair*
+============================================================================-->
+<a name="ipair*"></a>
+</dd><dt class="proc-def"><code class="proc-def">ipair*</code><var> elt<sub>1</sub> elt<sub>2</sub> ... -&gt; object</var>
+</dt><dd class="proc-def">
+
+    Like <code>ilist</code>, 
+    but the last argument provides the tail of the constructed ilist,
+    returning
+    <div class="indent"><code>
+(ipair <var>elt<sub>1</sub></var> (ipair <var>elt<sub>2</sub></var> (ipair ... <var>elt<sub>n</sub></var>)))
+    </code></div>
+   
+<pre class="code-example">(ipair* 1 2 3 4) =&gt; (1 2 3 . 4)
+(ipair* 1) =&gt; 1
+</pre>
+
+<!--
+==== make-ilist
+============================================================================-->
+<a name="make-ilist"></a>
+</dd><dt class="proc-def"> <code class="proc-def">make-ilist</code> <var>n [fill] -&gt; ilist</var>
+</dt><dd class="proc-def">
+    Returns an <var>n</var>-element ilist, 
+    whose elements are all the value <var>fill</var>.
+    If the <var>fill</var> argument is not given, the elements of the ilist may
+    be arbitrary values.
+<pre class="code-example">(make-ilist 4 'c) =&gt; (c c c c)
+</pre>
+
+<!--
+==== ilist-tabulate
+============================================================================-->
+<a name="ilist-tabulate"></a>
+</dd><dt class="proc-def"><code class="proc-def">ilist-tabulate</code><var> n init-proc -&gt; ilist</var>
+</dt><dd class="proc-def">
+    Returns an <var>n</var>-element ilist. Element <var>i</var> of the ilist, where 0 &lt;= <var>i</var> &lt; <var>n</var>,
+    is produced by <code>(<var>init-proc</var> <var>i</var>)</code>. No guarantee is made about the dynamic
+    order in which <var>init-proc</var> is applied to these indices.
+
+<pre class="code-example">(ilist-tabulate 4 values) =&gt; (0 1 2 3)
+</pre>
+
+    
+<!--
+==== iiota
+============================================================================-->
+<a name="iiota"></a>
+</dd><dt class="proc-def"><code class="proc-def">iiota</code><var> count [start step] -&gt; ilist</var>
+</dt><dd class="proc-def">
+    Returns an ilist containing the elements
+<pre class="code-example">(<var>start</var> <var>start</var>+<var>step</var> ... <var>start</var>+(<var>count</var>-1)*<var>step</var>)
+</pre>
+    The <var>start</var> and <var>step</var> parameters default to 0 and 1, respectively.
+    This procedure takes its name from the APL primitive.
+
+<pre class="code-example">(iiota 5) =&gt; (0 1 2 3 4)
+(iiota 5 0 -0.1) =&gt; (0 -0.1 -0.2 -0.3 -0.4)
+</pre>
+</dd></dl>
+
+<!--========================================================================-->
+<h2><a name="Predicates">Predicates</a></h2>
+<dl>
+<!--
+==== proper-ilist?
+==== ilist?
+============================================================================-->
+<dt class="proc-def1">
+<code class="proc-def">proper-ilist?</code><var> x -&gt; boolean</var>
+<a name="proper-ilist-p"></a>
+</dt><dt class="proc-defn">
+<code class="proc-def">ilist?</code><var> x -&gt; boolean</var>
+<a name="ilist-p"></a>
+</dt><dd class="proc-def">
+    These identifiers are bound either to the same procedure, or to procedures of equivalent behavior.  In either case, true is returned iff <var>x</var> is a proper ilist — a <code>()</code>-terminated ilist.
+<p>
+    More carefully: The empty list is a proper ilist. An ipair whose icdr is a 
+    proper ilist is also a proper ilist.  Everything else is a dotted ilist. This includes
+    non-ipair, non-() values (<em>e.g.</em> symbols, numbers, mutable pairs), 
+    which are considered to be dotted ilists of length 0.
+</p>
+
+<!--
+==== ipair?
+============================================================================-->
+<a name="ipair-p"></a>
+</dd><dt class="proc-def"><code class="proc-def">ipair?</code><var> object -&gt; boolean</var>
+</dt><dd class="proc-def">
+    Returns #t if <var>object</var> is an ipair; otherwise, #f.
+<pre class="code-example">(ipair? '(a . b)) =&gt;  #t
+(ipair? '(a b c)) =&gt;  #t
+(ipair? '())      =&gt;  #f
+(ipair? '#(a b))  =&gt;  #f
+(ipair? 7)        =&gt;  #f
+(ipair? 'a)       =&gt;  #f
+</pre>
+
+<!--
+==== null-ilist?
+============================================================================-->
+<a name="null-ilist-p"></a>
+</dd><dt class="proc-def"><code class="proc-def">null-ilist?</code><var> ilist -&gt; boolean</var>
+</dt><dd class="proc-def">
+    <var>Ilist</var> is a proper ilist. This procedure returns true if
+    the argument is the empty list (), and false otherwise. It is an
+    error to pass this procedure a value which is not a proper ilist.
+
+    This procedure is recommended as the termination condition for 
+    ilist-processing procedures that are not defined on dotted ilists.
+
+<!--
+==== not-ipair?
+============================================================================-->
+</dd><dt class="proc-def">
+<a name="not-ipair-p"></a>
+<code class="proc-def">not-ipair?</code><var> x -&gt; boolean</var>
+</dt><dd class="proc-def">
+    <pre>(lambda (x) (not (ipair? x)))</pre>
+    Provided as a procedure as it can be useful as the termination condition
+    for ilist-processing procedures that wish to handle all ilists,
+    both proper and dotted.
+
+<!--
+==== ilist=
+============================================================================-->
+</dd><dt class="proc-def">
+<a name="list="></a>
+<code class="proc-def">ilist=</code><var> elt= ilist<sub>1</sub> ... -&gt; boolean</var>
+</dt><dd class="proc-def">
+    Determines ilist equality, given an element-equality procedure.
+    Proper ilist <var>A</var> equals proper ilist <var>B</var> 
+    if they are of the same length,
+    and their corresponding elements are equal, 
+    as determined by <var>elt=</var>. 
+    If the element-comparison procedure's first argument is
+    from <var>ilist<sub>i</sub></var>, 
+    then its second argument is from <var>ilist<sub>i+1</sub></var>, 
+    <em>i.e.</em> it is always called as
+        <code>(<var>elt=</var> <var>a</var> <var>b</var>)</code>
+    for <var>a</var> an element of ilist <var>A</var>, 
+    and <var>b</var> an element of ilist <var>B</var>.
+<p>
+    In the <var>n</var>-ary case, 
+    every <var>ilist<sub>i</sub></var> is compared to 
+    <var>ilist<sub>i+1</sub></var> 
+    (as opposed, for example, to comparing 
+    <var>ilist<sub>1</sub></var> to    <var>ilist<sub>i</sub></var>, 
+    for <var>i</var>&gt;1). 
+    If there are no ilist arguments at all, 
+    <code>ilist=</code> simply returns true.
+</p><p>
+    It is an error to apply <code>ilist=</code> to anything except proper ilists.
+    It
+    cannot reasonably be extended to dotted ilists, as it provides no way to
+    specify an equality procedure for comparing the ilist terminators.
+</p><p>
+    Note that the dynamic order in which the <var>elt=</var> procedure is
+    applied to pairs of elements is not specified. 
+    For example, if <code>ilist=</code> is applied
+    to three ilists, <var>A</var>, <var>B</var>, and <var>C</var>, 
+    it may first completely compare <var>A</var> to <var>B</var>,
+    then compare <var>B</var> to <var>C</var>, 
+    or it may compare the first elements of <var>A</var> and <var>B</var>,
+    then the first elements of <var>B</var> and <var>C</var>, 
+    then the second elements of <var>A</var> and <var>B</var>, and so forth.
+</p><p>
+    The equality procedure must be consistent with <code>eq?</code>. 
+    That is, it must be the case that
+</p><div class="indent">
+        <code>(eq? <var>x</var> <var>y</var>)</code> =&gt; <code>(<var>elt=</var> <var>x</var> <var>y</var>)</code>.
+</div>
+    Note that this implies that two ilists which are <code>eq?</code> 
+    are always <code>ilist=</code>, as well; implementations may exploit this
+    fact to "short-cut" the element-by-element comparisons.
+<pre class="code-example">(ilist= eq?) =&gt; #t       ; Trivial cases
+(ilist= eq? '(a)) =&gt; #t
+</pre>
+
+</dd></dl>
+
+
+<!--========================================================================-->
+<h2><a name="Selectors">Selectors</a></h2>
+<dl>
+
+<!--
+==== icar icdr
+============================================================================-->
+<a name="icar"></a>
+<a name="icdr"></a>
+<dt class="proc-def1"><code class="proc-def">icar</code><var> ipair -&gt; value</var>
+</dt><dt class="proc-defn"><code class="proc-def">icdr</code><var> ipair -&gt; value</var>
+</dt><dd class="proc-def">
+    
+    These procedures return the contents of the icar and icdr field of their
+    argument, respectively.
+    Note that it is an error to apply them to the empty ilist.
+<pre class="code-example">(icar '(a b c))     =&gt;  a             (icdr '(a b c))     =&gt;  (b c)  
+(icar '((a) b c d)) =&gt;  (a)	     (icdr '((a) b c d)) =&gt;  (b c d)
+(icar '(1 . 2))     =&gt;  1	     (icdr '(1 . 2))     =&gt;  2      
+(icar '())          =&gt;  *error*	     (icdr '())          =&gt;  *error*
+</pre>
+
+
+
+<!--
+==== icaar icadr ... icdddar icddddr
+============================================================================-->
+<a name="icaar"></a>
+<a name="icadr"></a>
+<a name="icdddar"></a>
+<a name="icddddr"></a>
+</dd><dt class="proc-def1"><code class="proc-def">icaar</code><var> ipair -&gt; value</var>
+</dt><dt class="proc-defi"><code class="proc-def">icadr</code><var> ipair -&gt; value</var>
+</dt><dt class="proc-defi"><code class="proc-def">:</code>
+</dt><dt class="proc-defi"><code class="proc-def">icdddar</code><var> ipair -&gt; value</var>
+</dt><dt class="proc-defn"><code class="proc-def">icddddr</code><var> ipair -&gt; value</var>
+</dt><dd class="proc-def">
+
+    These procedures are compositions of <code>icar</code> and <code>icdr</code>,
+    where for example <code>icaddr</code> could be defined by
+<pre class="code-example">    
+(define icaddr (lambda (x) (icar (icdr (icdr x))))).
+</pre>
+    Arbitrary compositions, up to four deep, are provided.  There are
+    twenty-eight of these procedures in all.
+
+<!--
+==== ilist-ref
+============================================================================-->
+<a name="ilist-ref"></a>
+</dd><dt class="proc-def"><code class="proc-def">ilist-ref</code><var> ilist i -&gt; value</var>
+</dt><dd class="proc-def">
+    
+    Returns the <var>i</var><sup>th</sup> element of <var>ilist</var>.  
+    (This is the same as the icar of 
+        <code>(idrop <var>ilist</var> <var>i</var>)</code>.)
+    It is an error if <var>i</var> &gt;= <var>n</var>, 
+    where <var>n</var> is the length of <var>ilist</var>.
+<pre class="code-example">    
+(ilist-ref '(a b c d) 2) =&gt; c
+</pre>    
+
+<!--
+==== icar+icdr
+============================================================================-->
+</dd><dt class="proc-def">
+<a name="icar+icdr"></a>
+<code class="proc-def">icar+icdr</code><var> ipair -&gt; [x y]</var>
+</dt><dd class="proc-def">
+    The fundamental ipair deconstructor:
+<pre class="code-example">(lambda (p) (values (icar p) (icdr p)))
+</pre>
+    This can, of course, be implemented more efficiently by a compiler.
+
+<!--
+==== idrop
+==== itake
+============================================================================-->
+</dd><dt class="proc-def1">
+<a name="itake"></a>
+<code class="proc-def">itake</code><var> x i -&gt; ilist</var>
+</dt><dt class="proc-defi">
+<a name="idrop"></a>
+<code class="proc-def">idrop</code><var> x i -&gt; object</var>
+</dt><dt class="proc-defn">
+<a name="idrop"></a>
+<code class="proc-def">ilist-tail</code><var> x i -&gt; object</var>
+</dt><dd class="proc-def">
+    <code>itake</code> returns the first <var>i</var> elements of ilist <var>x</var>.<br/>
+    <code>idrop</code> returns all but the first <var>i</var> elements of ilist <var>x</var>.<br/>
+    <code>ilist-tail</code> is either the same procedure as <code>idrop</code> or else a procedure with the same behavior.
+<pre class="code-example">(itake '(a b c d e)  2) =&gt; (a b)
+(idrop '(a b c d e)  2) =&gt; (c d e)
+</pre>
+    <var>x</var> may be any value — a proper or dotted ilist:
+<pre class="code-example">(itake '(1 2 3 . d) 2) =&gt; (1 2)
+(idrop '(1 2 3 . d) 2) =&gt; (3 . d)
+(itake '(1 2 3 . d) 3) =&gt; (1 2 3)
+(idrop '(1 2 3 . d) 3) =&gt; d
+</pre>
+    For a legal <var>i</var>, <code>itake</code> and <code>idrop</code> partition the ilist in a manner which
+    can be inverted with <code>iappend</code>:
+<pre class="code-example">(iappend (itake <var>x</var> <var>i</var>) (idrop <var>x</var> <var>i</var>)) = <var>x</var>
+</pre>
+    <code>idrop</code> is exactly equivalent to performing <var>i</var> icdr operations on <var>x</var>;
+    the returned value shares a common tail with <var>x</var>.
+
+
+<!--
+==== idrop-right
+==== itake-right
+============================================================================-->
+</dd><dt class="proc-def1">
+<a name="itake-right"></a>
+<code class="proc-def">itake-right</code><var> dilist i -&gt; object</var>
+</dt><dt class="proc-defn">
+<a name="idrop-right"></a>
+<code class="proc-def">idrop-right</code><var> dilist i -&gt; ilist</var>
+</dt><dd class="proc-def">
+    <code>itake-right</code> returns the last <var>i</var> elements of <var>dilist</var>.<br/>
+    <code>idrop-right</code> returns all but the last <var>i</var> elements of <var>dilist</var>.
+<pre class="code-example">(itake-right '(a b c d e) 2) =&gt; (d e)
+(idrop-right '(a b c d e) 2) =&gt; (a b c)
+</pre>
+    The returned ilist may share a common tail with the argument ilist.
+<p>
+    <var>dilist</var> may be any ilist, either proper or dotted:
+</p><pre class="code-example">(itake-right '(1 2 3 . d) 2) =&gt; (2 3 . d)
+(idrop-right '(1 2 3 . d) 2) =&gt; (1)
+(itake-right '(1 2 3 . d) 0) =&gt; d
+(idrop-right '(1 2 3 . d) 0) =&gt; (1 2 3)
+</pre>
+    For a legal <var>i</var>, <code>itake-right</code> and <code>idrop-right</code> partition the ilist in a manner 
+    which can be inverted with <code>iappend</code>:
+<pre class="code-example">(iappend (itake <var>dilist</var> <var>i</var>) (idrop <var>dilist</var> <var>i</var>)) = <var>dilist</var>
+</pre>
+    <code>itake-right</code>'s return value is guaranteed to share a common tail with <var>dilist</var>.
+
+ 
+<!--
+==== isplit-at
+============================================================================-->
+</dd><dt class="proc-def">
+<a name="isplit-at"></a>
+<code class="proc-def">isplit-at&nbsp;</code><var> x i -&gt; [ilist object]</var>
+</dt><dd class="proc-def">
+    <code>isplit-at</code> splits the ilist <var>x</var> 
+    at index <var>i</var>, returning an ilist of the 
+    first <var>i</var> elements, and the remaining tail. It is equivalent
+    to
+<pre class="code-example">(values (itake x i) (idrop x i))
+</pre>
+
+
+<!--
+==== last-ipair
+==== ilast
+============================================================================-->
+</dd><dt class="proc-def1">
+<a name="ilast"></a>
+<code class="proc-def">ilast</code><var> ipair -&gt; object</var>
+</dt><dt class="proc-defn">
+<a name="last-ipair"></a>
+<code class="proc-def">last-ipair</code><var> ipair -&gt; ipair</var>
+</dt><dd class="proc-def">
+    Returns the last element of the non-empty, possibly dotted, ilist <var>ipair</var>.
+    <code>last-ipair</code> returns the last ipair in the non-empty
+    ilist <var>pair</var>.
+
+<pre class="code-example">(ilast '(a b c)) =&gt; c
+(last-ipair '(a b c)) =&gt; (c)
+</pre>
+
+</dd></dl>
+
+<!--========================================================================-->
+<h2><a name="Miscellaneous">Miscellaneous: length, append, concatenate, reverse, zip &amp; count</a></h2>
+
+<dl>
+<!--
+==== ilength
+============================================================================-->
+<dt class="proc-def">
+<a name="ilength"></a>
+<code class="proc-def">ilength&nbsp;&nbsp;</code><var>ilist -&gt; integer</var>
+</dt><dd class="proc-def">
+    Returns the length of its argument.
+    It is an error to pass a value to <code>ilength</code> which is not a proper
+    ilist (<code>()</code>-terminated).<p>    
+    The length of a proper ilist is a non-negative integer <var>n</var> such that <code>icdr</code> 
+    applied <var>n</var> times to the ilist produces the empty list.
+
+
+<!--
+==== iappend
+============================================================================-->
+</p></dd><dt class="proc-def">
+<a name="iappend"></a>
+<code class="proc-def">iappend&nbsp;</code><var> ilist<sub>1</sub> ... -&gt; ilist</var>
+</dt><dd class="proc-def">
+    
+    Returns an ilist consisting of the elements 
+    of <var>ilist<sub>1</sub></var>
+    followed by the elements of the other ilist parameters.
+<pre class="code-example">(iappend '(x) '(y))        =&gt;  (x y)
+(iappend '(a) '(b c d))    =&gt;  (a b c d)
+(iappend '(a (b)) '((c)))  =&gt;  (a (b) (c))
+</pre>
+    The resulting ilist is always newly allocated, except that it
+    shares structure with the final <var>ilist<sub>i</sub></var> argument.  
+    This last argument may be any value at all; 
+    an improper ilist results if it is not
+    a proper ilist. All other arguments must be proper ilists.
+<pre class="code-example">(iappend '(a b) '(c . d))  =&gt;  (a b c . d)
+(iappend '() 'a)           =&gt;  a
+(iappend '(x y))           =&gt;  (x y)
+(iappend)                  =&gt;  ()
+</pre>
+
+<!--
+==== iconcatenate 
+============================================================================-->
+</dd><dt class="proc-def">
+<a name="iconcatenate"></a>
+<code class="proc-def">iconcatenate&nbsp;</code><var> ilist-of-ilists -&gt; value</var>
+</dt><dd class="proc-def">
+    Appends the elements of its argument together. 
+    That is, <code>iconcatenate</code> returns
+<pre class="code-example">(iapply iappend ilist-of-ilists)
+</pre>
+    or, equivalently,
+<pre class="code-example">(ireduce-right iappend '() ilist-of-ilists)
+</pre>
+
+    
+<p>
+    Note that some Scheme implementations do not support passing more than a
+    certain number (<em>e.g.</em>, 64) of arguments to an n-ary procedure.  
+    In these implementations, the <code>(iapply iappend ...)</code> idiom
+    would fail when applied to long lists, 
+    but <code>iconcatenate</code> would continue to function properly.
+
+</p><p>
+    As with <code>iappend</code>, 
+    the last element of the input list may be any value at all.
+
+<!--
+==== ireverse
+============================================================================-->
+</p></dd><dt class="proc-def">
+<a name="ireverse"></a>
+<code class="proc-def">ireverse&nbsp;</code><var> ilist -&gt; ilist</var>
+</dt><dd class="proc-def">
+    
+
+    Returns a newly allocated ilist consisting of
+    the elements of <var>ilist</var> in reverse order.
+<pre class="code-example">(ireverse '(a b c)) =&gt;  (c b a)
+(ireverse '(a (b c) d (e (f))))
+    =&gt;  ((e (f)) d (b c) a)
+</pre>
+
+
+<!--
+==== iappend-reverse
+============================================================================-->
+</dd><dt class="proc-def">
+<a name="iappend-reverse"></a>
+<code class="proc-def">iappend-reverse&nbsp;&nbsp;</code><var>rev-head tail -&gt; ilist</var>
+</dt><dd class="proc-def">
+    <code>iappend-reverse</code> returns
+	<code>(iappend (reverse <var>rev-head</var>) <var>tail</var>)</code>.
+    It is provided because it is a common operation — a common
+    list-processing style calls for this exact operation to transfer values
+    accumulated in reverse order onto the front of another ilist, and because
+    the implementation is significantly more efficient than the simple
+    composition it replaces. (But note that this pattern of iterative 
+    computation followed by a reverse can frequently be rewritten as a 
+    recursion, dispensing with the <code>reverse</code> and <code>iappend-reverse</code> steps, and 
+    shifting temporary, intermediate storage from the heap to the stack, 
+    which is typically a win for reasons of cache locality and eager storage 
+    reclamation.)
+
+
+<!--
+==== izip
+============================================================================-->
+<a name="izip"></a>
+</dd><dt class="proc-def"><code class="proc-def">izip</code> <var>ilist<sub>1</sub> ilist<sub>2</sub> ... -&gt; ilist</var>
+</dt><dd class="proc-def">
+<pre>(lambda ilists (iapply imap ilist ilists))
+</pre>
+    If <code>izip</code> is passed <var>n</var> ilists, it returns an ilist as long as the shortest
+    of these ilists, each element of which is an <var>n</var>-element ilist comprised
+    of the corresponding elements from the parameter ilists.
+
+<pre class="code-example">(izip '(one two three) 
+     '(1 2 3)
+     '(odd even odd even odd even odd even))
+    =&gt; ((one 1 odd) (two 2 even) (three 3 odd))
+
+(izip '(1 2 3)) =&gt; ((1) (2) (3))
+</pre>
+    
+<!--
+==== iunzip5
+==== iunzip4
+==== iunzip3
+==== iunzip2
+==== iunzip1
+============================================================================-->
+<a name="iunzip1"></a>
+</dd><dt class="proc-def1">  <code class="proc-def">iunzip1</code><var> ilist -&gt; ilist</var>
+<a name="iunzip2"></a>
+</dt><dt class="proc-defi"> <code class="proc-def">iunzip2</code><var> ilist -&gt; [ilist ilist]</var>
+<a name="iunzip3"></a>
+</dt><dt class="proc-defi"> <code class="proc-def">iunzip3</code><var> ilist -&gt; [ilist ilist ilist]</var>
+<a name="iunzip4"></a>
+</dt><dt class="proc-defi"> <code class="proc-def">iunzip4</code><var> ilist -&gt; [ilist ilist ilist ilist]</var>
+<a name="iunzip5"></a>
+</dt><dt class="proc-defn"> <code class="proc-def">iunzip5</code><var> ilist -&gt; [ilist ilist ilist ilist ilist]</var>
+</dt><dd class="proc-def">
+    <code>iunzip1</code> takes an ilist of ilists, 
+    where every ilist must contain at least one element, 
+    and returns an ilist containing the initial element of each such ilist. 
+    That is, it returns <code>(imap icar ilists)</code>.  
+    <code>iunzip2</code> takes an ilist of ilists, where every ilist must contain at least
+    two elements, and returns two values: an ilist of the first elements,
+    and an ilist of the second elements. <code>iunzip3</code> does the same for the first
+    three elements of the ilists, and so forth.
+
+<pre class="code-example">(iunzip2 '((1 one) (2 two) (3 three))) =&gt;
+    (1 2 3) 
+    (one two three)
+</pre>
+
+<!--
+==== icount
+============================================================================-->
+</dd><dt class="proc-def">
+<a name="icount"></a>
+<code class="proc-def">icount</code><var> pred ilist<sub>1</sub> ilist<sub>2</sub> ... -&gt; integer</var>
+</dt><dd class="proc-def">
+    <var>pred</var> is a procedure taking as many arguments as there
+    are ilists and returning a single value. It is applied 
+    element-wise to the elements of the <var>ilist</var>s, and a count is
+    tallied of the number of elements that produce a true value. This count
+    is returned. <code>count</code> is "iterative" in that it is guaranteed
+    to apply <var>pred</var> to the <var>ilist</var> elements in a
+    left-to-right order.
+    The counting stops when the shortest ilist expires.
+<pre class="code-example">(count even? '(3 1 4 1 5 9 2 5 6)) =&gt; 3
+(count &lt; '(1 2 4 8) '(2 4 6 8 10 12 14 16)) =&gt; 3
+</pre>
+    
+</dd></dl>
+
+<!--========================================================================-->
+<h2><a name="FoldUnfoldMap">Fold, unfold &amp; map</a></h2>
+<dl>
+<!--
+==== ifold
+============================================================================-->
+<dt class="proc-def">
+<a name="ifold"></a>
+<code class="proc-def">ifold</code><var> kons knil ilist<sub>1</sub> ilist<sub>2</sub> ... -&gt; value</var>
+</dt><dd class="proc-def">
+    The fundamental ilist iterator. 
+<p>
+    First, consider the single ilist-parameter case. If <var>ilist<sub>1</sub></var> = (<var>e<sub>1</sub></var> <var>e<sub>2</sub></var> ... <var>e<sub>n</sub></var>),
+    then this procedure returns
+</p><div class="indent">
+<code>(<var>kons</var> <var>e<sub>n</sub></var> ... (<var>kons</var> <var>e<sub>2</sub></var> (<var>kons</var> <var>e<sub>1</sub></var> <var>knil</var>)) ... )</code>
+</div>
+    That is, it obeys the (tail) recursion
+<pre class="code-example">(ifold <var>kons</var> <var>knil</var> <var>lis</var>) = (ifold <var>kons</var> (<var>kons</var> (icar <var>lis</var>) <var>knil</var>) (icdr <var>lis</var>))
+(ifold <var>kons</var> <var>knil</var> '()) = <var>knil</var>
+</pre>
+
+    Examples:
+<pre class="code-example">(ifold + 0 lis)			; Add up the elements of LIS.
+
+(ifold ipair '() lis)		; Reverse LIS.
+
+(ifold ipair tail rev-head)	; See APPEND-REVERSE.
+
+;; How many symbols in LIS?
+(ifold (lambda (x count) (if (symbol? x) (+ count 1) count))
+      0
+      lis)
+
+;; Length of the longest string in LIS:
+(ifold (lambda (s max-len) (max max-len (string-length s)))
+      0
+      lis)
+</pre>
+
+    If <var>n</var> ilist arguments are provided, then the <var>kons</var> function must take
+    <var>n</var>+1 parameters: one element from each ilist, and the "seed" or fold
+    state, which is initially <var>knil</var>. The fold operation terminates when
+    the shortest ilist runs out of values:
+<pre class="code-example">(ifold ipair* '() '(a b c) '(1 2 3 4 5)) =&gt; (c 3 b 2 a 1)
+</pre>
+   
+<!--
+==== ifold-right
+============================================================================-->
+</dd><dt class="proc-def">
+<a name="ifold-right"></a>
+<code class="proc-def">ifold-right</code><var> kons knil ilist<sub>1</sub> ilist<sub>2</sub> ... -&gt; value</var>
+</dt><dd class="proc-def">
+    The fundamental ilist recursion operator. 
+<p>
+    First, consider the single ilist-parameter case. If <var>ilist<sub>1</sub></var> = <code>(<var>e<sub>1</sub></var> <var>e<sub>2</sub></var> ... <var>e<sub>n</sub></var>)</code>, 
+    then this procedure returns
+</p><div class="indent"><code>
+(<var>kons</var> <var>e<sub>1</sub></var> (<var>kons</var> <var>e<sub>2</sub></var> ... (<var>kons</var> <var>e<sub>n</sub></var> <var>knil</var>)))
+</code></div>
+    That is, it obeys the recursion
+<pre class="code-example">(ifold-right <var>kons</var> <var>knil</var> <var>lis</var>) = (<var>kons</var> (icar <var>lis</var>) (ifold-right <var>kons</var> <var>knil</var> (icdr <var>lis</var>)))
+(ifold-right <var>kons</var> <var>knil</var> '()) = <var>knil</var>
+</pre>
+        
+    Examples:
+<pre class="code-example">(ifold-right ipair '() lis)		; Copy LIS.
+
+;; Filter the even numbers out of LIS.
+(ifold-right (lambda (x l) (if (even? x) (ipair x l) l)) '() lis))
+</pre>
+
+    If <var>n</var> ilist arguments are provided, then the <var>kons</var> procedure must take
+    <var>n</var>+1 parameters: one element from each ilist, and the "seed" or fold
+    state, which is initially <var>knil</var>. The fold operation terminates when
+    the shortest ilist runs out of values:
+<pre class="code-example">(ifold-right ipair* '() '(a b c) '(1 2 3 4 5)) =&gt; (a 1 b 2 c 3)
+</pre>
+ 
+<!--
+==== ipair-fold
+============================================================================-->
+</dd><dt class="proc-def">
+<a name="ipair-fold"></a>
+<code class="proc-def">ipair-fold</code><var> kons knil ilist<sub>1</sub> ilist<sub>2</sub> ... -&gt; value</var>
+</dt><dd class="proc-def">
+    Analogous to <code>fold</code>, but <var>kons</var> is applied to successive sub-ilists of the 
+    ilists, rather than successive elements — that is, <var>kons</var> is applied to the
+    ipairs making up the lists, giving this (tail) recursion:
+<pre class="code-example">(ipair-fold <var>kons</var> <var>knil</var> <var>lis</var>) = (let ((tail (icdr <var>lis</var>)))
+                              (ipair-fold <var>kons</var> (<var>kons</var> <var>lis</var> <var>knil</var>) tail))
+(ipair-fold <var>kons</var> <var>knil</var> <code>'()</code>) = <var>knil</var>
+</pre>
+<p>
+    Example:
+</p><pre class="code-example">(ipair-fold ipair '() '(a b c)) =&gt; ((c) (b c) (a b c))
+</pre>
+
+    
+<!--
+==== ipair-fold-right
+============================================================================-->
+</dd><dt class="proc-def">
+<a name="ipair-fold-right"></a>
+<code class="proc-def">ipair-fold-right</code><var> kons knil ilist<sub>1</sub> ilist<sub>2</sub> ... -&gt; value</var>
+</dt><dd class="proc-def">
+    Holds the same relationship with <code>ifold-right</code> that <code>ipair-fold</code> holds with <code>ifold</code>.
+    Obeys the recursion
+<pre class="code-example">(ipair-fold-right <var>kons</var> <var>knil</var> <var>lis</var>) = 
+    (<var>kons</var> <var>lis</var> (ipair-fold-right <var>kons</var> <var>knil</var> (icdr <var>lis</var>)))
+(ipair-fold-right <var>kons</var> <var>knil</var> <code>'()</code>) = <var>knil</var>
+</pre>
+    
+    Example:
+<pre class="code-example">(ipair-fold-right ipair '() '(a b c)) =&gt; ((a b c) (b c) (c))
+</pre>
+<!--
+==== ireduce
+============================================================================-->
+</dd><dt class="proc-def">
+<a name="ireduce"></a>
+<code class="proc-def">ireduce</code><var> f ridentity ilist -&gt; value</var>
+</dt><dd class="proc-def">
+    <code>ireduce</code> is a variant of <code>ifold</code>. 
+<p>
+    <var>ridentity</var> should be a "right identity" of the procedure <var>f</var> — that is, 
+    for any value <var>x</var> acceptable to <var>f</var>,
+</p><pre class="code-example">(<var>f</var> <var>x</var> <var>ridentity</var>) = <var>x</var>
+</pre>
+    
+    <code>ireduce</code> has the following definition:
+<div class="indent">
+If <var>ilist</var> = (),  return <var>ridentity</var>;<br/>
+Otherwise,    return <code>(ifold <var>f</var> (icar <var>ilist</var>) (icdr <var>ilist</var>))</code>.
+</div>
+    ...in other words, we compute 
+    <code>(ifold <var>f</var> <var>ridentity</var> <var>ilist</var>)</code>.
+<p>
+    Note that <var>ridentity</var> is used <em>only</em> in the empty-list case.
+    You typically use <code>ireduce</code> when applying <var>f</var> is expensive and you'd
+    like to avoid the extra application incurred when <code>ifold</code> applies
+    <var>f</var> to the head of <var>ilist</var> and the identity value,
+    redundantly producing the same value passed in to <var>f</var>. 
+    For example, if <var>f</var> involves searching a file directory or 
+    performing a database query, this can be significant. 
+    In general, however, <code>ifold</code> is useful in many contexts where <code>ireduce</code> is not
+    (consider the examples given in the <code>ifold</code> definition — only one of the
+    five folds uses a function with a right identity. 
+    The other four may not be performed with <code>ireduce</code>).
+
+</p><pre class="code-example">;; take the max of an ilist of non-negative integers.
+(ireduce max 0 nums) ; i.e., (iapply max 0 nums)
+</pre>
+
+<!--
+==== ireduce-right
+============================================================================-->
+</dd><dt class="proc-def">
+<a name="ireduce-right"></a>
+<code class="proc-def">ireduce-right</code><var> f ridentity ilist -&gt; value</var>
+</dt><dd class="proc-def">
+    <code>ireduce-right</code> is the fold-right variant of <code>ireduce</code>.
+    It obeys the following definition:
+<pre class="code-example">(ireduce-right <var>f</var> <var>ridentity</var> '()) = <var>ridentity</var>
+(ireduce-right <var>f</var> <var>ridentity</var> '(<var>e<sub>1</sub></var>)) = (<var>f</var> <var>e<sub>1</sub></var> <var>ridentity</var>) = <var>e<sub>1</sub></var>
+(ireduce-right <var>f</var> <var>ridentity</var> '(<var>e<sub>1</sub></var> <var>e<sub>2</sub></var> ...)) =
+    (<var>f</var> <var>e<sub>1</sub></var> (ireduce <var>f</var> <var>ridentity</var> (<var>e<sub>2</sub></var> ...)))
+</pre>
+    ...in other words, we compute 
+    <code>(ifold-right <var>f</var> <var>ridentity</var> <var>ilist</var>)</code>.
+    
+<pre class="code-example">;; Append a bunch of ilists together.
+;; I.e., (iapply iappend ilist-of-ilists)
+(ireduce-right iappend '() ilist-of-ilists)
+</pre>
+
+<!--
+==== iunfold
+============================================================================-->
+</dd><dt class="proc-def">
+<a name="iunfold"></a>
+<code class="proc-def">iunfold</code><var> p f g seed [tail-gen] -&gt; ilist</var>
+</dt><dd class="proc-def">
+<code>iunfold</code> is best described by its basic recursion:
+<pre class="code-example">(iunfold <var>p</var> <var>f</var> <var>g</var> <var>seed</var>) = 
+    (if (<var>p</var> <var>seed</var>) (<var>tail-gen</var> <var>seed</var>)
+        (ipair (<var>f</var> <var>seed</var>)
+              (iunfold <var>p</var> <var>f</var> <var>g</var> (<var>g</var> <var>seed</var>))))
+</pre>
+<dl>
+<dt> <var>p</var> </dt><dd> Determines when to stop unfolding.
+</dd><dt> <var>f</var> </dt><dd> Maps each seed value to the corresponding ilist element.
+</dd><dt> <var>g</var> </dt><dd> Maps each seed value to next seed value.
+</dd><dt> <var>seed</var> </dt><dd> The "state" value for the unfold.
+</dd><dt> <var>tail-gen</var> </dt><dd> Creates the tail of the ilist; 
+                              defaults to <code>(lambda (x) '())</code>
+</dd></dl>
+<p>
+    In other words, we use <var>g</var> to generate a sequence of seed values
+</p><div class="indent">
+<var>seed</var>, <var>g</var>(<var>seed</var>), <var>g<sup>2</sup></var>(<var>seed</var>), <var>g<sup>3</sup></var>(<var>seed</var>), ...
+</div>
+    These seed values are mapped to ilist elements by <var>f</var>, 
+    producing the elements of the result ilist in a left-to-right order. 
+    <var>P</var> says when to stop.
+
+<p>
+    <code>iunfold</code> is the fundamental recursive ilist constructor, 
+    just as <code>ifold-right</code> is 
+    the fundamental recursive ilist consumer.
+    While <code>iunfold</code> may seem a bit abstract
+    to novice functional programmers, it can be used in a number of ways:
+
+</p><pre class="code-example">;; Ilist of squares: 1^2 ... 10^2
+(iunfold (lambda (x) (&gt; x 10))
+        (lambda (x) (* x x))
+	(lambda (x) (+ x 1))
+	1)
+		
+(iunfold null-ilist? icar icdr lis) ; Copy a proper ilist.
+
+;; Read current input port into an ilist of values.
+(iunfold eof-object? values (lambda (x) (read)) (read))
+
+;; Copy a possibly non-proper ilist:
+(iunfold not-ipair? icar icdr lis 
+              values)
+
+;; Append HEAD onto TAIL:
+(iunfold null-ilist? icar icdr head 
+              (lambda (x) tail))
+</pre>
+
+    Interested functional programmers may enjoy noting that 
+    <code>ifold-right</code> and <code>iunfold</code>
+    are in some sense inverses. 
+    That is, given operations <var>knull?</var>, <var>kar</var>, 
+    <var>kdr</var>, <var>kons</var>, and <var>knil</var> satisfying
+<div class="indent">
+<code>(<var>kons</var> (<var>kar</var> <var>x</var>) (<var>kdr</var> <var>x</var>))</code> = <code>x</code>
+    and 
+<code>(<var>knull?</var> <var>knil</var>)</code> = <code>#t</code>
+</div>
+    then
+<div class="indent">
+<code>(ifold-right <var>kons</var> <var>knil</var> (iunfold <var>knull?</var> <var>kar</var> <var>kdr</var> <var>x</var>))</code> = <var>x</var>
+</div>
+    and
+<div class="indent">
+<code>(iunfold <var>knull?</var> <var>kar</var> <var>kdr</var> (ifold-right <var>kons</var> <var>knil</var> <var>x</var>))</code> = <var>x</var>.
+</div>
+
+    This combinator sometimes is called an "anamorphism;" when an
+    explicit <var>tail-gen</var> procedure is supplied, it is called an
+    "apomorphism."
+
+
+<!--
+==== iunfold-right
+============================================================================-->
+</dd><dt class="proc-def">
+<a name="iunfold-right"></a>
+<code class="proc-def">iunfold-right</code><var> p f g seed [tail] -&gt; ilist</var>
+</dt><dd class="proc-def">
+    <code>iunfold-right</code> constructs an ilist with the following loop:
+<pre class="code-example">(let lp ((seed seed) (lis tail))
+  (if (p seed) lis
+      (lp (g seed)
+          (ipair (f seed) lis))))
+</pre>
+<dl>
+<dt> <var>p</var> </dt><dd> Determines when to stop unfolding.
+</dd><dt> <var>f</var> </dt><dd> Maps each seed value to the corresponding ilist element.
+</dd><dt> <var>g</var> </dt><dd> Maps each seed value to next seed value.
+</dd><dt> <var>seed</var> </dt><dd> The "state" value for the unfold.
+</dd><dt> <var>tail</var> </dt><dd> ilist terminator; defaults to <code>'()</code>.
+</dd></dl>
+<p>
+    In other words, we use <var>g</var> to generate a sequence of seed values
+</p><div class="indent">
+<var>seed</var>, <var>g</var>(<var>seed</var>), <var>g<sup>2</sup></var>(<var>seed</var>), <var>g<sup>3</sup></var>(<var>seed</var>), ...
+</div>
+    These seed values are mapped to ilist elements by <var>f</var>, 
+    producing the elements of the result ilist in a right-to-left order. 
+    <var>P</var> says when to stop.
+
+<p>
+    <code>iunfold-right</code> is the fundamental iterative ilist constructor, 
+    just as <code>ifold</code> is the
+    fundamental iterative ilist consumer. 
+    While <code>iunfold-right</code> may seem a bit abstract
+    to novice functional programmers, it can be used in a number of ways:
+</p><pre class="code-example">;; Ilist of squares: 1^2 ... 10^2
+(iunfold-right zero? 
+              (lambda (x) (* x x))
+              (lambda (x) (- x 1))
+              10)
+	
+;; Reverse a proper ilist.
+(iunfold-right null-ilist? icar icdr lis)
+
+;; Read current input port into an ilist of values.
+(iunfold-right eof-object? values (lambda (x) (read)) (read))
+
+;; (iappend-reverse rev-head tail)
+(iunfold-right null-ilist? icar icdr rev-head tail)
+</pre>
+
+    Interested functional programmers may enjoy noting that 
+    <code>ifold</code> and <code>iunfold-right</code>
+    are in some sense inverses. 
+    That is, given operations <var>knull?</var>, <var>kar</var>, 
+    <var>kdr</var>, <var>kons</var>, and <var>knil</var> satisfying
+<div class="indent">
+<code>(<var>kons</var> (<var>kar</var> <var>x</var>) (<var>kdr</var> <var>x</var>))</code> = <code>x</code>
+    and 
+<code>(<var>knull?</var> <var>knil</var>)</code> = <code>#t</code>
+</div>
+    then
+<div class="indent">
+<code>(ifold <var>kons</var> <var>knil</var> (iunfold-right <var>knull?</var> <var>kar</var> <var>kdr</var> <var>x</var>))</code> = <var>x</var>
+</div>
+    and
+<div class="indent">
+<code>(iunfold-right <var>knull?</var> <var>kar</var> <var>kdr</var> (ifold <var>kons</var> <var>knil</var> <var>x</var>))</code> = <var>x</var>.
+</div>
+
+    This combinator presumably has some pretentious mathematical name;
+    interested readers are invited to communicate it to the author.
+
+<!--
+==== imap
+============================================================================-->
+</dd><dt class="proc-def">
+<a name="imap"></a>
+<code class="proc-def">imap</code><var> proc ilist<sub>1</sub> ilist<sub>2</sub> ... -&gt; ilist</var>
+</dt><dd class="proc-def">
+    
+
+     <var>proc</var> is a procedure taking as many arguments 
+     as there are ilist arguments and returning a single value.  
+     <code>imap</code> applies <var>proc</var> element-wise to the elements
+     of the ilists and returns an ilist of the results, 
+     in order.  
+     The dynamic order in which <var>proc</var> 
+     is applied to the elements of the ilists is unspecified.
+    
+<pre class="code-example">(imap icadr '((a b) (d e) (g h))) =&gt;  (b e h)
+
+(imap (lambda (n) (expt n n))
+     '(1 2 3 4 5))
+    =&gt;  (1 4 27 256 3125)
+
+(imap + '(1 2 3) '(4 5 6)) =&gt;  (5 7 9)
+
+(let ((count 0))
+  (imap (lambda (ignored)
+         (set! count (+ count 1))
+         count)
+       '(a b))) =&gt;  (1 2) <em>or</em> (2 1)
+</pre>
+
+ <p>
+    
+<!--
+==== ifor-each
+============================================================================-->
+</p></dd><dt class="proc-def">
+<a name="ifor-each"></a>
+<code class="proc-def">ifor-each</code><var> proc ilist<sub>1</sub> ilist<sub>2</sub> ... -&gt; unspecified</var>
+</dt><dd class="proc-def">
+     
+
+     The arguments to <code>ifor-each</code> are like the arguments to 
+     <code>imap</code>, but
+     <code>ifor-each</code> calls <var>proc</var> for its side effects rather
+     than for its values.  
+     Unlike <code>imap</code>, <code>ifor-each</code> is guaranteed to call 
+     <var>proc</var> on the elements of the ilists in order from the first
+     element(s) to the last, 
+     and the value returned by <code>ifor-each</code> is unspecified.
+<pre class="code-example">(let ((v (make-vector 5)))
+  (ifor-each (lambda (i)
+              (vector-set! v i (* i i)))
+            '(0 1 2 3 4))
+  v)  =&gt;  #(0 1 4 9 16)
+</pre>
+ <p>
+  
+<!--
+==== iappend-map
+============================================================================-->
+</p></dd><dt class="proc-def">
+<a name="iappend-map"></a>
+<code class="proc-def">iappend-map&nbsp;&nbsp;</code><var>f ilist<sub>1</sub> ilist<sub>2</sub> ... -&gt; value</var>
+</dt><dd class="proc-def">
+    Equivalent to 
+<div class="indent"><code>
+(iapply iappend  (imap <var>f</var> <var>ilist<sub>1</sub></var> <var>ilist<sub>2</sub></var> ...))
+</code></div>
+    and
+<div class="indent"><code>
+(iapply iappend (imap <var>f</var> <var>ilist<sub>1</sub></var> <var>ilist<sub>2</sub></var> ...))
+</code></div>
+
+    Map <var>f</var> over the elements of the ilists, just as in the <code>imap</code> function.
+    However, the results of the applications are appended together (using <code>iappend</code>) to
+    make the final result. 
+<p>
+    The dynamic order in which the various applications of <var>f</var> are made is
+    not specified.
+</p><p>
+    Example:
+</p><pre class="code-example">(iappend-map (lambda (x) (ilist x (- x))) '(1 3 8))
+    =&gt; (1 -1 3 -3 8 -8)
+</pre>
+
+<!--
+==== imap-in-order
+============================================================================-->
+</dd><dt class="proc-def">
+<a name="imap-in-order"></a>
+<code class="proc-def">imap-in-order </code><var>f</var> <var>ilist<sub>1</sub> ilist<sub>2</sub> ... -&gt; ilist</var>
+</dt><dd class="proc-def">
+    A variant of the <code>imap</code> procedure that guarantees to apply <var>f</var> across
+    the elements of the <var>ilist<sub>i</sub></var> arguments in a left-to-right order. This
+    is useful for mapping procedures that both have side effects and
+    return useful values.
+<p>
+ <!--
+==== ipair-for-each
+============================================================================-->
+</p></dd><dt class="proc-def">
+<a name="ipair-for-each"></a>
+<code class="proc-def">ipair-for-each </code><var>f ilist<sub>1</sub> ilist<sub>2</sub> ... -&gt; unspecific</var>
+</dt><dd class="proc-def">
+    Like <code>ifor-each</code>, but <var>f</var> is applied to successive sub-ilists of the argument
+    ilists. That is, <var>f</var> is applied to the cells of the ilists, rather
+    than the ilists' elements. These applications occur in left-to-right
+    order.
+<pre class="code-example">(ipair-for-each (lambda (ipair) (display ipair) (newline)) '(a b c)) ==&gt;
+    (a b c)
+    (b c)
+    (c)
+</pre>
+<!--
+==== ifilter-map
+============================================================================-->
+</dd><dt class="proc-def">
+<a name="ifilter-map"></a>
+<code class="proc-def">ifilter-map</code><var> f ilist<sub>1</sub> ilist<sub>2</sub> ... -&gt; ilist</var>
+</dt><dd class="proc-def">
+    Like <code>imap</code>, but only true values are saved.
+<pre class="code-example">(ifilter-map (lambda (x) (and (number? x) (* x x))) '(a 1 b 3 c 7))
+    =&gt; (1 9 49)
+</pre>
+    The dynamic order in which the various applications of <var>f</var> are made is
+    not specified.
+<p>
+</p></dd></dl>
+
+<!--========================================================================-->
+<h2><a name="FilteringPartitioning">Filtering &amp; partitioning</a></h2>
+<dl>
+
+<!--
+==== ifilter
+============================================================================-->
+<dt class="proc-def">
+<a name="ifilter"></a>
+<code class="proc-def">ifilter</code><var> pred ilist -&gt; ilist</var>
+</dt><dd class="proc-def">
+    Return all the elements of <var>ilist</var> that satisfy predicate <var>pred</var>.
+    The ilist is not disordered — elements that appear in the result ilist
+    occur in the same order as they occur in the argument ilist.
+    The returned ilist may share a common tail with the argument ilist.
+    The dynamic order in which the various applications of <var>pred</var> are made is
+    not specified.
+    
+<pre class="code-example">(ifilter even? '(0 7 8 8 43 -4)) =&gt; (0 8 8 -4)
+</pre>
+
+<!--
+==== ipartition
+============================================================================-->
+</dd><dt class="proc-def">
+<a name="ipartition"></a>
+<code class="proc-def">ipartition</code><var> pred ilist -&gt; [ilist ilist]</var>
+</dt><dd class="proc-def">
+    Partitions the elements of <var>ilist</var> with predicate <var>pred</var>, and returns two
+    values: the ilist of in-elements and the ilist of out-elements.
+    The ilist is not disordered — elements occur in the result ilists
+    in the same order as they occur in the argument ilist.
+    The dynamic order in which the various applications of <var>pred</var> are made is
+    not specified. One of the returned ilists may share a common tail with the
+    argument ilist.
+
+<pre class="code-example">(ipartition symbol? '(one 2 3 four five 6)) =&gt; 
+    (one four five)
+    (2 3 6)
+</pre>
+
+<!--
+==== iremove
+============================================================================-->
+</dd><dt class="proc-def">
+<a name="iremove"></a>
+<code class="proc-def">iremove</code><var> pred ilist -&gt; ilist</var>
+</dt><dd class="proc-def">
+    Returns <var>ilist</var> without the elements that satisfy predicate <var>pred</var>:
+<pre class="code-example">(lambda (pred ilist) (ifilter (lambda (x) (not (pred x))) ilist))
+</pre>
+    The ilist is not disordered — elements that appear in the result ilist
+    occur in the same order as they occur in the argument ilist.
+    The returned ilist may share a common tail with the argument ilist.
+    The dynamic order in which the various applications of <var>pred</var> are made is 
+    not specified.
+    
+<pre class="code-example">(iremove even? '(0 7 8 8 43 -4)) =&gt; (7 43)
+</pre>
+
+
+<!--========================================================================-->
+</dd></dl><h2><a name="Searching">Searching</a></h2>
+<p>
+
+The following procedures all search ilists for a leftmost element satisfying
+some criteria. This means they do not always examine the entire ilist; thus,
+there is no efficient way for them to reliably detect and signal an error when
+passed a dotted ilist. Here are the general rules describing how
+these procedures work when applied to different kinds of ilists:
+
+</p><dl>
+    <dt> Proper ilists: 
+    </dt><dd> The standard, canonical behavior happens in this case.
+
+    </dd><dt> Dotted ilists: 
+    </dt><dd> It is an error to pass these procedures a dotted ilist
+                  that does not contain an element satisfying the search
+                  criteria. That is, it is an error if the procedure has
+                  to search all the way to the end of the dotted ilist.
+		  However, this SRFI does <em>not</em> specify anything at all
+                  about the behavior of these procedures when passed a
+                  dotted ilist containing an element satisfying the search
+                  criteria. It may finish successfully, signal an error,
+                  or perform some third action. Different implementations
+                  may provide different functionality in this case; code
+                  which is compliant with this SRFI may not rely on any
+                  particular behavior. Future SRFIs may refine this SRFI
+                  to define specific behavior in this case.
+                  <p>
+		  In brief, compliant code may not pass a dotted
+                  ilist argument to these procedures.
+
+    </p></dd></dl>
+<p>
+Here are some examples, using the <code>ifind</code> and <code>iany</code> procedures as canonical
+representatives:
+</p><pre class="code-example">;; Proper ilist — success
+(ifind even? '(1 2 3))	=&gt; 2
+(iany  even? '(1 2 3))	=&gt; #t
+
+;; proper ilist — failure
+(ifind even? '(1 7 3))	=&gt; #f
+(iany  even? '(1 7 3))	=&gt; #f
+
+;; Failure is error on a dotted ilist.
+(ifind even? '(1 3 . x))	=&gt; error
+(iany  even? '(1 3 . x))	=&gt; error
+
+;; The dotted ilist contains an element satisfying the search.
+;; This case is not specified — it could be success, an error, 
+;; or some third possibility.
+(ifind even? '(1 2 . x))	=&gt; error/undefined
+(iany  even? '(1 2 . x))	=&gt; error/undefined ; success, error or other.
+
+</pre>
+
+<dl>
+<!--
+==== ifind
+============================================================================-->
+<dt class="proc-def">
+<a name="ifind"></a>
+<code class="proc-def">ifind</code><var> pred ilist -&gt; value</var>
+</dt><dd class="proc-def">
+    Return the first element of <var>ilist</var> that satisfies predicate <var>pred</var>;
+    false if no element does.
+
+<pre class="code-example">(ifind even? '(3 1 4 1 5 9)) =&gt; 4
+</pre>
+
+    Note that <code>ifind</code> has an ambiguity in its lookup semantics — if <code>ifind</code>
+    returns <code>#f</code>, you cannot tell (in general) if it found a <code>#f</code> element
+    that satisfied <var>pred</var>, or if it did not find any element at all. In
+    many situations, this ambiguity cannot arise — either the ilist being
+    searched is known not to contain any <code>#f</code> elements, or the ilist is
+    guaranteed to have an element satisfying <var>pred</var>. However, in cases
+    where this ambiguity can arise, you should use <code>ifind-tail</code> instead of
+    <code>ifind</code> — <code>ifind-tail</code> has no such ambiguity:
+<pre class="code-example">(cond ((ifind-tail pred lis) =&gt; (lambda (ipair) ...)) ; Handle (icar ipair)
+      (else ...)) ; Search failed.
+</pre>
+
+<!--
+==== ifind-tail
+============================================================================-->
+</dd><dt class="proc-def">
+<a name="ifind-tail"></a>
+<code class="proc-def">ifind-tail</code><var> pred ilist -&gt; ipair or false</var>
+</dt><dd class="proc-def">
+    Return the first ipair of <var>ilist</var> whose icar satisfies <var>pred</var>. If no ipair does,
+    return false.
+<p>
+    <code>ifind-tail</code> can be viewed as a general-predicate variant of the <code>imember</code>
+    function.
+</p><p>
+    Examples: 
+</p><pre class="code-example">(ifind-tail even? '(3 1 37 -8 -5 0 0)) =&gt; (-8 -5 0 0)
+(ifind-tail even? '(3 1 37 -5)) =&gt; #f
+
+;; IMEMBER X LIS:
+(ifind-tail (lambda (elt) (equal? x elt)) lis)
+</pre>
+
+<p>
+    <code>Ifind-tail</code> is essentially <code>idrop-while</code>, 
+    where the sense of the predicate is inverted: 
+    <code>Ifind-tail</code> searches until it finds an element satisfying
+    the predicate; <code>idrop-while</code> searches until it finds an 
+    element that <em>doesn't</em> satisfy the predicate.
+
+<!--
+==== itake-while
+============================================================================-->
+</p></dd><dt class="proc-def">
+<a name="itake-while"></a>
+<code class="proc-def">itake-while&nbsp;</code><var> pred ilist -&gt; ilist</var>
+</dt><dd class="proc-def">
+
+Returns the longest initial prefix of <var>ilist</var> whose elements all
+satisfy the predicate <var>pred</var>.
+
+<p>
+</p><pre class="code-example">(itake-while even? '(2 18 3 10 22 9)) =&gt; (2 18)
+</pre>
+
+<!--
+==== idrop-while
+============================================================================-->
+</dd><dt class="proc-def">
+<a name="idrop-while"></a>
+<code class="proc-def">idrop-while</code><var> pred ilist -&gt; ilist</var>
+</dt><dd class="proc-def">
+idrops the longest initial prefix of <var>ilist</var> whose elements all
+satisfy the predicate <var>pred</var>, and returns the rest of the ilist.
+
+<pre class="code-example">(idrop-while even? '(2 18 3 10 22 9)) =&gt; (3 10 22 9)
+</pre>
+
+<!--
+==== ispan ibreak
+============================================================================-->
+</dd><dt class="proc-def1">
+<a name="ispan"></a>
+<code class="proc-def">ispan&nbsp;&nbsp;</code><var> pred ilist -&gt; [ilist ilist]</var>
+</dt><dt class="proc-defn">
+<a name="ibreak"></a>
+<code class="proc-def">ibreak&nbsp;</code><var> pred ilist -&gt; [ilist ilist]</var>
+</dt><dd class="proc-def">
+
+<code>ispan</code> splits the ilist into the longest initial prefix whose
+elements all satisfy <var>pred</var>, and the remaining tail. 
+<code>ibreak</code> inverts the sense of the predicate: 
+the tail commences with the first element of the input ilist
+that satisfies the predicate.
+
+<p>
+In other words: 
+<code>ispan</code> finds the initial span of elements 
+satisfying <var>pred</var>, 
+and <code>ibreak</code> breaks the ilist at the first element satisfying 
+<var>pred</var>.
+
+</p><p>
+<code>ispan</code> is equivalent to 
+</p><pre class="code-example">(values (itake-while <var>pred</var> <var>ilist</var>) 
+        (idrop-while <var>pred</var> <var>ilist</var>))
+</pre>
+
+<p>
+</p><pre class="code-example">(ispan even? '(2 18 3 10 22 9)) =&gt;
+  (2 18)
+  (3 10 22 9)
+
+(ibreak even? '(3 1 4 1 5 9)) =&gt;
+  (3 1)
+  (4 1 5 9)
+</pre>
+
+
+<!--
+==== iany
+============================================================================-->
+</dd><dt class="proc-def">
+<a name="iany"></a>
+<code class="proc-def">iany</code><var> pred ilist<sub>1</sub> ilist<sub>2</sub> ... -&gt; value</var>
+</dt><dd class="proc-def">
+    Applies the predicate across the ilists, returning true if the predicate
+    returns true on any application.
+<p>
+    If there are <var>n</var> ilist arguments <var>ilist<sub>1</sub></var> ... <var>ilist<sub>n</sub></var>, then <var>pred</var> must be a
+    procedure taking <var>n</var> arguments and returning a boolean result.
+</p><p>
+    <code>iany</code> applies <var>pred</var> to the first elements of the <var>ilist<sub>i</sub></var> parameters.
+    If this application returns a true value, <code>iany</code> immediately returns
+    that value. Otherwise, it iterates, applying <var>pred</var> to the second
+    elements of the <var>ilist<sub>i</sub></var> parameters, then the third, and so forth.
+    The iteration stops when a true value is produced or one of the ilists runs
+    out of values; in
+    the latter case, <code>iany</code> returns <code>#f</code>. 
+    The application of <var>pred</var> to the last element of the
+    ilists is a tail call.
+</p><p>
+    Note the difference between <code>ifind</code> and <code>iany</code> — <code>ifind</code> returns the element
+    that satisfied the predicate; <code>iany</code> returns the true value that the
+    predicate produced.
+</p><p>
+    Like <code>ievery</code>, <code>iany</code>'s name does not end with a question mark — this is to
+    indicate that it does not return a simple boolean (<code>#t</code> or <code>#f</code>), but a
+    general value.
+
+</p><pre class="code-example">(iany integer? '(a 3 b 2.7))   =&gt; #t
+(iany integer? '(a 3.1 b 2.7)) =&gt; #f
+(iany &lt; '(3 1 4 1 5)
+       '(2 7 1 8 2)) =&gt; #t
+</pre>
+
+<!--
+==== ievery
+============================================================================-->
+</dd><dt class="proc-def">
+<a name="ievery"></a>
+<code class="proc-def">ievery</code><var> pred ilist<sub>1</sub> ilist<sub>2</sub> ... -&gt; value</var>
+</dt><dd class="proc-def">
+    Applies the predicate across the ilists, returning true if the predicate
+    returns true on every application.
+<p>
+    If there are <var>n</var> ilist arguments <var>ilist<sub>1</sub></var> ... <var>ilist<sub>n</sub></var>, then <var>pred</var> must be a
+    procedure taking <var>n</var> arguments and returning a boolean result.
+</p><p>
+    <code>ievery</code> applies <var>pred</var> to the first elements of the <var>ilist<sub>i</sub></var> parameters.
+    If this application returns false, <code>ievery</code> immediately returns false.
+    Otherwise, it iterates, applying <var>pred</var> to the second elements of the
+    <var>ilist<sub>i</sub></var> parameters, then the third, and so forth. The iteration stops
+    when a false value is produced or one of the ilists runs out of values.
+    In the latter case, <code>ievery</code> returns
+    the true value produced by its final application of <var>pred</var>. 
+    The application of <var>pred</var> to the last element of the ilists 
+    is a tail call.
+</p><p>
+    If one of the <var>ilist<sub>i</sub></var> has no elements, <code>ievery</code> simply returns <code>#t</code>.
+</p><p>
+    Like <code>iany</code>, <code>ievery</code>'s name does not end with a question mark — this is to
+    indicate that it does not return a simple boolean (<code>#t</code> or <code>#f</code>), but a
+    general value.
+
+<!--
+==== ilist-index
+============================================================================-->
+</p></dd><dt class="proc-def">
+<a name="ilist-index"></a>
+<code class="proc-def">ilist-index</code><var> pred ilist<sub>1</sub> ilist<sub>2</sub> ... -&gt; integer or false</var>
+</dt><dd class="proc-def">
+    Return the index of the leftmost element that satisfies <var>pred</var>.
+<p>
+    If there are <var>n</var> ilist arguments <var>ilist<sub>1</sub></var> ... <var>ilist<sub>n</sub></var>, then <var>pred</var> must be a
+    function taking <var>n</var> arguments and returning a boolean result.
+</p><p>
+    <code>ilist-index</code> applies <var>pred</var> to the first elements of the <var>ilist<sub>i</sub></var> parameters.
+    If this application returns true, <code>ilist-index</code> immediately returns zero.
+    Otherwise, it iterates, applying <var>pred</var> to the second elements of the
+    <var>ilist<sub>i</sub></var> parameters, then the third, and so forth. When it finds a tuple of
+    ilist elements that cause <var>pred</var> to return true, it stops and returns the
+    zero-based index of that position in the ilists.
+</p><p>
+    The iteration stops when one of the ilists runs out of values; in this
+    case, <code>ilist-index</code> returns <code>#f</code>.
+
+</p><pre class="code-example">(ilist-index even? '(3 1 4 1 5 9)) =&gt; 2
+(list-index &lt; '(3 1 4 1 5 9 2 5 6) '(2 7 1 8 2)) =&gt; 1
+(ilist-index = '(3 1 4 1 5 9 2 5 6) '(2 7 1 8 2)) =&gt; #f
+</pre>
+
+<!--
+==== imember imemq imemv
+============================================================================-->
+</dd><dt class="proc-def1">
+<a name="imember"></a>
+<code class="proc-def">imember</code><var> x ilist [=] -&gt; ilist</var>
+</dt><dt class="proc-defi">
+<a name="imemq"></a>
+<code class="proc-def">imemq</code><var> x ilist -&gt; ilist</var>
+</dt><dt class="proc-defn">
+<a name="imemv"></a>
+<code class="proc-def">imemv</code><var> x ilist -&gt; ilist</var>
+</dt><dd class="proc-def">
+     
+
+    These procedures return the first sub-ilist of <var>ilist</var> whose icar is
+    <var>x</var>, where the sub-ilists of <var>ilist</var> are the 
+    non-empty ilists returned by 
+        <code>(idrop <var>ilist</var> <var>i</var>)</code>
+    for <var>i</var> less than the length of <var>ilist</var>.  
+    If <var>x</var> does
+    not occur in <var>ilist</var>, then <code>#f</code> is returned.  
+    <code>imemq</code> uses <code>eq?</code> to compare <var>x</var>
+    with the elements of <var>ilist</var>, 
+    while <code>imemv</code> uses <code>eqv?</code>, and
+    <code>imember</code> uses <code>equal?</code>.
+
+<pre class="code-example">    (imemq 'a '(a b c))          =&gt;  (a b c)
+    (imemq 'b '(a b c))          =&gt;  (b c)
+    (imemq 'a '(b c d))          =&gt;  #f
+    (imemq (ilist 'a) '(b (a) c)) =&gt;  #f
+    (imember (ilist 'a)
+            '(b (a) c))         =&gt;  ((a) c)
+    (imemq 101 '(100 101 102))   =&gt;  *unspecified*
+    (imemv 101 '(100 101 102))   =&gt;  (101 102)
+</pre>
+
+    
+<p>
+    The comparison procedure is used to compare the elements <var>e<sub>i</sub></var> of <var>ilist</var>
+    to the key <var>x</var> in this way:
+</p><div class="indent"><code>
+(= <var>x</var> <var>e<sub>i</sub></var>)		; ilist is (E1 ... En)
+</code></div>
+    That is, the first argument is always <var>x</var>, and the second argument is
+    one of the ilist elements. Thus one can reliably find the first element
+    of <var>ilist</var> that is greater than five with
+	<code>(imember 5 <var>ilist</var> &lt;)</code>
+
+<p>
+    Note that fully general ilist searching may be performed with
+    the <code>ifind-tail</code> and <code>ifind</code> procedures, <em>e.g.</em>
+</p><pre class="code-example">(ifind-tail even? ilist) ; Find the first elt with an even key.
+</pre>
+
+</dd></dl>
+
+<!--========================================================================-->
+<h2><a name="Deletion">Deletion</a></h2>
+<p>
+
+</p><dl>
+<!--
+==== idelete
+============================================================================-->
+<dt class="proc-def">
+<a name="idelete"></a>
+<code class="proc-def">idelete&nbsp;&nbsp;</code><var>x ilist [=] -&gt; ilist</var>
+</dt><dd class="proc-def">
+    <code>idelete</code> uses the comparison procedure =, which defaults to <code>equal?</code>, to find
+    all elements of <var>ilist</var> that are equal to <var>x</var>, and deletes them from <var>ilist</var>. The
+    dynamic order in which the various applications of <var>=</var> are made is not
+    specified.
+
+<p>
+    The ilist is not disordered — elements that appear in the result ilist
+    occur in the same order as they occur in the argument ilist.
+    The result may share a common tail with the argument ilist.
+
+</p><p>
+    Note that fully general element deletion can be performed with the <code>iremove</code>
+    procedures, <em>e.g.</em>:
+</p><pre class="code-example">;; idelete all the even elements from LIS:
+(iremove even? lis)
+</pre>
+
+    The comparison procedure is used in this way:
+	<code>(= <var>x</var> <var>e<sub>i</sub></var>)</code>.
+    That is, <var>x</var> is always the first argument, 
+    and an ilist element is always the
+    second argument. The comparison procedure will be used to compare each
+    element of <var>ilist</var> exactly once; the order in which it is applied to the
+    various <var>e<sub>i</sub></var> is not specified.  Thus, one can reliably remove all the
+    numbers greater than five from an ilist with
+	<code>(idelete 5 ilist &lt;)</code>
+
+
+<!--
+==== idelete-duplicates
+============================================================================-->
+</dd><dt class="proc-def">
+<a name="idelete-duplicates"></a>
+<code class="proc-def">idelete-duplicates&nbsp;&nbsp;</code><var>ilist [=] -&gt; ilist</var>
+</dt><dd class="proc-def">
+    <code>idelete-duplicates</code> removes duplicate elements from the
+    ilist argument.
+    If there are multiple equal elements in the argument ilist, the result ilist
+    only contains the first or leftmost of these elements in the result.
+    The order of these surviving elements is the same as in the original
+    ilist — <code>idelete-duplicates</code> does not disorder the ilist (hence it is useful
+    for "cleaning up" immutable association lists).
+<p>
+    The <var>=</var> parameter is used to compare the elements of the ilist; it defaults
+    to <code>equal?</code>. If <var>x</var> comes before <var>y</var> in <var>ilist</var>, then the comparison is performed 
+	<code>(= <var>x</var> <var>y</var>)</code>.
+    The comparison procedure will be used to compare each pair of elements in 
+    <var>ilist</var> no more than once; 
+    the order in which it is applied to the various pairs is not specified.
+</p><p>
+    Implementations of <code>idelete-duplicates</code>
+    are allowed to share common tails
+    between argument and result ilists — for example, if the ilist argument
+    contains only unique elements, it may simply return exactly
+    this ilist.
+</p><p>
+    Be aware that, in general, <code>idelete-duplicates</code>
+    runs in time O(n<sup>2</sup>) for <var>n</var>-element ilists.
+    Uniquifying long ilists can be accomplished in O(n lg n) time by sorting
+    the ilist to bring equal elements together, then using a linear-time
+    algorithm to remove equal elements. Alternatively, one can use algorithms
+    based on element-marking, with linear-time results.
+
+</p><pre class="code-example">(idelete-duplicates '(a b a c a b c z)) =&gt; (a b c z)
+
+;; Clean up an ialist:
+(idelete-duplicates '((a . 3) (b . 7) (a . 9) (c . 1))
+                   (lambda (x y) (eq? (icar x) (icar y))))
+    =&gt; ((a . 3) (b . 7) (c . 1))
+</pre>
+</dd></dl>
+
+<!--========================================================================-->
+<h2><a name="ImmutableassociationLists">Immutable association lists</a></h2>
+<p>
+An "immutable association list" (or "ialist") is an ilist of ipairs. The icar of each ipair
+contains a key value, and the icdr contains the associated data value. They can
+be used to construct simple look-up tables in Scheme. Note that ialists are probably inappropriate for performance-critical use on large data;
+in these cases, immutable maps or some other alternative should be employed.
+
+</p><dl>
+<!--
+==== iassoc iassq iassv
+============================================================================-->
+<dt class="proc-def1">
+<a name="iassoc"></a>
+<code class="proc-def">iassoc</code><var> key ialist [=] -&gt; ipair or #f</var>
+</dt><dt class="proc-defi">
+<a name="iassq"></a>
+<code class="proc-def">iassq</code><var> key ialist -&gt; ipair or #f</var>
+</dt><dt class="proc-defn">
+<a name="iassv"></a>
+<code class="proc-def">iassv</code><var> key ialist -&gt; ipair or #f</var>
+</dt><dd class="proc-def">
+
+  
+    <var>ialist</var> must be an immutable association list — an ilist of ipairs.  
+    These procedures
+    find the first ipair in <var>ialist</var> whose icar field is <var>key</var>, 
+    and returns that ipair.  
+    If no ipair in <var>ialist</var> has <var>key</var> as its icar, 
+    then <code>#f</code> is returned.  
+    <code>iassq</code> uses <code>eq?</code> to compare <var>key</var> 
+    with the icar fields of the ipairs in <var>ialist</var>, 
+    while <code>iassv</code> uses <code>eqv?</code> 
+    and <code>iassoc</code> uses <code>equal?</code>.
+<pre class="code-example">(define e '((a 1) (b 2) (c 3)))
+(iassq 'a e)                            =&gt;  (a 1)
+(iassq 'b e)                            =&gt;  (b 2)
+(iassq 'd e)                            =&gt;  #f
+(iassq (ilist 'a) '(((a)) ((b)) ((c))))  =&gt;  #f
+(iassoc (ilist 'a) '(((a)) ((b)) ((c)))) =&gt;  ((a))
+(iassq 5 '((2 3) (5 7) (11 13)))	   =&gt;  *unspecified*
+(iassv 5 '((2 3) (5 7) (11 13)))	   =&gt;  (5 7)
+</pre>
+<p>
+    The comparison procedure is used to compare the elements <var>e<sub>i</sub></var> of <var>ilist</var>
+    to the <var>key</var> parameter in this way:
+</p><div class="indent"><code>
+(= <var>key</var> (icar <var>e<sub>i</sub></var>))	; ilist is (E1 ... En)
+</code></div>
+    That is, the first argument is always <var>key</var>, 
+    and the second argument is one of the ilist elements. 
+    Thus one can reliably find the first entry
+    of <var>ialist</var> whose key is greater than five with
+	<code>(iassoc 5 <var>ialist</var> &lt;)</code>
+     
+<p>
+    Note that fully general ialist searching may be performed with
+    the <code>ifind-tail</code> and <code>ifind</code> procedures, <em>e.g.</em>
+</p><pre class="code-example">;; Look up the first association in <var>ialist</var> with an even key:
+(ifind (lambda (a) (even? (icar a))) ialist)
+</pre>
+
+
+<!--
+==== ialist-cons
+============================================================================-->
+</dd><dt class="proc-def">
+<a name="ialist-cons"></a>
+<code class="proc-def">ialist-cons</code><var> key datum ialist -&gt; ialist</var>
+</dt><dd class="proc-def">
+<pre>(lambda (key datum ialist) (ipair (ipair key datum) ialist))
+</pre>
+    Construct a new ialist entry mapping <var>key</var> -&gt; <var>datum</var> onto <var>ialist</var>.
+
+<!--
+==== ialist-delete
+============================================================================-->
+</dd><dt class="proc-def">
+<a name="ialist-delete"></a>
+<code class="proc-def">ialist-delete&nbsp;&nbsp;</code><var>key ialist [=] -&gt; ialist</var>
+</dt><dd class="proc-def">
+    <code>ialist-delete</code> deletes all associations from <var>ialist</var> with the given <var>key</var>, 
+    using key-comparison procedure =, which defaults to <code>equal?</code>. 
+    The dynamic order in which the various applications of <var>=</var> are made is not 
+    specified. 
+<p>
+    Return values may share common tails with the <var>ialist</var> argument.
+    The ialist is not disordered — elements that appear in the result ialist
+    occur in the same order as they occur in the argument ialist.
+</p><p>
+    The comparison procedure is used to compare the element keys <var>k<sub>i</sub></var> of <var>ialist</var>'s
+    entries to the <var>key</var> parameter in this way:
+	<code>(= <var>key</var> <var>k<sub>i</sub></var>)</code>.
+    Thus, one can reliably remove all entries of <var>ialist</var> whose key is greater
+    than five with
+	<code>(ialist-delete 5 <var>ialist</var> &lt;)</code>
+</p></dd></dl>
+
+
+<!--========================================================================-->
+<h2><a name="SetOperationsOnLists">Set operations on ilists</a></h2>
+<p>
+These procedures implement operations on sets represented as ilists of elements.
+They all take an <var>=</var> argument used to compare elements of ilists. 
+This equality procedure is required to be consistent with <code>eq?</code>. 
+That is, it must be the case that
+</p><div class="indent">
+        <code>(eq? <var>x</var> <var>y</var>)</code> =&gt; <code>(<var>=</var> <var>x</var> <var>y</var>)</code>.
+</div>
+Note that this implies, in turn, that two ilists that are <code>eq?</code> are
+also set-equal by any legal comparison procedure. This allows for
+constant-time determination of set operations on <code>eq?</code> ilists.
+
+<p>
+Be aware that these procedures typically run in time 
+O(<var>n</var> * <var>m</var>) 
+for <var>n</var>- and <var>m</var>-element ilist arguments.  
+Performance-critical applications
+operating upon large sets will probably wish to use other data
+structures and algorithms.
+
+</p><dl>
+<!--
+==== ilset<=
+============================================================================-->
+<dt class="proc-def">
+<a name="ilset&lt;="></a>
+<code class="proc-def">ilset&lt;=</code><var> = ilist<sub>1</sub> ... -&gt; boolean</var>
+</dt><dd class="proc-def">
+    Returns true iff every <var>ilist<sub>i</sub></var> is a subset of <var>ilist<sub>i+1</sub></var>, using <var>=</var> for
+    the element-equality procedure. 
+    Ilist <var>A</var> is a subset of ilist <var>B</var> if every
+    element in <var>A</var> is equal to some element of <var>B</var>. 
+    When performing an element comparison, 
+    the <var>=</var> procedure's first argument is an element
+    of <var>A</var>; its second, an element of <var>B</var>.
+<pre class="code-example">(ilset&lt;= eq? '(a) '(a b a) '(a b c c)) =&gt; #t
+
+(ilset&lt;= eq?) =&gt; #t             ; Trivial cases
+(ilset&lt;= eq? '(a)) =&gt; #t
+</pre>
+
+<!--
+==== ilset=
+============================================================================-->
+</dd><dt class="proc-def">
+<a name="ilset="></a>
+<code class="proc-def">ilset=</code><var> = ilist<sub>1</sub> ilist<sub>2</sub> ... -&gt; boolean</var>
+</dt><dd class="proc-def">
+    Returns true iff every <var>ilist<sub>i</sub></var> is set-equal to <var>ilist<sub>i+1</sub></var>, using <var>=</var> for
+    the element-equality procedure. "Set-equal" simply means that
+    <var>ilist<sub>i</sub></var> is a subset of <var>ilist<sub>i+1</sub></var>, and <var>ilist<sub>i+1</sub></var> is a subset of <var>ilist<sub>i</sub></var>.
+    The <var>=</var> procedure's first argument is an element of <var>ilist<sub>i</sub></var>; its second is an element of
+    <var>ilist<sub>i+1</sub></var>.
+<pre class="code-example">(ilset= eq? '(b e a) '(a e b) '(e e b a)) =&gt; #t
+
+(ilset= eq?) =&gt; #t               ; Trivial cases
+(ilset= eq? '(a)) =&gt; #t
+</pre>
+
+<!--
+==== ilset-adjoin
+============================================================================-->
+</dd><dt class="proc-def">
+<a name="ilset-adjoin"></a>
+<code class="proc-def">ilset-adjoin</code><var> = ilist elt<sub>1</sub> ... -&gt; ilist</var>
+</dt><dd class="proc-def">
+    Adds the <var>elt<sub>i</sub></var> elements not already in the ilist parameter to the 
+    result ilist. The result shares a common tail with the ilist parameter.
+    The new elements are added to the front of the ilist, but no guarantees
+    are made about their order. The <var>=</var> parameter is an equality procedure
+    used to determine if an <var>elt<sub>i</sub></var> is already a member of <var>ilist</var>. Its first 
+    argument is an element of <var>ilist</var>; its second is one of the <var>elt<sub>i</sub></var>.
+<p>
+    The ilist parameter is always a suffix of the result — even if the ilist
+    parameter contains repeated elements, these are not reduced.
+</p><pre class="code-example">(ilset-adjoin eq? '(a b c d c e) 'a 'e 'i 'o 'u) =&gt; (u o i a b c d c e)
+</pre>
+
+<!--
+==== ilset-union
+============================================================================-->
+</dd><dt class="proc-def">
+<a name="ilset-union"></a>
+<code class="proc-def">ilset-union</code><var> = ilist<sub>1</sub> ... -&gt; ilist</var>
+</dt><dd class="proc-def">
+    Returns the union of the ilists, using <var>=</var> for the element-equality
+    procedure.
+<p>
+    The union of ilists <var>A</var> and <var>B</var> is constructed as follows:
+    </p><ul>
+        <li> If <var>A</var> is the empty list, 
+             the answer is <var>B</var> (or a copy of <var>B</var>).
+        </li><li> Otherwise, the result is initialised to be ilist <var>A</var> 
+             (or a copy of <var>A</var>).
+	</li><li> Proceed through the elements of ilist <var>B</var> 
+             in a left-to-right order.
+	     If <var>b</var> is such an element of <var>B</var>, 
+             compare every element <var>r</var> of the current result ilist 
+             to <var>b</var>: 
+             <code>(= <var>r</var> <var>b</var>)</code>. 
+             If all comparisons fail, 
+             <var>b</var> is consed onto the front of the result.
+    </li></ul>
+    However, there is no guarantee that = will be applied to every pair
+    of arguments from <var>A</var> and <var>B</var>. 
+    In particular, if <var>A</var> is <code>eq</code>? to <var>B</var>, 
+    the operation may immediately terminate.
+
+<p>
+    In the n-ary case, the two-argument ilist-union operation is simply
+    folded across the argument ilists.
+
+</p><pre class="code-example">(ilset-union eq? '(a b c d e) '(a e i o u)) =&gt; 
+    (u o i a b c d e)
+
+;; Repeated elements in ilist1 are preserved.
+(ilset-union eq? '(a a c) '(x a x)) =&gt; (x a a c)
+
+;; Trivial cases
+(ilset-union eq?) =&gt; ()
+(ilset-union eq? '(a b c)) =&gt; (a b c)
+</pre>
+
+<!--
+==== ilset-intersection
+============================================================================-->
+</dd><dt class="proc-def">
+<a name="ilset-intersection"></a>
+<code class="proc-def">ilset-intersection</code><var> = ilist<sub>1</sub> ilist<sub>2</sub> ... -&gt; ilist</var>
+</dt><dd class="proc-def">
+    Returns the intersection of the ilists, 
+    using <var>=</var> for the element-equality procedure.
+<p>
+    The intersection of ilists <var>A</var> and <var>B</var>
+    is comprised of every element of <var>A</var> that is <var>=</var> 
+    to some element of <var>B</var>: 
+        <code>(<var>=</var> <var>a</var> <var>b</var>)</code>, 
+    for <var>a</var> in <var>A</var>, and <var>b</var> in <var>B</var>.
+    Note this implies that an element which appears in <var>B</var> 
+    and multiple times in ilist <var>A</var>
+    will also appear multiple times in the result.
+</p><p>
+    The order in which elements appear in the result is the same as
+    they appear in <var>ilist<sub>1</sub></var> — 
+    that is, <code>ilset-intersection</code> essentially filters 
+    <var>ilist<sub>1</sub></var>, 
+    without disarranging element order. 
+    The result may
+    share a common tail with <var>ilist<sub>1</sub></var>.
+</p><p>
+    In the n-ary case, the two-argument ilist-intersection operation is simply
+    folded across the argument ilists. However, the dynamic order in which the
+    applications of <var>=</var> are made is not specified. 
+    The procedure may check an
+    element of <var>ilist<sub>1</sub></var> for membership 
+    in every other ilist before proceeding to
+    consider the next element of <var>ilist<sub>1</sub></var>, 
+    or it may completely intersect <var>ilist<sub>1</sub></var>
+    and <var>ilist<sub>2</sub></var> 
+    before proceeding to <var>ilist<sub>3</sub></var>, 
+    or it may go about its work in some third order.
+
+</p><pre class="code-example">(ilset-intersection eq? '(a b c d e) '(a e i o u)) =&gt; (a e)
+
+;; Repeated elements in ilist1 are preserved.
+(ilset-intersection eq? '(a x y a) '(x a x z)) =&gt; '(a x a)
+
+(ilset-intersection eq? '(a b c)) =&gt; (a b c)     ; Trivial case
+</pre>
+
+<!--
+==== ilset-difference
+============================================================================-->
+</dd><dt class="proc-def">
+<a name="ilset-difference"></a>
+<code class="proc-def">ilset-difference</code><var> = ilist<sub>1</sub> ilist<sub>2</sub> ... -&gt; ilist</var>
+</dt><dd class="proc-def">
+    Returns the difference of the ilists, using <var>=</var> for the element-equality
+    procedure — all the elements of <var>ilist<sub>1</sub></var> that are not
+    <var>=</var> to any element from one of the
+    other <var>ilist<sub>i</sub></var> parameters. 
+<p>
+    The <var>=</var> procedure's first argument is 
+    always an element of <var>ilist<sub>1</sub></var>; 
+    its second is an element of one of the other <var>ilist<sub>i</sub></var>.
+    Elements that are repeated multiple times in the 
+    <var>ilist<sub>1</sub></var> parameter 
+    will occur multiple times in the result. 
+
+    The order in which elements appear in the result is the same as
+    they appear in <var>ilist<sub>1</sub></var> — 
+    that is, <code>ilset-difference</code> essentially
+    filters <var>ilist<sub>1</sub></var>, without disarranging element order. 
+    The result may share a common tail with <var>ilist<sub>1</sub></var>. 
+
+    The dynamic order in which the applications of <var>=</var> are made is not
+    specified. 
+    The procedure may check an element of <var>ilist<sub>1</sub></var>
+    for membership in every other ilist before proceeding to consider the
+    next element of <var>ilist<sub>1</sub></var>,
+    or it may completely compute the difference of 
+    <var>ilist<sub>1</sub></var> and <var>ilist<sub>2</sub></var> before
+    proceeding to <var>ilist<sub>3</sub></var>, 
+    or it may go about its work in some third order.
+
+</p><pre class="code-example">(ilset-difference eq? '(a b c d e) '(a e i o u)) =&gt; (b c d)
+
+(ilset-difference eq? '(a b c)) =&gt; (a b c) ; Trivial case
+</pre>
+
+<!--
+==== ilset-xor
+============================================================================-->
+</dd><dt class="proc-def">
+<a name="ilset-xor"></a>
+<code class="proc-def">ilset-xor</code><var> = ilist<sub>1</sub> ... -&gt; ilist</var>
+</dt><dd class="proc-def">
+    Returns the exclusive-or of the sets, 
+    using <var>=</var> for the element-equality procedure. 
+    If there are exactly two ilists, this is all the elements
+    that appear in exactly one of the two ilists. The operation is associative,
+    and thus extends to the n-ary case — the elements that appear in an
+    odd number of the ilists. The result may share a common tail with any of
+    the <var>ilist<sub>i</sub></var> parameters.
+<p>
+    More precisely, for two ilists <var>A</var> and <var>B</var>, 
+    <var>A</var> xor <var>B</var> is an ilist of
+    </p><ul>
+     <li> every element <var>a</var> of <var>A</var>
+          such that there is no element <var>b</var> of <var>B</var>
+          such that <code>(<var>=</var> <var>a</var> <var>b</var>)</code>, and
+     </li><li> every element <var>b</var> of <var>B</var> 
+          such that there is no element <var>a</var> of <var>A</var>
+          such that <code>(<var>=</var> <var>b</var> <var>a</var>)</code>.
+    </li></ul>
+    However, an implementation is allowed to assume that <var>=</var> is
+    symmetric — that is, that
+<div class="indent">
+	<code>(<var>=</var> <var>a</var> <var>b</var>)</code> =&gt; 
+        <code>(<var>=</var> <var>b</var> <var>a</var>)</code>.
+</div>
+    This means, for example, that if a comparison 
+    <code>(<var>=</var> <var>a</var> <var>b</var>)</code> produces
+    true for some <var>a</var> in <var>A</var> 
+    and <var>b</var> in <var>B</var>,
+    both <var>a</var> and <var>b</var> may be removed from
+    inclusion in the result.
+<p>
+    In the n-ary case, the binary-xor operation is simply folded across
+    the ilists.
+
+</p><pre class="code-example">(ilset-xor eq? '(a b c d e) '(a e i o u)) =&gt; (d c b i o u)
+
+;; Trivial cases.
+(ilset-xor eq?) =&gt; ()
+(ilset-xor eq? '(a b c d e)) =&gt; (a b c d e)
+</pre>
+
+
+<!--
+==== ilset-diff+intersection
+============================================================================-->
+</dd><dt class="proc-def">
+<a name="ilset-diff+intersection"></a>
+<code class="proc-def">ilset-diff+intersection</code><var> = ilist<sub>1</sub> ilist<sub>2</sub> ... -&gt; [ilist ilist]</var>
+</dt><dd class="proc-def">
+    Returns two values — the difference and the intersection of the ilists.
+    Is equivalent to 
+<pre class="code-example">(values (ilset-difference <var>=</var> <var>ilist<sub>1</sub></var> <var>ilist<sub>2</sub></var> ...)
+        (ilset-intersection <var>=</var> <var>ilist<sub>1</sub></var>
+                             (ilset-union <var>=</var> <var>ilist<sub>2</sub></var> ...)))
+</pre>
+    but can be implemented more efficiently.
+<p>
+    The <var>=</var> procedure's first argument is an element of <var>ilist<sub>1</sub></var>; its second
+    is an element of one of the other <var>ilist<sub>i</sub></var>.
+</p><p>
+    Either of the answer ilists may share a 
+    common tail with <var>ilist<sub>1</sub></var>.
+    This operation essentially partitions <var>ilist<sub>1</sub></var>.
+
+</p></dd></dl>
+<!--========================================================================-->
+<h2><a name="Replacement">Replacement</a></h2>
+<p>
+These two procedures are analogues of the primitive 
+side-effect operations on pairs, <code>set-car!</code> and <code>set-cdr!</code>.
+
+</p><dl>
+<!--
+==== replace-icar replace-icdr
+============================================================================-->
+<dt class="proc-def">
+<a name="replace-icar"></a>
+<code class="proc-def">replace-icar</code><var> ipair object -&gt; ipair</var>
+</dt><dd class="proc-def">
+     
+     This procedure returns an ipair with <var>object</var> in the icar field
+     and the icdr of <var>ipair</var> in the icdr field.
+</dd><dt class="proc-def">
+<a name="replace-icdr"></a>
+<code class="proc-def">replace-icdr</code><var> ipair object -&gt; ipair</var>
+</dt><dd class="proc-def">
+     
+     This procedure returns an ipair with <var>object</var> in the icdr field
+     and the icar of <var>ipair</var> in the icar field.
+</dd></dl>
+
+<!--========================================================================-->
+<h2><a name="Conversion">Conversion</a></h2>
+<p>
+These procedures convert between mutable and immutable pair structures.
+
+</p><dl>
+<!--
+==== pair->ipair ipair->pair
+============================================================================-->
+<dt class="proc-def1">
+<a name="pair->ipair"></a>
+<code class="proc-def">pair->ipair</code><var> pair -&gt; ipair</var>
+</dt><dt class="proc-defn">
+<a name="ipair->pair"></a>
+<code class="proc-def">ipair->pair</code><var> ipair -&gt; pair</var>
+</dt><dd class="proc-def">
+     
+     These procedures, which are inverses, return an ipair and a pair respectively
+     that have the same (i)car and (i)cdr fields as the argument.
+<!--
+==== list->ilist ilist->list
+============================================================================-->
+</dd><dt class="proc-def1">
+<a name="list->ilist"></a>
+<code class="proc-def">list->ilist</code><var> flist -&gt; dilist</var>
+</dt><dt class="proc-defn">
+<a name="ilist->list"></a>
+<code class="proc-def">ilist->list</code><var> dilist -&gt; flist</var>
+</dt><dd class="proc-def">
+     
+     <p>These procedures return an ilist and a list respectively that have the same
+     elements as the argument.  The tails of dotted (i)lists are preserved in the result,
+     which makes the procedures not inverses when the tail of a dotted ilist is
+     a list or vice versa.  The empty list is converted to itself.</p>
+     
+     <p>It is an error to apply <code>list->ilist</code> to a circular list.</p>
+<!--
+==== pair->ipair ipair->pair
+============================================================================-->
+</dd><dt class="proc-def1">
+<a name="tree->itree"></a>
+<code class="proc-def">tree->itree</code><var> object -&gt; object</var>
+</dt><dt class="proc-defn">
+<a name="itree->tree"></a>
+<code class="proc-def">itree->tree</code><var> object -&gt; object</var>
+</dt><dd class="proc-def">
+     
+     <p>These procedures walk a tree of pairs or ipairs respectively and make
+     a deep copy of it, returning an isomorphic tree containing ipairs or pairs respectively.
+     The result may share structure with the argument.
+     If the argument is not of the expected type, it is returned.</p>
+     
+     <p>These procedures are not inverses in the general case.  For example,
+     a pair of ipairs would be converted by <code>tree->itree</code> to
+     an ipair of ipairs, which if converted by <code>itree->tree</code>
+     would produce a pair of pairs.</p>
+<!--
+==== pair->ipair ipair->pair
+============================================================================-->
+</dd><dt class="proc-def1">
+<a name="gtree->itree"></a>
+<code class="proc-def">gtree->itree</code><var> object -&gt; object</var>
+</dt><dt class="proc-defn">
+<a name="gtree->tree"></a>
+<code class="proc-def">gtree->tree</code><var> object -&gt; object</var>
+</dt><dd class="proc-def">
+     
+     These procedures walk a generalized tree consisting of pairs, ipairs, or
+     a combination of both, and make a deep copy of it, returning an isomorphic tree
+     containing only ipairs or pairs respectively.
+     The result may share structure with the argument.
+     If the argument is neither a pair nor an ipair, it is returned.
+</dd></dl>
+
+<!--========================================================================-->
+<h2><a name="ProcedureApplication">Procedure Application</a></h2>
+<p>
+This procedure allows a procedure to be applied to an ilist.
+
+</p><dl>
+<!--
+==== iapply
+============================================================================-->
+<dt class="proc-def">
+<a name="iapply"></a>
+<code class="proc-def">iapply</code><var> procedure object ... ilist -&gt; ipair</var>
+</dt><dd class="proc-def">
+     
+     The <code>iapply</code> procedure is an analogue of <code>apply</code> whose last
+     argument is an ilist rather than a list. It is equivalent to
+     <code>(apply </code><var>procedure object</var> ... (<code>ilist->list</code> <var>ilist</var><code>))</code>,
+     but may be implemented more efficiently.
+</dd></dl>
+
+<!--========================================================================-->
+<h1><a name="Acknowledgements">Acknowledgements</a></h1>
+<p>
+Without the work of Olin Shivers on <a href="http://srfi.schemers.org/srfi-1/srfi-1.html">SRFI 1</a>,
+this SRFI would not exist. Everyone acknowledged there is transitively acknowledged here.
+This is not to imply that either Olin or anyone else necessarily endorses the final
+results, of course. 
+
+
+<!--========================================================================-->
+</p><h1><a name="ReferencesLinks">References &amp; links</a></h1>
+<p>
+
+</p><dl>
+<dt class="biblio">This document, in HTML:
+</dt><dd><a href="./srfi-116_files/srfi-116.html">
+    http://srfi.schemers.org/srfi-116/srfi-116.html</a>
+
+</dd><dt class="biblio">Source code for the reference implementation:
+</dt><dd><a href="http://srfi.schemers.org/srfi-116/ilists.tar.gz">
+    http://srfi.schemers.org/srfi-116/ilists.tar.gz</a>
+
+</dd><dt class="biblio">Archive of SRFI-116 discussion-list email:
+</dt><dd><a href="http://srfi.schemers.org/srfi-116/mail-archive/maillist.html">
+    http://srfi.schemers.org/srfi-116/mail-archive/maillist.html</a>
+
+</dd><dt class="biblio">SRFI web site:
+</dt><dd><a href="http://srfi.schemers.org/">
+    http://srfi.schemers.org/</a>
+</dd></dl>
+
+
+
+
+<!--========================================================================-->
+<h1><a name="Copyright">Copyright</a></h1>
+<p>Copyright (C) John Cowan 2014. All Rights Reserved.</p> 
+
+<p>Permission is hereby granted, free of charge, to any person obtaining a
+copy of this software and associated documentation files (the "Software"),
+to deal in the Software without restriction, including without limitation
+the rights to use, copy, modify, merge, publish, distribute, sublicense,
+and/or sell copies of the Software, and to permit persons to whom the
+Software is furnished to do so, subject to the following conditions:</p>
+
+<p>The above copyright notice and this permission notice shall be included in
+all copies or substantial portions of the Software.</p>
+
+<p>THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL
+THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
+FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
+DEALINGS IN THE SOFTWARE.</p>
+
+</body></html>
