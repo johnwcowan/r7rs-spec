@@ -223,7 +223,7 @@
 
 (test-group "sets/lowlevel"
   (define bucket (set string-ci-comparator "abc" "def"))
-  (test string-ci-comparator (set-comparator bucket))
+  (test string-ci-comparator (set-element-comparator bucket))
   (test-assert (set-contains? bucket "abc"))
   (test-assert (set-contains? bucket "ABC"))
   (test "def" (set-member bucket "DEF" "fqz"))
@@ -423,8 +423,15 @@
     (test all (bag-xor abcd efgh))
     (test none (bag-xor abcd other-abcd))
     (define abcd4 (bag-copy abcd))
-    ;; don't test xor! effect
     (test none (bag-xor! abcd4 other-abcd))
+    (define abab (bag eq-comparator 'a 'b 'a 'b))
+    (define ab2 (bag-copy ab))
+    (test abab (bag-sum! ab2 ab))
+    (test abab ab2)
+    (test abab (bag-product ab 2))
+    (define ab3 (bag-copy ab))
+    (bag-product! ab3 2)
+    (test abab ab3)
     (test "abcd smashed?" other-abcd abcd)
     (test "abcd smashed?" other-abcd abcd)
     (test "efgh smashed?" other-efgh efgh)
@@ -483,7 +490,7 @@
 
 (test-group "bags/lowlevel"
   (define bucket (bag string-ci-comparator "abc" "def"))
-  (test string-ci-comparator (bag-comparator bucket))
+  (test string-ci-comparator (bag-element-comparator bucket))
   (test-assert (bag-contains? bucket "abc"))
   (test-assert (bag-contains? bucket "ABC"))
   (test "def" (bag-member bucket "DEF" "fqz"))

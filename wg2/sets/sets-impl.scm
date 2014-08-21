@@ -239,11 +239,11 @@
 
 ;; Retrieve the comparator.
 
-(define (set-comparator set)
+(define (set-element-comparator set)
   (check-set set)
   (sob-comparator set))
 
-(define (bag-comparator bag)
+(define (bag-element-comparator bag)
   (check-bag bag)
   (sob-comparator bag))
 
@@ -925,11 +925,13 @@
 (define (max-one n multi?)
     (if multi? n (if (> n 1) 1 n)))
 
-;; The logic of union, intersection, and difference is the same: the
+;; The logic of union, intersection, difference, and sum is the same: the
 ;; sob-* and sob-*! procedures do the reduction to the dyadic-sob-*!
 ;; procedures.  The difference is that the sob-* procedures allocate
 ;; an empty copy of the first sob to accumulate the results in, whereas
 ;; the sob-*!  procedures work directly in the first sob.
+
+;; Note that there is no set-sum, as it is the same as set-union.
 
 (define (sob-union sob1 sob2 . sobs)
   (let ((result (sob-empty-copy sob1)))
@@ -1073,7 +1075,51 @@
   (check-all-bags bags)
   (apply sob-difference! bags))
 
-;; Here exactly two arguments are required, so the above structures are
+(define (sob-sum sob1 sob2 . sobs)
+  (let ((result (sob-empty-copy sob1)))
+    (dyadic-sob-sum! result sob1 sob2)
+    (for-each
+      (lambda (sob) (dyadic-sob-sum! result result sob))
+      sobs)
+    result))
+
+;; Sum is just like union, except that we take the sum rather than the max.
+
+(define (dyadic-sob-sum! result sob1 sob2)
+  (let ((sob1-ht (sob-hash-table sob1))
+        (sob2-ht (sob-hash-table sob2))
+        (result-ht (sob-hash-table result)))
+    (hash-table-for-each
+      (lambda (key value1)
+        (let ((value2 (hash-table-ref/default sob2-ht key 0)))
+          (hash-table-set! result-ht key (+ value1 value2))))
+      sob1-ht)
+    (hash-table-for-each
+      (lambda (key value2)
+        (let ((value1 (hash-table-ref/default sob1-ht key 0)))
+          (if (= value1 0)
+              (hash-table-set! result-ht key value2))))
+      sob2-ht)))
+
+
+;; Sum is defined for bags only; for sets, it is the same as union.
+
+(define (bag-sum . bags)
+  (check-all-bags bags)
+  (apply sob-sum bags))
+
+(define (sob-sum! sob1 sob2 . sobs)
+  (dyadic-sob-sum! sob1 sob1 sob2)
+  (for-each
+    (lambda (sob) (dyadic-sob-sum! sob1 sob1 sob))
+    sobs)
+  sob1)
+
+(define (bag-sum! . bags)
+  (check-all-bags bags)
+  (apply sob-sum! bags))
+
+;; For xor exactly two arguments are required, so the above structures are
 ;; not necessary.  This version accepts a result sob and computes the
 ;; absolute difference between the counts in the first sob and the
 ;; corresponding counts in the second.  
@@ -1127,6 +1173,26 @@
 
 
 ;;; A few bag-specific procedures
+
+(define (sob-product! result sob n)
+  (let ((rht (sob-hash-table result)))
+    (hash-table-for-each
+      (lambda (elem count) (hash-table-set! rht elem (* count n)))
+      (sob-hash-table sob))
+    result))
+
+(define (valid-n n)
+   (and (integer? n) (exact? n) (positive? n)))
+
+(define (bag-product bag n)
+  (check-bag bag)
+  (valid-n n)
+  (sob-product! (sob-empty-copy bag) bag n))
+
+(define (bag-product! bag n)
+  (check-bag bag)
+  (valid-n n)
+  (sob-product! bag bag n))
 
 (define (bag-unique-size bag)
   (check-bag bag)
