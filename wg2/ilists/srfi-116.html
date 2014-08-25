@@ -152,6 +152,7 @@ You can access the discussion via <a href="http://srfi.schemers.org/srfi-116/mai
   <ul>
   <li><a href="#ImproperIlists">Improper ilists</a>
   </li></ul>
+<li><a href="#Quotation">Quotation</a></li>
 <li><a href="#TheProcedures">The procedures</a>
   <ul>
   <li><a href="#Constructors">Constructors</a>
@@ -168,6 +169,7 @@ You can access the discussion via <a href="http://srfi.schemers.org/srfi-116/mai
   </li><li><a href="#Conversion">Conversion</a>
   </li><li><a href="#ProcedureApplication">Procedure application</a>
   </li></ul>
+</li><li><a href="#Comparator">Comparator</a>
 </li><li><a href="#Acknowledgements">Acknowledgements</a>
 </li><li><a href="#ReferencesLinks">References &amp; links</a>
 </li><li><a href="#Copyright">Copyright</a>
@@ -296,6 +298,11 @@ Here is a short list of the procedures provided by this SRFI.  To interpret the 
 <pre class="proc-index"><a href="#iapply">iapply</a>
 </pre>
 
+</dd><dt class="proc-index"> Comparators
+</dt><dd class="proc-index">
+<pre class="proc-index"><a href="#ilist-comparator">ilist-comparator</a>   <a href="#make-ilist-comparator">make-ilist-comparator</a>
+</pre>
+
 </dd></dl>
 </div>
 
@@ -366,7 +373,16 @@ procedures to catch the error cases where programmers inadvertently pass
 scalar values to an ilist procedure by accident, 
 <em>e.g.</em>, by switching the arguments to a procedure call.</p>
 
+<h1><a name="Quotation">Quotation</a></h1>
+<p>
 
+The syntax keyword <code>iq</code> is analogous to <code>quote</code>.
+It takes an arbitrary number of literals and constructs an ilist from them,
+with any pairs in the literals  converted to ipairs. It is useful
+for providing constant ipair-based objects.   Note that pairs within literal vectors will
+not be converted.  Unfortunately, there is no ilist analogue of <code>'</code>,
+so we save keystrokes by using <code>iq</code> rather than <code>iquote</code>
+and omitting the top-level parentheses.</p>
 
 <!--========================================================================-->
 <h1><a name="TheProcedures">The procedures</a></h1>
@@ -2433,6 +2449,30 @@ This procedure allows a procedure to be applied to an ilist.
 </dd></dl>
 
 <!--========================================================================-->
+<h2><a name="Comparator">Comparators</a></h2>
+<dl>
+<dt class="proc-def">
+<a name="ilist-comparator"></a>
+<code class="proc-def">ilist-comparator</code>
+</dt><dd class="proc-def">
+     
+     The <code>ilist-comparator</code> object is a SRFI-114 comparator suitable for comparing ilists.
+     Note that it is <em>not</em> a procedure.
+     It uses <code>default-comparator</code> to compare the elements.
+</dd>
+ 
+<dt class="proc-def">
+<a name="make-ilist-comparator"></a>
+<code class="proc-def">make-ilist-comparator</code><var> comparator -&gt; comparator</var>
+</dt><dd class="proc-def">
+     
+     The <code>make-ilist-comparator</code> procedure returns a comparator suitable for comparing ilists
+     using <var>element-comparator</var> to compare the elements.
+</dd></dl>
+ 
+
+
+<!--========================================================================-->
 <h1><a name="Acknowledgements">Acknowledgements</a></h1>
 <p>
 Without the work of Olin Shivers on <a href="http://srfi.schemers.org/srfi-1/srfi-1.html">SRFI 1</a>,
@@ -2441,7 +2481,7 @@ This is not to imply that either Olin or anyone else necessarily endorses the fi
 results, of course. 
 
 
-<!--========================================================================-->
+sr<!--========================================================================-->
 </p><h1><a name="ReferencesLinks">References &amp; links</a></h1>
 <p>
 

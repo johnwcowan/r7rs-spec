@@ -2,16 +2,17 @@
 ;;; Sample implementation
 ;;;
 ;;; Copyright (c) 1998, 1999 by Olin Shivers. 
-;;; Modifications Copyright (c) 2014 by John Cowan.  You may do as you please with
+;;; Modifications Copyright (c) 2014 by John Cowan.
+;;; You may do as you please with
 ;;; this code as long as you do not remove either copyright notice
-;;; or hold me or Olin liable for its use.  Please send bug reports to
+;;; or hold us liable for its use.  Please send bug reports to
 ;;; <srfi-116@srfi.schemers.org>.
 
 ;;; This is a library of ilist- and ipair-processing functions. I wrote it after
 ;;; carefully considering the functions provided by the libraries found in
 ;;; R4RS/R5RS Scheme, MIT Scheme, Gambit, RScheme, MzScheme, slib, Common
 ;;; Lisp, Bigloo, guile, T, APL and the SML standard basis. It is a pretty
-;;; rich toolkit, providing a superset of the functionality found in iany of
+;;; rich toolkit, providing a superset of the functionality found in any of
 ;;; the various Schemes I considered.
 
 ;;; This implementation is intended as a portable reference implementation
@@ -27,22 +28,22 @@
 ;;; itake       idrop       
 ;;; itake-right idrop-right 
 ;;; isplit-at
-;;; ilast ilast-ipair
+;;; ilast last-ipair
 ;;; izip iunzip1 iunzip2 iunzip3 iunzip4 iunzip5
 ;;; icount
 ;;; iappend-reverse iconcatenate  
-;;; iunfold       ifold       ipair-ifold       ireduce
-;;; iunfold-right ifold-right ipair-ifold-right ireduce-right
-;;; iappend-imap ipair-ifor-each ifilter-imap imap-in-order
+;;; iunfold       ifold       ipair-fold       ireduce
+;;; iunfold-right ifold-right ipair-fold-right ireduce-right
+;;; iappend-map ipair-for-each ifilter-map imap-in-order
 ;;; ifilter  ipartition  iremove
 ;;; ifind ifind-tail iany ievery ilist-index
 ;;; itake-while idrop-while
 ;;; ispan ibreak
 ;;; idelete
-;;; alist-ipair alist-copy
+;;; ialist-cons alist-copy
 ;;; idelete-duplicates
-;;; alist-idelete
-;;; lset<= lset= ilset-adjoin  
+;;; ialist-delete
+;;; ilset<= ilset= ilset-adjoin  
 ;;; ilset-union  ilset-intersection  ilset-difference  ilset-xor  ilset-diff+intersection
 ;;; ipair ipair? null? icar icdr 
 ;;; ilist ilength iappend ireverse icadr ... icddddr ilist-ref
@@ -125,9 +126,11 @@
 ;;;   Uses of the R5RS multiple-value procedure VALUES and the m-v binding
 ;;;     RECEIVE macro (which isn't R5RS, but is a trivial macro).
 ;;;   Many calls to a parameter-checking procedure check-arg:
-;;;    (define (check-arg pred val caller)
-;;;      (let lp ((val val))
-;;;        (if (pred val) val (lp (error "Bad argument" val pred caller)))))
+
+(define (check-arg pred val caller)
+  (let lp ((val val))
+    (if (pred val) val (lp (error "Bad argument" val pred caller)))))
+
 ;;;   A few uses of the LET-OPTIONAL and :OPTIONAL macros for parsing
 ;;;     optional arguments.
 ;;;
@@ -184,7 +187,7 @@
 	((<= i 0) ans))))
 
 
-;(define (ilist . ans) ans)	; R4RS
+;; The ilist procedure is defined in ilists-base.scm.
 
 
 ;;; Make an ilist of ilength LEN. Elt i is (PROC i) for 0 <= i < LEN.
@@ -203,8 +206,8 @@
 
 (define (ipair* ifirst . rest)
   (let recur ((x ifirst) (rest rest))
-    (if (ipair? rest)
-	(ipair x (recur (icar rest) (icdr rest)))
+    (if (pair? rest)
+	(ipair x (recur (car rest) (cdr rest)))
 	x)))
 
 ;;; (iunfold not-ipair? icar icdr lis values)
@@ -235,7 +238,7 @@
 ;;; Note that this definition rules out circular lists -- and this
 ;;; function is required to detect this case and return false.
 
-(define (ilist? x) (proper-ilist? x)
+(define (ilist? x) (proper-ilist? x))
 (define (proper-ilist? x)
   (let lp ((x x) (lag x))
     (if (ipair? x)
@@ -280,10 +283,10 @@
 (define (ilist= = . ilists)
   (or (null? ilists) ; special case
 
-      (let lp1 ((ilist-a (icar ilists)) (others (icdr ilists)))
+      (let lp1 ((ilist-a (car ilists)) (others (cdr ilists)))
 	(or (null? others)
-	    (let ((ilist-b (icar others))
-		  (others (icdr others)))
+	    (let ((ilist-b (car others))
+		  (others (cdr others)))
 	      (if (eq? ilist-a ilist-b)	; EQ? => LIST=
 		  (lp1 ilist-b others)
 		  (let lp2 ((ilist-a ilist-a) (ilist-b ilist-b))
@@ -362,7 +365,7 @@
 	(ipair (icar lis)
 	      (recur (icdr lis) (- k 1))))))
 
-(define (ilist-tail lis k) (idrop lis k)
+(define (ilist-tail lis k) (idrop lis k))
 (define (idrop lis k)
   (check-arg integer? k idrop)
   (let iter ((lis lis) (k k))
@@ -397,10 +400,10 @@
 	(receive (prefix suffix) (recur (icdr lis) (- k 1))
 	  (values (ipair (icar lis) prefix) suffix)))))
 
-(define (ilast lis) (icar (ilast-ipair lis)))
+(define (ilast lis) (icar (last-ipair lis)))
 
-(define (ilast-ipair lis)
-  (check-arg ipair? lis ilast-ipair)
+(define (last-ipair lis)
+  (check-arg ipair? lis last-ipair)
   (let lp ((lis lis))
     (let ((tail (icdr lis)))
       (if (ipair? tail) (lp tail) lis))))
@@ -454,10 +457,10 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (define (iappend . lists)
-  (if (ipair? lists)
-      (let recur ((list1 (icar lists)) (lists (icdr lists)))
-        (if (ipair? lists)
-            (let ((tail (recur (icar lists) (icdr lists))))
+  (if (pair? lists)
+      (let recur ((list1 (car lists)) (lists (cdr lists)))
+        (if (pair? lists)
+            (let ((tail (recur (car lists) (cdr lists))))
               (ifold-right ipair tail list1)) ; Append LIST1 & TAIL.
             list1))
       '()))
@@ -492,32 +495,33 @@
 ;;; the needs of the ifold/imap procs -- for example, to minimize the number
 ;;; of times the argument lists need to be examined.
 
-;;; Return (imap icdr lists). 
+;;; Return (imap icdr (list->ilist list)).
 ;;; However, if any element of LISTS is empty, just abort and return '().
 (define (%icdrs lists)
   (call-with-current-continuation
     (lambda (abort)
       (let recur ((lists lists))
-	(if (ipair? lists)
-	    (let ((lis (icar lists)))
+	(if (pair? lists)
+	    (let ((lis (car lists)))
 	      (if (null-ilist? lis) (abort '())
-		  (ipair (icdr lis) (recur (icdr lists)))))
+		  (ipair (cdr lis) (recur (cdr lists)))))
 	    '())))))
 
 (define (%cars+ lists ilast-elt)	; (iappend (imap icar lists) (ilist ilast-elt))
   (let recur ((lists lists))
     (if (ipair? lists) (ipair (icaar lists) (recur (icdr lists))) (ilist ilast-elt))))
 
-;;; LISTS is a (not very long) non-empty ilist of lists.
-;;; Return two lists: the cars & the cdrs of the lists.
-;;; However, if any of the lists is empty, just abort and return [() ()].
+;;; LISTS is a (not very long) non-empty list of ilists.
+;;; Return two ilists: the cars & the cdrs of the ilists.
+;;; However, if any of the ilists is empty, just abort and return [() ()].
 
 (define (%icars+icdrs lists)
   (call-with-current-continuation
     (lambda (abort)
       (let recur ((lists lists))
-        (if (ipair? lists)
-	    (receive (ilist other-lists) (icar+icdr lists)
+        (if (pair? lists)
+            (let ((ilist (car lists))
+                  (other-lists (cdr lists)))
 	      (if (null-ilist? ilist) (abort '() '()) ; LIST is empty -- bail out
 		  (receive (a d) (icar+icdr ilist)
 		    (receive (cars cdrs) (recur other-lists)
@@ -530,8 +534,9 @@
   (call-with-current-continuation
     (lambda (abort)
       (let recur ((lists lists))
-        (if (ipair? lists)
-	    (receive (ilist other-lists) (icar+icdr lists)
+        (if (pair? lists)
+            (let ((ilist (car lists))
+                  (other-lists (cdr lists)))
 	      (if (null-ilist? ilist) (abort '() '()) ; ILIST is empty -- bail out
 		  (receive (a d) (icar+icdr ilist)
 		    (receive (cars cdrs) (recur other-lists)
@@ -541,8 +546,9 @@
 ;;; Like %ICARS+ICDRS, but blow up if any ilist is empty.
 (define (%icars+icdrs/no-test lists)
   (let recur ((lists lists))
-    (if (ipair? lists)
-	(receive (ilist other-lists) (icar+icdr lists)
+    (if (pair? lists)
+        (let ((ilist (car lists))
+              (other-lists (cdr lists)))
 	  (receive (a d) (icar+icdr ilist)
 	    (receive (cars cdrs) (recur other-lists)
 	      (values (ipair a cars) (ipair d cdrs)))))
@@ -553,7 +559,7 @@
 ;;;;;;;;;
 (define (icount pred list1 . lists)
   (check-arg procedure? pred icount)
-  (if (ipair? lists)
+  (if (pair? lists)
 
       ;; N-ary case
       (let lp ((list1 list1) (lists lists) (i 0))
@@ -603,7 +609,7 @@
 
 (define (ifold kons knil lis1 . lists)
   (check-arg procedure? kons ifold)
-  (if (ipair? lists)
+  (if (pair? lists)
       (let lp ((lists (ipair lis1 lists)) (ans knil))	; N-ary case
 	(receive (cars+ans cdrs) (%icars+icdrs+ lists ans)
 	  (if (null? cars+ans) ans ; Done.
@@ -628,8 +634,8 @@
 	      (kons head (recur (icdr lis))))))))
 
 
-(define (ipair-ifold-right f zero lis1 . lists)
-  (check-arg procedure? f ipair-ifold-right)
+(define (ipair-fold-right f zero lis1 . lists)
+  (check-arg procedure? f ipair-fold-right)
   (if (ipair? lists)
       (let recur ((lists (ipair lis1 lists)))		; N-ary case
 	(let ((cdrs (%icdrs lists)))
@@ -639,8 +645,8 @@
       (let recur ((lis lis1))				; Fast path
 	(if (null-ilist? lis) zero (f lis (recur (icdr lis)))))))
 
-(define (ipair-ifold f zero lis1 . lists)
-  (check-arg procedure? f ipair-ifold)
+(define (ipair-fold f zero lis1 . lists)
+  (check-arg procedure? f ipair-fold)
   (if (ipair? lists)
       (let lp ((lists (ipair lis1 lists)) (ans zero))	; N-ary case
 	(let ((tails (%icdrs lists)))
@@ -671,13 +677,13 @@
 
 
 
-;;; Mappers: iappend-imap ipair-ifor-each ifilter-imap imap-in-order
+;;; Mappers: iappend-map ipair-for-each ifilter-map imap-in-order
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-(define (iappend-imap f lis1 . lists)
-  (really-iappend-imap iappend-imap  iappend  f lis1 lists))
+(define (iappend-map f lis1 . lists)
+  (really-iappend-map iappend-map  iappend  f lis1 lists))
 
-(define (really-iappend-imap who appender f lis1 lists)
+(define (really-iappend-map who appender f lis1 lists)
   (check-arg procedure? f who)
   (if (ipair? lists)
       (receive (cars cdrs) (%icars+icdrs (ipair lis1 lists))
@@ -696,8 +702,8 @@
 		  (appender vals (recur (icar rest) (icdr rest)))))))))
 
 
-(define (ipair-ifor-each proc lis1 . lists)
-  (check-arg procedure? proc ipair-ifor-each)
+(define (ipair-for-each proc lis1 . lists)
+  (check-arg procedure? proc ipair-for-each)
   (if (ipair? lists)
 
       (let lp ((lists (ipair lis1 lists)))
@@ -715,8 +721,8 @@
 
 ;;; We stop when LIS1 runs out, not when any ilist runs out.
 ;;; Map F across L, and save up all the non-false results.
-(define (ifilter-imap f lis1 . lists)
-  (check-arg procedure? f ifilter-imap)
+(define (ifilter-map f lis1 . lists)
+  (check-arg procedure? f ifilter-map)
   (if (ipair? lists)
       (let recur ((lists (ipair lis1 lists)))
 	(receive (cars cdrs) (%icars+icdrs lists)
@@ -836,7 +842,7 @@
 ;;; imember x lis [=]		Search by element comparison
 ;;;
 ;;; iassoc key lis [=]		Search alist by key comparison
-;;; alist-idelete key alist [=]	Alist-idelete by key comparison
+;;; ialist-delete key alist [=]	Alist-idelete by key comparison
 
 (define (idelete x lis . maybe-=) 
   (let ((= (:optional maybe-= equal?)))
@@ -880,13 +886,13 @@
   (let ((= (:optional maybe-= equal?)))
     (ifind (lambda (entry) (= x (icar entry))) lis)))
 
-(define (alist-ipair key datum alist) (ipair (ipair key datum) alist))
+(define (ialist-cons key datum alist) (ipair (ipair key datum) alist))
 
 (define (alist-copy alist)
   (imap (lambda (elt) (ipair (icar elt) (icdr elt)))
        alist))
 
-(define (alist-idelete key alist . maybe-=)
+(define (ialist-delete key alist . maybe-=)
   (let ((= (:optional maybe-= equal?)))
     (ifilter (lambda (elt) (not (= key (icar elt)))) alist)))
 
@@ -953,6 +959,9 @@
 		(pred head)	; Last PRED app is tail call.
 		(and (pred head) (lp (icar tail) (icdr tail))))))))
 
+(define (iany pred lis1 . lists)
+  (error "FIXME: iany definition is broken"))
+
 (define (ilist-index pred lis1 . lists)
   (check-arg procedure? pred ilist-index)
   (if (ipair? lists)
@@ -989,8 +998,8 @@
 
 (define (%lset2<= = lis1 lis2) (ievery (lambda (x) (imember x lis2 =)) lis1))
 
-(define (lset<= = . lists)
-  (check-arg procedure? = lset<=)
+(define (ilset<= = . lists)
+  (check-arg procedure? = ilset<=)
   (or (not (ipair? lists)) ; 0-ary case
       (let lp ((s1 (icar lists)) (rest (icdr lists)))
 	(or (not (ipair? rest))
@@ -999,8 +1008,8 @@
 		       (%lset2<= = s1 s2)) ; Real test
 		   (lp s2 rest)))))))
 
-(define (lset= = . lists)
-  (check-arg procedure? = lset=)
+(define (ilset= = . lists)
+  (check-arg procedure? = ilset=)
   (or (not (ipair? lists)) ; 0-ary case
       (let lp ((s1 (icar lists)) (rest (icdr lists)))
 	(or (not (ipair? rest))

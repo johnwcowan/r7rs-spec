@@ -1,9 +1,11 @@
 (require-library srfi-69)
-(require-library comparators)
 (module sets ()
-  (import chicken scheme)
+  (import scheme)
+  (import (only chicken
+    include define-record-type define-record-printer 
+    case-lambda call/cc when error use))
   (import (except srfi-69 hash-table-for-each))
-  (import comparators)
+  (use comparators)
 
   (export set set-unfold)
   (export set? set-contains? set-empty? set-disjoint?)
