@@ -236,6 +236,11 @@
   (set-replace! nums 2.0)
   ;; nums is now {1, 2.0, 3}
   (test-assert (set-any? inexact? nums))
+  (define sos
+    (set set-comparator
+      (set eqv-comparator 1 2)
+      (set eqv-comparator 1 2)))
+  (test 1 (set-size sos))
 ) ; end sets/lowlevel
 
 ) ; end sets
@@ -503,6 +508,11 @@
   (bag-replace! nums 2.0)
   ;; nums is now {1, 2.0, 3}
   (test-assert (bag-any? inexact? nums))
+  (define bob
+    (bag bag-comparator
+      (bag eqv-comparator 1 2)
+      (bag eqv-comparator 1 2)))
+  (test 2 (bag-size bob))
 ) ; end bags/lowlevel
 
 
@@ -545,6 +555,20 @@
   ;; minibag is now {a, a, a, a, 1, 2, 3}
   (test-assert (bag-contains? minibag 1))
 ) ; end bags/convert
+
+(test-group "bags/sumprod"
+  (define abb (bag eq-comparator 'a 'b 'b))
+  (define aab (bag eq-comparator 'a 'a 'b))
+  (define total (bag-sum abb aab))
+  (test 3 (bag-count (lambda (x) (eqv? x 'a)) total))
+  (test 3 (bag-count (lambda (x) (eqv? x 'b)) total))
+  (test 12 (bag-size (bag-product total 2)))
+  (define bag1 (bag eqv-comparator 1))
+  (bag-sum! bag1 bag1)
+  (test 2 (bag-size bag1))
+  (bag-product! bag1 2)
+  (test 4 (bag-size bag1))
+) ; end bag/sumprod
 
 ) ; end bags
 

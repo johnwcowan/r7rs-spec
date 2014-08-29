@@ -1259,6 +1259,24 @@
       alist)
     result))
 
+;;; Comparators
+
+;; Hash over sobs
+(define (sob-hash sob)
+  (let* ((ht (sob-hash-table sob))
+         (hash (comparator-hash-function (sob-comparator sob))))
+    (sob-fold
+      (lambda (element result) (+ (hash element) (* result 33)))
+      5381
+      sob)))
+
+;; Set and bag comparator
+
+(define set-comparator (make-comparator set? set=? #f sob-hash))
+
+(define bag-comparator (make-comparator bag? bag=? #f sob-hash))
+
+
 ;;; Set/bag printer (for debugging)
 
 (define (sob-print sob port)
