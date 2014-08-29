@@ -1,4 +1,4 @@
-<!DOCTYPE html SYSTEM "-//W3C//DTD HTML 3.2 Final//EN">
+﻿<!DOCTYPE html SYSTEM "-//W3C//DTD HTML 3.2 Final//EN">
 <html><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
     
     <title>SRFI 113: Sets and Bags</title>
@@ -426,6 +426,14 @@ The following comparators are used to compare sets or bags, and allow sets of se
 </p><p><code>set-comparator</code></p><p><code>bag-comparator</code></p><p>
 
 Note that these comparators do not provide comparison procedures, as there is no ordering between sets or bags.  It is an error to compare sets or bags with different element comparators.
+
+</p><h1>Acknowledgements</h1>
+
+<p>Kevin Wortman's detailed advice and whole-hearted cooperation with me has been essential to making this SRFI what it is.  He has coordinated his efforts toward a forthcoming immutable deque, bag, and map SRFI with mine in this SRFI and my forthcoming mutable queue and hash table SRFIs.</p>
+
+<p>Thanks also to Per Bothner, Art Gleckler, Aubrey Jaffer, Takashi Kato, Alexey Radul, Jim Rees, Alex Shinn, Charles Wang, and Alan Watson for their participation in the SRFI 113 mailing list, and to Michael Sperber for his editorial services.</p>
+
+<p>Of course, I take all the blame for any errors or infelicities.
 
 </p><h1>Implementation</h1>
 
