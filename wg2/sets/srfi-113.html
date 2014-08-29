@@ -73,8 +73,8 @@ subscribe to the list.  You can access previous messages via
 <p>It is an error to rely upon these procedures working by side effect. For example, this is not guaranteed to work:</p>
 
 <pre>
-        (let* ((set1 (set 'a 'b 'c))      ; set1 = {a,b,c}.
-               (set2 (set-adjoin! 'd)))   ; Add d to {a,b,c}.
+        (let* ((set1 (set 'a 'b 'c))           ; set1 = {a,b,c}.
+               (set2 (set-adjoin! set1 'd)))   ; Add d to {a,b,c}.
           set1) ; Could be either {a,b,c} or {a,b,c,d}.
 </pre>
 
