@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html SYSTEM "-//W3C//DTD HTML 3.2 Final//EN">
+<!DOCTYPE html SYSTEM "-//W3C//DTD HTML 3.2 Final//EN">
 <html><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
     
     <title>SRFI 113: Sets and Bags</title>
@@ -113,7 +113,7 @@ subscribe to the list.  You can access previous messages via
 </li><li><p><a href="#Mappingandfolding">Mapping and folding</a>: <code>set-map</code>, <code>set-for-each</code>, <code>set-fold</code>, <code>set-filter</code>, <code>set-filter!</code>, <code>set-remove</code>, <code>set-remove!</code>, <code>set-partition</code>, <code>set-partition!</code></p>
 </li><li><p><a href="#Copyingandconversion">Copying and conversion</a>: <code>set-copy</code>, <code>set-&gt;list</code>, <code>list-&gt;set</code>, <code>list-&gt;set!</code></p>
 </li><li><p><a href="#Subsets">Subsets</a>: <code>set=?</code>, <code>set&lt;?</code>, <code>set&gt;?</code>, <code>set&lt;=?</code>, <code>set&gt;=?</code></p>
-</li><li><p><a href="#Settheoryoperations">Set theory operations</a>: <code>set-union</code>, <code>set-intersection</code>, <code>set-difference</code>, <code>set-xor</code>, <code>set-union!</code>, <code>set-intersection!</code>, <code>set-difference!</code>, <code>set-xor!</code>, <code>set-cartesian-product</code>, <code>set-powerset</code></p>
+</li><li><p><a href="#Settheoryoperations">Set theory operations</a>: <code>set-union</code>, <code>set-intersection</code>, <code>set-difference</code>, <code>set-xor</code>, <code>set-union!</code>, <code>set-intersection!</code>, <code>set-difference!</code>, <code>set-xor!</code></p>
 </li><li><p><a href="#Additionalbagprocedures">Additional bag procedures</a>: <code>bag-sum</code>, <code>bag-sum!</code>, <code>bag-product</code>, <code>bag-product!</code>, <code>bag-element-count</code>, <code>bag-for-each-unique</code>, <code>bag-fold-unique</code>, <code>bag-increment!</code>, <code>bag-decrement!</code>, <code>bag-&gt;set</code>, <code>set-&gt;bag</code>, <code>set-&gt;bag!</code></p>
 </li><li><p><a href="#Comparators">Comparators</a>: <code>set-comparator</code>, <code>bag-comparator</code></p>
 </li>
@@ -353,21 +353,13 @@ Return a newly allocated set that is the union, intersection, asymmetric differe
 
 <p>Linear update procedures returning a set that is the union, intersection, asymmetric difference, or symmetric difference of the <em>sets</em>.  Asymmetric difference is extended to more than two sets by taking the difference between the first set and the union of the others.  Symmetric difference is not extended beyond two sets.  Elements in the result set are drawn from the first set in which they appear.</p>
 
-<p><code>(set-cartesian-product </code><em>set<sub>1</sub> set<sub>2</sub></em> ... <code>)</code></p><p>
-
-Return the cartesian product of the <em>sets</em>.  The result is a set of lists constituting every possible combination of elements of the arguments, where the first element of each list is drawn from <em>set<sub>1</sub></em>, the second element from <em>set<sub>2</sub></em>, and so on.  Note that the lists may share storage, so mutating them is an error even when they are removed from the result set.  To get a set of sets instead, use <code>set-map</code> with the comparator <code>set-comparator</code> and the mapping procedure <code>list-&gt;set</code>.  Note that there is no linear-update version of this procedure.</p>
-
-<p><code>(set-power-set </code><em>set</em><code>)</code></p><p>
-
-Return the power set of <em>set</em>.  The result is a set of lists constituting every possible combination of the elements of <em>set</em>, from the null list to the list of all elements.  The running time of this procedure is O(2<sup>n</sup>), so beware of applying it to large sets.  Note that the lists may share storage, so mutating them is an error even when they are removed from the result set.  To get a set of sets instead, use <code>set-map</code> with the comparator <code>set-comparator</code> and the mapping procedure <code>list-&gt;set</code>.  Note that there is no linear-update version of this procedure.</p>
-
 <h2 id="Bagprocedures">Bag procedures</h2><p>
 
 Bags are like sets, but can contain the same object more than once.  However, if two elements that are the same in the sense of the equality predicate, but not in the sense of <code>eqv?</code>, are both included, it is not guaranteed that they will remain distinct when retrieved from the bag.  It is an error for a single procedure to be invoked on bags with different comparators.
 
 </p><p>
 
-The procedures for creating and manipulating bags are the same as those for sets, except that <code>set</code> is replaced by <code>bag</code> in their names, and that adjoining an element to a bag is effective even if the bag already contains the element.  (The bag version of <code>set-power-set</code> is <code>bag-power-bag</code>.)  If two elements in a bag are the same in the sense of the bag's comparator, the implementation may in fact store just one of them.
+The procedures for creating and manipulating bags are the same as those for sets, except that <code>set</code> is replaced by <code>bag</code> in their names, and that adjoining an element to a bag is effective even if the bag already contains the element.  If two elements in a bag are the same in the sense of the bag's comparator, the implementation may in fact store just one of them.
 </p>
 
 <p>The <code>bag-union</code>, <code>bag-intersection</code>, <code>bag-difference</code>, and <code>bag-xor</code> procedures (and their linear update analogues) behave as follows when both bags contain elements that are equal in the sense of the bags' comparator:</p>
