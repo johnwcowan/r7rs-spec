@@ -18,6 +18,7 @@
   (export set=? set<? set>? set<=? set>=?)
   (export set-union set-intersection set-difference set-xor
           set-union! set-intersection! set-difference! set-xor!)
+  (export set-comparator)
   
   (export bag bag-unfold)
   (export bag? bag-contains? bag-empty? bag-disjoint?)
@@ -32,6 +33,7 @@
   (export bag=? bag<? bag>? bag<=? bag>=?)
   (export bag-union bag-intersection bag-difference bag-xor
           bag-union! bag-intersection! bag-difference! bag-xor!)
+  (export bag-comparator)
   
   
   (export bag-sum bag-sum! bag-product bag-product!
