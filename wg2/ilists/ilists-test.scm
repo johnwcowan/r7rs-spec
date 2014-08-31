@@ -142,7 +142,7 @@
   (test (iq (c) (b c) (a b c))
     (ipair-fold ipair '() (iq a b c)))
   (test (iq (a b c) (b c) (c))
-    (ipair-fold-right ipair '() (iq a b c))
+    (ipair-fold-right ipair '() (iq a b c)))
   (test 5 (ireduce max 0 (iq 1 3 5 4 2 0)))
   (test 1 (ireduce - 0 (iq 1 2)))
   (test -1 (ireduce - 0 (iq 1 2)))
