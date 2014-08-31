@@ -179,7 +179,7 @@
 (define (make-ilist len . maybe-elt)
   (check-arg (lambda (n) (and (integer? n) (>= n 0))) len make-ilist)
   (let ((elt (cond ((null? maybe-elt) #f) ; Default value
-		   ((null? (icdr maybe-elt)) (icar maybe-elt))
+		   ((null? (cdr maybe-elt)) (car maybe-elt))
 		   (else (error "Too many arguments to MAKE-ILIST"
 				(ipair len maybe-elt))))))
     (do ((i len (- i 1))
@@ -222,8 +222,12 @@
 
 (define (iiota count . maybe-start+step)
   (check-arg integer? count iiota)
-  (if (< count 0) (error "Negative step icount" iiota icount))
-  (let-optionals maybe-start+step ((start 0) (step 1))
+  (if (< count 0) (error "Negative step count" iiota count))
+  (let ((start (if (pair? maybe-start+step) (car maybe-start+step) 0))
+        (step (if (and (pair? maybe-start+step)
+                        (pair? (cdr maybe-start+step)))
+                 (cadr maybe-start+step)
+                 1)))
     (check-arg number? start iiota)
     (check-arg number? step iiota)
     (let loop ((n 0) (r '()))
@@ -305,7 +309,7 @@
         (lp (icdr x) (+ len 1))		; diverges.
         len)))
 
-(define (izip list1 . more-lists) (apply imap ilist list1 more-lists))
+(define (izip ilist1 . more-lists) (apply imap ilist ilist1 more-lists))
 
 
 ;;; Selectors
@@ -495,82 +499,86 @@
 ;;; the needs of the ifold/imap procs -- for example, to minimize the number
 ;;; of times the argument lists need to be examined.
 
-;;; Return (imap icdr (list->ilist list)).
-;;; However, if any element of LISTS is empty, just abort and return '().
-(define (%icdrs lists)
+;;; Return (map icdr ilists).
+;;; However, if any element of ILISTS is empty, just abort and return '().
+(define (%cdrs lists)
   (call-with-current-continuation
     (lambda (abort)
       (let recur ((lists lists))
 	(if (pair? lists)
 	    (let ((lis (car lists)))
-	      (if (null-ilist? lis) (abort '())
-		  (ipair (cdr lis) (recur (cdr lists)))))
+	      (if (null? lis) (abort '())
+		  (cons (icdr lis) (recur (cdr lists)))))
 	    '())))))
 
-(define (%cars+ lists ilast-elt)	; (iappend (imap icar lists) (ilist ilast-elt))
-  (let recur ((lists lists))
-    (if (ipair? lists) (ipair (icaar lists) (recur (icdr lists))) (ilist ilast-elt))))
-
-;;; LISTS is a (not very long) non-empty list of ilists.
-;;; Return two ilists: the cars & the cdrs of the ilists.
-;;; However, if any of the ilists is empty, just abort and return [() ()].
-
-(define (%icars+icdrs lists)
-  (call-with-current-continuation
-    (lambda (abort)
-      (let recur ((lists lists))
-        (if (pair? lists)
-            (let ((ilist (car lists))
-                  (other-lists (cdr lists)))
-	      (if (null-ilist? ilist) (abort '() '()) ; LIST is empty -- bail out
-		  (receive (a d) (icar+icdr ilist)
-		    (receive (cars cdrs) (recur other-lists)
-		      (values (ipair a cars) (ipair d cdrs))))))
-	    (values '() '()))))))
-
-;;; Like %ICARS+ICDRS, but we pass in a final elt tacked onto the end of the
-;;; cars ilist. What a hack.
-(define (%icars+icdrs+ lists cars-final)
-  (call-with-current-continuation
-    (lambda (abort)
-      (let recur ((lists lists))
-        (if (pair? lists)
-            (let ((ilist (car lists))
-                  (other-lists (cdr lists)))
-	      (if (null-ilist? ilist) (abort '() '()) ; ILIST is empty -- bail out
-		  (receive (a d) (icar+icdr ilist)
-		    (receive (cars cdrs) (recur other-lists)
-		      (values (ipair a cars) (ipair d cdrs))))))
-	    (values (ilist cars-final) '()))))))
-
-;;; Like %ICARS+ICDRS, but blow up if any ilist is empty.
-(define (%icars+icdrs/no-test lists)
+(define (%cars+ lists last-elt)	; (append (map icar lists) (list last-elt))
   (let recur ((lists lists))
     (if (pair? lists)
-        (let ((ilist (car lists))
-              (other-lists (cdr lists)))
-	  (receive (a d) (icar+icdr ilist)
-	    (receive (cars cdrs) (recur other-lists)
-	      (values (ipair a cars) (ipair d cdrs)))))
+      (cons (icar (car lists)) (recur (cdr lists)))
+      (list last-elt))))
+
+;;; LISTS is a (not very long) non-empty list of ilists.
+;;; Return two lists: the icars & the icdrs of the ilists.
+;;; However, if any of the ilists is empty, just abort and return [() ()].
+
+(define (%cars+cdrs ilists)
+  (call-with-current-continuation
+    (lambda (abort)
+      (let recur ((ilists ilists))
+        (if (pair? ilists)
+            (let ((ilist (car ilists))
+                  (other-ilists (cdr ilists)))
+	      (if (null? ilist) (abort '() '()) ; LIST is empty -- bail out
+                  (let ((a (icar ilist))
+                        (d (icdr ilist)))
+		    (receive (icars icdrs) (recur other-ilists)
+		      (values (cons a icars) (cons d icdrs))))))
+	    (values '() '()))))))
+
+;;; Like %CARS+CDRS, but we pass in a final elt tacked onto the end of the
+;;; cars ilist. What a hack.
+(define (%cars+cdrs+ ilists cars-final)
+  (call-with-current-continuation
+    (lambda (abort)
+      (let recur ((ilists ilists))
+        (if (pair? ilists)
+            (let ((ilist (car ilists))
+                  (other-ilists (cdr ilists)))
+	      (if (null? ilist) (abort '() '()) ; LIST is empty -- bail out
+		  (receive (a d) (icar+icdr ilist)
+		    (receive (cars cdrs) (recur other-ilists)
+		      (values (cons a cars) (cons d cdrs))))))
+	    (values (list cars-final) '()))))))
+
+;;; Like %CARS+CDRS, but blow up if any ilist is empty.
+(define (%cars+cdrs/no-test ilists)
+  (let recur ((ilists ilists))
+    (if (pair? ilists)
+        (let ((ilist (car ilists))
+              (other-ilists (cdr ilists)))
+          (let ((a (icar ilist))
+                (d (icdr ilist)))
+	    (receive (cars cdrs) (recur other-ilists)
+	      (values (cons a cars) (cons d cdrs)))))
 	(values '() '()))))
 
 
 ;;; icount
 ;;;;;;;;;
-(define (icount pred list1 . lists)
+(define (icount pred ilist1 . ilists)
   (check-arg procedure? pred icount)
-  (if (pair? lists)
+  (if (pair? ilists)
 
       ;; N-ary case
-      (let lp ((list1 list1) (lists lists) (i 0))
-	(if (null-ilist? list1) i
-	    (receive (as ds) (%icars+icdrs lists)
+      (let lp ((ilist1 ilist1) (ilists ilists) (i 0))
+	(if (null-ilist? ilist1) i
+	    (receive (as ds) (%cars+cdrs ilists)
 	      (if (null? as) i
-		  (lp (icdr list1) ds
-		      (if (apply pred (icar list1) as) (+ i 1) i))))))
+		  (lp (icdr ilist1) ds
+		      (if (apply pred (icar ilist1) as) (+ i 1) i))))))
 
       ;; Fast path
-      (let lp ((lis list1) (i 0))
+      (let lp ((lis ilist1) (i 0))
 	(if (null-ilist? lis) i
 	    (lp (icdr lis) (if (pred (icar lis)) (+ i 1) i))))))
 
@@ -611,7 +619,7 @@
   (check-arg procedure? kons ifold)
   (if (pair? lists)
       (let lp ((lists (ipair lis1 lists)) (ans knil))	; N-ary case
-	(receive (cars+ans cdrs) (%icars+icdrs+ lists ans)
+	(receive (cars+ans cdrs) (%cars+cdrs+ lists ans)
 	  (if (null? cars+ans) ans ; Done.
 	      (lp cdrs (apply kons cars+ans)))))
 	    
@@ -624,7 +632,7 @@
   (check-arg procedure? kons ifold-right)
   (if (ipair? lists)
       (let recur ((lists (ipair lis1 lists)))		; N-ary case
-	(let ((cdrs (%icdrs lists)))
+	(let ((cdrs (%cdrs lists)))
 	  (if (null? cdrs) knil
 	      (apply kons (%cars+ lists (recur cdrs))))))
 
@@ -638,7 +646,7 @@
   (check-arg procedure? f ipair-fold-right)
   (if (ipair? lists)
       (let recur ((lists (ipair lis1 lists)))		; N-ary case
-	(let ((cdrs (%icdrs lists)))
+	(let ((cdrs (%cdrs lists)))
 	  (if (null? cdrs) zero
 	      (apply f (iappend lists (ilist (recur cdrs)))))))
 
@@ -649,7 +657,7 @@
   (check-arg procedure? f ipair-fold)
   (if (ipair? lists)
       (let lp ((lists (ipair lis1 lists)) (ans zero))	; N-ary case
-	(let ((tails (%icdrs lists)))
+	(let ((tails (%cdrs lists)))
 	  (if (null? tails) ans
 	      (lp tails (apply f (iappend lists (ilist ans)))))))
 
@@ -686,11 +694,11 @@
 (define (really-iappend-map who appender f lis1 lists)
   (check-arg procedure? f who)
   (if (ipair? lists)
-      (receive (cars cdrs) (%icars+icdrs (ipair lis1 lists))
+      (receive (cars cdrs) (%cars+cdrs (ipair lis1 lists))
 	(if (null? cars) '()
 	    (let recur ((cars cars) (cdrs cdrs))
 	      (let ((vals (apply f cars)))
-		(receive (cars2 cdrs2) (%icars+icdrs cdrs)
+		(receive (cars2 cdrs2) (%cars+cdrs cdrs)
 		  (if (null? cars2) vals
 		      (appender vals (recur cars2 cdrs2))))))))
 
@@ -707,7 +715,7 @@
   (if (ipair? lists)
 
       (let lp ((lists (ipair lis1 lists)))
-	(let ((tails (%icdrs lists)))
+	(let ((tails (%cdrs lists)))
 	  (if (ipair? tails)
 	      (begin (apply proc lists)
 		     (lp tails)))))
@@ -725,7 +733,7 @@
   (check-arg procedure? f ifilter-map)
   (if (ipair? lists)
       (let recur ((lists (ipair lis1 lists)))
-	(receive (cars cdrs) (%icars+icdrs lists)
+	(receive (cars cdrs) (%cars+cdrs lists)
 	  (if (ipair? cars)
 	      (cond ((apply f cars) => (lambda (x) (ipair x (recur cdrs))))
 		    (else (recur cdrs))) ; Tail call in this arm.
@@ -743,11 +751,11 @@
 
 (define (imap-in-order f lis1 . lists)
   (check-arg procedure? f imap-in-order)
-  (if (ipair? lists)
-      (let recur ((lists (ipair lis1 lists)))
-	(receive (cars cdrs) (%icars+icdrs lists)
-	  (if (ipair? cars)
-	      (let ((x (apply f cars)))		; Do head ifirst,
+  (if (pair? lists)
+      (let recur ((lists (cons lis1 lists)))
+	(receive (cars cdrs) (%cars+cdrs lists)
+	  (if (pair? cars)
+	      (let ((x (apply f cars)))		; Do head first,
 		(ipair x (recur cdrs)))		; then tail.
 	      '())))
 	    
@@ -944,10 +952,10 @@
   (if (ipair? lists)
 
       ;; N-ary case
-      (receive (heads tails) (%icars+icdrs (ipair lis1 lists))
+      (receive (heads tails) (%cars+cdrs (ipair lis1 lists))
 	(or (not (ipair? heads))
 	    (let lp ((heads heads) (tails tails))
-	      (receive (next-heads next-tails) (%icars+icdrs tails)
+	      (receive (next-heads next-tails) (%cars+cdrs tails)
 		(if (ipair? next-heads)
 		    (and (apply pred heads) (lp next-heads next-tails))
 		    (apply pred heads)))))) ; Last PRED app is tail call.
@@ -968,7 +976,7 @@
 
       ;; N-ary case
       (let lp ((lists (ipair lis1 lists)) (n 0))
-	(receive (heads tails) (%icars+icdrs lists)
+	(receive (heads tails) (%cars+cdrs lists)
 	  (and (ipair? heads)
 	       (if (apply pred heads) n
 		   (lp tails (+ n 1))))))

@@ -195,7 +195,7 @@ The sample implementation of this SRFI is derived from the sample implementation
 <!--========================================================================-->
 </p><h1><a name="ProcedureIndex">Procedure Index</a></h1>
 <p>
-Here is a short list of the procedures provided by this SRFI.  To interpret the examples, pretend that they are executed on a Scheme that reads quoted list syntax as immutable lists and prints immutable pairs and lists with the syntax of mutable ones.  Although it may be reasonable for <code>display</code> to work this way, <code>write</code> and certainly <code>read</code> should not.
+Here is a short list of the procedures provided by this SRFI.  To interpret the examples, pretend that they are executed on a Scheme that prints immutable pairs and lists with the syntax of mutable ones.  Although it may be reasonable for <code>display</code> to work this way, <code>write</code> should not.
 
 </p><div class="indent">
 <dl>
@@ -433,10 +433,10 @@ defined to accept such an argument.
     The ipair is guaranteed to be different (in the sense of <code>eqv?</code>)
     from every existing object.
 <pre class="code-example">(ipair 'a '())        =&gt; (a)
-(ipair '(a) '(b c d)) =&gt; ((a) b c d)
-(ipair "a" '(b c))    =&gt; ("a" b c)
+(ipair (iq a) (iq b c d)) =&gt; ((a) b c d)
+(ipair "a" (iq b c))    =&gt; ("a" b c)
 (ipair 'a 3)          =&gt; (a . 3)
-(ipair '(a b) 'c)     =&gt; ((a b ) . c)
+(ipair (iq a b) 'c)     =&gt; ((a b ) . c)
 </pre>
 
 <!--
@@ -464,7 +464,7 @@ defined to accept such an argument.
     Of utility only as a value to be conveniently passed to higher-order 
     procedures.
 
-<pre class="code-example">(xipair '(b c) 'a) =&gt; (a b c)
+<pre class="code-example">(xipair (iq b c) 'a) =&gt; (a b c)
 </pre>
 
     The name stands for "eXchanged Immutable PAIR."
@@ -560,8 +560,8 @@ defined to accept such an argument.
 </dd><dt class="proc-def"><code class="proc-def">ipair?</code><var> object -&gt; boolean</var>
 </dt><dd class="proc-def">
     Returns #t if <var>object</var> is an ipair; otherwise, #f.
-<pre class="code-example">(ipair? '(a . b)) =&gt;  #t
-(ipair? '(a b c)) =&gt;  #t
+<pre class="code-example">(ipair? (ipair 'a 'b)) =&gt;  #t
+(ipair? (iq a b c)) =&gt;  #t
 (ipair? '())      =&gt;  #f
 (ipair? '#(a b))  =&gt;  #f
 (ipair? 7)        =&gt;  #f
@@ -646,7 +646,7 @@ defined to accept such an argument.
     are always <code>ilist=</code>, as well; implementations may exploit this
     fact to "short-cut" the element-by-element comparisons.
 <pre class="code-example">(ilist= eq?) =&gt; #t       ; Trivial cases
-(ilist= eq? '(a)) =&gt; #t
+(ilist= eq? (iq a)) =&gt; #t
 </pre>
 
 </dd></dl>
@@ -668,9 +668,9 @@ defined to accept such an argument.
     These procedures return the contents of the icar and icdr field of their
     argument, respectively.
     Note that it is an error to apply them to the empty ilist.
-<pre class="code-example">(icar '(a b c))     =&gt;  a             (icdr '(a b c))     =&gt;  (b c)  
-(icar '((a) b c d)) =&gt;  (a)	     (icdr '((a) b c d)) =&gt;  (b c d)
-(icar '(1 . 2))     =&gt;  1	     (icdr '(1 . 2))     =&gt;  2      
+<pre class="code-example">(icar (iq a b c))     =&gt;  a             (icdr (iq a b c))     =&gt;  (b c)  
+(icar (iq (a) b c d)) =&gt;  (a)	     (icdr (iq (a) b c d)) =&gt;  (b c d)
+(icar (ipair 1 2))     =&gt;  1	     (icdr (ipair 1 2))     =&gt;  2      
 (icar '())          =&gt;  *error*	     (icdr '())          =&gt;  *error*
 </pre>
 
@@ -711,7 +711,7 @@ defined to accept such an argument.
     It is an error if <var>i</var> &gt;= <var>n</var>, 
     where <var>n</var> is the length of <var>ilist</var>.
 <pre class="code-example">    
-(ilist-ref '(a b c d) 2) =&gt; c
+(ilist-ref (iq a b c d) 2) =&gt; c
 </pre>    
 
 <!--
@@ -743,14 +743,14 @@ defined to accept such an argument.
     <code>itake</code> returns the first <var>i</var> elements of ilist <var>x</var>.<br/>
     <code>idrop</code> returns all but the first <var>i</var> elements of ilist <var>x</var>.<br/>
     <code>ilist-tail</code> is either the same procedure as <code>idrop</code> or else a procedure with the same behavior.
-<pre class="code-example">(itake '(a b c d e)  2) =&gt; (a b)
-(idrop '(a b c d e)  2) =&gt; (c d e)
+<pre class="code-example">(itake (iq a b c d e)  2) =&gt; (a b)
+(idrop (iq a b c d e)  2) =&gt; (c d e)
 </pre>
     <var>x</var> may be any value — a proper or dotted ilist:
-<pre class="code-example">(itake '(1 2 3 . d) 2) =&gt; (1 2)
-(idrop '(1 2 3 . d) 2) =&gt; (3 . d)
-(itake '(1 2 3 . d) 3) =&gt; (1 2 3)
-(idrop '(1 2 3 . d) 3) =&gt; d
+<pre class="code-example">(itake (ipair 1 (ipair 2 (ipair 3 'd))) =&gt; (1 2)
+(idrop (ipair 1 (ipair 2 (ipair 3 'd))) 2) =&gt; (3 . d)
+(itake (ipair 1 (ipair 2 (ipair 3 'd))) 3) =&gt; (1 2 3)
+(idrop (ipair 1 (ipair 2 (ipair 3 'd))) 3) =&gt; d
 </pre>
     For a legal <var>i</var>, <code>itake</code> and <code>idrop</code> partition the ilist in a manner which
     can be inverted with <code>iappend</code>:
@@ -773,16 +773,16 @@ defined to accept such an argument.
 </dt><dd class="proc-def">
     <code>itake-right</code> returns the last <var>i</var> elements of <var>dilist</var>.<br/>
     <code>idrop-right</code> returns all but the last <var>i</var> elements of <var>dilist</var>.
-<pre class="code-example">(itake-right '(a b c d e) 2) =&gt; (d e)
-(idrop-right '(a b c d e) 2) =&gt; (a b c)
+<pre class="code-example">(itake-right (iq a b c d e) 2) =&gt; (d e)
+(idrop-right (iq a b c d e) 2) =&gt; (a b c)
 </pre>
     The returned ilist may share a common tail with the argument ilist.
 <p>
     <var>dilist</var> may be any ilist, either proper or dotted:
-</p><pre class="code-example">(itake-right '(1 2 3 . d) 2) =&gt; (2 3 . d)
-(idrop-right '(1 2 3 . d) 2) =&gt; (1)
-(itake-right '(1 2 3 . d) 0) =&gt; d
-(idrop-right '(1 2 3 . d) 0) =&gt; (1 2 3)
+</p><pre class="code-example">(itake-right (iq ipair 1 (ipair 2 (ipair 3 'd))) 2) =&gt; (2 3 . d)
+(idrop-right (ipair 1 (ipair 2 (ipair 3 'd))) 2) =&gt; (1)
+(itake-right (ipair 1 (ipair 2 (ipair 3 'd))) 0) =&gt; d
+(idrop-right (ipair 1 (ipair 2 (ipair 3 'd))) 0) =&gt; (1 2 3)
 </pre>
     For a legal <var>i</var>, <code>itake-right</code> and <code>idrop-right</code> partition the ilist in a manner 
     which can be inverted with <code>iappend</code>:
@@ -821,8 +821,8 @@ defined to accept such an argument.
     <code>last-ipair</code> returns the last ipair in the non-empty
     ilist <var>pair</var>.
 
-<pre class="code-example">(ilast '(a b c)) =&gt; c
-(last-ipair '(a b c)) =&gt; (c)
+<pre class="code-example">(ilast (iq a b c)) =&gt; c
+(last-ipair (iq a b c)) =&gt; (c)
 </pre>
 
 </dd></dl>
@@ -856,18 +856,18 @@ defined to accept such an argument.
     Returns an ilist consisting of the elements 
     of <var>ilist<sub>1</sub></var>
     followed by the elements of the other ilist parameters.
-<pre class="code-example">(iappend '(x) '(y))        =&gt;  (x y)
-(iappend '(a) '(b c d))    =&gt;  (a b c d)
-(iappend '(a (b)) '((c)))  =&gt;  (a (b) (c))
+<pre class="code-example">(iappend (iq x) (iq y))        =&gt;  (x y)
+(iappend (iq a) (iq b c d))    =&gt;  (a b c d)
+(iappend (iq a (b)) (iq (c)))  =&gt;  (a (b) (c))
 </pre>
     The resulting ilist is always newly allocated, except that it
     shares structure with the final <var>ilist<sub>i</sub></var> argument.  
     This last argument may be any value at all; 
     an improper ilist results if it is not
     a proper ilist. All other arguments must be proper ilists.
-<pre class="code-example">(iappend '(a b) '(c . d))  =&gt;  (a b c . d)
+<pre class="code-example">(iappend (iq a b) (ipair 'c 'd))  =&gt;  (a b c . d)
 (iappend '() 'a)           =&gt;  a
-(iappend '(x y))           =&gt;  (x y)
+(iappend (iq x y))         =&gt;  (x y)
 (iappend)                  =&gt;  ()
 </pre>
 
@@ -909,8 +909,8 @@ defined to accept such an argument.
 
     Returns a newly allocated ilist consisting of
     the elements of <var>ilist</var> in reverse order.
-<pre class="code-example">(ireverse '(a b c)) =&gt;  (c b a)
-(ireverse '(a (b c) d (e (f))))
+<pre class="code-example">(ireverse (iq a b c)) =&gt;  (c b a)
+(ireverse (iq a (b c) d (e (f))))
     =&gt;  ((e (f)) d (b c) a)
 </pre>
 
@@ -923,7 +923,7 @@ defined to accept such an argument.
 <code class="proc-def">iappend-reverse&nbsp;&nbsp;</code><var>rev-head tail -&gt; ilist</var>
 </dt><dd class="proc-def">
     <code>iappend-reverse</code> returns
-	<code>(iappend (reverse <var>rev-head</var>) <var>tail</var>)</code>.
+	<code>(iappend (ireverse <var>rev-head</var>) <var>tail</var>)</code>.
     It is provided because it is a common operation — a common
     list-processing style calls for this exact operation to transfer values
     accumulated in reverse order onto the front of another ilist, and because
@@ -948,12 +948,12 @@ defined to accept such an argument.
     of these ilists, each element of which is an <var>n</var>-element ilist comprised
     of the corresponding elements from the parameter ilists.
 
-<pre class="code-example">(izip '(one two three) 
-     '(1 2 3)
-     '(odd even odd even odd even odd even))
+<pre class="code-example">(izip (iq one two three) 
+     (iq 1 2 3)
+     (iq odd even odd even odd even odd even))
     =&gt; ((one 1 odd) (two 2 even) (three 3 odd))
 
-(izip '(1 2 3)) =&gt; ((1) (2) (3))
+(izip (iq 1 2 3)) =&gt; ((1) (2) (3))
 </pre>
     
 <!--
@@ -983,7 +983,7 @@ defined to accept such an argument.
     and an ilist of the second elements. <code>iunzip3</code> does the same for the first
     three elements of the ilists, and so forth.
 
-<pre class="code-example">(iunzip2 '((1 one) (2 two) (3 three))) =&gt;
+<pre class="code-example">(iunzip2 (iq (1 one) (2 two) (3 three))) =&gt;
     (1 2 3) 
     (one two three)
 </pre>
@@ -1003,8 +1003,8 @@ defined to accept such an argument.
     to apply <var>pred</var> to the <var>ilist</var> elements in a
     left-to-right order.
     The counting stops when the shortest ilist expires.
-<pre class="code-example">(count even? '(3 1 4 1 5 9 2 5 6)) =&gt; 3
-(count &lt; '(1 2 4 8) '(2 4 6 8 10 12 14 16)) =&gt; 3
+<pre class="code-example">(count even? (iq 3 1 4 1 5 9 2 5 6)) =&gt; 3
+(count &lt; (iq 1 2 4 8) (iq 2 4 6 8 10 12 14 16)) =&gt; 3
 </pre>
     
 </dd></dl>
@@ -1053,7 +1053,7 @@ defined to accept such an argument.
     <var>n</var>+1 parameters: one element from each ilist, and the "seed" or fold
     state, which is initially <var>knil</var>. The fold operation terminates when
     the shortest ilist runs out of values:
-<pre class="code-example">(ifold ipair* '() '(a b c) '(1 2 3 4 5)) =&gt; (c 3 b 2 a 1)
+<pre class="code-example">(ifold ipair* '() (iq a b c) (iq 1 2 3 4 5)) =&gt; (c 3 b 2 a 1)
 </pre>
    
 <!--
@@ -1086,7 +1086,7 @@ defined to accept such an argument.
     <var>n</var>+1 parameters: one element from each ilist, and the "seed" or fold
     state, which is initially <var>knil</var>. The fold operation terminates when
     the shortest ilist runs out of values:
-<pre class="code-example">(ifold-right ipair* '() '(a b c) '(1 2 3 4 5)) =&gt; (a 1 b 2 c 3)
+<pre class="code-example">(ifold-right ipair* '() (iq a b c) (iq 1 2 3 4 5)) =&gt; (a 1 b 2 c 3)
 </pre>
  
 <!--
@@ -1105,7 +1105,7 @@ defined to accept such an argument.
 </pre>
 <p>
     Example:
-</p><pre class="code-example">(ipair-fold ipair '() '(a b c)) =&gt; ((c) (b c) (a b c))
+</p><pre class="code-example">(ipair-fold ipair '() (iq a b c)) =&gt; ((c) (b c) (a b c))
 </pre>
 
     
@@ -1124,7 +1124,7 @@ defined to accept such an argument.
 </pre>
     
     Example:
-<pre class="code-example">(ipair-fold-right ipair '() '(a b c)) =&gt; ((a b c) (b c) (c))
+<pre class="code-example">(ipair-fold-right ipair '() (iq a b c)) =&gt; ((a b c) (b c) (c))
 </pre>
 <!--
 ==== ireduce
@@ -1174,8 +1174,8 @@ Otherwise,    return <code>(ifold <var>f</var> (icar <var>ilist</var>) (icdr <va
     <code>ireduce-right</code> is the fold-right variant of <code>ireduce</code>.
     It obeys the following definition:
 <pre class="code-example">(ireduce-right <var>f</var> <var>ridentity</var> '()) = <var>ridentity</var>
-(ireduce-right <var>f</var> <var>ridentity</var> '(<var>e<sub>1</sub></var>)) = (<var>f</var> <var>e<sub>1</sub></var> <var>ridentity</var>) = <var>e<sub>1</sub></var>
-(ireduce-right <var>f</var> <var>ridentity</var> '(<var>e<sub>1</sub></var> <var>e<sub>2</sub></var> ...)) =
+(ireduce-right <var>f</var> <var>ridentity</var> (iq <var>e<sub>1</sub></var>)) = (<var>f</var> <var>e<sub>1</sub></var> <var>ridentity</var>) = <var>e<sub>1</sub></var>
+(ireduce-right <var>f</var> <var>ridentity</var> (iq <var>e<sub>1</sub></var> <var>e<sub>2</sub></var> ...)) =
     (<var>f</var> <var>e<sub>1</sub></var> (ireduce <var>f</var> <var>ridentity</var> (<var>e<sub>2</sub></var> ...)))
 </pre>
     ...in other words, we compute 
@@ -1357,19 +1357,19 @@ Otherwise,    return <code>(ifold <var>f</var> (icar <var>ilist</var>) (icdr <va
      The dynamic order in which <var>proc</var> 
      is applied to the elements of the ilists is unspecified.
     
-<pre class="code-example">(imap icadr '((a b) (d e) (g h))) =&gt;  (b e h)
+<pre class="code-example">(imap icadr (iq (a b) (d e) (g h))) =&gt;  (b e h)
 
 (imap (lambda (n) (expt n n))
-     '(1 2 3 4 5))
+     (iq 1 2 3 4 5))
     =&gt;  (1 4 27 256 3125)
 
-(imap + '(1 2 3) '(4 5 6)) =&gt;  (5 7 9)
+(imap + (iq 1 2 3) (iq 4 5 6)) =&gt;  (5 7 9)
 
 (let ((count 0))
   (imap (lambda (ignored)
          (set! count (+ count 1))
          count)
-       '(a b))) =&gt;  (1 2) <em>or</em> (2 1)
+       (iq a b))) =&gt;  (1 2) <em>or</em> (2 1)
 </pre>
 
  <p>
@@ -1394,7 +1394,7 @@ Otherwise,    return <code>(ifold <var>f</var> (icar <var>ilist</var>) (icdr <va
 <pre class="code-example">(let ((v (make-vector 5)))
   (ifor-each (lambda (i)
               (vector-set! v i (* i i)))
-            '(0 1 2 3 4))
+            (iq 0 1 2 3 4))
   v)  =&gt;  #(0 1 4 9 16)
 </pre>
  <p>
@@ -1423,7 +1423,7 @@ Otherwise,    return <code>(ifold <var>f</var> (icar <var>ilist</var>) (icdr <va
     not specified.
 </p><p>
     Example:
-</p><pre class="code-example">(iappend-map (lambda (x) (ilist x (- x))) '(1 3 8))
+</p><pre class="code-example">(iappend-map (lambda (x) (ilist x (- x))) (iq 1 3 8))
     =&gt; (1 -1 3 -3 8 -8)
 </pre>
 
@@ -1450,7 +1450,7 @@ Otherwise,    return <code>(ifold <var>f</var> (icar <var>ilist</var>) (icdr <va
     ilists. That is, <var>f</var> is applied to the cells of the ilists, rather
     than the ilists' elements. These applications occur in left-to-right
     order.
-<pre class="code-example">(ipair-for-each (lambda (ipair) (display ipair) (newline)) '(a b c)) ==&gt;
+<pre class="code-example">(ipair-for-each (lambda (ipair) (display ipair) (newline)) (iq a b c)) ==&gt;
     (a b c)
     (b c)
     (c)
@@ -1463,7 +1463,7 @@ Otherwise,    return <code>(ifold <var>f</var> (icar <var>ilist</var>) (icdr <va
 <code class="proc-def">ifilter-map</code><var> f ilist<sub>1</sub> ilist<sub>2</sub> ... -&gt; ilist</var>
 </dt><dd class="proc-def">
     Like <code>imap</code>, but only true values are saved.
-<pre class="code-example">(ifilter-map (lambda (x) (and (number? x) (* x x))) '(a 1 b 3 c 7))
+<pre class="code-example">(ifilter-map (lambda (x) (and (number? x) (* x x))) (iq a 1 b 3 c 7))
     =&gt; (1 9 49)
 </pre>
     The dynamic order in which the various applications of <var>f</var> are made is
@@ -1489,7 +1489,7 @@ Otherwise,    return <code>(ifold <var>f</var> (icar <var>ilist</var>) (icdr <va
     The dynamic order in which the various applications of <var>pred</var> are made is
     not specified.
     
-<pre class="code-example">(ifilter even? '(0 7 8 8 43 -4)) =&gt; (0 8 8 -4)
+<pre class="code-example">(ifilter even? (iq 0 7 8 8 43 -4)) =&gt; (0 8 8 -4)
 </pre>
 
 <!--
@@ -1507,7 +1507,7 @@ Otherwise,    return <code>(ifold <var>f</var> (icar <var>ilist</var>) (icdr <va
     not specified. One of the returned ilists may share a common tail with the
     argument ilist.
 
-<pre class="code-example">(ipartition symbol? '(one 2 3 four five 6)) =&gt; 
+<pre class="code-example">(ipartition symbol? (iq one 2 3 four five 6)) =&gt; 
     (one four five)
     (2 3 6)
 </pre>
@@ -1528,7 +1528,7 @@ Otherwise,    return <code>(ifold <var>f</var> (icar <var>ilist</var>) (icdr <va
     The dynamic order in which the various applications of <var>pred</var> are made is 
     not specified.
     
-<pre class="code-example">(iremove even? '(0 7 8 8 43 -4)) =&gt; (7 43)
+<pre class="code-example">(iremove even? (iq 0 7 8 8 43 -4)) =&gt; (7 43)
 </pre>
 
 
@@ -1569,22 +1569,22 @@ these procedures work when applied to different kinds of ilists:
 Here are some examples, using the <code>ifind</code> and <code>iany</code> procedures as canonical
 representatives:
 </p><pre class="code-example">;; Proper ilist — success
-(ifind even? '(1 2 3))	=&gt; 2
-(iany  even? '(1 2 3))	=&gt; #t
+(ifind even? (iq 1 2 3))	=&gt; 2
+(iany  even? (iq 1 2 3))	=&gt; #t
 
 ;; proper ilist — failure
-(ifind even? '(1 7 3))	=&gt; #f
-(iany  even? '(1 7 3))	=&gt; #f
+(ifind even? (iq 1 7 3))	=&gt; #f
+(iany  even? (iq 1 7 3))	=&gt; #f
 
 ;; Failure is error on a dotted ilist.
-(ifind even? '(1 3 . x))	=&gt; error
-(iany  even? '(1 3 . x))	=&gt; error
+(ifind even? (ipair (1 (ipair 3 x)))	=&gt; error
+(iany  even? (ipair (1 (ipair 3 x)))	=&gt; error
 
 ;; The dotted ilist contains an element satisfying the search.
 ;; This case is not specified — it could be success, an error, 
 ;; or some third possibility.
-(ifind even? '(1 2 . x))	=&gt; error/undefined
-(iany  even? '(1 2 . x))	=&gt; error/undefined ; success, error or other.
+(ifind even? (ipair (1 (ipair 2 x)))	=&gt; error/undefined
+(iany  even? (ipair (1 (ipair 2 x))))	=&gt; error/undefined ; success, error or other.
 
 </pre>
 
@@ -1599,7 +1599,7 @@ representatives:
     Return the first element of <var>ilist</var> that satisfies predicate <var>pred</var>;
     false if no element does.
 
-<pre class="code-example">(ifind even? '(3 1 4 1 5 9)) =&gt; 4
+<pre class="code-example">(ifind even? (iq 3 1 4 1 5 9)) =&gt; 4
 </pre>
 
     Note that <code>ifind</code> has an ambiguity in its lookup semantics — if <code>ifind</code>
@@ -1628,8 +1628,8 @@ representatives:
     function.
 </p><p>
     Examples: 
-</p><pre class="code-example">(ifind-tail even? '(3 1 37 -8 -5 0 0)) =&gt; (-8 -5 0 0)
-(ifind-tail even? '(3 1 37 -5)) =&gt; #f
+</p><pre class="code-example">(ifind-tail even? (iq 3 1 37 -8 -5 0 0)) =&gt; (-8 -5 0 0)
+(ifind-tail even? (iq 3 1 37 -5)) =&gt; #f
 
 ;; IMEMBER X LIS:
 (ifind-tail (lambda (elt) (equal? x elt)) lis)
@@ -1654,7 +1654,7 @@ Returns the longest initial prefix of <var>ilist</var> whose elements all
 satisfy the predicate <var>pred</var>.
 
 <p>
-</p><pre class="code-example">(itake-while even? '(2 18 3 10 22 9)) =&gt; (2 18)
+</p><pre class="code-example">(itake-while even? (iq 2 18 3 10 22 9)) =&gt; (2 18)
 </pre>
 
 <!--
@@ -1667,7 +1667,7 @@ satisfy the predicate <var>pred</var>.
 idrops the longest initial prefix of <var>ilist</var> whose elements all
 satisfy the predicate <var>pred</var>, and returns the rest of the ilist.
 
-<pre class="code-example">(idrop-while even? '(2 18 3 10 22 9)) =&gt; (3 10 22 9)
+<pre class="code-example">(idrop-while even? (iq 2 18 3 10 22 9)) =&gt; (3 10 22 9)
 </pre>
 
 <!--
@@ -1701,11 +1701,11 @@ and <code>ibreak</code> breaks the ilist at the first element satisfying
 </pre>
 
 <p>
-</p><pre class="code-example">(ispan even? '(2 18 3 10 22 9)) =&gt;
+</p><pre class="code-example">(ispan even? (iq 2 18 3 10 22 9)) =&gt;
   (2 18)
   (3 10 22 9)
 
-(ibreak even? '(3 1 4 1 5 9)) =&gt;
+(ibreak even? (iq 3 1 4 1 5 9)) =&gt;
   (3 1)
   (4 1 5 9)
 </pre>
@@ -1742,10 +1742,10 @@ and <code>ibreak</code> breaks the ilist at the first element satisfying
     indicate that it does not return a simple boolean (<code>#t</code> or <code>#f</code>), but a
     general value.
 
-</p><pre class="code-example">(iany integer? '(a 3 b 2.7))   =&gt; #t
-(iany integer? '(a 3.1 b 2.7)) =&gt; #f
-(iany &lt; '(3 1 4 1 5)
-       '(2 7 1 8 2)) =&gt; #t
+</p><pre class="code-example">(iany integer? (iq a 3 b 2.7))   =&gt; #t
+(iany integer? (iq a 3.1 b 2.7)) =&gt; #f
+(iany &lt; (iq 3 1 4 1 5)
+       (iq 2 7 1 8 2)) =&gt; #t
 </pre>
 
 <!--
@@ -1799,9 +1799,9 @@ and <code>ibreak</code> breaks the ilist at the first element satisfying
     The iteration stops when one of the ilists runs out of values; in this
     case, <code>ilist-index</code> returns <code>#f</code>.
 
-</p><pre class="code-example">(ilist-index even? '(3 1 4 1 5 9)) =&gt; 2
-(list-index &lt; '(3 1 4 1 5 9 2 5 6) '(2 7 1 8 2)) =&gt; 1
-(ilist-index = '(3 1 4 1 5 9 2 5 6) '(2 7 1 8 2)) =&gt; #f
+</p><pre class="code-example">(ilist-index even? (iq 3 1 4 1 5 9)) =&gt; 2
+(list-index &lt; (iq 3 1 4 1 5 9 2 5 6) (iq 2 7 1 8 2)) =&gt; 1
+(ilist-index = (iq 3 1 4 1 5 9 2 5 6) (iq 2 7 1 8 2)) =&gt; #f
 </pre>
 
 <!--
@@ -1831,14 +1831,14 @@ and <code>ibreak</code> breaks the ilist at the first element satisfying
     while <code>imemv</code> uses <code>eqv?</code>, and
     <code>imember</code> uses <code>equal?</code>.
 
-<pre class="code-example">    (imemq 'a '(a b c))          =&gt;  (a b c)
-    (imemq 'b '(a b c))          =&gt;  (b c)
-    (imemq 'a '(b c d))          =&gt;  #f
-    (imemq (ilist 'a) '(b (a) c)) =&gt;  #f
+<pre class="code-example">    (imemq 'a (iq a b c))          =&gt;  (a b c)
+    (imemq 'b (iq a b c))          =&gt;  (b c)
+    (imemq 'a (iq b c d))          =&gt;  #f
+    (imemq (ilist 'a) (iq b (a) c)) =&gt;  #f
     (imember (ilist 'a)
-            '(b (a) c))         =&gt;  ((a) c)
-    (imemq 101 '(100 101 102))   =&gt;  *unspecified*
-    (imemv 101 '(100 101 102))   =&gt;  (101 102)
+            (iq b (a) c))         =&gt;  ((a) c)
+    (imemq 101 (iq 100 101 102))   =&gt;  *unspecified*
+    (imemv 101 (iq 100 101 102))   =&gt;  (101 102)
 </pre>
 
     
@@ -1936,10 +1936,10 @@ and <code>ibreak</code> breaks the ilist at the first element satisfying
     algorithm to remove equal elements. Alternatively, one can use algorithms
     based on element-marking, with linear-time results.
 
-</p><pre class="code-example">(idelete-duplicates '(a b a c a b c z)) =&gt; (a b c z)
+</p><pre class="code-example">(idelete-duplicates (iq a b a c a b c z)) =&gt; (a b c z)
 
 ;; Clean up an ialist:
-(idelete-duplicates '((a . 3) (b . 7) (a . 9) (c . 1))
+(idelete-duplicates (iq (a . 3) (b . 7) (a . 9) (c . 1))
                    (lambda (x y) (eq? (icar x) (icar y))))
     =&gt; ((a . 3) (b . 7) (c . 1))
 </pre>
@@ -1979,14 +1979,14 @@ in these cases, immutable maps or some other alternative should be employed.
     with the icar fields of the ipairs in <var>ialist</var>, 
     while <code>iassv</code> uses <code>eqv?</code> 
     and <code>iassoc</code> uses <code>equal?</code>.
-<pre class="code-example">(define e '((a 1) (b 2) (c 3)))
+<pre class="code-example">(define e (iq (a 1) (b 2) (c 3)))
 (iassq 'a e)                            =&gt;  (a 1)
 (iassq 'b e)                            =&gt;  (b 2)
 (iassq 'd e)                            =&gt;  #f
-(iassq (ilist 'a) '(((a)) ((b)) ((c))))  =&gt;  #f
-(iassoc (ilist 'a) '(((a)) ((b)) ((c)))) =&gt;  ((a))
-(iassq 5 '((2 3) (5 7) (11 13)))	   =&gt;  *unspecified*
-(iassv 5 '((2 3) (5 7) (11 13)))	   =&gt;  (5 7)
+(iassq (ilist 'a) (iq ((a)) ((b)) ((c))))  =&gt;  #f
+(iassoc (ilist 'a) (iq ((a)) ((b)) ((c)))) =&gt;  ((a))
+(iassq 5 (iq (2 3) (5 7) (11 13)))	   =&gt;  *unspecified*
+(iassv 5 (iq (2 3) (5 7) (11 13)))	   =&gt;  (5 7)
 </pre>
 <p>
     The comparison procedure is used to compare the elements <var>e<sub>i</sub></var> of <var>ilist</var>
@@ -2081,10 +2081,10 @@ structures and algorithms.
     When performing an element comparison, 
     the <var>=</var> procedure's first argument is an element
     of <var>A</var>; its second, an element of <var>B</var>.
-<pre class="code-example">(ilset&lt;= eq? '(a) '(a b a) '(a b c c)) =&gt; #t
+<pre class="code-example">(ilset&lt;= eq? (iq a) (iq a b a) (iq a b c c)) =&gt; #t
 
 (ilset&lt;= eq?) =&gt; #t             ; Trivial cases
-(ilset&lt;= eq? '(a)) =&gt; #t
+(ilset&lt;= eq? (iq a)) =&gt; #t
 </pre>
 
 <!--
@@ -2099,10 +2099,10 @@ structures and algorithms.
     <var>ilist<sub>i</sub></var> is a subset of <var>ilist<sub>i+1</sub></var>, and <var>ilist<sub>i+1</sub></var> is a subset of <var>ilist<sub>i</sub></var>.
     The <var>=</var> procedure's first argument is an element of <var>ilist<sub>i</sub></var>; its second is an element of
     <var>ilist<sub>i+1</sub></var>.
-<pre class="code-example">(ilset= eq? '(b e a) '(a e b) '(e e b a)) =&gt; #t
+<pre class="code-example">(ilset= eq? (iq b e a) (iq a e b) (iq e e b a)) =&gt; #t
 
 (ilset= eq?) =&gt; #t               ; Trivial cases
-(ilset= eq? '(a)) =&gt; #t
+(ilset= eq? (iq a)) =&gt; #t
 </pre>
 
 <!--
@@ -2121,7 +2121,7 @@ structures and algorithms.
 <p>
     The ilist parameter is always a suffix of the result — even if the ilist
     parameter contains repeated elements, these are not reduced.
-</p><pre class="code-example">(ilset-adjoin eq? '(a b c d c e) 'a 'e 'i 'o 'u) =&gt; (u o i a b c d c e)
+</p><pre class="code-example">(ilset-adjoin eq? (iq a b c d c e) 'a 'e 'i 'o 'u) =&gt; (u o i a b c d c e)
 </pre>
 
 <!--
@@ -2158,15 +2158,15 @@ structures and algorithms.
     In the n-ary case, the two-argument ilist-union operation is simply
     folded across the argument ilists.
 
-</p><pre class="code-example">(ilset-union eq? '(a b c d e) '(a e i o u)) =&gt; 
+</p><pre class="code-example">(ilset-union eq? (iq a b c d e) (iq a e i o u)) =&gt; 
     (u o i a b c d e)
 
 ;; Repeated elements in ilist1 are preserved.
-(ilset-union eq? '(a a c) '(x a x)) =&gt; (x a a c)
+(ilset-union eq? (iq a a c) (iq x a x)) =&gt; (x a a c)
 
 ;; Trivial cases
 (ilset-union eq?) =&gt; ()
-(ilset-union eq? '(a b c)) =&gt; (a b c)
+(ilset-union eq? (iq a b c)) =&gt; (a b c)
 </pre>
 
 <!--
@@ -2208,12 +2208,12 @@ structures and algorithms.
     before proceeding to <var>ilist<sub>3</sub></var>, 
     or it may go about its work in some third order.
 
-</p><pre class="code-example">(ilset-intersection eq? '(a b c d e) '(a e i o u)) =&gt; (a e)
+</p><pre class="code-example">(ilset-intersection eq? (iq a b c d e) (iq a e i o u)) =&gt; (a e)
 
 ;; Repeated elements in ilist1 are preserved.
-(ilset-intersection eq? '(a x y a) '(x a x z)) =&gt; '(a x a)
+(ilset-intersection eq? (iq a x y a) (iq x a x z)) =&gt; (iq a x a)
 
-(ilset-intersection eq? '(a b c)) =&gt; (a b c)     ; Trivial case
+(ilset-intersection eq? (iq a b c)) =&gt; (a b c)     ; Trivial case
 </pre>
 
 <!--
@@ -2251,9 +2251,9 @@ structures and algorithms.
     proceeding to <var>ilist<sub>3</sub></var>, 
     or it may go about its work in some third order.
 
-</p><pre class="code-example">(ilset-difference eq? '(a b c d e) '(a e i o u)) =&gt; (b c d)
+</p><pre class="code-example">(ilset-difference eq? (iq a b c d e) (iq a e i o u)) =&gt; (b c d)
 
-(ilset-difference eq? '(a b c)) =&gt; (a b c) ; Trivial case
+(ilset-difference eq? (iq a b c)) =&gt; (a b c) ; Trivial case
 </pre>
 
 <!--
@@ -2297,11 +2297,11 @@ structures and algorithms.
     In the n-ary case, the binary-xor operation is simply folded across
     the ilists.
 
-</p><pre class="code-example">(ilset-xor eq? '(a b c d e) '(a e i o u)) =&gt; (d c b i o u)
+</p><pre class="code-example">(ilset-xor eq? (iq a b c d e) (iq a e i o u)) =&gt; (d c b i o u)
 
 ;; Trivial cases.
 (ilset-xor eq?) =&gt; ()
-(ilset-xor eq? '(a b c d e)) =&gt; (a b c d e)
+(ilset-xor eq? (iq a b c d e)) =&gt; (a b c d e)
 </pre>
 
 
