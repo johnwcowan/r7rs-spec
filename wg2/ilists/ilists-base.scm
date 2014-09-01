@@ -4,11 +4,19 @@
 
 (define-record-type <ilist> (ipair icar icdr) ipair? (icar icar) (icdr icdr))
 
+;;; SRFI 8 syntax for receiving multiple values
+
+(define-syntax receive
+  (syntax-rules ()
+    ((receive formals expression body ...)
+     (call-with-values (lambda () expression)
+                       (lambda formals body ...)))))
+
 ;;; Syntax for quoting ilists
 
 (define-syntax iq
   (syntax-rules ()
-    ((iq obj ...) (gtree->itree (ilist 'obj ...)))))
+    ((iq . tree) (gtree->itree 'tree))))
 
 ;;; Replacers
 
@@ -127,10 +135,10 @@
   (check-arg procedure? proc ipair-for-each)
   (if (pair? lists)
 
-      (let lp ((lists (cons lis1 (list->ilist lists))))
+      (let lp ((lists (cons lis1 lists)))
         (let ((tails (%cdrs lists)))
           (if (pair? tails)
-              (begin (apply proc (car lists))
+              (begin (apply proc (map icar lists))
                      (lp tails)))))
 
       ;; Fast path.

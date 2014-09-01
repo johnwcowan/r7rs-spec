@@ -600,10 +600,10 @@
   (check-arg procedure? p iunfold)
   (check-arg procedure? f iunfold)
   (check-arg procedure? g iunfold)
-  (if (ipair? maybe-tail-gen)
+  (if (pair? maybe-tail-gen)
 
-      (let ((tail-gen (icar maybe-tail-gen)))
-	(if (ipair? (icdr maybe-tail-gen))
+      (let ((tail-gen (car maybe-tail-gen)))
+	(if (pair? (cdr maybe-tail-gen))
 	    (apply error "Too many arguments" iunfold p f g seed maybe-tail-gen)
 
 	    (let recur ((seed seed))
@@ -615,72 +615,72 @@
 	    (ipair (f seed) (recur (g seed)))))))
       
 
-(define (ifold kons knil lis1 . lists)
+(define (ifold kons knil ilis1 . ilists)
   (check-arg procedure? kons ifold)
-  (if (pair? lists)
-      (let lp ((lists (ipair lis1 lists)) (ans knil))	; N-ary case
-	(receive (cars+ans cdrs) (%cars+cdrs+ lists ans)
+  (if (pair? ilists)
+      (let lp ((ilists (cons ilis1 ilists)) (ans knil))	; N-ary case
+	(receive (cars+ans cdrs) (%cars+cdrs+ ilists ans)
 	  (if (null? cars+ans) ans ; Done.
 	      (lp cdrs (apply kons cars+ans)))))
 	    
-      (let lp ((lis lis1) (ans knil))			; Fast path
-	(if (null-ilist? lis) ans
-	    (lp (icdr lis) (kons (icar lis) ans))))))
+      (let lp ((ilis ilis1) (ans knil))			; Fast path
+	(if (null-ilist? ilis) ans
+	    (lp (icdr ilis) (kons (icar ilis) ans))))))
 
 
-(define (ifold-right kons knil lis1 . lists)
+(define (ifold-right kons knil ilis1 . ilists)
   (check-arg procedure? kons ifold-right)
-  (if (ipair? lists)
-      (let recur ((lists (ipair lis1 lists)))		; N-ary case
-	(let ((cdrs (%cdrs lists)))
+  (if (pair? ilists)
+      (let recur ((ilists (cons ilis1 ilists)))		; N-ary case
+	(let ((cdrs (%cdrs ilists)))
 	  (if (null? cdrs) knil
-	      (apply kons (%cars+ lists (recur cdrs))))))
+	      (apply kons (%cars+ ilists (recur cdrs))))))
 
-      (let recur ((lis lis1))				; Fast path
-	(if (null-ilist? lis) knil
-	    (let ((head (icar lis)))
-	      (kons head (recur (icdr lis))))))))
+      (let recur ((ilis ilis1))				; Fast path
+	(if (null? ilis) knil
+	    (let ((head (icar ilis)))
+	      (kons head (recur (icdr ilis))))))))
 
 
-(define (ipair-fold-right f zero lis1 . lists)
+(define (ipair-fold-right f zero ilis1 . ilists)
   (check-arg procedure? f ipair-fold-right)
-  (if (ipair? lists)
-      (let recur ((lists (ipair lis1 lists)))		; N-ary case
-	(let ((cdrs (%cdrs lists)))
+  (if (pair? ilists)
+      (let recur ((ilists (cons ilis1 ilists)))		; N-ary case
+	(let ((cdrs (%cdrs ilists)))
 	  (if (null? cdrs) zero
-	      (apply f (iappend lists (ilist (recur cdrs)))))))
+	      (apply f (append ilists (list (recur cdrs)))))))
 
-      (let recur ((lis lis1))				; Fast path
-	(if (null-ilist? lis) zero (f lis (recur (icdr lis)))))))
+      (let recur ((ilis ilis1))				; Fast path
+	(if (null-ilist? ilis) zero (f ilis (recur (icdr ilis)))))))
 
-(define (ipair-fold f zero lis1 . lists)
+(define (ipair-fold f zero ilis1 . ilists)
   (check-arg procedure? f ipair-fold)
-  (if (ipair? lists)
-      (let lp ((lists (ipair lis1 lists)) (ans zero))	; N-ary case
-	(let ((tails (%cdrs lists)))
+  (if (pair? ilists)
+      (let lp ((ilists (cons ilis1 ilists)) (ans zero))	; N-ary case
+	(let ((tails (%cdrs ilists)))
 	  (if (null? tails) ans
-	      (lp tails (apply f (iappend lists (ilist ans)))))))
+	      (lp tails (apply f (append ilists (list ans)))))))
 
-      (let lp ((lis lis1) (ans zero))
-	(if (null-ilist? lis) ans
-	    (let ((tail (icdr lis)))		; Grab the icdr now,
-	      (lp tail (f lis ans)))))))	; in case F SET-CDR!s LIS.
+      (let lp ((ilis ilis1) (ans zero))
+	(if (null-ilist? ilis) ans
+	    (let ((tail (icdr ilis)))		; Grab the icdr now,
+	      (lp tail (f ilis ans)))))))	; in case F SET-CDR!s LIS.
       
 
 ;;; IREDUCE and IREDUCE-RIGHT only use RIDENTITY in the empty-ilist case.
 ;;; These cannot meaningfully be n-ary.
 
-(define (ireduce f ridentity lis)
+(define (ireduce f ridentity ilis)
   (check-arg procedure? f ireduce)
-  (if (null-ilist? lis) ridentity
-      (ifold f (icar lis) (icdr lis))))
+  (if (null-ilist? ilis) ridentity
+      (ifold f (icar ilis) (icdr ilis))))
 
-(define (ireduce-right f ridentity lis)
+(define (ireduce-right f ridentity ilis)
   (check-arg procedure? f ireduce-right)
-  (if (null-ilist? lis) ridentity
-      (let recur ((head (icar lis)) (lis (icdr lis)))
-	(if (ipair? lis)
-	    (f head (recur (icar lis) (icdr lis)))
+  (if (null-ilist? ilis) ridentity
+      (let recur ((head (icar ilis)) (ilis (icdr ilis)))
+	(if (ipair? ilis)
+	    (f head (recur (icar ilis) (icdr ilis)))
 	    head))))
 
 
@@ -688,13 +688,13 @@
 ;;; Mappers: iappend-map ipair-for-each ifilter-map imap-in-order
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-(define (iappend-map f lis1 . lists)
-  (really-iappend-map iappend-map  iappend  f lis1 lists))
+(define (iappend-map f ilis1 . ilists)
+  (really-iappend-map iappend-map  iappend  f ilis1 ilists))
 
-(define (really-iappend-map who appender f lis1 lists)
+(define (really-iappend-map who appender f ilis1 ilists)
   (check-arg procedure? f who)
-  (if (ipair? lists)
-      (receive (cars cdrs) (%cars+cdrs (ipair lis1 lists))
+  (if (pair? ilists)
+      (receive (cars cdrs) (%cars+cdrs (cons ilis1 ilists))
 	(if (null? cars) '()
 	    (let recur ((cars cars) (cdrs cdrs))
 	      (let ((vals (apply f cars)))
@@ -703,47 +703,47 @@
 		      (appender vals (recur cars2 cdrs2))))))))
 
       ;; Fast path
-      (if (null-ilist? lis1) '()
-	  (let recur ((elt (icar lis1)) (rest (icdr lis1)))
+      (if (null-ilist? ilis1) '()
+	  (let recur ((elt (icar ilis1)) (rest (icdr ilis1)))
 	    (let ((vals (f elt)))
 	      (if (null-ilist? rest) vals
 		  (appender vals (recur (icar rest) (icdr rest)))))))))
 
 
-(define (ipair-for-each proc lis1 . lists)
+(define (ipair-for-each proc ilis1 . ilists)
   (check-arg procedure? proc ipair-for-each)
-  (if (ipair? lists)
+  (if (pair? ilists)
 
-      (let lp ((lists (ipair lis1 lists)))
-	(let ((tails (%cdrs lists)))
-	  (if (ipair? tails)
-	      (begin (apply proc lists)
-		     (lp tails)))))
+      (let lp ((ilists (cons ilis1 ilists)))
+	(let ((itails (%cdrs ilists)))
+	  (if (pair? itails)
+	      (begin (apply proc ilists)
+		     (lp itails)))))
 
       ;; Fast path.
-      (let lp ((lis lis1))
-	(if (not (null-ilist? lis))
-	    (let ((tail (icdr lis)))	; Grab the icdr now,
-	      (proc lis)		; in case PROC SET-CDR!s LIS.
+      (let lp ((ilis ilis1))
+	(if (not (null-ilist? ilis))
+	    (let ((tail (icdr ilis)))	; Grab the icdr now,
+	      (proc ilis)		; even though nothing can happen
 	      (lp tail))))))
 
 ;;; We stop when LIS1 runs out, not when any ilist runs out.
 ;;; Map F across L, and save up all the non-false results.
-(define (ifilter-map f lis1 . lists)
+(define (ifilter-map f ilis1 . ilists)
   (check-arg procedure? f ifilter-map)
-  (if (ipair? lists)
-      (let recur ((lists (ipair lis1 lists)))
-	(receive (cars cdrs) (%cars+cdrs lists)
-	  (if (ipair? cars)
+  (if (pair? ilists)
+      (let recur ((ilists (cons ilis1 ilists)))
+	(receive (cars cdrs) (%cars+cdrs ilists)
+	  (if (pair? cars)
 	      (cond ((apply f cars) => (lambda (x) (ipair x (recur cdrs))))
 		    (else (recur cdrs))) ; Tail call in this arm.
 	      '())))
 	    
       ;; Fast path.
-      (let recur ((lis lis1))
-	(if (null-ilist? lis) lis
-	    (let ((tail (recur (icdr lis))))
-	      (cond ((f (icar lis)) => (lambda (x) (ipair x tail)))
+      (let recur ((ilis ilis1))
+	(if (null-ilist? ilis) ilis
+	    (let ((tail (recur (icdr ilis))))
+	      (cond ((f (icar ilis)) => (lambda (x) (ipair x tail)))
 		    (else tail)))))))
 
 
@@ -967,17 +967,34 @@
 		(pred head)	; Last PRED app is tail call.
 		(and (pred head) (lp (icar tail) (icdr tail))))))))
 
-(define (iany pred lis1 . lists)
-  (error "FIXME: iany definition is broken"))
+(define (iany pred ilis1 . ilists)
+  (check-arg procedure? pred iany)
+  (if (pair? ilists)
+
+      ;; N-ary case
+      (receive (heads tails) (%cars+cdrs (cons ilis1 ilists))
+        (and (pair? heads)
+             (let lp ((heads heads) (tails tails))
+               (receive (next-heads next-tails) (%cars+cdrs tails)
+                 (if (pair? next-heads)
+                     (or (apply pred heads) (lp next-heads next-tails))
+                     (apply pred heads)))))) ; Last PRED app is tail call.
+
+      ;; Fast path
+      (and (not (null-ilist? ilis1))
+           (let lp ((head (icar ilis1)) (tail (icdr ilis1)))
+             (if (null-ilist? tail)
+                 (pred head)            ; Last PRED app is tail call.
+                 (or (pred head) (lp (icar tail) (icdr tail))))))))
 
 (define (ilist-index pred lis1 . lists)
   (check-arg procedure? pred ilist-index)
-  (if (ipair? lists)
+  (if (pair? lists)
 
       ;; N-ary case
-      (let lp ((lists (ipair lis1 lists)) (n 0))
+      (let lp ((lists (cons lis1 lists)) (n 0))
 	(receive (heads tails) (%cars+cdrs lists)
-	  (and (ipair? heads)
+	  (and (pair? heads)
 	       (if (apply pred heads) n
 		   (lp tails (+ n 1))))))
 

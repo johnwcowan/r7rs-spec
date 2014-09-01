@@ -2,6 +2,7 @@
 (use ilists)
 
 (test-group "ilists"
+
 (test-group "ilists/constructors"
   (define abc (ilist 'a 'b 'c))
   (test 'a (icar abc))
@@ -76,7 +77,6 @@
   (test 'n (icdaddr abcdefghijklmnop))
   (test 'o (icadddr abcdefghijklmnop))
   (test 'p (icddddr abcdefghijklmnop))
-
 ) ; end ilists/cxrs
 
 (test-group "ilists/selectors"
@@ -123,31 +123,182 @@
   (test 3 (icount < (iq 1 2 4 8) (iq 2 4 6 8 10 12 14 16)))
 ) ; end ilists/misc
 
-(test-group "ilists/fold"
+(test-group "ilists/folds"
+  ;; We have to be careful to test both single-list and multiple-list
+  ;; code paths, as they are different in this implementation.
 
   (define lis (iq 1 2 3))
   (test 6 (ifold + 0 lis))
   (test (iq 3 2 1) (ifold ipair '() lis))
-  (define lis2 (iq 'a 0 'b))
-  (test 2 (ifold (lambda (x count) (if (symbol? x) (+ count 1) count)) 0 lis2))
-  (test 4 (ifold
+  (test 2 (ifold
             (lambda (x count) (if (symbol? x) (+ count 1) count))
             0
+            (iq a 0 b)))
+  (test 4 (ifold
+            (lambda (s max-len) (max max-len (string-length s)))
+            0
             (iq "ab" "abcd" "abc")))
+  (test 32 (ifold
+             (lambda (a b ans) (+ (* a b) ans))
+             0
+             (iq 1 2 3)
+             (iq 4 5 6)))
+  (define (z x y ans) (ipair (ilist x y) ans))
+  (test (iq (b d) (a c))
+    (ifold z '() (iq a b) (iq c d)))
   (test lis (ifold-right ipair '() lis))
-  (test (iq 1 3) (ifold-right
+  (test (iq 0 2 4) (ifold-right
                    (lambda (x l) (if (even? x) (ipair x l) l))
                    '()
                    (iq 0 1 2 3 4)))
+  (test (iq (a c) (b d))
+    (ifold-right z '() (iq a b) (iq c d)))
   (test (iq (c) (b c) (a b c))
     (ipair-fold ipair '() (iq a b c)))
+  (test (iq ((b) (d)) ((a b) (c d)))
+    (ipair-fold z '() (iq a b) (iq c d)))
   (test (iq (a b c) (b c) (c))
     (ipair-fold-right ipair '() (iq a b c)))
+  (test (iq ((a b) (c d)) ((b) (d)))
+    (ipair-fold-right z '() (iq a b) (iq c d)))
   (test 5 (ireduce max 0 (iq 1 3 5 4 2 0)))
   (test 1 (ireduce - 0 (iq 1 2)))
-  (test -1 (ireduce - 0 (iq 1 2)))
+  (test -1 (ireduce-right - 0 (iq 1 2)))
+  (test (iq 1 4 9 16 25 36 49 64 81 100)
+   (iunfold (lambda (x) (> x 10))
+     (lambda (x) (* x x))
+     (lambda (x) (+ x 1))
+     1))
+  (test (iq 1 2 3) (iunfold null-ilist? icar icdr (iq 1 2 3)))
+  (test (iq 1 2 3 4)
+    (iunfold null-ilist? icar icdr (iq 1 2) (lambda (x) (iq 3 4))))
+  (test (iq b e h) (imap icadr (iq (a b) (d e) (g h))))
+  (test (iq b e h) (imap-in-order icadr (iq (a b) (d e) (g h))))
+  (test (iq 5 7 9) (imap + (iq 1 2 3) (iq 4 5 6)))
+  (test (iq 5 7 9) (imap-in-order + (iq 1 2 3) (iq 4 5 6)))
+  (define z (let ((count 0)) (lambda (ignored) (set! count (+ count 1)) count)))
+  (test (iq 1 2) (imap-in-order z (iq a b)))
+  (test '#(0 1 4 9 16)
+    (let ((v (make-vector 5)))
+      (ifor-each (lambda (i)
+                  (vector-set! v i (* i i)))
+                (iq 0 1 2 3 4))
+    v))
+  (test '#(5 7 9 11 13)
+    (let ((v (make-vector 5)))
+      (ifor-each (lambda (i j)
+                  (vector-set! v i (+ i j)))
+                (iq 0 1 2 3 4)
+                (iq 5 6 7 8 9))
+    v))
+  (test (iq 1 -1 3 -3 8 -8)
+    (iappend-map (lambda (x) (ilist x (- x))) (iq 1 3 8)))
+  (test (iq 1 4 2 5 3 6)
+    (iappend-map ilist (iq 1 2 3) (iq 4 5 6)))
+  (test (vector (iq 0 1 2 3 4) (iq 1 2 3 4) (iq 2 3 4) (iq 3 4) (iq 4))
+    (let ((v (make-vector 5)))
+      (ipair-for-each (lambda (lis) (vector-set! v (icar lis) lis)) (iq 0 1 2 3 4))
+    v))
+  (test (vector (iq 5 6 7 8 9) (iq 6 7 8 9) (iq 7 8 9) (iq 8 9) (iq 9))
+    (let ((v (make-vector 5)))
+      (ipair-for-each (lambda (i j) (vector-set! v (icar i) j))
+                (iq 0 1 2 3 4)
+                (iq 5 6 7 8 9))
+    v))
+  (test (iq 1 9 49)
+    (ifilter-map (lambda (x) (and (number? x) (* x x))) (iq a 1 b 3 c 7)))
+  (test (iq 5 7 9)
+    (ifilter-map
+      (lambda (x y) (and (number? x) (number? y) (+ x y)))
+      (iq 1 a 2 b 3 4)
+      (iq 4 0 5 y 6 z)))
+) ; end ilists/folds
 
-) ; end ilists/fold
+(test-group "ilists/filtering"
+  (test (iq 0 8 8 -4) (ifilter even? (iq 0 7 8 8 43 -4)))
+  (test (list (iq one four five) (iq 2 3 6))
+    (call-with-values
+      (lambda () (ipartition symbol? (iq one 2 3 four five 6)))
+      list))
+  (test (iq 7 43) (iremove even? (iq 0 7 8 8 43 -4)))
+) ; end ilists/filtering
+
+(test-group "ilists/searching"
+  (test 2 (ifind even? (iq 1 2 3)))
+  (test #t (iany  even? (iq 1 2 3)))
+  (test #f (ifind even? (iq 1 7 3)))
+  (test #f (iany  even? (iq 1 7 3)))
+  (test-error (ifind even? (ipair (1 (ipair 3 x)))))
+  (test-error (iany  even? (ipair (1 (ipair 3 x)))))
+  (test 4 (ifind even? (iq 3 1 4 1 5 9)))
+  (test (iq -8 -5 0 0) (ifind-tail even? (iq 3 1 37 -8 -5 0 0)))
+  (test (iq 2 18) (itake-while even? (iq 2 18 3 10 22 9)))
+  (test (iq 3 10 22 9) (idrop-while even? (iq 2 18 3 10 22 9)))
+  (test (list (iq 2 18) (iq 3 10 22 9))
+    (call-with-values
+      (lambda () (ispan even? (iq 2 18 3 10 22 9)))
+      list))
+  (test (list (iq 3 1) (iq 4 1 5 9))
+    (call-with-values
+      (lambda () (ibreak even? (iq 3 1 4 1 5 9)))
+      list))
+  (test #t (iany integer? (iq a 3 b 2.7)))
+  (test #f (iany integer? (iq a 3.1 b 2.7)))
+  (test #t (iany < (iq 3 1 4 1 5) (iq 2 7 1 8 2)))
+  (test #t (ievery integer? (iq 1 2 3 4 5)))
+  (test #f (ievery integer? (iq 1 2 3 4.5 5)))
+  (test #t (ievery < (iq 1 2 3) (iq 4 5 6)))
+  (test 2 (ilist-index even? (iq 3 1 4 1 5 9)))
+  (test 1 (ilist-index < (iq 3 1 4 1 5 9 2 5 6) (iq 2 7 1 8 2)))
+  (test #f (ilist-index = (iq 3 1 4 1 5 9 2 5 6) (iq 2 7 1 8 2)))
+  (test (iq a b c) (imemq 'a (iq a b c)))
+  (test (iq b c) (imemq 'b (iq a b c)))
+  (test #f (imemq 'a (iq b c d)))
+  (test #f (imemq (ilist 'a) (iq b (a) c)))
+  (test (iq (a) c) (imember (ilist 'a) (iq b (a) c)))
+  (test (iq 101 102) (imemv 101 (iq 100 101 102)))
+) ; end ilists/searching
+
+(test-group "ilists/deletion"
+  (test (iq 1 2 4 5) (idelete 3 (iq 1 2 3 4 5)))
+  (test (iq 3 4 5) (idelete 5 (iq 3 4 5 6 7) <))
+  (test (iq a b c z) (idelete-duplicates (iq a b a c a b c z)))
+) ; end ilists/deletion
+
+(test-group "ilists/alists"
+  (define e (iq (a 1) (b 2) (c 3))) (test (iq a 1) (iassq 'a e))
+  (test (iq b 2) (iassq 'b e))
+  (test #f (iassq 'd e))
+  (test #f (iassq (ilist 'a) (iq ((a)) ((b)) ((c)))))
+  (test (iq (a)) (iassoc (ilist 'a) (iq ((a)) ((b)) ((c)))))
+  (define e2 (iq (2 3) (5 7) (11 13)))
+  (test (iq 5 7) (iassv 5 e2))
+  (test (iq 11 13) (iassoc 5 e2 <))
+  (test (ipair (iq 1 1) e2) (ialist-cons 1 (ilist 1) e2))
+  (test (iq (2 3) (11 13)) (ialist-delete 5 e2))
+  (test (iq (2 3) (5 7)) (ialist-delete 5 e2 <))
+) ; end ilists/alists
+
+(test-group "ilists/sets"
+  (test #t (ilset<= eq? (iq a) (iq a b a) (iq a b c c)))
+  (test #t (ilset<= eq?))
+  (test #t (ilset<= eq? (iq a)))
+  (test #t (ilset= eq? (iq b e a) (iq a e b) (iq e e b a)))
+  (test #t (ilset= eq?))
+  (test #t (ilset= eq? (iq a)))
+  (test (iq u o i a b c d c e) (ilset-adjoin eq? (iq a b c d c e) 'a 'e 'i 'o 'u))
+  (test (iq u o i a b c d e) (ilset-union eq? (iq a b c d e) (iq a e i o u)))
+  (test (iq x a a c) (ilset-union eq? (iq a a c) (iq x a x)))
+  (test '() (ilset-union eq?))
+  (test (iq a b c) (ilset-union (iq a b c)))
+  (test (iq a e) (ilset-intersection eq? (iq a b c d e) (iq a e i o u)))
+  (test (iq a x a) (ilset-intersection eq? (iq a x y a) (iq x a x z)))
+  (test (iq a b c) (ilset-intersection eq? (iq a b c)))
+  (test (iq b c d) (ilset-difference eq? (iq a b c d e) (iq a e i o u)))
+  (test (iq a b c) (ilset-difference eq? (iq a b c)))
+  (test (iq d c b i o u) (ilset-xor eq? (iq a b c d e) (iq a e i o u)))
+  (test (iq a b c d e) (ilset-xor eq? (iq a b c d e)))
+) ; end ilists/sets
 
 ) ; end ilists
 

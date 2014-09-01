@@ -1,7 +1,7 @@
 (module ilists ()
   (import scheme)
   (import (only chicken
-    include define-record-type define-record-printer receive error))
+    include define-record-type define-record-printer error))
   (export iq)
   (export ipair ilist xipair ipair* make-ilist ilist-tabulate iiota)
   (export ipair?)

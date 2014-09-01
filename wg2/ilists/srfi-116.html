@@ -189,7 +189,14 @@ Because "icons" means something else in both ordinary English and computer jargo
 </p><p>
 In the prose, immutable pairs and lists are known as ipairs and ilists throughout.
 </p><p>
-The sample implementation of this SRFI is derived from the sample implementation of SRFI 1, but with a few easy modernizations.  It depends on SRFI 9 (or R7RS) records.
+The sample implementation of this SRFI is derived from the sample implementation of SRFI 1, but with a few easy modernizations.  It depends on SRFI 9 (or R7RS) records.  The five files in the implementation are as follows:
+
+<ul>
+<li><code>ilists-impl.scm</code> is a modified version of the SRFI 1 implementation.</li>
+<li><code>ilists-base.scm</code> provides the definition of ipair records as well as additional procedures that are required by this SRFI.</li>
+<li><code>ilists.sld</code> is an R7RS library.</li>
+<li><code>ilists.scm</code> is a Chicken library.</li>
+<li><code>ilists-test.scm</code> is a set of tests using the Chicken <code>test</code> egg, which is also available in Chibi as the R7RS library <code>(chibi test)</code>.</li></ul>
 
 
 <!--========================================================================-->
@@ -1800,7 +1807,7 @@ and <code>ibreak</code> breaks the ilist at the first element satisfying
     case, <code>ilist-index</code> returns <code>#f</code>.
 
 </p><pre class="code-example">(ilist-index even? (iq 3 1 4 1 5 9)) =&gt; 2
-(list-index &lt; (iq 3 1 4 1 5 9 2 5 6) (iq 2 7 1 8 2)) =&gt; 1
+(ilist-index &lt; (iq 3 1 4 1 5 9 2 5 6) (iq 2 7 1 8 2)) =&gt; 1
 (ilist-index = (iq 3 1 4 1 5 9 2 5 6) (iq 2 7 1 8 2)) =&gt; #f
 </pre>
 
@@ -2045,7 +2052,7 @@ in these cases, immutable maps or some other alternative should be employed.
 
 
 <!--========================================================================-->
-<h2><a name="SetOperationsOnLists">Set operations on ilists</a></h2>
+<h2><a name="SetOperationsOnIlists">Set operations on ilists</a></h2>
 <p>
 These procedures implement operations on sets represented as ilists of elements.
 They all take an <var>=</var> argument used to compare elements of ilists. 
@@ -2211,7 +2218,7 @@ structures and algorithms.
 </p><pre class="code-example">(ilset-intersection eq? (iq a b c d e) (iq a e i o u)) =&gt; (a e)
 
 ;; Repeated elements in ilist1 are preserved.
-(ilset-intersection eq? (iq a x y a) (iq x a x z)) =&gt; (iq a x a)
+(ilset-intersection eq? (iq a x y a) (iq x a x z)) =&gt; (a x a)
 
 (ilset-intersection eq? (iq a b c)) =&gt; (a b c)     ; Trivial case
 </pre>
