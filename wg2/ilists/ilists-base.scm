@@ -21,10 +21,10 @@
 ;;; Replacers
 
 (define (replace-icar old new)
-  (ipair new (cdr old)))
+  (ipair new (icdr old)))
 
 (define (replace-icdr old new)
-  (ipair (car old) new))
+  (ipair (icar old) new))
 
 ;;; Conversion between lists and ilists
 
@@ -35,17 +35,19 @@
   (cons (icar ipair) (icdr ipair)))
 
 (define (list->ilist list)
-  (if (pair? list)
-    (ipair (car list) (list->ilist (cdr list)))
-    list))
+  (let lp ((list list))
+    (if (pair? list)
+      (ipair (car list) (lp (cdr list)))
+      list)))
 
 (define (ilist . objs)
   (list->ilist objs))
 
 (define (ilist->list ilist)
-  (if (ipair? ilist)
-    (cons (icar ilist) (list->ilist (icdr ilist)))
-    list))
+  (let lp ((ilist ilist))
+    (if (ipair? ilist)
+      (cons (icar ilist) (lp (icdr ilist)))
+      ilist)))
 
 (define (tree->itree obj)
   (if (pair? obj)

@@ -279,6 +279,26 @@
   (test (iq (2 3) (5 7)) (ialist-delete 5 e2 <))
 ) ; end ilists/alists
 
+(test-group "ilists/replacers"
+  (test (ipair 1 3) (replace-icar (ipair 2 3) 1))
+  (test (ipair 1 3) (replace-icdr (ipair 1 2) 3))
+) ; end ilists/replacers
+
+(test-group "ilists/conversion"
+  (test (ipair 1 2) (pair->ipair '(1 . 2)))
+  (test '(1 . 2) (ipair->pair (ipair 1 2)))
+  (test (iq 1 2 3) (list->ilist '(1 2 3)))
+  (test '(1 2 3) (ilist->list (iq 1 2 3)))
+  (test (ipair 1 (ipair 2 3)) (list->ilist '(1 2 . 3)))
+  (test '(1 2 . 3) (ilist->list (ipair 1 (ipair 2 3))))
+  (test (ipair (ipair 1 2) (ipair 3 4)) (tree->itree '((1 . 2) . (3 . 4))))
+  (test '((1 . 2) . (3 . 4)) (itree->tree (ipair (ipair 1 2) (ipair 3 4))))
+  (test (ipair (ipair 1 2) (ipair 3 4)) (gtree->itree (cons (ipair 1 2) (ipair 3 4))))
+  (test '((1 . 2) . (3 . 4)) (gtree->tree (cons (ipair 1 2) (ipair 3 4))))
+  (test 6 (iapply + (iq 1 2 3)))
+  (test 15 (iapply + 1 2 (iq 3 4 5)))
+) ; end ilists/conversion
+
 ) ; end ilists
 
 (test-exit)

@@ -168,8 +168,9 @@ You can access the discussion via <a href="http://srfi.schemers.org/srfi-116/mai
   </li><li><a href="#Replacers">Replacers</a>
   </li><li><a href="#Conversion">Conversion</a>
   </li><li><a href="#ProcedureApplication">Procedure application</a>
+  </li><li><a href="#Comparator">Comparator</a>
   </li></ul>
-</li><li><a href="#Comparator">Comparator</a>
+</li><li><a href="#SampleImplementation">Sample Implementation</a>
 </li><li><a href="#Acknowledgements">Acknowledgements</a>
 </li><li><a href="#ReferencesLinks">References &amp; links</a>
 </li><li><a href="#Copyright">Copyright</a>
@@ -180,27 +181,23 @@ You can access the discussion via <a href="http://srfi.schemers.org/srfi-116/mai
 <h1><a name="Abstract">Abstract</a></h1>
 <p>
 Scheme currently does not provide immutable pairs corresponding to its existing mutable pairs, although most uses of pairs do not exploit their mutability.  The <a href="http://www.racket-lang.org">Racket</a> system takes the radical approach of making Scheme's pairs immutable, and providing a minimal library of mutable pairs with procedures named <code>mpair?, mcons, mcar, mcdr, set-mcar!, set-mcdr!</code>.  This SRFI takes the opposite approach of leaving Scheme's pairs unchanged and providing a full set of routines for creating and dealing with immutable pairs.  The sample implementation is portable and efficient.</p>
-<!--========================================================================-->
 <h1><a name="Rationale">Rationale</a></h1>
 <p>
-Rather than attempting to design this library from scratch, I have chosen the conservative option of modifying <a href="http://srfi.schemers.org/srfi-1/srfi-1.html">SRFI 1</a>.  By discarding the linear-update procedures ending in <code>!</code>, dropping references to circular lists, and inserting an <code>i</code> at a judicious place in each identifier (usually at the beginning) the library remains fairly rich.  I have added a few procedures for conversion between ordinary pairs and immutable pairs and for applying a procedure to an immutable list of arguments.
-</p><p>
-Because "icons" means something else in both ordinary English and computer jargon, the basic constructor and its immediate relatives are named <code>ipair</code>, <code>xipair</code> and <code>ipair*</code> instead.
-</p><p>
+Rather than attempting to design this library from scratch, I have chosen the conservative option of modifying <a href="http://srfi.schemers.org/srfi-1/srfi-1.html">SRFI 1</a>.  Consequently, most of the rationale given in that document applies to this one as well.  I have made the following changes:</p>
+
+<ul><li>Removed all linear-update procedures ending in <code>!</code></li>
+<li>Removed all references to circular lists (there will be a future SRFI for immutable bidirectional cycles).</li>
+<li>Removed <code>first</code>, <code>second </code>, etc., which are mostly used for poor man's records.</li>
+<li>Removed the O(n<sup>2</sup>) lists-as-sets procedures (there will be a future SRFI supporting O(n log n) immutable sets).</li>
+<li>Inserted an <code>i</code> at a judicious place in each identifier, usually at the beginning.  However, because "icons" means something else in both ordinary English and computer jargon, the basic constructor and its immediate relatives are named <code>ipair</code>, <code>xipair</code> and <code>ipair*</code> instead.</li>
+<li>Added procedures for conversion between ordinary and immutable pairs, lists, and trees.</li>
+<li>Added an analogue of <code>apply</code> for applying a procedure to an immutable list of arguments.</li></ul>
+
+<p>
 In the prose, immutable pairs and lists are known as ipairs and ilists throughout.
-</p><p>
-The sample implementation of this SRFI is derived from the sample implementation of SRFI 1, but with a few easy modernizations.  It depends on SRFI 9 (or R7RS) records.  The five files in the implementation are as follows:
-
-<ul>
-<li><code>ilists-impl.scm</code> is a modified version of the SRFI 1 implementation.</li>
-<li><code>ilists-base.scm</code> provides the definition of ipair records as well as additional procedures that are required by this SRFI.</li>
-<li><code>ilists.sld</code> is an R7RS library.</li>
-<li><code>ilists.scm</code> is a Chicken library.</li>
-<li><code>ilists-test.scm</code> is a set of tests using the Chicken <code>test</code> egg, which is also available in Chibi as the R7RS library <code>(chibi test)</code>.</li></ul>
-
-
+</p>
 <!--========================================================================-->
-</p><h1><a name="ProcedureIndex">Procedure Index</a></h1>
+<h1><a name="ProcedureIndex">Procedure Index</a></h1>
 <p>
 Here is a short list of the procedures provided by this SRFI.  To interpret the examples, pretend that they are executed on a Scheme that prints immutable pairs and lists with the syntax of mutable ones.  Although it may be reasonable for <code>display</code> to work this way, <code>write</code> should not.
 
@@ -2193,6 +2190,18 @@ This procedure allows a procedure to be applied to an ilist.
      using <var>element-comparator</var> to compare the elements.
 </dd></dl>
  
+<!--========================================================================-->
+<h1><a name="SampleImplementation">Sample Implementation</a></h1>
+<p>The sample implementation of this SRFI is derived from the sample implementation of SRFI 1.  It depends on SRFI 9 (or R7RS) records.  The five files in the implementation are as follows:</p>
+
+<ul>
+<li><code>ilists-impl.scm</code> is a modified version of the SRFI 1 implementation.</li>
+<li><code>ilists-base.scm</code> provides the definition of ipair records as well as additional procedures that are required by this SRFI.</li>
+<li><code>ilists.sld</code> is an R7RS library.</li>
+<li><code>ilists.scm</code> is a Chicken library.</li>
+<li><code>ilists-test.scm</code> is a set of tests using the Chicken <code>test</code> egg, which is also available in Chibi as the R7RS library <code>(chibi test)</code>.</li></ul>
+
+
 
 
 <!--========================================================================-->
@@ -2204,7 +2213,7 @@ This is not to imply that either Olin or anyone else necessarily endorses the fi
 results, of course. 
 
 
-sr<!--========================================================================-->
+<!--========================================================================-->
 </p><h1><a name="ReferencesLinks">References &amp; links</a></h1>
 <p>
 
