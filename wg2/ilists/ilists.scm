@@ -23,8 +23,6 @@
   (export ilist-index itake-while idrop-while ispan ibreak)
   (export idelete idelete-duplicates )
   (export iassoc iassq iassv ialist-cons ialist-delete)
-  (export ilset<= ilset= ilset-adjoin ilset-union ilset-intersection)
-  (export ilset-difference ilset-xor ilset-diff+intersection)
   (export replace-icar replace-icdr)
   (export pair->ipair ipair->pair list->ilist ilist->list)
   (export tree->itree itree->tree gtree->itree gtree->tree)

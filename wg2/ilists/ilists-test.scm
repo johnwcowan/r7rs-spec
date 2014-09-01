@@ -279,27 +279,6 @@
   (test (iq (2 3) (5 7)) (ialist-delete 5 e2 <))
 ) ; end ilists/alists
 
-(test-group "ilists/sets"
-  (test #t (ilset<= eq? (iq a) (iq a b a) (iq a b c c)))
-  (test #t (ilset<= eq?))
-  (test #t (ilset<= eq? (iq a)))
-  (test #t (ilset= eq? (iq b e a) (iq a e b) (iq e e b a)))
-  (test #t (ilset= eq?))
-  (test #t (ilset= eq? (iq a)))
-  (test (iq u o i a b c d c e) (ilset-adjoin eq? (iq a b c d c e) 'a 'e 'i 'o 'u))
-  (test (iq u o i a b c d e) (ilset-union eq? (iq a b c d e) (iq a e i o u)))
-  (test (iq x a a c) (ilset-union eq? (iq a a c) (iq x a x)))
-  (test '() (ilset-union eq?))
-  (test (iq a b c) (ilset-union (iq a b c)))
-  (test (iq a e) (ilset-intersection eq? (iq a b c d e) (iq a e i o u)))
-  (test (iq a x a) (ilset-intersection eq? (iq a x y a) (iq x a x z)))
-  (test (iq a b c) (ilset-intersection eq? (iq a b c)))
-  (test (iq b c d) (ilset-difference eq? (iq a b c d e) (iq a e i o u)))
-  (test (iq a b c) (ilset-difference eq? (iq a b c)))
-  (test (iq d c b i o u) (ilset-xor eq? (iq a b c d e) (iq a e i o u)))
-  (test (iq a b c d e) (ilset-xor eq? (iq a b c d e)))
-) ; end ilists/sets
-
 ) ; end ilists
 
 (test-exit)
