@@ -257,7 +257,7 @@ distinguishable from \rsixrs\ libraries.
 In \rsevenrs\ terms, the body of an \rsixrs\ library consists
 of a single export declaration followed by a single import declaration,
 followed by commands and definitions.  In \rsevenrs, commands and
-definitions are not permitted directly within the body: they have to be be wrapped in a {\cf begin}
+definitions are not permitted directly within the body: they have to be wrapped in a {\cf begin}
 library declaration.
 
 \item There is no direct \rsixrs\ equivalent of the {\cf include}, {\cf include-ci},
@@ -288,8 +288,10 @@ Non-Unicode characters are permitted.
 
 \item The full numeric tower is optional as in \rfivers, but optional support for IEEE
 infinities, NaN, and {\mbox -0.0} was adopted from \rsixrs. Most clarifications on
-numeric results were also adopted, but the \rsixrs\ procedures {\cf real-valued?},
-{\cf rational-valued?}, and {\cf integer-valued}? were not. 
+numeric results were also adopted, but the semantics of the \rsixrs\ procedures {\cf real?},
+{\cf rational?}, and {\cf integer}? were not adopted.
+(Note that the \rfivers{}/\rsevenrs\ semantics are available in \rsixrs\ using
+{\cf real-valued?}, {\cf rational-valued?}, and {\cf integer-valued?}).
 The \rsixrs\ division operators {\cf div}, {\cf mod}, {\cf div-and-mod}, {\cf
 div0}, {\cf mod0} and {\cf div0-and-mod0} are not provided.
 
