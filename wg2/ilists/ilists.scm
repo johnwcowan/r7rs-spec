@@ -7,6 +7,7 @@
   (export ipair?)
   (export proper-ilist? ilist? dotted-ilist? not-ipair? null-ilist? ilist=)
   (export icar icdr ilist-ref)
+  (export ifirst isecond ithird ifourth ififth isixth iseventh ieighth ininth itenth)
   (export icaar icadr icdar icddr)
   (export icaaar icaadr icadar icaddr icdaar icdadr icddar icdddr)
   (export icaaaar icaaadr icaadar icaaddr icadaar icadadr icaddar icadddr)

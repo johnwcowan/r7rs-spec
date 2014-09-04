@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0//EN" "http://www.w3.org/TR/REC-html40/strict.dtd">
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0//EN" "http://www.w3.org/TR/REC-html40/strict.dtd">
 <html lang="en-US"><head><meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1"/>
     <meta name="keywords" content="Scheme, programming language, list processing, SRFI, underage lesbian threesomes"/>
     <title>SRFI 116: Immutable List Library</title>
@@ -164,7 +164,6 @@ You can access the discussion via <a href="http://srfi.schemers.org/srfi-116/mai
   </li><li><a href="#Searching">Searching</a>
   </li><li><a href="#Deletion">Deletion</a>
   </li><li><a href="#ImmutableassociationLists">Immutable association lists</a>
-  </li><li><a href="#SetOperationsOnIlists">Set operations on ilists</a>
   </li><li><a href="#Replacers">Replacers</a>
   </li><li><a href="#Conversion">Conversion</a>
   </li><li><a href="#ProcedureApplication">Procedure application</a>
@@ -187,7 +186,6 @@ Rather than attempting to design this library from scratch, I have chosen the co
 
 <ul><li>Removed all linear-update procedures ending in <code>!</code></li>
 <li>Removed all references to circular lists (there will be a future SRFI for immutable bidirectional cycles).</li>
-<li>Removed <code>first</code>, <code>second </code>, etc., which are mostly used for poor man's records.</li>
 <li>Removed the O(n<sup>2</sup>) lists-as-sets procedures (there will be a future SRFI supporting O(n log n) immutable sets).</li>
 <li>Inserted an <code>i</code> at a judicious place in each identifier, usually at the beginning.  However, because "icons" means something else in both ordinary English and computer jargon, the basic constructor and its immediate relatives are named <code>ipair</code>, <code>xipair</code> and <code>ipair*</code> instead.</li>
 <li>Added procedures for conversion between ordinary and immutable pairs, lists, and trees.</li>
@@ -221,6 +219,7 @@ Here is a short list of the procedures provided by this SRFI.  To interpret the 
 </dd><dt class="proc-index"> Selectors
 </dt><dd class="proc-index">
 <pre class="proc-index"><a href="#icar">icar</a> <a href="#icdr">icdr</a> ... <a href="#icddadr">icddadr</a> <a href="#icddddr">icddddr</a> <a href="#ilist-ref">ilist-ref</a>
+<a href="http://srfi.schemers.org/srfi-1/srfi-1.html#ifirst">ifirst</a> <a href="http://srfi.schemers.org/srfi-1/srfi-1.html#isecond">isecond</a> <a href="http://srfi.schemers.org/srfi-1/srfi-1.html#ithird">ithird</a> <a href="http://srfi.schemers.org/srfi-1/srfi-1.html#ifourth">ifourth</a> <a href="http://srfi.schemers.org/srfi-1/srfi-1.html#ififth">ififth</a> <a href="http://srfi.schemers.org/srfi-1/srfi-1.html#isixth">isixth</a> <a href="http://srfi.schemers.org/srfi-1/srfi-1.html#iseventh">iseventh</a> <a href="http://srfi.schemers.org/srfi-1/srfi-1.html#ieighth">ieighth</a> <a href="http://srfi.schemers.org/srfi-1/srfi-1.html#ininth">ininth</a> <a href="http://srfi.schemers.org/srfi-1/srfi-1.html#itenth">itenth</a>
 <a href="#icar+icdr">icar+icdr</a>
 <a href="#itake">itake</a>       <a href="#idrop">idrop</a>/<a href="#ilist-tail">ilist-tail</a>
 <a href="#itake-right">itake-right</a> <a href="#idrop-right">idrop-right</a>
@@ -272,16 +271,6 @@ Here is a short list of the procedures provided by this SRFI.  To interpret the 
 <pre class="proc-index"><a href="#iassoc">iassoc</a> <a href="#iassq">iassq</a> <a href="#iassv">iassv</a>
 <a href="#ialist-cons">ialist-cons</a> 
 <a href="#ialist-delete">ialist-delete</a>
-</pre>
-
-</dd><dt class="proc-index"> Set operations on ilists
-</dt><dd class="proc-index">
-<pre class="proc-index"><a href="#ilset&lt;=">ilset&lt;=</a> <a href="#ilset=">ilset=</a> <a href="#ilset-adjoin">ilset-adjoin</a>
-<a href="#ilset-union">ilset-union</a>			
-<a href="#ilset-intersection">ilset-intersection</a>		
-<a href="#ilset-difference">ilset-difference</a>		        
-<a href="#ilset-xor">ilset-xor</a>			
-<a href="#ilset-diff+intersection">ilset-diff+intersection</a>	        
 </pre>
 
 </dd><dt class="proc-index"> Replacement
@@ -558,6 +547,20 @@ defined to accept such an argument.
 </p>
 
 <!--
+==== dotted-ilist?
+============================================================================-->
+<a name="dotted-ilist-p"></a>
+</dd><dt class="proc-def"><code class="proc-def">dotted-ilist?</code><var> x -&gt; boolean</var>
+</dt><dd class="proc-def">
+    True if <var>x</var> is a finite, non-nil-terminated ilist. That is, there exists
+    an <var>n</var> &gt;= 0 such that icdr<sup><var>n</var></sup>(<var>x</var>) is neither an ipair nor (). 
+    This includes
+    non-ipair, non-() values (<em>e.g.</em> symbols, numbers), 
+    which are considered to be dotted ilists of length 0.
+<pre>(dotted-ilist? <var>x</var>) = (not (proper-ilist? <var>x</var>))
+</pre>
+
+<!--
 ==== ipair?
 ============================================================================-->
 <a name="ipair-p"></a>
@@ -717,6 +720,54 @@ defined to accept such an argument.
 <pre class="code-example">    
 (ilist-ref (iq a b c d) 2) =&gt; c
 </pre>    
+
+<!--
+==== itenth
+==== ininth
+==== ieighth
+==== iseventh
+==== isixth
+==== ififth
+==== ifourth
+==== ithird
+==== isecond
+==== ifirst
+============================================================================-->
+</dd><dt class="proc-def1">
+<a name="ifirst"></a>
+<code class="proc-def">ifirst&nbsp;&nbsp;&nbsp;</code><var>pair -&gt; object </var>
+</dt><dt class="proc-defi">
+<a name="isecond"></a>
+<code class="proc-def">isecond&nbsp;&nbsp;</code><var>pair -&gt; object </var>
+</dt><dt class="proc-defi">
+<a name="ithird"></a>
+<code class="proc-def">ithird&nbsp;&nbsp;&nbsp;</code><var>pair -&gt; object </var>
+</dt><dt class="proc-defi">
+<a name="ifourth"></a>
+<code class="proc-def">ifourth&nbsp;&nbsp;</code><var>pair -&gt; object </var>
+</dt><dt class="proc-defi">
+<a name="ififth"></a>
+<code class="proc-def">ififth&nbsp;&nbsp;&nbsp;</code><var>pair -&gt; object </var>
+</dt><dt class="proc-defi">
+<a name="isixth"></a>
+<code class="proc-def">isixth&nbsp;&nbsp;&nbsp;</code><var>pair -&gt; object </var>
+</dt><dt class="proc-defi">
+<a name="iseventh"></a>
+<code class="proc-def">iseventh&nbsp;</code><var>pair -&gt; object </var>
+</dt><dt class="proc-defi">
+<a name="ieighth"></a>
+<code class="proc-def">ieighth&nbsp;&nbsp;</code><var>pair -&gt; object </var>
+</dt><dt class="proc-defi">
+<a name="ininth"></a>
+<code class="proc-def">ininth&nbsp;&nbsp;&nbsp;</code><var>pair -&gt; object </var>
+</dt><dt class="proc-defn">
+<a name="itenth"></a>
+<code class="proc-def">itenth&nbsp;&nbsp;&nbsp;</code><var>pair -&gt; object  </var>
+</dt><dd class="proc-def">
+    Synonyms for <code>car</code>, <code>cadr</code>, <code>caddr</code>, ... 
+
+<pre class="code-example">(ithird '(a b c d e)) =&gt; c
+</pre>
 
 <!--
 ==== icar+icdr

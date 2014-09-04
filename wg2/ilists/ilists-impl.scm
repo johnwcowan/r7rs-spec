@@ -45,6 +45,7 @@
 ;;; ialist-delete
 ;;; ipair ipair? null? icar icdr 
 ;;; ilist ilength iappend ireverse icadr ... icddddr ilist-ref
+;;; first second third fourth fifth sixth seventh eighth ninth tenth
 ;;; imemq imemv iassq iassv
 ;;;
 ;;;   ilist-tail (same as idrop)
