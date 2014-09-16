@@ -1870,7 +1870,7 @@ The {\cf list-tail} procedure could be defined by
 \proto{list-ref}{ list \vr{k}}{procedure}}
 
 \domain{The \var{list} argument can be circular, but
-it is an error if \var{list} has fewer than \vr{k} elements.}
+it is an error if \var{list} has \vr{k} or fewer elements.}
 Returns the \vr{k}th element of \var{list}.  (This is the same
 as the car of {\tt(list-tail \var{list} \vr{k})}.)
 
