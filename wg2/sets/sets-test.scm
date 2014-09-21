@@ -55,11 +55,12 @@
   (set! nums (set eqv-comparator 10 20 30 40 50))
   ;; nums is now {10, 20, 30, 40, 50}
   (test-assert
-    (set=? nums (set-unfold eqv-comparator
+    (set=? nums (set-unfold
        (lambda (i) (= i 0))
        (lambda (i) (* i 10))
        (lambda (i) (- i 1))
-       5)))
+       5
+       eqv-comparator)))
   (test '(a) (set->list (set eq-comparator 'a)))
   (set! syms2 (list->set eq-comparator '(e f)))
   ;; syms2 is now {e, f}
@@ -290,11 +291,12 @@
   (set! nums (bag eqv-comparator 10 20 30 40 50))
   ;; nums is now {10, 20, 30, 40, 50}
   (test-assert
-    (bag=? nums (bag-unfold eqv-comparator
+    (bag=? nums (bag-unfold
        (lambda (i) (= i 0))
        (lambda (i) (* i 10))
        (lambda (i) (- i 1))
-       5)))
+       5
+       eqv-comparator)))
   (test '(a) (bag->list (bag eq-comparator 'a)))
   (set! syms2 (list->bag eq-comparator '(e f)))
   ;; syms2 is now {e, f}

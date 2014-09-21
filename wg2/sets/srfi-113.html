@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html SYSTEM "-//W3C//DTD HTML 3.2 Final//EN">
+<!DOCTYPE html SYSTEM "-//W3C//DTD HTML 3.2 Final//EN">
 <html><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
     
     <title>SRFI 113: Sets and Bags</title>
@@ -128,7 +128,7 @@ subscribe to the list.  You can access previous messages via
 
 <p>Returns a newly allocated empty set.  The <em>comparator</em> argument is a <a href="http://srfi.schemers.org/srfi-114/srfi-114.html">SRFI 114</a> comparator, which is used to control and distinguish the elements of the set.  The <em>elements</em> are used to initialize the set.</p>
 
-<p><code>(set-unfold </code><em>comparator stop? mapper successor seed</em><code>)</code></p>
+<p><code>(set-unfold </code><em>stop? mapper successor seed comparator</em><code>)</code></p>
 
 <p>Create a newly allocated set as if by <code>set</code> using <em>comparator</em>.  If the result of applying the predicate <em>stop?</em> to <em>seed</em> is true, return the set.  Otherwise, apply the procedure <em>mapper</em> to <em>seed</em>.  The value that <em>mapper</em> returns is added to the set.  Then get a new seed by applying the procedure <em>successor</em> to <em>seed</em>, and repeat this algorithm.</p>
 

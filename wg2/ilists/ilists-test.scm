@@ -1,4 +1,5 @@
 (use test)
+(use comparators)
 (use ilists)
 
 (test-group "ilists"

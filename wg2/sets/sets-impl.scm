@@ -142,7 +142,7 @@
 ;; we provide an opportunity to map the sequence of seeds through a
 ;; mapper function.
 
-(define (sob-unfold comparator stop? mapper successor seed multi?)
+(define (sob-unfold stop? mapper successor seed comparator multi?)
   (let ((result (make-sob comparator multi?)))
     (let loop ((seed seed))
       (if (stop? seed)
@@ -151,11 +151,11 @@
             (sob-increment! result (mapper seed) 1)
             (loop (successor seed)))))))
 
-(define (set-unfold comparator continue? mapper successor seed)
-  (sob-unfold comparator continue? mapper successor seed #f))
+(define (set-unfold continue? mapper successor seed comparator)
+  (sob-unfold continue? mapper successor seed comparator #f))
 
-(define (bag-unfold comparator continue? mapper successor seed)
-  (sob-unfold comparator continue? mapper successor seed #t))
+(define (bag-unfold continue? mapper successor seed comparator)
+  (sob-unfold continue? mapper successor seed comparator #t))
 
 ;;; Predicates
 
