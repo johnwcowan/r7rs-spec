@@ -381,11 +381,12 @@ evaluates to the list <code>(10 2 3)</code>, the expression
 <code>(set-car! '(1 2 3) 10)</code> is not portable and in fact an error.</p>
 
 <p>This SRFI recommends that implementations that provide both this SRFI and
-immutable quotations should cause quotations to return the same immutable
-pairs that this SRFI describes.  This means that the standard Scheme pair
-and list operations, as well as libraries like SRFI 1 which are built on them,
-should accept both mutable and immutable pairs: thus <code>(car (ilist 1 2))</code>
-should evaluate to <code>1</code>.</p>
+immutable quotations should cause quotations and quasiquotations to return the
+same immutable pairs that this SRFI describes.  This means that the standard
+Scheme pair and list operations, as well as libraries like SRFI 1 which are 
+built on them, accept both mutable and immutable pairs: thus
+<code>(car (ilist 1 2))</code> evaluates to <code>1</code>
+because <code>(car '(1 2))</code> does.</p>
 
 <p>This SRFI further recommends that <code>read</code> should return mutable
 pairs and lists when reading list structure.  No recommendation is made about the
