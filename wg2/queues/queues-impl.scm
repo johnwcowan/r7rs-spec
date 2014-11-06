@@ -54,7 +54,7 @@
 ;;; The invariant is that either first is (the first pair of) a list
 ;;; and last is the last pair, or both of them are the empty list.
 
-(define-record-type <queue> (raw-make-queue first last) queue?
+(define-record-type <queue> (first-last->queue first last) queue?
   (first first set-first!)
   (last last set-last!))
 
@@ -62,8 +62,8 @@
 
 (define (list->queue list)
   (if (null? list)
-    (raw-make-queue '() '())
-    (raw-make-queue list (last-pair list))))
+    (first-last->queue '() '())
+    (first-last->queue list (last-pair list))))
 
 (define make-queue
   (case-lambda
@@ -120,6 +120,8 @@
     elem))
 
 (define (queue-remove-back! queue)
+  (if (queue-empty? queue)
+    (error "Empty queue"))
   (let* ((old-last (last queue))
          (elem (car old-last))
          (new-last (penult-pair (first queue))))
@@ -134,19 +136,31 @@
 (define (penult-pair lis)
   (let lp ((lis lis))
     (cond
-      ((null? lis) (error "Empty queue"))
+     ;((null? lis) (error "Empty queue"))
       ((null? (cdr lis)) '())
       ((null? (cddr lis)) lis)
       (else (lp (cdr lis))))))
+
+(define (queue-clear! queue)
+  (set-first! queue '())
+  (set-last! queue '()))
 
 ;;; The whole queue
 
 (define (queue-length queue)
   (length (first queue)))
 
-;; Because append does not copy its back argument, we need to do so ourselves
+;; Because append does not copy its back argument, we cannot use it
 (define (queue-append . queues)
-  (error "queue-append not written yet"))
+  (queue-concatenate queues))
+
+(define (queue-concatenate queues)
+  (let ((result (queue)))
+    (for-each
+      (lambda (queue)
+        (for-each (lambda (elem) (queue-add-back! result elem)) (first queue)))
+      (first queue))
+     result))
 
 (define (queue-reverse queue)
   (list->queue (reverse (first queue))))
@@ -201,7 +215,10 @@
     (set-last! queue '())
     (set-last! queue (last-pair lis))))
 
+(define (queue->first-last queue)
+  (values (first queue) (last queue)))
+
 ;;; Queues as hooks
 
 (define (queue-invoke queue . args)
-  (queue-for-each (lambda (proc) (apply proc args)) (first queue)))
+  (queue-for-each (lambda (proc) (apply proc args)) queue))
