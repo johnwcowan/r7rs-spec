@@ -336,23 +336,25 @@ library either.
 
 \begin{scheme}
 {\cf *}                       {\cf +}
-{\cf -}                       {\cf /}
-{\cf <}                       {\cf <=}
-{\cf =}                       {\cf >}
-{\cf >=}                      {\cf abs}
-{\cf acos}                    {\cf and}
-{\cf angle}                   {\cf append}
-{\cf apply}                   {\cf asin}
-{\cf assoc}                   {\cf assq}
-{\cf assv}                    {\cf atan}
-{\cf begin}                   {\cf boolean?}
-{\cf caaaar}                  {\cf caaadr}
-{\cf caaar}                   {\cf caadar}
-{\cf caaddr}                  {\cf caadr}
-{\cf caar}                    {\cf cadaar}
-{\cf cadadr}                  {\cf cadar}
-{\cf caddar}                  {\cf cadddr}
-{\cf caddr}                   {\cf cadr}
+{\cf -}                       {\cf ...}
+{\cf /}                       {\cf <}
+{\cf <=}                      {\cf =}
+{\cf =>}                      {\cf >}
+{\cf >=}                      {\cf \_}
+{\cf abs}                     {\cf acos}
+{\cf and}                     {\cf angle}
+{\cf append}                  {\cf apply}
+{\cf asin}                    {\cf assoc}
+{\cf assq}                    {\cf assv}
+{\cf atan}                    {\cf begin}
+{\cf boolean?\ }               {\cf caaaar}
+{\cf caaadr}                  {\cf caaar}
+{\cf caadar}                  {\cf caaddr}
+{\cf caadr}                   {\cf caar}
+{\cf cadaar}                  {\cf cadadr}
+{\cf cadar}                   {\cf caddar}
+{\cf cadddr}                  {\cf caddr}
+{\cf cadr}
 {\cf call-with-current-continuation}
 {\cf call-with-input-file}    {\cf call-with-output-file}
 {\cf call-with-values}        {\cf car}
@@ -382,46 +384,46 @@ library either.
 {\cf define-syntax}           {\cf delay}
 {\cf denominator}             {\cf display}
 {\cf do}                      {\cf dynamic-wind}
-{\cf eof-object?\ }            {\cf eq?}
-{\cf equal?\ }                 {\cf eqv?}
-{\cf eval}                    {\cf even?}
-{\cf exact->inexact}          {\cf exact?}
-{\cf exp}                     {\cf expt}
-{\cf floor}                   {\cf for-each}
-{\cf force}                   {\cf gcd}
-{\cf if}                      {\cf imag-part}
-{\cf inexact->exact}          {\cf inexact?}
-{\cf input-port?\ }            {\cf integer->char}
-{\cf integer?\ }               {\cf interaction-environment}
-{\cf lambda}                  {\cf lcm}
-{\cf length}                  {\cf let}
-{\cf let*}                    {\cf let-syntax}
-{\cf letrec}                  {\cf letrec-syntax}
-{\cf list}                    {\cf list->string}
-{\cf list->vector}            {\cf list-ref}
-{\cf list-tail}               {\cf list?}
-{\cf load}                    {\cf log}
-{\cf magnitude}               {\cf make-polar}
-{\cf make-rectangular}        {\cf make-string}
-{\cf make-vector}             {\cf map}
-{\cf max}                     {\cf member}
-{\cf memq}                    {\cf memv}
-{\cf min}                     {\cf modulo}
-{\cf negative?\ }              {\cf newline}
-{\cf not}                     {\cf null-environment}
-{\cf null?\ }                  {\cf number->string}
-{\cf number?\ }                {\cf numerator}
-{\cf odd?\ }                   {\cf open-input-file}
-{\cf open-output-file}        {\cf or}
-{\cf output-port?\ }           {\cf pair?}
-{\cf peek-char}               {\cf positive?}
-{\cf procedure?\ }             {\cf quasiquote}
-{\cf quote}                   {\cf quotient}
-{\cf rational?\ }              {\cf rationalize}
-{\cf read}                    {\cf read-char}
-{\cf real-part}               {\cf real?}
-{\cf remainder}               {\cf reverse}
-{\cf round}
+{\cf else}                    {\cf eof-object?}
+{\cf eq?\ }                    {\cf equal?}
+{\cf eqv?\ }                   {\cf eval}
+{\cf even?\ }                  {\cf exact->inexact}
+{\cf exact?\ }                 {\cf exp}
+{\cf expt}                    {\cf floor}
+{\cf for-each}                {\cf force}
+{\cf gcd}                     {\cf if}
+{\cf imag-part}               {\cf inexact->exact}
+{\cf inexact?\ }               {\cf input-port?}
+{\cf integer->char}           {\cf integer?}
+{\cf interaction-environment} {\cf lambda}
+{\cf lcm}                     {\cf length}
+{\cf let}                     {\cf let*}
+{\cf let-syntax}              {\cf letrec}
+{\cf letrec-syntax}           {\cf list}
+{\cf list->string}            {\cf list->vector}
+{\cf list-ref}                {\cf list-tail}
+{\cf list?\ }                  {\cf load}
+{\cf log}                     {\cf magnitude}
+{\cf make-polar}              {\cf make-rectangular}
+{\cf make-string}             {\cf make-vector}
+{\cf map}                     {\cf max}
+{\cf member}                  {\cf memq}
+{\cf memv}                    {\cf min}
+{\cf modulo}                  {\cf negative?}
+{\cf newline}                 {\cf not}
+{\cf null-environment}        {\cf null?}
+{\cf number->string}          {\cf number?}
+{\cf numerator}               {\cf odd?}
+{\cf open-input-file}         {\cf open-output-file}
+{\cf or}                      {\cf output-port?}
+{\cf pair?\ }                  {\cf peek-char}
+{\cf positive?\ }              {\cf procedure?}
+{\cf quasiquote}              {\cf quote}
+{\cf quotient}                {\cf rational?}
+{\cf rationalize}             {\cf read}
+{\cf read-char}               {\cf real-part}
+{\cf real?\ }                  {\cf remainder}
+{\cf reverse}                 {\cf round}
 {\cf scheme-report-environment}
 {\cf set!}                    {\cf set-car!}
 {\cf set-cdr!}                {\cf sin}
@@ -437,12 +439,13 @@ library either.
 {\cf string=?\ }               {\cf string>=?}
 {\cf string>?\ }               {\cf string?}
 {\cf substring}               {\cf symbol->string}
-{\cf symbol?\ }                {\cf tan}
-{\cf truncate}                {\cf values}
-{\cf vector}                  {\cf vector->list}
-{\cf vector-fill!}            {\cf vector-length}
-{\cf vector-ref}              {\cf vector-set!}
-{\cf vector?\ }                {\cf with-input-from-file}
-{\cf with-output-to-file}     {\cf write}
-{\cf write-char}              {\cf zero?}
+{\cf symbol?\ }                {\cf syntax-rules}
+{\cf tan}                     {\cf truncate}
+{\cf values}                  {\cf vector}
+{\cf vector->list}            {\cf vector-fill!}
+{\cf vector-length}           {\cf vector-ref}
+{\cf vector-set!}             {\cf vector?}
+{\cf with-input-from-file}    {\cf with-output-to-file}
+{\cf write}                   {\cf write-char}
+{\cf zero?}
 \end{scheme}
