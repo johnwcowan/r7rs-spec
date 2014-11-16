@@ -1,5 +1,6 @@
 (define-library (ilists)
   (import (scheme base))
+  (import (comparators))
   (export iq)
   (export ipair ilist xipair ipair* ilist-copy make-ilist ilist-tabulate iiota)
   (export ipair?)

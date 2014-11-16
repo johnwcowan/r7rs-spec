@@ -1,20 +1,3 @@
-;;; Updating default comparator (imported as default-default-comparator)
-
-(define (default-comparison a b)
-  (cond
-    ((and (ipair? a) (ipair? b)) (ipair-comparison a b))
-    ((ipair? a) 1) ; ipairs are greater than other types
-    ((ipair? b) -1)
-    (else (comparator-compare default-default-comparator a b))))
-
-(define (default-hash obj)
-  (if (ipair? obj)
-    (ipair-hash obj)
-    (comparator-hash default-default-comparator obj)))
-
-(define default-comparator
-  (make-comparator #t #t default-comparison default-hash))
-
 ;;; Ilist comparator constructor
 
 (define (make-ilist-comparator comparator)
@@ -24,7 +7,7 @@
 
 (define ilist-comparator (make-ilist-comparator default-comparator))
 
-;;; Pair comparator constructors
+;;; Ipair comparator constructors
 
 (define (make-icar-comparator comparator)
   (make-comparator
@@ -70,7 +53,7 @@
 
 (define ipair-hash (comparator-hash-function ipair-comparator))
 
-;; Compute type index for inexact list comparisons
+;; Compute type index for inexact ilist comparisons
 (define (improper-ilist-type obj)
   (cond
     ((null? obj) 0)
@@ -112,3 +95,7 @@
     (make-improper-ilist-comparison comparator)
     (make-improper-ilist-hash comparator)))
 
+;;; Register ilist-comparator with SRFI 114 sample implementation.
+;;; If you don't use the sample implementation of SRFI 114, do something else.
+
+(comparator-register-default! ilist-comparator)

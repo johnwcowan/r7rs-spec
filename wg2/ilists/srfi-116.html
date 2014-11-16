@@ -1,6 +1,21 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0//EN" "http://www.w3.org/TR/REC-html40/strict.dtd">
 <html lang="en-US"><head><meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1"/>
-    <meta name="keywords" content="Scheme, programming language, list processing, SRFI, immutable lesbian threesomes"/>
+<!-- This commented out text is for the brittle SRFI tools -->
+<!--
+</head>
+<body>
+<H1>Title</H1>
+
+Immutable List Library
+
+<H1>Author</H1>
+
+John Cowan
+
+<H1>Status</H1>
+
+This SRFI is currently in ``draft'' status.
+-->
     <title>SRFI 116: Immutable List Library</title>
 
     <!-- Should have a media=all to get, for example, printing to work.
@@ -134,11 +149,20 @@ John Cowan
 <!--========================================================================-->
 <h1>Status</h1>
 
-This SRFI is currently in ``draft'' status.  To see an explanation of each status that a SRFI can hold, see <a href="http://srfi.schemers.org/srfi-process.html">here</a>.
-You can access the discussion via <a href="http://srfi.schemers.org/srfi-116/mail-archive/maillist.html">the archive of the mailing list</a>.
 <p>
+To see an explanation of
+each status that a SRFI can hold, see <a
+href="http://srfi.schemers.org/srfi-process.html">here</a>.
+
+To provide input on this SRFI, please
+<a href="mailto:srfi minus 116 at srfi dot schemers dot org">mail to
+<code>&lt;srfi minus 116 at srfi dot schemers dot org&gt;</code></a>.  See
+<a href="../srfi-list-subscribe.html">instructions here</a> to
+subscribe to the list.  You can access previous messages via
+<a href="mail-archive/maillist.html">the archive of the mailing list</a>.
 </p><ul>
-    <li>Received: </li>
+    <li>Received: <a href="http://srfi.schemers.org/cgi-bin/viewcvs.cgi/*checkout*/srfi/srfi-116/srfi-116.html?rev=1.1">2013/05/31</a></li>
+      <li>Draft: 2014/09/08-2014/11/08</li>
 </ul>
 
 <!--========================================================================-->
@@ -204,7 +228,7 @@ Note:  In the prose, immutable pairs and lists are known as ipairs and ilists th
 <!--========================================================================-->
 <h1><a name="ProcedureIndex">Procedure Index</a></h1>
 <p>
-Here is a short list of the procedures provided by this SRFI.
+Here is a short list of the procedures provided by this SRFI.  To interpret the examples, pretend that they are executed on a Scheme that prints immutable pairs and lists with the syntax of mutable ones.  Although it may be reasonable for <code>display</code> to work this way, <code>write</code> should not.
 
 </p><div class="indent">
 <dl>
@@ -244,10 +268,11 @@ Here is a short list of the procedures provided by this SRFI.
 
 </dd><dt class="proc-index"> Fold, unfold &amp; map
 </dt><dd class="proc-index">
-<pre class="proc-index"><a href="#imap">imap</a>        <a href="#ifor-each">ifor-each</a>
-<a href="#ifold">ifold</a>       <a href="#iunfold">iunfold</a>        <a href="#ipair-fold">ipair-fold</a>       <a href="#ireduce">ireduce</a> 
-<a href="#ifold-right">ifold-right</a> <a href="#iunfold-right">iunfold-right</a>  <a href="#ipair-fold-right">ipair-fold-right</a> <a href="#ireduce-right">ireduce-right</a> 
-<a href="#iappend-map">iappend-map</a> <a href="#ipair-for-each">ipair-for-each</a> <a href="#ifilter-map">ifilter-map</a>      <a href="#imap-in-order">imap-in-order</a>
+<pre class="proc-index"><a href="#imap">imap</a> <a href="#ifor-each">ifor-each</a>
+<a href="#ifold">ifold</a>       <a href="#iunfold">iunfold</a>       <a href="#ipair-fold">ipair-fold</a>       <a href="#ireduce">ireduce</a> 
+<a href="#ifold-right">ifold-right</a> <a href="#iunfold-right">iunfold-right</a> <a href="#ipair-fold-right">ipair-fold-right</a> <a href="#ireduce-right">ireduce-right</a> 
+<a href="#iappend-map">iappend-map</a>
+<a href="#ipair-for-each">ipair-for-each</a> <a href="#ifilter-map">ifilter-map</a> <a href="#imap-in-order">imap-in-order</a>
 </pre>
 
 </dd><dt class="proc-index"> Filtering &amp; partitioning
@@ -259,23 +284,24 @@ Here is a short list of the procedures provided by this SRFI.
 </dd><dt class="proc-index"> Searching
 </dt><dd class="proc-index">
 <pre class="proc-index"><a href="#imember">imember</a> <a href="#imemq">imemq</a> <a href="#imemv">imemv</a>
-<a href="#ifind">ifind</a>         <a href="#ifind-tail">ifind-tail</a> 
+<a href="#ifind">ifind</a> <a href="#ifind-tail">ifind-tail</a> 
 <a href="#iany">iany</a> <a href="#ievery">ievery</a>
 <a href="#ilist-index">ilist-index</a>
-<a href="#itake-while">itake-while</a>   <a href="#idrop-while">idrop-while</a>
+<a href="#itake-while">itake-while</a> <a href="#idrop-while">idrop-while</a>
 <a href="#ispan">ispan</a> <a href="#ibreak">ibreak</a>
 </pre>
 
 </dd><dt class="proc-index"> Deleting
 </dt><dd class="proc-index">
-<pre class="proc-inde x"><a href="#idelete">idelete</a>       <a href="#idelete-duplicates">idelete-duplicates</a> 
+<pre class="proc-inde x"><a href="#idelete">idelete</a>  <a href="#idelete-duplicates">idelete-duplicates</a> 
 
 </pre>
 
 </dd><dt class="proc-index"> Immutable association lists
 </dt><dd class="proc-index">
 <pre class="proc-index"><a href="#iassoc">iassoc</a> <a href="#iassq">iassq</a> <a href="#iassv">iassv</a>
-<a href="#ialist-cons">ialist-cons</a>  <a href="#ialist-delete">ialist-delete</a>
+<a href="#ialist-cons">ialist-cons</a> 
+<a href="#ialist-delete">ialist-delete</a>
 </pre>
 
 </dd><dt class="proc-index"> Replacement
@@ -374,33 +400,13 @@ scalar values to an ilist procedure by accident,
 <em>e.g.</em>, by switching the arguments to a procedure call.</p>
 
 <h1><a name="Quotation">Quotation</a></h1>
-<p>The various Scheme standards permit, but do not require,
-Scheme implementations to treat quoted pairs and lists as immutable.
-Thus whereas the expression <code>(set-car! (list 1 2 3) 10)</code>
-evaluates to the list <code>(10 2 3)</code>, the expression
-<code>(set-car! '(1 2 3) 10)</code> is not portable and in fact an error.</p>
+<p>
 
-<p>This SRFI recommends that implementations that provide both this SRFI and
-immutable quotations should cause quotations and quasiquotations to return the
-same immutable pairs that this SRFI describes.  This means that the standard
-Scheme pair and list operations, as well as libraries like SRFI 1 which are 
-built on them, accept both mutable and immutable pairs: thus
-<code>(car (ilist 1 2))</code> evaluates to <code>1</code>
-because <code>(car '(1 2))</code> does.</p>
-
-<p>This SRFI further recommends that <code>read</code> should return mutable
-pairs and lists when reading list structure.  No recommendation is made about the
-behavior of <code>write</code>, <code>display</code>, and similar output
-procedures on immutable lists.</p>
-
-<p>To make life easier for Scheme programmers, given that many implementations
-do not provide immutable quotation, the syntax keyword <code>iq</code> is
-provided as part of this SRFI.  It is analogous to <code>quote</code>,
-taking an arbitrary number of literals and constructing an ilist from them,
-with any pairs in the literals converted to ipairs. It is useful
-for providing constant ipair-based objects.
-Note that pairs within literal vectors or other implementation-dependent literals
-will not be converted.  Unfortunately, there is no ilist analogue of <code>'</code>,
+The syntax keyword <code>iq</code> is analogous to <code>quote</code>.
+It takes an arbitrary number of literals and constructs an ilist from them,
+with any pairs in the literals  converted to ipairs. It is useful
+for providing constant ipair-based objects.   Note that pairs within literal vectors will
+not be converted.  Unfortunately, there is no ilist analogue of <code>'</code>,
 so we save keystrokes by using <code>iq</code> rather than <code>iquote</code>
 and omitting the top-level parentheses.</p>
 
@@ -429,8 +435,6 @@ The templates given below obey the following conventions for procedure formals:
 </td></tr><tr valign="baseline"><th align="left"> <var>=</var>
     </th><td> A boolean procedure taking two arguments
 </td></tr></tbody></table>
-
-<p>To interpret the examples, pretend that they are executed on a Scheme that prints immutable pairs and lists with the syntax of mutable ones.</p>
 
 <p>
 It is an error to pass a dotted ilist to a procedure not
@@ -606,11 +610,10 @@ defined to accept such an argument.
     Returns #t if <var>object</var> is an ipair; otherwise, #f.
 <pre class="code-example">(ipair? (ipair 'a 'b)) =&gt;  #t
 (ipair? (iq a b c)) =&gt;  #t
-(ipair? (cons 1 2)) =&gt;  #f
-(ipair? '())        =&gt;  #f
-(ipair? '#(a b))    =&gt;  #f
-(ipair? 7)          =&gt;  #f
-(ipair? 'a)         =&gt;  #f
+(ipair? '())      =&gt;  #f
+(ipair? '#(a b))  =&gt;  #f
+(ipair? 7)        =&gt;  #f
+(ipair? 'a)       =&gt;  #f
 </pre>
 
 <!--
@@ -713,10 +716,10 @@ defined to accept such an argument.
     These procedures return the contents of the icar and icdr field of their
     argument, respectively.
     Note that it is an error to apply them to the empty ilist.
-<pre class="code-example">(icar (iq a b c))       =&gt;  a        (icdr (iq a b c))     =&gt;  (b c)  
-(icar (iq (a) b c d))   =&gt;  (a)	     (icdr (iq (a) b c d)) =&gt;  (b c d)
-(icar (ipair 1 2))      =&gt;  1	     (icdr (ipair 1 2))    =&gt;  2      
-(icar '())              =&gt;  *error*  (icdr '())            =&gt;  *error*
+<pre class="code-example">(icar (iq a b c))     =&gt;  a             (icdr (iq a b c))     =&gt;  (b c)  
+(icar (iq (a) b c d)) =&gt;  (a)	     (icdr (iq (a) b c d)) =&gt;  (b c d)
+(icar (ipair 1 2))     =&gt;  1	     (icdr (ipair 1 2))     =&gt;  2      
+(icar '())          =&gt;  *error*	     (icdr '())          =&gt;  *error*
 </pre>
 
 
@@ -840,7 +843,7 @@ defined to accept such an argument.
 (idrop (iq a b c d e)  2) =&gt; (c d e)
 </pre>
     <var>x</var> may be any value — a proper or dotted ilist:
-<pre class="code-example">(itake (ipair 1 (ipair 2 (ipair 3 'd)))    =&gt; (1 2)
+<pre class="code-example">(itake (ipair 1 (ipair 2 (ipair 3 'd))) =&gt; (1 2)
 (idrop (ipair 1 (ipair 2 (ipair 3 'd))) 2) =&gt; (3 . d)
 (itake (ipair 1 (ipair 2 (ipair 3 'd))) 3) =&gt; (1 2 3)
 (idrop (ipair 1 (ipair 2 (ipair 3 'd))) 3) =&gt; d
@@ -873,9 +876,9 @@ defined to accept such an argument.
 <p>
     <var>dilist</var> may be any ilist, either proper or dotted:
 </p><pre class="code-example">(itake-right (iq ipair 1 (ipair 2 (ipair 3 'd))) 2) =&gt; (2 3 . d)
-(idrop-right (ipair 1 (ipair 2 (ipair 3 'd))) 2)    =&gt; (1)
-(itake-right (ipair 1 (ipair 2 (ipair 3 'd))) 0)    =&gt; d
-(idrop-right (ipair 1 (ipair 2 (ipair 3 'd))) 0)    =&gt; (1 2 3)
+(idrop-right (ipair 1 (ipair 2 (ipair 3 'd))) 2) =&gt; (1)
+(itake-right (ipair 1 (ipair 2 (ipair 3 'd))) 0) =&gt; d
+(idrop-right (ipair 1 (ipair 2 (ipair 3 'd))) 0) =&gt; (1 2 3)
 </pre>
     For a legal <var>i</var>, <code>itake-right</code> and <code>idrop-right</code> partition the ilist in a manner 
     which can be inverted with <code>iappend</code>:
@@ -914,7 +917,7 @@ defined to accept such an argument.
     <code>last-ipair</code> returns the last ipair in the non-empty
     ilist <var>pair</var>.
 
-<pre class="code-example">(ilast (iq a b c))      =&gt; c
+<pre class="code-example">(ilast (iq a b c)) =&gt; c
 (last-ipair (iq a b c)) =&gt; (c)
 </pre>
 
@@ -1924,14 +1927,14 @@ and <code>ibreak</code> breaks the ilist at the first element satisfying
     while <code>imemv</code> uses <code>eqv?</code>, and
     <code>imember</code> uses <code>equal?</code>.
 
-<pre class="code-example">    (imemq 'a (iq a b c))           =&gt;  (a b c)
-    (imemq 'b (iq a b c))           =&gt;  (b c)
-    (imemq 'a (iq b c d))           =&gt;  #f
+<pre class="code-example">    (imemq 'a (iq a b c))          =&gt;  (a b c)
+    (imemq 'b (iq a b c))          =&gt;  (b c)
+    (imemq 'a (iq b c d))          =&gt;  #f
     (imemq (ilist 'a) (iq b (a) c)) =&gt;  #f
     (imember (ilist 'a)
-            (iq b (a) c))           =&gt;  ((a) c)
-    (imemq 101 (iq 100 101 102))    =&gt;  *unspecified*
-    (imemv 101 (iq 100 101 102))    =&gt;  (101 102)
+            (iq b (a) c))         =&gt;  ((a) c)
+    (imemq 101 (iq 100 101 102))   =&gt;  *unspecified*
+    (imemv 101 (iq 100 101 102))   =&gt;  (101 102)
 </pre>
 
     
@@ -2073,9 +2076,9 @@ in these cases, immutable maps or some other alternative should be employed.
     while <code>iassv</code> uses <code>eqv?</code> 
     and <code>iassoc</code> uses <code>equal?</code>.
 <pre class="code-example">(define e (iq (a 1) (b 2) (c 3)))
-(iassq 'a e)                               =&gt;  (a 1)
-(iassq 'b e)                               =&gt;  (b 2)
-(iassq 'd e)                               =&gt;  #f
+(iassq 'a e)                            =&gt;  (a 1)
+(iassq 'b e)                            =&gt;  (b 2)
+(iassq 'd e)                            =&gt;  #f
 (iassq (ilist 'a) (iq ((a)) ((b)) ((c))))  =&gt;  #f
 (iassoc (ilist 'a) (iq ((a)) ((b)) ((c)))) =&gt;  ((a))
 (iassq 5 (iq (2 3) (5 7) (11 13)))	   =&gt;  *unspecified*
@@ -2372,6 +2375,7 @@ results, of course.
 
 <!--========================================================================-->
 <h1><a name="Copyright">Copyright</a></h1>
+
 <p>Copyright (C) John Cowan 2014. All Rights Reserved.</p> 
 
 <p>Permission is hereby granted, free of charge, to any person obtaining a
@@ -2391,5 +2395,10 @@ THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
 FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 DEALINGS IN THE SOFTWARE.</p>
+
+    <hr/>
+<address>Editor: <a href="mailto:srfi-editors at srfi dot schemers dot org">
+             Mike Sperber</a></address>
+
 
 </body></html>

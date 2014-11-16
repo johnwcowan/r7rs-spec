@@ -1,8 +1,9 @@
+(require-library comparators)
 (module ilists ()
   (import scheme)
   (import (only chicken
     include define-record-type define-record-printer error))
-  (import (rename comparators (default-comparator default-default-comparator)))
+  (import comparators)
   (export iq)
   (export ipair ilist xipair ipair* ilist-copy make-ilist ilist-tabulate iiota)
   (export ipair?)
