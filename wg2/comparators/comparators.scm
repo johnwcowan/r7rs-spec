@@ -35,6 +35,7 @@
   (export in-open-interval? in-closed-interval? in-open-closed-interval? 
           in-closed-open-interval?)
   (export comparator-min comparator-max)
+  (export comparator-register-default!)
   (include "r7rs-shim.scm")
   (include "basics.scm")
   (include "default.scm")

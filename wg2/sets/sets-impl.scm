@@ -1276,6 +1276,9 @@
 
 (define bag-comparator (make-comparator bag? bag=? #f sob-hash))
 
+;;; Register above comparators for use by default-comparator
+(comparator-register-default! set-comparator)
+(comparator-register-default! bag-comparator)
 
 ;;; Set/bag printer (for debugging)
 

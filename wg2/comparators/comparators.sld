@@ -33,6 +33,7 @@
   (export in-open-interval? in-closed-interval? in-open-closed-interval? 
           in-closed-open-interval?)
   (export comparator-min comparator-max)
+  (export comparator-register-default!)
   (include "basics.scm")
   (include "default.scm")
   (include "constructors.scm")
