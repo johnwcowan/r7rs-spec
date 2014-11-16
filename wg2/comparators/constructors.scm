@@ -75,19 +75,16 @@
 ;; Test procedure for inexact reals
 (define (inexact-real? obj) (and (number? obj) (inexact? obj) (real? obj)))
 
-;; Return an appropriately rounded number
-(define (rounded x symbol)
-  (cond
-    ((procedure? symbol) (symbol x))
-    ((eq? symbol 'round) (round x))
-    ((eq? symbol 'ceiling) (ceiling x))
-    ((eq? symbol 'floor) (floor x))
-    ((eq? symbol 'truncate) (truncate x))
-    (else (error "invalid rounding specification" symbol))))
-
 ;; Return a number appropriately rounded to epsilon
-(define (rounded-to x epsilon symbol)
-  (rounded (/ x epsilon) symbol))
+(define (rounded-to x epsilon rounding)
+  (let ((quo (/ x epsilon)))
+    (cond
+      ((procedure? rounding) (rounding x epsilon))
+      ((eq? rounding 'round) (round quo))
+      ((eq? rounding 'ceiling) (ceiling quo))
+      ((eq? rounding 'floor) (floor quo))
+      ((eq? rounding 'truncate) (truncate quo))
+      (else (error "invalid rounding specification" symbol)))))
 
 ;; Returns result of comparing a NaN with a non-NaN
 (define (nan-comparison nan-handling which other)
@@ -115,15 +112,16 @@
                 (rounded-to b epsilon rounding)))))))
 
 ;; Return 0 for NaN, number-hash otherwise
-(define (inexact-real-hash obj)
-  (if (nan? obj) 0 (number-hash obj)))
+(define (make-inexact-real-hash epsilon rounding)
+  (lambda (obj)
+    (if (nan? obj) 0 (number-hash (rounded-to obj epsilon rounding)))))
 
 (define (make-inexact-real-comparator epsilon rounding nan-handling)
   (make-comparator
     inexact-real?
     #t
     (make-inexact-real-comparison epsilon rounding nan-handling)
-    inexact-real-hash))
+    (make-inexact-real-hash epsilon rounding)))
 
 ;;; Sequence comparator constructors and comparators
 ;;; The hash functions are based on djb2, but
