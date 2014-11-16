@@ -84,7 +84,7 @@
       ((eq? rounding 'ceiling) (ceiling quo))
       ((eq? rounding 'floor) (floor quo))
       ((eq? rounding 'truncate) (truncate quo))
-      (else (error "invalid rounding specification" symbol)))))
+      (else (error "invalid rounding specification" rounding)))))
 
 ;; Returns result of comparing a NaN with a non-NaN
 (define (nan-comparison nan-handling which other)
@@ -131,14 +131,16 @@
 
 ;; Makes a comparison procedure that works listwise
 (define (make-listwise-comparison comparison null? car cdr)
-  (lambda (a b)
-    (let ((a-null? (null? a)) (b-null? (null? b)))
-      (cond
-        ((and a-null? b-null?) 0)
-        (a-null? -1)
-        (b-null? 1)
-        (else (let ((result (comparison (car a) (car b))))
-          (if (= result 0) (comparison (cdr a) (cdr b)) result)))))))
+  (letrec ((proc
+    (lambda (a b)
+      (let ((a-null? (null? a)) (b-null? (null? b)))
+        (cond
+          ((and a-null? b-null?) 0)
+          (a-null? -1)
+          (b-null? 1)
+          (else (let ((result (comparison (car a) (car b))))
+            (if (= result 0) (proc (cdr a) (cdr b)) result))))))))
+    proc))
 
 ;; Makes a hash function that works listwise
 (define (make-listwise-hash hash null? car cdr)
