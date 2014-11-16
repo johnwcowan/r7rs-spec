@@ -1,15 +1,16 @@
-<!DOCTYPE html SYSTEM "-//W3C//DTD HTML 3.2 Final//EN">
-<html><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-    
+<!DOCTYPE HTML PUBLIC "" "-//W3C//DTD HTML 3.2 Final//EN">
+<html>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
     <title>SRFI 113: Sets and Bags</title>
   </head>
 <body>
 
-<h1>Title</h1>
+<H1>Title</H1>
 
 Sets and bags
 
-<h1>Author</h1>
+<H1>Author</H1>
 
 John Cowan
 
@@ -17,14 +18,15 @@ John Cowan
 This SRFI is currently in ``draft'' status.
 
 To see an explanation of
-each status that a SRFI can hold, see <a href="http://srfi.schemers.org/srfi-process.html">here</a>.
+each status that a SRFI can hold, see <a
+href="http://srfi.schemers.org/srfi-process.html">here</a>.
 
 To provide input on this SRFI, please
 <a href="mailto:srfi minus 113 at srfi dot schemers dot org">mail to
 <code>&lt;srfi minus 113 at srfi dot schemers dot org&gt;</code></a>.  See
-<a href="http://srfi.schemers.org/srfi-list-subscribe.html">instructions here</a> to
+<a href="../srfi-list-subscribe.html">instructions here</a> to
 subscribe to the list.  You can access previous messages via
-<a href="http://srfi.schemers.org/srfi-113/mail-archive/maillist.html">the archive of the mailing list</a>.
+<a href="mail-archive/maillist.html">the archive of the mailing list</a>.
 </p>
 
 <ul>
@@ -34,6 +36,11 @@ subscribe to the list.  You can access previous messages via
       <li>Revised: <a href="http://srfi.schemers.org/cgi-bin/viewcvs.cgi/*checkout*/srfi/srfi-113/srfi-113.html?rev=1.3">2013/07/03</a></li>
       <li>Revised: <a href="http://srfi.schemers.org/cgi-bin/viewcvs.cgi/*checkout*/srfi/srfi-113/srfi-113.html?rev=1.4">2013/12/04</a></li>
       <li>Revised: <a href="http://srfi.schemers.org/cgi-bin/viewcvs.cgi/*checkout*/srfi/srfi-113/srfi-113.html?rev=1.5">2014/03/31</a></li>
+      <li>Revised: <a href="http://srfi.schemers.org/cgi-bin/viewcvs.cgi/*checkout*/srfi/srfi-113/srfi-113.html?rev=1.6">2014/08/15</a></li>
+      <li>Revised: <a href="http://srfi.schemers.org/cgi-bin/viewcvs.cgi/*checkout*/srfi/srfi-113/srfi-113.html?rev=1.8">2014/08/19</a></li>
+      <li>Revised: <a href="http://srfi.schemers.org/cgi-bin/viewcvs.cgi/*checkout*/srfi/srfi-113/srfi-113.html?rev=1.9">2014/08/22</a></li>
+      <li>Revised: <a href="http://srfi.schemers.org/cgi-bin/viewcvs.cgi/*checkout*/srfi/srfi-113/srfi-113.html?rev=1.10">2014/08/22</a></li>
+      <li>Revised: <a href="http://srfi.schemers.org/cgi-bin/viewcvs.cgi/*checkout*/srfi/srfi-113/srfi-113.html?rev=1.11">2014/08/29</a></li>
     </ul>
 
 <h1>Abstract</h1><p><em>Sets</em> and <em>bags</em> (also known as multisets) are unordered collections that can contain any Scheme object.  Sets enforce the constraint that no two elements can be the same in the sense of the set's associated <em>equality predicate</em>; bags do not.
@@ -73,8 +80,8 @@ subscribe to the list.  You can access previous messages via
 <p>It is an error to rely upon these procedures working by side effect. For example, this is not guaranteed to work:</p>
 
 <pre>
-        (let* ((set1 (set 'a 'b 'c))           ; set1 = {a,b,c}.
-               (set2 (set-adjoin! set1 'd)))   ; Add d to {a,b,c}.
+        (let* ((set1 (set 'a 'b 'c))      ; set1 = {a,b,c}.
+               (set2 (set-adjoin! 'd)))   ; Add d to {a,b,c}.
           set1) ; Could be either {a,b,c} or {a,b,c,d}.
 </pre>
 
@@ -113,7 +120,7 @@ subscribe to the list.  You can access previous messages via
 </li><li><p><a href="#Mappingandfolding">Mapping and folding</a>: <code>set-map</code>, <code>set-for-each</code>, <code>set-fold</code>, <code>set-filter</code>, <code>set-filter!</code>, <code>set-remove</code>, <code>set-remove!</code>, <code>set-partition</code>, <code>set-partition!</code></p>
 </li><li><p><a href="#Copyingandconversion">Copying and conversion</a>: <code>set-copy</code>, <code>set-&gt;list</code>, <code>list-&gt;set</code>, <code>list-&gt;set!</code></p>
 </li><li><p><a href="#Subsets">Subsets</a>: <code>set=?</code>, <code>set&lt;?</code>, <code>set&gt;?</code>, <code>set&lt;=?</code>, <code>set&gt;=?</code></p>
-</li><li><p><a href="#Settheoryoperations">Set theory operations</a>: <code>set-union</code>, <code>set-intersection</code>, <code>set-difference</code>, <code>set-xor</code>, <code>set-union!</code>, <code>set-intersection!</code>, <code>set-difference!</code>, <code>set-xor!</code></p>
+</li><li><p><a href="#Settheoryoperations">Set theory operations</a>: <code>set-union</code>, <code>set-intersection</code>, <code>set-difference</code>, <code>set-xor</code>, <code>set-union!</code>, <code>set-intersection!</code>, <code>set-difference!</code>, <code>set-xor!</code>, <code>set-cartesian-product</code>, <code>set-powerset</code></p>
 </li><li><p><a href="#Additionalbagprocedures">Additional bag procedures</a>: <code>bag-sum</code>, <code>bag-sum!</code>, <code>bag-product</code>, <code>bag-product!</code>, <code>bag-element-count</code>, <code>bag-for-each-unique</code>, <code>bag-fold-unique</code>, <code>bag-increment!</code>, <code>bag-decrement!</code>, <code>bag-&gt;set</code>, <code>set-&gt;bag</code>, <code>set-&gt;bag!</code></p>
 </li><li><p><a href="#Comparators">Comparators</a>: <code>set-comparator</code>, <code>bag-comparator</code></p>
 </li>
@@ -128,7 +135,7 @@ subscribe to the list.  You can access previous messages via
 
 <p>Returns a newly allocated empty set.  The <em>comparator</em> argument is a <a href="http://srfi.schemers.org/srfi-114/srfi-114.html">SRFI 114</a> comparator, which is used to control and distinguish the elements of the set.  The <em>elements</em> are used to initialize the set.</p>
 
-<p><code>(set-unfold </code><em>stop? mapper successor seed comparator</em><code>)</code></p>
+<p><code>(set-unfold </code><em>comparator stop? mapper successor seed</em><code>)</code></p>
 
 <p>Create a newly allocated set as if by <code>set</code> using <em>comparator</em>.  If the result of applying the predicate <em>stop?</em> to <em>seed</em> is true, return the set.  Otherwise, apply the procedure <em>mapper</em> to <em>seed</em>.  The value that <em>mapper</em> returns is added to the set.  Then get a new seed by applying the procedure <em>successor</em> to <em>seed</em>, and repeat this algorithm.</p>
 
@@ -353,13 +360,21 @@ Return a newly allocated set that is the union, intersection, asymmetric differe
 
 <p>Linear update procedures returning a set that is the union, intersection, asymmetric difference, or symmetric difference of the <em>sets</em>.  Asymmetric difference is extended to more than two sets by taking the difference between the first set and the union of the others.  Symmetric difference is not extended beyond two sets.  Elements in the result set are drawn from the first set in which they appear.</p>
 
+<p><code>(set-cartesian-product </code><em>set<sub>1</sub> set<sub>2</sub></em> ... <code>)</code></p><p>
+
+Return the cartesian product of the <em>sets</em>.  The result is a set of lists constituting every possible combination of elements of the arguments, where the first element of each list is drawn from <em>set<sub>1</sub></em>, the second element from <em>set<sub>2</sub></em>, and so on.  Note that the lists may share storage, so mutating them is an error even when they are removed from the result set.  To get a set of sets instead, use <code>set-map</code> with the comparator <code>set-comparator</code> and the mapping procedure <code>list-&gt;set</code>.  Note that there is no linear-update version of this procedure.</p>
+
+<p><code>(set-power-set </code><em>set</em><code>)</code></p><p>
+
+Return the power set of <em>set</em>.  The result is a set of sets constituting every possible combination of the elements of <em>set</em>, from the null set to the set of all elements.  The running time of this procedure is O(2<sup>n</sup>), so beware of applying it to large sets.  Note that there is no linear-update version of this procedure.</p>
+
 <h2 id="Bagprocedures">Bag procedures</h2><p>
 
 Bags are like sets, but can contain the same object more than once.  However, if two elements that are the same in the sense of the equality predicate, but not in the sense of <code>eqv?</code>, are both included, it is not guaranteed that they will remain distinct when retrieved from the bag.  It is an error for a single procedure to be invoked on bags with different comparators.
 
 </p><p>
 
-The procedures for creating and manipulating bags are the same as those for sets, except that <code>set</code> is replaced by <code>bag</code> in their names, and that adjoining an element to a bag is effective even if the bag already contains the element.  If two elements in a bag are the same in the sense of the bag's comparator, the implementation may in fact store just one of them.
+The procedures for creating and manipulating bags are the same as those for sets, except that <code>set</code> is replaced by <code>bag</code> in their names, and that adjoining an element to a bag is effective even if the bag already contains the element.  (The bag version of <code>set-power-set</code> is <code>bag-power-bag</code>.)  If two elements in a bag are the same in the sense of the bag's comparator, the implementation may in fact store just one of them.
 </p>
 
 <p>The <code>bag-union</code>, <code>bag-intersection</code>, <code>bag-difference</code>, and <code>bag-xor</code> procedures (and their linear update analogues) behave as follows when both bags contain elements that are equal in the sense of the bags' comparator:</p>
@@ -427,19 +442,17 @@ The following comparators are used to compare sets or bags, and allow sets of se
 
 Note that these comparators do not provide comparison procedures, as there is no ordering between sets or bags.  It is an error to compare sets or bags with different element comparators.
 
-</p><h1>Acknowledgements</h1>
-
-<p>Kevin Wortman's detailed advice and whole-hearted cooperation with me has been essential to making this SRFI what it is.  He has coordinated his efforts toward a forthcoming immutable deque, bag, and map SRFI with mine in this SRFI and my forthcoming mutable queue and hash table SRFIs.</p>
-
-<p>Thanks also to Per Bothner, Art Gleckler, Aubrey Jaffer, Takashi Kato, Alexey Radul, Jim Rees, Alex Shinn, Charles Wang, and Alan Watson for their participation in the SRFI 113 mailing list, and to Michael Sperber for his editorial services.</p>
-
-<p>Of course, I take all the blame for any errors or infelicities.
-
 </p><h1>Implementation</h1>
 
 <p>The implementation places the identifiers defined above into the <code>sets</code> library.</p>
 
 <p>Sets and bags are implemented as a thin veneer over hashtables.</p>
+
+<p>The implementation registers <code>set-comparator</code> and
+<code>bag-comparator</code> with SRFI 114's default comparator, assuming
+the sample implementation of SRFI 114 is being used.  Scheme implementers
+who provide their own implementations of SRFI 114 must change this part
+of the code.</p>
 
 <p>The <a href="http://srfi.schemers.org/srfi-113/sets.tar.gz">sample implementation</a> contains the following files:</p>
 

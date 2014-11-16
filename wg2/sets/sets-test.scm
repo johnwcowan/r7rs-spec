@@ -575,6 +575,21 @@
 ) ; end bags
 
 
+
+(test-group "comparators"
+  (define a (set number-comparator 1 2 3))
+  (define b (set number-comparator 1 2 4))
+  (define aa (bag number-comparator 1 2 3))
+  (define bb (bag number-comparator 1 2 4))
+  (test-assert (not (=? set-comparator a b)))
+  (test-assert (=? set-comparator a (set-copy a)))
+  (test-error (<? set-comparator a b))
+  (test-assert (not (=? bag-comparator aa bb)))
+  (test-assert (=? bag-comparator aa (bag-copy aa)))
+  (test-error (<? bag-comparator aa bb))
+  (test-assert (not (=? default-comparator a aa)))
+) ; end comparators
+
 ) ; end r7rs-sets
 
 (test-exit)
