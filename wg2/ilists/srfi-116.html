@@ -2337,6 +2337,11 @@ This procedure allows a procedure to be applied to an ilist.
 <li><code>ilists-test.scm</code> is a set of tests using the Chicken <code>test</code> egg, which is also available in Chibi as the R7RS library <code>(chibi test)</code>.</li></ul>
 
 
+<p>The implementation registers <code>ilist-comparator</code>
+with SRFI 114's default comparator, assuming
+the sample implementation of SRFI 114 is being used.  Scheme implementers
+who provide their own implementations of SRFI 114 must change this part
+of the code.</p>
 
 
 <!--========================================================================-->

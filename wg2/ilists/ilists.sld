@@ -29,4 +29,5 @@
   (export iapply)
   (include "ilists-base.scm")
   (include "ilists-impl.scm")
+  (include "ilists-comp.scm")
 )

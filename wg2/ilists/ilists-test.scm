@@ -340,6 +340,22 @@
   (test 15 (iapply + 1 2 (iq 3 4 5)))
 ) ; end ilists/conversion
 
+(test-group "ilists/comparators"
+  (define a (iq 1 2 3))
+  (define b (iq 1 2 4))
+  (test-assert (not (=? ilist-comparator a b)))
+  (test-assert (<? ilist-comparator a b))
+  (test-assert (=? ilist-comparator a (ilist-copy a)))
+  (test-assert (=? (make-ilist-comparator integer-comparator) a (ilist-copy a)))
+  (define ap (ipair 1 2))
+  (define bp (ipair 3 4))
+  (define cp (ipair 1 4))
+  (test-assert (<? ipair-comparator ap bp))
+  (test-assert (<? ipair-comparator ap cp))
+  (test-assert (=? (make-icar-comparator default-comparator) ap cp))
+  (test-assert (=? (make-icdr-comparator default-comparator) bp cp))
+) ; end ilists/comparators
+
 ) ; end ilists
 
 (test-exit)
