@@ -120,7 +120,7 @@ subscribe to the list.  You can access previous messages via
 </li><li><p><a href="#Mappingandfolding">Mapping and folding</a>: <code>set-map</code>, <code>set-for-each</code>, <code>set-fold</code>, <code>set-filter</code>, <code>set-filter!</code>, <code>set-remove</code>, <code>set-remove!</code>, <code>set-partition</code>, <code>set-partition!</code></p>
 </li><li><p><a href="#Copyingandconversion">Copying and conversion</a>: <code>set-copy</code>, <code>set-&gt;list</code>, <code>list-&gt;set</code>, <code>list-&gt;set!</code></p>
 </li><li><p><a href="#Subsets">Subsets</a>: <code>set=?</code>, <code>set&lt;?</code>, <code>set&gt;?</code>, <code>set&lt;=?</code>, <code>set&gt;=?</code></p>
-</li><li><p><a href="#Settheoryoperations">Set theory operations</a>: <code>set-union</code>, <code>set-intersection</code>, <code>set-difference</code>, <code>set-xor</code>, <code>set-union!</code>, <code>set-intersection!</code>, <code>set-difference!</code>, <code>set-xor!</code>, <code>set-cartesian-product</code>, <code>set-powerset</code></p>
+</li><li><p><a href="#Settheoryoperations">Set theory operations</a>: <code>set-union</code>, <code>set-intersection</code>, <code>set-difference</code>, <code>set-xor</code>, <code>set-union!</code>, <code>set-intersection!</code>, <code>set-difference!</code>, <code>set-xor!</code></p>
 </li><li><p><a href="#Additionalbagprocedures">Additional bag procedures</a>: <code>bag-sum</code>, <code>bag-sum!</code>, <code>bag-product</code>, <code>bag-product!</code>, <code>bag-element-count</code>, <code>bag-for-each-unique</code>, <code>bag-fold-unique</code>, <code>bag-increment!</code>, <code>bag-decrement!</code>, <code>bag-&gt;set</code>, <code>set-&gt;bag</code>, <code>set-&gt;bag!</code></p>
 </li><li><p><a href="#Comparators">Comparators</a>: <code>set-comparator</code>, <code>bag-comparator</code></p>
 </li>
@@ -171,17 +171,19 @@ subscribe to the list.  You can access previous messages via
 
 <p><code>(set-adjoin </code><em>set element</em> ...<code>)</code></p>
 
+<p>The <code>set-adjoin</code> procedure returns a newly allocated set that uses the same comparator as <em>set</em> and contains all the values of <em>set</em>, and in addition each <em>element</em> unless it is already equal (in the sense of the comparator) to one of the existing or newly added members.  It is an error to add an element to <i>set</i> that does not return <code>#t</code> when passed to the type test procedure of the comparator.</p>
+
 <p><code>(set-adjoin! </code><em>set element</em> ...<code>)</code></p>
 
-<p>The <code>set-adjoin</code> procedure returns a newly allocated set that uses the same comparator as <em>set</em> and contains all the values of <em>set</em>, and in addition each <em>element</em> unless it is already equal (in the sense of the comparator) to one of the existing or newly added members.  It is an error to add an element to <i>set</i> that does not return <code>#t</code> when passed to the type test procedure of the comparator.</p>
+<p>The <code>set-adjoin!</code> procedure is the same as <code>set-adjoin</code> , except that it is permitted to mutate and return the <em>set</em> argument rather than allocating a new set.</p>
 
 <p><code>(set-replace </code><em>set element</em><code>)</code></p>
 
-<p><code>(set-replace! </code><em>set element</em><code>)</code></p>
-
 <p>The <code>set-replace</code> procedure returns a newly allocated set that uses the same comparator as <em>set</em> and contains all the values of <em>set</em> except as follows:  If <i>element</i> is equal (in the sense of <i>set</i>'s comparator) to an existing member of <i>set</i>, then that member is omitted and replaced by <i>element</i>.  If there is no such element in <i>set</i>, then <i>set</i> is returned unchanged.</p>
 
-<p>The <code>set-adjoin!</code> and <code>set-replace!</code> procedures are the same as <code>set-adjoin</code> and <code>set-replace</code>, except that they are permitted to mutate and return the <em>set</em> argument rather than allocating a new set.</p>
+<p><code>(set-replace! </code><em>set element</em><code>)</code></p>
+
+<p>The <code>set-replace!</code> procedure is the same as code> and /code> and <code>set-replace</code>, except that it is permitted to mutate and return the <em>set</em> argument rather than allocating a new set.</p>
 
 <p><code>(set-delete </code><em>set element</em> ...<code>)</code></p>
 
@@ -246,10 +248,10 @@ Returns <code>#t</code> if every element of <em>set</em> satisfies <em>predicate
 <p>Note that, when <em>proc</em> defines a mapping that is not 1:1, some of the mapped objects may be equivalent in the sense of <em>comparator's</em> equality predicate, and in this case duplicate elements are omitted as in the set constructor.  For example:</p>
 
 <pre>
-(set-map (lambda (x) (quotient x 2))
-         integer-comparator
-         (set integer-comparator 1 2 3 4 5))
- => (set integer-comparator 0 1 2)
+    (set-map (lambda (x) (quotient x 2))
+             integer-comparator
+             (set integer-comparator 1 2 3 4 5))
+         => (set integer-comparator 0 1 2)
 </pre>
 
 <p>If the elements are the same in the sense of <code>eqv?</code>, it is unpredictable which one will be preserved in the result.</p>
