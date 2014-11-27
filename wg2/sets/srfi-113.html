@@ -41,6 +41,7 @@ subscribe to the list.  You can access previous messages via
       <li>Revised: <a href="http://srfi.schemers.org/cgi-bin/viewcvs.cgi/*checkout*/srfi/srfi-113/srfi-113.html?rev=1.9">2014/08/22</a></li>
       <li>Revised: <a href="http://srfi.schemers.org/cgi-bin/viewcvs.cgi/*checkout*/srfi/srfi-113/srfi-113.html?rev=1.10">2014/08/22</a></li>
       <li>Revised: <a href="http://srfi.schemers.org/cgi-bin/viewcvs.cgi/*checkout*/srfi/srfi-113/srfi-113.html?rev=1.11">2014/08/29</a></li>
+      <li>Revised: <a href="http://srfi.schemers.org/cgi-bin/viewcvs.cgi/*checkout*/srfi/srfi-113/srfi-113.html?rev=1.12">2014/11/16</a></li>
     </ul>
 
 <h1>Abstract</h1><p><em>Sets</em> and <em>bags</em> (also known as multisets) are unordered collections that can contain any Scheme object.  Sets enforce the constraint that no two elements can be the same in the sense of the set's associated <em>equality predicate</em>; bags do not.
@@ -185,6 +186,8 @@ subscribe to the list.  You can access previous messages via
 
 <p>The <code>set-replace!</code> procedure is the same as code> and /code> and <code>set-replace</code>, except that it is permitted to mutate and return the <em>set</em> argument rather than allocating a new set.</p>
 
+<p>The <code>set-adjoin!</code> and <code>set-replace!</code> procedures are the same as <code>set-adjoin</code> and <code>set-replace</code>, except that they are permitted to mutate and return the <em>set</em> argument rather than allocating a new set.</p>
+
 <p><code>(set-delete </code><em>set element</em> ...<code>)</code></p>
 
 <p><code>(set-delete! </code><em>set element</em> ...<code>)</code></p>
@@ -241,17 +244,18 @@ Returns <code>#t</code> if every element of <em>set</em> satisfies <em>predicate
 
 <p>Applies <em>proc</em> to each element of <em>set</em> in arbitrary order and returns a newly allocated set, created as if by <code>(set </code><em>comparator</em><code>)</code>, which contains the results of the applications.  For example:</p>
 
-<pre>        (set-map string-ci-comparator symbol-&gt;string (set eq? 'foo 'bar 'baz))
-            =&gt; (set string-ci-comparator "foo" "bar" "baz")
+<pre>
+        (set-map string-ci-comparator symbol-&gt;string (set eq? 'foo 'bar 'baz))
+             =&gt; (set string-ci-comparator "foo" "bar" "baz")
 </pre>
 
 <p>Note that, when <em>proc</em> defines a mapping that is not 1:1, some of the mapped objects may be equivalent in the sense of <em>comparator's</em> equality predicate, and in this case duplicate elements are omitted as in the set constructor.  For example:</p>
 
 <pre>
-    (set-map (lambda (x) (quotient x 2))
-             integer-comparator
-             (set integer-comparator 1 2 3 4 5))
-         => (set integer-comparator 0 1 2)
+(set-map (lambda (x) (quotient x 2))
+         integer-comparator
+         (set integer-comparator 1 2 3 4 5))
+ => (set integer-comparator 0 1 2)
 </pre>
 
 <p>If the elements are the same in the sense of <code>eqv?</code>, it is unpredictable which one will be preserved in the result.</p>
@@ -362,21 +366,13 @@ Return a newly allocated set that is the union, intersection, asymmetric differe
 
 <p>Linear update procedures returning a set that is the union, intersection, asymmetric difference, or symmetric difference of the <em>sets</em>.  Asymmetric difference is extended to more than two sets by taking the difference between the first set and the union of the others.  Symmetric difference is not extended beyond two sets.  Elements in the result set are drawn from the first set in which they appear.</p>
 
-<p><code>(set-cartesian-product </code><em>set<sub>1</sub> set<sub>2</sub></em> ... <code>)</code></p><p>
-
-Return the cartesian product of the <em>sets</em>.  The result is a set of lists constituting every possible combination of elements of the arguments, where the first element of each list is drawn from <em>set<sub>1</sub></em>, the second element from <em>set<sub>2</sub></em>, and so on.  Note that the lists may share storage, so mutating them is an error even when they are removed from the result set.  To get a set of sets instead, use <code>set-map</code> with the comparator <code>set-comparator</code> and the mapping procedure <code>list-&gt;set</code>.  Note that there is no linear-update version of this procedure.</p>
-
-<p><code>(set-power-set </code><em>set</em><code>)</code></p><p>
-
-Return the power set of <em>set</em>.  The result is a set of sets constituting every possible combination of the elements of <em>set</em>, from the null set to the set of all elements.  The running time of this procedure is O(2<sup>n</sup>), so beware of applying it to large sets.  Note that there is no linear-update version of this procedure.</p>
-
 <h2 id="Bagprocedures">Bag procedures</h2><p>
 
 Bags are like sets, but can contain the same object more than once.  However, if two elements that are the same in the sense of the equality predicate, but not in the sense of <code>eqv?</code>, are both included, it is not guaranteed that they will remain distinct when retrieved from the bag.  It is an error for a single procedure to be invoked on bags with different comparators.
 
 </p><p>
 
-The procedures for creating and manipulating bags are the same as those for sets, except that <code>set</code> is replaced by <code>bag</code> in their names, and that adjoining an element to a bag is effective even if the bag already contains the element.  (The bag version of <code>set-power-set</code> is <code>bag-power-bag</code>.)  If two elements in a bag are the same in the sense of the bag's comparator, the implementation may in fact store just one of them.
+The procedures for creating and manipulating bags are the same as those for sets, except that <code>set</code> is replaced by <code>bag</code> in their names, and that adjoining an element to a bag is effective even if the bag already contains the element.  (If two elements in a bag are the same in the sense of the bag's comparator, the implementation may in fact store just one of them.
 </p>
 
 <p>The <code>bag-union</code>, <code>bag-intersection</code>, <code>bag-difference</code>, and <code>bag-xor</code> procedures (and their linear update analogues) behave as follows when both bags contain elements that are equal in the sense of the bags' comparator:</p>
