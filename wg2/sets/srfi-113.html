@@ -370,7 +370,7 @@ Bags are like sets, but can contain the same object more than once.  However, if
 
 </p><p>
 
-The procedures for creating and manipulating bags are the same as those for sets, except that <code>set</code> is replaced by <code>bag</code> in their names, and that adjoining an element to a bag is effective even if the bag already contains the element.  (If two elements in a bag are the same in the sense of the bag's comparator, the implementation may in fact store just one of them.
+The procedures for creating and manipulating bags are the same as those for sets, except that <code>set</code> is replaced by <code>bag</code> in their names, and that adjoining an element to a bag is effective even if the bag already contains the element.  If two elements in a bag are the same in the sense of the bag's comparator, the implementation may in fact store just one of them.
 </p>
 
 <p>The <code>bag-union</code>, <code>bag-intersection</code>, <code>bag-difference</code>, and <code>bag-xor</code> procedures (and their linear update analogues) behave as follows when both bags contain elements that are equal in the sense of the bags' comparator:</p>
