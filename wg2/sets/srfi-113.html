@@ -82,7 +82,7 @@ subscribe to the list.  You can access previous messages via
 
 <pre>
         (let* ((set1 (set 'a 'b 'c))      ; set1 = {a,b,c}.
-               (set2 (set-adjoin! 'd)))   ; Add d to {a,b,c}.
+               (set2 (set-adjoin! set1 'd)))   ; Add d to {a,b,c}.
           set1) ; Could be either {a,b,c} or {a,b,c,d}.
 </pre>
 
