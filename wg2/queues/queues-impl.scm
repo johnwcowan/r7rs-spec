@@ -159,7 +159,7 @@
     (for-each
       (lambda (queue)
         (for-each (lambda (elem) (queue-add-back! result elem)) (first queue)))
-      (first queue))
+      queues)
      result))
 
 (define (queue-reverse queue)
@@ -217,6 +217,10 @@
 
 (define (queue->first-last queue)
   (values (first queue) (last queue)))
+
+(define (first-last->queue! queue first last)
+  (set-first! queue first)
+  (set-last! queue last))
 
 ;;; Queues as hooks
 

@@ -9,7 +9,7 @@
   (export queue-length queue-append queue-concatenate)
   (export queue-map queue-map! queue-for-each)
   (export queue->list list->queue list->queue!)
-  (export first-last->queue queue->first-last)
+  (export first-last->queue queue->first-last first-last->queue!)
   (export queue-invoke)
   (include "queues-impl.scm")
 )
