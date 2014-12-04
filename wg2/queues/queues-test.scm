@@ -58,7 +58,7 @@
   (define m (make-queue-with-list '(1 2 3 4)))
   (test '(1 2 3 4) (queue-list m))
   (define n (queue 5 6))
-  (set-queue-from-list! n (list 1 2))
+  (queue-set-list! n (list 1 2))
   (test '(1 2) (queue-list n))
   (define d (list 1 2 3))
   (define e (cddr d))
@@ -73,7 +73,7 @@
   (define g (make-queue-with-first-last d e))
   (test '(1 2 3 4) (queue-list g))
   (define h (queue 5 6))
-  (set-queue-from-first-last! h d e)
+  (queue-set-first-last! h d e)
   (test '(1 2 3 4) (queue-list h))
 ); end queues/conversion
 

@@ -214,7 +214,7 @@
 (define (queue-list queue)
   (get-first queue))
 
-(define (set-queue-from-list! queue lis)
+(define (queue-set-list! queue lis)
   (set-first! queue lis)
   (if (null? lis)
     (set-last! queue '())
@@ -223,7 +223,7 @@
 (define (queue-first-last queue)
   (values (get-first queue) (get-last queue)))
 
-(define (set-queue-from-first-last! queue first last)
+(define (queue-set-first-last! queue first last)
   (set-first! queue first)
   (set-last! queue last))
 

@@ -1,5 +1,5 @@
 <!DOCTYPE HTML PUBLIC "" "-//IETF//DTD HTML//EN">
-<html lang="en-US"><head>
+<html lang="en-US"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
 
 <title>SRFI 117: Mutable Queues</title></head><body>
 
@@ -64,7 +64,7 @@ Returns a newly allocated queue containing <em>k</em> elements.  If <em>fill</em
 <tt>(queue </tt><em>element</em> ...<tt>)</tt>
 </p>
 <p>
-Returns a newly allocated queue containing the <em>elements</em>.  This operation is O(n).
+Returns a newly allocated queue containing the <em>elements</em>.  This operation is O(n) where n is the queue length.
 </p>
 <p>
 <tt>(queue-copy </tt><em>queue</em><tt>)</tt>
@@ -89,13 +89,13 @@ Returns a newly allocated queue containing the elements of <em>queue</em>.  This
 <tt>(make-queue-with-list </tt><em>list</em><tt>)</tt>
 </p>
 <p>
-Returns a newly allocated queue containing the elements of <em>list</em> in order.  The result shares storage with <em>list</em>.  This operation is O(n).
+Returns a newly allocated queue containing the elements of <em>list</em> in order.  The result shares storage with <em>list</em>.  This operation is O(n) where n is the queue length.
 </p>
 <p>
 To apply a non-destructive list procedure to a queue and return a new queue, use <tt>(make-queue-with-list (</tt><em>proc</em><tt> (queue-list </tt><em>queue</em><tt>)))</tt>.
 </p>
 <p>
-<tt>(make-queue-with-first-last </tt><em>front back</em><tt>)</tt>
+<tt>(make-queue-with-first-last </tt><em>first last</em><tt>)</tt>
 </p>
 <p>
 Returns a newly allocated queue containing the elements of the list whose first pair is <em>first</em> and whose last pair is <em>last</em>.  It is an error if the pairs do not belong to the same list.  Alternatively, both <em>first</em> and <em>last</em> can be the empty list.  The result shares storage with the list.  This operation is O(1).
@@ -116,13 +116,13 @@ Returns <tt>#t</tt> if <em>obj</em> is a queue with no elements, and <tt>#f</tt>
 </p>
 <h2 id="Accessors">Accessors</h2>
 <p>
-<tt>(queue-front </tt><em>queue</em><tt> </tt><em>element</em><tt>)</tt>
+<tt>(queue-front </tt><em>queue</em><tt>)</tt>
 </p>
 <p>
 Returns the first element of the queue.  If the queue is empty, an error is signaled.  This operation is O(1).
 </p>
 <p>
-<tt>(queue-back </tt><em>queue</em><tt> </tt><em>element</em><tt>)</tt>
+<tt>(queue-back </tt><em>queue</em><tt>)</tt>
 </p>
 <p>
 Returns the last element of the queue.  If the queue is empty, an error is signaled.  This operation is O(1).
@@ -141,13 +141,13 @@ Returns two values, the first and last pairs of the list that contains the membe
 </p>
 <h2 id="Mutators">Mutators</h2>
 <p>
-<tt>(queue-add-front! </tt><em>queue</em><tt> </tt><em>element</em><tt>)</tt>
+<tt>(queue-add-front! </tt><em>queue element</em><tt>)</tt>
 </p>
 <p>
 Adds <em>element</em> to the beginning of <em>queue</em>.  Returns an unspecified value.  This operation is O(1).
 </p>
 <p>
-<tt>(queue-add-back! </tt><em>queue</em><tt> </tt><em>element</em><tt>)</tt>
+<tt>(queue-add-back! </tt><em>queue element</em><tt>)</tt>
 </p>
 <p>
 Adds <em>element</em> to the end of <em>queue</em>.  Returns an unspecified value.  This operation is O(1).
@@ -162,7 +162,7 @@ Removes the first element of <em>queue</em> and returns it. If the queue is empt
 <tt>(queue-remove-back! </tt><em>queue</em><tt>)</tt>
 </p>
 <p>
-Removes the last element of <em>queue</em> and returns it.  If the queue is empty, an error is signaled.  This operation is O(n), because the list does not have backward links.
+Removes the last element of <em>queue</em> and returns it.  If the queue is empty, an error is signaled.  This operation is O(n) where n is the queue length, because the list does not have backward links.
 </p>
 <p>
 <tt>(queue-remove-all! </tt><em>queue</em><tt>)</tt>
@@ -177,16 +177,16 @@ Removes all the elements of <em>queue</em> and returns them in order as a list. 
 Removes all elements of <em>queue</em>.  Returns an unspecified value.  This operation is O(1).
 </p>
 <p>
-<tt>(set-queue-from-list! </tt><em>queue list</em><tt>)</tt>
+<tt>(queue-set-list! </tt><em>queue list</em><tt>)</tt>
 </p>
 <p>
-Replaces the list associated with <em>queue</em> with <em>list</em>, effectively discarding all the elements of <em>queue</em> in favor of those in <em>list</em>.  Returns an unspecified value.  This operation is O(n).
+Replaces the list associated with <em>queue</em> with <em>list</em>, effectively discarding all the elements of <em>queue</em> in favor of those in <em>list</em>.  Returns an unspecified value.  This operation is O(n) where n is the list length.
 </p>
 <p>
-To apply a destructive list procedure to a queue, use <tt>(set-queue-from-list! (</tt><em>proc</em><tt> (queue-list </tt><em>queue</em><tt>)))</tt>.
+To apply a destructive list procedure to a queue, use <tt>(queue-set-list! (</tt><em>proc</em><tt> (queue-list </tt><em>queue</em><tt>)))</tt>.
 </p>
 <p>
-<tt>(set-queue-from-first-last! </tt><em>queue front back</em><tt>)</tt>
+<tt>(queue-set-first-last! </tt><em>queue first last</em><tt>)</tt>
 </p>
 <p>
 Replaces the list associated with <em>queue</em> with the list whose first pair is <em>first</em> and whose last pair is <em>last</em>.  Alternatively, both <em>first</em> and <em>last</em> can be the empty list.  Returns an unspecified value.  This operation is O(1).
@@ -196,7 +196,7 @@ Replaces the list associated with <em>queue</em> with the list whose first pair 
 <tt>(queue-length </tt><em>queue</em><tt>)</tt>
 </p>
 <p>
-Returns the number of elements in <em>queue</em>.  This operation is at most O(n).
+Returns the number of elements in <em>queue</em>.  This operation is at most O(n) where n is the queue length.
 </p>
 <p>
 <tt>(queue-append </tt><em>queue</em> ...<tt>)</tt>
@@ -208,14 +208,14 @@ Returns a queue which contains all the elements in all the <em>queues</em> in th
 <tt>(queue-concatenate </tt><em>list-of-queues</em> ...<tt>)</tt>
 </p>
 <p>
-Returns a queue which contains all the elements in all the queues which are members of <em>list-of-queues</em> in the order in which they appear.  The result does not share storage with any of the arguments.  This operation is O(n) in the total number of elements.  It is not part of the R7RS-small list API, but is included here to make appending a large number of queues possible in Schemes that limit the number of arguments to <tt>apply</tt>.
+Returns a queue which contains all the elements in all the queues which are members of <em>list-of-queues</em> in the order in which they appear.  The result does not share storage with any of the arguments.  This operation is O(n) in the total number of elements in all queues.  It is not part of the R7RS-small list API, but is included here to make appending a large number of queues possible in Schemes that limit the number of arguments to <tt>apply</tt>.
 </p>
 <h2 id="Mapping">Mapping</h2>
 <p>
 <tt>(queue-map </tt><em>proc queue</em><tt>)</tt>
 </p>
 <p>
-Applies <em>proc</em> to each element of <em>queue</em> in unspecified order and returns a newly allocated queue containing the results.  This operation is O(n).
+Applies <em>proc</em> to each element of <em>queue</em> in unspecified order and returns a newly allocated queue containing the results.  This operation is O(n) where n is the queue length.
 </p>
 <p>
 <tt>(queue-map! </tt><em>proc queue</em><tt>)</tt>
@@ -224,10 +224,10 @@ Applies <em>proc</em> to each element of <em>queue</em> in unspecified order and
 Applies <em>proc</em> to each element of <em>queue</em> in order and modifies <em>queue</em> to contain the results.  This operation is O(n).  It is not part of the R7RS-small list API, but is included here to make transformation of a queue by mutation more efficient.
 </p>
 <p>
-<tt>(queue-for-each </tt><em>proc</em><tt> </tt><em>queue</em><tt>)</tt>
+<tt>(queue-for-each </tt><em>proc queue</em><tt>)</tt>
 </p>
 <p>
-Applies <em>proc</em> to each element of <em>queue</em> in order, discarding the returned values.  Returns an unspecified value.  This operation is O(n).
+Applies <em>proc</em> to each element of <em>queue</em> in order, discarding the returned values.  Returns an unspecified value.  This operation is O(n) where n is the queue length.
 </p>
 
 <H1>Implementation</H1>
