@@ -1,10 +1,7 @@
 <!DOCTYPE HTML PUBLIC "" "-//IETF//DTD HTML//EN">
-<html>
-  <head>
-    <title>SRFI 117: Mutable Queues</title>
-  </head>
+<html lang="en-US"><head>
 
-  <body>
+<title>SRFI 117: Mutable Queues</title></head><body>
 
 <H1>Title</H1>
 
@@ -13,6 +10,26 @@ Mutable Queues
 <H1>Author</H1>
 
 John Cowan &lt;cowan@ccil.org&gt;
+
+<H1>Status</H1>
+
+<p>
+This SRFI is currently in ``draft'' status.
+To see an explanation of
+each status that a SRFI can hold, see <a
+href="http://srfi.schemers.org/srfi-process.html">here</a>.
+
+To provide input on this SRFI, please
+<a href="mailto:srfi minus 117 at srfi dot schemers dot org">mail to
+<code>&lt;srfi minus 117 at srfi dot schemers dot org&gt;</code></a>.  See
+<a href="../srfi-list-subscribe.html">instructions here</a> to
+subscribe to the list.  You can access previous messages via
+<a href="mail-archive/maillist.html">the archive of the mailing list</a>.
+</p><ul>
+    <li>Received: <a
+    href="http://srfi.schemers.org/cgi-bin/viewcvs.cgi/*checkout*/srfi/srfi-117/srfi-117.html?rev=1.1">2014/12/02</a></li>
+      <li>Draft: 2014/12/02-2015/02/02</li>
+</ul>
 
 <H1>Abstract</H1>
 
@@ -26,9 +43,13 @@ Queues (more precisely, mostly-output-restricted deques) are mutable ordered col
 
 <H1>Rationale</H1>
 
-<p>Historically, queues of this form were called "tconc structures" (where "tconc" is short for "tail concatenate"), and Lispers have tended to roll their own using pairs.  This version uses a record to hold the first-pair and last-pair pointers rather than a pair, but uses pairs and the empty list internally.</p>
+<p>The queues described in this SRFI are objects of a disjoint type that provide an ordered sequence of arbitrary Scheme objects.  Like lists, they provide sequential access to their elements; unlike lists, they normally should not share storage with other queues, unless special precautions have been taken.</p>
 
-<p>Because the representation of queues as lists is exposed by the implementation, it's not necessary to provide a comprehensive API for queues, since <a class="ext-link" href="http://srfi.schemers.org/srfi-1/srfi-1.html"><span class="icon">​</span>SRFI 1</a> and other list APIs can serve the same purpose, using the <tt>queue-&gt;list</tt>, <tt>list-&gt;queue</tt>, and <tt>list-queue!</tt> procedures to convert between queues and lists fairly cheaply.  Consequently, the API provided here over and above the bare necessities of queueing and dequeueing elements is closely analogous to the R7RS-small API for lists.  It also subsumes the <a class="ext-link" href="http://wiki.call-cc.org/man/4/Unit%20data-structures#queues"><span class="icon">​</span>Chicken</a> and <a class="ext-link" href="http://people.csail.mit.edu/jaffer/slib/Queues.html#Queues"><span class="icon">​</span>SLIB</a> APIs.</p>
+<p>Technically, a queue is an object that makes it efficient to remove elements from the front and to add elements to the back.  These queues also make it efficient to add elements to the front, but removing elements from the back is inefficient.  Therefore, because these objects do not provide the normal behavioral guarantees of <a href="http://en.wikipedia.org/wiki/Double-ended_queue">deques</a>, they are not referred to as deques.  True deques will be provided in a future SRFI.</p>
+
+<p>Historically, objects of this form were called "tconc structures" (where "tconc" is short for "tail concatenate"), and Lispers have tended to roll their own using pairs.  This version uses a record to hold the first-pair and last-pair pointers rather than a pair, but uses pairs and the empty list internally.</p>
+
+<p>Because the representation of queues as lists is exposed by the implementation, it's not necessary to provide a comprehensive API for queues.  Instead, <a class="ext-link" href="http://srfi.schemers.org/srfi-1/srfi-1.html">SRFI 1</a> and other list APIs can serve the same purpose, using the conversion procedures to convert between queues and lists fairly cheaply.  Consequently, the API provided here over and above the bare necessities of queueing and dequeueing elements is closely analogous to the R7RS-small API for lists.  It also subsumes the <a class="ext-link" href="http://wiki.call-cc.org/man/4/Unit%20data-structures#queues">Chicken</a> and <a class="ext-link" href="http://people.csail.mit.edu/jaffer/slib/Queues.html#Queues">​SLIB</a> APIs.</p>
 
 <H1>Specification</H1>
 
@@ -54,15 +75,32 @@ Returns a newly allocated queue containing the elements of <em>queue</em>.  This
 <p>
 <tt>(queue-unfold </tt><em>stop? mapper successor seed</em><tt>)</tt>
 </p>
-<p>
-If the result of applying the predicate <em>stop?</em> to <em>seed</em> is <tt>#f</tt>, return a newly allocated empty queue.  Otherwise, apply the procedure <em>mapper</em> to <em>seed</em>.  <em>Mapper</em> returns a value which is added to the end of the queue.  Then get a new seed by applying the procedure <em>successor</em> to <em>seed</em>, and repeat this algorithm.
+<p>Creates a newly allocated empty queue, and performs the following algorithm:</p>
+
+<p>If the result of applying the predicate <em>stop?</em> to <em>seed</em> is <tt>#f</tt>, return the queue.  Otherwise, apply the procedure <em>mapper</em> to <em>seed</em>, returning a value which is added to the back of the queue.  Then get a new seed by applying the procedure <em>successor</em> to <em>seed</em>, and repeat this algorithm.
 </p>
 <p>
 <tt>(queue-unfold-right </tt><em>stop? mapper successor seed</em><tt>)</tt>
 </p>
+<p>Creates a newly allocated empty queue, and performs the following algorithm:</p>
+
+<p>If the result of applying the predicate <em>stop?</em> to <em>seed</em> is <tt>#f</tt>, return the queue.  Otherwise, apply the procedure <em>mapper</em> to <em>seed</em>, returning a value which is added to the front of the queue.  Then get a new seed by applying the procedure <em>successor</em> to <em>seed</em>, and repeat this algorithm.</p>
 <p>
-If the result of applying the predicate <em>stop?</em> to <em>seed</em> is <tt>#f</tt>, return a newly allocated empty queue.  Otherwise, apply the procedure <em>mapper</em> to <em>seed</em>.  <em>Mapper</em> returns a value which is added to the beginning of the queue.  Then get a new seed by applying the procedure <em>successor</em> to <em>seed</em>, and repeat this algorithm.
+<tt>(make-queue-with-list </tt><em>list</em><tt>)</tt>
 </p>
+<p>
+Returns a newly allocated queue containing the elements of <em>list</em> in order.  The result shares storage with <em>list</em>.  This operation is O(n).
+</p>
+<p>
+To apply a non-destructive list procedure to a queue and return a new queue, use <tt>(make-queue-with-list (</tt><em>proc</em><tt> (queue-list </tt><em>queue</em><tt>)))</tt>.
+</p>
+<p>
+<tt>(make-queue-with-first-last </tt><em>front back</em><tt>)</tt>
+</p>
+<p>
+Returns a newly allocated queue containing the elements of the list whose first pair is <em>first</em> and whose last pair is <em>last</em>.  It is an error if the pairs do not belong to the same list.  Alternatively, both <em>first</em> and <em>last</em> can be the empty list.  The result shares storage with the list.  This operation is O(1).
+</p>
+
 <h2 id="Predicates">Predicates</h2>
 <p>
 <tt>(queue? </tt><em>obj</em><tt>)</tt>
@@ -81,13 +119,25 @@ Returns <tt>#t</tt> if <em>obj</em> is a queue with no elements, and <tt>#f</tt>
 <tt>(queue-front </tt><em>queue</em><tt> </tt><em>element</em><tt>)</tt>
 </p>
 <p>
-Returns the first element of the queue.  This operation is O(1).
+Returns the first element of the queue.  If the queue is empty, an error is signaled.  This operation is O(1).
 </p>
 <p>
 <tt>(queue-back </tt><em>queue</em><tt> </tt><em>element</em><tt>)</tt>
 </p>
 <p>
-Returns the last element of the queue.  This operation is O(1).
+Returns the last element of the queue.  If the queue is empty, an error is signaled.  This operation is O(1).
+</p>
+<p>
+<tt>(queue-list </tt><em>queue</em><tt>)</tt>
+</p>
+<p>
+Returns the list that contains the members of <em>queue</em> in order.  The result shares storage with <em>queue</em>.  This operation is O(1).
+</p>
+<p>
+<tt>(queue-first-last </tt><em>queue</em><tt>)</tt>
+</p>
+<p>
+Returns two values, the first and last pairs of the list that contains the members of <em>queue</em> in order.  If <em>queue</em> is empty, returns two empty lists.  The results share storage with the queue.  This operation is O(1).
 </p>
 <h2 id="Mutators">Mutators</h2>
 <p>
@@ -106,26 +156,47 @@ Adds <em>element</em> to the end of <em>queue</em>.  Returns an unspecified valu
 <tt>(queue-remove-front! </tt><em>queue</em><tt>)</tt>
 </p>
 <p>
-Removes the first element of <em>queue</em> and returns it.  It is an error if <em>queue</em> is empty.  This operation is O(1).
+Removes the first element of <em>queue</em> and returns it. If the queue is empty, an error is signaled.  This operation is O(1).
 </p>
 <p>
 <tt>(queue-remove-back! </tt><em>queue</em><tt>)</tt>
 </p>
 <p>
-Removes the last element of <em>queue</em> and returns it.  It is an error if <em>queue</em> is empty.  This operation is O(n), because the list does not have backward links.
+Removes the last element of <em>queue</em> and returns it.  If the queue is empty, an error is signaled.  This operation is O(n), because the list does not have backward links.
+</p>
+<p>
+<tt>(queue-remove-all! </tt><em>queue</em><tt>)</tt>
+</p>
+<p>
+Removes all the elements of <em>queue</em> and returns them in order as a list.  Returns an unspecified value.  This operation is O(1).
 </p>
 <p>
 <tt>(queue-clear! </tt><em>queue</em><tt>)</tt>
 </p>
 <p>
-Removes all elements of <em>queue</em>.  This operation is O(1).
+Removes all elements of <em>queue</em>.  Returns an unspecified value.  This operation is O(1).
+</p>
+<p>
+<tt>(set-queue-from-list! </tt><em>queue list</em><tt>)</tt>
+</p>
+<p>
+Replaces the list associated with <em>queue</em> with <em>list</em>, effectively discarding all the elements of <em>queue</em> in favor of those in <em>list</em>.  Returns an unspecified value.  This operation is O(n).
+</p>
+<p>
+To apply a destructive list procedure to a queue, use <tt>(set-queue-from-list! (</tt><em>proc</em><tt> (queue-list </tt><em>queue</em><tt>)))</tt>.
+</p>
+<p>
+<tt>(set-queue-from-first-last! </tt><em>queue front back</em><tt>)</tt>
+</p>
+<p>
+Replaces the list associated with <em>queue</em> with the list whose first pair is <em>first</em> and whose last pair is <em>last</em>.  Alternatively, both <em>first</em> and <em>last</em> can be the empty list.  Returns an unspecified value.  This operation is O(1).
 </p>
 <h2 id="Thewholequeue">The whole queue</h2>
 <p>
 <tt>(queue-length </tt><em>queue</em><tt>)</tt>
 </p>
 <p>
-Returns the number of elements in <em>queue</em>.  This operation is O(n).
+Returns the number of elements in <em>queue</em>.  This operation is at most O(n).
 </p>
 <p>
 <tt>(queue-append </tt><em>queue</em> ...<tt>)</tt>
@@ -158,56 +229,6 @@ Applies <em>proc</em> to each element of <em>queue</em> in order and modifies <e
 <p>
 Applies <em>proc</em> to each element of <em>queue</em> in order, discarding the returned values.  Returns an unspecified value.  This operation is O(n).
 </p>
-<h2 id="Conversionandlistoperations">Conversion and list operations</h2>
-<p>
-<tt>(queue-&gt;list </tt><em>queue</em><tt>)</tt>
-</p>
-<p>
-Returns the list that contains the members of <em>queue</em> in order.  The result shares storage with <em>queue</em>.  This operation is O(1).
-</p>
-<p>
-<tt>(list-&gt;queue </tt><em>list</em><tt>)</tt>
-</p>
-<p>
-Returns a newly allocated queue containing the elements of <em>list</em> in order.  The result shares storage with <em>list</em>.  This operation is O(n).
-</p>
-<p>
-To apply a non-destructive list procedure to a queue and return a new queue, use <tt>(list-&gt;queue (</tt><em>proc</em><tt> (queue-&gt;list </tt><em>queue</em><tt>)))</tt>.
-</p>
-<p>
-<tt>(list-&gt;queue! </tt><em>queue list</em><tt>)</tt>
-</p>
-<p>
-Replaces the list associated with <em>queue</em> with <em>list</em>, effectively discarding all the elements of <em>queue</em> in favor of those in <em>list</em>.  The result is unspecified.  Returns an unspecified value.  This operation is O(n).
-</p>
-<p>
-To apply a destructive list procedure to a queue, use <tt>(list-&gt;queue! (</tt><em>proc</em><tt> (queue-&gt;list </tt><em>queue</em><tt>)))</tt>.
-</p>
-<p>
-<tt>(queue-&gt;first-last</tt><em>queue</em><tt>)</tt>
-</p>
-<p>
-Returns two values, the first and last pairs of the list that contains the members of <em>queue</em> in order.  If <em>queue</em> is empty, returns two empty lists.  The results share storage with the queue.  This operation is O(1).
-</p>
-<p>
-<tt>(first-last-&gt;queue </tt><em>front back</em><tt>)</tt>
-</p>
-<p>
-Returns a newly allocated queue containing the elements of the list whose first pair is <em>first</em> and whose last pair is <em>last</em>.  Alternatively, both <em>first</em> and <em>last</em> can be the empty list.  The result shares storage with the list.  This operation is O(1).
-</p>
-<p>
-<tt>(first-last-&gt;queue! </tt><em>queue front back</em><tt>)</tt>
-</p>
-<p>
-Replaces the list associated with <em>queue</em> with the list whose first pair is <em>first</em> and whose last pair is <em>last</em>.  Alternatively, both <em>first</em> and <em>last</em> can be the empty list.  The result is unspecified.  This operation is O(1).
-</p>
-<h2 id="Queuesashooks">Queues as hooks</h2>
-<p>
-<tt>(queue-invoke </tt><em>queue arg</em> ...<tt>)</tt>
-</p>
-<p>
-Apply each element of <em>queue</em> in turn to the <em>args</em>.  It is an error if any element is not a procedure.  This allows queues to be used as hooks, which various parts of a program can register interest in by adding a procedure to the queue.  This operation is O(n).
-</p>
 
 <H1>Implementation</H1>
 
@@ -218,6 +239,7 @@ Apply each element of <em>queue</em> in turn to the <em>args</em>.  It is an err
 <ul><li><code>queues-impl.scm</code> – implementation of queues</li>
 <li><code>queues.sld</code> – an R7RS library named <code>(queues)</code></li>
 <li><code>queues.scm</code> – a Chicken library</li>
+<li><code>queues-test.scm</code> – tests using the Chicken test egg</li>
 </ul>
 
 <H1>Copyright</H1>
@@ -245,7 +267,7 @@ DEALINGS IN THE SOFTWARE.</p>
     <address>Editor: <a href="mailto:srfi-editors at srfi dot schemers dot org">Michael Sperber</a></address>
 <!-- Created: Tue Sep 29 19:20:08 EDT 1998 -->
 <!-- hhmts start -->
-Last modified: Sun Jan 28 14:21:14 MET 2007
+Last modified: Tue Dec  2 20:13:06 MET 2014
 <!-- hhmts end -->
   </body>
 </html>

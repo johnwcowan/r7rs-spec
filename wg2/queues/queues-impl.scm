@@ -54,49 +54,49 @@
 ;;; The invariant is that either first is (the first pair of) a list
 ;;; and last is the last pair, or both of them are the empty list.
 
-(define-record-type <queue> (first-last->queue first last) queue?
-  (first first set-first!)
-  (last last set-last!))
+(define-record-type <queue> (make-queue-with-first-last first last) queue?
+  (first get-first set-first!)
+  (last get-last set-last!))
 
 ;;; Constructors
 
-(define (list->queue list)
+(define (make-queue-with-list list)
   (if (null? list)
-    (first-last->queue '() '())
-    (first-last->queue list (last-pair list))))
+    (make-queue-with-first-last '() '())
+    (make-queue-with-first-last list (last-pair list))))
 
 (define make-queue
   (case-lambda
     ((k) (make-queue k #f))
-    ((k fill) (list->queue (make-list k fill)))))
+    ((k fill) (make-queue-with-list (make-list k fill)))))
 
 (define (queue . objs)
-  (list->queue objs))
+  (make-queue-with-list objs))
 
 (define (queue-copy queue)
-  (list->queue (list-copy (first queue))))
+  (make-queue-with-list (list-copy (get-first queue))))
 
 ;;; Predicates
 
 (define (queue-empty? queue)
-  (null? (first queue)))
+  (null? (get-first queue)))
 
 ;;; Accessors
 
 (define (queue-front queue)
   (if (queue-empty? queue)
     (error "Empty queue")
-    (car (first queue))))
+    (car (get-first queue))))
 
 (define (queue-back queue)
   (if (queue-empty? queue)
     (error "Empty queue")
-    (car (last queue))))
+    (car (get-last queue))))
 
 ;;; Mutators (which carefully maintain the invariant)
 
 (define (queue-add-front! queue elem)
-  (let ((new-first (cons elem (first queue))))
+  (let ((new-first (cons elem (get-first queue))))
     (if (queue-empty? queue)
       (set-last! queue new-first))
     (set-first! queue new-first)))
@@ -105,13 +105,13 @@
   (let ((new-last (list elem)))
     (if (queue-empty? queue)
       (set-first! queue new-last)
-      (set-cdr! (last queue) new-last))
+      (set-cdr! (get-last queue) new-last))
     (set-last! queue new-last)))
 
 (define (queue-remove-front! queue)
   (if (queue-empty? queue)
     (error "Empty queue"))
-  (let* ((old-first (first queue))
+  (let* ((old-first (get-first queue))
          (elem (car old-first))
          (new-first (cdr old-first)))
     (if (null? new-first)
@@ -122,14 +122,19 @@
 (define (queue-remove-back! queue)
   (if (queue-empty? queue)
     (error "Empty queue"))
-  (let* ((old-last (last queue))
+  (let* ((old-last (get-last queue))
          (elem (car old-last))
-         (new-last (penult-pair (first queue))))
+         (new-last (penult-pair (get-first queue))))
     (if (null? new-last)
       (set-first! queue '())
       (set-cdr! new-last '()))
     (set-last! queue new-last)
     elem))
+
+(define (queue-remove-all! queue)
+   (let ((result (get-first queue)))
+      (queue-clear! queue)
+      result))
 
 ;; Return the next to last pair of lis, or nil if there is none
 
@@ -148,7 +153,7 @@
 ;;; The whole queue
 
 (define (queue-length queue)
-  (length (first queue)))
+  (length (get-first queue)))
 
 ;; Because append does not copy its back argument, we cannot use it
 (define (queue-append . queues)
@@ -158,19 +163,19 @@
   (let ((result (queue)))
     (for-each
       (lambda (queue)
-        (for-each (lambda (elem) (queue-add-back! result elem)) (first queue)))
+        (for-each (lambda (elem) (queue-add-back! result elem)) (get-first queue)))
       queues)
      result))
 
 (define (queue-reverse queue)
-  (list->queue (reverse (first queue))))
+  (make-queue-with-list (reverse (get-first queue))))
 
 (define queue-member?
   (case-lambda
     ((queue elem)
      (queue-member? queue elem equal?))
     ((queue elem =)
-     (let lp ((lis (first queue)))
+     (let lp ((lis (get-first queue)))
        (if (null? lis)
          #f
          (if (= (car lis) elem)
@@ -182,7 +187,7 @@
     ((elem queue)
      (queue-assoc elem queue equal?))
     ((queue elem =)
-     (let lp ((lis (first queue)))
+     (let lp ((lis (get-first queue)))
        (if (null? lis)
          #f
          (if (= (caar lis) elem)
@@ -190,39 +195,35 @@
            (lp (cdr lis))))))))
 
 (define (queue-map proc queue)
-  (list->queue (map proc (first queue))))
+  (make-queue-with-list (map proc (get-first queue))))
 
 (define (queue-unfold stop? mapper successor seed)
-  (list->queue (unfold stop? mapper successor seed)))
+  (make-queue-with-list (unfold stop? mapper successor seed)))
 
 (define (queue-unfold-right stop? mapper successor seed)
-  (list->queue (unfold-right stop? mapper successor seed)))
+  (make-queue-with-list (unfold-right stop? mapper successor seed)))
 
 (define (queue-map! proc queue)
-  (map! proc (first queue)))
+  (map! proc (get-first queue)))
 
 (define (queue-for-each proc queue)
-  (for-each proc (first queue)))
+  (for-each proc (get-first queue)))
 
 ;;; Conversion
 
-(define (queue->list queue)
-  (first queue))
+(define (queue-list queue)
+  (get-first queue))
 
-(define (list->queue! queue lis)
+(define (set-queue-from-list! queue lis)
   (set-first! queue lis)
   (if (null? lis)
     (set-last! queue '())
     (set-last! queue (last-pair lis))))
 
-(define (queue->first-last queue)
-  (values (first queue) (last queue)))
+(define (queue-first-last queue)
+  (values (get-first queue) (get-last queue)))
 
-(define (first-last->queue! queue first last)
+(define (set-queue-from-first-last! queue first last)
   (set-first! queue first)
   (set-last! queue last))
 
-;;; Queues as hooks
-
-(define (queue-invoke queue . args)
-  (queue-for-each (lambda (proc) (apply proc args)) queue))
