@@ -1,4 +1,4 @@
-;;;; Implementation of queue SRFI
+;;;; Implementation of list-queue SRFI
 
 ;;; R7RS shims.  Comment these out on an R7RS system.
 ;;; I stole this code from Chibi Scheme, which is BSD-licensed.
@@ -50,90 +50,89 @@
             (cons (mapper seed) ans)))))
 
 
-;;; The queue record
+;;; The list-queue record
 ;;; The invariant is that either first is (the first pair of) a list
 ;;; and last is the last pair, or both of them are the empty list.
 
-(define-record-type <queue> (make-queue-with-first-last first last) queue?
+(define-record-type <list-queue> (raw-make-list-queue first last) list-queue?
   (first get-first set-first!)
   (last get-last set-last!))
 
 ;;; Constructors
 
-(define (make-queue-with-list list)
-  (if (null? list)
-    (make-queue-with-first-last '() '())
-    (make-queue-with-first-last list (last-pair list))))
-
-(define make-queue
+(define make-list-queue
   (case-lambda
-    ((k) (make-queue k #f))
-    ((k fill) (make-queue-with-list (make-list k fill)))))
+    ((list)
+     (if (null? list)
+       (raw-make-list-queue '() '())
+       (raw-make-list-queue list (last-pair list))))
+    ((list last)
+     (raw-make-list-queue list last))))
 
-(define (queue . objs)
-  (make-queue-with-list objs))
+(define (list-queue . objs)
+  (make-list-queue objs))
 
-(define (queue-copy queue)
-  (make-queue-with-list (list-copy (get-first queue))))
+(define (list-queue-copy list-queue)
+  (make-list-queue (list-copy (get-first list-queue))))
 
 ;;; Predicates
 
-(define (queue-empty? queue)
-  (null? (get-first queue)))
+(define (list-queue-empty? list-queue)
+  (null? (get-first list-queue)))
 
 ;;; Accessors
 
-(define (queue-front queue)
-  (if (queue-empty? queue)
-    (error "Empty queue")
-    (car (get-first queue))))
+(define (list-queue-front list-queue)
+  (if (list-queue-empty? list-queue)
+    (error "Empty list-queue")
+    (car (get-first list-queue))))
 
-(define (queue-back queue)
-  (if (queue-empty? queue)
-    (error "Empty queue")
-    (car (get-last queue))))
+(define (list-queue-back list-queue)
+  (if (list-queue-empty? list-queue)
+    (error "Empty list-queue")
+    (car (get-last list-queue))))
 
 ;;; Mutators (which carefully maintain the invariant)
 
-(define (queue-add-front! queue elem)
-  (let ((new-first (cons elem (get-first queue))))
-    (if (queue-empty? queue)
-      (set-last! queue new-first))
-    (set-first! queue new-first)))
+(define (list-queue-add-front! list-queue elem)
+  (let ((new-first (cons elem (get-first list-queue))))
+    (if (list-queue-empty? list-queue)
+      (set-last! list-queue new-first))
+    (set-first! list-queue new-first)))
 
-(define (queue-add-back! queue elem)
+(define (list-queue-add-back! list-queue elem)
   (let ((new-last (list elem)))
-    (if (queue-empty? queue)
-      (set-first! queue new-last)
-      (set-cdr! (get-last queue) new-last))
-    (set-last! queue new-last)))
+    (if (list-queue-empty? list-queue)
+      (set-first! list-queue new-last)
+      (set-cdr! (get-last list-queue) new-last))
+    (set-last! list-queue new-last)))
 
-(define (queue-remove-front! queue)
-  (if (queue-empty? queue)
-    (error "Empty queue"))
-  (let* ((old-first (get-first queue))
+(define (list-queue-remove-front! list-queue)
+  (if (list-queue-empty? list-queue)
+    (error "Empty list-queue"))
+  (let* ((old-first (get-first list-queue))
          (elem (car old-first))
          (new-first (cdr old-first)))
     (if (null? new-first)
-      (set-last! queue '()))
-    (set-first! queue new-first)
+      (set-last! list-queue '()))
+    (set-first! list-queue new-first)
     elem))
 
-(define (queue-remove-back! queue)
-  (if (queue-empty? queue)
-    (error "Empty queue"))
-  (let* ((old-last (get-last queue))
+(define (list-queue-remove-back! list-queue)
+  (if (list-queue-empty? list-queue)
+    (error "Empty list-queue"))
+  (let* ((old-last (get-last list-queue))
          (elem (car old-last))
-         (new-last (penult-pair (get-first queue))))
+         (new-last (penult-pair (get-first list-queue))))
     (if (null? new-last)
-      (set-first! queue '())
+      (set-first! list-queue '())
       (set-cdr! new-last '()))
-    (set-last! queue new-last)
+    (set-last! list-queue new-last)
     elem))
 
-(define (queue-remove-all! queue)
-   (let ((result (get-first queue)))
-      (queue-clear! queue)
+(define (list-queue-remove-all! list-queue)
+   (let ((result (get-first list-queue)))
+      (list-queue-clear! list-queue)
       result))
 
 ;; Return the next to last pair of lis, or nil if there is none
@@ -141,89 +140,90 @@
 (define (penult-pair lis)
   (let lp ((lis lis))
     (cond
-     ;((null? lis) (error "Empty queue"))
+     ;((null? lis) (error "Empty list-queue"))
       ((null? (cdr lis)) '())
       ((null? (cddr lis)) lis)
       (else (lp (cdr lis))))))
 
-(define (queue-clear! queue)
-  (set-first! queue '())
-  (set-last! queue '()))
+(define (list-queue-clear! list-queue)
+  (set-first! list-queue '())
+  (set-last! list-queue '()))
 
-;;; The whole queue
+;;; The whole list-queue
 
-(define (queue-length queue)
-  (length (get-first queue)))
+(define (list-queue-length list-queue)
+  (length (get-first list-queue)))
 
 ;; Because append does not copy its back argument, we cannot use it
-(define (queue-append . queues)
-  (queue-concatenate queues))
+(define (list-queue-append . list-queues)
+  (list-queue-concatenate list-queues))
 
-(define (queue-concatenate queues)
-  (let ((result (queue)))
+(define (list-queue-concatenate list-queues)
+  (let ((result (list-queue)))
     (for-each
-      (lambda (queue)
-        (for-each (lambda (elem) (queue-add-back! result elem)) (get-first queue)))
-      queues)
+      (lambda (list-queue)
+        (for-each (lambda (elem) (list-queue-add-back! result elem)) (get-first list-queue)))
+      list-queues)
      result))
 
-(define (queue-reverse queue)
-  (make-queue-with-list (reverse (get-first queue))))
+(define (list-queue-reverse list-queue)
+  (make-list-queue (reverse (get-first list-queue))))
 
-(define queue-member?
+(define list-queue-member?
   (case-lambda
-    ((queue elem)
-     (queue-member? queue elem equal?))
-    ((queue elem =)
-     (let lp ((lis (get-first queue)))
+    ((list-queue elem)
+     (list-queue-member? list-queue elem equal?))
+    ((list-queue elem =)
+     (let lp ((lis (get-first list-queue)))
        (if (null? lis)
          #f
          (if (= (car lis) elem)
            #t
            (lp (cdr lis))))))))
 
-(define queue-assoc
+(define list-queue-assoc
   (case-lambda
-    ((elem queue)
-     (queue-assoc elem queue equal?))
-    ((queue elem =)
-     (let lp ((lis (get-first queue)))
+    ((elem list-queue)
+     (list-queue-assoc elem list-queue equal?))
+    ((list-queue elem =)
+     (let lp ((lis (get-first list-queue)))
        (if (null? lis)
          #f
          (if (= (caar lis) elem)
            (car lis)
            (lp (cdr lis))))))))
 
-(define (queue-map proc queue)
-  (make-queue-with-list (map proc (get-first queue))))
+(define (list-queue-map proc list-queue)
+  (make-list-queue (map proc (get-first list-queue))))
 
-(define (queue-unfold stop? mapper successor seed)
-  (make-queue-with-list (unfold stop? mapper successor seed)))
+(define (list-queue-unfold stop? mapper successor seed)
+  (make-list-queue (unfold stop? mapper successor seed)))
 
-(define (queue-unfold-right stop? mapper successor seed)
-  (make-queue-with-list (unfold-right stop? mapper successor seed)))
+(define (list-queue-unfold-right stop? mapper successor seed)
+  (make-list-queue (unfold-right stop? mapper successor seed)))
 
-(define (queue-map! proc queue)
-  (map! proc (get-first queue)))
+(define (list-queue-map! proc list-queue)
+  (map! proc (get-first list-queue)))
 
-(define (queue-for-each proc queue)
-  (for-each proc (get-first queue)))
+(define (list-queue-for-each proc list-queue)
+  (for-each proc (get-first list-queue)))
 
 ;;; Conversion
 
-(define (queue-list queue)
-  (get-first queue))
+(define (list-queue-list list-queue)
+  (get-first list-queue))
 
-(define (queue-set-list! queue lis)
-  (set-first! queue lis)
-  (if (null? lis)
-    (set-last! queue '())
-    (set-last! queue (last-pair lis))))
+(define (list-queue-first-last list-queue)
+  (values (get-first list-queue) (get-last list-queue)))
 
-(define (queue-first-last queue)
-  (values (get-first queue) (get-last queue)))
-
-(define (queue-set-first-last! queue first last)
-  (set-first! queue first)
-  (set-last! queue last))
+(define list-queue-set-list!
+  (case-lambda
+    ((list-queue first)
+     (set-first! list-queue first)
+     (if (null? first)
+       (set-last! list-queue '())
+       (set-last! list-queue (last-pair first))))
+    ((list-queue first last)
+     (set-first! list-queue first)
+     (set-last! list-queue last))))
 
