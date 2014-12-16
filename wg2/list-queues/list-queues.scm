@@ -11,5 +11,6 @@
   (export list-queue-map list-queue-map! list-queue-for-each)
   (export list-queue-list list-queue-set-list!)
   (export list-queue-first-last)
+  (export empty-list-queue-error?)
   (include "list-queues-impl.scm")
 )

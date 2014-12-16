@@ -39,7 +39,7 @@
 (define (each . procs)
   (lambda args
     (let loop ((procs procs))
-      (unless (null? procs)
+      (if (not (null? procs))
         (apply (car procs) args)
         (loop (cdr procs))))))
         (if #f #f)
@@ -64,8 +64,8 @@
         (else #f)))))
 
 (define (map-reduce mapper reducer)
-  (lambda args
-    (apply reducer (map mapper args))))
+  (lambda (list)
+    (apply reducer (map mapper list))))
 
 (define (always . objs) #t)
 

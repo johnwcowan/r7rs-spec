@@ -19,13 +19,13 @@
         ((zero? k) (set-car! ls x))
         (else (list-set! (cdr ls) (- k 1) x))))
 
-;;; This definition is from Chibi's SRFI-1 implementation.
+;; This definition is from Chibi's SRFI-1 implementation.
 
 (define (last-pair ls) (if (null? (cdr ls)) ls (last-pair (cdr ls))))
 
-;;; This definition of map! isn't fully SRFI-1 compliant, as it
-;;; handles only unary functions.  You can use SRFI-1's definition
-;;; if you want.
+;; This definition of map! isn't fully SRFI-1 compliant, as it
+;; handles only unary functions.  You can use SRFI-1's definition
+;; if you want.
 
 (define (map! f lis)
   (let lp ((lis lis))
@@ -34,8 +34,8 @@
         (set-car! lis (f (car lis)))
         (lp (cdr lis))))))
 
-;;; Again, these definitions of unfold and unfold-right are stripped down;
-;;; there is no support for a tail generator.
+;; Again, these definitions of unfold and unfold-right are stripped down;
+;; there is no support for a tail generator.
 
 (define (unfold stop? mapper successor seed)
   (let loop ((seed seed))
@@ -49,10 +49,22 @@
         (loop (successor seed)
             (cons (mapper seed) ans)))))
 
+;; This definition is excessively simple, but it works well enough.
+
+(define raise error)
+
+;; Unique error object
+
+(define empty-list-queue-error (string-copy "Empty list-queue"))
+
+;; Error predicate
+
+(define (empty-list-queue-error? x) (eq? x empty-list-queue-error))
 
 ;;; The list-queue record
-;;; The invariant is that either first is (the first pair of) a list
-;;; and last is the last pair, or both of them are the empty list.
+
+;; The invariant is that either first is (the first pair of) a list
+;; and last is the last pair, or both of them are the empty list.
 
 (define-record-type <list-queue> (raw-make-list-queue first last) list-queue?
   (first get-first set-first!)
@@ -84,12 +96,12 @@
 
 (define (list-queue-front list-queue)
   (if (list-queue-empty? list-queue)
-    (error "Empty list-queue")
+    (raise empty-list-queue-error)
     (car (get-first list-queue))))
 
 (define (list-queue-back list-queue)
   (if (list-queue-empty? list-queue)
-    (error "Empty list-queue")
+    (raise empty-list-queue-error)
     (car (get-last list-queue))))
 
 ;;; Mutators (which carefully maintain the invariant)
@@ -109,7 +121,7 @@
 
 (define (list-queue-remove-front! list-queue)
   (if (list-queue-empty? list-queue)
-    (error "Empty list-queue"))
+    (raise empty-list-queue-error))
   (let* ((old-first (get-first list-queue))
          (elem (car old-first))
          (new-first (cdr old-first)))
@@ -120,7 +132,7 @@
 
 (define (list-queue-remove-back! list-queue)
   (if (list-queue-empty? list-queue)
-    (error "Empty list-queue"))
+    (raise empty-list-queue-error))
   (let* ((old-last (get-last list-queue))
          (elem (car old-last))
          (new-last (penult-pair (get-first list-queue))))
@@ -140,7 +152,7 @@
 (define (penult-pair lis)
   (let lp ((lis lis))
     (cond
-     ;((null? lis) (error "Empty list-queue"))
+     ;((null? lis) (raise empty-list-queue-error))
       ((null? (cdr lis)) '())
       ((null? (cddr lis)) lis)
       (else (lp (cdr lis))))))
