@@ -82,14 +82,14 @@ Returns a newly allocated list queue containing the elements of <em>list-queue</
 </p>
 <p>Creates a newly allocated empty list queue, and performs the following algorithm:</p>
 
-<p>If the result of applying the predicate <em>stop?</em> to <em>seed</em> is <tt>#f</tt>, return the list queue.  Otherwise, apply the procedure <em>mapper</em> to <em>seed</em>, returning a value which is added to the back of the list queue.  Then get a new seed by applying the procedure <em>successor</em> to <em>seed</em>, and repeat this algorithm.
+<p>If the result of applying the predicate <em>stop?</em> to <em>seed</em> is true, return the list queue.  Otherwise, apply the procedure <em>mapper</em> to <em>seed</em>, returning a value which is added to the back of the list queue.  Then get a new seed by applying the procedure <em>successor</em> to <em>seed</em>, and repeat this algorithm.
 </p>
 <p>
 <tt>(list-queue-unfold-right </tt><em>stop? mapper successor seed</em><tt>)</tt>
 </p>
 <p>Creates a newly allocated empty list queue, and performs the following algorithm:</p>
 
-<p>If the result of applying the predicate <em>stop?</em> to <em>seed</em> is <tt>#f</tt>, return the list queue.  Otherwise, apply the procedure <em>mapper</em> to <em>seed</em>, returning a value which is added to the front of the list queue.  Then get a new seed by applying the procedure <em>successor</em> to <em>seed</em>, and repeat this algorithm.</p>
+<p>If the result of applying the predicate <em>stop?</em> to <em>seed</em> is true, return the list queue.  Otherwise, apply the procedure <em>mapper</em> to <em>seed</em>, returning a value which is added to the front of the list queue.  Then get a new seed by applying the procedure <em>successor</em> to <em>seed</em>, and repeat this algorithm.</p>
 
 <h2 id="Predicates">Predicates</h2>
 <p>
