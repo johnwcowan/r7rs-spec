@@ -1,4 +1,5 @@
-(include "generators.sch")
+(use numbers)
+(use generators)
 
 
 (when (not (equal? (generator->list (make-generator 'a 'b 'c 'd 'e))
@@ -6,12 +7,12 @@
       (error 'failed "Test 1 failed"))
 
 
-(when (not (equal? (generator->list (circular-generator 1 2 3) 10)
+(when (not (equal? (generator->list (make-circular-generator 1 2 3) 10)
                    '(1 2 3 1 2 3 1 2 3 1)))
       (error 'failed "Test 2 failed"))
 
 
-(when (not (equal? (generator->reverse-list (circular-generator 1 2 3) 10)
+(when (not (equal? (generator->reverse-list (make-circular-generator 1 2 3) 10)
                    '(1 3 2 1 3 2 1 3 2 1)))
       (error 'failed "Test 3 failed"))
 
@@ -131,49 +132,49 @@
       (error 'failed "Test 21.3 failed"))
 
 
-(when (not (equal? (generator->list (gcons* 'a 'b (giota 2)))
+(when (not (equal? (generator->list (gcons* 'a 'b (make-iota-generator 2)))
                    '(a b 0 1)))
       (error 'failed "Test 22 failed"))
 
 
-(when (not (equal? (generator->list (gappend (giota 2) (make-generator) (make-generator) (make-generator) (make-generator 'a)
+(when (not (equal? (generator->list (gappend (make-iota-generator 2) (make-generator) (make-generator) (make-generator) (make-generator 'a)
                                                        (make-generator) (make-generator) (make-generator) (make-generator 'b 'c)))
                    '(0 1 a b c)))
       (error 'failed "Test 23 failed"))
 
 
-(when (not (equal? (generator->list (gconcatenate (make-generator (giota 2)) (make-generator) (make-generator) (make-generator) (make-generator (giota 1))
-                                                       (make-generator) (make-generator) (make-generator) (make-generator (giota 3))))
+(when (not (equal? (generator->list (gconcatenate (make-generator (make-iota-generator 2)) (make-generator) (make-generator) (make-generator) (make-generator (make-iota-generator 1))
+                                                       (make-generator) (make-generator) (make-generator) (make-generator (make-iota-generator 3))))
                    '(0 1 0 0 1 2)))
       (error 'failed "Test 24 failed"))
 
 
 ;Tested with built-in comparitors but it should work for srfi 114 as now coded...
-;(when (not (equal? (generator->list (gmerge < (giota 2) (make-generator) (make-generator) (giota 1)
-;                                              (make-generator) (make-generator) (make-generator) (giota 3)))
+;(when (not (equal? (generator->list (gmerge < (make-iota-generator 2) (make-generator) (make-generator) (make-iota-generator 1)
+;                                              (make-generator) (make-generator) (make-generator) (make-iota-generator 3)))
 ;                   '(0 0 0 1 1 2)))
 ;      (error 'failed "Test 25 failed"))
 
 
 ;Tested with built-in comparitors but it should work for srfi 114 as now coded...
-;(when (not (equal? (generator->list (gunion < (giota 2) (make-generator) (make-generator) (giota 5)
-;                                              (make-generator) (make-generator) (make-generator) (giota 3)))
+;(when (not (equal? (generator->list (gunion < (make-iota-generator 2) (make-generator) (make-generator) (make-iota-generator 5)
+;                                              (make-generator) (make-generator) (make-generator) (make-iota-generator 3)))
 ;                   '(0 1 2 3 4)))
 ;      (error 'failed "Test 26 failed"))
 
 
 ;Tested with built-in comparitors but it should work for srfi 114 as now coded...
-;(when (not (equal? (generator->list (gintersection < (giota 2) (giota 5) (giota 3)))
+;(when (not (equal? (generator->list (gintersection < (make-iota-generator 2) (make-iota-generator 5) (make-iota-generator 3)))
 ;                   '(0 1)))
 ;      (error 'failed "Test 27 failed"))
 
 
-(when (not (equal? (generator->list (gfilter (lambda (v) (> v 2)) (giota 6)))
+(when (not (equal? (generator->list (gfilter (lambda (v) (> v 2)) (make-iota-generator 6)))
                    '(3 4 5)))
       (error 'failed "Test 28 failed"))
 
 
-(when (not (equal? (generator->list (gremove (lambda (v) (> v 2)) (giota 6)))
+(when (not (equal? (generator->list (gremove (lambda (v) (> v 2)) (make-iota-generator 6)))
                    '(0 1 2)))
       (error 'failed "Test 29 failed"))
 
@@ -238,27 +239,27 @@
       (error 'failed "Test 41 failed"))
 
 
-(when (not (equal? (generator->list (glist 3 (giota 7)))
+(when (not (equal? (generator->list (glists 3 (make-iota-generator 7)))
                    '((0 1 2) (3 4 5) (6))))
       (error 'failed "Test 42 failed"))
 
 
-(when (not (equal? (generator->list (glist 3 (giota 7) #f))
+(when (not (equal? (generator->list (glists 3 (make-iota-generator 7) #f))
                    '((0 1 2) (3 4 5) (6 #f #f))))
       (error 'failed "Test 43 failed"))
 
 
-(when (not (equal? (generator->list (glist (giota 9) (giota 9) #f))
+(when (not (equal? (generator->list (glists (make-iota-generator 9) (make-iota-generator 9) #f))
                    '(() (0) (1 2) (3 4 5) (6 7 8 #f))))
       (error 'failed "Test 44 failed"))
 
 
-(when (not (equal? (generator->list (gvectors (giota 9) (giota 9) #f))
+(when (not (equal? (generator->list (gvectors (make-iota-generator 9) (make-iota-generator 9) #f))
                    '(#() #(0) #(1 2) #(3 4 5) #(6 7 8 #f))))
       (error 'failed "Test 45 failed"))
 
 
-(when (not (equal? (generator->list (gstrings (giota 9) (make-generator #\a #\b #\c #\d #\e #\f #\g #\h #\i) #\-))
+(when (not (equal? (generator->list (gstrings (make-iota-generator 9) (make-generator #\a #\b #\c #\d #\e #\f #\g #\h #\i) #\-))
                    '("" "a" "bc" "def" "ghi-")))
       (error 'failed "Test 46 failed"))
 
@@ -273,19 +274,19 @@
       (error 'failed "Test 48 failed"))
 
 
-(when (not (equal? (generator-fold (lambda (x y acc) (+ acc (* x y))) 0 (make-generator 1 2 3 4 5 6 7) (circular-generator 1 2 3))
+(when (not (equal? (generator-fold (lambda (x y acc) (+ acc (* x y))) 0 (make-generator 1 2 3 4 5 6 7) (make-circular-generator 1 2 3))
                    53))
       (error 'failed "Test 49 failed"))
 
 
 (when (not (equal? (let ((total 0)) 
-                        (generator-for-each (lambda (x y) (set! total (+ total (* x y)))) (make-generator 1 2 3 4 5 6 7 8) (circular-generator 1 2 3))
+                        (generator-for-each (lambda (x y) (set! total (+ total (* x y)))) (make-generator 1 2 3 4 5 6 7 8) (make-circular-generator 1 2 3))
                         total)
                    69))
       (error 'failed "Test 50 failed"))
 
 
-(when (not (equal? (generator-collect (lambda (x y) (* x y)) (make-generator 1 2 3 4 5 6 7 8) (circular-generator 1 2 3))
+(when (not (equal? (generator-collect (lambda (x y) (* x y)) (make-generator 1 2 3 4 5 6 7 8) (make-circular-generator 1 2 3))
                    '(1 4 9 4 10 18 7 16)))
       (error 'failed "Test 51 failed"))
 
@@ -310,7 +311,7 @@
       (error 'failed "Test 55 failed"))
 
 
-(when (not (equal? (generator-any (lambda (x) (= (modulo x 7) 2)) (circular-generator 5 6 7 8 9 10))
+(when (not (equal? (generator-any (lambda (x) (= (modulo x 7) 2)) (make-circular-generator 5 6 7 8 9 10))
                    #t))
       (error 'failed "Test 56 failed"))
 
@@ -320,7 +321,7 @@
       (error 'failed "Test 56 failed"))
 
 
-(when (not (equal? (let ((total 0))
+#;(when (not (equal? (let ((total 0))
                         (do-generator (x (make-generator 0 1 2 3 4)) (set! total (+ total x)))
                    total)
                    10))

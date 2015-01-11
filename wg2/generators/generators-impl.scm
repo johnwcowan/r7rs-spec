@@ -1,3 +1,14 @@
+;; Chibi Scheme versions of any and every
+
+(define (any pred ls)
+  (if (null? (cdr ls))
+      (pred (car ls))
+      ((lambda (x) (if x x (any pred (cdr ls)))) (pred (car ls)))))
+
+(define (every pred ls)
+  (if (null? (cdr ls))
+      (pred (car ls))
+      (if (pred (car ls)) (every pred (cdr ls)) #f)))
 
 
 
@@ -10,8 +21,8 @@
                             next))))
 
 
-;; circular-generator
-(define (circular-generator . args)
+;; make-circular-generator
+(define (make-circular-generator . args)
         (let ((loopgen (apply make-generator args)))
              (lambda () (let ((next (loopgen)))
                              (if (eof-object? next)
@@ -33,8 +44,6 @@
                                           (set! count (- count 1))
                                           v)
                                      (eof-object))))))
-(define giota make-iota-generator)
-
 
 ;; make-range-generator
 (define make-range-generator
@@ -67,7 +76,7 @@
         (define yield (lambda (v) (call/cc (lambda (r) (set! resume r) (return v)))))
         (lambda () (call/cc (lambda (cc) (set! return cc)
                                          (if resume
-                                             (resume (void))  ; void? or yield again?
+                                             (resume (if #f #f))  ; void? or yield again?
                                              (begin (proc yield)
                                                     (set! resume (lambda (v) (return (eof-object))))
                                                     (return (eof-object))))))))
@@ -118,14 +127,39 @@
                                           next))))))
 
 
+(define make-bytevector-generator
+        (case-lambda ((str) (make-bytevector-generator str 0 (bytevector-length str))) 
+                     ((str start) (make-bytevector-generator str start (bytevector-length str))) 
+                     ((str start end)
+                      (lambda () (if (>= start end)
+                                     (eof-object)
+                                     (let ((next (bytevector-u8-ref str start)))
+                                          (set! start (+ start 1))
+                                          next))))))
+
+
 ;; make-bits-generator
 (define (make-bits-generator n)
-        ; Seems right to me, but i'm not sure if this is what the spec intended for negative numbers
-        (lambda () (if (and (>= n -1) (<= n 0))
-                       (eof-object)
-                       (let ((highbit (= 1 (bitwise-and 1 n))))
-                            (set! n (bitwise-arithmetic-shift-right n 1))
-                            highbit))))
+        (if (negative? n)
+          (let ((m (- (+ n 1))))
+            (lambda ()
+              (if (= m 0)
+                (eof-object)
+                (let ((lowbit (if (odd? m) 1 0)))
+                  (set! m (/ (- m lowbit) 2))
+                  (= lowbit 0)))))
+          (lambda ()
+            (if (= n 0)
+              (eof-object)
+              (let ((lowbit (if (odd? n) 1 0)))
+                (set! n (/ (- n lowbit) 2))
+                (= lowbit 1))))))
+        
+
+
+;; make-port-generator
+(define (make-port-generator port reader)
+        (lambda () (reader port)))
         
 
 
@@ -137,7 +171,7 @@
 
 ;; make-port-line-generator
 (define (make-port-line-generator port)
-        (lambda () (get-line port)))
+        (lambda () (read-line port)))
         
 
 
@@ -149,12 +183,7 @@
 
 ;; make-port-byte-generator
 (define (make-port-byte-generator port)
-        ;; http://srfi.schemers.org/srfi-56/srfi-56.html#proc-read-byte
-        ;; or perhaps this should be done differently?
-        (lambda () (let ((c (read-char port)))
-                         (if (eof-object? c) 
-                             c 
-                             (char->integer c)))))
+	(lambda () (read-u8 port)))
         
 
 
@@ -168,7 +197,7 @@
         (make-coroutine-generator (lambda (yield) 
             (let loop ((s seed))
                  (if (stop? s)
-                     (void)
+                     (if #f #f)
                      (begin (yield (mapper s))
                             (loop (successor s))))))))
 
@@ -276,8 +305,19 @@
 ;; gmap
 (define (gmap proc . gens)
         (lambda () (let ((results (map (lambda (g) (g)) gens)))
-                        (if (andmap (lambda (result) (not (eof-object? result))) results)
+                        (if (every (lambda (result) (not (eof-object? result))) results)
                             (apply proc results)
+                            (eof-object)))))
+             
+
+
+;; gfold
+(define (gfold proc seed . gens)
+        (lambda () (let ((results (map (lambda (g) (g)) gens)))
+                        (if (every (lambda (result) (not (eof-object? result))) results)
+                            (let-values (((value newseed) (apply proc (append results (list seed)))))
+                              (set! seed newseed)
+                              value)
                             (eof-object)))))
              
 
@@ -419,17 +459,17 @@
 ;; gtuple
 (define (gtuple . gens)
         (lambda () (let ((tuple (map (lambda (g) (g)) gens)))
-                        (if (andmap (lambda (v) (not (eof-object? v))) tuple)
+                        (if (every (lambda (v) (not (eof-object? v))) tuple)
                             tuple
                             (eof-object)))))
              
 
 
-;; glist (should gslices be an alias of this?)
-(define glist
+;; glists
+(define glists
         (case-lambda ((sizer item-gen)
                       (when (number? sizer)
-                            (set! sizer (circular-generator sizer)))
+                            (set! sizer (make-circular-generator sizer)))
                       (lambda () (let ((size (sizer)))
                                       (let loop ((i 0) (lst '()))
                                            (if (= i size)
@@ -444,7 +484,7 @@
                                   lst
                                   (pad (cons padding lst) (+ 1 csize) tsize)))
                       (when (number? sizer)
-                            (set! sizer (circular-generator sizer)))
+                            (set! sizer (make-circular-generator sizer)))
                       (lambda () (let ((size (sizer)))
                                       (let loop ((i 0) (lst '()))
                                            (if (= i size)
@@ -458,13 +498,13 @@
 
 ;; gvectors
 (define (gvectors . args)
-        (gmap list->vector (apply glist args)))
+        (gmap list->vector (apply glists args)))
              
 
 
 ;; gstrings
 (define (gstrings . args)
-        (gmap list->string (apply glist args)))
+        (gmap list->string (apply glists args)))
              
 
 
@@ -542,7 +582,7 @@
 (define (generator-fold f seed . gs)
         (define (inner-fold seed)
                 (let ((vs (map (lambda (g) (g)) gs)))
-                     (if (ormap eof-object? vs)
+                     (if (any eof-object? vs)
                          seed
                          (inner-fold (apply f (append vs (list seed)))))))
         (inner-fold seed))
@@ -553,8 +593,8 @@
 (define (generator-for-each f . gs)
         (let loop ()
              (let ((vs (map (lambda (g) (g)) gs)))
-                  (if (ormap eof-object? vs)
-                      (void)
+                  (if (any eof-object? vs)
+                      (if #f #f)
                       (begin (apply f vs) 
                              (loop))))))
 
@@ -563,7 +603,7 @@
 (define (generator-collect f . gs)
         (let loop ((lst '()))
              (let ((vs (map (lambda (g) (g)) gs)))
-                  (if (ormap eof-object? vs)
+                  (if (any eof-object? vs)
                       (reverse lst)
                       (loop (cons (apply f vs) lst))))))
 
@@ -622,7 +662,7 @@
                         (all-equal? (cdr lst))
                         #f)))
         (let loop ((vs (map (lambda (g) (g)) gs)))
-             (if (ormap eof-object? vs)
+             (if (any eof-object? vs)
                  #t
                  (if (all-equal? (map pred vs))
                      (loop (map (lambda (g) (g)) gs))
