@@ -178,6 +178,10 @@
       list-queues)
      result))
 
+(define (list-queue-append! result list-queues)
+  ; FIXME
+)
+
 (define (list-queue-reverse list-queue)
   (make-list-queue (reverse (get-first list-queue))))
 

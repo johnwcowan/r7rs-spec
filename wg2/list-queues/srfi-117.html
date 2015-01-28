@@ -181,7 +181,19 @@ Replaces the list associated with <em>list-queue</em> with <em>list</em>, effect
 Note: To apply a destructive list procedure to a list queue, use <tt>(list-queue-set-list! (</tt><em>proc</em><tt> (list-queue-list </tt><em>list-queue</em><tt>)))</tt>.
 </p>
 <p>
-<tt>(list-queue-concatenate </tt><em>list-of-list-queues</em> ...<tt>)</tt>
+<tt>(list-queue-append </tt><em>list-queue</em> ...<tt>)</tt>
+</p>
+<p>
+Returns a list queue which contains all the elements in front-to-back order from all the list queues which are members of the <em>list-queues</em> in the order in which they appear.  The result does not share storage with any of the arguments.  This operation is O(n) in the total number of elements in all queues.  
+</p>
+<p>
+<tt>(list-queue-append! </tt><em>result-queue list-queue</em> ...<tt>)</tt>
+</p>
+<p>
+Appends all the elements of the <em>list-queues</em> to <em>result-queue</em>, leaving all the <em>list-queues</em> empty.  This operation is O(n) in the number of queues, not the number of elements.
+</p>
+<p>
+<tt>(list-queue-concatenate </tt><em>list-of-list-queues</em><tt>)</tt>
 </p>
 <p>
 Returns a list queue which contains all the elements in front-to-back order from all the list queues which are members of <em>list-of-list-queues</em> in the order in which they appear.  The result does not share storage with any of the arguments.  This operation is O(n) in the total number of elements in all queues.  It is not part of the R7RS-small list API, but is included here to make appending a large number of queues possible in Schemes that limit the number of arguments to <tt>apply</tt>.
@@ -221,7 +233,7 @@ Returns <code>#t</code> if <em>obj</em> is an object raised by any of the above 
 <p>The <a href="http://srfi.schemers.org/srfi-117/list-queues.tar.gz">sample implementation</a> contains the following files:</p>
 
 <ul><li><code>list-queues-impl.scm</code> – implementation of queues</li>
-<li><code>list-queues.sld</code> – an R7RS library named <code>(queues)</code></li>
+<li><code>list-queues.sld</code> – an R7RS library named <code>(list-queues)</code></li>
 <li><code>list-queues.scm</code> – a Chicken library</li>
 <li><code>list-queues-test.scm</code> – tests using the Chicken test egg</li>
 </ul>
