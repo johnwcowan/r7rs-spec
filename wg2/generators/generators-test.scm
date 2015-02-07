@@ -179,9 +179,6 @@
       (error 'failed "Test 29 failed"))
 
 
-(when (not (equal? (generator->list (gfilter-map (lambda (v) (member 3 v)) (make-generator '(1 2 3) '(1) '(2 3 4 5))))
-                   '((3) (3 4 5))))
-      (error 'failed "Test 30 failed"))
 
 
 (when (not (equal? (generator->list (gstate-filter (lambda (v s) (values (< s v) v)) 0 (make-generator 1 2 3 2 1 0 1 2 3 2 1 0 1 2 3)))
@@ -228,10 +225,6 @@
                    '(0 5 10 15 20 25)))
       (error 'failed "Test 39 failed"))
 
-
-(when (not (equal? (generator->list (gpairs (make-generator #t #t #f #t) (make-generator 0 5 10 15 20 25 30 35 40 45 50)))
-                   '((#t . 0) (#t . 5) (#f . 10) (#t . 15))))
-      (error 'failed "Test 40 failed"))
 
 
 (when (not (equal? (generator->list (gtuple (make-generator #t #t #f #t) (make-generator 0 5 10 15 20 25 30 35 40 45 50) (make-generator 1 2 3 4 5 6)))

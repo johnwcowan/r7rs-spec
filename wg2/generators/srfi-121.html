@@ -160,7 +160,7 @@ of a series of <var>k</var> numbers (by default, an infinite number), namely
 <dd><p>Creates a generator from a coroutine.
 </p>
 <p>The <var>proc</var> argument is a procedure that takes one argument, <var>yield</var>.  When
-called, <code>generate</code> immediately returns
+called, <code>make-coroutine-generator</code> immediately returns
 a generator <var>g</var>.  When <var>g</var> is called, <var>proc</var> runs
 until it calls <var>yield</var>.  Calling <var>yield</var> causes
 the execution of <var>proc</var> to be suspended, and <var>g</var> returns the value passed
@@ -176,7 +176,7 @@ end-of-file object from then on.  The return value of <var>proc</var> is ignored
 it to <code>g</code>.
 </p>
 <table><tr><td>&nbsp;</td><td><pre class="example">(define g
-  (generate
+  (make-coroutine-generator
    (lambda (yield) (let loop ((i 0))
                (when (&lt; i 3) (yield i) (loop (+ i 1)))))))
 
@@ -226,10 +226,10 @@ is the <var>start</var>-th element, and it ends right before the <var>end</var>-
 (generator-&gt;list (make-vector-generator '#(a b c d e) 2 4))
   &rArr; (c d)
 (generator-&gt;list (make-reverse-vector-generator '#(a b c d e) 2))
-  &rArr; (e d c b)
+  &rArr; (e d c)
 (generator-&gt;list (make-reverse-vector-generator '#(a b c d e) 2 4))
   &rArr; (d c)
-(generator-&gt;list (make-reverse-vector-generator '#(a b c d e) #f 2))
+(generator-&gt;list (make-reverse-vector-generator '#(a b c d e) 0 2))
   &rArr; (b a)
 </pre></td></tr></table>
 </dd></dl>
@@ -351,9 +351,7 @@ then all the results from the second one, then the third, etc.
 </p>
 <p>It is similar to <code>(apply gappend (generator-&gt;list gen))</code>, except
 that <code>gconcatenate</code> can work even if <var>gen</var> generates an infinite
-number of generators.  Calls to the returned generator are guaranteed to tail-call
-one of the generators provided by <var>gen</var> until they are exhausted.
-</p>
+number of generators.</p>
 <table><tr><td>&nbsp;</td><td><pre class="example">
 (generator-&gt;list
   (gconcatenate
@@ -373,8 +371,8 @@ with the order determined by a
  <code>gunion</code> returns all the elements that are distinct in the sense of the comparator;
  <code>gintersection</code> returns the elements that appear in all of the generators.
 </p>
-<p>Each input generator must yield appropriately ordered elements by itself;
-otherwise the result won't be ordered.
+<p>It is an error if the output of each generator is not correctly ordered
+according to <var>comparator</var>. 
 </p>
 <p>If only one generator is given, it is just returned.
 In that case, <var>comparator</var> is ignored.
@@ -421,13 +419,6 @@ returns a generator immediately without consuming input.
 <dd><p>Return generators that yield the items from the source generator,
 except those on which <var>pred</var> answers false or true respectively.
 </p></dd></dl>
-
-<dl>
-<dt><code>gfilter-map</code><i> proc gen gen<sub>2</sub> &hellip;</i></dt>
-<dd><p>Works the same as <code>(gfilter values (gmap proc gen gen<sub>2</sub> &hellip;))</code>, only
-slightly more efficiently.
-</p></dd></dl>
-
 <dl>
 <dt><code>gstate-filter</code><i> proc seed gen</i></dt>
 <dd><p>This allows stateful filtering of a series.  The <var>proc</var> argument
@@ -492,23 +483,6 @@ while <var>pred</var> returns true for them, then starts yielding items returned
 </p></dd></dl>
 
 <dl>
-<dt><code>gpairs</code><i> car-gen cdr-gen</i></dt>
-<dd><p>Returns a generator that yields pairs
-whose car is the result of calling <var>car-gen</var>
-and whose cdr is the result of calling <var>cdr-gen</var>.
-The output ends when either generator is exhausted.
-</p>
-<table><tr><td>&nbsp;</td><td><pre class="example">
-(define g
-  (gpairs (make-generator 113 101 12 68 -55)
-          (make-generator #t #f #t #f #f))
-
-(generator-&gt;list g 10)
- &rArr; ((113 . #t) (101 . #f) (12 . #t) (68 . #f) (-55 . #f))
-</pre></td></tr></table>
-</dd></dl>
-
-<dl>
 <dt><code>gtuple</code><i> gen &hellip;</i></dt>
 <dd><p>Returns a generator that yields lists 
 whose i-th element is generated from the i-th argument.
@@ -530,13 +504,16 @@ whose i-th element is generated from the i-th argument.
 <dt><code>gvectors</code><i> sizer item-gen [ padding ]</i></dt>
 <dt><code>gstrings</code><i> sizer item-gen [ padding ]</i></dt>
 <dd><p>Creates a generator that generates lists, vectors or strings of values from <var>item-gen</var>, respectively.  The size of each datum is determined by <var>sizer</var>, which can
-be either a non-negative integer or a generator of non-negative integers.
-The value of the sizer determines the length of the result data.
+be either a non-negative integer
+(in which case the value of the sizer determines the length of the result data)
+or a generator of non-negative integers
+(in which case the sizer is invoked once for each result returned, and the
+value returned determines the length of the result data).
 </p>
 <p>The <var>padding</var> argument controls how the end
 of input is handled, just like <code>gtake</code>.  When <var>padding</var> is
 not provided, the last item from the output generator may not
-have <var>k</var> items if the input is too short to fill them, as shown
+have the expected number of items if the input is too short to fill them, as shown
 in the above example.  If <var>padding</var> is present and the input is
 too short to complete <var>k</var> items, <var>padding</var> is used
 to fill the rest.
@@ -578,7 +555,8 @@ that are equal to the preceding item in the sense of <var>pred</var>, which defa
 <dd><p>Creates a generator that returns elements of <var>value-gen</var>
 specified by the indices (non-negative exact integers) generated by
 <var>index-gen</var>.  It is an error if the indices are not strictly
-increasing.
+increasing, or if they have values exceeding the number of elements
+available from <var>value-gen</var>.
 </p>
 <table><tr><td>&nbsp;</td><td><pre class="example">
 (generator->list (gindex (list->generator '(a b c d e f))
@@ -604,7 +582,7 @@ true, the current value of <var>value-gen</var> is generated, but otherwise not.
 <dl>
 <dt><code>gnth-value</code><i> gen n</i></dt>
 <dd><p>Creates a generator that returns every <var>n</var>th element of <var>gen</var></p>
-<table><tr><td>&nbsp;</td><td><pre class="example">(generator-&gt;list (gnth-value (list->generator '(a b c d e f))))
+<table><tr><td>&nbsp;</td><td><pre class="example">(generator-&gt;list (gnth-value (list->generator '(a b c d e f) 2)))
   &rArr; (a c e)
 </pre></td></tr></table>
 </dd></dl>
@@ -626,8 +604,8 @@ the cdr is a list of the corresponding generated values in order.</p>
 <h2 class="subsection">Consuming generated values</h2>
 
 <p>Unless otherwise noted,
-these procedures consume all the values of the generator passed to them.  They
-have names prefixed with <code>generator-</code>.
+these procedures consume all the values available from the generator
+that is passed to them.  They have names prefixed with <code>generator-</code>.
 </p>
 
 <dl>
@@ -708,12 +686,16 @@ combining <code>generator-&gt;list</code> and <code>gmap</code>.
 
 <dl>
 <dt><code>generator-nth</code><i> gen n</i></dt>
-<dd><p>Returns the <var>n</var>th item of the generator.
+<dd><p>Returns the <var>n</var>th item of the generator.  It is an error
+if the generator returns less than <var>n</var> values.
 </p></dd></dl>
 
 <dl>
 <dt><code>generator-last</code><i> gen</i></dt>
 <dd><p>Returns the last item of the generator.
+</p>
+<p>Be careful not to pass an infinite generator to this procedure without
+specifying <var>k</var>, or this procedure will not return.
 </p></dd></dl>
 
 <dl>
@@ -721,6 +703,9 @@ combining <code>generator-&gt;list</code> and <code>gmap</code>.
 <dd><p>Returns the first item from the generator <var>gen</var> that satisfies
 the predicate <var>pred</var>, or <code>#f</code> if there is no such item before
 an end-of-file object is generated.
+</p>
+<p>Be careful not to pass an infinite generator to this procedure without
+specifying <var>k</var>, or this procedure will not return.
 </p></dd></dl>
 
 <dl>

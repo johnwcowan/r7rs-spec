@@ -23,8 +23,8 @@
           make-port-char-generator make-port-byte-generator
           make-for-each-generator make-unfold-generator)
   (export gcons* gappend gconcatenate gmerge gunion gintersection gmap gfold
-          gfilter gremove gfilter-map gstate-filter gbuffer-filter
-          gtake gdrop gtake-while gdrop-while gpairs gtuple glists gvectors gstrings
+          gfilter gremove gstate-filter gbuffer-filter
+          gtake gdrop gtake-while gdrop-while gtuple glists gvectors gstrings
           gdelete gdelete-neighbor-dups)
   (export generator->list generator->reverse-list generator-fold generator-for-each
           generator-collect generator-last generator-find generator-length

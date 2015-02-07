@@ -333,7 +333,7 @@
              
 
 
-;; gfilter-map
+;; gfilter
 (define (gfilter pred gen)
         (lambda () (let loop ()
                         (let ((next (gen)))
@@ -347,18 +347,6 @@
 ;; gremove
 (define (gremove pred gen)
         (gfilter (lambda (v) (not (pred v))) gen))
-             
-
-
-;; gfilter-map
-(define (gfilter-map proc . gens)
-        (define g (apply gmap (cons proc gens)))
-        (lambda () (let loop ((next (g)))
-                        (if (eof-object? next)
-                            next
-                            (if next
-                                next
-                                (loop (g)))))))
              
 
 
@@ -442,17 +430,6 @@
                                 next
                                 (begin (set! gen (make-generator))
                                        (gen)))))))
-             
-
-
-;; gpairs
-(define (gpairs car-gen cdr-gen)
-        (lambda () (let ((car-next (car-gen)) 
-                         (cdr-next (cdr-gen)))
-                        (if (or (eof-object? car-next)
-                                (eof-object? cdr-next)) 
-                            (eof-object)
-                            (cons car-next cdr-next)))))
              
 
 
