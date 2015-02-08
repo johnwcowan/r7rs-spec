@@ -62,27 +62,27 @@
       (error 'failed "Test 11 failed"))
 
 
-(when (not (equal? (generator->list (make-list-generator '(1 3 5)))
+(when (not (equal? (generator->list (list->generator '(1 3 5)))
                    '(1 3 5)))
       (error 'failed "Test 12 failed"))
 
 
-(when (not (equal? (generator->list (make-vector-generator '#(1 3 5)))
+(when (not (equal? (generator->list (vector->generator '#(1 3 5)))
                    '(1 3 5)))
       (error 'failed "Test 13 failed"))
 
 
-(when (not (equal? (generator->list (make-vector-generator '#(0 1 2 3 4 5 6) 2 6))
+(when (not (equal? (generator->list (vector->generator '#(0 1 2 3 4 5 6) 2 6))
                    '(2 3 4 5)))
       (error 'failed "Test 14 failed"))
 
 
-(when (not (equal? (generator->list (make-reverse-vector-generator '#(0 1 2 3 4 5 6) 2 6))
+(when (not (equal? (generator->list (reverse-vector->generator '#(0 1 2 3 4 5 6) 2 6))
                    '(5 4 3 2)))
       (error 'failed "Test 15 failed"))
 
 
-(when (not (equal? (generator->list (make-string-generator "Hello World" 2 7))
+(when (not (equal? (generator->list (string->generator "Hello World" 2 7))
                    '(#\l #\l #\o #\space #\W)))
       (error 'failed "Test 15 failed"))
 
@@ -324,4 +324,8 @@
 
 
 
+
+(when (not (equal? (generator-nth (make-generator 1 2 3 4 5) 2)
+                   3))
+      (error 'failed "Test 58 failed"))
 

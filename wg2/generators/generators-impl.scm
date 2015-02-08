@@ -23,10 +23,14 @@
 
 ;; make-circular-generator
 (define (make-circular-generator . args)
-        (let ((loopgen (apply make-generator args)))
+        (list->circular-generator args))
+
+;; list->circular-generator
+(define (list->circular-generator list)
+        (let ((loopgen (apply make-generator list)))
              (lambda () (let ((next (loopgen)))
                              (if (eof-object? next)
-                                 (begin (set! loopgen (apply make-generator args))
+                                 (begin (set! loopgen (apply make-generator list))
                                         (loopgen))
                                  next)))))
 
@@ -82,8 +86,8 @@
                                                     (return (eof-object))))))))
 
 
-;; make-list-generator
-(define (make-list-generator lst)
+;; list->generator
+(define (list->generator lst)
         (lambda () (if (null? lst)
                        (eof-object)
                        (let ((next (car lst)))
@@ -91,10 +95,10 @@
                             next))))
 
 
-;; make-vector-generator
-(define make-vector-generator
-        (case-lambda ((vec) (make-vector-generator vec 0 (vector-length vec))) 
-                     ((vec start) (make-vector-generator vec start (vector-length vec))) 
+;; vector->generator
+(define vector->generator
+        (case-lambda ((vec) (vector->generator vec 0 (vector-length vec))) 
+                     ((vec start) (vector->generator vec start (vector-length vec))) 
                      ((vec start end)
                       (lambda () (if (>= start end)
                                      (eof-object)
@@ -103,10 +107,10 @@
                                           next))))))
 
 
-;; make-reverse-vector-generator
-(define make-reverse-vector-generator
-        (case-lambda ((vec) (make-reverse-vector-generator vec 0 (vector-length vec))) 
-                     ((vec start) (make-reverse-vector-generator vec start (vector-length vec))) 
+;; reverse-vector->generator
+(define reverse-vector->generator
+        (case-lambda ((vec) (reverse-vector->generator vec 0 (vector-length vec))) 
+                     ((vec start) (reverse-vector->generator vec start (vector-length vec))) 
                      ((vec start end)
                       (lambda () (if (>= start end)
                                      (eof-object)
@@ -115,10 +119,10 @@
                                           next))))))
 
 
-;; make-string-generator
-(define make-string-generator
-        (case-lambda ((str) (make-string-generator str 0 (string-length str))) 
-                     ((str start) (make-string-generator str start (string-length str))) 
+;; string->generator
+(define string->generator
+        (case-lambda ((str) (string->generator str 0 (string-length str))) 
+                     ((str start) (string->generator str start (string-length str))) 
                      ((str start end)
                       (lambda () (if (>= start end)
                                      (eof-object)
@@ -127,9 +131,9 @@
                                           next))))))
 
 
-(define make-bytevector-generator
-        (case-lambda ((str) (make-bytevector-generator str 0 (bytevector-length str))) 
-                     ((str start) (make-bytevector-generator str start (bytevector-length str))) 
+(define bytevector->generator
+        (case-lambda ((str) (bytevector->generator str 0 (bytevector-length str))) 
+                     ((str start) (bytevector->generator str start (bytevector-length str))) 
                      ((str start end)
                       (lambda () (if (>= start end)
                                      (eof-object)
@@ -675,4 +679,30 @@
 
 
 
+
+;; generator-nth
+(define (generator-nth gen n)
+  (let loop ((n n))
+    (when (> n 0)
+      (gen)
+      (loop (- n 1))))
+  (let ((result (gen)))
+    (if (eof-object? result)
+      (error "generator-nth argument too large")
+      result)))
+
+(define (ggroup-by gen proc pred)
+  (error "ggroup-by undefined"))
+
+(define (gindex value-gen index-gen)
+  (error "gindex undefined"))
+
+(define (ginterleave value-gen index-gen)
+  (error "ginterleave not yet implemented"))
+
+(define (gnth-value gen n)
+  (error "gnth-value not yet implemented"))
+
+(define (gselect value-gen truth-gen)
+  (error "gselect not yet implemented"))
 
