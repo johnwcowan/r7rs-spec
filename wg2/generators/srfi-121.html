@@ -58,11 +58,40 @@ procedure that can be called with no arguments can serve as a
 generator.
 </p>
 
-<p>Generators are very lightweight and are useful for implementing simple
-on-demand calculations.  However, it's important to keep in mind that calling
+<p>Lazy streams in the style of
+<a href="http://srfi.schemers.org/srfi-41/srfi-41.html">SRFI 41</a>
+can do everything generators can do and more,
+so there would be no need for generators if Scheme implementations had
+efficient integrated lazy streams.  Unfortunately,
+lazy streams are usually implemented on top of
+promises, which are implemented on top of procedures.
+Generators are just procedures, and so are inherently more lightweight.
+However, it's important to keep in mind that calling
 a generator is a
 side-effecting construct; you can't safely backtrack, for example.
-Persistent lazy sequences based on generators will be the subject of a future SRFI.
+(Persistent lazy sequences based on generators may be the subject of a future SRFI.)</p>
+
+<p>What is more, Scheme already has some generator-like
+constructs, notably the input procedures
+<code>read</code>, <code>read-char</code>, <code>read-line</code>,
+<code>read-string</code>, <code>read-u8</code>, <code>read-bytevector</code>,
+and <code>read-bytevector!</code>, as well as the random number generators
+of <a href="http://srfi.schemers.org/srfi-27/srfi-27.html">SRFI 27</a>.
+If Scheme had lazy streams as a built-in
+abstraction, these operations would naturally have been represented by
+lazy streams.  Generator-like interfaces are
+common, so it may be worthwhile to have some common idioms
+extracted into a library.</p>
+
+<p>Experience with Gauche has shown that lazy sequences based
+on generators are more efficient than SRFI 41 streams,
+because lazy consing requires
+a thunk for every item in a stream,
+whereas generators can generate items without consing.  You still
+need one cell per item to make a lazy list, but that is a normal
+cons and can be much lighter.  An implementation in which thunk
+creation is as lightweight as consing would overcome this limitation,
+but there are probably no such implementations.
 </p>
 
 <p>Using an end-of-file object to indicate that there is no more input
