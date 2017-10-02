@@ -2279,10 +2279,10 @@ argument is not the uppercase member of such a pair, it is returned.
 
 The {\cf char-foldcase} procedure applies the Unicode simple
 case-folding algorithm to its argument and returns the result.  Note that
-language-sensitive folding is not used.  If the argument is an uppercase
-letter, the result will be either a lowercase letter
-or the same as the argument if the lowercase letter does not exist or
-is not supported by the implementation.
+language-sensitive folding is not used.  
+If the character that results from folding
+is not supported by the implementation,
+the argument is returned.
 See UAX \#44~\cite{uax44} (part of the Unicode Standard) for details.
 
 Note that many Unicode lowercase characters do not have uppercase
