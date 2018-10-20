@@ -4456,11 +4456,13 @@ It is an error to mutate any of these strings or the alist itself.
 
 Returns an inexact number representing the current time on the International Atomic
 Time (TAI) scale.  The value 0.0 represents midnight
-on January 1, 1970 TAI (equivalent to ten seconds before midnight Universal Time)
+on January 1, 1970 TAI (equivalent to 4.2131700 seconds before midnight Universal Time)
 and the value 1.0 represents one TAI
 second later.  Neither high accuracy nor high precision are required; in particular,
 returning Coordinated Universal Time plus a suitable constant might be
 the best an implementation can do.
+
+As of 2018, a TAI-UTC offset table can be found at~\cite{TAI}.
 \end{entry}
 
 \begin{entry}{%
