@@ -2215,7 +2215,8 @@ numeric, whitespace, upper case, or lower case characters, respectively,
 otherwise they return \schfalse.  
 
 Specifically, they must return \schtrue{} when applied to characters with
-the Unicode properties Alphabetic, Numeric\_Digit, White\_Space, Uppercase, and
+the Unicode properties Alphabetic, Numeric\_Type=Decimal or Numeric\_Type=Digit,
+White\_Space, Uppercase, and
 Lowercase respectively, and \schfalse{} when applied to any other Unicode
 characters.  Note that many Unicode characters are alphabetic but neither
 upper nor lower case.
