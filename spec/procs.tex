@@ -9,7 +9,7 @@
 \mainindex{global environment}
 \mainindex{procedure}
 
-This chapter describes Scheme's built-in procedures.  
+This chapter describes Scheme's built-in procedures.
 
 The procedures {\cf force}, {\cf promise?}, and {\cf make-promise} are intimately associated
 with the expression types {\cf delay} and {\cf delay-force}, and are described
@@ -38,7 +38,7 @@ the computational analogue of a mathematical equivalence relation; it is
 symmetric, reflexive, and transitive.  Of the equivalence predicates
 described in this section, {\cf eq?}\ is the finest or most
 discriminating, {\cf equal?}\ is the coarsest, and {\cf eqv?}\ is
-slightly less discriminating than {\cf eq?}.  
+slightly less discriminating than {\cf eq?}.
 
 
 \begin{entry}{%
@@ -330,7 +330,7 @@ Scheme numbers that attempt to model them, the machine representations
 used to implement the Scheme numbers, and notations used to write numbers.
 This report uses the types \type{number}, \type{complex}, \type{real},
 \type{rational}, and \type{integer} to refer to both mathematical numbers
-and Scheme numbers.  
+and Scheme numbers.
 
 \subsection{Numerical types}
 \label{numericaltypes}
@@ -343,7 +343,7 @@ in which each level is a subset of the level above it:
 \> \tupe{complex number} \\
 \> \tupe{real number} \\
 \> \tupe{rational number} \\
-\> \tupe{integer} 
+\> \tupe{integer}
 \end{tabbing}
 
 For example, 3 is an integer.  Therefore 3 is also a rational,
@@ -494,9 +494,9 @@ Nevertheless, implementations that do not provide \tupe{exact} rational
 numbers should return \tupe{inexact} rational numbers rather than
 reporting an implementation restriction.
 
-\vest An implementation may use floating-point and other approximate 
+\vest An implementation may use floating-point and other approximate
 representation strategies for \tupe{inexact} numbers.
-This report recommends, but does not require, that 
+This report recommends, but does not require, that
 implementations that use
 floating-point representations
 follow the IEEE 754 standard,
@@ -562,7 +562,7 @@ infinity or less than negative infinity.
 An implementation that does not support non-real numbers may use NaN
 to represent non-real values like {\cf (sqrt -1.0)} and {\cf (asin 2.0)}.
 
-A NaN always compares false to any number, including a NaN.  
+A NaN always compares false to any number, including a NaN.
 An arithmetic operation where one operand is NaN returns NaN, unless the
 implementation can prove that the result would be the same if the NaN
 were replaced by any rational number.  Dividing zero by zero results in
@@ -895,8 +895,8 @@ These procedures return the sum or product of their arguments.
 (+)                     \ev  0
 (* 4)                   \ev  4
 (*)                     \ev  1%
-\end{scheme} 
- 
+\end{scheme}
+
 \end{entry}
 
 
@@ -928,7 +928,7 @@ exact zero unless one of the other arguments is a NaN.
 \begin{entry}{%
 \proto{abs}{ x}{procedure}}
 
-The {\cf abs} procedure returns the absolute value of its argument.  
+The {\cf abs} procedure returns the absolute value of its argument.
 \begin{scheme}
 (abs -7)                \ev  7%
 \end{scheme}
@@ -948,7 +948,7 @@ number-theoretic (integer) division.  It is an error if \vrii{n} is zero.
 The procedures ending in {\cf /} return two integers; the other
 procedures return an integer.  All the procedures compute a
 quotient \vr{n_q} and remainder \vr{n_r} such that
-$\vri{n} = \vrii{n} \vr{n_q} + \vr{n_r}$.  For each of the 
+$\vri{n} = \vrii{n} \vr{n_q} + \vr{n_r}$.  For each of the
 division operators, there are three procedures defined as follows:
 
 \begin{scheme}
@@ -1123,7 +1123,7 @@ all.
 \proto{atan}{ \vr{z}}{inexact library procedure}
 \rproto{atan}{ \vr{y} \vr{x}}{inexact library procedure}}
 
-These procedures 
+These procedures
 compute the usual transcendental functions.  The {\cf log} procedure
 computes the natural logarithm of \vr{z} (not the base ten logarithm)
 if a single argument is given, or the base-\vrii{z} logarithm of \vri{z}
@@ -1146,7 +1146,7 @@ $$\sin^{-1} z = -i \log (i z + \sqrt{1 - z^2})$$
 $$\cos^{-1} z = \pi / 2 - \sin^{-1} z$$
 $$\tan^{-1} z = (\log (1 + i z) - \log (1 - i z)) / (2 i)$$
 
-However, {\cf (log 0.0)} returns {\cf -inf.0} 
+However, {\cf (log 0.0)} returns {\cf -inf.0}
 (and {\cf (log -0.0)} returns {\cf -inf.0+$\pi$i}) if the
 implementation supports infinities (and {\cf -0.0}).
 
@@ -1295,7 +1295,7 @@ but {\cf abs} is in the base library, whereas
 
 The procedure {\cf inexact} returns an \tupe{inexact} representation of \vr{z}.
 The value returned is the
-\tupe{inexact} number that is numerically closest to the argument.  
+\tupe{inexact} number that is numerically closest to the argument.
 For inexact arguments, the result is the same as the argument. For exact
 complex numbers, the result is a complex number whose real and imaginary
 parts are the result of applying {\cf inexact} to the real
@@ -1403,7 +1403,7 @@ An error is never signaled due to the content of \vr{string}.
 
 \begin{note}
 The domain of {\cf string->number} may be restricted by implementations
-in the following ways.  
+in the following ways.
 If all numbers supported by an implementation are real, then
 {\cf string->number} is permitted to return \schfalse{} whenever
 \vr{string} uses the polar or rectangular notations for complex
@@ -1431,7 +1431,7 @@ As a consequence, the \rfivers\ permission to return \schfalse{} when
 \label{booleansection}
 
 The standard boolean objects for true and false are written as
-\schtrue{} and \schfalse.\sharpindex{t}\sharpindex{f}  
+\schtrue{} and \schfalse.\sharpindex{t}\sharpindex{f}
 Alternatively, they can be written \sharptrue~and \sharpfalse,
 respectively.  What really
 matters, though, are the objects that the Scheme conditional expressions
@@ -1498,11 +1498,11 @@ The {\cf boolean?} predicate returns \schtrue{} if \var{obj} is either \schtrue{
 \begin{entry}{%
 \proto{boolean=?}{ \vari{boolean} \varii{boolean} \variii{boolean} \dotsfoo}{procedure}}
 
-Returns \schtrue{} if all the arguments 
+Returns \schtrue{} if all the arguments
 are \schtrue{} or all are \schfalse{}.
 
 \end{entry}
- 
+
 \section{Pairs and lists}
 \label{listsection}
 
@@ -1601,12 +1601,12 @@ Within literal expressions and representations of objects read by the
 the symbols \ide{quote}, \ide{quasiquote}, \hbox{\ide{unquote}}, and
 \ide{unquote-splicing}, respectively.  The second element in each case
 is \hyper{datum}.  This convention is supported so that arbitrary Scheme
-programs can be represented as lists.  
+programs can be represented as lists.
 That is, according to Scheme's grammar, every
 \meta{expression} is also a \meta{datum} (see section~\ref{datum}).
 Among other things, this permits the use of the {\cf read} procedure to
-parse Scheme programs.  See section~\ref{externalreps}. 
- 
+parse Scheme programs.  See section~\ref{externalreps}.
+
 
 \begin{entry}{%
 \proto{pair?}{ obj}{procedure}}
@@ -1652,7 +1652,7 @@ error to take the car of the empty list\index{empty list}.
 (car '(1 . 2))          \ev  1
 (car '())               \ev  \scherror%
 \end{scheme}
- 
+
 \end{entry}
 
 
@@ -1667,7 +1667,7 @@ Note that it is an error to take the cdr of the empty list.
 (cdr '(1 . 2))          \ev  2
 (cdr '())               \ev  \scherror%
 \end{scheme}
- 
+
 \end{entry}
 
 
@@ -1733,7 +1733,7 @@ For example, {\cf caddr} could be defined by
 (define caddr (lambda (x) (car (cdr (cdr x))))){\rm.}%
 \end{scheme}
 
-Arbitrary compositions up to four deep are provided.  
+Arbitrary compositions up to four deep are provided.
 
 \end{entry}
 
@@ -1817,9 +1817,9 @@ followed by the elements of the other \var{list}s.
 If there are no arguments, the empty list is returned.
 If there is exactly one argument, it is returned.
 Otherwise the resulting list is always newly allocated, except that it shares
-structure with the last argument.  
+structure with the last argument.
 An improper list results if the last argument is not a
-proper list.  
+proper list.
 
 \begin{scheme}
 (append '(x) '(y))              \ev  (x y)
@@ -1862,7 +1862,7 @@ The {\cf list-tail} procedure could be defined by
     (if (zero? k)
         x
         (list-tail (cdr x) (- k 1)))))%
-\end{scheme} 
+\end{scheme}
 \end{entry}
 
 
@@ -1910,7 +1910,7 @@ returned by {\tt (list-tail \var{list} \var{k})} for \var{k} less
 than the length of \var{list}.  If
 \var{obj} does not occur in \var{list}, then \schfalse{} (not the empty list) is
 returned.  The {\cf memq} procedure uses {\cf eq?}\ to compare \var{obj} with the elements of
-\var{list}, while {\cf memv} uses {\cf eqv?} and 
+\var{list}, while {\cf memv} uses {\cf eqv?} and
 {\cf member} uses \var{compare}, if given, and {\cf equal?} otherwise.
 
 \begin{scheme}
@@ -1925,8 +1925,8 @@ returned.  The {\cf memq} procedure uses {\cf eq?}\ to compare \var{obj} with th
         string-ci=?)            \ev  ("b" "c")
 (memq 101 '(100 101 102))       \ev  \unspecified
 (memv 101 '(100 101 102))       \ev  (101 102)%
-\end{scheme} 
- 
+\end{scheme}
+
 \end{entry}
 
 
@@ -1952,13 +1952,13 @@ and {\cf equal?} otherwise.
 (assq 'd e)     \ev  \schfalse
 (assq (list 'a) '(((a)) ((b)) ((c))))
                 \ev  \schfalse
-(assoc (list 'a) '(((a)) ((b)) ((c))))   
+(assoc (list 'a) '(((a)) ((b)) ((c))))
                            \ev  ((a))
 (assoc 2.0 '((1 1) (2 4) (3 9)) =)
                            \ev (2 4)
-(assq 5 '((2 3) (5 7) (11 13)))    
+(assq 5 '((2 3) (5 7) (11 13)))
                            \ev  \unspecified
-(assv 5 '((2 3) (5 7) (11 13)))    
+(assv 5 '((2 3) (5 7) (11 13)))
                            \ev  (5 7)%
 \end{scheme}
 
@@ -1966,7 +1966,7 @@ and {\cf equal?} otherwise.
 \begin{rationale}
 Although they are often used as predicates,
 {\cf memq}, {\cf memv}, {\cf member}, {\cf assq}, {\cf assv}, and {\cf assoc} do not
-have question marks in their names because they return 
+have question marks in their names because they return
 potentially useful values rather than just \schtrue{} or \schfalse{}.
 \end{rationale}
 \end{entry}
@@ -2056,11 +2056,11 @@ to apply mutation procedures like \ide{string-set!} to strings returned
 by this procedure.
 
 \begin{scheme}
-(symbol->string 'flying-fish)     
+(symbol->string 'flying-fish)
                                   \ev  "flying-fish"
 (symbol->string 'Martin)          \ev  "Martin"
 (symbol->string
-   (string->symbol "Malvina"))     
+   (string->symbol "Malvina"))
                                   \ev  "Malvina"%
 \end{scheme}
 \end{entry}
@@ -2092,7 +2092,7 @@ require escaping when written, but does not interpret escapes in its input.
 \label{charactersection}
 
 Characters are objects that represent printed characters such as
-letters and digits.  
+letters and digits.
 All Scheme implementations must support at least the ASCII character
 repertoire: that is, Unicode characters U+0000 through U+007F.
 Implementations may support any other Unicode characters they see fit,
@@ -2105,7 +2105,7 @@ or \sharpsign\backwhack\hyper{character name} or
 \sharpsign\backwhack{}x\meta{hex scalar value}.
 
 The following character names must be supported
-by all implementations with the given values.  
+by all implementations with the given values.
 Implementations may add other names
 provided they cannot be interpreted as hex scalar values preceded by {\cf x}.
 
@@ -2138,7 +2138,7 @@ $$
 
 Case is significant in \sharpsign\backwhack\hyper{character}, and in
 \sharpsign\backwhack{\rm$\langle$character name$\rangle$},
-but not in {\cf\sharpsign\backwhack{}x}\meta{hex scalar value}.  
+but not in {\cf\sharpsign\backwhack{}x}\meta{hex scalar value}.
 If \hyper{character} in
 \sharpsign\backwhack\hyper{character} is alphabetic, then any character
 immediately following \hyper{character} cannot be one that can appear in an identifier.
@@ -2150,7 +2150,7 @@ by a representation of the symbol ``{\tt pace}.''
 
 \todo{Fix}
 Characters written in the \sharpsign\backwhack{} notation are self-evaluating.
-That is, they do not have to be quoted in programs.  
+That is, they do not have to be quoted in programs.
 
 \vest Some of the procedures that operate on characters ignore the
 difference between upper case and lower case.  The procedures that
@@ -2175,7 +2175,7 @@ Returns \schtrue{} if \var{obj} is a character, otherwise returns \schfalse.
 
 \label{characterequality}
 
-These procedures return \schtrue{} if 
+These procedures return \schtrue{} if
 the results of passing their arguments to {\cf char\coerce{}integer}
 are respectively
 equal, monotonically increasing, monotonically decreasing,
@@ -2212,7 +2212,7 @@ applied to their arguments before they were compared.
 
 These procedures return \schtrue{} if their arguments are alphabetic,
 numeric, whitespace, upper case, or lower case characters, respectively,
-otherwise they return \schfalse.  
+otherwise they return \schfalse.
 
 Specifically, they must return \schtrue{} when applied to characters with
 the Unicode properties Alphabetic, Numeric\_Type=Decimal,
@@ -2244,13 +2244,13 @@ or \schfalse{} on any other character.
 \proto{char->integer}{ char}{procedure}
 \proto{integer->char}{ \vr{n}}{procedure}}
 
-Given a Unicode character, 
-{\cf char\coerce{}integer} returns an exact integer 
-between 0 and {\tt \#xD7FF} or 
-between {\tt \#xE000} and {\tt \#x10FFFF} 
+Given a Unicode character,
+{\cf char\coerce{}integer} returns an exact integer
+between 0 and {\tt \#xD7FF} or
+between {\tt \#xE000} and {\tt \#x10FFFF}
 which is equal to the Unicode scalar value of that character.
-Given a non-Unicode character, 
-it returns an exact integer greater than {\tt \#x10FFFF}.  
+Given a non-Unicode character,
+it returns an exact integer greater than {\tt \#x10FFFF}.
 This is true independent of whether the implementation uses
 the Unicode representation internally.
 
@@ -2280,7 +2280,7 @@ argument is not the uppercase member of such a pair, it is returned.
 
 The {\cf char-foldcase} procedure applies the Unicode simple
 case-folding algorithm to its argument and returns the result.  Note that
-language-sensitive folding is not used.  
+language-sensitive folding is not used.
 If the character that results from folding
 is not supported by the implementation,
 the argument is returned.
@@ -2295,7 +2295,7 @@ equivalents.
 \section{Strings}
 \label{stringsection}
 
-Strings are sequences of characters.  
+Strings are sequences of characters.
 \vest Strings are written as sequences of characters enclosed within quotation marks
 ({\cf "}).  Within a string literal, various escape
 sequences\mainindex{escape sequence} represent characters other than
@@ -2303,12 +2303,12 @@ themselves.  Escape sequences always start with a backslash (\backwhack{}):
 
 \begin{itemize}
 \item{\cf\backwhack{}a} : alarm, U+0007
-\item{\cf\backwhack{}b} : backspace, U+0008 
-\item{\cf\backwhack{}t} : character tabulation, U+0009 
-\item{\cf\backwhack{}n} : linefeed, U+000A 
-\item{\cf\backwhack{}r} : return, U+000D 
-\item{\cf\backwhack{}}\verb|"| : double quote, U+0022 
-\item{\cf\backwhack{}\backwhack{}} : backslash, U+005C 
+\item{\cf\backwhack{}b} : backspace, U+0008
+\item{\cf\backwhack{}t} : character tabulation, U+0009
+\item{\cf\backwhack{}n} : linefeed, U+000A
+\item{\cf\backwhack{}r} : return, U+000D
+\item{\cf\backwhack{}}\verb|"| : double quote, U+0022
+\item{\cf\backwhack{}\backwhack{}} : backslash, U+005C
 \item{\cf\backwhack{}|} : vertical line, U+007C
 \item{\cf\backwhack{}\arbno{\hyper{intraline whitespace}}\hyper{line ending}
       \arbno{\hyper{intraline whitespace}}} : nothing
@@ -2332,7 +2332,7 @@ Examples:
 \begin{scheme}
 "The word \backwhack{}"recursion\backwhack{}" has many meanings."
 "Another example:\backwhack{}ntwo lines of text"
-"Here's text \backwhack{} 
+"Here's text \backwhack{}
    containing just one line"
 "\backwhack{}x03B1; is named GREEK SMALL LETTER ALPHA."%
 \end{scheme}
@@ -2443,7 +2443,7 @@ exactly the same characters in the same positions, otherwise returns
 
 Returns \schtrue{} if, after case-folding, all the strings are the same
 length and contain the same characters in the same positions, otherwise
-returns \schfalse.  Specifically, these procedures behave as if 
+returns \schfalse.  Specifically, these procedures behave as if
 {\cf string-foldcase} were applied to their arguments before comparing them.
 
 \end{entry}
@@ -2498,7 +2498,7 @@ These procedures apply the Unicode full string uppercasing, lowercasing,
 and case-folding algorithms to their arguments and return the result.
 In certain cases, the result differs in length from the argument.
 If the result is equal to the argument in the sense of {\cf string=?}, the argument may be returned.
-Note that language-sensitive mappings and foldings are not used.  
+Note that language-sensitive mappings and foldings are not used.
 
 The Unicode Standard prescribes special treatment of the Greek letter
 $\Sigma$, whose normal lower-case form is $\sigma$ but which becomes
@@ -2546,7 +2546,7 @@ returns a newly allocated string formed from the elements in the list
 In both procedures, order is preserved.
 {\cf string\coerce{}list}
 and {\cf list\coerce{}string} are
-inverses so far as {\cf equal?}\ is concerned.  
+inverses so far as {\cf equal?}\ is concerned.
 
 \end{entry}
 
@@ -2630,7 +2630,7 @@ Vector constants are self-evaluating, so they do not need to be quoted in progra
 
 \begin{entry}{%
 \proto{vector?}{ obj}{procedure}}
- 
+
 Returns \schtrue{} if \var{obj} is a vector; otherwise returns \schfalse.
 \end{entry}
 
@@ -2990,14 +2990,14 @@ and returns the corresponding bytevector.
 
 \begin{scheme}
 (utf8->string \#u8(\#x41)) \ev "A"
-(string->utf8 "$\lambda$") \ev \#u8(\#xCE \#xBB)%
+(string->utf8 string) \ev \#u8(\#xCE \#xBB)%
 \end{scheme}
 
 \end{entry}
 
 \section{Control features}
 \label{proceduresection}
- 
+
 This section describes various primitive procedures which control the
 flow of program execution in special ways.
 Procedures in this section that invoke procedure arguments
@@ -3013,9 +3013,9 @@ Returns \schtrue{} if \var{obj} is a procedure, otherwise returns \schfalse.
 \begin{scheme}
 (procedure? car)            \ev  \schtrue
 (procedure? 'car)           \ev  \schfalse
-(procedure? (lambda (x) (* x x)))   
+(procedure? (lambda (x) (* x x)))
                             \ev  \schtrue
-(procedure? '(lambda (x) (* x x)))  
+(procedure? '(lambda (x) (* x x)))
                             \ev  \schfalse
 (call-with-current-continuation procedure?)
                             \ev  \schtrue%
@@ -3249,7 +3249,7 @@ procedure (including the initialization expressions of
 take the number of values that the consumer expects.
 The continuations of all non-final expressions within a sequence
 of expressions, such as in {\cf lambda}, {\cf case-lambda}, {\cf begin},
-{\cf let}, {\cf let*}, {\cf letrec}, {\cf letrec*}, {\cf let-values}, 
+{\cf let}, {\cf let*}, {\cf letrec}, {\cf letrec*}, {\cf let-values},
 {\cf let*-values}, {\cf let-syntax}, {\cf letrec-syntax}, {\cf parameterize},
 {\cf guard}, {\cf case}, {\cf cond}, {\cf when}, and {\cf unless} expressions,
 take an arbitrary number of values because they discard the values passed
@@ -3360,7 +3360,7 @@ Delivers all of its arguments to its continuation.
 The {\tt values} procedure might be defined as follows:
 \begin{scheme}
 (define (values . things)
-  (call-with-current-continuation 
+  (call-with-current-continuation
     (lambda (cont) (apply cont things))))%
 \end{scheme}
 
@@ -3484,7 +3484,7 @@ object can be used to represent an exception.
 It is also an error if \var{thunk} does not accept zero arguments.}
 The {\cf with-exception-handler} procedure returns the results of invoking
 \var{thunk}.  \var{Handler} is installed as the current
-exception handler 
+exception handler
 in the dynamic environment used for the invocation of \var{thunk}.
 
 \begin{scheme}
@@ -3580,9 +3580,9 @@ The procedure {\cf error-object?} must return \schtrue{} on such objects.
 \begin{entry}{%
 \proto{error-object?}{ obj}{procedure}}
 
-Returns \schtrue{} if \var{obj} is an object created by {\cf error} 
+Returns \schtrue{} if \var{obj} is an object created by {\cf error}
 or one of an implementation-defined set of objects.  Otherwise, it returns
-\schfalse.  
+\schfalse.
 The objects used to signal errors, including those which satisfy the
 predicates {\cf file-error?} and {\cf read-error?}, may or may not
 satisfy {\cf error-object?}.
@@ -3746,21 +3746,21 @@ system on which the Scheme program is running.
 
 \domain{It is an error if \var{proc} does not accept one argument.}
 The {\cf call-with-port}
-procedure calls \var{proc} with \var{port} as an argument.  
+procedure calls \var{proc} with \var{port} as an argument.
 If \var{proc} returns,
 then the port is closed automatically and the values yielded by the
-\var{proc} are returned.  If \var{proc} does not return, then 
+\var{proc} are returned.  If \var{proc} does not return, then
 the port must not be closed automatically unless it is possible to
 prove that the port will never again be used for a read or write
 operation.
 
 \begin{rationale}
 Because Scheme's escape procedures have unlimited extent, it  is
-possible to escape from the current continuation but later to resume it. 
+possible to escape from the current continuation but later to resume it.
 If implementations were permitted to close the port on any escape from the
 current continuation, then it would be impossible to write portable code using
 both {\cf call-with-current-continuation} and {\cf call-with-port}.
-\end{rationale} 
+\end{rationale}
 
 \end{entry}
 
@@ -3771,7 +3771,7 @@ both {\cf call-with-current-continuation} and {\cf call-with-port}.
 \domain{It is an error if \var{proc} does not accept one argument.}
 These procedures obtain a
 textual port obtained by opening the named file for input or output
-as if by {\cf open-input-file} or {\cf open-output-file}.  
+as if by {\cf open-input-file} or {\cf open-output-file}.
 The port and \var{proc} are then passed to a procedure equivalent
 to {\cf call-with-port}.
 \end{entry}
@@ -3783,7 +3783,7 @@ to {\cf call-with-port}.
 \proto{binary-port?}{ obj}{procedure}
 \proto{port?}{ obj}{procedure}}
 
-These procedures return \schtrue{} if \var{obj} is an input port, output port, 
+These procedures return \schtrue{} if \var{obj} is an input port, output port,
 textual port, binary port, or any
 kind of port, respectively.  Otherwise they return \schfalse.
 
@@ -3820,7 +3820,7 @@ are implementation-defined textual ports.
 \proto{with-output-to-file}{ string thunk}{file library procedure}}
 
 The file is opened for input or output
-as if by {\cf open-input-file} or {\cf open-output-file}, 
+as if by {\cf open-input-file} or {\cf open-output-file},
 and the new port is made to be the value returned by
 {\cf current-input-port} or {\cf current-output-port}
 (as used by {\tt (read)}, {\tt (write \var{obj})}, and so forth).
@@ -3840,7 +3840,7 @@ dynamically with {\cf parameterize}.
 \begin{entry}{%
 \proto{open-input-file}{ string}{file library procedure}
 \proto{open-binary-input-file}{ string}{file library procedure}}
- 
+
 Takes a \var{string} for an existing file and returns a textual
 input port or binary input port that is capable of delivering data from the
 file.  If the file does not exist or cannot be opened, an error that satisfies {\cf file-error?} is signaled.
@@ -3870,7 +3870,7 @@ an error that satisfies {\cf file-error?} is signaled.
 \proto{close-output-port}{ port}{procedure}}
 
 Closes the resource associated with \var{port}, rendering the \var{port}
-incapable of delivering or accepting data.  
+incapable of delivering or accepting data.
 It is an error
 to apply the last two procedures to a port which is not an input
 or output port, respectively.
@@ -3919,8 +3919,7 @@ If the result string is modified, the effect is unspecified.
     (display " by piece ")
     (display "by piece.")
     (newline)
-    (get-output-string (current-output-port)))
-\lev "piece by piece by piece.\backwhack{}n"%
+    (get-output-string (current-output-port))) \lev "piece by piece by piece.\backwhack{}n"%
 \end{scheme}
 
 \end{entry}
@@ -3994,7 +3993,7 @@ an error that satisfies {\cf read-error?} is signaled.
 Returns the next character available from the textual input \var{port},
 updating
 the \var{port} to point to the following character.  If no more characters
-are available, an end-of-file object is returned.  
+are available, an end-of-file object is returned.
 
 \end{entry}
 
@@ -4006,7 +4005,7 @@ are available, an end-of-file object is returned.
 Returns the next character available from the textual input \var{port},
 but {\em without} updating
 the \var{port} to point to the following character.  If no more characters
-are available, an end-of-file object is returned.  
+are available, an end-of-file object is returned.
 
 \begin{note}
 The value returned by a call to {\cf peek-char} is the same as the
@@ -4066,7 +4065,7 @@ Returns \schtrue{} if a character is ready on the textual input \var{port} and
 returns \schfalse{} otherwise.  If {\cf char-ready} returns \schtrue{} then
 the next {\cf read-char} operation on the given \var{port} is guaranteed
 not to hang.  If the \var{port} is at end of file then {\cf char-ready?}\
-returns \schtrue.  
+returns \schtrue.
 
 \begin{rationale}
 The {\cf char-ready?} procedure exists to make it possible for a program to
@@ -4099,9 +4098,9 @@ an end-of-file object is returned.
 \rproto{read-u8}{ port}{procedure}}
 
 Returns the next byte available from the binary input \var{port},
-updating the \var{port} to point to the following byte.  
+updating the \var{port} to point to the following byte.
 If no more bytes are
-available, an end-of-file object is returned.  
+available, an end-of-file object is returned.
 
 \end{entry}
 
@@ -4111,7 +4110,7 @@ available, an end-of-file object is returned.
 
 Returns the next byte available from the binary input \var{port},
 but {\em without} updating the \var{port} to point to the following
-byte.  If no more bytes are available, an end-of-file object is returned.  
+byte.  If no more bytes are available, an end-of-file object is returned.
 
 \end{entry}
 
@@ -4123,7 +4122,7 @@ Returns \schtrue{} if a byte is ready on the binary input \var{port}
 and returns \schfalse{} otherwise.  If {\cf u8-ready?} returns
 \schtrue{} then the next {\cf read-u8} operation on the given
 \var{port} is guaranteed not to hang.  If the \var{port} is at end of
-file then {\cf u8-ready?}\ returns \schtrue.  
+file then {\cf u8-ready?}\ returns \schtrue.
 
 \end{entry}
 
@@ -4227,7 +4226,7 @@ objects appear in the representation as if written by {\cf write-char}
 instead of by {\cf write}.
 
 The {\cf display} representation of other objects is unspecified.
-However, {\cf display} must not loop forever on 
+However, {\cf display} must not loop forever on
 self-referencing pairs, vectors, or records.  Thus if the
 normal {\cf write} representation is used, datum labels are needed
 to represent cycles as in {\cf write}.
@@ -4240,7 +4239,7 @@ The {\cf display} procedure returns an unspecified value.
 \begin{rationale}
 The {\cf write} procedure is intended
 for producing mach\-ine-readable output and {\cf display} for producing
-human-readable output.  
+human-readable output.
 \end{rationale}
 \end{entry}
 
@@ -4262,7 +4261,7 @@ from one operating system to another.  Returns an unspecified value.
 
 Writes the character \var{char} (not an external representation of the
 character) to the given textual output \var{port} and returns an unspecified
-value.  
+value.
 
 \end{entry}
 
@@ -4423,7 +4422,7 @@ Many operating systems provide each running process with an
 (This environment is not to be confused with the Scheme environments that
 can be passed to {\cf eval}: see section~\ref{environments}.)
 Both the name and value of an environment variable are strings.
-The procedure {\cf get-environment-variable} returns the value 
+The procedure {\cf get-environment-variable} returns the value
 of the environment variable \var{name},
 or \schfalse{} if the named
 environment variable is not found.  It may
@@ -4482,7 +4481,7 @@ should be very likely that a compactly represented integer will suffice
 as the returned value.  Any particular jiffy size will be inappropriate
 for some implementations: a microsecond is too long for a very fast
 machine, while a much smaller unit would force many implementations to
-return integers which have to be allocated for most calls, rendering 
+return integers which have to be allocated for most calls, rendering
 {\cf current-jiffy} less useful for accurate timing measurements.
 \end{rationale}
 
@@ -4514,10 +4513,9 @@ example of what {\cf features} might return:
 \begin{scheme}
 (features) \ev
   (r7rs ratios exact-complex full-unicode
-   gnu-linux little-endian 
+   gnu-linux little-endian
    fantastic-scheme
    fantastic-scheme-1.0
    space-ship-control-system)%
 \end{scheme}
 \end{entry}
-
