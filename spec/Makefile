@@ -33,6 +33,9 @@ r7rs.pdf: $(SOURCES) stdmod.tex
 	pdflatex $<
 	pdflatex $<
 
+r7rs.html: $(SOURCES) stdmod.tex
+	pandoc --mathml --standalone $< -o r7rs.html
+
 overview.pdf: overview.tex overview-body.tex
 	pdflatex $<
 	pdflatex $<
