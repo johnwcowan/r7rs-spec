@@ -36,6 +36,9 @@ r7rs.pdf: $(SOURCES) stdmod.tex
 r7rs.html: $(SOURCES) stdmod.tex config.tex
 	make4ht --loglevel debug --utf8 --xetex --config config.tex $<
 
+r7rs.md.pdf: r7rs.md
+	pandoc r7rs.md -o r7rs.md.pdf
+
 overview.pdf: overview.tex overview-body.tex
 	pdflatex $<
 	pdflatex $<
