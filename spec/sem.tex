@@ -6,7 +6,7 @@
 
 \newcommand{\sembrack}[1]{[\![#1]\!]}
 \newcommand{\fun}[1]{\hbox{\it #1}}
-\newenvironment{semfun}{\begin{tabbing}$}{$\end{tabbing}}
+\newenvironment{semfun}{}{}
 \newcommand\LOC{{\tt{}L}}
 \newcommand\NAT{{\tt{}N}}
 \newcommand\TRU{{\tt{}T}}
@@ -40,7 +40,7 @@ and notation used here are described in~\cite{Stoy77}; the definition of
 {\cf dynamic-wind} is taken from~\cite{GasbichlerKnauelSperberKelsey2003}.
 The notation is summarized below:
 
-\begin{tabular}{ll}
+\begin{}{ll}
 $\langle\,\ldots\,\rangle$ & sequence formation \\
 $s \elt k$                 & $k$th member of the sequence $s$ (1-based) \\
 $\#s$                      & length of sequence $s$ \\
@@ -50,7 +50,7 @@ $t \rightarrow a, b$       & McCarthy conditional ``if $t$ then $a$ else $b$'' \
 $\rho[x/i]$                & substitution ``$\rho$ with $x$ for $i$'' \\
 $x\hbox{ \rm in }{\texttt{D}}$         & injection of $x$ into domain $\texttt{D}$ \\
 $x\,\vert\,\texttt{D}$       & projection of $x$ to domain $\texttt{D}$
-\end{tabular}
+\end{}
 
 The reason that expression continuations take sequences of values instead
 of single values is to simplify the formal treatment of procedure calls

@@ -19,9 +19,9 @@ is not an identifier.
 All implementations of Scheme must support the following extended identifier
 characters:
 
-\begin{scheme}
+\begin{verbatim}
 !\ \$ \% \verb"&" * + - . / :\ < = > ? @ \verb"^" \verb"_" \verb"~" %
-\end{scheme}
+\end{verbatim}
 
 Alternatively, an identifier can be represented by a sequence of zero or more
 characters enclosed within vertical lines ({\cf $|$}), analogous to
@@ -45,7 +45,7 @@ identifier.
 
 Here are some examples of identifiers:
 
-\begin{scheme}
+\begin{verbatim}
 ...                      {+}
 +soup+                   <=?
 ->string                 a34kTMNs
@@ -53,7 +53,7 @@ lambda                   list->vector
 q                        V17a
 |two words|              |two\backwhack{}x20;words|
 the-word-recursion-has-many-meanings%
-\end{scheme}
+\end{verbatim}
 
 See section~\ref{extendedalphas} for the formal syntax of identifiers.
 
@@ -129,7 +129,7 @@ Block comments are indicated with properly nested {\tt
   \#|}\index{#"|@\texttt{\sharpsign\verticalbar}}\index{"|#@\texttt{\verticalbar\sharpsign}}
 and {\tt |\#} pairs.
 
-\begin{scheme}
+\begin{verbatim}
 \#|
    The FACT procedure computes the factorial
    of a non-negative integer.
@@ -140,7 +140,7 @@ and {\tt |\#} pairs.
         \#;(= n 1)
         1        ;Base case: return 1
         (* n (fact (- n 1))))))%
-\end{scheme}
+\end{verbatim}
 
 
 \section{Other notations}
@@ -217,7 +217,7 @@ These are used for labeling and referencing other literal data (section~\ref{lab
 
 \end{description}
 
-\section{Datum labels}\unsection
+\section{Datum labels}
 \label{labelsection}
 
 \begin{entry}{%
@@ -225,7 +225,7 @@ These are used for labeling and referencing other literal data (section~\ref{lab
 \pproto{\#\hyper{n}\#}{lexical syntax}}
 
 The lexical syntax
-\texttt{\#\hyper{n}=\hyper{datum}} reads the same as \hyper{datum}, but also
+\#\hyper{n}=\hyper{datum} reads the same as \hyper{datum}, but also
 results in \hyper{datum} being labelled by \hyper{n}.
 It is an error if \hyper{n} is not a sequence of digits.
 
@@ -237,11 +237,11 @@ object as the \texttt{\#\hyper{n}}=
 Together, these syntaxes permit the notation of
 structures with shared or circular substructure.
 
-\begin{scheme}
+\begin{verbatim}
 (let ((x (list 'a 'b 'c)))
   (set-cdr! (cddr x) x)
   x)                       \ev \#0=(a b c . \#0\#)
-\end{scheme}
+\end{verbatim}
 
 The scope of a datum label is the portion of the outermost datum in which it appears
 that is to the right of the label.
@@ -256,9 +256,9 @@ It is an error for a \hyper{program} or \hyper{library} to include
 circular references except in literals.  In particular,
 it is an error for {\cf quasiquote} (section~\ref{quasiquote}) to contain them.
 
-\begin{scheme}
+\begin{verbatim}
 \#1=(begin (display \#\backwhack{}x) \#1\#)
                        \ev \scherror%
-\end{scheme}
+\end{verbatim}
 \end{entry}
 
