@@ -1,21 +1,113 @@
-'=̀13
+<!-- markdown-toc start - Don't edit this section. Run M-x markdown-toc-refresh-toc -->
+**Table of Contents**
 
--.375in
+- [Summary](#summary)
+- [Contents](#contents)
+    - [-](#-)
+    - [Acknowledgments](#acknowledgments)
+- [Overview of Scheme](#overview-of-scheme)
+    - [Semantics](#semantics)
+    - [Syntax](#syntax)
+    - [Notation and terminology](#notation-and-terminology)
+        - [Base and optional features](#base-and-optional-features)
+        - [Error situations and unspecified behavior](#error-situations-and-unspecified-behavior)
+        - [Entry format](#entry-format)
+        - [Evaluation examples](#evaluation-examples)
+        - [Naming conventions](#naming-conventions)
+- [Lexical conventions](#lexical-conventions)
+    - [Identifiers](#identifiers)
+    - [Whitespace and comments](#whitespace-and-comments)
+    - [Other notations](#other-notations)
+    - [Datum labels](#datum-labels)
+- [Basic concepts](#basic-concepts)
+    - [Variables, syntactic keywords, and regions](#variables-syntactic-keywords-and-regions)
+    - [Disjointness of types](#disjointness-of-types)
+    - [External representations](#external-representations)
+    - [Storage model](#storage-model)
+    - [Proper tail recursion](#proper-tail-recursion)
+- [Expressions](#expressions)
+    - [Primitive expression types](#primitive-expression-types)
+        - [Variable references](#variable-references)
+        - [Literal expressions](#literal-expressions)
+        - [Procedure calls](#procedure-calls)
+        - [Procedures](#procedures)
+        - [Conditionals](#conditionals)
+        - [Assignments](#assignments)
+        - [Inclusion](#inclusion)
+    - [Derived expression types](#derived-expression-types)
+        - [Conditionals](#conditionals-1)
+        - [Binding constructs](#binding-constructs)
+        - [Sequencing](#sequencing)
+        - [Iteration](#iteration)
+        - [Delayed evaluation](#delayed-evaluation)
+        - [Dynamic bindings](#dynamic-bindings)
+        - [Exception handling](#exception-handling)
+        - [Quasiquotation](#quasiquotation)
+        - [Case-lambda](#case-lambda)
+    - [Macros](#macros)
+        - [Binding constructs for syntactic keywords](#binding-constructs-for-syntactic-keywords)
+        - [Pattern language](#pattern-language)
+        - [Signaling errors in macro transformers](#signaling-errors-in-macro-transformers)
+- [Program structure](#program-structure)
+    - [Programs](#programs)
+    - [Import declarations](#import-declarations)
+    - [Variable definitions](#variable-definitions)
+        - [Top level definitions](#top-level-definitions)
+        - [Internal definitions](#internal-definitions)
+        - [Multiple-value definitions](#multiple-value-definitions)
+    - [Syntax definitions](#syntax-definitions)
+    - [Record-type definitions](#record-type-definitions)
+    - [Libraries](#libraries)
+        - [Library Syntax](#library-syntax)
+        - [Library example](#library-example)
+    - [The REPL](#the-repl)
+- [Standard procedures](#standard-procedures)
+    - [Equivalence predicates](#equivalence-predicates)
+    - [Numbers](#numbers)
+        - [Numerical types](#numerical-types)
+        - [Exactness](#exactness)
+        - [Implementation restrictions](#implementation-restrictions)
+        - [Implementation extensions](#implementation-extensions)
+        - [Syntax of numerical constants](#syntax-of-numerical-constants)
+        - [Numerical operations](#numerical-operations)
+        - [Numerical input and output](#numerical-input-and-output)
+    - [Booleans](#booleans)
+    - [Pairs and lists](#pairs-and-lists)
+    - [Symbols](#symbols)
+    - [Characters](#characters)
+    - [Strings](#strings)
+    - [Vectors](#vectors)
+    - [Bytevectors](#bytevectors)
+    - [Control features](#control-features)
+    - [Exceptions](#exceptions)
+    - [Environments and evaluation](#environments-and-evaluation)
+    - [Input and output](#input-and-output)
+        - [Ports](#ports)
+        - [Input](#input)
+        - [Output](#output)
+    - [System interface](#system-interface)
+    - [Derived expression types](#derived-expression-types-1)
+- [Standard Libraries](#standard-libraries)
+- [Standard Feature Identifiers](#standard-feature-identifiers)
+- [Language changes](#language-changes)
+    - [-](#--1)
+    - [Other language changes since R<sup>5</sup>RS](#other-language-changes-since-rsup5suprs)
+    - [Incompatibilities with R<sup>6</sup>RS](#incompatibilities-with-rsup6suprs)
+- [Additional material](#additional-material)
+- [Example](#example)
 
-plus 2pt minus 2pt plus 2pt
+<!-- markdown-toc end -->
 
--.5in -.5in
-
-# Summary {#summary .unnumbered}
+# Summary
 
 The report gives a defining description of the programming language
 Scheme. Scheme is a statically scoped and properly tail recursive
-dialect of the Lisp programming language []{.citation cites="McCarthy"}
-invented by Guy Lewis Steele Jr. and Gerald Jay Sussman. It was designed
-to have exceptionally clear and simple semantics and few different ways
-to form expressions. A wide variety of programming paradigms, including
-imperative, functional, and object-oriented styles, find convenient
-expression in Scheme.
+dialect of the Lisp programming language <span class="citation"
+cites="McCarthy"></span> invented by Guy Lewis Steele Jr. and Gerald
+Jay Sussman. It was designed to have exceptionally clear and simple
+semantics and few different ways to form expressions. A wide variety of
+programming paradigms, including imperative, functional, and
+object-oriented styles, find convenient expression in Scheme.
 
 The introduction offers a brief history of the language and of the
 report.
@@ -28,8 +120,8 @@ Chapters [\[expressionchapter\]](#expressionchapter)
 and [\[programchapter\]](#programchapter) describe the syntax and
 semantics of expressions, definitions, programs, and libraries.
 
-Chapter [\[builtinchapter\]](#builtinchapter) describes Scheme's
-built-in procedures, which include all of the language's data
+Chapter [\[builtinchapter\]](#builtinchapter) describes Scheme’s
+built-in procedures, which include all of the language’s data
 manipulation and input/output primitives.
 
 Chapter [\[formalchapter\]](#formalchapter) provides a formal syntax for
@@ -45,13 +137,14 @@ standardized implementation feature names.
 
 The report concludes with a list of references and an alphabetic index.
 
-*Note:* The editors of the R$^{5}$RS and R$^{6}$RS reports are listed as
-authors of this report in recognition of the substantial portions of
-this report that are copied directly from R$^{5}$RS and R$^{6}$RS. There
-is no intended implication that those editors, individually or
-collectively, support or do not support this report.
+*Note:* The editors of the R<sup>5</sup>RS and R<sup>6</sup>RS reports
+are listed as authors of this report in recognition of the substantial
+portions of this report that are copied directly from
+R<sup>5</sup>RS and R<sup>6</sup>RS. There is no intended implication
+that those editors, individually or collectively, support or do not
+support this report.
 
-# Contents {#contents .unnumbered}
+# Contents
 
 Programming languages should be designed not by piling feature on top of
 feature, but by removing the weaknesses and restrictions that make
@@ -75,57 +168,61 @@ that is both coherent and efficient. Scheme was the first widely used
 programming language to embrace first-class escape procedures, from
 which all previously known sequential control structures can be
 synthesized. A subsequent version of Scheme introduced the concept of
-exact and inexact numbers, an extension of Common Lisp's generic
+exact and inexact numbers, an extension of Common Lisp’s generic
 arithmetic. More recently, Scheme became the first programming language
 to support hygienic macros, which permit the syntax of a
 block-structured language to be extended in a consistent and reliable
 manner.
 
-### Background {#background .unnumbered}
+### Background
 
-The first description of Scheme was written in 1975 []{.citation
-cites="Scheme75"}. A revised report []{.citation cites="Scheme78"}
-appeared in 1978, which described the evolution of the language as its
-MIT implementation was upgraded to support an innovative
-compiler []{.citation cites="Rabbit"}. Three distinct projects began in
-1981 and 1982 to use variants of Scheme for courses at MIT, Yale, and
-Indiana University []{.citation cites="Rees82 MITScheme Scheme311"}. An
-introductory computer science textbook using Scheme was published in
-1984 []{.citation cites="SICP"}.
+The first description of Scheme was written in 1975 <span
+class="citation" cites="Scheme75"></span>. A revised report <span
+class="citation" cites="Scheme78"></span> appeared in 1978, which
+described the evolution of the language as its MIT implementation was
+upgraded to support an innovative compiler <span class="citation"
+cites="Rabbit"></span>. Three distinct projects began in 1981 and 1982
+to use variants of Scheme for courses at MIT, Yale, and Indiana
+University <span class="citation"
+cites="Rees82 MITScheme Scheme311"></span>. An introductory computer
+science textbook using Scheme was published in 1984 <span
+class="citation" cites="SICP"></span>.
 
 As Scheme became more widespread, local dialects began to diverge until
 students and researchers occasionally found it difficult to understand
 code written at other sites. Fifteen representatives of the major
 implementations of Scheme therefore met in October 1984 to work toward a
 better and more widely accepted standard for Scheme. Their report, the
-RRRS []{.citation cites="RRRS"}, was published at MIT and Indiana
-University in the summer of 1985. Further revision took place in the
-spring of 1986, resulting in the R$^{3}$RS []{.citation cites="R3RS"}.
-Work in the spring of 1988 resulted in R$^{4}$RS []{.citation
-cites="R4RS"}, which became the basis for the IEEE Standard for the
-Scheme Programming Language in 1991 []{.citation cites="IEEEScheme"}. In
+RRRS <span class="citation" cites="RRRS"></span>, was published at MIT
+and Indiana University in the summer of 1985. Further revision took
+place in the spring of 1986, resulting in the R<sup>3</sup>RS <span
+class="citation" cites="R3RS"></span>. Work in the spring of 1988
+resulted in R<sup>4</sup>RS <span class="citation" cites="R4RS"></span>,
+which became the basis for the IEEE Standard for the Scheme Programming
+Language in 1991 <span class="citation" cites="IEEEScheme"></span>. In
 1998, several additions to the IEEE standard, including high-level
 hygienic macros, multiple return values, and eval, were finalized as the
-R$^{5}$RS []{.citation cites="R5RS"}.
+R<sup>5</sup>RS <span class="citation" cites="R5RS"></span>.
 
 In the fall of 2006, work began on a more ambitious standard, including
 many new improvements and stricter requirements made in the interest of
-improved portability. The resulting standard, the R$^{6}$RS, was
-completed in August 2007 []{.citation cites="R6RS"}, and was organized
-as a core language and set of mandatory standard libraries. Several new
-implementations of Scheme conforming to it were created. However, most
-existing R$^{5}$RS implementations (even excluding those which are
-essentially unmaintained) did not adopt R$^{6}$RS, or adopted only
-selected parts of it.
+improved portability. The resulting standard, the R<sup>6</sup>RS, was
+completed in August 2007 <span class="citation" cites="R6RS"></span>,
+and was organized as a core language and set of mandatory standard
+libraries. Several new implementations of Scheme conforming to it were
+created. However, most existing R<sup>5</sup>RS implementations (even
+excluding those which are essentially unmaintained) did not adopt
+R<sup>6</sup>RS, or adopted only selected parts of it.
 
 In consequence, the Scheme Steering Committee decided in August 2009 to
-divide the standard into two separate but compatible languages --- a
-"small" language, suitable for educators, researchers, and users of
-embedded languages, focused on R$^{5}$RS compatibility, and a "large"
-language focused on the practical needs of mainstream software
-development, intended to become a replacement for R$^{6}$RS. The present
-report describes the "small" language of that effort: therefore it
-cannot be considered in isolation as the successor to R$^{6}$RS.
+divide the standard into two separate but compatible languages — a
+“small” language, suitable for educators, researchers, and users of
+embedded languages, focused on R<sup>5</sup>RS compatibility, and a
+“large” language focused on the practical needs of mainstream software
+development, intended to become a replacement for R<sup>6</sup>RS. The
+present report describes the “small” language of that effort: therefore
+it cannot be considered in isolation as the successor to
+R<sup>6</sup>RS.
 
 We intend this report to belong to the entire Scheme community, and so
 we grant permission to copy it in whole or in part without fee. In
@@ -133,13 +230,13 @@ particular, we encourage implementers of Scheme to use this report as a
 starting point for manuals and other documentation, modifying it as
 necessary.
 
-### Acknowledgments {#acknowledgments .unnumbered}
+### Acknowledgments
 
 We would like to thank the members of the Steering Committee, William
 Clinger, Marc Feeley, Chris Hanson, Jonathan Rees, and Olin Shivers, for
 their support and guidance.
 
-This report is very much a community effort, and we'd like to thank
+This report is very much a community effort, and we’d like to thank
 everyone who provided comments and feedback, including the following
 people: David Adler, Eli Barzilay, Taylan Ulrich Bayırlı/Kammer, Marco
 Benelli, Pierpaolo Bernardi, Peter Bex, Per Bothner, John Boyle, Taylor
@@ -173,19 +270,21 @@ Daniel Weise, Henry Wu, and Ozan Yigit. We thank Carol Fessenden, Daniel
 Friedman, and Christopher Haynes for permission to use text from the
 Scheme 311 version 4 reference manual. We thank Texas Instruments,
 Inc. for permission to use text from the *TI Scheme Language Reference
-Manual* []{.citation cites="TImanual85"}. We gladly acknowledge the
-influence of manuals for MIT Scheme []{.citation cites="MITScheme"},
-T []{.citation cites="Rees84"}, Scheme 84 []{.citation
-cites="Scheme84"}, Common Lisp []{.citation cites="CLtL"}, and Algol
-60 []{.citation cites="Naur63"}, as well as the following SRFIs: 0, 1,
-4, 6, 9, 11, 13, 16, 30, 34, 39, 43, 46, 62, and 87, all of which are
-available at http://srfi.schemers.org.
+Manual* <span class="citation" cites="TImanual85"></span>. We gladly
+acknowledge the influence of manuals for MIT Scheme <span
+class="citation" cites="MITScheme"></span>, T <span class="citation"
+cites="Rees84"></span>, Scheme 84 <span class="citation"
+cites="Scheme84"></span>, Common Lisp <span class="citation"
+cites="CLtL"></span>, and Algol 60 <span class="citation"
+cites="Naur63"></span>, as well as the following SRFIs: 0, 1, 4, 6, 9,
+11, 13, 16, 30, 34, 39, 43, 46, 62, and 87, all of which are available
+at http://srfi.schemers.org.
 
 # Overview of Scheme
 
 ## Semantics
 
-This section gives an overview of Scheme's semantics. A detailed
+This section gives an overview of Scheme’s semantics. A detailed
 informal semantics is the subject of
 chapters [\[basicchapter\]](#basicchapter)
 through [\[builtinchapter\]](#builtinchapter). For reference purposes,
@@ -222,7 +321,7 @@ procedures, and so on.
 
 One distinguishing feature of Scheme is that continuations, which in
 most other languages only operate behind the scenes, also have
-"first-class" status. Continuations are useful for implementing a wide
+“first-class” status. Continuations are useful for implementing a wide
 variety of advanced control constructs, including non-local exits,
 backtracking, and coroutines. See
 section [\[continuations\]](#continuations).
@@ -232,7 +331,7 @@ that the actual argument expressions are evaluated before the procedure
 gains control, regardless of whether the procedure needs the result of
 the evaluation.
 
-Scheme's model of arithmetic is designed to remain as independent as
+Scheme’s model of arithmetic is designed to remain as independent as
 possible of the particular ways in which numbers are represented within
 a computer. In Scheme, every integer is a rational number, every
 rational is a real, and every real is a complex number. Thus the
@@ -292,8 +391,8 @@ All implementations of Scheme:
 
 ### Error situations and unspecified behavior
 
-When speaking of an error situation, this report uses the phrase "an
-error is signaled" to indicate that implementations must detect and
+When speaking of an error situation, this report uses the phrase “an
+error is signaled” to indicate that implementations must detect and
 report the error. An error is signaled by raising a non-continuable
 exception, as if by the procedure raise as described in
 section [\[exceptionsection\]](#exceptionsection). The object raised is
@@ -302,15 +401,15 @@ previously used for the same purpose. In addition to errors signaled in
 situations described in this report, programmers can signal their own
 errors and handle signaled errors.
 
-The phrase "an error that satisfies *predicate* is signaled" means that
+The phrase “an error that satisfies *predicate* is signaled” means that
 an error is signaled as above. Furthermore, if the object that is
 signaled is passed to the specified predicate (such as file-error? or
-read-error?), the predicate returns \#t.
+read-error?), the predicate returns #t.
 
 If such wording does not appear in the discussion of an error, then
 implementations are not required to detect or report the error, though
 they are encouraged to do so. Such a situation is sometimes, but not
-always, referred to with the phrase "an error." In such a situation, an
+always, referred to with the phrase “an error.” In such a situation, an
 implementation may or may not signal an error; if it does signal an
 error, the object that is signaled may or may not satisfy the predicates
 error-object?, file-error?, or read-error?. Alternatively,
@@ -319,11 +418,11 @@ implementations may provide non-portable extensions.
 For example, it is an error for a procedure to be passed an argument of
 a type that the procedure is not explicitly specified to handle, even
 though such domain errors are seldom mentioned in this report.
-Implementations may signal an error, extend a procedure's domain of
+Implementations may signal an error, extend a procedure’s domain of
 definition to include such arguments, or fail catastrophically.
 
-This report uses the phrase "may report a violation of an implementation
-restriction" to indicate circumstances under which an implementation is
+This report uses the phrase “may report a violation of an implementation
+restriction” to indicate circumstances under which an implementation is
 permitted to report that it is unable to continue execution of a correct
 program because of some restriction imposed by the implementation.
 Implementation restrictions are discouraged, but implementations are
@@ -334,17 +433,18 @@ implementation restriction if it does not have enough storage to run a
 program, or if an arithmetic operation would produce an exact number
 that is too large for the implementation to represent.
 
-If the value of an expression is said to be "unspecified," then the
+If the value of an expression is said to be “unspecified,” then the
 expression must evaluate to some object without signaling an error, but
 the value depends on the implementation; this report explicitly does not
 say what value is returned.
 
-Finally, the words and phrases "must," "must not," "shall," "shall not,"
-"should," "should not," "may," "required," "recommended," and
-"optional," although not capitalized in this report, are to be
-interpreted as described in RFC 2119 []{.citation cites="rfc2119"}. They
-are used only with reference to implementer or implementation behavior,
-not with reference to programmer or program behavior.
+Finally, the words and phrases “must,” “must not,” “shall,” “shall not,”
+“should,” “should not,” “may,” “required,” “recommended,” and
+“optional,” although not capitalized in this report, are to be
+interpreted as described in RFC 2119 <span class="citation"
+cites="rfc2119"></span>. They are used only with reference to
+implementer or implementation behavior, not with reference to programmer
+or program behavior.
 
 ### Entry format
 
@@ -354,16 +454,16 @@ Each entry describes one language feature or a group of related
 features, where a feature is either a syntactic construct or a
 procedure. An entry begins with one or more header lines of the form
 
-*template*  *category*\
+*template*  *category*  
 
 for identifiers in the base library, or
 
-*template*  *name* library *category*\
+*template*  *name* library *category*  
 
 where *name* is the short name of a library as defined in
 Appendix [\[stdlibraries\]](#stdlibraries).
 
-If *category* is "syntax," the entry describes an expression type, and
+If *category* is “syntax,” the entry describes an expression type, and
 the template gives the syntax of the expression type. Components of
 expressions are designated by syntactic variables, which are written
 using angle brackets, for example expression and variable. Syntactic
@@ -371,34 +471,38 @@ variables are intended to denote segments of program text; for example,
 expression stands for any string of characters which is a syntactically
 valid expression. The notation
 
-::: tabbing
-$\ldots$
-:::
+<div class="tabbing">
+
+…
+
+</div>
 
 indicates zero or more occurrences of a thing, and
 
-::: tabbing
-thing$_{2}$ $\ldots$
-:::
+<div class="tabbing">
+
+thing<sub>2</sub> …
+
+</div>
 
 indicates one or more occurrences of a thing.
 
-If *category* is "auxiliary syntax," then the entry describes a syntax
+If *category* is “auxiliary syntax,” then the entry describes a syntax
 binding that occurs only as part of specific surrounding expressions.
 Any use as an independent syntactic construct or variable is an error.
 
-If *category* is "procedure," then the entry describes a procedure, and
+If *category* is “procedure,” then the entry describes a procedure, and
 the header line gives a template for a call to the procedure. Argument
 names in the template are *italicized*. Thus the header line
 
-(vector-ref *vector* *k*)  procedure\
+(vector-ref *vector* *k*)  procedure  
 
 indicates that the procedure bound to the `vector-ref` variable takes
 two arguments, a vector *vector* and an exact non-negative integer *k*
 (see below). The header lines
 
-(make-vector *k*)  procedure\
-(make-vector *k* *fill*)  procedure\
+(make-vector *k*)  procedure  
+(make-vector *k* *fill*)  procedure  
 
 indicate that the `make-vector` procedure must be defined to take either
 one or two arguments.
@@ -412,34 +516,34 @@ argument is not of the named type. For example, the header line for
 `vector-ref` is a vector. The following naming conventions also imply
 type restrictions:
 
-  --------------------------------------------------- ----------------------------------------------------
-  $alist$                                             association list (list of pairs)
-  $boolean$                                           boolean value (#t or \#f)
-  $byte$                                              exact integer $0 \leq byte < 256$
-  $bytevector$                                        bytevector
-  $char$                                              character
-  $end$                                               exact non-negative integer
-  $k$, $k_{1}$, $\ldots$ $k_{j}$, $\ldots$            exact non-negative integer
-  $letter$                                            alphabetic character
-  $list$, $list_{1}$, $\ldots$ $list_{j}$, $\ldots$   list (see section [\[listsection\]](#listsection))
-  $n$, $n_{1}$, $\ldots$ $n_{j}$, $\ldots$            integer
-  *obj*                                               any object
-  $pair$                                              pair
-  $port$                                              port
-  $proc$                                              procedure
-  $q$, $q_{1}$, $\ldots$ $q_{j}$, $\ldots$            rational number
-  $start$                                             exact non-negative integer
-  $string$                                            string
-  $symbol$                                            symbol
-  $thunk$                                             zero-argument procedure
-  $vector$                                            vector
-  $x$, $x_{1}$, $\ldots$ $x_{j}$, $\ldots$            real number
-  $y$, $y_{1}$, $\ldots$ $y_{j}$, $\ldots$            real number
-  $z$, $z_{1}$, $\ldots$ $z_{j}$, $\ldots$            complex number
-  --------------------------------------------------- ----------------------------------------------------
+|                                                                         |                                                    |
+|:------------------------------------------------------------------------|:---------------------------------------------------|
+| *a**l**i**s**t*                                                         | association list (list of pairs)                   |
+| *b**o**o**l**e**a**n*                                                   | boolean value (#t or #f)                           |
+| *b**y**t**e*                                                            | exact integer 0 ≤ *b**y**t**e* \< 256              |
+| *b**y**t**e**v**e**c**t**o**r*                                          | bytevector                                         |
+| *c**h**a**r*                                                            | character                                          |
+| *e**n**d*                                                               | exact non-negative integer                         |
+| *k*, *k*<sub>1</sub>, … *k*<sub>*j*</sub>, …                            | exact non-negative integer                         |
+| *l**e**t**t**e**r*                                                      | alphabetic character                               |
+| *l**i**s**t*, *l**i**s**t*<sub>1</sub>, … *l**i**s**t*<sub>*j*</sub>, … | list (see section [\[listsection\]](#listsection)) |
+| *n*, *n*<sub>1</sub>, … *n*<sub>*j*</sub>, …                            | integer                                            |
+| *obj*                                                                   | any object                                         |
+| *p**a**i**r*                                                            | pair                                               |
+| *p**o**r**t*                                                            | port                                               |
+| *p**r**o**c*                                                            | procedure                                          |
+| *q*, *q*<sub>1</sub>, … *q*<sub>*j*</sub>, …                            | rational number                                    |
+| *s**t**a**r**t*                                                         | exact non-negative integer                         |
+| *s**t**r**i**n**g*                                                      | string                                             |
+| *s**y**m**b**o**l*                                                      | symbol                                             |
+| *t**h**u**n**k*                                                         | zero-argument procedure                            |
+| *v**e**c**t**o**r*                                                      | vector                                             |
+| *x*, *x*<sub>1</sub>, … *x*<sub>*j*</sub>, …                            | real number                                        |
+| *y*, *y*<sub>1</sub>, … *y*<sub>*j*</sub>, …                            | real number                                        |
+| *z*, *z*<sub>1</sub>, … *z*<sub>*j*</sub>, …                            | complex number                                     |
 
-The names $start$ and $end$ are used as indexes into strings, vectors,
-and bytevectors. Their use implies the following:
+The names *s**t**a**r**t* and *e**n**d* are used as indexes into
+strings, vectors, and bytevectors. Their use implies the following:
 
 -   It is an error if *start* is greater than *end*.
 
@@ -459,16 +563,16 @@ and bytevectors. Their use implies the following:
 
 ### Evaluation examples
 
-The symbol "⟶" used in program examples is read "evaluates to." For
+The symbol “⟶” used in program examples is read “evaluates to.” For
 example,
 
       (* 5 8)      $\Longrightarrow$ 40
 
 means that the expression `(* 5 8)` evaluates to the object `40`. Or,
 more precisely: the expression given by the sequence of characters
-"`(* 5 8)`" evaluates, in an environment containing the base library, to
+“`(* 5 8)`” evaluates, in an environment containing the base library, to
 an object that can be represented externally by the sequence of
-characters "` 40`." See section [\[externalreps\]](#externalreps) for a
+characters “` 40`.” See section [\[externalreps\]](#externalreps) for a
 discussion of external representations of objects.
 
 ### Naming conventions
@@ -485,9 +589,9 @@ section [\[storagemodel\]](#storagemodel)). Such procedures are called
 *mutation procedures*. The value returned by a mutation procedure is
 unspecified.
 
-By convention, "`->`" appears within the names of procedures that take
+By convention, “`->`” appears within the names of procedures that take
 an object of one type and return an analogous object of another type.
-For example, list-\>vector takes a list and returns a vector whose
+For example, list->vector takes a list and returns a vector whose
 elements are the same as those of the list.
 
 A *command* is a procedure that does not return useful values to its
@@ -503,8 +607,8 @@ Scheme, see section [\[BNF\]](#BNF).
 
 ## Identifiers
 
-An identifier is any sequence of letters, digits, and "extended
-identifier characters" provided that it does not have a prefix which is
+An identifier is any sequence of letters, digits, and “extended
+identifier characters” provided that it does not have a prefix which is
 a valid number. However, the `.` token (a single period) used in the
 list syntax is not an identifier.
 
@@ -514,19 +618,17 @@ identifier characters:
     !\ \$ \% \verb"&" * + - . / :\ < = > ? @ \verb"^" \verb"_" \verb"~" %
 
 Alternatively, an identifier can be represented by a sequence of zero or
-more characters enclosed within vertical lines ($|$), analogous to
-string literals. Any character, including whitespace characters, but
-excluding the backslash and vertical line characters, can appear
-verbatim in such an identifier. In addition, characters can be specified
-using either an inline hex escape or the same escapes available in
-strings.
+more characters enclosed within vertical lines (\|), analogous to string
+literals. Any character, including whitespace characters, but excluding
+the backslash and vertical line characters, can appear verbatim in such
+an identifier. In addition, characters can be specified using either an
+inline hex escape or the same escapes available in strings.
 
 For example, the identifier `|H\x65;llo|` is the same identifier as
 `Hello`, and in an implementation that supports the appropriate Unicode
-character the identifier `|\x3BB;|` is the same as the identifier
-$\lambda$. What is more, `|\t\t|` and `|\x9;\x9;|` are the same. Note
-that `||` is a valid identifier that is different from any other
-identifier.
+character the identifier `|\x3BB;|` is the same as the identifier *λ*.
+What is more, `|\t\t|` and `|\x9;\x9;|` are the same. Note that `||` is
+a valid identifier that is different from any other identifier.
 
 Here are some examples of identifiers:
 
@@ -551,19 +653,19 @@ Identifiers have two uses within Scheme programs:
     section [\[quote\]](#quote)), it is being used to denote a *symbol*
     (see section [\[symbolsection\]](#symbolsection)).
 
-In contrast with earlier revisions of the report []{.citation
-cites="R5RS"}, the syntax distinguishes between upper and lower case in
-identifiers and in characters specified using their names. However, it
-does not distinguish between upper and lower case in numbers, nor in
-inline hex escapes used in the syntax of identifiers, characters, or
-strings. None of the identifiers defined in this report contain
-upper-case characters, even when they appear to do so as a result of the
-English-language convention of capitalizing the first word of a
-sentence.
+In contrast with earlier revisions of the report <span class="citation"
+cites="R5RS"></span>, the syntax distinguishes between upper and lower
+case in identifiers and in characters specified using their names.
+However, it does not distinguish between upper and lower case in
+numbers, nor in inline hex escapes used in the syntax of identifiers,
+characters, or strings. None of the identifiers defined in this report
+contain upper-case characters, even when they appear to do so as a
+result of the English-language convention of capitalizing the first word
+of a sentence.
 
 The following directives give explicit control over case folding.
 
-#!fold-case\
+#!fold-case  
 #!no-fold-case
 
 These directives can appear anywhere comments are permitted (see
@@ -596,7 +698,7 @@ continues to the end of the line on which the semicolon appears.
 Another way to indicate a comment is to prefix a datum
 (cf. section [\[datumsyntax\]](#datumsyntax)) with `#;` and optional
 whitespace. The comment consists of the comment prefix `#;`, the space,
-and the datum together. This notation is useful for "commenting out"
+and the datum together. This notation is useful for “commenting out”
 sections of code.
 
 Block comments are indicated with properly nested ` #|` and `|#` pairs.
@@ -617,104 +719,89 @@ Block comments are indicated with properly nested ` #|` and `|#` pairs.
 For a description of the notations used for numbers, see
 section [\[numbersection\]](#numbersection).
 
-`. + -`
+`. + -`  
+These are used in numbers, and can also occur anywhere in an identifier.
+A delimited plus or minus sign by itself is also an identifier. A
+delimited period (not occurring within a number or identifier) is used
+in the notation for pairs (section [\[listsection\]](#listsection)), and
+to indicate a rest-parameter in a formal parameter list
+(section [\[lambda\]](#lambda)). Note that a sequence of two or more
+periods *is* an identifier.
 
-:   These are used in numbers, and can also occur anywhere in an
-    identifier. A delimited plus or minus sign by itself is also an
-    identifier. A delimited period (not occurring within a number or
-    identifier) is used in the notation for pairs
-    (section [\[listsection\]](#listsection)), and to indicate a
-    rest-parameter in a formal parameter list
-    (section [\[lambda\]](#lambda)). Note that a sequence of two or more
-    periods *is* an identifier.
+`( )`  
+Parentheses are used for grouping and to notate lists
+(section [\[listsection\]](#listsection)).
 
-`( )`
+`’`  
+The apostrophe (single quote) character is used to indicate literal data
+(section [\[quote\]](#quote)).
 
-:   Parentheses are used for grouping and to notate lists
-    (section [\[listsection\]](#listsection)).
+``  
+The grave accent (backquote) character is used to indicate partly
+constant data (section [\[quasiquote\]](#quasiquote)).
 
-`’`
+`, ,@`  
+The character comma and the sequence comma at-sign are used in
+conjunction with quasiquotation (section [\[quasiquote\]](#quasiquote)).
 
-:   The apostrophe (single quote) character is used to indicate literal
-    data (section [\[quote\]](#quote)).
+`"`  
+The quotation mark character is used to delimit strings
+(section [\[stringsection\]](#stringsection)).
 
-``
+`‘ `  
+Backslash is used in the syntax for character constants
+(section [\[charactersection\]](#charactersection)) and as an escape
+character within string constants
+(section [\[stringsection\]](#stringsection)) and identifiers
+(section [\[extendedalphas\]](#extendedalphas)).
 
-:   The grave accent (backquote) character is used to indicate partly
-    constant data (section [\[quasiquote\]](#quasiquote)).
+`[ ] { }`
 
-`, ,@`
+  
+Left and right square and curly brackets (braces) are reserved for
+possible future extensions to the language.
 
-:   The character comma and the sequence comma at-sign are used in
-    conjunction with quasiquotation
-    (section [\[quasiquote\]](#quasiquote)).
+`#`  
+The number sign is used for a variety of purposes depending on the
+character that immediately follows it:
 
-`"`
+#t #f  
+These are the boolean constants
+(section [\[booleansection\]](#booleansection)), along with the
+alternatives `#true` and `#false`.
 
-:   The quotation mark character is used to delimit strings
-    (section [\[stringsection\]](#stringsection)).
+`#``‘ `  
+This introduces a character constant
+(section [\[charactersection\]](#charactersection)).
 
-`‘ `
+`#``(`  
+This introduces a vector constant
+(section [\[vectorsection\]](#vectorsection)). Vector constants are
+terminated by `)` .
 
-:   Backslash is used in the syntax for character constants
-    (section [\[charactersection\]](#charactersection)) and as an escape
-    character within string constants
-    (section [\[stringsection\]](#stringsection)) and identifiers
-    (section [\[extendedalphas\]](#extendedalphas)).
+`#``u8(`  
+This introduces a bytevector constant
+(section [\[bytevectorsection\]](#bytevectorsection)). Bytevector
+constants are terminated by `)` .
 
-    `[ ] { }`
+`#e #i #b #o #d #x`  
+These are used in the notation for numbers
+(section [\[numbernotations\]](#numbernotations)).
 
-:   Left and right square and curly brackets (braces) are reserved for
-    possible future extensions to the language.
-
-`#`
-
-:   The number sign is used for a variety of purposes depending on the
-    character that immediately follows it:
-
-\#t \#f
-
-:   These are the boolean constants
-    (section [\[booleansection\]](#booleansection)), along with the
-    alternatives `#true` and `#false`.
-
-`#``‘ `
-
-:   This introduces a character constant
-    (section [\[charactersection\]](#charactersection)).
-
-`#``(`
-
-:   This introduces a vector constant
-    (section [\[vectorsection\]](#vectorsection)). Vector constants are
-    terminated by `)` .
-
-`#``u8(`
-
-:   This introduces a bytevector constant
-    (section [\[bytevectorsection\]](#bytevectorsection)). Bytevector
-    constants are terminated by `)` .
-
-`#e #i #b #o #d #x`
-
-:   These are used in the notation for numbers
-    (section [\[numbernotations\]](#numbernotations)).
-
-`#n= #n#`
-
-:   These are used for labeling and referencing other literal data
-    (section [\[labelsection\]](#labelsection)).
+`#n= #n#`  
+These are used for labeling and referencing other literal data
+(section [\[labelsection\]](#labelsection)).
 
 ## Datum labels
 
-\#n=datum  lexical syntax\
-\#n\#  lexical syntax\
-The lexical syntax \#n=datum reads the same as datum, but also results
-in datum being labelled by n. It is an error if n is not a sequence of
+#n=datum  lexical syntax  
+#n#  lexical syntax  
+The lexical syntax #n=datum reads the same as datum, but also results in
+datum being labelled by n. It is an error if n is not a sequence of
 digits.
 
-The lexical syntax \#n\# serves as a reference to some object labelled
-by \#n=; the result is the same object as the \#n= (see
+The lexical syntax #n# serves as a reference to some object labelled by
+#n=; the result is the same object as the #n= (see
 section [\[equivalencesection\]](#equivalencesection)).
 
 Together, these syntaxes permit the notation of structures with shared
@@ -726,10 +813,10 @@ or circular substructure.
 
 The scope of a datum label is the portion of the outermost datum in
 which it appears that is to the right of the label. Consequently, a
-reference \#n\# can occur only after a label \#n=; it is an error to
+reference #n# can occur only after a label #n=; it is an error to
 attempt a forward reference. In addition, it is an error if the
-reference appears as the labelled object itself (as in \#n= \#n#),
-because the object labelled by \#n= is not well defined in this case.
+reference appears as the labelled object itself (as in #n= #n#), because
+the object labelled by #n= is not well defined in this case.
 
 It is an error for a program or library to include circular references
 except in literals. In particular, it is an error for quasiquote
@@ -749,7 +836,7 @@ that syntax. An identifier that names a location is called a *variable*
 and is said to be *bound* to that location. The set of all visible
 bindings in effect at some point in a program is known as the
 *environment* in effect at that point. The value stored in the location
-to which a variable is bound is called the variable's value. By abuse of
+to which a variable is bound is called the variable’s value. By abuse of
 terminology, the variable is sometimes said to name the value or to be
 bound to the value. This is not quite accurate, but confusion rarely
 results from this practice.
@@ -802,22 +889,22 @@ symbol, vector*, and all record types.
 Although there is a separate boolean type, any Scheme value can be used
 as a boolean value for the purpose of a conditional test. As explained
 in section [\[booleansection\]](#booleansection), all values count as
-true in such a test except for \#f. This report uses the word "true" to
-refer to any Scheme value except \#f, and the word "false" to refer to
-\#f.
+true in such a test except for #f. This report uses the word “true” to
+refer to any Scheme value except #f, and the word “false” to refer to
+#f.
 
 ## External representations
 
 An important concept in Scheme (and Lisp) is that of the *external
 representation* of an object as a sequence of characters. For example,
 an external representation of the integer 28 is the sequence of
-characters "`28`", and an external representation of a list consisting
-of the integers 8 and 13 is the sequence of characters "`(8 13)`".
+characters “`28`”, and an external representation of a list consisting
+of the integers 8 and 13 is the sequence of characters “`(8 13)`”.
 
 The external representation of an object is not necessarily unique. The
-integer 28 also has representations "`#e28.000`" and "`#x1c`", and the
+integer 28 also has representations “`#e28.000`” and “`#x1c`”, and the
 list in the previous paragraph also has the representations
-"`( 08 13 )`" and "`(8 . (13 . ()))`" (see
+“`( 08 13 )`” and “`(8 . (13 . ()))`” (see
 section [\[listsection\]](#listsection)).
 
 Many objects have standard external representations, but some, such as
@@ -833,11 +920,11 @@ representations, and the procedure write (section [\[write\]](#write))
 generates them. Together, they provide an elegant and powerful
 input/output facility.
 
-Note that the sequence of characters "`(+ 2 6)`" is *not* an external
+Note that the sequence of characters “`(+ 2 6)`” is *not* an external
 representation of the integer 8, even though it *is* an expression
 evaluating to the integer 8; rather, it is an external representation of
 a three-element list, the elements of which are the symbol `+` and the
-integers 2 and 6. Scheme's syntax has the property that any sequence of
+integers 2 and 6. Scheme’s syntax has the property that any sequence of
 characters that is an expression is also the external representation of
 some object. This can lead to confusion, since it is not always obvious
 out of context whether a given sequence of characters is intended to
@@ -906,7 +993,7 @@ by continuations captured earlier by call-with-current-continuation that
 are later invoked. In the absence of captured continuations, calls could
 return at most once and the active calls would be those that had not yet
 returned. A formal definition of proper tail recursion can be found
-in []{.citation cites="propertailrecursion"}.
+in <span class="citation" cites="propertailrecursion"></span>.
 
 *Rationale:*
 
@@ -919,7 +1006,7 @@ return to the continuation passed to the procedure. A properly
 tail-recursive implementation returns to that continuation directly.
 
 Proper tail recursion was one of the central ideas in Steele and
-Sussman's original version of Scheme. Their first Scheme interpreter
+Sussman’s original version of Scheme. Their first Scheme interpreter
 implemented both functions and actors. Control flow was expressed using
 actors, which differed from functions in that they passed their results
 on to another actor instead of returning to a caller. In the terminology
@@ -935,7 +1022,7 @@ determined with respect to a particular lambda expression.
 
 -   The last expression within the body of a lambda expression, shown as
     tail expression below, occurs in a tail context. The same is true of
-    all the bodies of case-lambda expressions. ̄ $|$ ̄ (lāmbda formals
+    all the bodies of case-lambda expressions. ̄ \| ̄ (lāmbda formals
     expression tail expression)
 
     (case-lambda (formals tail body))
@@ -949,12 +1036,14 @@ determined with respect to a particular lambda expression.
     tail sequence. Only those rules that contain tail contexts are shown
     here.
 
-    ̄ $|$ ̄ (if expression tail expression tail expression) (if
+    ̄ \| ̄ (if expression tail expression tail expression) (if
     expression tail expression)
 
-    (cond cond clause$^{+}$) (cond cond clause (else tail sequence))
+    (cond cond clause<sup>+</sup>) (cond cond clause (else
+    tail sequence))
 
-    (cāse expression $^{+}$) (cāse expression (else tail sequence))
+    (cāse expression <sup>+</sup>) (cāse expression (else
+    tail sequence))
 
     (and expression tail expression) (or expression tail expression)
 
@@ -982,10 +1071,10 @@ determined with respect to a particular lambda expression.
     tail expression
 
 -   If a cond or case expression is in a tail context, and has a clause
-    of the form (expression$_{1}$ => expression$_{2}$) then the
-    (implied) call to the procedure that results from the evaluation of
-    expression$_{2}$ is in a tail context. expression$_{2}$ itself is
-    not in a tail context.
+    of the form (expression<sub>1</sub> => expression<sub>2</sub>) then
+    the (implied) call to the procedure that results from the evaluation
+    of expression<sub>2</sub> is in a tail context.
+    expression<sub>2</sub> itself is not in a tail context.
 
 Certain procedures defined in this report are also required to perform
 tail calls. The first argument passed to `apply` and to
@@ -1030,7 +1119,7 @@ with the delay, delay-force, and parameterize expression types.
 
 -2ex
 
-variable  syntax\
+variable  syntax  
 An expression consisting of a variable
 (section [\[variablesection\]](#variablesection)) is a variable
 reference. The value of the variable reference is the value stored in
@@ -1044,9 +1133,9 @@ an unbound variable.
 
 -2ex
 
-(quote *datum*)  syntax\
-`’`datum  syntax\
-constant  syntax\
+(quote *datum*)  syntax  
+`’`datum  syntax  
+constant  syntax  
 (quote datum) evaluates to datum. Datum can be any external
 representation of a Scheme object (see
 section [\[externalreps\]](#externalreps)). This notation is used to
@@ -1092,7 +1181,7 @@ using a mutation procedure like set-car! or string-set!.
 
 -2ex
 
-(operator operand$_{1}$ $\ldots\,$)  syntax\
+(operator operand<sub>1</sub> … )  syntax  
 A procedure call is written by enclosing in parentheses an expression
 for the procedure to be called followed by expressions for the arguments
 to be passed to it. The operator and operand expressions are evaluated
@@ -1132,7 +1221,7 @@ expression evaluating to itself. In Scheme, it is an error.
 
 -2ex
 
-(lambda *formals body*)  syntax\
+(lambda *formals body*)  syntax  
 *Syntax:* Formals is a formal arguments list as described below, and
 body is a sequence of zero or more definitions followed by one or more
 expressions.
@@ -1146,7 +1235,7 @@ the formal argument list to fresh locations, and the corresponding
 actual argument values will be stored in those locations. (A *fresh*
 location is one that is distinct from every previously existing
 location.) Next, the expressions in the body of the lambda expression
-(which, if it contains definitions, represents a letrec\* form --- see
+(which, if it contains definitions, represents a letrec\* form — see
 section [\[letrecstar\]](#letrecstar)) will be evaluated sequentially in
 the extended environment. The results of the last expression in the body
 will be returned as the results of the procedure call.
@@ -1177,7 +1266,7 @@ Formals have one of the following forms:
 
 -   `(variable_1 \ldots\, variable_{n} . variable_{n+1})`: If a
     space-delimited period precedes the last variable, then the
-    procedure takes $n$ or more arguments, where $n$ is the number of
+    procedure takes *n* or more arguments, where *n* is the number of
     formal arguments before the period (it is an error if there is not
     at least one). The value stored in the binding of the last variable
     will be a newly allocated list of the actual arguments left over
@@ -1199,8 +1288,8 @@ section [\[equivalencesection\]](#equivalencesection)).
 
 -2ex
 
-(if *test consequent alternate*)  syntax\
-(if *test consequent*)  syntax\
+(if *test consequent alternate*)  syntax  
+(if *test consequent*)  syntax  
 *Syntax:* Test, consequent, and alternate are expressions.
 
 *Semantics:* An if expression is evaluated as follows: first, test is
@@ -1221,7 +1310,7 @@ unspecified.
 
 -2ex
 
-(set! *variable expression*)  syntax\
+(set! *variable expression*)  syntax  
 *Semantics:* Expression is evaluated, and the resulting value is stored
 in the location to which variable is bound. It is an error if variable
 is not bound either in some region enclosing the set! expression or else
@@ -1236,8 +1325,8 @@ globally. The result of the set! expression is unspecified.
 
 -2ex
 
-(include *string$_{1}$ string$_{2}$ $\ldots\,$*)  syntax\
-(include-ci *string$_{1}$ string$_{2}$ $\ldots\,$*)  syntax\
+(include *string<sub>1</sub> string<sub>2</sub> … *)  syntax  
+(include-ci *string<sub>1</sub> string<sub>2</sub> … *)  syntax  
 *Semantics:* Both `include` and `include-ci` take one or more filenames
 expressed as string literals, apply an implementation-specific algorithm
 to find corresponding files, read the contents of the files in the
@@ -1263,9 +1352,9 @@ the primitive constructs described in the previous section.
 
 -2ex
 
-(cond *clause$_{1}$ clause$_{2}$ $\ldots\,$*)  syntax\
-else  auxiliary syntax\
-=>  auxiliary syntax\
+(cond *clause<sub>1</sub> clause<sub>2</sub> … *)  syntax  
+else  auxiliary syntax  
+=>  auxiliary syntax  
 *Syntax:* Clauses take one of two forms, either
 
     (\hyper{test} \hyperi{expression} \dotsfoo)%
@@ -1274,7 +1363,7 @@ where test is any expression, or
 
     (\hyper{test} => \hyper{expression})%
 
-The last clause can be an "else clause," which has the form
+The last clause can be an “else clause,” which has the form
 
     (else \hyperi{expression} \hyperii{expression} \dotsfoo)\rm.%
 
@@ -1292,7 +1381,7 @@ error if its value is not a procedure that accepts one argument. This
 procedure is then called on the value of the test and the values
 returned by this procedure are returned by the cond expression.
 
-If all tests evaluate to \#f, and there is no else clause, then the
+If all tests evaluate to #f, and there is no else clause, then the
 result of the conditional expression is unspecified; if there is an else
 clause, then its expressions are evaluated in order, and the values of
 the last one are returned.
@@ -1307,7 +1396,7 @@ the last one are returned.
     (cond ((assv 'b '((a 1) (b 2))) => cadr)
           (else \schfalse{}))         \ev  2%
 
-(case *key clause$_{1}$ clause$_{2}$ $\ldots\,$*)  syntax\
+(case *key clause<sub>1</sub> clause<sub>2</sub> … *)  syntax  
 *Syntax:* Key can be any expression. Each clause has the form
 
     ((\hyperi{datum} \dotsfoo) \hyperi{expression} \hyperii{expression} \dotsfoo)\rm,%
@@ -1318,7 +1407,7 @@ Alternatively, a clause can be of the form
 
     ((\hyperi{datum} \dotsfoo) => \hyper{expression})%
 
-The last clause can be an "else clause," which has one of the forms
+The last clause can be an “else clause,” which has one of the forms
 
     (else \hyperi{expression} \hyperii{expression} \dotsfoo)
 
@@ -1356,25 +1445,25 @@ by the case expression.
       ((w y) 'semivowel)
       (else => (lambda (x) x)))     \ev  c%
 
-(and *test$_{1}$ $\ldots\,$*)  syntax\
+(and *test<sub>1</sub> … *)  syntax  
 *Semantics:* The test expressions are evaluated from left to right, and
-if any expression evaluates to \#f (see
-section [\[booleansection\]](#booleansection)), then \#f is returned.
-Any remaining expressions are not evaluated. If all the expressions
-evaluate to true values, the values of the last expression are returned.
-If there are no expressions, then \#t is returned.
+if any expression evaluates to #f (see
+section [\[booleansection\]](#booleansection)), then #f is returned. Any
+remaining expressions are not evaluated. If all the expressions evaluate
+to true values, the values of the last expression are returned. If there
+are no expressions, then #t is returned.
 
     (and (= 2 2) (> 2 1))           \ev  \schtrue
     (and (= 2 2) (< 2 1))           \ev  \schfalse
     (and 1 2 'c '(f g))             \ev  (f g)
     (and)                           \ev  \schtrue%
 
-(or *test$_{1}$ $\ldots\,$*)  syntax\
+(or *test<sub>1</sub> … *)  syntax  
 *Semantics:* The test expressions are evaluated from left to right, and
 the value of the first expression that evaluates to a true value (see
 section [\[booleansection\]](#booleansection)) is returned. Any
 remaining expressions are not evaluated. If all expressions evaluate to
-\#f or if there are no expressions, then \#f is returned.
+#f or if there are no expressions, then #f is returned.
 
     (or (= 2 2) (> 2 1))            \ev  \schtrue
     (or (= 2 2) (< 2 1))            \ev  \schtrue
@@ -1382,7 +1471,7 @@ remaining expressions are not evaluated. If all expressions evaluate to
     (or (memq 'b '(a b c))
         (/ 3 0))                    \ev  (b c)%
 
-(when *test expression$_{1}$ expression$_{2}$ $\ldots\,$*)  syntax\
+(when *test expression<sub>1</sub> expression<sub>2</sub> … *)  syntax  
 *Syntax:* The test is an expression.
 
 *Semantics:* The test is evaluated, and if it evaluates to a true value,
@@ -1394,10 +1483,11 @@ expression is unspecified.
       (display "2"))  \ev  \unspecified
      \>{\em and prints}  12%
 
-(unless *test expression$_{1}$ expression$_{2}$ $\ldots\,$*)  syntax\
+(unless *test expression<sub>1</sub> expression<sub>2</sub> … *)
+ syntax  
 *Syntax:* The test is an expression.
 
-*Semantics:* The test is evaluated, and if it evaluates to \#f, the
+*Semantics:* The test is evaluated, and if it evaluates to #f, the
 expressions are evaluated in order. The result of the unless expression
 is unspecified.
 
@@ -1406,14 +1496,14 @@ is unspecified.
       (display "2"))  \ev  \unspecified
      \>{\em and prints nothing}%
 
-(cond-expand *ce-clause$_{1}$ ce-clause$_{2}$ $\ldots\,$*)  syntax\
+(cond-expand *ce-clause<sub>1</sub> ce-clause<sub>2</sub> … *)  syntax  
 *Syntax:* The `cond-expand` expression type provides a way to statically
 expand different expressions depending on the implementation. A
 ce-clause takes the following form:
 
 `(feature requirement expression \ldots\,)`
 
-The last clause can be an "else clause," which has the form
+The last clause can be an “else clause,” which has the form
 
 `(else expression \ldots\,)`
 
@@ -1432,16 +1522,16 @@ A feature requirement takes one of the following forms:
 *Semantics:* Each implementation maintains a list of feature identifiers
 which are present, as well as a list of libraries which can be imported.
 The value of a feature requirement is determined by replacing each
-feature identifier and `(library library name)` on the implementation's
-lists with \#t, and all other feature identifiers and library names with
-\#f, then evaluating the resulting expression as a Scheme boolean
+feature identifier and `(library library name)` on the implementation’s
+lists with #t, and all other feature identifiers and library names with
+#f, then evaluating the resulting expression as a Scheme boolean
 expression under the normal interpretation of and, or, and not.
 
 A `cond-expand` is then expanded by evaluating the feature requirements
-of successive ce-clauses in order until one of them returns \#t. When a
+of successive ce-clauses in order until one of them returns #t. When a
 true clause is found, the corresponding expressions are expanded to a
 begin, and the remaining clauses are ignored. If none of the
-feature requirements evaluate to \#t, then if there is an else clause,
+feature requirements evaluate to #t, then if there is an else clause,
 its expressions are included. Otherwise, the behavior of the
 `cond-expand` is unspecified. Unlike cond, cond-expand does not depend
 on the value of any variables.
@@ -1465,7 +1555,7 @@ constructs are analogous to let and let\* respectively, but are designed
 to handle multiple-valued expressions, binding different identifiers to
 the returned values.
 
-(let *bindings body*)  syntax\
+(let *bindings body*)  syntax  
 *Syntax:* Bindings has the form
 
     ((\hyperi{variable} \hyperi{init}) \dotsfoo)\rm,%
@@ -1489,9 +1579,9 @@ variable has body as its region.
             (z (+ x y)))
         (* z x)))                   \ev  35%
 
-See also "named let," section [\[namedlet\]](#namedlet).
+See also “named let,” section [\[namedlet\]](#namedlet).
 
-(let\* *bindings body*)  syntax\
+(let\* *bindings body*)  syntax  
 
 *Syntax:* Bindings has the form
 
@@ -1512,7 +1602,7 @@ variables need not be distinct.
              (z (+ x y)))
         (* z x)))             \ev  70%
 
-(letrec *bindings body*)  syntax\
+(letrec *bindings body*)  syntax  
 *Syntax:* Bindings has the form
 
     ((\hyperi{variable} \hyperi{init}) \dotsfoo)\rm,%
@@ -1551,7 +1641,7 @@ variables to the values of the inits. In the most common uses of letrec,
 all the inits are lambda expressions and the restriction is satisfied
 automatically.
 
-(letrec\* *bindings body*)  syntax\
+(letrec\* *bindings body*)  syntax  
 *Syntax:* Bindings has the form
 
     ((\hyperi{variable} \hyperi{init}) \dotsfoo)\rm,%
@@ -1596,10 +1686,10 @@ more than once.
                 (mean exp log)
                 (mean / /))))
 
-Evaluating (means '(3 (1 4))) returns three values: 8/3,
+Evaluating (means ’(3 (1 4))) returns three values: 8/3,
 2.28942848510666 (approximately), and 36/19.
 
-(let-values *mv binding spec body*)  syntax\
+(let-values *mv binding spec body*)  syntax  
 *Syntax:* Mv binding spec has the form
 
     ((\hyperi{formals} \hyperi{init}) \dotsfoo)\rm,%
@@ -1625,7 +1715,7 @@ by the corresponding init.
     (let-values (((root rem) (exact-integer-sqrt 32)))
       (* root rem))                \ev  35%
 
-(let\*-values *mv binding spec body*)  syntax\
+(let\*-values *mv binding spec body*)  syntax  
 
 *Syntax:* Mv binding spec has the form
 
@@ -1651,10 +1741,10 @@ initialized, and so on.
 
 -2ex
 
-Both of Scheme's sequencing constructs are named begin, but the two have
+Both of Scheme’s sequencing constructs are named begin, but the two have
 slightly different forms and uses:
 
-(begin *expression or definition $\ldots\,$*)  syntax\
+(begin *expression or definition … *)  syntax  
 This form of begin can appear as part of a body, or at the outermost
 level of a program, or at the REPL, or directly nested in a begin that
 is itself of this form. It causes the contained expressions and
@@ -1666,7 +1756,7 @@ section [\[macrosection\]](#macrosection)) which need to generate
 multiple definitions and splice them into the context in which they are
 expanded.
 
-(begin *expression$_{1}$ expression$_{2}$ $\ldots\,$*)  syntax\
+(begin *expression<sub>1</sub> expression<sub>2</sub> … *)  syntax  
 This form of begin can be used as an ordinary expression. The
 expressions are evaluated sequentially from left to right, and the
 values of the last expression are returned. This expression type is used
@@ -1687,7 +1777,7 @@ see section [\[librarydeclarations\]](#librarydeclarations).
 
 ### Iteration
 
-(do ((variable$_{1}$ init$_{1}$ step$_{1}$)  syntax\
+(do ((variable<sub>1</sub> init<sub>1</sub> step<sub>1</sub>)  syntax  
 ` \ldots\,) (test expression \ldots\,) command \ldots\,)`
 
 *Syntax:* All of init, step, test, and command are expressions.
@@ -1732,8 +1822,8 @@ A step can be omitted, in which case the effect is the same as if
            (sum 0 (+ sum (car x))))
           ((null? x) sum)))             \ev  25%
 
-(let *variable bindings body*)  syntax\
-*Semantics:* "Named let" is a variant on the syntax of `let` which
+(let *variable bindings body*)  syntax  
+*Semantics:* “Named let” is a variant on the syntax of `let` which
 provides a more general looping construct than do and can also be used
 to express recursion. It has the same syntax and semantics as ordinary
 let except that variable is bound within body to a procedure whose
@@ -1759,7 +1849,7 @@ variable.
 
 -2ex
 
-(delay *expression*)  lazy library syntax\
+(delay *expression*)  lazy library syntax  
 *Semantics:* The delay construct is used together with the procedure
 `force` to implement *lazy evaluation* or *call by need*.
 `(delay expression)` returns an object called a *promise* which at some
@@ -1768,7 +1858,7 @@ expression, and deliver the resulting value.
 
 The effect of expression returning multiple values is unspecified.
 
-(delay-force *expression*)  lazy library syntax\
+(delay-force *expression*)  lazy library syntax  
 *Semantics:* The expression (delay-force *expression*) is conceptually
 similar to (delay (force *expression*)), with the difference that
 forcing the result of delay-force will in effect result in a tail call
@@ -1778,11 +1868,11 @@ result in a long series of chains of delay and force can be rewritten
 using delay-force to prevent consuming unbounded space during
 evaluation.
 
-(force *promise*)  lazy library procedure\
+(force *promise*)  lazy library procedure  
 The force procedure forces the value of a *promise* created by `delay`,
 `delay-force`, or `make-promise`. If no value has been computed for the
 promise, then a value is computed and returned. The value of the promise
-must be cached (or "memoized") so that if it is forced a second time,
+must be cached (or “memoized”) so that if it is forced a second time,
 the previously computed value is returned. Consequently, a delayed
 expression is evaluated using the parameter values and exception handler
 of the call to force which first requested its value. If *promise* is
@@ -1809,7 +1899,7 @@ not a promise, it may be returned unchanged.
 The following example is a mechanical transformation of a lazy
 stream-filtering algorithm into Scheme. Each call to a constructor is
 wrapped in delay, and each argument passed to a deconstructor is wrapped
-in force. The use of (delay-force \...) instead of (delay (force \...))
+in force. The use of (delay-force ...) instead of (delay (force ...))
 around the body of the procedure ensures that an ever-growing sequence
 of pending promises does not exhaust available storage, because force
 will in effect force such sequences iteratively.
@@ -1854,13 +1944,13 @@ supported in some implementations:
 
 -   It may be the case that there is no means by which a promise can be
     operationally distinguished from its forced value. That is,
-    expressions like the following may evaluate to either \#t or to \#f,
+    expressions like the following may evaluate to either #t or to #f,
     depending on the implementation:
 
         (eqv? (delay 1) 1)          \ev  \unspecified
         (pair? (delay (cons 1 2)))  \ev  \unspecified%
 
--   Implementations may implement "implicit forcing," where the value of
+-   Implementations may implement “implicit forcing,” where the value of
     a promise is forced by procedures that operate only on arguments of
     a certain type, like cdr and \*. However, procedures that operate
     uniformly on their arguments, like list, must not force them.
@@ -1869,12 +1959,12 @@ supported in some implementations:
         (car
           (list (delay (* 3 7)) 13))    \ev {\it{}a promise}%
 
-(promise? **obj**)  lazy library procedure\
-The promise? procedure returns \#t if its argument is a promise, and \#f
+(promise? **obj**)  lazy library procedure  
+The promise? procedure returns #t if its argument is a promise, and #f
 otherwise. Note that promises are not necessarily disjoint from other
 Scheme types such as procedures.
 
-(make-promise **obj**)  lazy library procedure\
+(make-promise **obj**)  lazy library procedure  
 The make-promise procedure returns a promise which, when forced, will
 return *obj*. It is similar to delay, but does not delay its argument:
 it is a procedure rather than syntax. If *obj* is already a promise, it
@@ -1894,8 +1984,8 @@ This sections introduces *parameter objects*, which can be bound to new
 values for the duration of a dynamic extent. The set of all parameter
 bindings at a given time is called the *dynamic environment*.
 
-(make-parameter *init*)  procedure\
-(make-parameter *init converter*)  procedure\
+(make-parameter *init*)  procedure  
+(make-parameter *init converter*)  procedure  
 Returns a newly allocated parameter object, which is a procedure that
 accepts zero arguments and returns the value associated with the
 parameter object. Initially, this value is the value of (*converter*
@@ -1906,10 +1996,10 @@ parameterize, which is described below.
 The effect of passing arguments to a parameter object is
 implementation-dependent.
 
-(parameterize ((param$_{1}$ value$_{1}$) $\ldots\,$)  syntax\
+(parameterize ((param<sub>1</sub> value<sub>1</sub>) … )  syntax  
 ` )`
 
-*Syntax:* Both param$_{1}$ and value$_{1}$ are expressions.
+*Syntax:* Both param<sub>1</sub> and value<sub>1</sub> are expressions.
 
 It is an error if the value of any param expression is not a parameter
 object.
@@ -1927,8 +2017,8 @@ to the conversion procedure. The results of the last expression in the
 body are returned as the results of the entire parameterize expression.
 
 *Note:* If the conversion procedure is not idempotent, the results of
-(parameterize ((x (x))) \...), which appears to bind the parameter *x*
-to its current value, might not be what the user expects.
+(parameterize ((x (x))) ...), which appears to bind the parameter *x* to
+its current value, might not be what the user expects.
 
 If an implementation supports multiple threads of execution, then
 parameterize must not change the associated values of any parameters in
@@ -1963,8 +2053,8 @@ call chain explicitly.
 
 -2ex
 
-(guard (variable  syntax\
-` cond clause_2 \ldots\,) )`\
+(guard (variable  syntax  
+` cond clause_2 \ldots\,) )`  
 *Syntax:* Each cond clause is as in the specification of cond.
 
 *Semantics:* The body is evaluated with an exception handler that binds
@@ -1973,7 +2063,7 @@ section [\[exceptionsection\]](#exceptionsection)) to variable and,
 within the scope of that binding, evaluates the clauses as if they were
 the clauses of a cond expression. That implicit cond expression is
 evaluated with the continuation and dynamic environment of the guard
-expression. If every cond clause's test evaluates to \#f and there is no
+expression. If every cond clause’s test evaluates to #f and there is no
 else clause, then raise-continuable is invoked on the raised object
 within the dynamic environment of the original call to raise or
 raise-continuable, except that the current exception handler is that of
@@ -1998,23 +2088,23 @@ complete discussion of exceptions.
 
 -2ex
 
-(quasiquote *qq template*)  syntax\
-``qq template  syntax\
-unquote  auxiliary syntax\
-`‘ `  auxiliary syntax\
-unquote-splicing  auxiliary syntax\
-`‘ ``‘`  auxiliary syntax\
-"Quasiquote" expressions are useful for constructing a list or vector
+(quasiquote *qq template*)  syntax  
+``qq template  syntax  
+unquote  auxiliary syntax  
+`‘ `  auxiliary syntax  
+unquote-splicing  auxiliary syntax  
+`‘ ``‘`  auxiliary syntax  
+“Quasiquote” expressions are useful for constructing a list or vector
 structure when some but not all of the desired structure is known in
 advance. If no commas appear within the qq template, the result of
 evaluating ``qq template is equivalent to the result of evaluating
 `’`qq template. If a comma appears within the qq template, however, the
-expression following the comma is evaluated ("unquoted") and its result
+expression following the comma is evaluated (“unquoted”) and its result
 is inserted into the structure instead of the comma and the expression.
 If a comma appears followed without intervening whitespace by a
 commercial at-sign (`‘`), then it is an error if the following
 expression does not evaluate to a list; the opening and closing
-parentheses of the list are then "stripped away" and the elements of the
+parentheses of the list are then “stripped away” and the elements of the
 list are inserted in place of the comma at-sign expression sequence. A
 comma at-sign normally appears only within a list or vector qq template.
 
@@ -2085,7 +2175,7 @@ as described above.
 
 -2ex
 
-(case-lambda *clause $\ldots\,$*)  case-lambda library syntax\
+(case-lambda *clause … *)  case-lambda library syntax  
 *Syntax:* Each clause is of the form (formals body), where formals and
 body have the same syntax as in a lambda expression.
 
@@ -2152,9 +2242,9 @@ provided to prevent unintended conflicts:
     surround the use of the macro.
 
 In consequence, all macros defined using the pattern language are
-"hygienic" and "referentially transparent" and thus preserve Scheme's
-lexical scoping. []{.citation
-cites="Kohlbecker86 hygienic Bawden88 macrosthatwork syntacticabstraction"}
+“hygienic” and “referentially transparent” and thus preserve Scheme’s
+lexical scoping. <span class="citation"
+cites="Kohlbecker86 hygienic Bawden88 macrosthatwork syntacticabstraction"></span>
 
 Implementations may provide macro facilities of other types.
 
@@ -2166,7 +2256,7 @@ instead of binding variables to locations that contain values. Syntactic
 keywords can also be bound globally or locally with define-syntax; see
 section [\[define-syntax\]](#define-syntax).
 
-(let-syntax *bindings body*)  syntax\
+(let-syntax *bindings body*)  syntax  
 *Syntax:* Bindings has the form
 
     ((\hyper{keyword} \hyper{transformer spec}) \dotsfoo)%
@@ -2195,7 +2285,7 @@ transformers. Each binding of a keyword has body as its region.
         (let ((x 'inner))
           (m))))                       \ev  outer%
 
-(letrec-syntax *bindings body*)  syntax\
+(letrec-syntax *bindings body*)  syntax  
 *Syntax:* Same as for let-syntax.
 
 *Semantics:* The body is expanded in the syntactic environment obtained
@@ -2229,12 +2319,11 @@ expression.
 
 A transformer spec has one of the following forms:
 
-(syntax-rules (pattern literal $\ldots\,$)  syntax\
-` \ldots\,) ` (syntax-rules ellipsis (pattern literal $\ldots\,$)
- syntax\
-` \ldots\,)`\
-\_  auxiliary syntax\
-$\ldots\,$  auxiliary syntax\
+(syntax-rules (pattern literal … )  syntax  
+` \ldots\,) ` (syntax-rules ellipsis (pattern literal … )  syntax  
+` \ldots\,)`  
+\_  auxiliary syntax  
+…   auxiliary syntax  
 *Syntax:* It is an error if any of the pattern literals, or the ellipsis
 in the second form, is not an identifier. It is also an error if
 syntax rule is not of the form
@@ -2264,7 +2353,7 @@ following
 
 where an element is a template optionally followed by an ellipsis. An
 ellipsis is the identifier specified in the second form of syntax-rules,
-or the default identifier \... (three consecutive periods) otherwise.
+or the default identifier ... (three consecutive periods) otherwise.
 
 *Semantics:* An instance of syntax-rules produces a new macro
 transformer by specifying a sequence of hygienic rewrite rules. A use of
@@ -2293,10 +2382,10 @@ underscore appears in the pattern literals list, then that takes
 precedence and underscores in the pattern match as literals. Multiple
 underscores can appear in a pattern.
 
-Identifiers that appear in (pattern literal $\ldots\,$) are interpreted
-as literal identifiers to be matched against corresponding elements of
-the input. An element in the input matches a literal identifier if and
-only if it is an identifier and either both its occurrence in the macro
+Identifiers that appear in (pattern literal … ) are interpreted as
+literal identifiers to be matched against corresponding elements of the
+input. An element in the input matches a literal identifier if and only
+if it is an identifier and either both its occurrence in the macro
 expression and its occurrence in the macro definition have the same
 lexical binding, or the two identifiers are the same and both have no
 lexical binding.
@@ -2305,47 +2394,56 @@ A subpattern followed by ellipsis can match zero or more elements of the
 input, unless ellipsis appears in the pattern literals, in which case it
 is matched as a literal.
 
-More formally, an input expression $E$ matches a pattern $P$ if and only
+More formally, an input expression *E* matches a pattern *P* if and only
 if:
 
--   $P$ is an underscore (\_).
+-   *P* is an underscore (\_).
 
--   $P$ is a non-literal identifier; or
+-   *P* is a non-literal identifier; or
 
--   $P$ is a literal identifier and $E$ is an identifier with the same
+-   *P* is a literal identifier and *E* is an identifier with the same
     binding; or
 
--   $P$ is a list ($P_{1}$ $\ldots$ $P_{n}$) and $E$ is a list of $n$
-    elements that match $P_{1}$ through $P_{n}$, respectively; or
+-   *P* is a list (*P*<sub>1</sub> … *P*<sub>*n*</sub>) and *E* is a
+    list of *n* elements that match *P*<sub>1</sub> through
+    *P*<sub>*n*</sub>, respectively; or
 
--   $P$ is an improper list ($P_{1}$ $P_{2}$ $\ldots$ $P_{n}$ .
-    $P_{n + 1}$) and $E$ is a list or improper list of $n$ or more
-    elements that match $P_{1}$ through $P_{n}$, respectively, and whose
-    $n$th tail matches $P_{n + 1}$; or
+-   *P* is an improper list (*P*<sub>1</sub> *P*<sub>2</sub> …
+    *P*<sub>*n*</sub> . *P*<sub>*n* + 1</sub>) and *E* is a list or
+    improper list of *n* or more elements that match *P*<sub>1</sub>
+    through *P*<sub>*n*</sub>, respectively, and whose *n*th tail
+    matches *P*<sub>*n* + 1</sub>; or
 
--   $P$ is of the form ($P_{1}$ $\ldots$ $P_{k}$ $P_{e}$ ellipsis
-    $P_{m + 1}$ $\ldots\,$ $P_{n}$) where $E$ is a proper list of $n$
-    elements, the first $k$ of which match $P_{1}$ through $P_{k}$,
-    respectively, whose next $m - k$ elements each match $P_{e}$, whose
-    remaining $n - m$ elements match $P_{m + 1}$ through $P_{n}$; or
+-   *P* is of the form (*P*<sub>1</sub> … *P*<sub>*k*</sub>
+    *P*<sub>*e*</sub> ellipsis *P*<sub>*m* + 1</sub> … 
+    *P*<sub>*n*</sub>) where *E* is a proper list of *n* elements, the
+    first *k* of which match *P*<sub>1</sub> through *P*<sub>*k*</sub>,
+    respectively, whose next *m* − *k* elements each match
+    *P*<sub>*e*</sub>, whose remaining *n* − *m* elements match
+    *P*<sub>*m* + 1</sub> through *P*<sub>*n*</sub>; or
 
--   $P$ is of the form ($P_{1}$ $\ldots$ $P_{k}$ $P_{e}$ ellipsis
-    $P_{m + 1}$ $\ldots\,$ $P_{n}$ . $P_{x}$) where $E$ is a list or
-    improper list of $n$ elements, the first $k$ of which match $P_{1}$
-    through $P_{k}$, whose next $m - k$ elements each match $P_{e}$,
-    whose remaining $n - m$ elements match $P_{m + 1}$ through $P_{n}$,
-    and whose $n$th and final cdr matches $P_{x}$; or
+-   *P* is of the form (*P*<sub>1</sub> … *P*<sub>*k*</sub>
+    *P*<sub>*e*</sub> ellipsis *P*<sub>*m* + 1</sub> … 
+    *P*<sub>*n*</sub> . *P*<sub>*x*</sub>) where *E* is a list or
+    improper list of *n* elements, the first *k* of which match
+    *P*<sub>1</sub> through *P*<sub>*k*</sub>, whose next *m* − *k*
+    elements each match *P*<sub>*e*</sub>, whose remaining *n* − *m*
+    elements match *P*<sub>*m* + 1</sub> through *P*<sub>*n*</sub>, and
+    whose *n*th and final cdr matches *P*<sub>*x*</sub>; or
 
--   $P$ is a vector of the form #($P_{1}$ $\ldots$ $P_{n}$) and $E$ is a
-    vector of $n$ elements that match $P_{1}$ through $P_{n}$; or
+-   *P* is a vector of the form #(*P*<sub>1</sub> … *P*<sub>*n*</sub>)
+    and *E* is a vector of *n* elements that match *P*<sub>1</sub>
+    through *P*<sub>*n*</sub>; or
 
--   $P$ is of the form #($P_{1}$ $\ldots$ $P_{k}$ $P_{e}$ ellipsis
-    $P_{m + 1}$ $\ldots\,$$P_{n}$) where $E$ is a vector of $n$ elements
-    the first $k$ of which match $P_{1}$ through $P_{k}$, whose next
-    $m - k$ elements each match $P_{e}$, and whose remaining $n - m$
-    elements match $P_{m + 1}$ through $P_{n}$; or
+-   *P* is of the form #(*P*<sub>1</sub> … *P*<sub>*k*</sub>
+    *P*<sub>*e*</sub> ellipsis *P*<sub>*m* + 1</sub>
+    … *P*<sub>*n*</sub>) where *E* is a vector of *n* elements the first
+    *k* of which match *P*<sub>1</sub> through *P*<sub>*k*</sub>, whose
+    next *m* − *k* elements each match *P*<sub>*e*</sub>, and whose
+    remaining *n* − *m* elements match *P*<sub>*m* + 1</sub> through
+    *P*<sub>*n*</sub>; or
 
--   $P$ is a constant and $E$ is equal to $P$ in the sense of the equal?
+-   *P* is a constant and *E* is equal to *P* in the sense of the equal?
     procedure.
 
 It is an error to use a macro keyword, within the scope of its binding,
@@ -2410,7 +2508,7 @@ which would result in an invalid procedure call.
 
 ### Signaling errors in macro transformers
 
-(syntax-error message args $\ldots\,$)  syntax\
+(syntax-error message args … )  syntax  
 syntax-error behaves similarly to error
 ([\[exceptionsection\]](#exceptionsection)) except that implementations
 with an expansion pass separate from evaluation should signal an error
@@ -2452,8 +2550,8 @@ At the outermost level of a program,
 `(begin expression or definition_1 \ldots\,)` is equivalent to the
 sequence of expressions and definitions in the `begin`. Similarly, in a
 body, `(begin definition_1 \ldots\,)` is equivalent to the sequence
-definition$_{1}$ $\ldots\,$. Macros can expand into such begin forms.
-For the formal definition, see [\[sequencing\]](#sequencing).
+definition<sub>1</sub> … . Macros can expand into such begin forms. For
+the formal definition, see [\[sequencing\]](#sequencing).
 
 Import declarations and definitions cause bindings to be created in the
 global environment or modify the value of existing global bindings. The
@@ -2491,7 +2589,7 @@ of the following forms:
 
 -   `(rename import set  (identifier_1 identifier_2) \ldots\,)`
 
-In the first form, all of the identifiers in the named library's export
+In the first form, all of the identifiers in the named library’s export
 clauses are imported with the same names (or the exported names if
 exported with `rename`). The additional import set forms modify this set
 as follows:
@@ -2505,8 +2603,9 @@ as follows:
     the listed identifiers are not found in the original set.
 
 -   `rename` modifies the given import set, replacing each instance of
-    identifier$_{1}$ with identifier$_{2}$. It is an error if any of the
-    listed identifier$_{1}$s are not found in the original set.
+    identifier<sub>1</sub> with identifier<sub>2</sub>. It is an error
+    if any of the listed identifier<sub>1</sub>s are not found in the
+    original set.
 
 -   `prefix` automatically renames all identifiers in the given
     import set, prefixing each with the specified identifier.
@@ -2608,7 +2707,7 @@ Another kind of definition is provided by define-values, which creates
 multiple definitions from a single expression returning multiple values.
 It is allowed wherever define is allowed.
 
-(define-values *formals expression*)  syntax\
+(define-values *formals expression*)  syntax  
 
 It is an error if a variable appears more than once in the set of
 formals.
@@ -2687,7 +2786,7 @@ outermost level or in a body. The values of a record type are called
 holds a single location. A predicate, a constructor, and field accessors
 and mutators are defined for each record type.
 
-(define-record-type name  syntax\
+(define-record-type name  syntax  
 )
 
 *Syntax:* name and pred are identifiers. The constructor is of the form
@@ -2707,9 +2806,9 @@ field name. It is also an error for the same identifier to occur more
 than once as an accessor or mutator name.
 
 The define-record-type construct is generative: each use creates a new
-record type that is distinct from all existing types, including Scheme's
-predefined types and other record types --- even record types of the
-same name or structure.
+record type that is distinct from all existing types, including Scheme’s
+predefined types and other record types — even record types of the same
+name or structure.
 
 An instance of define-record-type is equivalent to the following
 definitions:
@@ -2721,15 +2820,15 @@ definitions:
     extensions.
 
 -   constructor name is bound to a procedure that takes as many
-    arguments as there are field names in the (constructor name
-    $\ldots\,$) subexpression and returns a new record of type name.
-    Fields whose names are listed with constructor name have the
-    corresponding argument as their initial value. The initial values of
-    all other fields are unspecified. It is an error for a field name to
-    appear in constructor but not as a field name.
+    arguments as there are field names in the (constructor name … )
+    subexpression and returns a new record of type name. Fields whose
+    names are listed with constructor name have the corresponding
+    argument as their initial value. The initial values of all other
+    fields are unspecified. It is an error for a field name to appear in
+    constructor but not as a field name.
 
--   pred is bound to a predicate that returns \#t when given a value
-    returned by the procedure bound to constructor name and \#f for
+-   pred is bound to a predicate that returns #t when given a value
+    returned by the procedure bound to constructor name and #f for
     everything else.
 
 -   Each accessor name is bound to a procedure that takes a record of
@@ -2782,7 +2881,7 @@ identifier is scheme are reserved for use by this report and future
 versions of this report. Libraries whose first identifier is srfi are
 reserved for libraries implementing Scheme Requests for Implementation.
 It is inadvisable, but not an error, for identifiers in library names to
-contain any of the characters \| `‘ ` ? \* \< \" : \> + \[ \] / or
+contain any of the characters \| `‘ ` ? \* \< " : \> + \[ \] / or
 control characters after escapes are expanded.
 
 A library declaration is any of:
@@ -2813,8 +2912,8 @@ In an export spec, an identifier names a single binding defined within
 or imported into the library, where the external name for the export is
 the same as the name of the binding within the library. A `rename` spec
 exports the binding defined within or imported into the library and
-named by identifier$_{1}$ in each `(identifier_1 identifier_2)` pairing,
-using identifier$_{2}$ as the external name.
+named by identifier<sub>1</sub> in each `(identifier_1 identifier_2)`
+pairing, using identifier<sub>2</sub> as the external name.
 
 An `import` declaration provides a way to import the identifiers
 exported by another library. It has the same syntax and semantics as an
@@ -2848,7 +2947,7 @@ the processing of other declarations, with the environment growing as
 imported bindings are added to it by each `import` declaration.
 
 When a library is loaded, its expressions are executed in textual order.
-If a library's definitions are referenced in the expanded form of a
+If a library’s definitions are referenced in the expanded form of a
 program or library body, then that library must be loaded before the
 expanded program or library body is evaluated. This rule applies
 transitively. If a library is imported by more than one program or
@@ -2869,9 +2968,9 @@ b)).
 ### Library example
 
 The following example shows how a program can be divided into libraries
-plus a relatively small main program []{.citation cites="life"}. If the
-main program is entered into a REPL, it is not necessary to import the
-base library.
+plus a relatively small main program <span class="citation"
+cites="life"></span>. If the main program is entered into a REPL, it is
+not necessary to import the base library.
 
     (define-library (example grid)
       (export make rows cols ref each
@@ -2988,7 +3087,7 @@ than the beginning.
 
 # Standard procedures
 
-This chapter describes Scheme's built-in procedures.
+This chapter describes Scheme’s built-in procedures.
 
 The procedures force, promise?, and make-promise are intimately
 associated with the expression types delay and delay-force, and are
@@ -3011,91 +3110,92 @@ that the locations in the object are fresh.
 ## Equivalence predicates
 
 A *predicate* is a procedure that always returns a boolean value (#t or
-\#f). An *equivalence predicate* is the computational analogue of a
+#f). An *equivalence predicate* is the computational analogue of a
 mathematical equivalence relation; it is symmetric, reflexive, and
 transitive. Of the equivalence predicates described in this section,
 eq? is the finest or most discriminating, equal? is the coarsest, and
 eqv? is slightly less discriminating than eq?.
 
-(eqv? **obj$_{1}$* *obj$_{2}$**)  procedure\
+(eqv? **obj<sub>1</sub>* *obj<sub>2</sub>**)  procedure  
 The eqv? procedure defines a useful equivalence relation on objects.
-Briefly, it returns \#t if *obj$_{1}$* and *obj$_{2}$* are normally
-regarded as the same object. This relation is left slightly open to
-interpretation, but the following partial specification of eqv? holds
-for all implementations of Scheme.
+Briefly, it returns #t if *obj<sub>1</sub>* and *obj<sub>2</sub>* are
+normally regarded as the same object. This relation is left slightly
+open to interpretation, but the following partial specification of eqv?
+holds for all implementations of Scheme.
 
-The eqv? procedure returns \#t if:
+The eqv? procedure returns #t if:
 
--   *obj$_{1}$* and *obj$_{2}$* are both \#t or both \#f.
+-   *obj<sub>1</sub>* and *obj<sub>2</sub>* are both #t or both #f.
 
--   *obj$_{1}$* and *obj$_{2}$* are both symbols and are the same symbol
-    according to the symbol=? procedure
+-   *obj<sub>1</sub>* and *obj<sub>2</sub>* are both symbols and are the
+    same symbol according to the symbol=? procedure
     (section [\[symbolsection\]](#symbolsection)).
 
--   *obj$_{1}$* and *obj$_{2}$* are both exact numbers and are
-    numerically equal (in the sense of =).
+-   *obj<sub>1</sub>* and *obj<sub>2</sub>* are both exact numbers and
+    are numerically equal (in the sense of =).
 
--   *obj$_{1}$* and *obj$_{2}$* are both inexact numbers such that they
-    are numerically equal (in the sense of =) and they yield the same
-    results (in the sense of eqv?) when passed as arguments to any other
-    procedure that can be defined as a finite composition of Scheme's
-    standard arithmetic procedures, provided it does not result in a NaN
-    value.
+-   *obj<sub>1</sub>* and *obj<sub>2</sub>* are both inexact numbers
+    such that they are numerically equal (in the sense of =) and they
+    yield the same results (in the sense of eqv?) when passed as
+    arguments to any other procedure that can be defined as a finite
+    composition of Scheme’s standard arithmetic procedures, provided it
+    does not result in a NaN value.
 
--   *obj$_{1}$* and *obj$_{2}$* are both characters and are the same
-    character according to the char=? procedure
+-   *obj<sub>1</sub>* and *obj<sub>2</sub>* are both characters and are
+    the same character according to the char=? procedure
     (section [\[charactersection\]](#charactersection)).
 
--   *obj$_{1}$* and *obj$_{2}$* are both the empty list.
+-   *obj<sub>1</sub>* and *obj<sub>2</sub>* are both the empty list.
 
--   *obj$_{1}$* and *obj$_{2}$* are pairs, vectors, bytevectors,
-    records, or strings that denote the same location in the store
-    (section [\[storagemodel\]](#storagemodel)).
+-   *obj<sub>1</sub>* and *obj<sub>2</sub>* are pairs, vectors,
+    bytevectors, records, or strings that denote the same location in
+    the store (section [\[storagemodel\]](#storagemodel)).
 
--   *obj$_{1}$* and *obj$_{2}$* are procedures whose location tags are
-    equal (section [\[lambda\]](#lambda)).
+-   *obj<sub>1</sub>* and *obj<sub>2</sub>* are procedures whose
+    location tags are equal (section [\[lambda\]](#lambda)).
 
-The eqv? procedure returns \#f if:
+The eqv? procedure returns #f if:
 
--   *obj$_{1}$* and *obj$_{2}$* are of different types
+-   *obj<sub>1</sub>* and *obj<sub>2</sub>* are of different types
     (section [\[disjointness\]](#disjointness)).
 
--   one of *obj$_{1}$* and *obj$_{2}$* is \#t but the other is \#f.
+-   one of *obj<sub>1</sub>* and *obj<sub>2</sub>* is #t but the other
+    is #f.
 
--   *obj$_{1}$* and *obj$_{2}$* are symbols but are not the same symbol
-    according to the symbol=? procedure
+-   *obj<sub>1</sub>* and *obj<sub>2</sub>* are symbols but are not the
+    same symbol according to the symbol=? procedure
     (section [\[symbolsection\]](#symbolsection)).
 
--   one of *obj$_{1}$* and *obj$_{2}$* is an exact number but the other
-    is an inexact number.
+-   one of *obj<sub>1</sub>* and *obj<sub>2</sub>* is an exact number
+    but the other is an inexact number.
 
--   *obj$_{1}$* and *obj$_{2}$* are both exact numbers and are
-    numerically unequal (in the sense of =).
+-   *obj<sub>1</sub>* and *obj<sub>2</sub>* are both exact numbers and
+    are numerically unequal (in the sense of =).
 
--   *obj$_{1}$* and *obj$_{2}$* are both inexact numbers such that
-    either they are numerically unequal (in the sense of =), or they do
-    not yield the same results (in the sense of eqv?) when passed as
-    arguments to any other procedure that can be defined as a finite
-    composition of Scheme's standard arithmetic procedures, provided it
-    does not result in a NaN value. As an exception, the behavior of
-    eqv? is unspecified when both *obj$_{1}$* and *obj$_{2}$* are NaN.
+-   *obj<sub>1</sub>* and *obj<sub>2</sub>* are both inexact numbers
+    such that either they are numerically unequal (in the sense of =),
+    or they do not yield the same results (in the sense of eqv?) when
+    passed as arguments to any other procedure that can be defined as a
+    finite composition of Scheme’s standard arithmetic procedures,
+    provided it does not result in a NaN value. As an exception, the
+    behavior of eqv? is unspecified when both *obj<sub>1</sub>* and
+    *obj<sub>2</sub>* are NaN.
 
--   *obj$_{1}$* and *obj$_{2}$* are characters for which the char=?
-    procedure returns \#f.
+-   *obj<sub>1</sub>* and *obj<sub>2</sub>* are characters for which the
+    char=? procedure returns #f.
 
--   one of *obj$_{1}$* and *obj$_{2}$* is the empty list but the other
-    is not.
+-   one of *obj<sub>1</sub>* and *obj<sub>2</sub>* is the empty list but
+    the other is not.
 
--   *obj$_{1}$* and *obj$_{2}$* are pairs, vectors, bytevectors,
-    records, or strings that denote distinct locations.
+-   *obj<sub>1</sub>* and *obj<sub>2</sub>* are pairs, vectors,
+    bytevectors, records, or strings that denote distinct locations.
 
--   *obj$_{1}$* and *obj$_{2}$* are procedures that would behave
-    differently (return different values or have different side effects)
-    for some arguments.
+-   *obj<sub>1</sub>* and *obj<sub>2</sub>* are procedures that would
+    behave differently (return different values or have different side
+    effects) for some arguments.
 
-```{=html}
 <!-- -->
-```
+
     (eqv? 'a 'a)                     \ev  \schtrue
     (eqv? 'a 'b)                     \ev  \schfalse
     (eqv? 2 2)                       \ev  \schtrue
@@ -3123,8 +3223,8 @@ cases is that the value returned by eqv? must be a boolean.
     (eqv? 1.0e0 1.0f0)       \ev  \unspecified
     (eqv? +nan.0 +nan.0)     \ev  \unspecified%
 
-Note that (eqv? 0.0 -0.0) will return \#f if negative zero is
-distinguished, and \#t if negative zero is not distinguished.
+Note that (eqv? 0.0 -0.0) will return #f if negative zero is
+distinguished, and #t if negative zero is not distinguished.
 
 The next set of examples shows the use of eqv? with procedures that have
 local state. The gen-counter procedure must return a distinct procedure
@@ -3183,16 +3283,16 @@ both.
 numbers, then an implementation of eqv? that simply compares equal-sized
 inexact numbers for bitwise equality is correct by the above definition.
 
-(eq? **obj$_{1}$* *obj$_{2}$**)  procedure\
+(eq? **obj<sub>1</sub>* *obj<sub>2</sub>**)  procedure  
 The eq? procedure is similar to eqv? except that in some cases it is
 capable of discerning distinctions finer than those detectable by eqv?.
-It must always return \#f when eqv? also would, but may return \#f in
-some cases where eqv? would return \#t.
+It must always return #f when eqv? also would, but may return #f in some
+cases where eqv? would return #t.
 
 On symbols, booleans, the empty list, pairs, and records, and also on
 non-empty strings, vectors, and bytevectors, eq? and eqv? are guaranteed
 to have the same behavior. On procedures, eq? must return true if the
-arguments' location tags are equal. On numbers and characters, eq?'s
+arguments’ location tags are equal. On numbers and characters, eq?’s
 behavior is implementation-dependent, but it will always return either
 true or false. On empty strings, empty vectors, and empty bytevectors,
 eq? may also behave differently from eqv?.
@@ -3222,15 +3322,14 @@ not always possible to compute eqv? of two numbers in constant time,
 whereas eq? implemented as pointer comparison will always finish in
 constant time.
 
-(equal? **obj$_{1}$* *obj$_{2}$**)  procedure\
+(equal? **obj<sub>1</sub>* *obj<sub>2</sub>**)  procedure  
 The equal? procedure, when applied to pairs, vectors, strings and
-bytevectors, recursively compares them, returning \#t when the
-unfoldings of its arguments into (possibly infinite) trees are equal (in
-the sense of equal?) as ordered trees, and \#f otherwise. It returns the
-same as eqv? when applied to booleans, symbols, numbers, characters,
-ports, procedures, and the empty list. If two objects are eqv?, they
-must be equal? as well. In all other cases, equal? may return either \#t
-or \#f.
+bytevectors, recursively compares them, returning #t when the unfoldings
+of its arguments into (possibly infinite) trees are equal (in the sense
+of equal?) as ordered trees, and #f otherwise. It returns the same as
+eqv? when applied to booleans, symbols, numbers, characters, ports,
+procedures, and the empty list. If two objects are eqv?, they must be
+equal? as well. In all other cases, equal? may return either #t or #f.
 
 Even if its arguments are circular data structures, equal? must always
 terminate.
@@ -3264,25 +3363,27 @@ report uses the types *number*, *complex*, *real*, *rational*, and
 Mathematically, numbers are arranged into a tower of subtypes in which
 each level is a subset of the level above it:
 
-::: tabbing
-         n̄umber\
-complex number\
-real number\
-rational number\
+<div class="tabbing">
+
+         n̄umber  
+complex number  
+real number  
+rational number  
 integer
-:::
+
+</div>
 
 For example, 3 is an integer. Therefore 3 is also a rational, a real,
 and a complex number. The same is true of the Scheme numbers that model
 3. For Scheme numbers, these types are defined by the predicates
 `number?`, `complex?`, `real?`, `rational?`, and `integer?`.
 
-There is no simple relationship between a number's type and its
+There is no simple relationship between a number’s type and its
 representation inside a computer. Although most implementations of
 Scheme will offer at least two different representations of 3, these
 different representations denote the same integer.
 
-Scheme's numerical operations treat numbers as abstract data, as
+Scheme’s numerical operations treat numbers as abstract data, as
 independent of their representation as possible. Although an
 implementation of Scheme may use multiple internal representations of
 numbers, this ought not to be apparent to a casual programmer writing
@@ -3405,8 +3506,8 @@ representation strategies for inexact numbers. This report recommends,
 but does not require, that implementations that use floating-point
 representations follow the IEEE 754 standard, and that implementations
 using other representations should match or exceed the precision
-achievable using these floating-point standards []{.citation
-cites="IEEE"}. In particular, the description of transcendental
+achievable using these floating-point standards <span class="citation"
+cites="IEEE"></span>. In particular, the description of transcendental
 functions in IEEE 754-2008 should be followed by such implementations,
 particularly with respect to infinities and NaNs.
 
@@ -3433,7 +3534,7 @@ used. For example, the value of (sqrt 4) should be 2, but in an
 implementation that provides both single and double precision floating
 point numbers it may be the latter but must not be the former.
 
-It is the programmer's responsibility to avoid using inexact number
+It is the programmer’s responsibility to avoid using inexact number
 objects with magnitude or significand too large to be represented in the
 implementation.
 
@@ -3472,8 +3573,8 @@ distinguish negative zero. If it does, however, the behavior of the
 transcendental functions is sensitive to the distinction in accordance
 with IEEE 754. Specifically, in a Scheme implementing both complex
 numbers and negative zero, the branch cut of the complex logarithm
-function is such that (imag-part (log -1.0-0.0i)) is $- \pi$ rather than
-$\pi$.
+function is such that (imag-part (log -1.0-0.0i)) is  − *π* rather than
+*π*.
 
 Furthermore, the negation of negative zero is ordinary zero and vice
 versa. This implies that the sum of two or more negative zeros is
@@ -3528,11 +3629,10 @@ distinguish between different NaNs.
 
 There are two notations provided for non-real complex numbers: the
 *rectangular notation* *a*+*b*i, where *a* is the real part and *b* is
-the imaginary part; and the *polar notation* *r*@$\theta$, where *r* is
-the magnitude and $\theta$ is the phase (angle) in radians. These are
-related by the equation
-$a + bi = r\cos\theta + \left( r\sin\theta \right)i$. All of *a*, *b*,
-*r*, and $\theta$ are real numbers.
+the imaginary part; and the *polar notation* *r*@*θ*, where *r* is the
+magnitude and *θ* is the phase (angle) in radians. These are related by
+the equation *a* + *b**i* = *r*cos *θ* + (*r*sin*θ*)*i*. All of *a*,
+*b*, *r*, and *θ* are real numbers.
 
 ### Numerical operations
 
@@ -3547,21 +3647,21 @@ represented without loss of accuracy; the inexact constants were chosen
 so that this is likely to be true in implementations that use IEEE
 binary doubles to represent inexact numbers.
 
-(number? *obj*)  procedure\
-(complex? *obj*)  procedure\
-(real? *obj*)  procedure\
-(rational? *obj*)  procedure\
-(integer? *obj*)  procedure\
+(number? *obj*)  procedure  
+(complex? *obj*)  procedure  
+(real? *obj*)  procedure  
+(rational? *obj*)  procedure  
+(integer? *obj*)  procedure  
 These numerical type predicates can be applied to any kind of argument,
-including non-numbers. They return \#t if the object is of the named
-type, and otherwise they return \#f. In general, if a type predicate is
+including non-numbers. They return #t if the object is of the named
+type, and otherwise they return #f. In general, if a type predicate is
 true of a number then all higher type predicates are also true of that
 number. Consequently, if a type predicate is false of a number, then all
 lower type predicates are also false of that number.
 
-If $z$ is a complex number, then (real? $z$) is true if and only if
-(zero? (imag-part $z$)) is true. If $x$ is an inexact real number, then
-(integer? $x$) is true if and only if (= $x$ (round $x$)).
+If *z* is a complex number, then (real? *z*) is true if and only if
+(zero? (imag-part *z*)) is true. If *x* is an inexact real number, then
+(integer? *x*) is true if and only if (= *x* (round *x*)).
 
 The numbers +inf.0, -inf.0, and +nan.0 are real but not rational.
 
@@ -3589,8 +3689,8 @@ same as `number?`, but unusual implementations may represent some
 irrational numbers exactly or may extend the number system to support
 some kind of non-complex numbers.
 
-(exact? *$z$*)  procedure\
-(inexact? *$z$*)  procedure\
+(exact? **z**)  procedure  
+(inexact? **z**)  procedure  
 These numerical predicates provide tests for the exactness of a
 quantity. For any Scheme number, precisely one of these predicates is
 true.
@@ -3599,51 +3699,50 @@ true.
     (exact? \#e3.0)         \ev  \schtrue
     (inexact? 3.)          \ev  \schtrue%
 
-(exact-integer? *$z$*)  procedure\
-Returns \#t if $z$ is both exact and an integer; otherwise returns \#f.
+(exact-integer? **z**)  procedure  
+Returns #t if *z* is both exact and an integer; otherwise returns #f.
 
     (exact-integer? 32) \ev \schtrue{}
     (exact-integer? 32.0) \ev \schfalse{}
     (exact-integer? 32/5) \ev \schfalse{}%
 
-(finite? *$z$*)  inexact library procedure\
-The finite? procedure returns \#t on all real numbers except +inf.0,
+(finite? **z**)  inexact library procedure  
+The finite? procedure returns #t on all real numbers except +inf.0,
 -inf.0, and +nan.0, and on complex numbers if their real and imaginary
-parts are both finite. Otherwise it returns \#f.
+parts are both finite. Otherwise it returns #f.
 
     (finite? 3)         \ev  \schtrue
     (finite? +inf.0)       \ev  \schfalse
     (finite? 3.0+inf.0i)   \ev  \schfalse%
 
-(infinite? *$z$*)  inexact library procedure\
-The infinite? procedure returns \#t on the real numbers +inf.0 and
+(infinite? **z**)  inexact library procedure  
+The infinite? procedure returns #t on the real numbers +inf.0 and
 -inf.0, and on complex numbers if their real or imaginary parts or both
-are infinite. Otherwise it returns \#f.
+are infinite. Otherwise it returns #f.
 
     (infinite? 3)         \ev  \schfalse
     (infinite? +inf.0)       \ev  \schtrue
     (infinite? +nan.0)       \ev  \schfalse
     (infinite? 3.0+inf.0i)   \ev  \schtrue%
 
-(nan? *$z$*)  inexact library procedure\
-The nan? procedure returns \#t on +nan.0, and on complex numbers if
-their real or imaginary parts or both are +nan.0. Otherwise it returns
-\#f.
+(nan? **z**)  inexact library procedure  
+The nan? procedure returns #t on +nan.0, and on complex numbers if their
+real or imaginary parts or both are +nan.0. Otherwise it returns #f.
 
     (nan? +nan.0)          \ev  \schtrue
     (nan? 32)              \ev  \schfalse
     (nan? +nan.0+5.0i)     \ev  \schtrue
     (nan? 1+2i)            \ev  \schfalse%
 
-(= *$z_{1}$ $z_{2}$ $z_{3}$ $\ldots\,$*)  procedure\
-(\< *$x_{1}$ $x_{2}$ $x_{3}$ $\ldots\,$*)  procedure\
-(> *$x_{1}$ $x_{2}$ $x_{3}$ $\ldots\,$*)  procedure\
-(\<= *$x_{1}$ $x_{2}$ $x_{3}$ $\ldots\,$*)  procedure\
-(>= *$x_{1}$ $x_{2}$ $x_{3}$ $\ldots\,$*)  procedure\
-These procedures return \#t if their arguments are (respectively):
-equal, monotonically increasing, monotonically decreasing, monotonically
-non-decreasing, or monotonically non-increasing, and \#f otherwise. If
-any of the arguments are +nan.0, all the predicates return \#f. They do
+(= **z*<sub>1</sub> *z*<sub>2</sub> *z*<sub>3</sub> … *)  procedure  
+(\< **x*<sub>1</sub> *x*<sub>2</sub> *x*<sub>3</sub> … *)  procedure  
+(> **x*<sub>1</sub> *x*<sub>2</sub> *x*<sub>3</sub> … *)  procedure  
+(\<= **x*<sub>1</sub> *x*<sub>2</sub> *x*<sub>3</sub> … *)  procedure  
+(>= **x*<sub>1</sub> *x*<sub>2</sub> *x*<sub>3</sub> … *)  procedure  
+These procedures return #t if their arguments are (respectively): equal,
+monotonically increasing, monotonically decreasing, monotonically
+non-decreasing, or monotonically non-increasing, and #f otherwise. If
+any of the arguments are +nan.0, all the predicates return #f. They do
 not distinguish between inexact zero and inexact negative zero.
 
 These predicates are required to be transitive.
@@ -3664,16 +3763,16 @@ predicates, the results are unreliable because a small inaccuracy can
 affect the result; this is especially true of `=` and `zero?`. When in
 doubt, consult a numerical analyst.
 
-(zero? *$z$*)  procedure\
-(positive? *$x$*)  procedure\
-(negative? *$x$*)  procedure\
-(odd? *$n$*)  procedure\
-(even? *$n$*)  procedure\
+(zero? **z**)  procedure  
+(positive? **x**)  procedure  
+(negative? **x**)  procedure  
+(odd? **n**)  procedure  
+(even? **n**)  procedure  
 These numerical predicates test a number for a particular property,
-returning \#t or \#f. See note above.
+returning #t or #f. See note above.
 
-(max *$x_{1}$ $x_{2}$ $\ldots\,$*)  procedure\
-(min *$x_{1}$ $x_{2}$ $\ldots\,$*)  procedure\
+(max **x*<sub>1</sub> *x*<sub>2</sub> … *)  procedure  
+(min **x*<sub>1</sub> *x*<sub>2</sub> … *)  procedure  
 These procedures return the maximum or minimum of their arguments.
 
     (max 3 4)              \ev  4    ; exact
@@ -3687,8 +3786,8 @@ exactness, and the numerical value of the result cannot be represented
 as an inexact number without loss of accuracy, then the procedure may
 report a violation of an implementation restriction.
 
-(+ *$z_{1}$ $\ldots\,$*)  procedure\
-(\* *$z_{1}$ $\ldots\,$*)  procedure\
+(+ **z*<sub>1</sub> … *)  procedure  
+(\* **z*<sub>1</sub> … *)  procedure  
 These procedures return the sum or product of their arguments.
 
     (+ 3 4)                 \ev  7
@@ -3697,10 +3796,10 @@ These procedures return the sum or product of their arguments.
     (* 4)                   \ev  4
     (*)                     \ev  1%
 
-(- *$z$*)  procedure\
-(- *$z_{1}$ $z_{2}$ $\ldots\,$*)  procedure\
-(/ *$z$*)  procedure\
-(/ *$z_{1}$ $z_{2}$ $\ldots\,$*)  procedure\
+(- **z**)  procedure  
+(- **z*<sub>1</sub> *z*<sub>2</sub> … *)  procedure  
+(/ **z**)  procedure  
+(/ **z*<sub>1</sub> *z*<sub>2</sub> … *)  procedure  
 With two or more arguments, these procedures return the difference or
 quotient of their arguments, associating to the left. With one argument,
 however, they return the additive or multiplicative inverse of their
@@ -3716,41 +3815,42 @@ return an exact zero unless one of the other arguments is a NaN.
     (/ 3 4 5)               \ev  3/20
     (/ 3)                   \ev  1/3%
 
-(abs *x*)  procedure\
+(abs *x*)  procedure  
 The abs procedure returns the absolute value of its argument.
 
     (abs -7)                \ev  7%
 
-(floor/ *$n_{1}$ $n_{2}$*)  procedure\
-(floor-quotient *$n_{1}$ $n_{2}$*)  procedure\
-(floor-remainder *$n_{1}$ $n_{2}$*)  procedure\
-(truncate/ *$n_{1}$ $n_{2}$*)  procedure\
-(truncate-quotient *$n_{1}$ $n_{2}$*)  procedure\
-(truncate-remainder *$n_{1}$ $n_{2}$*)  procedure\
+(floor/ **n*<sub>1</sub> *n*<sub>2</sub>*)  procedure  
+(floor-quotient **n*<sub>1</sub> *n*<sub>2</sub>*)  procedure  
+(floor-remainder **n*<sub>1</sub> *n*<sub>2</sub>*)  procedure  
+(truncate/ **n*<sub>1</sub> *n*<sub>2</sub>*)  procedure  
+(truncate-quotient **n*<sub>1</sub> *n*<sub>2</sub>*)  procedure  
+(truncate-remainder **n*<sub>1</sub> *n*<sub>2</sub>*)  procedure  
 These procedures implement number-theoretic (integer) division. It is an
-error if $n_{2}$ is zero. The procedures ending in / return two
+error if *n*<sub>2</sub> is zero. The procedures ending in / return two
 integers; the other procedures return an integer. All the procedures
-compute a quotient $n_{q}$ and remainder $n_{r}$ such that
-[\${\\hbox{\$n_1\$\\/}} = {\\hbox{\$n_2\$\\/}} {\\hbox{\$n_q\$\\/}} +
-{\\hbox{\$n_r\$\\/}}\$]{.math .inline}. For each of the division
-operators, there are three procedures defined as follows:
+compute a quotient *n*<sub>*q*</sub> and remainder *n*<sub>*r*</sub>
+such that <span class="math inline">${\\hbox{$n_1$\\/}} =
+{\\hbox{$n_2$\\/}} {\\hbox{$n_q$\\/}} + {\\hbox{$n_r$\\/}}$</span>. For
+each of the division operators, there are three procedures defined as
+follows:
 
     (\hyper{operator}/ \vri{n} \vrii{n})             \ev \vr{n_q} \vr{n_r}
     (\hyper{operator}-quotient \vri{n} \vrii{n})     \ev \vr{n_q}
     (\hyper{operator}-remainder \vri{n} \vrii{n})    \ev \vr{n_r}%
 
-The remainder $n_{r}$ is determined by the choice of integer $n_{q}$:
-[\${\\hbox{\$n_r\$\\/}} = {\\hbox{\$n_1\$\\/}} - {\\hbox{\$n_2\$\\/}}
-{\\hbox{\$n_q\$\\/}}\$]{.math .inline}. Each set of operators uses a
-different choice of $n_{q}$:
+The remainder *n*<sub>*r*</sub> is determined by the choice of integer
+*n*<sub>*q*</sub>: <span class="math inline">${\\hbox{$n_r$\\/}} =
+{\\hbox{$n_1$\\/}} - {\\hbox{$n_2$\\/}} {\\hbox{$n_q$\\/}}$</span>. Each
+set of operators uses a different choice of *n*<sub>*q*</sub>:
 
-  ---------- -----------------------------------------------------------------------------------------------------------
-  floor      [\${\\hbox{\$n_q\$\\/}} = \\lfloor{\\hbox{\$n_1\$\\/}} / {\\hbox{\$n_2\$\\/}}\\rfloor\$]{.math .inline}
-  truncate   [\${\\hbox{\$n_q\$\\/}} = \\text{truncate}({\\hbox{\$n_1\$\\/}} / {\\hbox{\$n_2\$\\/}})\$]{.math .inline}
-  ---------- -----------------------------------------------------------------------------------------------------------
+|          |                                                                                                                   |
+|:---------|:------------------------------------------------------------------------------------------------------------------|
+| floor    | <span class="math inline">${\\hbox{$n_q$\\/}} = \\lfloor{\\hbox{$n_1$\\/}} / {\\hbox{$n_2$\\/}}\\rfloor$</span>   |
+| truncate | <span class="math inline">${\\hbox{$n_q$\\/}} = \\text{truncate}({\\hbox{$n_1$\\/}} / {\\hbox{$n_2$\\/}})$</span> |
 
-For any of the operators, and for integers $n_{1}$ and $n_{2}$ with
-$n_{2}$ not equal to 0,
+For any of the operators, and for integers *n*<sub>1</sub> and
+*n*<sub>2</sub> with *n*<sub>2</sub> not equal to 0,
 
          (= \vri{n} (+ (* \vrii{n} (\hyper{operator}-quotient \vri{n} \vrii{n}))
                (\hyper{operator}-remainder \vri{n} \vrii{n})))
@@ -3770,9 +3870,9 @@ Examples:
     (truncate/ -5 -2)    \ev 2 -1
     (truncate/ -5.0 -2)  \ev 2.0 -1.0%
 
-(quotient *$n_{1}$ $n_{2}$*)  procedure\
-(remainder *$n_{1}$ $n_{2}$*)  procedure\
-(modulo *$n_{1}$ $n_{2}$*)  procedure\
+(quotient **n*<sub>1</sub> *n*<sub>2</sub>*)  procedure  
+(remainder **n*<sub>1</sub> *n*<sub>2</sub>*)  procedure  
+(modulo **n*<sub>1</sub> *n*<sub>2</sub>*)  procedure  
 The quotient and remainder procedures are equivalent to
 truncate-quotient and truncate-remainder, respectively, and modulo is
 equivalent to floor-remainder.
@@ -3780,8 +3880,8 @@ equivalent to floor-remainder.
 *Note:* These procedures are provided for backward compatibility with
 earlier versions of this report.
 
-(gcd *$n_{1}$ $\ldots\,$*)  procedure\
-(lcm *$n_{1}$ $\ldots\,$*)  procedure\
+(gcd **n*<sub>1</sub> … *)  procedure  
+(lcm **n*<sub>1</sub> … *)  procedure  
 These procedures return the greatest common divisor or least common
 multiple of their arguments. The result is always non-negative.
 
@@ -3791,8 +3891,8 @@ multiple of their arguments. The result is always non-negative.
     (lcm 32.0 -36)          \ev  288.0  ; inexact
     (lcm)                   \ev  1%
 
-(numerator *$q$*)  procedure\
-(denominator *$q$*)  procedure\
+(numerator **q**)  procedure  
+(denominator **q**)  procedure  
 These procedures return the numerator or denominator of their argument;
 the result is computed as if the argument was represented as a fraction
 in lowest terms. The denominator is always positive. The denominator of
@@ -3803,16 +3903,16 @@ in lowest terms. The denominator is always positive. The denominator of
     (denominator
       (inexact (/ 6 4))) \ev 2.0%
 
-(floor *x*)  procedure\
-(ceiling *x*)  procedure\
-(truncate *x*)  procedure\
-(round *x*)  procedure\
+(floor *x*)  procedure  
+(ceiling *x*)  procedure  
+(truncate *x*)  procedure  
+(round *x*)  procedure  
 These procedures return integers. The floor procedure returns the
-largest integer not larger than $x$. The ceiling procedure returns the
-smallest integer not smaller than $x$, truncate returns the integer
-closest to $x$ whose absolute value is not larger than the absolute
-value of $x$, and round returns the closest integer to $x$, rounding to
-even when $x$ is halfway between two integers.
+largest integer not larger than *x*. The ceiling procedure returns the
+smallest integer not smaller than *x*, truncate returns the integer
+closest to *x* whose absolute value is not larger than the absolute
+value of *x*, and round returns the closest integer to *x*, rounding to
+even when *x* is halfway between two integers.
 
 *Rationale:* The round procedure rounds to even for consistency with the
 default rounding mode specified by the IEEE 754 IEEE floating-point
@@ -3836,128 +3936,136 @@ then it is returned.
     (round 7/2)           \ev  4    ; exact
     (round 7)             \ev  7%
 
-(rationalize *x y*)  procedure\
+(rationalize *x y*)  procedure  
 The rationalize procedure returns the *simplest* rational number
-differing from $x$ by no more than $y$. A rational number $r_{1}$ is
-*simpler* than another rational number $r_{2}$ if $r_{1} = p_{1}/q_{1}$
-and $r_{2} = p_{2}/q_{2}$ (in lowest terms) and
-$\left| p_{1} \right| \leq \left| p_{2} \right|$ and
-$\left| q_{1} \right| \leq \left| q_{2} \right|$. Thus $3/5$ is simpler
-than $4/7$. Although not all rationals are comparable in this ordering
-(consider $2/7$ and $3/5$), any interval contains a rational number that
-is simpler than every other rational number in that interval (the
-simpler $2/5$ lies between $2/7$ and $3/5$). Note that $0 = 0/1$ is the
-simplest rational of all.
+differing from *x* by no more than *y*. A rational number
+*r*<sub>1</sub> is *simpler* than another rational number
+*r*<sub>2</sub> if *r*<sub>1</sub> = *p*<sub>1</sub>/*q*<sub>1</sub> and
+*r*<sub>2</sub> = *p*<sub>2</sub>/*q*<sub>2</sub> (in lowest terms) and
+\|*p*<sub>1</sub>\| ≤ \|*p*<sub>2</sub>\| and
+\|*q*<sub>1</sub>\| ≤ \|*q*<sub>2</sub>\|. Thus 3/5 is simpler than 4/7.
+Although not all rationals are comparable in this ordering (consider 2/7
+and 3/5), any interval contains a rational number that is simpler than
+every other rational number in that interval (the simpler 2/5 lies
+between 2/7 and 3/5). Note that 0 = 0/1 is the simplest rational of all.
 
     (rationalize
       (exact .3) 1/10)  \ev 1/3    ; exact
     (rationalize .3 1/10)        \ev \#i1/3  ; inexact%
 
-(exp *$z$*)  inexact library procedure\
-(log *$z$*)  inexact library procedure\
-(log *$z_{1}$ $z_{2}$*)  inexact library procedure\
-(sin *$z$*)  inexact library procedure\
-(cos *$z$*)  inexact library procedure\
-(tan *$z$*)  inexact library procedure\
-(asin *$z$*)  inexact library procedure\
-(acos *$z$*)  inexact library procedure\
-(atan *$z$*)  inexact library procedure\
-(atan *$y$ $x$*)  inexact library procedure\
+(exp **z**)  inexact library procedure  
+(log **z**)  inexact library procedure  
+(log **z*<sub>1</sub> *z*<sub>2</sub>*)  inexact library procedure  
+(sin **z**)  inexact library procedure  
+(cos **z**)  inexact library procedure  
+(tan **z**)  inexact library procedure  
+(asin **z**)  inexact library procedure  
+(acos **z**)  inexact library procedure  
+(atan **z**)  inexact library procedure  
+(atan **y* *x**)  inexact library procedure  
 These procedures compute the usual transcendental functions. The log
-procedure computes the natural logarithm of $z$ (not the base ten
-logarithm) if a single argument is given, or the base-$z_{2}$ logarithm
-of $z_{1}$ if two arguments are given. The asin, acos, and atan
-procedures compute arcsine ($\sin^{- 1}$), arc-cosine ($\cos^{- 1}$),
-and arctangent ($\tan^{- 1}$), respectively. The two-argument variant of
-atan computes `(angle (make-rectangular x y))` (see below), even in
-implementations that don't support complex numbers.
+procedure computes the natural logarithm of *z* (not the base ten
+logarithm) if a single argument is given, or the base-*z*<sub>2</sub>
+logarithm of *z*<sub>1</sub> if two arguments are given. The asin, acos,
+and atan procedures compute arcsine (sin<sup>−1</sup>), arc-cosine
+(cos<sup>−1</sup>), and arctangent (tan<sup>−1</sup>), respectively. The
+two-argument variant of atan computes `(angle (make-rectangular x y))`
+(see below), even in implementations that don’t support complex numbers.
 
 In general, the mathematical functions log, arcsine, arc-cosine, and
-arctangent are multiply defined. The value of $\log z$ is defined to be
-the one whose imaginary part lies in the range from $- \pi$ (inclusive
-if -0.0 is distinguished, exclusive otherwise) to $\pi$ (inclusive). The
-value of $\log 0$ is mathematically undefined. With $\log$ defined this
-way, the values of $\sin^{- 1}z$, $\cos^{- 1}z$, and $\tan^{- 1}z$ are
-according to the following formulæ:
-$$\sin^{- 1}z = - i\log\left( iz + \sqrt{1 - z^{2}} \right)$$
-$$\cos^{- 1}z = \pi/2 - \sin^{- 1}z$$
-$$\tan^{- 1}z = \left( \log(1 + iz) - \log(1 - iz) \right)/(2i)$$
+arctangent are multiply defined. The value of log *z* is defined to be
+the one whose imaginary part lies in the range from  − *π* (inclusive if
+-0.0 is distinguished, exclusive otherwise) to *π* (inclusive). The
+value of log 0 is mathematically undefined. With log  defined this way,
+the values of sin<sup>−1</sup>*z*, cos<sup>−1</sup>*z*, and
+tan<sup>−1</sup>*z* are according to the following formulæ:
+$$\\sin^{- 1}z = - i\\log\\left( iz + \\sqrt{1 - z^{2}} \\right)$$
+cos<sup>−1</sup>*z* = *π*/2 − sin<sup>−1</sup>*z*
+tan<sup>−1</sup>*z* = (log(1+*i**z*)−log(1−*i**z*))/(2*i*)
 
-However, (log 0.0) returns -inf.0 (and (log -0.0) returns -inf.0+$\pi$i)
+However, (log 0.0) returns -inf.0 (and (log -0.0) returns -inf.0+*π*i)
 if the implementation supports infinities (and -0.0).
 
 The range of (atan *y* *x*) is as in the following table. The asterisk
 (\*) indicates that the entry applies to implementations that
 distinguish minus zero.
 
-::: center
-        $y$ condition   $x$ condition   range of result $r$
-  ----- --------------- --------------- -------------------------------
-        $y = 0.0$       $x > 0.0$       $0.0$
-   $*$  $y = + 0.0$     $x > 0.0$       $+ 0.0$
-   $*$  $y = - 0.0$     $x > 0.0$       $- 0.0$
-        $y > 0.0$       $x > 0.0$       $0.0 < r < \frac{\pi}{2}$
-        $y > 0.0$       $x = 0.0$       $\frac{\pi}{2}$
-        $y > 0.0$       $x < 0.0$       $\frac{\pi}{2} < r < \pi$
-        $y = 0.0$       $x < 0$         $\pi$
-   $*$  $y = + 0.0$     $x < 0.0$       $\pi$
-   $*$  $y = - 0.0$     $x < 0.0$       $- \pi$
-        $y < 0.0$       $x < 0.0$       $- \pi < r < - \frac{\pi}{2}$
-        $y < 0.0$       $x = 0.0$       $- \frac{\pi}{2}$
-        $y < 0.0$       $x > 0.0$       $- \frac{\pi}{2} < r < 0.0$
-        $y = 0.0$       $x = 0.0$       undefined
-   $*$  $y = + 0.0$     $x = + 0.0$     $+ 0.0$
-   $*$  $y = - 0.0$     $x = + 0.0$     $- 0.0$
-   $*$  $y = + 0.0$     $x = - 0.0$     $\pi$
-   $*$  $y = - 0.0$     $x = - 0.0$     $- \pi$
-   $*$  $y = + 0.0$     $x = 0$         $\frac{\pi}{2}$
-   $*$  $y = - 0.0$     $x = 0$         $- \frac{\pi}{2}$
-:::
+<div class="center">
 
-The above specification follows []{.citation cites="CLtL"}, which in
-turn cites []{.citation cites="Penfield81"}; refer to these sources for
-more detailed discussion of branch cuts, boundary conditions, and
-implementation of these functions. When it is possible, these procedures
-produce a real result from a real argument.
+|     | *y* condition | *x* condition | range of result *r*                |
+|:---:|:--------------|:--------------|:-----------------------------------|
+|     | *y* = 0.0     | *x* \> 0.0    | 0.0                                |
+| \*  | *y* =  + 0.0  | *x* \> 0.0    |  + 0.0                             |
+| \*  | *y* =  − 0.0  | *x* \> 0.0    |  − 0.0                             |
+|     | *y* \> 0.0    | *x* \> 0.0    | $0.0 \< r \< \\frac{\\pi}{2}$      |
+|     | *y* \> 0.0    | *x* = 0.0     | $\\frac{\\pi}{2}$                  |
+|     | *y* \> 0.0    | *x* \< 0.0    | $\\frac{\\pi}{2} \< r \< \\pi$     |
+|     | *y* = 0.0     | *x* \< 0      | *π*                                |
+| \*  | *y* =  + 0.0  | *x* \< 0.0    | *π*                                |
+| \*  | *y* =  − 0.0  | *x* \< 0.0    |  − *π*                             |
+|     | *y* \< 0.0    | *x* \< 0.0    | $- \\pi \< r \< - \\frac{\\pi}{2}$ |
+|     | *y* \< 0.0    | *x* = 0.0     | $- \\frac{\\pi}{2}$                |
+|     | *y* \< 0.0    | *x* \> 0.0    | $- \\frac{\\pi}{2} \< r \< 0.0$    |
+|     | *y* = 0.0     | *x* = 0.0     | undefined                          |
+| \*  | *y* =  + 0.0  | *x* =  + 0.0  |  + 0.0                             |
+| \*  | *y* =  − 0.0  | *x* =  + 0.0  |  − 0.0                             |
+| \*  | *y* =  + 0.0  | *x* =  − 0.0  | *π*                                |
+| \*  | *y* =  − 0.0  | *x* =  − 0.0  |  − *π*                             |
+| \*  | *y* =  + 0.0  | *x* = 0       | $\\frac{\\pi}{2}$                  |
+| \*  | *y* =  − 0.0  | *x* = 0       | $- \\frac{\\pi}{2}$                |
 
-(square *$z$*)  procedure\
-Returns the square of $z$. This is equivalent to (\* *z* *z*).
+</div>
+
+The above specification follows <span class="citation"
+cites="CLtL"></span>, which in turn cites <span class="citation"
+cites="Penfield81"></span>; refer to these sources for more detailed
+discussion of branch cuts, boundary conditions, and implementation of
+these functions. When it is possible, these procedures produce a real
+result from a real argument.
+
+(square **z**)  procedure  
+Returns the square of *z*. This is equivalent to (\* *z* *z*).
 
     (square 42)       \ev 1764
     (square 2.0)     \ev 4.0%
 
-(sqrt *$z$*)  inexact library procedure\
-Returns the principal square root of $z$. The result will have either a
+(sqrt **z**)  inexact library procedure  
+Returns the principal square root of *z*. The result will have either a
 positive real part, or a zero real part and a non-negative imaginary
 part.
 
     (sqrt 9)  \ev 3
     (sqrt -1) \ev +i%
 
-(exact-integer-sqrt *k*)  procedure\
-Returns two non-negative exact integers $s$ and $r$ where
-[\$\\hbox{\\it{}k\\/} = s\^2 + r\$]{.math .inline} and
-[\$\\hbox{\\it{}k\\/} \< (s+1)\^2\$]{.math .inline}.
+(exact-integer-sqrt *k*)  procedure  
+Returns two non-negative exact integers *s* and *r* where <span
+class="math inline">$\\hbox{\\it{}k\\/} = s^2 + r$</span> and <span
+class="math inline">$\\hbox{\\it{}k\\/} \< (s+1)^2$</span>.
 
     (exact-integer-sqrt 4) \ev 2 0
     (exact-integer-sqrt 5) \ev 2 1%
 
-(expt *$z_{1}$ $z_{2}$*)  procedure\
-Returns $z_{1}$ raised to the power $z_{2}$. For nonzero $z_{1}$, this
-is $${z_{1}}^{z_{2}} = e^{z_{2}\log z_{1}}$$ The value of $0^{z}$ is $1$
-if (zero? z), $0$ if (real-part z) is positive, and an error otherwise.
-Similarly for $0.0^{z}$, with inexact results.
+(expt **z*<sub>1</sub> *z*<sub>2</sub>*)  procedure  
+Returns *z*<sub>1</sub> raised to the power *z*<sub>2</sub>. For nonzero
+*z*<sub>1</sub>, this is
+*z*<sub>1</sub><sup>*z*<sub>2</sub></sup> = *e*<sup>*z*<sub>2</sub>log *z*<sub>1</sub></sup>
+The value of 0<sup>*z*</sup> is 1 if (zero? z), 0 if (real-part z) is
+positive, and an error otherwise. Similarly for 0.0<sup>*z*</sup>, with
+inexact results.
 
-(make-rectangular *$x_{1}$ $x_{2}$*)  complex library procedure\
-(make-polar *$x_{3}$ $x_{4}$*)  complex library procedure\
-(real-part *$z$*)  complex library procedure\
-(imag-part *$z$*)  complex library procedure\
-(magnitude *$z$*)  complex library procedure\
-(angle *$z$*)  complex library procedure\
-Let $x_{1}$, $x_{2}$, $x_{3}$, and $x_{4}$ be real numbers and $z$ be a
-complex number such that [\$\${\\hbox{\$z\$\\/}} =
-{\\hbox{\$x_1\$\\/}} + {\\hbox{\$x_2\$\\/}}\\hbox{\$i\$} =
-{\\hbox{\$x_3\$\\/}} \\cdot e\^{i x_4}\$\$]{.math .display} Then all of
+(make-rectangular **x*<sub>1</sub> *x*<sub>2</sub>*)
+ complex library procedure  
+(make-polar **x*<sub>3</sub> *x*<sub>4</sub>*)
+ complex library procedure  
+(real-part **z**)  complex library procedure  
+(imag-part **z**)  complex library procedure  
+(magnitude **z**)  complex library procedure  
+(angle **z**)  complex library procedure  
+Let *x*<sub>1</sub>, *x*<sub>2</sub>, *x*<sub>3</sub>, and
+*x*<sub>4</sub> be real numbers and *z* be a complex number such that
+<span class="math display">$${\\hbox{$z$\\/}} = {\\hbox{$x_1$\\/}} +
+{\\hbox{$x_2$\\/}}\\hbox{$i$} = {\\hbox{$x_3$\\/}} \\cdot e^{i
+x_4}$$</span> Then all of
 
     (make-rectangular \vri{x} \vrii{x}) \ev \vr{z}
     (make-polar \vriii{x} \vriv{x})     \ev \vr{z}
@@ -3966,8 +4074,9 @@ complex number such that [\$\${\\hbox{\$z\$\\/}} =
     (magnitude \vr{z})                  \ev $|\vriii{x}|$
     (angle \vr{z})                      \ev $x_{angle}$%
 
-are true, where $- \pi \leq x_{angle} \leq \pi$ with [\$x\_{angle} =
-{\\hbox{\$x_4\$\\/}} + 2\\pi n\$]{.math .inline} for some integer $n$.
+are true, where  − *π* ≤ *x*<sub>*a**n**g**l**e*</sub> ≤ *π* with <span
+class="math inline">$x\_{angle} = {\\hbox{$x_4$\\/}} + 2\\pi n$</span>
+for some integer *n*.
 
 The make-polar procedure may return an inexact complex number even if
 its arguments are exact. The real-part and imag-part procedures may
@@ -3978,9 +4087,9 @@ the corresponding argument passed to make-rectangular was exact.
 argument, but abs is in the base library, whereas magnitude is in the
 optional complex library.
 
-(inexact *$z$*)  procedure\
-(exact *$z$*)  procedure\
-The procedure inexact returns an inexact representation of $z$. The
+(inexact **z**)  procedure  
+(exact **z**)  procedure  
+The procedure inexact returns an inexact representation of *z*. The
 value returned is the inexact number that is numerically closest to the
 argument. For inexact arguments, the result is the same as the argument.
 For exact complex numbers, the result is a complex number whose real and
@@ -3989,7 +4098,7 @@ imaginary parts of the argument, respectively. If an exact argument has
 no reasonably close inexact equivalent (in the sense of =), then a
 violation of an implementation restriction may be reported.
 
-The procedure exact returns an exact representation of $z$. The value
+The procedure exact returns an exact representation of *z*. The value
 returned is the exact number that is numerically closest to the
 argument. For exact arguments, the result is the same as the argument.
 For inexact non-integral real arguments, the implementation may return a
@@ -4004,16 +4113,16 @@ These procedures implement the natural one-to-one correspondence between
 exact and inexact integers throughout an implementation-dependent range.
 See section [\[restrictions\]](#restrictions).
 
-*Note:* These procedures were known in R$^{5}$RS as exact-\>inexact and
-inexact-\>exact, respectively, but they have always accepted arguments
-of any exactness. The new names are clearer and shorter, as well as
-being compatible with R$^{6}$RS.
+*Note:* These procedures were known in R<sup>5</sup>RS as exact->inexact
+and inexact->exact, respectively, but they have always accepted
+arguments of any exactness. The new names are clearer and shorter, as
+well as being compatible with R<sup>6</sup>RS.
 
 ### Numerical input and output
 
-(number-\>string *z*)  procedure\
-(number-\>string *z radix*)  procedure\
-It is an error if $radix$ is not one of 2, 8, 10, or 16.
+(number->string *z*)  procedure  
+(number->string *z radix*)  procedure  
+It is an error if *r**a**d**i**x* is not one of 2, 8, 10, or 16.
 
 The procedure numberstring takes a number and a radix and returns as a
 string an external representation of the given number in the given radix
@@ -4027,74 +4136,77 @@ such that
                             radix)))%
 
 is true. It is an error if no possible result makes this expression
-true. If omitted, $radix$ defaults to 10.
+true. If omitted, *r**a**d**i**x* defaults to 10.
 
-If $z$ is inexact, the radix is 10, and the above expression can be
+If *z* is inexact, the radix is 10, and the above expression can be
 satisfied by a result that contains a decimal point, then the result
 contains a decimal point and is expressed using the minimum number of
 digits (exclusive of exponent and trailing zeroes) needed to make the
-above expression true []{.citation cites="howtoprint howtoread"};
-otherwise the format of the result is unspecified.
+above expression true <span class="citation"
+cites="howtoprint howtoread"></span>; otherwise the format of the result
+is unspecified.
 
 The result returned by numberstring never contains an explicit radix
 prefix.
 
-*Note:* The error case can occur only when $z$ is not a complex number
+*Note:* The error case can occur only when *z* is not a complex number
 or is a complex number with a non-rational real or imaginary part.
 
-*Rationale:* If $z$ is an inexact number and the radix is 10, then the
+*Rationale:* If *z* is an inexact number and the radix is 10, then the
 above expression is normally satisfied by a result containing a decimal
 point. The unspecified case allows for infinities, NaNs, and unusual
 representations.
 
-(string-\>number *string*)  procedure\
-(string-\>number *string radix*)  procedure\
+(string->number *string*)  procedure  
+(string->number *string radix*)  procedure  
 Returns a number of the maximally precise representation expressed by
-the given $string$. It is an error if $radix$ is not 2, 8, 10, or 16.
+the given *s**t**r**i**n**g*. It is an error if *r**a**d**i**x* is not
+2, 8, 10, or 16.
 
-If supplied, $radix$ is a default radix that will be overridden if an
-explicit radix prefix is present in $string$ (e.g. `"#o177"`). If
-$radix$ is not supplied, then the default radix is 10. If $string$ is
-not a syntactically valid notation for a number, or would result in a
-number that the implementation cannot represent, then string-\>number
-returns \#f. An error is never signaled due to the content of $string$.
+If supplied, *r**a**d**i**x* is a default radix that will be overridden
+if an explicit radix prefix is present in *s**t**r**i**n**g* (e.g.
+`"#o177"`). If *r**a**d**i**x* is not supplied, then the default radix
+is 10. If *s**t**r**i**n**g* is not a syntactically valid notation for a
+number, or would result in a number that the implementation cannot
+represent, then string->number returns #f. An error is never signaled
+due to the content of *s**t**r**i**n**g*.
 
     (string->number "100")        \ev  100
     (string->number "100" 16)     \ev  256
     (string->number "1e2")        \ev  100.0%
 
-*Note:* The domain of string-\>number may be restricted by
+*Note:* The domain of string->number may be restricted by
 implementations in the following ways. If all numbers supported by an
-implementation are real, then string-\>number is permitted to return \#f
-whenever $string$ uses the polar or rectangular notations for complex
-numbers. If all numbers are integers, then string-\>number may return
-\#f whenever the fractional notation is used. If all numbers are exact,
-then string-\>number may return \#f whenever an exponent marker or
+implementation are real, then string->number is permitted to return #f
+whenever *s**t**r**i**n**g* uses the polar or rectangular notations for
+complex numbers. If all numbers are integers, then string->number may
+return #f whenever the fractional notation is used. If all numbers are
+exact, then string->number may return #f whenever an exponent marker or
 explicit exactness prefix is used. If all inexact numbers are integers,
-then string-\>number may return \#f whenever a decimal point is used.
+then string->number may return #f whenever a decimal point is used.
 
-The rules used by a particular implementation for string-\>number must
+The rules used by a particular implementation for string->number must
 also be applied to read and to the routine that reads programs, in order
 to maintain consistency between internal numeric processing, I/O, and
-the processing of programs. As a consequence, the R$^{5}$RS permission
-to return \#f when *string* has an explicit radix prefix has been
-withdrawn.
+the processing of programs. As a consequence, the
+R<sup>5</sup>RS permission to return #f when *string* has an explicit
+radix prefix has been withdrawn.
 
 ## Booleans
 
-The standard boolean objects for true and false are written as \#t and
-\#f. Alternatively, they can be written \#true and \#false,
-respectively. What really matters, though, are the objects that the
-Scheme conditional expressions (if, cond, and, or, when, unless, do)
-treat as true or false. The phrase "a true value" (or sometimes just
-"true") means any object treated as true by the conditional expressions,
-and the phrase "a false value" (or "false") means any object treated as
-false by the conditional expressions.
+The standard boolean objects for true and false are written as #t and
+#f. Alternatively, they can be written #true and #false, respectively.
+What really matters, though, are the objects that the Scheme conditional
+expressions (if, cond, and, or, when, unless, do) treat as true or
+false. The phrase “a true value” (or sometimes just “true”) means any
+object treated as true by the conditional expressions, and the phrase “a
+false value” (or “false”) means any object treated as false by the
+conditional expressions.
 
-Of all the Scheme values, only \#f counts as false in conditional
-expressions. All other Scheme values, including \#t, count as true.
+Of all the Scheme values, only #f counts as false in conditional
+expressions. All other Scheme values, including #t, count as true.
 
-*Note:* Unlike some other dialects of Lisp, Scheme distinguishes \#f and
+*Note:* Unlike some other dialects of Lisp, Scheme distinguishes #f and
 the empty list from each other and from the symbol `nil`.
 
 Boolean constants evaluate to themselves, so they do not need to be
@@ -4104,8 +4216,8 @@ quoted in programs.
     \schfalse        \ev  \schfalse
     '\schfalse       \ev  \schfalse%
 
-(not *obj*)  procedure\
-The not procedure returns \#t if *obj* is false, and returns \#f
+(not *obj*)  procedure  
+The not procedure returns #t if *obj* is false, and returns #f
 otherwise.
 
     (not \schtrue)   \ev  \schfalse
@@ -4116,17 +4228,17 @@ otherwise.
     (not (list))     \ev  \schfalse
     (not 'nil)       \ev  \schfalse%
 
-(boolean? *obj*)  procedure\
-The boolean? predicate returns \#t if *obj* is either \#t or \#f and
-returns \#f otherwise.
+(boolean? *obj*)  procedure  
+The boolean? predicate returns #t if *obj* is either #t or #f and
+returns #f otherwise.
 
     (boolean? \schfalse)  \ev  \schtrue
     (boolean? 0)          \ev  \schfalse
     (boolean? '())        \ev  \schfalse%
 
-(boolean=? **boolean$_{1}$* *boolean$_{2}$* *boolean$_{3}$* $\ldots\,$*)
- procedure\
-Returns \#t if all the arguments are \#t or all are \#f.
+(boolean=? **boolean<sub>1</sub>* *boolean<sub>2</sub>* *boolean<sub>3</sub>* … *)
+ procedure  
+Returns #t if all the arguments are #t or all are #f.
 
 ## Pairs and lists
 
@@ -4158,11 +4270,11 @@ has no elements, and its length is zero.
 and are terminated by the empty list.
 
 The most general notation (external representation) for Scheme pairs is
-the "dotted" notation (*c$_{1}$* . *c$_{2}$*) where *c$_{1}$* is the
-value of the car field and *c$_{2}$* is the value of the cdr field. For
-example (4 . 5) is a pair whose car is 4 and whose cdr is 5. Note that
-(4 . 5) is the external representation of a pair, not an expression that
-evaluates to a pair.
+the “dotted” notation (*c<sub>1</sub>* . *c<sub>2</sub>*) where
+*c<sub>1</sub>* is the value of the car field and *c<sub>2</sub>* is the
+value of the cdr field. For example (4 . 5) is a pair whose car is 4 and
+whose cdr is 5. Note that (4 . 5) is the external representation of a
+pair, not an expression that evaluates to a pair.
 
 A more streamlined notation can be used for lists: the elements of the
 list are simply enclosed in parentheses and separated by spaces. The
@@ -4208,24 +4320,24 @@ denote two-element lists whose first elements are the symbols `quote`,
 `quasiquote`, `unquote`, and `unquote-splicing`, respectively. The
 second element in each case is datum. This convention is supported so
 that arbitrary Scheme programs can be represented as lists. That is,
-according to Scheme's grammar, every expression is also a datum (see
+according to Scheme’s grammar, every expression is also a datum (see
 section [\[datum\]](#datum)). Among other things, this permits the use
 of the read procedure to parse Scheme programs. See
 section [\[externalreps\]](#externalreps).
 
-(pair? *obj*)  procedure\
-The pair? predicate returns \#t if *obj* is a pair, and otherwise
-returns \#f.
+(pair? *obj*)  procedure  
+The pair? predicate returns #t if *obj* is a pair, and otherwise returns
+#f.
 
     (pair? '(a . b))        \ev  \schtrue
     (pair? '(a b c))        \ev  \schtrue
     (pair? '())             \ev  \schfalse
     (pair? '\#(a b))         \ev  \schfalse%
 
-(cons **obj$_{1}$* *obj$_{2}$**)  procedure\
-Returns a newly allocated pair whose car is *obj$_{1}$* and whose cdr is
-*obj$_{2}$*. The pair is guaranteed to be different (in the sense of
-eqv?) from every existing object.
+(cons **obj<sub>1</sub>* *obj<sub>2</sub>**)  procedure  
+Returns a newly allocated pair whose car is *obj<sub>1</sub>* and whose
+cdr is *obj<sub>2</sub>*. The pair is guaranteed to be different (in the
+sense of eqv?) from every existing object.
 
     (cons 'a '())           \ev  (a)
     (cons '(a) '(b c d))    \ev  ((a) b c d)
@@ -4233,7 +4345,7 @@ eqv?) from every existing object.
     (cons 'a 3)             \ev  (a . 3)
     (cons '(a b) 'c)        \ev  ((a b) . c)%
 
-(car *pair*)  procedure\
+(car *pair*)  procedure  
 Returns the contents of the car field of *pair*. Note that it is an
 error to take the car of the empty list.
 
@@ -4242,7 +4354,7 @@ error to take the car of the empty list.
     (car '(1 . 2))          \ev  1
     (car '())               \ev  \scherror%
 
-(cdr *pair*)  procedure\
+(cdr *pair*)  procedure  
 Returns the contents of the cdr field of *pair*. Note that it is an
 error to take the cdr of the empty list.
 
@@ -4250,7 +4362,7 @@ error to take the cdr of the empty list.
     (cdr '(1 . 2))          \ev  2
     (cdr '())               \ev  \scherror%
 
-(set-car! *pair obj*)  procedure\
+(set-car! *pair obj*)  procedure  
 Stores *obj* in the car field of *pair*.
 
     (define (f) (list 'not-a-constant-list))
@@ -4258,15 +4370,15 @@ Stores *obj* in the car field of *pair*.
     (set-car! (f) 3)             \ev  \unspecified
     (set-car! (g) 3)             \ev  \scherror%
 
-(set-cdr! *pair obj*)  procedure\
+(set-cdr! *pair obj*)  procedure  
 Stores *obj* in the cdr field of *pair*.
 
 `(cadr pair)` procedure
 
-(caar *pair*)  procedure\
-(cadr *pair*)  procedure\
-(cdar *pair*)  procedure\
-(cddr *pair*)  procedure\
+(caar *pair*)  procedure  
+(cadr *pair*)  procedure  
+(cdar *pair*)  procedure  
+(cddr *pair*)  procedure  
 These procedures are compositions of car and cdr as follows:
 
     (define (caar x) (car (car x)))
@@ -4274,11 +4386,11 @@ These procedures are compositions of car and cdr as follows:
     (define (cdar x) (cdr (car x)))
     (define (cddr x) (cdr (cdr x)))%
 
-(caaar *pair*)  cxr library procedure\
-(caadr *pair*)  cxr library procedure\
-to 1 $\vdots$  to 1 $\vdots$\
-(cdddar *pair*)  cxr library procedure\
-(cddddr *pair*)  cxr library procedure\
+(caaar *pair*)  cxr library procedure  
+(caadr *pair*)  cxr library procedure  
+to 1 ⋮  to 1 ⋮  
+(cdddar *pair*)  cxr library procedure  
+(cddddr *pair*)  cxr library procedure  
 These twenty-four procedures are further compositions of car and cdr on
 the same principles. For example, caddr could be defined by
 
@@ -4286,13 +4398,12 @@ the same principles. For example, caddr could be defined by
 
 Arbitrary compositions up to four deep are provided.
 
-(null? *obj*)  procedure\
-Returns \#t if *obj* is the empty list, otherwise returns \#f.
+(null? *obj*)  procedure  
+Returns #t if *obj* is the empty list, otherwise returns #f.
 
-(list? *obj*)  procedure\
-Returns \#t if *obj* is a list. Otherwise, it returns \#f. By
-definition, all lists have finite length and are terminated by the empty
-list.
+(list? *obj*)  procedure  
+Returns #t if *obj* is a list. Otherwise, it returns #f. By definition,
+all lists have finite length and are terminated by the empty list.
 
             (list? '(a b c))     \ev  \schtrue
             (list? '())          \ev  \schtrue
@@ -4301,28 +4412,28 @@ list.
               (set-cdr! x x)
               (list? x))         \ev  \schfalse%
 
-(make-list *k*)  procedure\
-(make-list *k fill*)  procedure\
+(make-list *k*)  procedure  
+(make-list *k fill*)  procedure  
 Returns a newly allocated list of *k* elements. If a second argument is
 given, then each element is initialized to *fill*. Otherwise the initial
 contents of each element is unspecified.
 
     (make-list 2 3)   \ev   (3 3)%
 
-(list **obj* $\ldots\,$*)  procedure\
+(list **obj* … *)  procedure  
 Returns a newly allocated list of its arguments.
 
     (list 'a (+ 3 4) 'c)            \ev  (a 7 c)
     (list)                          \ev  ()%
 
-(length *list*)  procedure\
+(length *list*)  procedure  
 Returns the length of *list*.
 
     (length '(a b c))               \ev  3
     (length '(a (b) (c d e)))       \ev  3
     (length '())                    \ev  0%
 
-(append *list $\ldots\,$*)  procedure\
+(append *list … *)  procedure  
 The last argument, if there is one, can be of any type.
 
 Returns a list consisting of the elements of the first *list* followed
@@ -4339,17 +4450,17 @@ results if the last argument is not a proper list.
     (append '(a b) '(c . d))        \ev  (a b c . d)
     (append '() 'a)                 \ev  a%
 
-(reverse *list*)  procedure\
+(reverse *list*)  procedure  
 Returns a newly allocated list consisting of the elements of *list* in
 reverse order.
 
     (reverse '(a b c))              \ev  (c b a)
     (reverse '(a (b c) d (e (f))))  \lev  ((e (f)) d (b c) a)%
 
-(list-tail *list $k$*)  procedure\
-It is an error if *list* has fewer than $k$ elements.
+(list-tail *list *k**)  procedure  
+It is an error if *list* has fewer than *k* elements.
 
-Returns the sublist of *list* obtained by omitting the first $k$
+Returns the sublist of *list* obtained by omitting the first *k*
 elements. The list-tail procedure could be defined by
 
     (define list-tail
@@ -4358,21 +4469,21 @@ elements. The list-tail procedure could be defined by
             x
             (list-tail (cdr x) (- k 1)))))%
 
-(list-ref *list $k$*)  procedure\
+(list-ref *list *k**)  procedure  
 The *list* argument can be circular, but it is an error if *list* has
-$k$ or fewer elements.
+*k* or fewer elements.
 
-Returns the $k$th element of *list*. (This is the same as the car of
+Returns the *k*th element of *list*. (This is the same as the car of
 `(list-tail list k)`.)
 
     (list-ref '(a b c d) 2)                 \ev  c
     (list-ref '(a b c d)
               (exact (round 1.8))) \lev  c%
 
-(list-set! *list k obj*)  procedure\
-It is an error if $k$ is not a valid index of *list*.
+(list-set! *list k obj*)  procedure  
+It is an error if *k* is not a valid index of *list*.
 
-The list-set! procedure stores *obj* in element $k$ of *list*.
+The list-set! procedure stores *obj* in element *k* of *list*.
 
     (let ((ls (list 'one 'two 'five!)))
       (list-set! ls 2 'three)
@@ -4380,14 +4491,14 @@ The list-set! procedure stores *obj* in element $k$ of *list*.
 
     (list-set! '(0 1 2) 1 "oops")  \lev  \scherror  ; constant list%
 
-(memq *obj list*)  procedure\
-(memv *obj list*)  procedure\
-(member *obj list*)  procedure\
-(member *obj list compare*)  procedure\
+(memq *obj list*)  procedure  
+(memv *obj list*)  procedure  
+(member *obj list*)  procedure  
+(member *obj list compare*)  procedure  
 These procedures return the first sublist of *list* whose car is *obj*,
 where the sublists of *list* are the non-empty lists returned by
 `(list-tail list k)` for *k* less than the length of *list*. If *obj*
-does not occur in *list*, then \#f (not the empty list) is returned. The
+does not occur in *list*, then #f (not the empty list) is returned. The
 memq procedure uses eq? to compare *obj* with the elements of *list*,
 while memv uses eqv? and member uses *compare*, if given, and equal?
 otherwise.
@@ -4404,16 +4515,16 @@ otherwise.
     (memq 101 '(100 101 102))       \ev  \unspecified
     (memv 101 '(100 101 102))       \ev  (101 102)%
 
-(assq *obj alist*)  procedure\
-(assv *obj alist*)  procedure\
-(assoc *obj alist*)  procedure\
-(assoc *obj alist compare*)  procedure\
-It is an error if *alist* (for "association list") is not a list of
+(assq *obj alist*)  procedure  
+(assv *obj alist*)  procedure  
+(assoc *obj alist*)  procedure  
+(assoc *obj alist compare*)  procedure  
+It is an error if *alist* (for “association list”) is not a list of
 pairs.
 
 These procedures find the first pair in *alist* whose car field is
 *obj*, and returns that pair. If no pair in *alist* has *obj* as its
-car, then \#f (not the empty list) is returned. The assq procedure uses
+car, then #f (not the empty list) is returned. The assq procedure uses
 eq? to compare *obj* with the car fields of the pairs in *alist*, while
 assv uses eqv? and assoc uses *compare* if given and equal? otherwise.
 
@@ -4434,10 +4545,9 @@ assv uses eqv? and assoc uses *compare* if given and equal? otherwise.
 
 *Rationale:* Although they are often used as predicates, memq, memv,
 member, assq, assv, and assoc do not have question marks in their names
-because they return potentially useful values rather than just \#t or
-\#f.
+because they return potentially useful values rather than just #t or #f.
 
-(list-copy *obj*)  procedure\
+(list-copy *obj*)  procedure  
 Returns a newly allocated copy of the given *obj* if it is a list. Only
 the pairs themselves are copied; the cars of the result are the same (in
 the sense of eqv?) as the cars of *list*. If *obj* is an improper list,
@@ -4467,14 +4577,14 @@ literal expression, or read using the read procedure, and subsequently
 written out using the write procedure, will read back in as the
 identical symbol (in the sense of eqv?).
 
-*Note:* Some implementations have values known as "uninterned symbols,"
+*Note:* Some implementations have values known as “uninterned symbols,”
 which defeat write/read invariance, and also violate the rule that two
 symbols are the same if and only if their names are spelled the same.
 This report does not specify the behavior of implementation-dependent
 extensions.
 
-(symbol? *obj*)  procedure\
-Returns \#t if *obj* is a symbol, otherwise returns \#f.
+(symbol? *obj*)  procedure  
+Returns #t if *obj* is a symbol, otherwise returns #f.
 
     (symbol? 'foo)          \ev  \schtrue
     (symbol? (car '(a b)))  \ev  \schtrue
@@ -4483,15 +4593,15 @@ Returns \#t if *obj* is a symbol, otherwise returns \#f.
     (symbol? '())           \ev  \schfalse
     (symbol? \schfalse)     \ev  \schfalse%
 
-(symbol=? **symbol$_{1}$* *symbol$_{2}$* *symbol$_{3}$* $\ldots\,$*)
- procedure\
-Returns \#t if all the arguments all have the same names in the sense of
+(symbol=? **symbol<sub>1</sub>* *symbol<sub>2</sub>* *symbol<sub>3</sub>* … *)
+ procedure  
+Returns #t if all the arguments all have the same names in the sense of
 string=?.
 
 *Note:* The definition above assumes that none of the arguments are
 uninterned symbols.
 
-(symbol-\>string *symbol*)  procedure\
+(symbol->string *symbol*)  procedure  
 Returns the name of *symbol* as a string, but without adding escapes. It
 is an error to apply mutation procedures like `string-set!` to strings
 returned by this procedure.
@@ -4503,7 +4613,7 @@ returned by this procedure.
        (string->symbol "Malvina"))     
                                       \ev  "Malvina"%
 
-(string-\>symbol *string*)  procedure\
+(string->symbol *string*)  procedure  
 Returns the symbol whose name is *string*. This procedure can create
 symbols with names containing special characters that would require
 escaping when written, but does not interpret escapes in its input.
@@ -4535,120 +4645,124 @@ The following character names must be supported by all implementations
 with the given values. Implementations may add other names provided they
 cannot be interpreted as hex scalar values preceded by x.
 
-  -- --------------------------------------------
-     
-     ; [U+0007]{.roman}
-     
-     ; [U+0008]{.roman}
-     
-     ; [U+007F]{.roman}
-     
-     ; [U+001B]{.roman}
-     
-     ; the linefeed character, [U+000A]{.roman}
-     
-     ; the null character, [U+0000]{.roman}
-     
-     ; the return character, [U+000D]{.roman}
-     
-     ; the preferred way to write a space
-     
-     ; the tab character, [U+0009]{.roman}
-  -- --------------------------------------------
+|     |                                                             |
+|:----|:------------------------------------------------------------|
+|     |                                                             |
+|     | ; <span class="roman">U+0007</span>                         |
+|     |                                                             |
+|     | ; <span class="roman">U+0008</span>                         |
+|     |                                                             |
+|     | ; <span class="roman">U+007F</span>                         |
+|     |                                                             |
+|     | ; <span class="roman">U+001B</span>                         |
+|     |                                                             |
+|     | ; the linefeed character, <span class="roman">U+000A</span> |
+|     |                                                             |
+|     | ; the null character, <span class="roman">U+0000</span>     |
+|     |                                                             |
+|     | ; the return character, <span class="roman">U+000D</span>   |
+|     |                                                             |
+|     | ; the preferred way to write a space                        |
+|     |                                                             |
+|     | ; the tab character, <span class="roman">U+0009</span>      |
 
 Here are some additional examples:
 
-  -- -------------------------------------------------
-     
-     ; lower case letter
-     
-     ; upper case letter
-     
-     ; left parenthesis
-     
-     ; the space character
-     
-     ; $\lambda$ (if character is supported)
-     
-     ; $\iota$ (if character and name are supported)
-  -- -------------------------------------------------
+|     |                                             |
+|:----|:--------------------------------------------|
+|     |                                             |
+|     | ; lower case letter                         |
+|     |                                             |
+|     | ; upper case letter                         |
+|     |                                             |
+|     | ; left parenthesis                          |
+|     |                                             |
+|     | ; the space character                       |
+|     |                                             |
+|     | ; *λ* (if character is supported)           |
+|     |                                             |
+|     | ; *ι* (if character and name are supported) |
 
-Case is significant in `#``‘ `character, and in
-`#``‘ `$\langle$character name$\rangle$, but not in
-`#``‘ `xhex scalar value. If character in `#``‘ `character is
+Case is significant in `#``‘ `character, and in `#``‘ `⟨character name⟩,
+but not in `#``‘ `xhex scalar value. If character in `#``‘ `character is
 alphabetic, then any character immediately following character cannot be
 one that can appear in an identifier. This rule resolves the ambiguous
-case where, for example, the sequence of characters "`#‘ space`" could
+case where, for example, the sequence of characters “`#‘ space`” could
 be taken to be either a representation of the space character or a
-representation of the character "`#‘ s`" followed by a representation of
-the symbol "`pace`."
+representation of the character “`#‘ s`” followed by a representation of
+the symbol “`pace`.”
 
 Characters written in the `#``‘ ` notation are self-evaluating. That is,
 they do not have to be quoted in programs.
 
 Some of the procedures that operate on characters ignore the difference
 between upper case and lower case. The procedures that ignore case have
-"`-ci`" (for "case insensitive") embedded in their names.
+“`-ci`” (for “case insensitive”) embedded in their names.
 
-(char? *obj*)  procedure\
-Returns \#t if *obj* is a character, otherwise returns \#f.
+(char? *obj*)  procedure  
+Returns #t if *obj* is a character, otherwise returns #f.
 
-(char=? *$char_{1}$ $char_{2}$ $char_{3}$ $\ldots\,$*)  procedure\
-(char\<? *$char_{1}$ $char_{2}$ $char_{3}$ $\ldots\,$*)  procedure\
-(char>? *$char_{1}$ $char_{2}$ $char_{3}$ $\ldots\,$*)  procedure\
-(char\<=? *$char_{1}$ $char_{2}$ $char_{3}$ $\ldots\,$*)  procedure\
-(char>=? *$char_{1}$ $char_{2}$ $char_{3}$ $\ldots\,$*)  procedure\
-These procedures return \#t if the results of passing their arguments to
+(char=? **c**h**a**r*<sub>1</sub> *c**h**a**r*<sub>2</sub> *c**h**a**r*<sub>3</sub> … *)
+ procedure  
+(char\<? **c**h**a**r*<sub>1</sub> *c**h**a**r*<sub>2</sub> *c**h**a**r*<sub>3</sub> … *)
+ procedure  
+(char>? **c**h**a**r*<sub>1</sub> *c**h**a**r*<sub>2</sub> *c**h**a**r*<sub>3</sub> … *)
+ procedure  
+(char\<=? **c**h**a**r*<sub>1</sub> *c**h**a**r*<sub>2</sub> *c**h**a**r*<sub>3</sub> … *)
+ procedure  
+(char>=? **c**h**a**r*<sub>1</sub> *c**h**a**r*<sub>2</sub> *c**h**a**r*<sub>3</sub> … *)
+ procedure  
+These procedures return #t if the results of passing their arguments to
 charinteger are respectively equal, monotonically increasing,
 monotonically decreasing, monotonically non-decreasing, or monotonically
 non-increasing.
 
 These predicates are required to be transitive.
 
-(char-ci=? *$char_{1}$ $char_{2}$ $char_{3}$ $\ldots\,$*)
- char library procedure\
-(char-ci\<? *$char_{1}$ $char_{2}$ $char_{3}$ $\ldots\,$*)
- char library procedure\
-(char-ci>? *$char_{1}$ $char_{2}$ $char_{3}$ $\ldots\,$*)
- char library procedure\
-(char-ci\<=? *$char_{1}$ $char_{2}$ $char_{3}$ $\ldots\,$*)
- char library procedure\
-(char-ci>=? *$char_{1}$ $char_{2}$ $char_{3}$ $\ldots\,$*)
- char library procedure\
+(char-ci=? **c**h**a**r*<sub>1</sub> *c**h**a**r*<sub>2</sub> *c**h**a**r*<sub>3</sub> … *)
+ char library procedure  
+(char-ci\<? **c**h**a**r*<sub>1</sub> *c**h**a**r*<sub>2</sub> *c**h**a**r*<sub>3</sub> … *)
+ char library procedure  
+(char-ci>? **c**h**a**r*<sub>1</sub> *c**h**a**r*<sub>2</sub> *c**h**a**r*<sub>3</sub> … *)
+ char library procedure  
+(char-ci\<=? **c**h**a**r*<sub>1</sub> *c**h**a**r*<sub>2</sub> *c**h**a**r*<sub>3</sub> … *)
+ char library procedure  
+(char-ci>=? **c**h**a**r*<sub>1</sub> *c**h**a**r*<sub>2</sub> *c**h**a**r*<sub>3</sub> … *)
+ char library procedure  
 These procedures are similar to char=? et cetera, but they treat upper
 case and lower case letters as the same. For example, (char-ci=? #`‘ `A
-\#`‘ `a) returns \#t.
+#`‘ `a) returns #t.
 
 Specifically, these procedures behave as if char-foldcase were applied
 to their arguments before they were compared.
 
-(char-alphabetic? *char*)  char library procedure\
-(char-numeric? *char*)  char library procedure\
-(char-whitespace? *char*)  char library procedure\
-(char-upper-case? *letter*)  char library procedure\
-(char-lower-case? *letter*)  char library procedure\
-These procedures return \#t if their arguments are alphabetic, numeric,
+(char-alphabetic? *char*)  char library procedure  
+(char-numeric? *char*)  char library procedure  
+(char-whitespace? *char*)  char library procedure  
+(char-upper-case? *letter*)  char library procedure  
+(char-lower-case? *letter*)  char library procedure  
+These procedures return #t if their arguments are alphabetic, numeric,
 whitespace, upper case, or lower case characters, respectively,
-otherwise they return \#f.
+otherwise they return #f.
 
-Specifically, they must return \#t when applied to characters with the
+Specifically, they must return #t when applied to characters with the
 Unicode properties Alphabetic, Numeric_Type=Decimal, White_Space,
-Uppercase, and Lowercase respectively, and \#f when applied to any other
+Uppercase, and Lowercase respectively, and #f when applied to any other
 Unicode characters. Note that many Unicode characters are alphabetic but
 neither upper nor lower case.
 
-(digit-value *char*)  char library procedure\
+(digit-value *char*)  char library procedure  
 This procedure returns the numeric value (0 to 9) of its argument if it
-is a numeric digit (that is, if char-numeric? returns \#t), or \#f on
-any other character.
+is a numeric digit (that is, if char-numeric? returns #t), or #f on any
+other character.
 
     (digit-value \#\backwhack{}3) \ev 3
     (digit-value \#\backwhack{}x0664) \ev 4
     (digit-value \#\backwhack{}x0AE6) \ev 0
     (digit-value \#\backwhack{}x0EA6) \ev \schfalse%
 
-(char-\>integer *char*)  procedure\
-(integer-\>char *$n$*)  procedure\
+(char->integer *char*)  procedure  
+(integer->char **n**)  procedure  
 Given a Unicode character, charinteger returns an exact integer between
 0 and `#xD7FF` or between `#xE000` and `#x10FFFF` which is equal to the
 Unicode scalar value of that character. Given a non-Unicode character,
@@ -4659,9 +4773,9 @@ representation internally.
 Given an exact integer that is the value returned by a character when
 charinteger is applied to it, integerchar returns that character.
 
-(char-upcase *char*)  char library procedure\
-(char-downcase *char*)  char library procedure\
-(char-foldcase *char*)  char library procedure\
+(char-upcase *char*)  char library procedure  
+(char-downcase *char*)  char library procedure  
+(char-foldcase *char*)  char library procedure  
 The char-upcase procedure, given an argument that is the lowercase part
 of a Unicode casing pair, returns the uppercase member of the pair,
 provided that both characters are supported by the Scheme
@@ -4680,8 +4794,8 @@ The char-foldcase procedure applies the Unicode simple case-folding
 algorithm to its argument and returns the result. Note that
 language-sensitive folding is not used. If the character that results
 from folding is not supported by the implementation, the argument is
-returned. See UAX #44 []{.citation cites="uax44"} (part of the Unicode
-Standard) for details.
+returned. See UAX #44 <span class="citation" cites="uax44"></span> (part
+of the Unicode Standard) for details.
 
 Note that many Unicode lowercase characters do not have uppercase
 equivalents.
@@ -4689,9 +4803,9 @@ equivalents.
 ## Strings
 
 Strings are sequences of characters. Strings are written as sequences of
-characters enclosed within quotation marks (\"). Within a string
-literal, various escape sequences represent characters other than
-themselves. Escape sequences always start with a backslash (`‘ `):
+characters enclosed within quotation marks ("). Within a string literal,
+various escape sequences represent characters other than themselves.
+Escape sequences always start with a backslash (`‘ `):
 
 -   `‘ `a : alarm, U+0007
 
@@ -4740,7 +4854,7 @@ character of a string has index 0, the second has index 1, and so on.
 
 Some of the procedures that operate on strings ignore the difference
 between upper and lower case. The names of the versions that ignore case
-end with "-ci" (for "case insensitive").
+end with “-ci” (for “case insensitive”).
 
 Implementations may forbid certain characters from appearing in strings.
 However, with the exception of `#‘ null`, ASCII characters must not be
@@ -4758,34 +4872,34 @@ procedure passed to string-map (see section [\[stringmap\]](#stringmap))
 to return a forbidden character, or for read-string (see
 section [\[readstring\]](#readstring)) to attempt to read one.
 
-(string? *obj*)  procedure\
-Returns \#t if *obj* is a string, otherwise returns \#f.
+(string? *obj*)  procedure  
+Returns #t if *obj* is a string, otherwise returns #f.
 
-(make-string *$k$*)  procedure\
-(make-string *$k$ char*)  procedure\
+(make-string **k**)  procedure  
+(make-string **k* char*)  procedure  
 The make-string procedure returns a newly allocated string of length
-$k$. If *char* is given, then all the characters of the string are
+*k*. If *char* is given, then all the characters of the string are
 initialized to *char*, otherwise the contents of the string are
 unspecified.
 
-(string *char $\ldots\,$*)  procedure\
+(string *char … *)  procedure  
 Returns a newly allocated string composed of the arguments. It is
 analogous to list.
 
-(string-length *string*)  procedure\
+(string-length *string*)  procedure  
 Returns the number of characters in the given *string*.
 
-(string-ref *string $k$*)  procedure\
-It is an error if $k$ is not a valid index of *string*.
+(string-ref *string *k**)  procedure  
+It is an error if *k* is not a valid index of *string*.
 
-The string-ref procedure returns character $k$ of *string* using
+The string-ref procedure returns character *k* of *string* using
 zero-origin indexing. There is no requirement for this procedure to
 execute in constant time.
 
-(string-set! *string k char*)  procedure\
-It is an error if $k$ is not a valid index of *string*.
+(string-set! *string k char*)  procedure  
+It is an error if *k* is not a valid index of *string*.
 
-The string-set! procedure stores *char* in element $k$ of *string*.
+The string-set! procedure stores *char* in element *k* of *string*.
 There is no requirement for this procedure to execute in constant time.
 
     (define (f) (make-string 3 \sharpsign\backwhack{}*))
@@ -4796,35 +4910,35 @@ There is no requirement for this procedure to execute in constant time.
                  0
                  \sharpsign\backwhack{}?)  \ev  \scherror%
 
-(string=? *$string_{1}$ $string_{2}$ $string_{3}$ $\ldots\,$*)
- procedure\
-Returns \#t if all the strings are the same length and contain exactly
-the same characters in the same positions, otherwise returns \#f.
+(string=? **s**t**r**i**n**g*<sub>1</sub> *s**t**r**i**n**g*<sub>2</sub> *s**t**r**i**n**g*<sub>3</sub> … *)
+ procedure  
+Returns #t if all the strings are the same length and contain exactly
+the same characters in the same positions, otherwise returns #f.
 
-(string-ci=? *$string_{1}$ $string_{2}$ $string_{3}$ $\ldots\,$*)
- char library procedure\
-Returns \#t if, after case-folding, all the strings are the same length
+(string-ci=? **s**t**r**i**n**g*<sub>1</sub> *s**t**r**i**n**g*<sub>2</sub> *s**t**r**i**n**g*<sub>3</sub> … *)
+ char library procedure  
+Returns #t if, after case-folding, all the strings are the same length
 and contain the same characters in the same positions, otherwise returns
-\#f. Specifically, these procedures behave as if string-foldcase were
+#f. Specifically, these procedures behave as if string-foldcase were
 applied to their arguments before comparing them.
 
-(string\<? *$string_{1}$ $string_{2}$ $string_{3}$ $\ldots\,$*)
- procedure\
-(string-ci\<? *$string_{1}$ $string_{2}$ $string_{3}$ $\ldots\,$*)
- char library procedure\
-(string>? *$string_{1}$ $string_{2}$ $string_{3}$ $\ldots\,$*)
- procedure\
-(string-ci>? *$string_{1}$ $string_{2}$ $string_{3}$ $\ldots\,$*)
- char library procedure\
-(string\<=? *$string_{1}$ $string_{2}$ $string_{3}$ $\ldots\,$*)
- procedure\
-(string-ci\<=? *$string_{1}$ $string_{2}$ $string_{3}$ $\ldots\,$*)
- char library procedure\
-(string>=? *$string_{1}$ $string_{2}$ $string_{3}$ $\ldots\,$*)
- procedure\
-(string-ci>=? *$string_{1}$ $string_{2}$ $string_{3}$ $\ldots\,$*)
- char library procedure\
-These procedures return \#t if their arguments are (respectively):
+(string\<? **s**t**r**i**n**g*<sub>1</sub> *s**t**r**i**n**g*<sub>2</sub> *s**t**r**i**n**g*<sub>3</sub> … *)
+ procedure  
+(string-ci\<? **s**t**r**i**n**g*<sub>1</sub> *s**t**r**i**n**g*<sub>2</sub> *s**t**r**i**n**g*<sub>3</sub> … *)
+ char library procedure  
+(string>? **s**t**r**i**n**g*<sub>1</sub> *s**t**r**i**n**g*<sub>2</sub> *s**t**r**i**n**g*<sub>3</sub> … *)
+ procedure  
+(string-ci>? **s**t**r**i**n**g*<sub>1</sub> *s**t**r**i**n**g*<sub>2</sub> *s**t**r**i**n**g*<sub>3</sub> … *)
+ char library procedure  
+(string\<=? **s**t**r**i**n**g*<sub>1</sub> *s**t**r**i**n**g*<sub>2</sub> *s**t**r**i**n**g*<sub>3</sub> … *)
+ procedure  
+(string-ci\<=? **s**t**r**i**n**g*<sub>1</sub> *s**t**r**i**n**g*<sub>2</sub> *s**t**r**i**n**g*<sub>3</sub> … *)
+ char library procedure  
+(string>=? **s**t**r**i**n**g*<sub>1</sub> *s**t**r**i**n**g*<sub>2</sub> *s**t**r**i**n**g*<sub>3</sub> … *)
+ procedure  
+(string-ci>=? **s**t**r**i**n**g*<sub>1</sub> *s**t**r**i**n**g*<sub>2</sub> *s**t**r**i**n**g*<sub>3</sub> … *)
+ char library procedure  
+These procedures return #t if their arguments are (respectively):
 monotonically increasing, monotonically decreasing, monotonically
 non-decreasing, or monotonically non-increasing.
 
@@ -4838,7 +4952,7 @@ characters, and if the two strings differ in length but are the same up
 to the length of the shorter string, the shorter string would be
 considered to be lexicographically less than the longer string. However,
 it is also permitted to use the natural ordering imposed by the
-implementation's internal representation of strings, or a more complex
+implementation’s internal representation of strings, or a more complex
 locale-specific ordering.
 
 In all cases, a pair of strings must satisfy exactly one of string\<?,
@@ -4846,13 +4960,13 @@ string=?, and string>?, and must satisfy string\<=? if and only if they
 do not satisfy string>? and string>=? if and only if they do not satisfy
 string\<?.
 
-The "`-ci`" procedures behave as if they applied string-foldcase to
+The “`-ci`” procedures behave as if they applied string-foldcase to
 their arguments before invoking the corresponding procedures without
-"`-ci`".
+“`-ci`”.
 
-(string-upcase *string*)  char library procedure\
-(string-downcase *string*)  char library procedure\
-(string-foldcase *string*)  char library procedure\
+(string-upcase *string*)  char library procedure  
+(string-downcase *string*)  char library procedure  
+(string-foldcase *string*)  char library procedure  
 These procedures apply the Unicode full string uppercasing, lowercasing,
 and case-folding algorithms to their arguments and return the result. In
 certain cases, the result differs in length from the argument. If the
@@ -4861,27 +4975,27 @@ may be returned. Note that language-sensitive mappings and foldings are
 not used.
 
 The Unicode Standard prescribes special treatment of the Greek letter
-$\Sigma$, whose normal lower-case form is $\sigma$ but which becomes
-$\varsigma$ at the end of a word. See UAX #44 []{.citation
-cites="uax44"} (part of the Unicode Standard) for details. However,
-implementations of string-downcase are not required to provide this
-behavior, and may choose to change $\Sigma$ to $\sigma$ in all cases.
+*Σ*, whose normal lower-case form is *σ* but which becomes ς at the end
+of a word. See UAX #44 <span class="citation" cites="uax44"></span>
+(part of the Unicode Standard) for details. However, implementations of
+string-downcase are not required to provide this behavior, and may
+choose to change *Σ* to *σ* in all cases.
 
-(substring *string start end*)  procedure\
+(substring *string start end*)  procedure  
 The substring procedure returns a newly allocated string formed from the
 characters of *string* beginning with index *start* and ending with
 index *end*. This is equivalent to calling string-copy with the same
 arguments, but is provided for backward compatibility and stylistic
 flexibility.
 
-(string-append **string* $\ldots\,$*)  procedure\
+(string-append **string* … *)  procedure  
 Returns a newly allocated string whose characters are the concatenation
 of the characters in the given strings.
 
-(string-\>list *string*)  procedure\
-(string-\>list *string start*)  procedure\
-(string-\>list *string start end*)  procedure\
-(list-\>string *list*)  procedure\
+(string->list *string*)  procedure  
+(string->list *string start*)  procedure  
+(string->list *string start end*)  procedure  
+(list->string *list*)  procedure  
 It is an error if any element of *list* is not a character.
 
 The stringlist procedure returns a newly allocated list of the
@@ -4890,15 +5004,15 @@ newly allocated string formed from the elements in the list *list*. In
 both procedures, order is preserved. stringlist and liststring are
 inverses so far as equal? is concerned.
 
-(string-copy *string*)  procedure\
-(string-copy *string start*)  procedure\
-(string-copy *string start end*)  procedure\
+(string-copy *string*)  procedure  
+(string-copy *string start*)  procedure  
+(string-copy *string start end*)  procedure  
 Returns a newly allocated copy of the part of the given *string* between
 *start* and *end*.
 
-(string-copy! *to at from*)  procedure\
-(string-copy! *to at from start*)  procedure\
-(string-copy! *to at from start end*)  procedure\
+(string-copy! *to at from*)  procedure  
+(string-copy! *to at from start*)  procedure  
+(string-copy! *to at from start end*)  procedure  
 It is an error if *at* is less than zero or greater than the length of
 *to*. It is also an error if (- (string-length *to*) *at*) is less than
 (- *end* *start*).
@@ -4916,9 +5030,9 @@ such circumstances.
     (string-copy! b 1 a 0 2)
     b \ev "a12de"%
 
-(string-fill! *string fill*)  procedure\
-(string-fill! *string fill start*)  procedure\
-(string-fill! *string fill start end*)  procedure\
+(string-fill! *string fill*)  procedure  
+(string-fill! *string fill start*)  procedure  
+(string-fill! *string fill start end*)  procedure  
 It is an error if *fill* is not a character.
 
 The string-fill! procedure stores *fill* in the elements of *string*
@@ -4940,7 +5054,7 @@ than the length of the vector.
 
 Vectors are written using the notation `#(obj \ldots\,)`. For example, a
 vector of length 3 containing the number zero in element 0, the list (2
-2 2 2) in element 1, and the string \"Anna\" in element 2 can be written
+2 2 2) in element 1, and the string "Anna" in element 2 can be written
 as follows:
 
     \#(0 (2 2 2 2) "Anna")%
@@ -4948,28 +5062,28 @@ as follows:
 Vector constants are self-evaluating, so they do not need to be quoted
 in programs.
 
-(vector? *obj*)  procedure\
-Returns \#t if *obj* is a vector; otherwise returns \#f.
+(vector? *obj*)  procedure  
+Returns #t if *obj* is a vector; otherwise returns #f.
 
-(make-vector *k*)  procedure\
-(make-vector *k fill*)  procedure\
+(make-vector *k*)  procedure  
+(make-vector *k fill*)  procedure  
 Returns a newly allocated vector of *k* elements. If a second argument
 is given, then each element is initialized to *fill*. Otherwise the
 initial contents of each element is unspecified.
 
-(vector *obj $\ldots\,$*)  procedure\
+(vector *obj … *)  procedure  
 Returns a newly allocated vector whose elements contain the given
 arguments. It is analogous to list.
 
     (vector 'a 'b 'c)               \ev  \#(a b c)%
 
-(vector-length *vector*)  procedure\
+(vector-length *vector*)  procedure  
 Returns the number of elements in *vector* as an exact integer.
 
-(vector-ref *vector k*)  procedure\
-It is an error if $k$ is not a valid index of *vector*.
+(vector-ref *vector k*)  procedure  
+It is an error if *k* is not a valid index of *vector*.
 
-The vector-ref procedure returns the contents of element $k$ of
+The vector-ref procedure returns the contents of element *k* of
 *vector*.
 
     (vector-ref '\#(1 1 2 3 5 8 13 21)
@@ -4978,10 +5092,10 @@ The vector-ref procedure returns the contents of element $k$ of
                 (exact
                  (round (* 2 (acos -1))))) \lev 13%
 
-(vector-set! *vector k obj*)  procedure\
-It is an error if $k$ is not a valid index of *vector*.
+(vector-set! *vector k obj*)  procedure  
+It is an error if *k* is not a valid index of *vector*.
 
-The vector-set! procedure stores *obj* in element $k$ of *vector*.
+The vector-set! procedure stores *obj* in element *k* of *vector*.
 
     (let ((vec (vector 0 '(2 2 2 2) "Anna")))
       (vector-set! vec 1 '("Sue" "Sue"))
@@ -4989,14 +5103,14 @@ The vector-set! procedure stores *obj* in element $k$ of *vector*.
 
     (vector-set! '\#(0 1 2) 1 "doe")  \lev  \scherror  ; constant vector%
 
-(vector-\>list *vector*)  procedure\
-(vector-\>list *vector start*)  procedure\
-(vector-\>list *vector start end*)  procedure\
-(list-\>vector *list*)  procedure\
-The vector-\>list procedure returns a newly allocated list of the
-objects contained in the elements of *vector* between *start* and *end*.
-The list-\>vector procedure returns a newly created vector initialized
-to the elements of the list *list*.
+(vector->list *vector*)  procedure  
+(vector->list *vector start*)  procedure  
+(vector->list *vector start end*)  procedure  
+(list->vector *list*)  procedure  
+The vector->list procedure returns a newly allocated list of the objects
+contained in the elements of *vector* between *start* and *end*. The
+list->vector procedure returns a newly created vector initialized to the
+elements of the list *list*.
 
 In both procedures, order is preserved.
 
@@ -5004,18 +5118,18 @@ In both procedures, order is preserved.
     (vector->list '\#(dah dah didah) 1 2) \lev (dah)
     (list->vector '(dididit dah))   \lev  \#(dididit dah)%
 
-(vector-\>string *vector*)  procedure\
-(vector-\>string *vector start*)  procedure\
-(vector-\>string *vector start end*)  procedure\
-(string-\>vector *string*)  procedure\
-(string-\>vector *string start*)  procedure\
-(string-\>vector *string start end*)  procedure\
+(vector->string *vector*)  procedure  
+(vector->string *vector start*)  procedure  
+(vector->string *vector start end*)  procedure  
+(string->vector *string*)  procedure  
+(string->vector *string start*)  procedure  
+(string->vector *string start end*)  procedure  
 It is an error if any element of *vector* between *start* and *end* is
 not a character.
 
-The vector-\>string procedure returns a newly allocated string of the
+The vector->string procedure returns a newly allocated string of the
 objects contained in the elements of *vector* between *start* and *end*.
-The string-\>vector procedure returns a newly created vector initialized
+The string->vector procedure returns a newly created vector initialized
 to the elements of the string *string* between *start* and *end*.
 
 In both procedures, order is preserved.
@@ -5024,9 +5138,9 @@ In both procedures, order is preserved.
     (vector->string
       \#(\#\backwhack{}1 \#\backwhack{}2 \#\backwhack{}3) \ev "123"
 
-(vector-copy *vector*)  procedure\
-(vector-copy *vector start*)  procedure\
-(vector-copy *vector start end*)  procedure\
+(vector-copy *vector*)  procedure  
+(vector-copy *vector start*)  procedure  
+(vector-copy *vector start end*)  procedure  
 Returns a newly allocated copy of the elements of the given *vector*
 between *start* and *end*. The elements of the new vector are the same
 (in the sense of eqv?) as the elements of the old.
@@ -5038,9 +5152,9 @@ between *start* and *end*. The elements of the new vector are the same
     (define c (vector-copy b 1 3))
     c \ev \#(8 2)%
 
-(vector-copy! *to at from*)  procedure\
-(vector-copy! *to at from start*)  procedure\
-(vector-copy! *to at from start end*)  procedure\
+(vector-copy! *to at from*)  procedure  
+(vector-copy! *to at from start*)  procedure  
+(vector-copy! *to at from start end*)  procedure  
 It is an error if *at* is less than zero or greater than the length of
 *to*. It is also an error if (- (vector-length *to*) *at*) is less than
 (- *end* *start*).
@@ -5058,15 +5172,15 @@ circumstances.
     (vector-copy! b 1 a 0 2)
     b \ev \#(10 1 2 40 50)%
 
-(vector-append **vector* $\ldots\,$*)  procedure\
+(vector-append **vector* … *)  procedure  
 Returns a newly allocated vector whose elements are the concatenation of
 the elements of the given vectors.
 
     (vector-append \#(a b c) \#(d e f)) \lev \#(a b c d e f)%
 
-(vector-fill! *vector fill*)  procedure\
-(vector-fill! *vector fill start*)  procedure\
-(vector-fill! *vector fill start end*)  procedure\
+(vector-fill! *vector fill*)  procedure  
+(vector-fill! *vector fill start*)  procedure  
+(vector-fill! *vector fill start end*)  procedure  
 The vector-fill! procedure stores *fill* in the elements of *vector*
 between *start* and *end*.
 
@@ -5097,37 +5211,37 @@ follows:
 Bytevector constants are self-evaluating, so they do not need to be
 quoted in programs.
 
-(bytevector? *obj*)  procedure\
-Returns \#t if *obj* is a bytevector. Otherwise, \#f is returned.
+(bytevector? *obj*)  procedure  
+Returns #t if *obj* is a bytevector. Otherwise, #f is returned.
 
-(make-bytevector *k*)  procedure\
-(make-bytevector *k byte*)  procedure\
+(make-bytevector *k*)  procedure  
+(make-bytevector *k byte*)  procedure  
 The make-bytevector procedure returns a newly allocated bytevector of
-length $k$. If *byte* is given, then all elements of the bytevector are
+length *k*. If *byte* is given, then all elements of the bytevector are
 initialized to *byte*, otherwise the contents of each element are
 unspecified.
 
     (make-bytevector 2 12) \ev \#u8(12 12)%
 
-(bytevector **byte* $\ldots\,$*)  procedure\
+(bytevector **byte* … *)  procedure  
 Returns a newly allocated bytevector containing its arguments.
 
     (bytevector 1 3 5 1 3 5)        \ev  \#u8(1 3 5 1 3 5)
     (bytevector)                          \ev  \#u8()%
 
-(bytevector-length *bytevector*)  procedure\
+(bytevector-length *bytevector*)  procedure  
 Returns the length of *bytevector* in bytes as an exact integer.
 
-(bytevector-u8-ref *bytevector k*)  procedure\
-It is an error if $k$ is not a valid index of *bytevector*.
+(bytevector-u8-ref *bytevector k*)  procedure  
+It is an error if *k* is not a valid index of *bytevector*.
 
 Returns the *k*th byte of *bytevector*.
 
     (bytevector-u8-ref '\#u8(1 1 2 3 5 8 13 21)
                 5)  \lev  8%
 
-(bytevector-u8-set! *bytevector k byte*)  procedure\
-It is an error if $k$ is not a valid index of *bytevector*.
+(bytevector-u8-set! *bytevector k byte*)  procedure  
+It is an error if *k* is not a valid index of *bytevector*.
 
 Stores *byte* as the *k*th byte of *bytevector*.
 
@@ -5135,18 +5249,18 @@ Stores *byte* as the *k*th byte of *bytevector*.
       (bytevector-u8-set! bv 1 3)
       bv) \lev \#u8(1 3 3 4)%
 
-(bytevector-copy *bytevector*)  procedure\
-(bytevector-copy *bytevector start*)  procedure\
-(bytevector-copy *bytevector start end*)  procedure\
+(bytevector-copy *bytevector*)  procedure  
+(bytevector-copy *bytevector start*)  procedure  
+(bytevector-copy *bytevector start end*)  procedure  
 Returns a newly allocated bytevector containing the bytes in
 *bytevector* between *start* and *end*.
 
     (define a \#u8(1 2 3 4 5))
     (bytevector-copy a 2 4)) \ev \#u8(3 4)%
 
-(bytevector-copy! *to at from*)  procedure\
-(bytevector-copy! *to at from start*)  procedure\
-(bytevector-copy! *to at from start end*)  procedure\
+(bytevector-copy! *to at from*)  procedure  
+(bytevector-copy! *to at from start*)  procedure  
+(bytevector-copy! *to at from start end*)  procedure  
 It is an error if *at* is less than zero or greater than the length of
 *to*. It is also an error if (- (bytevector-length *to*) *at*) is less
 than (- *end* *start*).
@@ -5164,21 +5278,21 @@ such circumstances.
     (bytevector-copy! b 1 a 0 2)
     b \ev \#u8(10 1 2 40 50)%
 
-*Note:* This procedure appears in R$^{6}$RS, but places the source
+*Note:* This procedure appears in R<sup>6</sup>RS, but places the source
 before the destination, contrary to other such procedures in Scheme.
 
-(bytevector-append **bytevector* $\ldots\,$*)  procedure\
+(bytevector-append **bytevector* … *)  procedure  
 Returns a newly allocated bytevector whose elements are the
 concatenation of the elements in the given bytevectors.
 
     (bytevector-append \#u8(0 1 2) \#u8(3 4 5)) \lev \#u8(0 1 2 3 4 5)%
 
-(utf8-\>string *bytevector*)  procedure\
-(utf8-\>string *bytevector start*)  procedure\
-(utf8-\>string *bytevector start end*)  procedure\
-(string-\>utf8 *string*)  procedure\
-(string-\>utf8 *string start*)  procedure\
-(string-\>utf8 *string start end*)  procedure\
+(utf8->string *bytevector*)  procedure  
+(utf8->string *bytevector start*)  procedure  
+(utf8->string *bytevector start end*)  procedure  
+(string->utf8 *string*)  procedure  
+(string->utf8 *string start*)  procedure  
+(string->utf8 *string start end*)  procedure  
 It is an error for *bytevector* to contain invalid UTF-8 byte sequences.
 
 These procedures translate between strings and bytevectors that encode
@@ -5199,8 +5313,8 @@ that invoke procedure arguments always do so in the same dynamic
 environment as the call of the original procedure. The
 procedure? predicate is also described here.
 
-(procedure? *obj*)  procedure\
-Returns \#t if *obj* is a procedure, otherwise returns \#f.
+(procedure? *obj*)  procedure  
+Returns #t if *obj* is a procedure, otherwise returns #f.
 
     (procedure? car)            \ev  \schtrue
     (procedure? 'car)           \ev  \schfalse
@@ -5211,9 +5325,9 @@ Returns \#t if *obj* is a procedure, otherwise returns \#f.
     (call-with-current-continuation procedure?)
                                 \ev  \schtrue%
 
-(apply *proc *arg$_{1}$* $\ldots$ args*)  procedure\
+(apply *proc *arg<sub>1</sub>* … args*)  procedure  
 The apply procedure calls *proc* with the elements of the list (append
-(list *arg$_{1}$* $\ldots\,$) *args*) as the actual arguments.
+(list *arg<sub>1</sub>* … ) *args*) as the actual arguments.
 
     (apply + (list 3 4))              \ev  7
 
@@ -5224,7 +5338,7 @@ The apply procedure calls *proc* with the elements of the list (append
 
     ((compose sqrt *) 12 75)              \ev  30%
 
-(map *proc *list$_{1}$* *list$_{2}$* $\ldots\,$*)  procedure\
+(map *proc *list<sub>1</sub>* *list<sub>2</sub>* … *)  procedure  
 It is an error if *proc* does not accept as many arguments as there are
 *list*s and return a single value.
 
@@ -5250,7 +5364,8 @@ from map, the values returned by earlier returns are not mutated.
              count)
            '(a b)))                 \ev  (1 2) \var{or} (2 1)%
 
-(string-map *proc *string$_{1}$* *string$_{2}$* $\ldots\,$*)  procedure\
+(string-map *proc *string<sub>1</sub>* *string<sub>2</sub>* … *)
+ procedure  
 It is an error if *proc* does not accept as many arguments as there are
 *string*s and return a single character.
 
@@ -5276,7 +5391,8 @@ returned by earlier returns are not mutated.
      "studlycaps xxx"
      "ululululul")   \lev   "StUdLyCaPs"%
 
-(vector-map *proc *vector$_{1}$* *vector$_{2}$* $\ldots\,$*)  procedure\
+(vector-map *proc *vector<sub>1</sub>* *vector<sub>2</sub>* … *)
+ procedure  
 It is an error if *proc* does not accept as many arguments as there are
 *vector*s and return a single value.
 
@@ -5302,7 +5418,7 @@ returned by earlier returns are not mutated.
          count)
        '\#(a b)))                     \ev  \#(1 2) \var{or} \#(2 1)%
 
-(for-each *proc *list$_{1}$* *list$_{2}$* $\ldots\,$*)  procedure\
+(for-each *proc *list<sub>1</sub>* *list<sub>2</sub>* … *)  procedure  
 It is an error if *proc* does not accept as many arguments as there are
 *list*s.
 
@@ -5323,8 +5439,8 @@ It is an error for *proc* to mutate any of the lists.
                 '(0 1 2 3 4))
       v)                                \ev  \#(0 1 4 9 16)%
 
-(string-for-each *proc *string$_{1}$* *string$_{2}$* $\ldots\,$*)
- procedure\
+(string-for-each *proc *string<sub>1</sub>* *string<sub>2</sub>* … *)
+ procedure  
 It is an error if *proc* does not accept as many arguments as there are
 *string*s.
 
@@ -5343,8 +5459,8 @@ runs out. It is an error for *proc* to mutate any of the strings.
        "abcde")
       v)                         \ev  (101 100 99 98 97)%
 
-(vector-for-each *proc *vector$_{1}$* *vector$_{2}$* $\ldots\,$*)
- procedure\
+(vector-for-each *proc *vector<sub>1</sub>* *vector<sub>2</sub>* … *)
+ procedure  
 It is an error if *proc* does not accept as many arguments as there are
 *vector*s.
 
@@ -5363,13 +5479,13 @@ runs out. It is an error for *proc* to mutate any of the vectors.
        '\#(0 1 2 3 4))
       v)                                \ev  (0 1 4 9 16)%
 
-(call-with-current-continuation *proc*)  procedure\
-(call/cc *proc*)  procedure\
+(call-with-current-continuation *proc*)  procedure  
+(call/cc *proc*)  procedure  
 It is an error if *proc* does not accept one argument.
 
 The procedure call-with-current-continuation (or its equivalent
 abbreviation call/cc) packages the current continuation (see the
-rationale below) as an "escape procedure" and passes it as an argument
+rationale below) as an “escape procedure” and passes it as an argument
 to *proc*. The escape procedure is a Scheme procedure that, if it is
 later called, will abandon whatever continuation is in effect at that
 later time and will instead use the continuation that was in effect when
@@ -5441,7 +5557,7 @@ result, print it on the screen, prompt for the next input, evaluate it,
 and so on forever. Most of the time the continuation includes actions
 specified by user code, as in a continuation that will take the result,
 multiply it by the value stored in a local variable, add seven, and give
-the answer to the REPL's continuation to be printed. Normally these
+the answer to the REPL’s continuation to be printed. Normally these
 ubiquitous continuations are hidden behind the scenes and programmers do
 not think much about them. On rare occasions, however, a programmer
 needs to deal with continuations explicitly. The
@@ -5449,7 +5565,7 @@ call-with-current-continuation procedure allows Scheme programmers to do
 that by creating a procedure that acts just like the current
 continuation.
 
-(values *obj $\ldots$*)  procedure\
+(values *obj …*)  procedure  
 Delivers all of its arguments to its continuation. The `values`
 procedure might be defined as follows:
 
@@ -5457,7 +5573,7 @@ procedure might be defined as follows:
       (call-with-current-continuation 
         (lambda (cont) (apply cont things))))%
 
-(call-with-values *producer consumer*)  procedure\
+(call-with-values *producer consumer*)  procedure  
 Calls its *producer* argument with no arguments and a continuation that,
 when passed some values, calls the *consumer* procedure with those
 values as arguments. The continuation for the call to *consumer* is the
@@ -5469,7 +5585,7 @@ continuation of the call to `call-with-values`.
 
     (call-with-values * -)                             \ev  -1%
 
-(dynamic-wind *before thunk after*)  procedure\
+(dynamic-wind *before thunk after*)  procedure  
 Calls *thunk* without arguments, returning the result(s) of this call.
 *Before* and *after* are called, also without arguments, as required by
 the following rules. Note that, in the absence of calls to continuations
@@ -5535,7 +5651,7 @@ extent of a call to *before* or *after* is unspecified.
 
 ## Exceptions
 
-This section describes Scheme's exception-handling and exception-raising
+This section describes Scheme’s exception-handling and exception-raising
 procedures. For the concept of Scheme exceptions, see
 section [\[errorsituations\]](#errorsituations). See also
 [\[guard\]](#guard) for the guard syntax.
@@ -5550,7 +5666,7 @@ handler, passing it an object encapsulating information about the
 exception. Any procedure accepting one argument can serve as an
 exception handler and any object can be used to represent an exception.
 
-(with-exception-handler **handler* *thunk**)  procedure\
+(with-exception-handler **handler* *thunk**)  procedure  
 It is an error if *handler* does not accept one argument. It is also an
 error if *thunk* does not accept zero arguments.
 
@@ -5580,7 +5696,7 @@ dynamic environment used for the invocation of *thunk*.
 
 After printing, the second example then raises another exception.
 
-(raise **obj**)  procedure\
+(raise **obj**)  procedure  
 Raises an exception by invoking the current exception handler on *obj*.
 The handler is called with the same dynamic environment as that of the
 call to raise, except that the current exception handler is the one that
@@ -5589,7 +5705,7 @@ returns, a secondary exception is raised in the same dynamic environment
 as the handler. The relationship between *obj* and the object raised by
 the secondary exception is unspecified.
 
-(raise-continuable **obj**)  procedure\
+(raise-continuable **obj**)  procedure  
 Raises an exception by invoking the current exception handler on *obj*.
 The handler is called with the same dynamic environment as the call to
 raise-continuable, except that: (1) the current exception handler is the
@@ -5612,13 +5728,13 @@ become the values returned by the call to raise-continuable.
        {\it prints:} should be a number
        \ev 65%
 
-(error **message* *obj* $\ldots$*)  procedure\
+(error **message* *obj* …*)  procedure  
 *Message* should be a string.
 
 Raises an exception as if by calling raise on a newly allocated
 implementation-defined object which encapsulates the information
 provided by *message*, as well as any *obj*s, known as the *irritants*.
-The procedure error-object? must return \#t on such objects.
+The procedure error-object? must return #t on such objects.
 
     (define (null-list? l)
       (cond ((pair? l) \#f)
@@ -5628,28 +5744,28 @@ The procedure error-object? must return \#t on such objects.
                 "null-list?: argument out of domain"
                 l))))%
 
-(error-object? *obj*)  procedure\
-Returns \#t if *obj* is an object created by error or one of an
-implementation-defined set of objects. Otherwise, it returns \#f. The
+(error-object? *obj*)  procedure  
+Returns #t if *obj* is an object created by error or one of an
+implementation-defined set of objects. Otherwise, it returns #f. The
 objects used to signal errors, including those which satisfy the
 predicates file-error? and read-error?, may or may not satisfy
 error-object?.
 
-(error-object-message *error-object*)  procedure\
+(error-object-message *error-object*)  procedure  
 Returns the message encapsulated by *error-object*.
 
-(error-object-irritants *error-object*)  procedure\
+(error-object-irritants *error-object*)  procedure  
 Returns a list of the irritants encapsulated by *error-object*.
 
-(read-error? *obj*)  procedure\
-(file-error? *obj*)  procedure\
-Error type predicates. Returns \#t if *obj* is an object raised by the
+(read-error? *obj*)  procedure  
+(file-error? *obj*)  procedure  
+Error type predicates. Returns #t if *obj* is an object raised by the
 read procedure or by the inability to open an input or output port on a
-file, respectively. Otherwise, it returns \#f.
+file, respectively. Otherwise, it returns #f.
 
 ## Environments and evaluation
 
-(environment *$list_{1}$ $\ldots\,$*)  eval library procedure\
+(environment **l**i**s**t*<sub>1</sub> … *)  eval library procedure  
 This procedure returns a specifier for the environment that results by
 starting with an empty environment and then importing each *list*,
 considered as an import set, into it. (See
@@ -5657,10 +5773,10 @@ section [\[libraries\]](#libraries) for a description of import sets.)
 The bindings of the environment represented by the specifier are
 immutable, as is the environment itself.
 
-(scheme-report-environment *version*)  r5rs library procedure\
-If *version* is equal to 5, corresponding to R$^{5}$RS,
+(scheme-report-environment *version*)  r5rs library procedure  
+If *version* is equal to 5, corresponding to R<sup>5</sup>RS,
 scheme-report-environment returns a specifier for an environment that
-contains only the bindings defined in the R$^{5}$RS library.
+contains only the bindings defined in the R<sup>5</sup>RS library.
 Implementations must support this value of *version*.
 
 Implementations may also support other values of *version*, in which
@@ -5674,11 +5790,12 @@ identifier bound in a scheme-report-environment (for example car) is
 unspecified. Thus both the environment and the bindings it contains may
 be immutable.
 
-(null-environment *version*)  r5rs library procedure\
-If *version* is equal to 5, corresponding to R$^{5}$RS, the
+(null-environment *version*)  r5rs library procedure  
+If *version* is equal to 5, corresponding to R<sup>5</sup>RS, the
 null-environment procedure returns a specifier for an environment that
 contains only the bindings for all syntactic keywords defined in the
-R$^{5}$RS library. Implementations must support this value of *version*.
+R<sup>5</sup>RS library. Implementations must support this value of
+*version*.
 
 Implementations may also support other values of *version*, in which
 case they return a specifier for an environment containing appropriate
@@ -5691,14 +5808,14 @@ identifier bound in a scheme-report-environment (for example car) is
 unspecified. Thus both the environment and the bindings it contains may
 be immutable.
 
-(interaction-environment)  repl library procedure\
+(interaction-environment)  repl library procedure  
 This procedure returns a specifier for a mutable environment that
 contains an implementation-defined set of bindings, typically a superset
 of those exported by (scheme base). The intent is that this procedure
 will return the environment in which the implementation would evaluate
 expressions entered by the user into a REPL.
 
-(eval *expr-or-def environment-specifier*)  eval library procedure\
+(eval *expr-or-def environment-specifier*)  eval library procedure  
 If *expr-or-def* is an expression, it is evaluated in the specified
 environment and its values are returned. If it is a definition, the
 specified identifier(s) are defined in the specified environment,
@@ -5742,7 +5859,7 @@ binary port types are disjoint is implementation-dependent.
 Ports can be used to access files, devices, and similar things on the
 host system on which the Scheme program is running.
 
-(call-with-port *port proc*)  procedure\
+(call-with-port *port proc*)  procedure  
 It is an error if *proc* does not accept one argument.
 
 The call-with-port procedure calls *proc* with *port* as an argument. If
@@ -5751,15 +5868,15 @@ yielded by the *proc* are returned. If *proc* does not return, then the
 port must not be closed automatically unless it is possible to prove
 that the port will never again be used for a read or write operation.
 
-*Rationale:* Because Scheme's escape procedures have unlimited extent,
+*Rationale:* Because Scheme’s escape procedures have unlimited extent,
 it is possible to escape from the current continuation but later to
 resume it. If implementations were permitted to close the port on any
 escape from the current continuation, then it would be impossible to
 write portable code using both call-with-current-continuation and
 call-with-port.
 
-(call-with-input-file *string proc*)  file library procedure\
-(call-with-output-file *string proc*)  file library procedure\
+(call-with-input-file *string proc*)  file library procedure  
+(call-with-output-file *string proc*)  file library procedure  
 It is an error if *proc* does not accept one argument.
 
 These procedures obtain a textual port obtained by opening the named
@@ -5767,31 +5884,31 @@ file for input or output as if by open-input-file or open-output-file.
 The port and *proc* are then passed to a procedure equivalent to
 call-with-port.
 
-(input-port? *obj*)  procedure\
-(output-port? *obj*)  procedure\
-(textual-port? *obj*)  procedure\
-(binary-port? *obj*)  procedure\
-(port? *obj*)  procedure\
-These procedures return \#t if *obj* is an input port, output port,
+(input-port? *obj*)  procedure  
+(output-port? *obj*)  procedure  
+(textual-port? *obj*)  procedure  
+(binary-port? *obj*)  procedure  
+(port? *obj*)  procedure  
+These procedures return #t if *obj* is an input port, output port,
 textual port, binary port, or any kind of port, respectively. Otherwise
-they return \#f.
+they return #f.
 
-(input-port-open? *port*)  procedure\
-(output-port-open? *port*)  procedure\
-Returns \#t if *port* is still open and capable of performing input or
-output, respectively, and \#f otherwise.
+(input-port-open? *port*)  procedure  
+(output-port-open? *port*)  procedure  
+Returns #t if *port* is still open and capable of performing input or
+output, respectively, and #f otherwise.
 
-(current-input-port)  procedure\
-(current-output-port)  procedure\
-(current-error-port)  procedure\
+(current-input-port)  procedure  
+(current-output-port)  procedure  
+(current-error-port)  procedure  
 Returns the current default input port, output port, or error port (an
 output port), respectively. These procedures are parameter objects,
 which can be overridden with parameterize (see
 section [\[make-parameter\]](#make-parameter)). The initial bindings for
 these are implementation-defined textual ports.
 
-(with-input-from-file *string thunk*)  file library procedure\
-(with-output-to-file *string thunk*)  file library procedure\
+(with-input-from-file *string thunk*)  file library procedure  
+(with-output-to-file *string thunk*)  file library procedure  
 The file is opened for input or output as if by open-input-file or
 open-output-file, and the new port is made to be the value returned by
 current-input-port or current-output-port (as used by `(read)`,
@@ -5803,15 +5920,15 @@ escape procedure is used to escape from the continuation of these
 procedures, they behave exactly as if the current input or output port
 had been bound dynamically with parameterize.
 
-(open-input-file *string*)  file library procedure\
-(open-binary-input-file *string*)  file library procedure\
+(open-input-file *string*)  file library procedure  
+(open-binary-input-file *string*)  file library procedure  
 Takes a *string* for an existing file and returns a textual input port
 or binary input port that is capable of delivering data from the file.
 If the file does not exist or cannot be opened, an error that satisfies
 file-error? is signaled.
 
-(open-output-file *string*)  file library procedure\
-(open-binary-output-file *string*)  file library procedure\
+(open-output-file *string*)  file library procedure  
+(open-binary-output-file *string*)  file library procedure  
 Takes a *string* naming an output file to be created and returns a
 textual output port or binary output port that is capable of writing
 data to a new file by that name.
@@ -5820,9 +5937,9 @@ If a file with the given name already exists, the effect is unspecified.
 If the file cannot be opened, an error that satisfies file-error? is
 signaled.
 
-(close-port *port*)  procedure\
-(close-input-port *port*)  procedure\
-(close-output-port *port*)  procedure\
+(close-port *port*)  procedure  
+(close-input-port *port*)  procedure  
+(close-output-port *port*)  procedure  
 Closes the resource associated with *port*, rendering the *port*
 incapable of delivering or accepting data. It is an error to apply the
 last two procedures to a port which is not an input or output port,
@@ -5833,15 +5950,15 @@ close the input and output sides of the port independently.
 
 These routines have no effect if the port has already been closed.
 
-(open-input-string *string*)  procedure\
+(open-input-string *string*)  procedure  
 Takes a string and returns a textual input port that delivers characters
 from the string. If the string is modified, the effect is unspecified.
 
-(open-output-string)  procedure\
+(open-output-string)  procedure  
 Returns a textual output port that will accumulate characters for
 retrieval by get-output-string.
 
-(get-output-string *port*)  procedure\
+(get-output-string *port*)  procedure  
 It is an error if *port* was not created with open-output-string.
 
 Returns a string consisting of the characters that have been output to
@@ -5858,15 +5975,15 @@ modified, the effect is unspecified.
         (get-output-string (current-output-port)))
     \lev "piece by piece by piece.\backwhack{}n"%
 
-(open-input-bytevector *bytevector*)  procedure\
+(open-input-bytevector *bytevector*)  procedure  
 Takes a bytevector and returns a binary input port that delivers bytes
 from the bytevector.
 
-(open-output-bytevector)  procedure\
+(open-output-bytevector)  procedure  
 Returns a binary output port that will accumulate bytes for retrieval by
 get-output-bytevector.
 
-(get-output-bytevector *port*)  procedure\
+(get-output-bytevector *port*)  procedure  
 It is an error if *port* was not created with open-output-bytevector.
 
 Returns a bytevector consisting of the bytes that have been output to
@@ -5880,8 +5997,8 @@ operation on a closed port.
 
  
 
-(read)  read library procedure\
-(read *port*)  read library procedure\
+(read)  read library procedure  
+(read *port*)  read library procedure  
 The read procedure converts external representations of Scheme objects
 into the objects themselves. That is, it is a parser for the
 non-terminal datum (see sections [\[datum\]](#datum) and
@@ -5897,18 +6014,18 @@ If an end of file is encountered in the input before any characters are
 found that can begin an object, then an end-of-file object is returned.
 The port remains open, and further attempts to read will also return an
 end-of-file object. If an end of file is encountered after the beginning
-of an object's external representation, but the external representation
+of an object’s external representation, but the external representation
 is incomplete and therefore not parsable, an error that satisfies
 read-error? is signaled.
 
-(read-char)  procedure\
-(read-char *port*)  procedure\
+(read-char)  procedure  
+(read-char *port*)  procedure  
 Returns the next character available from the textual input *port*,
 updating the *port* to point to the following character. If no more
 characters are available, an end-of-file object is returned.
 
-(peek-char)  procedure\
-(peek-char *port*)  procedure\
+(peek-char)  procedure  
+(peek-char *port*)  procedure  
 Returns the next character available from the textual input *port*, but
 *without* updating the *port* to point to the following character. If no
 more characters are available, an end-of-file object is returned.
@@ -5921,8 +6038,8 @@ call to peek-char. In particular, a call to peek-char on an interactive
 port will hang waiting for input whenever a call to read-char would have
 hung.
 
-(read-line)  procedure\
-(read-line *port*)  procedure\
+(read-line)  procedure  
+(read-line *port*)  procedure  
 Returns the next line of text available from the textual input *port*,
 updating the *port* to point to the following character. If an end of
 line is read, a string containing all of the text up to (but not
@@ -5937,74 +6054,74 @@ of a carriage return character followed by a linefeed character.
 Implementations may also recognize other end of line characters or
 sequences.
 
-(eof-object? *obj*)  procedure\
-Returns \#t if *obj* is an end-of-file object, otherwise returns \#f.
-The precise set of end-of-file objects will vary among implementations,
-but in any case no end-of-file object will ever be an object that can be
+(eof-object? *obj*)  procedure  
+Returns #t if *obj* is an end-of-file object, otherwise returns #f. The
+precise set of end-of-file objects will vary among implementations, but
+in any case no end-of-file object will ever be an object that can be
 read in using read.
 
-(eof-object)  procedure\
+(eof-object)  procedure  
 Returns an end-of-file object, not necessarily unique.
 
-(char-ready?)  procedure\
-(char-ready? *port*)  procedure\
-Returns \#t if a character is ready on the textual input *port* and
-returns \#f otherwise. If char-ready returns \#t then the next read-char
+(char-ready?)  procedure  
+(char-ready? *port*)  procedure  
+Returns #t if a character is ready on the textual input *port* and
+returns #f otherwise. If char-ready returns #t then the next read-char
 operation on the given *port* is guaranteed not to hang. If the *port*
-is at end of file then char-ready? returns \#t.
+is at end of file then char-ready? returns #t.
 
 *Rationale:* The char-ready? procedure exists to make it possible for a
 program to accept characters from interactive ports without getting
 stuck waiting for input. Any input editors associated with such ports
 must ensure that characters whose existence has been asserted by
 char-ready? cannot be removed from the input. If char-ready? were to
-return \#f at end of file, a port at end of file would be
+return #f at end of file, a port at end of file would be
 indistinguishable from an interactive port that has no ready characters.
 
-(read-string *k*)  procedure\
-(read-string *k port*)  procedure\
+(read-string *k*)  procedure  
+(read-string *k port*)  procedure  
 Reads the next *k* characters, or as many as are available before the
 end of file, from the textual input *port* into a newly allocated string
 in left-to-right order and returns the string. If no characters are
 available before the end of file, an end-of-file object is returned.
 
-(read-u8)  procedure\
-(read-u8 *port*)  procedure\
+(read-u8)  procedure  
+(read-u8 *port*)  procedure  
 Returns the next byte available from the binary input *port*, updating
 the *port* to point to the following byte. If no more bytes are
 available, an end-of-file object is returned.
 
-(peek-u8)  procedure\
-(peek-u8 *port*)  procedure\
+(peek-u8)  procedure  
+(peek-u8 *port*)  procedure  
 Returns the next byte available from the binary input *port*, but
 *without* updating the *port* to point to the following byte. If no more
 bytes are available, an end-of-file object is returned.
 
-(u8-ready?)  procedure\
-(u8-ready? *port*)  procedure\
-Returns \#t if a byte is ready on the binary input *port* and returns
-\#f otherwise. If u8-ready? returns \#t then the next read-u8 operation
-on the given *port* is guaranteed not to hang. If the *port* is at end
-of file then u8-ready? returns \#t.
+(u8-ready?)  procedure  
+(u8-ready? *port*)  procedure  
+Returns #t if a byte is ready on the binary input *port* and returns #f
+otherwise. If u8-ready? returns #t then the next read-u8 operation on
+the given *port* is guaranteed not to hang. If the *port* is at end of
+file then u8-ready? returns #t.
 
-(read-bytevector *k*)  procedure\
-(read-bytevector *k port*)  procedure\
+(read-bytevector *k*)  procedure  
+(read-bytevector *k port*)  procedure  
 Reads the next *k* bytes, or as many as are available before the end of
 file, from the binary input *port* into a newly allocated bytevector in
 left-to-right order and returns the bytevector. If no bytes are
 available before the end of file, an end-of-file object is returned.
 
-(read-bytevector! *bytevector*)  procedure\
-(read-bytevector! *bytevector port*)  procedure\
-(read-bytevector! *bytevector port start*)  procedure\
-(read-bytevector! *bytevector port start end*)  procedure\
-Reads the next $end - start$ bytes, or as many as are available before
-the end of file, from the binary input *port* into *bytevector* in
-left-to-right order beginning at the *start* position. If *end* is not
-supplied, reads until the end of *bytevector* has been reached. If
-*start* is not supplied, reads beginning at position 0. Returns the
-number of bytes read. If no bytes are available, an end-of-file object
-is returned.
+(read-bytevector! *bytevector*)  procedure  
+(read-bytevector! *bytevector port*)  procedure  
+(read-bytevector! *bytevector port start*)  procedure  
+(read-bytevector! *bytevector port start end*)  procedure  
+Reads the next *e**n**d* − *s**t**a**r**t* bytes, or as many as are
+available before the end of file, from the binary input *port* into
+*bytevector* in left-to-right order beginning at the *start* position.
+If *end* is not supplied, reads until the end of *bytevector* has been
+reached. If *start* is not supplied, reads beginning at position 0.
+Returns the number of bytes read. If no bytes are available, an
+end-of-file object is returned.
 
 ### Output
 
@@ -6012,14 +6129,14 @@ If *port* is omitted from any output procedure, it defaults to the value
 returned by (current-output-port). It is an error to attempt an output
 operation on a closed port.
 
-(write *obj*)  write library procedure\
-(write *obj port*)  write library procedure\
+(write *obj*)  write library procedure  
+(write *obj port*)  write library procedure  
 Writes a representation of *obj* to the given textual output *port*.
 Strings that appear in the written representation are enclosed in
 quotation marks, and within those strings backslash and quotation mark
 characters are escaped by backslashes. Symbols that contain non-ASCII
 characters are escaped with vertical lines. Character objects are
-written using the \#`‘ ` notation.
+written using the #`‘ ` notation.
 
 If *obj* contains cycles which would cause an infinite loop using the
 normal written representation, then at least the objects that form part
@@ -6032,20 +6149,20 @@ other types that do not have datum representations.
 
 The write procedure returns an unspecified value.
 
-(write-shared *obj*)  write library procedure\
-(write-shared *obj port*)  write library procedure\
+(write-shared *obj*)  write library procedure  
+(write-shared *obj port*)  write library procedure  
 The write-shared procedure is the same as write, except that shared
 structure must be represented using datum labels for all pairs and
 vectors that appear more than once in the output.
 
-(write-simple *obj*)  write library procedure\
-(write-simple *obj port*)  write library procedure\
+(write-simple *obj*)  write library procedure  
+(write-simple *obj port*)  write library procedure  
 The write-simple procedure is the same as write, except that shared
 structure is never represented using datum labels. This can cause
 write-simple not to terminate if *obj* contains circular structure.
 
-(display *obj*)  write library procedure\
-(display *obj port*)  write library procedure\
+(display *obj*)  write library procedure  
+(display *obj port*)  write library procedure  
 Writes a representation of *obj* to the given textual output *port*.
 Strings that appear in the written representation are output as if by
 write-string instead of by write. Symbols are not escaped. Character
@@ -6065,39 +6182,39 @@ The display procedure returns an unspecified value.
 *Rationale:* The write procedure is intended for producing
 machine-readable output and display for producing human-readable output.
 
-(newline)  procedure\
-(newline *port*)  procedure\
+(newline)  procedure  
+(newline *port*)  procedure  
 Writes an end of line to textual output *port*. Exactly how this is done
 differs from one operating system to another. Returns an unspecified
 value.
 
-(write-char *char*)  procedure\
-(write-char *char port*)  procedure\
+(write-char *char*)  procedure  
+(write-char *char port*)  procedure  
 Writes the character *char* (not an external representation of the
 character) to the given textual output *port* and returns an unspecified
 value.
 
-(write-string *string*)  procedure\
-(write-string *string port*)  procedure\
-(write-string *string port start*)  procedure\
-(write-string *string port start end*)  procedure\
+(write-string *string*)  procedure  
+(write-string *string port*)  procedure  
+(write-string *string port start*)  procedure  
+(write-string *string port start end*)  procedure  
 Writes the characters of *string* from *start* to *end* in left-to-right
 order to the textual output *port*.
 
-(write-u8 *byte*)  procedure\
-(write-u8 *byte port*)  procedure\
+(write-u8 *byte*)  procedure  
+(write-u8 *byte port*)  procedure  
 Writes the *byte* to the given binary output *port* and returns an
 unspecified value.
 
-(write-bytevector *bytevector*)  procedure\
-(write-bytevector *bytevector port*)  procedure\
-(write-bytevector *bytevector port start*)  procedure\
-(write-bytevector *bytevector port start end*)  procedure\
+(write-bytevector *bytevector*)  procedure  
+(write-bytevector *bytevector port*)  procedure  
+(write-bytevector *bytevector port start*)  procedure  
+(write-bytevector *bytevector port start end*)  procedure  
 Writes the bytes of *bytevector* from *start* to *end* in left-to-right
 order to the binary output *port*.
 
-(flush-output-port)  procedure\
-(flush-output-port *port*)  procedure\
+(flush-output-port)  procedure  
+(flush-output-port *port*)  procedure  
 Flushes any buffered output from the buffer of output-port to the
 underlying file or device and returns an unspecified value.
 
@@ -6107,8 +6224,8 @@ Questions of system interface generally fall outside of the domain of
 this report. However, the following operations are important enough to
 deserve description here.
 
-(load *filename*)  load library procedure\
-(load *filename environment-specifier*)  load library procedure\
+(load *filename*)  load library procedure  
+(load *filename environment-specifier*)  load library procedure  
 It is an error if *filename* is not a string.
 
 An implementation-dependent operation is used to transform *filename*
@@ -6127,43 +6244,43 @@ value.
 operation on other kinds of files necessarily varies among
 implementations.
 
-(file-exists? *filename*)  file library procedure\
+(file-exists? *filename*)  file library procedure  
 It is an error if *filename* is not a string.
 
-The file-exists? procedure returns \#t if the named file exists at the
-time the procedure is called, and \#f otherwise.
+The file-exists? procedure returns #t if the named file exists at the
+time the procedure is called, and #f otherwise.
 
-(delete-file *filename*)  file library procedure\
+(delete-file *filename*)  file library procedure  
 It is an error if *filename* is not a string.
 
 The delete-file procedure deletes the named file if it exists and can be
 deleted, and returns an unspecified value. If the file does not exist or
 cannot be deleted, an error that satisfies file-error? is signaled.
 
-(command-line)  process-context library procedure\
+(command-line)  process-context library procedure  
 Returns the command line passed to the process as a list of strings. The
 first string corresponds to the command name, and is
 implementation-dependent. It is an error to mutate any of these strings.
 
-(exit)  process-context library procedure\
-(exit *obj*)  process-context library procedure\
+(exit)  process-context library procedure  
+(exit *obj*)  process-context library procedure  
 Runs all outstanding dynamic-wind *after* procedures, terminates the
 running program, and communicates an exit value to the operating system.
-If no argument is supplied, or if *obj* is \#t, the exit procedure
-should communicate to the operating system that the program exited
-normally. If *obj* is \#f, the exit procedure should communicate to the
-operating system that the program exited abnormally. Otherwise, exit
-should translate *obj* into an appropriate exit value for the operating
-system, if possible.
+If no argument is supplied, or if *obj* is #t, the exit procedure should
+communicate to the operating system that the program exited normally. If
+*obj* is #f, the exit procedure should communicate to the operating
+system that the program exited abnormally. Otherwise, exit should
+translate *obj* into an appropriate exit value for the operating system,
+if possible.
 
 The exit procedure must not signal an exception or return to its
 continuation.
 
 *Note:* Because of the requirement to run handlers, this procedure is
-not just the operating system's exit procedure.
+not just the operating system’s exit procedure.
 
-(emergency-exit)  process-context library procedure\
-(emergency-exit *obj*)  process-context library procedure\
+(emergency-exit)  process-context library procedure  
+(emergency-exit *obj*)  process-context library procedure  
 Terminates the program without running any outstanding dynamic-wind
 *after* procedures and communicates an exit value to the operating
 system in the same manner as exit.
@@ -6171,22 +6288,22 @@ system in the same manner as exit.
 *Note:* The emergency-exit procedure corresponds to the \_exit procedure
 in Windows and Posix.
 
-(get-environment-variable *name*)  process-context library procedure\
+(get-environment-variable *name*)  process-context library procedure  
 Many operating systems provide each running process with an
 *environment* consisting of *environment variables*. (This environment
 is not to be confused with the Scheme environments that can be passed to
 eval: see section [\[environments\]](#environments).) Both the name and
 value of an environment variable are strings. The procedure
 get-environment-variable returns the value of the environment variable
-*name*, or \#f if the named environment variable is not found. It may
-use locale information to encode the name and decode the value of the
-environment variable. It is an error if\
-get-environment-variable can't decode the value. It is also an error to
+*name*, or #f if the named environment variable is not found. It may use
+locale information to encode the name and decode the value of the
+environment variable. It is an error if  
+get-environment-variable can’t decode the value. It is also an error to
 mutate the resulting string.
 
     (get-environment-variable "PATH") \lev "/usr/local/bin:/usr/bin:/bin"%
 
-(get-environment-variables)  process-context library procedure\
+(get-environment-variables)  process-context library procedure  
 Returns the names and values of all the environment variables as an
 alist, where the car of each entry is the name of an environment
 variable and the cdr is its value, both as strings. The order of the
@@ -6195,7 +6312,7 @@ the alist itself.
 
     (get-environment-variables) \lev (("USER" . "root") ("HOME" . "/"))%
 
-(current-second)  time library procedure\
+(current-second)  time library procedure  
 Returns an inexact number representing the current time on the
 International Atomic Time (TAI) scale. The value 0.0 represents midnight
 on January 1, 1970 TAI (equivalent to 8.000082 seconds before midnight
@@ -6204,10 +6321,10 @@ Neither high accuracy nor high precision are required; in particular,
 returning Coordinated Universal Time plus a suitable constant might be
 the best an implementation can do.
 
-As of 2018, a TAI-UTC offset table can be found at []{.citation
-cites="TAI"}.
+As of 2018, a TAI-UTC offset table can be found at <span
+class="citation" cites="TAI"></span>.
 
-(current-jiffy)  time library procedure\
+(current-jiffy)  time library procedure  
 Returns the number of *jiffies* as an exact integer that have elapsed
 since an arbitrary, implementation-defined epoch. A jiffy is an
 implementation-defined fraction of a second which is defined by the
@@ -6224,7 +6341,7 @@ while a much smaller unit would force many implementations to return
 integers which have to be allocated for most calls, rendering
 current-jiffy less useful for accurate timing measurements.
 
-(jiffies-per-second)  time library procedure\
+(jiffies-per-second)  time library procedure  
 Returns an exact integer representing the number of jiffies per SI
 second. This value is an implementation-specified constant.
 
@@ -6235,7 +6352,7 @@ second. This value is an implementation-specified constant.
         (/ (- (current-jiffy) start)
            (jiffies-per-second))))%
 
-(features)  procedure\
+(features)  procedure  
 Returns a list of the feature identifiers which cond-expand treats as
 true. It is an error to modify this list. Here is an example of what
 features might return:
@@ -6246,612 +6363,6 @@ features might return:
        fantastic-scheme
        fantastic-scheme-1.0
        space-ship-control-system)%
-
-# Formal syntax and semantics
-
-This chapter provides formal descriptions of what has already been
-described informally in previous chapters of this report.
-
-## Formal syntax
-
-This section provides a formal syntax for Scheme written in an extended
-BNF.
-
-All spaces in the grammar are for legibility. Case is not significant
-except in the definitions of letter, character name and mnemonic escape;
-for example, #x1A and #X1a are equivalent, but foo and Foo and
-\#`‘ `space and \#`‘ `Space are distinct. empty stands for the empty
-string.
-
-The following extensions to BNF are used to make the description more
-concise: thing means zero or more occurrences of thing; and thing$^{+}$
-means at least one thing.
-
-### Lexical structure
-
-This section describes how individual tokens (identifiers, numbers,
-etc.) are formed from sequences of characters. The following sections
-describe how expressions and programs are formed from sequences of
-tokens.
-
-Intertoken space can occur on either side of any token, but not within a
-token.
-
-Identifiers that do not begin with a vertical line are terminated by a
-delimiter or by the end of the input. So are dot, numbers, characters,
-and booleans. Identifiers that begin with a vertical line are terminated
-by another vertical line.
-
-The following four characters from the ASCII repertoire are reserved for
-future extensions to the language: `[ ] { }`
-
-In addition to the identifier characters of the ASCII repertoire
-specified below, Scheme implementations may permit any additional
-repertoire of non-ASCII Unicode characters to be employed in
-identifiers, provided that each such character has a Unicode general
-category of Lu, Ll, Lt, Lm, Lo, Mn, Mc, Me, Nd, Nl, No, Pd, Pc, Po, Sc,
-Sm, Sk, So, or Co, or is U+200C or U+200D (the zero-width non-joiner and
-joiner, respectively, which are needed for correct spelling in Persian,
-Hindi, and other languages). However, it is an error for the first
-character to have a general category of Nd, Mc, or Me. It is also an
-error to use a non-Unicode character in symbols or identifiers.
-
-All Scheme implementations must permit the escape sequence
-`‘ x<hexdigits>;` to appear in Scheme identifiers that are enclosed in
-vertical lines. If the character with the given Unicode scalar value is
-supported by the implementation, identifiers containing such a sequence
-are equivalent to identifiers containing the corresponding character.
-
-̄ $|$ ̄ token ⟶ identifier $|$ boolean $|$ number $|$ character $|$
-string $|$ ( $|$ ) $|$ `#`( $|$ `#`u8( $|$ `’` $|$ `` $|$ , $|$ ,@ $|$
-**.** delimiter ⟶ whitespace $|$ vertical line $|$ ( $|$ ) $|$ \" $|$ ;
-intraline whitespace ⟶ space or tab whitespace ⟶ intraline whitespace
-$|$ line ending vertical line ⟶ \| line ending ⟶ newline $|$ return
-newline $|$ return comment ⟶ ; ̄ $\langle$all subsequent characters up
-to a  line ending$\rangle$ $|$ nested comment $|$ #; intertoken space
-datum nested comment ⟶ #\| c̄omment text comment cont \|\# comment text ⟶
-̄ $\langle$character sequence not containing  `#|` or `|#`$\rangle$
-comment cont ⟶ nested comment comment text directive ⟶ #!fold-case $|$
-#!no-fold-case
-
-Note that it is ungrammatical to follow a directive with anything but a
-delimiter or the end of file.
-
-̄ $|$ ̄ atmosphere ⟶ whitespace $|$ comment $|$ directive
-intertoken space ⟶ atmosphere
-
-identifier ⟶ $\langle$
-
-Note that +i, -i and infnan below are exceptions to the
-peculiar identifier rule; they are parsed as numbers, not identifiers.
-
-̄ $|$ ̄ identifier ⟶ initial subsequent $|$ vertical line symbol element
-vertical line $|$ peculiar identifier initial ⟶ letter $|$
-special initial letter ⟶ a $|$ b $|$ c $|$ \... $|$ z $|$ A $|$ B $|$ C
-$|$ \... $|$ Z special initial ⟶ ! $|$ \$ $|$ % $|$ `&` $|$ \* $|$ / $|$
-: $|$ \< $|$ = $|$ \> $|$ ? $|$ @ $|$ `^` $|$ `_` $|$ `~` subsequent ⟶
-initial $|$ digit $|$ special subsequent digit ⟶ 0 $|$ 1 $|$ 2 $|$ 3 $|$
-4 $|$ 5 $|$ 6 $|$ 7 $|$ 8 $|$ 9 hex digit ⟶ digit $|$ a $|$ b $|$ c $|$
-d $|$ e $|$ f explicit sign ⟶ + $|$ - special subsequent ⟶ explicit sign
-$|$ . $|$ @ inline hex escape ⟶ `‘ `xhex scalar value; hex scalar value
-⟶ hex digit$^{+}$ mnemonic escape ⟶ `‘ `a $|$ `‘ `b $|$ `‘ `t $|$ `‘ `n
-$|$ `‘ `r peculiar identifier ⟶ explicit sign $|$ explicit sign
-sign subsequent subsequent $|$ explicit sign . dot subsequent subsequent
-$|$ . dot subsequent subsequent dot subsequent ⟶ sign subsequent $|$ .
-sign subsequent ⟶ initial $|$ explicit sign $|$ @ symbol element ⟶
-any character other than vertical line or `‘ ` $|$ inline hex escape $|$
-mnemonic escape $|$ `‘ `\|
-
-boolean ⟶ \#t $|$ \#f $|$ \#true $|$ \#false
-
-character ⟶ \#`‘ ` any character $|$ \#`‘ ` character name $|$
-\#`‘ `xhex scalar value character name ⟶ alarm $|$ backspace $|$ delete
-$|$ escape $|$ newline $|$ null $|$ return $|$ space $|$ tab
-
-string ⟶ \" string element \" string element ⟶
-any character other than `"` or `‘ ` $|$ mnemonic escape $|$ `‘ ``"` $|$
-`‘ ``‘ ` $|$ `‘ `\| $|$ `‘ `intraline whitespaceline ending
-intraline whitespace $|$ inline hex escape bytevector ⟶ #u8(byte) byte ⟶
-any exact integer between 0 and 255
-
-̄ $|$ ̄ number ⟶ num $2$ $|$ num $8$ $|$ num $10$ $|$ num $16$
-
-The following rules for num $R$, complex $R$, real $R$, ureal $R$,
-uinteger $R$, and prefix $R$ are implicitly replicated for $R = 2,8,10,$
-and $16$. There are no rules for decimal $2$, decimal $8$, and
-decimal $16$, which means that numbers containing decimal points or
-exponents are always in decimal radix. Although not shown below, all
-alphabetic characters used in the grammar of numbers can appear in
-either upper or lower case. ̄ $|$ ̄ num $R$ ⟶ prefix $R$ complex $R$
-complex $R$ ⟶ real $R$ $|$ real $R$ @ real $R$ $|$ real $R$ + ureal $R$
-i $|$ real $R$ - ureal $R$ i $|$ real $R$ + i $|$ real $R$ - i $|$
-real $R$ infnan i $|$ + ureal $R$ i $|$ - ureal $R$ i $|$ infnan i $|$ +
-i $|$ - i real $R$ ⟶ sign ureal $R$ $|$ infnan ureal $R$ ⟶ uinteger $R$
-$|$ uinteger $R$ / uinteger $R$ $|$ decimal $R$ decimal $10$ ⟶
-uinteger $10$ suffix $|$ . digit $10$$^{+}$ suffix $|$ digit $10$$^{+}$
-. digit $10$ suffix uinteger $R$ ⟶ digit $R$$^{+}$ prefix $R$ ⟶
-radix $R$ exactness $|$ exactness radix $R$ infnan ⟶ +inf.0 $|$ -inf.0
-$|$ +nan.0 $|$ -nan.0
-
-̄ $|$ ̄ suffix ⟶ empty $|$ exponent marker sign digit $10$$^{+}$
-exponent marker ⟶ e sign ⟶ empty $|$ + $|$ - exactness ⟶ empty $|$ #i
-$|$ #e radix 2 ⟶ #b radix 8 ⟶ #o radix 10 ⟶ empty $|$ #d radix 16 ⟶ #x
-digit 2 ⟶ 0 $|$ 1 digit 8 ⟶ 0 $|$ 1 $|$ 2 $|$ 3 $|$ 4 $|$ 5 $|$ 6 $|$ 7
-digit 10 ⟶ digit digit 16 ⟶ digit $10$ $|$ a $|$ b $|$ c $|$ d $|$ e $|$
-f
-
-### External representations
-
-Datum is what the `read` procedure (section [\[read\]](#read))
-successfully parses. Note that any string that parses as an expression
-will also parse as a datum.
-
-̄ $|$ ̄ datum ⟶ simple datum $|$ compound datum $|$ label = datum $|$
-label \# simple datum ⟶ boolean $|$ number $|$ character $|$ string $|$
-symbol $|$ bytevector symbol ⟶ identifier compound datum ⟶ list $|$
-vector $|$ abbreviation list ⟶ (datum) $|$ (datum$^{+}$ . datum)
-abbreviation ⟶ abbrev prefix datum abbrev prefix ⟶ ' $|$ ' $|$ , $|$ ,@
-vector ⟶ #(datum) label ⟶ \# uinteger 10
-
-### Expressions
-
-The definitions in this and the following subsections assume that all
-the syntax keywords defined in this report have been properly imported
-from their libraries, and that none of them have been redefined or
-shadowed.
-
-̄ $|$ ̄ expression ⟶ identifier $|$ literal $|$ procedure call $|$
-lambda expression $|$ conditional $|$ assignment $|$ derived expression
-$|$ macro use $|$ macro block $|$ includer
-
-literal ⟶ quotation $|$ self-evaluating self-evaluating ⟶ boolean $|$
-number $|$ vector $|$ character $|$ string $|$ bytevector quotation ⟶
-'datum $|$ (quote datum) procedure call ⟶ (operator operand) operator ⟶
-expression operand ⟶ expression
-
-lambda expression ⟶ (lambda formals body) formals ⟶ (identifier) $|$
-identifier $|$ (identifier$^{+}$ . identifier) body ⟶ definition
-sequence sequence ⟶ command expression command ⟶ expression
-
-conditional ⟶ (if test consequent alternate) test ⟶ expression
-consequent ⟶ expression alternate ⟶ expression $|$ empty
-
-assignment ⟶ (set! identifier expression)
-
-derived expression ⟶ (cond cond clause$^{+}$) $|$ (cond cond clause
-(else sequence)) $|$ (cāse expression $^{+}$) $|$ (cāse expression (else
-sequence)) $|$ (cāse expression (else => recipient)) $|$ (and test) $|$
-(or test) $|$ (when test sequence) $|$ (unless test sequence) $|$ (let
-(binding spec) body) $|$ (let identifier (binding spec) body) $|$ (let\*
-(binding spec) body) $|$ (letrec (binding spec) body) $|$ (letrec\*
-(binding spec) body) $|$ (let-values (mv binding spec) body) $|$
-(let\*-values (mv binding spec) body) $|$ (begin sequence) $|$ (dō
-(̄iteration spec) (test do result) ) $|$ (delay expression) $|$
-(delay-force expression) $|$ (pārameterize ((expression expression))
-body) $|$ (guard (identifier cond clause) body) $|$ quasiquotation $|$
-(cāse-lambda case-lambda clause)
-
-cond clause ⟶ (test sequence) $|$ (test) $|$ (test => recipient)
-recipient ⟶ expression case clause ⟶ ((datum) sequence) $|$ ((datum) =>
-recipient) binding spec ⟶ (identifier expression) mv binding spec ⟶
-(formals expression) iteration spec ⟶ (identifier init step) $|$
-(identifier init) case-lambda clause ⟶ (formals body) init ⟶ expression
-step ⟶ expression do result ⟶ sequence $|$ empty
-
-macro use ⟶ (keyword datum) keyword ⟶ identifier
-
-macro block ⟶ (let-syntax (syntax spec) body) $|$ (letrec-syntax
-(syntax spec) body) syntax spec ⟶ (keyword transformer spec)
-
-includer ⟶ $|$ (include string$^{+}$) $|$ (include-ci string$^{+}$)
-
-### Quasiquotations
-
-The following grammar for quasiquote expressions is not context-free. It
-is presented as a recipe for generating an infinite number of production
-rules. Imagine a copy of the following rules for $D = 1,2,3,\ldots$,
-where $D$ is the nesting depth.
-
-̄ $|$ ̄ quasiquotation ⟶ quasiquotation 1 qq template 0 ⟶ expression
-quasiquotation $D$ ⟶ 'qq template $D$ $|$ (quasiquote qq template $D$)
-qq template $D$ ⟶ simple datum $|$ list qq template $D$ $|$
-vector qq template $D$ $|$ unquotation $D$ list qq template $D$ ⟶
-(qq template or splice $D$) $|$ (qq template or splice $D$$^{+}$
-. qq template $D$) $|$ 'qq template $D$ $|$ quasiquotation $D + 1$
-vector qq template $D$ ⟶ #(qq template or splice $D$) unquotation $D$ ⟶
-,qq template $D - 1$ $|$ (unquote qq template $D - 1$)
-qq template or splice $D$ ⟶ qq template $D$ $|$ splicing unquotation $D$
-splicing unquotation $D$ ⟶ ,@qq template $D - 1$ $|$ (unquote-splicing
-qq template $D - 1$)
-
-In quasiquotations, a list qq template $D$ can sometimes be confused
-with either an unquotation $D$ or a splicing unquotation $D$. The
-interpretation as an unquotation or splicing unquotation $D$ takes
-precedence.
-
-### Transformers
-
-*Note:* Though this grammar does not say so, a top-level `syntax-rules`
-pattern must be a list pattern, not a vector pattern or an identifier
-pattern.
-
-̄ $|$ ̄ transformer spec ⟶ (syntax-rules (identifier) syntax rule) $|$
-(syntax-rules identifier (identifier)   syntax rule) syntax rule ⟶
-(pattern template) pattern ⟶ pattern identifier $|$ underscore $|$
-(pattern) $|$ (pattern$^{+}$ . pattern) $|$ (pattern pattern ellipsis
-pattern) $|$ (pattern pattern ellipsis pattern   . pattern) $|$
-#(pattern) $|$ #(pattern pattern ellipsis pattern) $|$ pattern datum
-pattern datum ⟶ string $|$ character $|$ boolean $|$ number $|$
-bytevector template ⟶ pattern identifier $|$ (template element) $|$
-(template element$^{+}$ . template) $|$ #(template element) $|$
-template datum template element ⟶ template $|$ template ellipsis
-template datum ⟶ pattern datum pattern identifier ⟶
-any identifier except \... ellipsis ⟶ an identifier defaulting to \...
-underscore ⟶ the identifier \_
-
-### Programs and definitions
-
-̄ $|$ ̄ program ⟶ import declaration$^{+}$ command or definition$^{+}$
-command or definition ⟶ command $|$ definition $|$ (begin
-command or definition$^{+}$) definition ⟶ (define identifier expression)
-$|$ (define (identifier def formals) body) $|$ syntax definition $|$
-(define-values formals body) $|$ (define-record-type identifier
-  constructor identifier field spec) $|$ (begin definition) def formals
-⟶ identifier $|$ identifier . identifier constructor ⟶ (identifier
-field name) field spec ⟶ (field name accessor) $|$ (field name accessor
-mutator) field name ⟶ identifier accessor ⟶ identifier mutator ⟶
-identifier syntax definition ⟶ (define-syntax keyword transformer spec)
-
-### Libraries
-
-̄ $|$ ̄ library ⟶ (dēfine-library library name library declaration)
-library name ⟶ (library name part$^{+}$) library name part ⟶ identifier
-$|$ uinteger 10 library declaration ⟶ (export export spec) $|$
-import declaration $|$ (begin command or definition) $|$ includer $|$
-(include-library-declarations string$^{+}$) $|$ (cond-expand
-cond-expand clause$^{+}$) $|$ (cond-expand cond-expand clause$^{+}$ to
-1 (else library declaration)) import declaration ⟶ (import
-import set$^{+}$) export spec ⟶ identifier $|$ (rename identifier
-identifier) import set ⟶ library name $|$ (only import set
-identifier$^{+}$) $|$ (except import set identifier$^{+}$) $|$ (prefix
-import set identifier) $|$ (rename import set (identifier
-identifier)$^{+}$) cond-expand clause ⟶ (feature requirement
-library declaration) feature requirement ⟶ identifier $|$ (library
-library name) $|$ (and feature requirement) $|$ (or feature requirement)
-$|$ (not feature requirement)
-
-## Formal semantics
-
-This section provides a formal denotational semantics for the primitive
-expressions of Scheme and selected built-in procedures. The concepts and
-notation used here are described in []{.citation cites="Stoy77"}; the
-definition of dynamic-wind is taken from []{.citation
-cites="GasbichlerKnauelSperberKelsey2003"}. The notation is summarized
-below:
-
-  -------------------------------------------- -------------------------------------------------
-  $\langle\,\ldots\,\rangle$                   sequence formation
-  $\left. s\downarrow k \right.$               $k$th member of the sequence $s$ (1-based)
-  $\# s$                                       length of sequence $s$
-  [\$s ⟶{}\\S⟶{} t\$]{.math .inline}           concatenation of sequences $s$ and $t$
-  $s \dagger k$                                drop the first $k$ members of sequence $s$
-  $\left. t\rightarrow a,b \right.$            McCarthy conditional "if $t$ then $a$ else $b$"
-  $\rho\lbrack x/i\rbrack$                     substitution "$\rho$ with $x$ for $i$"
-  [\$x\\hbox{ \\rm in }{D}\$]{.math .inline}   injection of $x$ into domain $D$
-  $x\,|\, D$                                   projection of $x$ to domain $D$
-  -------------------------------------------- -------------------------------------------------
-
-The reason that expression continuations take sequences of values
-instead of single values is to simplify the formal treatment of
-procedure calls and multiple return values.
-
-The boolean flag associated with pairs, vectors, and strings will be
-true for mutable objects and false for immutable objects.
-
-The order of evaluation within a call is unspecified. We mimic that here
-by applying arbitrary permutations *permute* and *unpermute*, which must
-be inverses, to the arguments in a call before and after they are
-evaluated. This is not quite right since it suggests, incorrectly, that
-the order of evaluation is constant throughout a program (for any given
-number of arguments), but it is a closer approximation to the intended
-semantics than a left-to-right evaluation would be.
-
-The storage allocator *new* is implementation-dependent, but it must
-obey the following axiom: if [\$\\hbox{\\it
-new}⟶{}\\sigma⟶{}\\hbox{\\raise.13ex\\hbox{\$\\scriptstyle\\in\$}}⟶{}{\\tt{}L}\$]{.math
-.inline}, then [\$\\sigma⟶{}(\\hbox{\\it
-new}⟶{}\\sigma⟶{}\\vert⟶{}{\\tt{}L})\\downarrow 2 = {\\it
-false}\$]{.math .inline}.
-
-The definition of [\$\\hbox{\$\\cal K\$}\$]{.math .inline} is omitted
-because an accurate definition of [\$\\hbox{\$\\cal K\$}\$]{.math
-.inline} would complicate the semantics without being very interesting.
-
-If P is a program in which all variables are defined before being
-referenced or assigned, then the meaning of P is [\$\$\\hbox{\$\\cal
-E\$}\[\\!\[\\hbox{((lambda (\\hbox{\\rm I}\\hbox{\\rm\*}) \\hbox{\\rm
-P}\') {\\hbox{\\rm\\\<undefined\\\>}} \$\\ldots\\,\$)}\]\\!\]\$\$]{.math
-.display} where I is the sequence of variables defined in P,
-[\$\\hbox{\\rm P}\'\$]{.math .inline} is the sequence of expressions
-obtained by replacing every definition in P by an assignment, undefined
-is an expression that evaluates to *undefined*, and [\$\\hbox{\$\\cal
-E\$}\$]{.math .inline} is the semantic function that assigns meaning to
-expressions.
-
-### Abstract syntax
-
-  ---------- ------------ ------------- ---------------------------------
-           K  .13ex$\in$  Con           constants, including quotations
-           I  .13ex$\in$  Ide           identifiers (variables)
-           E  .13ex$\in$  Exp           expressions
-    $\Gamma$  .13ex$\in$  Com $=$ Exp   commands
-  ---------- ------------ ------------- ---------------------------------
-
-=Exp⟶ =to 1 ̄ $|$ ̄
-
-Exp ⟶ K $|$ I $|$ (E$_{0}$ E) (lambda (I) $\Gamma$ E$_{0}$) (lambda (I
-**.** I) $\Gamma$ E$_{0}$) (lambda I $\Gamma$ E$_{0}$) (if E$_{0}$
-E$_{1}$ E$_{2}$) $|$ (if E$_{0}$ E$_{1}$) (set! I E)
-
-### Domain equations
-
-  ------------ ------------ ------------------------------------ --- --------------------------------------------------------------------------------------------------------- ------------------
-      $\alpha$  .13ex$\in$  `L`                                                                                                                                                locations
-         $\nu$  .13ex$\in$  `N`                                                                                                                                                natural numbers
-                            `T`                                  =   $\{$*false, true$\}$*                                                                                     booleans
-                            `Q`                                                                                                                                                symbols
-                            `H`                                                                                                                                                characters
-                            `R`                                                                                                                                                numbers
-                            `E`[\$\_{\\rm p}\$]{.math .inline}   =   [\${\\tt{}L}\\times {\\tt{}L}\\times {\\tt{}T}\$]{.math .inline}                                          pairs
-                            `E`[\$\_{\\rm v}\$]{.math .inline}   =   [\${\\tt{}L}\\hbox{\\rm\*} \\times {\\tt{}T}\$]{.math .inline}                                            vectors
-                            `E`[\$\_{\\rm s}\$]{.math .inline}   =   [\${\\tt{}L}\\hbox{\\rm\*} \\times {\\tt{}T}\$]{.math .inline}                                            strings
-                            `M`                                  =                                                                                                             
-                                                                                                                                                                               miscellaneous
-        $\phi$  .13ex$\in$  `F`                                  =   [\${\\tt{}L}\\times({\\tt{}E}\\hbox{\\rm\*} \\to \\tt{P}\\to {\\tt{}K}\\to {\\tt{}C})\$]{.math .inline}   procedure values
-    $\epsilon$  .13ex$\in$  `E`                                  =                                                                                                             
-                                                                                                                                                                               expressed values
-      $\sigma$  .13ex$\in$  `S`                                  =   [\${\\tt{}L}\\to({\\tt{}E}\\times{\\tt{}T})\$]{.math .inline}                                             stores
-        $\rho$  .13ex$\in$  `U`                                  =   [\$\\hbox{\\rm Ide}\\to{\\tt{}L}\$]{.math .inline}                                                        environments
-      $\theta$  .13ex$\in$  `C`                                  =   [\${\\tt{}S}\\to{\\tt{}A}\$]{.math .inline}                                                               command conts
-      $\kappa$  .13ex$\in$  `K`                                  =   [\${\\tt{}E}\\hbox{\\rm\*}\\to{\\tt{}C}\$]{.math .inline}                                                 expression conts
-                            `A`                                                                                                                                                answers
-                            `X`                                                                                                                                                errors
-      $\omega$  .13ex$\in$  `P`                                  =   [\$({\\tt{}F}\\times {\\tt{}F}\\times \\tt{P}) + \\{\\textit{root}\\}\$]{.math .inline}                   dynamic points
-  ------------ ------------ ------------------------------------ --- --------------------------------------------------------------------------------------------------------- ------------------
-
-### Semantic functions
-
-  --------------------------------------------------------- -------------------------------------------------------------------------------------------------------
-                  [\$\\hbox{\$\\cal K\$}:\$]{.math .inline} [\$\\hbox{\\rm Con}\\to{\\tt{}E}\$]{.math .inline}
-                  [\$\\hbox{\$\\cal E\$}:\$]{.math .inline} [\$\\hbox{\\rm Exp}\\to{\\tt{}U}\\to\\tt{P}\\to{\\tt{}K}\\to{\\tt{}C}\$]{.math .inline}
-    [\$\\hbox{\$\\cal E\$}\\hbox{\\rm\*}:\$]{.math .inline} [\$\\hbox{\\rm Exp}\\hbox{\\rm\*}\\to{\\tt{}U}\\to\\tt{P}\\to{\\tt{}K}\\to{\\tt{}C}\$]{.math .inline}
-                  [\$\\hbox{\$\\cal C\$}:\$]{.math .inline} [\$\\hbox{\\rm Com}\\hbox{\\rm\*}\\to{\\tt{}U}\\to\\tt{P}\\to{\\tt{}C}\\to{\\tt{}C}\$]{.math .inline}
-  --------------------------------------------------------- -------------------------------------------------------------------------------------------------------
-
-Definition of [\$\\cal K\$]{.math .inline} deliberately omitted.
-
-[\$\\cal E\$]{.math .inline}\[\] = ⟶.⟶*send* ([\$\\cal K\$]{.math
-.inline}\[\]) 
-
-[\$\\cal E\$]{.math .inline}\[\] = ⟶.⟶*hold*⟶ [\$\\=\$]{.math
-.inline}(*lookup*⟶⟶I)[\$\\\\ \\\>\$]{.math .inline}(*single*(⟶.⟶
-[\$\\=\$]{.math .inline}= *undefined*[\$\\\\ \\\> \\\>
-\\hbox{\\hspace\*{2em}}\$]{.math
-.inline}*wrong* "undefined variable",[\$\\\\ \\\>
-\\\>\\hbox{\\hspace\*{1em}}\$]{.math .inline}*send*⟶⟶))
-
-[\$\\cal E\$]{.math .inline}\[\] =[\$\\\\
-\\hbox{\\hspace\*{1em}}\$]{.math .inline}⟶.⟶[\$\\cal E\$]{.math .inline}
-[\$\\=\$]{.math .inline}(*permute*(E_0⟶§⟶E))[\$\\\\ \\\>\$]{.math
-.inline}⟶[\$\\\\ \\\>\$]{.math .inline}⟶[\$\\\\ \\\>\$]{.math
-.inline}(⟶.⟶ ([\$\\=\$]{.math .inline}(⟶.⟶ *applicate*⟶() ⟶() ⟶)[\$\\\\
-\\\> \\\>\$]{.math .inline}(*unpermute*⟶)))
-
-[\$\\cal E\$]{.math .inline}\[\] =[\$\\\\
-\\hbox{\\hspace\*{1em}}\$]{.math .inline}⟶.⟶⟶.⟶[\$\\\\
-\\hbox{\\hspace\*{2em}}\$]{.math .inline}*new*⟶⟶.13ex$\in$⟶`L`[\$\\\\
-\\hbox{\\hspace\*{3em}}\$]{.math .inline}*send*⟶ [\$\\=\$]{.math
-.inline}( [\$\\=\$]{.math .inline}*new*⟶  `L`,[\$\\\\ \\\> \\\>\$]{.math
-.inline}\^\^⟶.⟶ [\$\\=\$]{.math .inline}\# = \#I[\$\\\\ \\\>
-\\\>\$]{.math .inline}*tievals* [\$\\=\$]{.math .inline}(⟶.⟶
-[\$\\=\$]{.math .inline}(\^⟶.⟶[\$\\cal C\$]{.math .inline}\[\]\^\^
-([\$\\cal E\$]{.math .inline}\[\]\^\^\^))[\$\\\\ \\\> \\\> \\\>
-\\\>\$]{.math .inline}(*extends*⟶⟶I⟶))[\$\\\\ \\\> \\\> \\\>\$]{.math
-.inline},[\$\\\\ \\\> \\\> \\hbox{\\hspace\*{1em}}\$]{.math
-.inline}*wrong* "wrong number of arguments"[\$\\\\ \\\> \\\>\$]{.math
-.inline} in `E`)[\$\\\\ \\\>\$]{.math .inline}[\$\\\\ \\\>\$]{.math
-.inline}(*update*⟶(*new*⟶  `L`) ⟶*unspecified* ⟶),[\$\\\\
-\\hbox{\\hspace\*{3em}}\$]{.math .inline}*wrong* "out of memory"⟶
-
-[\$\\cal E\$]{.math .inline}\[\] =[\$\\\\
-\\hbox{\\hspace\*{1em}}\$]{.math .inline}⟶.⟶⟶.⟶[\$\\\\
-\\hbox{\\hspace\*{2em}}\$]{.math .inline}*new*⟶⟶.13ex$\in$⟶`L`[\$\\\\
-\\hbox{\\hspace\*{3em}}\$]{.math .inline}*send*⟶ [\$\\=\$]{.math
-.inline}( [\$\\=\$]{.math .inline}*new*⟶  `L`,[\$\\\\ \\\> \\\>\$]{.math
-.inline}\^\^⟶.⟶ [\$\\=\$]{.math .inline}\# #I[\$\\\\ \\\> \\\>
-\\\>\\hbox{\\hspace\*{1em}}\$]{.math .inline}*tievalsrest*[\$\\\\ \\\>
-\\\> \\\>\\hbox{\\hspace\*{2em}}\\=\$]{.math .inline}(⟶.⟶
-[\$\\=\$]{.math .inline}(\^⟶.⟶[\$\\cal C\$]{.math .inline}\[\]\^\^
-([\$\\cal E\$]{.math .inline}\[\]\^\^\^))[\$\\\\ \\\> \\\> \\\> \\\>
-\\\>\$]{.math .inline}(*extends*⟶ ⟶(I⟶§⟶I) ⟶))[\$\\\\ \\\> \\\> \\\>
-\\\>\$]{.math .inline}[\$\\\\ \\\> \\\> \\\> \\\>\$]{.math
-.inline}(#I),[\$\\\\ \\\> \\\> \\\>\\hbox{\\hspace\*{1em}}\$]{.math
-.inline}*wrong* "too few arguments" in `E`)[\$\\\\ \\\>\$]{.math
-.inline}[\$\\\\ \\\>\$]{.math .inline}(*update*⟶(*new*⟶  `L`)
-⟶*unspecified* ⟶),[\$\\\\ \\hbox{\\hspace\*{3em}}\$]{.math
-.inline}*wrong* "out of memory"⟶
-
-[\$\\cal E\$]{.math .inline}\[\] = [\$\\cal E\$]{.math .inline}\[\]
-
-[\$\\cal E\$]{.math .inline}\[\] =[\$\\\\
-\\hbox{\\hspace\*{1em}}\$]{.math .inline}⟶.⟶ [\$\\cal E\$]{.math
-.inline}\[\]⟶⟶(*single*⟶(⟶.⟶ [\$\\=\$]{.math .inline}*truish*⟶[\$\\cal
-E\$]{.math .inline}\[\],[\$\\\\ \\\>\\hbox{\\hspace\*{1em}}\$]{.math
-.inline}[\$\\cal E\$]{.math .inline}\[\]))
-
-[\$\\cal E\$]{.math .inline}\[\] =[\$\\\\
-\\hbox{\\hspace\*{1em}}\$]{.math .inline}⟶.⟶ [\$\\cal E\$]{.math
-.inline}\[\]⟶⟶(*single*⟶(⟶.⟶ [\$\\=\$]{.math .inline}*truish*⟶[\$\\cal
-E\$]{.math .inline}\[\],[\$\\\\ \\\>\\hbox{\\hspace\*{1em}}\$]{.math
-.inline}*send*⟶*unspecified*⟶))
-
-Here and elsewhere, any expressed value other than *undefined* may be
-used in place of *unspecified*.
-
-[\$\\cal E\$]{.math .inline}\[\] =[\$\\\\
-\\hbox{\\hspace\*{1em}}\$]{.math .inline}⟶.⟶[\$\\cal E\$]{.math
-.inline}\[\]⟶⟶⟶ (*single*(⟶.⟶*assign*⟶ [\$\\=\$]{.math
-.inline}(*lookup*⟶⟶I)[\$\\\\ \\\>\$]{.math .inline}[\$\\\\ \\\>\$]{.math
-.inline}(*send*⟶*unspecified*⟶)))
-
-[\$\\cal E\$]{.math .inline}\[\] = ⟶.⟶⟶
-
-[\$\\cal E\$]{.math .inline}\[\] =[\$\\\\
-\\hbox{\\hspace\*{1em}}\$]{.math .inline}⟶.⟶ [\$\\cal E\$]{.math
-.inline}\[\]⟶⟶ (*single* (\_0⟶.⟶[\$\\cal E\$]{.math .inline}\[\] ⟶⟶(⟶.⟶
-⟶(\_0⟶§⟶))))
-
-[\$\\cal C\$]{.math .inline}\[\] =  .⟶
-
-[\$\\cal C\$]{.math .inline}\[\] = ⟶.⟶[\$\\cal E\$]{.math
-.inline}\[\]⟶⟶(⟶.⟶ [\$\\cal C\$]{.math .inline}\[\])
-
-### Auxiliary functions
-
-*lookup* : `U`Ide[\$\\\\\$]{.math .inline} *lookup* = I⟶.⟶I
-
-*extends* : `U`Ide [\$\\\\\$]{.math .inline} *extends* =[\$\\\\
-\\hbox{\\hspace\*{1em}}\$]{.math .inline}I⟶.⟶ [\$\\=\$]{.math
-.inline}#I=0,[\$\\\\ \\\>\$]{.math .inline}*extends*⟶() ⟶(I) ⟶()
-
-*wrong* : `X`
-
-*send* : `E`[\$\\\\\$]{.math .inline} *send* = ⟶.⟶
-
-*single* : (`E`) [\$\\\\\$]{.math .inline} *single* =[\$\\\\
-\\hbox{\\hspace\*{1em}}\$]{.math .inline}⟶.⟶ [\$\\=\$]{.math
-.inline}#=1(),[\$\\\\ \\\>\$]{.math
-.inline}*wrong* "wrong number of return values"
-
-*new* : `S`(`L`+ { *error* })
-
-*hold* : `L`[\$\\\\\$]{.math .inline} *hold* = ⟶.⟶*send* ()
-
-*assign* : `L`[\$\\\\\$]{.math .inline} *assign* = ⟶.⟶(*update*⟶)
-
-*update* : `L`[\$\\\\\$]{.math .inline} *update* = ⟶.⟶
-
-*tievals* : (`L` ) [\$\\\\\$]{.math .inline} *tievals* =[\$\\\\
-\\hbox{\\hspace\*{1em}}\$]{.math .inline}⟶.⟶ [\$\\=\$]{.math
-.inline}#=0⟶,[\$\\\\ \\\>\$]{.math
-.inline}*new*⟶⟶.13ex$\in$⟶`L`*tievals*  [\$\\=\$]{.math
-.inline}(⟶.⟶(*new*⟶⟶⟶`L` ⟶§⟶))[\$\\\\ \\\> \\\>\$]{.math
-.inline}()[\$\\\\ \\\> \\\>\$]{.math .inline}(*update*(*new*⟶⟶⟶`L`) ()
-),[\$\\\\ \\\>\$]{.math .inline}*wrong* "out of memory"
-
-*tievalsrest* : (`L` ) [\$\\\\\$]{.math .inline} *tievalsrest* =[\$\\\\
-\\hbox{\\hspace\*{1em}}\$]{.math .inline}⟶.⟶*list*⟶ [\$\\=\$]{.math
-.inline}(*dropfirst*⟶)[\$\\\\ \\\>\$]{.math
-.inline}(*single*(⟶.⟶*tievals*⟶⟶ ((*takefirst*⟶)⟶§⟶)))
-
-*dropfirst* = l n ⟶.⟶ n=0 l, *dropfirst* (l )(n - 1)
-
-*takefirst* = l n ⟶.⟶ n=0 ⟶, l ⟶§⟶(*takefirst* (l )(n - 1))
-
-*truish* : `E`[\$\\\\\$]{.math .inline} *truish* = ⟶.⟶ = *false*
-*false*, *true*
-
-*permute* : Exp Exp
-
-*unpermute* : `E`
-
-*applicate* : `E`
-`P\\ applicate =\\  \hbox{\hspace*{1em}}⟶.⟶ \=⟶.13ex\scriptstyle\in⟶F(⟶⟶F), wrong “bad procedure” `
-
-*onearg* :
-(`E``P) (E P)\\ onearg =\\  \hbox{\hspace*{1em}}⟶.⟶ \=#=1(),\\     \>wrong “wrong number of arguments” `
-
-*twoarg* :
-(`E``P) (E P)\\ twoarg =\\  \hbox{\hspace*{1em}}⟶.⟶ \=#=2()(),\\     \>wrong “wrong number of arguments” `
-
-*threearg* :
-(`E``P) (E P)\\ threearg =\\  \hbox{\hspace*{1em}}⟶.⟶ \=#=3()()(),\\     \>wrong “wrong number of arguments” `
-
-*list* : `E`
-`P\\ list =\\  \hbox{\hspace*{1em}}⟶.⟶ \=#=0send⟶null⟶,\\     \>list () (single(⟶.⟶ cons,)) `
-
-*cons* : `E`
-`P\\ cons =\\  \hbox{\hspace*{1em}}twoarg (_1_2⟶.⟶ \=new⟶⟶.13ex\scriptstyle\in⟶L\\     \>          \=(^⟶.⟶ \=new⟶^⟶.13ex\scriptstyle\in⟶L\\     \>  \>send  \=(\=new⟶⟶⟶L, new⟶^⟶⟶L, true\\                                 \>  \>  \>  \> in E)\\     \>  \>  \>\\     \>  \>  \>(update(new⟶^⟶⟶L) _2 ^),\\     \>  \>wrong “out of memory”^)\\     \>(update(new⟶⟶⟶L)_1),\\     \>wrong “out of memory”) `
-
-*less* : `E`
-`P\\ less =\\  \hbox{\hspace*{1em}}twoarg (_1_2⟶.⟶ \=(_1⟶.13ex\scriptstyle\in⟶R_2⟶.13ex\scriptstyle\in⟶R)\\     \>send  (_1⟶⟶R<_2⟶⟶R true, false) ,\\     \>wrong “non-numeric argument to <”) `
-
-*add* : `E`
-`P\\ add =\\  \hbox{\hspace*{1em}}twoarg (_1_2⟶.⟶ \=(_1⟶.13ex\scriptstyle\in⟶R_2⟶.13ex\scriptstyle\in⟶R)\\     \>send  \=((_1⟶⟶R+_2⟶⟶R) in E) ,\\     \>wrong “non-numeric argument to +”) `
-
-*car* : `E`
-`P\\ car =\\  \hbox{\hspace*{1em}}onearg (⟶.⟶ \=⟶.13ex\scriptstyle\in⟶E_{\rm p} car-internal⟶,\\     \>wrong “non-pair argument to car”) `
-
-*car-internal* : `E`[\$\\\\\$]{.math .inline} *car-internal* =
-[\$\\hbox{\\hspace\*{1em}}\$]{.math .inline}⟶.⟶ [\$\\=\$]{.math
-.inline}*hold*  (⟶⟶`E`[\$\_{\\rm p}\$]{.math .inline})
-
-*cdr* : `E` `P `
-
-*cdr-internal* : `E`
-
-*setcar* : `E`
-`P\\ setcar =\\  \hbox{\hspace*{1em}}twoarg (_1_2⟶.⟶ \=_1⟶.13ex\scriptstyle\in⟶E_{\rm p}\\     \>(_1⟶⟶E_{\rm p}) assign \=(_1⟶⟶E_{\rm p})\\     \>                           \>_2\\     \>                                  \>(send⟶unspecified⟶),\\     \>wrong “immutable argument to set-car!”,\\     \>wrong “non-pair argument to set-car!”) `
-
-*eqv* : `E`
-`P\\ eqv =\\  \hbox{\hspace*{1em}}twoarg (_1_2⟶.⟶ \=(_1⟶.13ex\scriptstyle\in⟶M_2⟶.13ex\scriptstyle\in⟶M)\\     \>send  \=(_1⟶⟶M= _2⟶⟶Mtrue, false),\\     \>(_1⟶.13ex\scriptstyle\in⟶Q_2⟶.13ex\scriptstyle\in⟶Q)\\     \>send  \=(_1⟶⟶Q= _2⟶⟶Qtrue, false),\\     \>(_1⟶.13ex\scriptstyle\in⟶H_2⟶.13ex\scriptstyle\in⟶H)\\     \>send  \=(_1⟶⟶H= _2⟶⟶Htrue, false),\\     \>(_1⟶.13ex\scriptstyle\in⟶R_2⟶.13ex\scriptstyle\in⟶R)\\     \>send  \=(_1⟶⟶R=_2⟶⟶Rtrue, false),\\     \>(_1⟶.13ex\scriptstyle\in⟶E_{\rm p}_2⟶.13ex\scriptstyle\in⟶E_{\rm p})\\     \>send  \=(\=(⟶.⟶ (\=(p_1) = (p_2)\\     \>  \>   \>   \>(p_1) = (p_2)) true,\\     \>  \>   \>   \>false)\\     \>  \>   \>(_1⟶⟶E_{\rm p})\\     \>  \>   \>(_2⟶⟶E_{\rm p}))\\     \>  \>,\\     \>(_1⟶.13ex\scriptstyle\in⟶E_{\rm v}_2⟶.13ex\scriptstyle\in⟶E_{\rm v}) …,\\     \>(_1⟶.13ex\scriptstyle\in⟶E_{\rm s}_2⟶.13ex\scriptstyle\in⟶E_{\rm s}) …,\\     \>(_1⟶.13ex\scriptstyle\in⟶F_2⟶.13ex\scriptstyle\in⟶F)\\     \>send  \=((_1⟶⟶F) = (_2⟶⟶F) true, false)\\     \>  \>,\\     \>send ⟶false⟶) `
-
-*apply* : `E`
-`P\\ apply =\\  \hbox{\hspace*{1em}}twoarg (_1_2⟶.⟶ \=_1⟶.13ex\scriptstyle\in⟶F valueslist⟶_2 (⟶.⟶applicate⟶_1),\\     \>wrong “bad procedure argument to apply”) `
-
-*valueslist* : `E`[\$\\\\\$]{.math .inline} *valueslist* =[\$\\\\
-\\hbox{\\hspace\*{1em}}\$]{.math .inline}⟶.⟶ [\$\\=\$]{.math
-.inline}⟶.13ex$\in$⟶`E`[\$\_{\\rm p}\$]{.math .inline}[\$\\\\
-\\\>\$]{.math .inline}*cdr-internal*⟶ [\$\\=\$]{.math .inline}[\$\\\\
-\\\> \\\>\$]{.math .inline}(⟶.⟶ [\$\\=\$]{.math
-.inline}*valueslist*⟶[\$\\\\ \\\> \\\> \\\>\$]{.math .inline}[\$\\\\
-\\\> \\\> \\\>\$]{.math .inline}(⟶.⟶[\$\\=\$]{.math
-.inline}*car-internal*[\$\\\\ \\\> \\\> \\\> \\\>\$]{.math
-.inline}⟶[\$\\\\ \\\> \\\> \\\> \\\>\$]{.math .inline} (*single*(⟶.⟶
-(⟶§⟶))))),[\$\\\\ \\\>\$]{.math .inline}= *null*⟶,[\$\\\\ \\\>\$]{.math
-.inline}*wrong* "non-list argument to values-list"
-
-*cwcc* [\$\\=\$]{.math .inline}: `E`
-`P\\ \> \\ cwcc =\\  \hbox{\hspace*{1em}}onearg (⟶.⟶ \=⟶.13ex\scriptstyle\in⟶F\\     \>(⟶.⟶ \=new⟶⟶.13ex\scriptstyle\in⟶L\\     \>  \>applicate⟶ \=\\     \>  \>  \>\=new⟶⟶⟶L,\\     \>  \>  \>  \> ^^⟶.⟶ travel⟶^()\\     \>  \>  \>  in E\\     \>  \>  \>\\     \>  \>  \>\\     \>  \>  \>(update  \=(new⟶⟶⟶L)\\     \>  \>  \>   \>unspecified\\     \>  \>  \>   \>),\\     \>  \>wrong “out of memory” ),\\     \>wrong “bad procedure argument”) `
-
-*travel* :
-`PP\\ travel = \\   \hbox{\hspace*{1em}}_1_2⟶.⟶ travelpath⟶(\=(pathup⟶_1(commonancest⟶_1_2)) ⟶§⟶\\   \> (pathdown⟶(commonancest⟶_1_2)_2)) `
-
-*pointdepth* :
-`P\\ pointdepth = \\   \hbox{\hspace*{1em}}⟶.⟶ = root , 1 + (pointdepth⟶(⟶⟶(F P))) `
-
-*ancestors* :
-`PP\\ ancestors = \\   \hbox{\hspace*{1em}}⟶.⟶ = root {}, {}⟶⟶(ancestors⟶(⟶⟶(F P))) `
-
-*commonancest* :
-`PPP\\ commonancest = \\   \hbox{\hspace*{1em}}_1_2⟶.⟶\= the only element of \\   \>{ ^⟶⟶\= ^(ancestors⟶_1)⟶⟶(ancestors⟶_2),\\   \>\>pointdepth⟶^pointdepth⟶^\\   \>\> ^(ancestors⟶_1)⟶⟶(ancestors⟶_2)} `
-
-*pathup* :
-`PP(P)\\ pathup = \\   \hbox{\hspace*{1em}}_1_2⟶.⟶ \=_1=_2,\\   \>(_1, _1⟶⟶(FP)) ⟶§⟶\\   \>(pathup⟶(_1⟶⟶(FP))_2) `
-
-*pathdown* :
-`PP(P)\\ pathdown = \\   \hbox{\hspace*{1em}}_1_2⟶.⟶ \=_1=_2,\\   \>(pathdown⟶_1(_2⟶⟶(FP))) ⟶§⟶\\   \>(_2, _2⟶⟶(FP)) `
-
-*travelpath* :
-(`P) \\ travelpath = \\   \hbox{\hspace*{1em}}⟶.⟶ \=#=0,\\   \>(())\=(())\\   \>\>(⟶.⟶travelpath⟶( )) `
-
-*dynamicwind* : `E`
-`P\\ dynamicwind = \\ \hbox{\hspace*{1em}}threearg (\=_1_2_3⟶.⟶ (_1⟶.13ex\scriptstyle\in⟶F_2⟶.13ex\scriptstyle\in⟶F_3⟶.13ex\scriptstyle\in⟶F)\\   \>applicate⟶ \=_1(\=⟶.⟶\\   \>\>applicate⟶\=_2 ((_1⟶⟶F,_3⟶⟶F,) in P)\\   \>\>\>(⟶.⟶applicate⟶_3(⟶.⟶))),\\   \>wrong “bad procedure argument”) `
-
-*values* : `E` `P\\ values = ⟶.⟶ `
-
-*cwv* : `E`
-`P \\ cwv =\\  \hbox{\hspace*{1em}}twoarg (_1_2⟶.⟶ \=applicate⟶_1⟶ (⟶.⟶applicate⟶_2⟶)) `
 
 ## Derived expression types
 
@@ -7185,9 +6696,9 @@ where make-promise is defined as follows:
         (list (cons done? proc))))%
 
 Finally, we define force to call the procedure expressions in promises
-iteratively using a trampoline technique following []{.citation
-cites="srfi45"} until a non-lazy result (i.e. a value created by delay
-instead of delay-force) is returned, as follows:
+iteratively using a trampoline technique following <span
+class="citation" cites="srfi45"></span> until a non-lazy result (i.e. a
+value created by delay instead of delay-force) is returned, as follows:
 
     (define (force promise)
       (if (promise-done? promise)
@@ -7659,7 +7170,7 @@ expressions from files.
 **Process-Context Library**
 
 The (scheme process-context) library exports procedures for accessing
-with the program's calling context.
+with the program’s calling context.
 
     {\cf command-line}            {\cf emergency-exit}
     {\cf exit}
@@ -7696,45 +7207,45 @@ objects.
 
 **R5RS Library**
 
-The (scheme r5rs) library provides the identifiers defined by R$^{5}$RS,
-except that transcript-on and transcript-off are not present. Note that
-the exact and inexact procedures appear under their R$^{5}$RS names
-inexact-\>exact and exact-\>inexact respectively. However, if an
-implementation does not provide a particular library such as the complex
-library, the corresponding identifiers will not appear in this library
-either.
+The (scheme r5rs) library provides the identifiers defined by
+R<sup>5</sup>RS, except that transcript-on and transcript-off are not
+present. Note that the exact and inexact procedures appear under their
+R<sup>5</sup>RS names inexact->exact and exact->inexact respectively.
+However, if an implementation does not provide a particular library such
+as the complex library, the corresponding identifiers will not appear in
+this library either.
 
-\* + - \... / \< \<= = => \> \>= \_ abs acos and angle append apply asin
+\* + - ... / \< \<= = => \> \>= \_ abs acos and angle append apply asin
 assoc assq assv atan begin boolean?  caaaar caaadr caaar caadar caaddr
 caadr caar cadaar cadadr cadar caddar cadddr caddr cadr
 call-with-current-continuation call-with-input-file
 call-with-output-file call-with-values car case cdaaar cdaadr cdaar
 cdadar cdaddr cdadr cdar cddaar cddadr cddar cdddar cddddr cdddr cddr
-cdr ceiling char-\>integer char-alphabetic?  char-ci\<=? char-ci\<? 
+cdr ceiling char->integer char-alphabetic?  char-ci\<=? char-ci\<? 
 char-ci=? char-ci>=?  char-ci>? char-downcase char-lower-case?
 char-numeric?  char-ready? char-upcase char-upper-case?
 char-whitespace?  char\<=? char\<?  char=? char>=?  char>? char? 
 close-input-port close-output-port complex? cond cons cos
 current-input-port current-output-port define define-syntax delay
 denominator display do dynamic-wind else eof-object? eq?  equal? eqv? 
-eval even?  exact-\>inexact exact?  exp expt floor for-each force gcd if
-imag-part inexact-\>exact inexact?  input-port? integer-\>char integer?
+eval even?  exact->inexact exact?  exp expt floor for-each force gcd if
+imag-part inexact->exact inexact?  input-port? integer->char integer?
 interaction-environment lambda lcm length let let\* let-syntax letrec
-letrec-syntax list list-\>string list-\>vector list-ref list-tail list? 
+letrec-syntax list list->string list->vector list-ref list-tail list? 
 load log magnitude make-polar make-rectangular make-string make-vector
 map max member memq memv min modulo negative? newline not
-null-environment null? number-\>string number? numerator odd?
+null-environment null? number->string number? numerator odd?
 open-input-file open-output-file or output-port? pair?  peek-char
 positive?  procedure? quasiquote quote quotient rational? rationalize
 read read-char real-part real?  remainder reverse round
 scheme-report-environment set! set-car! set-cdr! sin sqrt string
-string-\>list string-\>number string-\>symbol string-append
-string-ci\<=?  string-ci\<? string-ci=?  string-ci>=? string-ci>? 
-string-copy string-fill! string-length string-ref string-set!
-string\<=?  string\<? string=?  string>=? string>?  string? substring
-symbol-\>string symbol?  syntax-rules tan truncate values vector
-vector-\>list vector-fill! vector-length vector-ref vector-set! vector?
-with-input-from-file with-output-to-file write write-char zero?
+string->list string->number string->symbol string-append string-ci\<=? 
+string-ci\<? string-ci=?  string-ci>=? string-ci>?  string-copy
+string-fill! string-length string-ref string-set! string\<=?  string\<?
+string=?  string>=? string>?  string? substring symbol->string symbol? 
+syntax-rules tan truncate values vector vector->list vector-fill!
+vector-length vector-ref vector-set! vector? with-input-from-file
+with-output-to-file write write-char zero?
 
 # Standard Feature Identifiers
 
@@ -7744,7 +7255,7 @@ feature identifier if it does not provide the corresponding feature.
 
 r7rs
 
-All R$^{7}$RS Scheme implementations have this feature.
+All R<sup>7</sup>RS Scheme implementations have this feature.
 
 exact-closed
 
@@ -7777,15 +7288,15 @@ windows
 
 This implementation is running on Windows.
 
-unix, darwin, gnu-linux, bsd, freebsd, solaris, \...
+unix, darwin, gnu-linux, bsd, freebsd, solaris, ...
 
 Operating system flags (perhaps more than one).
 
-i386, x86-64, ppc, sparc, jvm, clr, llvm, \...
+i386, x86-64, ppc, sparc, jvm, clr, llvm, ...
 
 CPU architecture flags.
 
-ilp32, lp64, ilp64, \...
+ilp32, lp64, ilp64, ...
 
 C memory model flags.
 
@@ -7797,14 +7308,15 @@ The name of this implementation.
 
 The name and version of this implementation.
 
-# Language changes {#language-changes .unnumbered}
+# Language changes
 
 1ex
 
-### Incompatibilities with R$^{5}$RS {#incompatibilities-with-r5rs .unnumbered}
+### Incompatibilities with R<sup>5</sup>RS
 
 This section enumerates the incompatibilities between this report and
-the "Revised$^{5}$ report" []{.citation cites="R5RS"}.
+the “Revised<sup>5</sup> report” <span class="citation"
+cites="R5RS"></span>.
 
 *This list is not authoritative, but is believed to be correct and
 complete.*
@@ -7820,37 +7332,38 @@ complete.*
     wildcard, which means it cannot be used as a syntax variable. It can
     still be used as a literal.
 
--   The R$^{5}$RS procedures exact-\>inexact and inexact-\>exact have
-    been renamed to their R$^{6}$RS names, inexact and exact,
+-   The R<sup>5</sup>RS procedures exact->inexact and inexact->exact
+    have been renamed to their R<sup>6</sup>RS names, inexact and exact,
     respectively, as these names are shorter and more correct. The
-    former names are still available in the R$^{5}$RS library.
+    former names are still available in the R<sup>5</sup>RS library.
 
 -   The guarantee that string comparison (with string\<? and the related
     predicates) is a lexicographical extension of character comparison
     (with char\<? and the related predicates) has been removed.
 
--   Support for the \# character in numeric literals is no longer
+-   Support for the # character in numeric literals is no longer
     required.
 
 -   Support for the letters s, f, d, and l as exponent markers is no
     longer required.
 
--   Implementations of stringnumber are no longer permitted to return
-    \#f when the argument contains an explicit radix prefix, and must be
+-   Implementations of stringnumber are no longer permitted to return #f
+    when the argument contains an explicit radix prefix, and must be
     compatible with read and the syntax of numbers in programs.
 
 -   The procedures transcript-on and transcript-off have been removed.
 
-### Other language changes since R$^{5}$RS {#other-language-changes-since-r5rs .unnumbered}
+### Other language changes since R<sup>5</sup>RS
 
 This section enumerates the additional differences between this report
-and the "Revised$^{5}$ report" []{.citation cites="R5RS"}.
+and the “Revised<sup>5</sup> report” <span class="citation"
+cites="R5RS"></span>.
 
 *This list is not authoritative, but is believed to be correct and
 complete.*
 
--   Various minor ambiguities and unclarities in R$^{5}$RS have been
-    cleaned up.
+-   Various minor ambiguities and unclarities in R<sup>5</sup>RS have
+    been cleaned up.
 
 -   Libraries have been added as a new program structure to improve
     encapsulation and sharing of code. Some existing and new identifiers
@@ -7858,7 +7371,7 @@ complete.*
     imported into other libraries or main programs, with controlled
     exposure and renaming of identifiers. The contents of a library can
     be made conditional on the features of the implementation on which
-    it is to be used. There is an R$^{5}$RS compatibility library.
+    it is to be used. There is an R<sup>5</sup>RS compatibility library.
 
 -   The expressions types include, include-ci, and cond-expand have been
     added to the base library; they have the same semantics as the
@@ -7873,16 +7386,16 @@ complete.*
     and by file-related procedures also have predicates to detect them.
 
 -   New disjoint types supporting access to multiple fields can be
-    generated with the define-record-type of SRFI 9 []{.citation
-    cites="srfi9"}
+    generated with the define-record-type of SRFI 9 <span
+    class="citation" cites="srfi9"></span>
 
 -   Parameter objects can be created with make-parameter, and
     dynamically rebound with parameterize. The procedures
     current-input-port and current-output-port are now parameter
     objects, as is the newly introduced current-error-port.
 
--   Support for promises has been enhanced based on SRFI 45 []{.citation
-    cites="srfi45"}.
+-   Support for promises has been enhanced based on SRFI 45 <span
+    class="citation" cites="srfi45"></span>.
 
 -   *Bytevectors*, vectors of exact integers in the range from 0 to 255
     inclusive, have been added as a new disjoint type. A subset of the
@@ -7915,14 +7428,14 @@ complete.*
     labels; write-shared generates labels for all shared and circular
     structure. The display procedure must not loop on circular objects.
 
--   The R$^{6}$RS procedure eof-object has been added. Eof-objects are
-    now required to be a disjoint type.
+-   The R<sup>6</sup>RS procedure eof-object has been added. Eof-objects
+    are now required to be a disjoint type.
 
 -   Syntax definitions are now allowed wherever variable definitions
     are.
 
 -   The syntax-rules construct now allows the ellipsis symbol to be
-    specified explicitly instead of the default \..., allows template
+    specified explicitly instead of the default ..., allows template
     escapes with an ellipsis-prefixed list, and allows tail patterns to
     follow an ellipsis pattern.
 
@@ -7947,12 +7460,13 @@ complete.*
 -   The convenience conditionals when and unless have been added.
 
 -   The behavior of eqv? on inexact numbers now conforms to the
-    R$^{6}$RS definition.
+    R<sup>6</sup>RS definition.
 
 -   When applied to procedures, eq? and eqv? are permitted to return
     different answers.
 
--   The R$^{6}$RS procedures boolean=? and symbol=? have been added.
+-   The R<sup>6</sup>RS procedures boolean=? and symbol=? have been
+    added.
 
 -   Positive infinity, negative infinity, NaN, and negative inexact zero
     have been added to the numeric tower as inexact values with the
@@ -7975,12 +7489,11 @@ complete.*
 -   The - and / procedures and the character and string comparison
     predicates are now required to support more than two arguments.
 
--   The forms \#true and \#false are now supported as well as \#t and
-    \#f.
+-   The forms #true and #false are now supported as well as #t and #f.
 
 -   The procedures make-list, list-copy, list-set!, string-map,
-    string-for-each, string-\>vector, vector-append, vector-copy,
-    vector-map, vector-for-each, vector-\>string, vector-copy!, and
+    string-for-each, string->vector, vector-append, vector-copy,
+    vector-map, vector-for-each, vector->string, vector-copy!, and
     string-copy! have been added to round out the sequence operations.
 
 -   Some string and vector procedures support processing of part of a
@@ -8031,81 +7544,86 @@ complete.*
 
 -   The formal semantics now handles dynamic-wind.
 
-### Incompatibilities with R$^{6}$RS {#incompatibilities-with-r6rs .unnumbered}
+### Incompatibilities with R<sup>6</sup>RS
 
-This section enumerates the incompatibilities between R$^{7}$RS and the
-"Revised$^{6}$ report" []{.citation cites="R6RS"} and its accompanying
-Standard Libraries document.
+This section enumerates the incompatibilities between
+R<sup>7</sup>RS and the “Revised<sup>6</sup> report” <span
+class="citation" cites="R6RS"></span> and its accompanying Standard
+Libraries document.
 
 *This list is not authoritative, and is possibly incomplete.*
 
--   R$^{7}$RS libraries begin with the keyword define-library rather
-    than library in order to make them syntactically distinguishable
-    from R$^{6}$RS libraries. In R$^{7}$RS terms, the body of an
-    R$^{6}$RS library consists of a single export declaration followed
-    by a single import declaration, followed by commands and
-    definitions. In R$^{7}$RS, commands and definitions are not
-    permitted directly within the body: they have to be wrapped in a
-    begin library declaration.
+-   R<sup>7</sup>RS libraries begin with the keyword define-library
+    rather than library in order to make them syntactically
+    distinguishable from R<sup>6</sup>RS libraries. In
+    R<sup>7</sup>RS terms, the body of an R<sup>6</sup>RS library
+    consists of a single export declaration followed by a single import
+    declaration, followed by commands and definitions. In
+    R<sup>7</sup>RS, commands and definitions are not permitted directly
+    within the body: they have to be wrapped in a begin library
+    declaration.
 
--   There is no direct R$^{6}$RS equivalent of the include, include-ci,
-    include-library-declarations, or cond-expand library declarations.
-    On the other hand, the R$^{7}$RS library syntax does not support
-    phase or version specifications.
+-   There is no direct R<sup>6</sup>RS equivalent of the include,
+    include-ci, include-library-declarations, or cond-expand library
+    declarations. On the other hand, the R<sup>7</sup>RS library syntax
+    does not support phase or version specifications.
 
 -   The grouping of standardized identifiers into libraries is different
-    from the R$^{6}$RS approach. In particular, procedures which are
-    optional in R$^{5}$RS  either expressly or by implication, have been
-    removed from the base library. Only the base library itself is an
-    absolute requirement.
+    from the R<sup>6</sup>RS approach. In particular, procedures which
+    are optional in R<sup>5</sup>RS  either expressly or by implication,
+    have been removed from the base library. Only the base library
+    itself is an absolute requirement.
 
 -   No form of identifier syntax is provided.
 
 -   Internal syntax definitions are allowed, but uses of a syntax form
     cannot appear before its definition; the even/odd example given in
-    R$^{6}$RS is not allowed.
+    R<sup>6</sup>RS is not allowed.
 
--   The R$^{6}$RS exception system was incorporated as-is, but the
+-   The R<sup>6</sup>RS exception system was incorporated as-is, but the
     condition types have been left unspecified. In particular, where
-    R$^{6}$RS requires a condition of a specified type to be signaled,
-    R$^{7}$RS says only "it is an error", leaving the question of
-    signaling open.
+    R<sup>6</sup>RS requires a condition of a specified type to be
+    signaled, R<sup>7</sup>RS says only “it is an error”, leaving the
+    question of signaling open.
 
 -   Full Unicode support is not required. Normalization is not provided.
     Character comparisons are defined by Unicode, but string comparisons
     are implementation-dependent. Non-Unicode characters are permitted.
 
--   The full numeric tower is optional as in R$^{5}$RS, but optional
-    support for IEEE infinities, NaN, and -0.0 was adopted from
-    R$^{6}$RS. Most clarifications on numeric results were also adopted,
-    but the semantics of the R$^{6}$RS procedures real?, rational?, and
-    integer? were not adopted. (Note that the
-    R$^{5}$RS/R$^{7}$RS semantics are available in R$^{6}$RS using
-    real-valued?, rational-valued?, and integer-valued?). The
-    R$^{6}$RS division operators div, mod, div-and-mod, div0, mod0 and
-    div0-and-mod0 are not provided.
+-   The full numeric tower is optional as in R<sup>5</sup>RS, but
+    optional support for IEEE infinities, NaN, and -0.0 was adopted from
+    R<sup>6</sup>RS. Most clarifications on numeric results were also
+    adopted, but the semantics of the R<sup>6</sup>RS procedures real?,
+    rational?, and integer? were not adopted. (Note that the
+    R<sup>5</sup>RS/R<sup>7</sup>RS semantics are available in
+    R<sup>6</sup>RS using real-valued?, rational-valued?, and
+    integer-valued?). The R<sup>6</sup>RS division operators div, mod,
+    div-and-mod, div0, mod0 and div0-and-mod0 are not provided.
 
 -   When a result is unspecified, it is still required to be a single
     value. However, non-final expressions in a body can return any
     number of values.
 
 -   The semantics of map and for-each have been changed to use the SRFI
-    1 []{.citation cites="srfi1"} early termination behavior. Likewise,
-    assoc and member take an optional equal? argument as in SRFI 1,
-    instead of the separate assp and memp procedures of R$^{6}$RS.
+    1 <span class="citation" cites="srfi1"></span> early termination
+    behavior. Likewise, assoc and member take an optional equal?
+    argument as in SRFI 1, instead of the separate assp and memp
+    procedures of R<sup>6</sup>RS.
 
--   The R$^{6}$RS quasiquote clarifications have been adopted, with the
-    exception of multiple-argument unquote and unquote-splicing.
+-   The R<sup>6</sup>RS quasiquote clarifications have been adopted,
+    with the exception of multiple-argument unquote and
+    unquote-splicing.
 
--   The R$^{6}$RS method of specifying mantissa widths was not adopted.
+-   The R<sup>6</sup>RS method of specifying mantissa widths was not
+    adopted.
 
--   String ports are compatible with SRFI 6 []{.citation cites="srfi6"}
-    rather than R$^{6}$RS.
+-   String ports are compatible with SRFI 6 <span class="citation"
+    cites="srfi6"></span> rather than R<sup>6</sup>RS.
 
--   R$^{6}$RS-style bytevectors are included, but only the unsigned byte
-    (u8) procedures have been provided. The lexical syntax uses #u8 for
-    compatibility with SRFI 4 []{.citation cites="srfi4"}, rather than
-    the R$^{6}$RS #vu8 style.
+-   R<sup>6</sup>RS-style bytevectors are included, but only the
+    unsigned byte (u8) procedures have been provided. The lexical syntax
+    uses #u8 for compatibility with SRFI 4 <span class="citation"
+    cites="srfi4"></span>, rather than the R<sup>6</sup>RS #vu8 style.
 
 -   The utility macros when and unless are provided, but their result is
     left unspecified.
@@ -8113,7 +7631,7 @@ Standard Libraries document.
 -   The remaining features of the Standard Libraries document were left
     to future standardization efforts.
 
-# Additional material {#additional-material .unnumbered}
+# Additional material
 
 1ex
 
@@ -8129,20 +7647,21 @@ research.
 On-line Scheme discussions are held using IRC on the #scheme channel at
 irc.freenode.net and on the Usenet discussion group comp.lang.scheme.
 
-# Example {#example .unnumbered}
+# Example
 
 1ex
 
 The procedure integrate-system integrates the system
-$$y_{k}^{\prime} = f_{k}\left( y_{1},y_{2},\ldots,y_{n} \right),\; k = 1,\ldots,n$$
+*y*<sub>*k*</sub><sup>′</sup> = *f*<sub>*k*</sub>(*y*<sub>1</sub>,*y*<sub>2</sub>,…,*y*<sub>*n*</sub>), *k* = 1, …, *n*
 of differential equations with the method of Runge-Kutta.
 
 The parameter `system-derivative` is a function that takes a system
-state (a vector of values for the state variables $y_{1},\ldots,y_{n}$)
-and produces a system derivative (the values
-$y_{1}^{\prime},\ldots,y_{n}^{\prime}$). The parameter `initial-state`
-provides an initial system state, and `h` is an initial guess for the
-length of the integration step.
+state (a vector of values for the state variables
+*y*<sub>1</sub>, …, *y*<sub>*n*</sub>) and produces a system derivative
+(the values
+*y*<sub>1</sub><sup>′</sup>, …, *y*<sub>*n*</sub><sup>′</sup>). The
+parameter `initial-state` provides an initial system state, and `h` is
+an initial guess for the length of the integration step.
 
 The value returned by integrate-system is an infinite stream of system
 states.
@@ -8219,9 +7738,9 @@ of the stream.
       (force (cdr stream)))%
 
 The following illustrates the use of integrate-system in integrating the
-system [\$\$C {dv_C \\over dt} = -i_L - {v_C \\over R}\$\$]{.math
-.display} [\$\$L {di_L \\over dt} = v_C\$\$]{.math .display} which
-models a damped oscillator.
+system <span class="math display">$$C {dv_C \\over dt} = -i_L - {v_C
+\\over R}$$</span> <span class="math display">$$L {di_L \\over dt} =
+v_C$$</span> which models a damped oscillator.
 
     (define (damped-oscillator R L C)
       (lambda (state)
@@ -8236,7 +7755,8 @@ models a damped oscillator.
          '\#(1 0)
          .01))%
 
-::: thebibliography
+<div class="thebibliography">
+
 999
 
 Harold Abelson and Gerald Jay Sussman with Julie Sussman. *Structure and
@@ -8244,20 +7764,19 @@ Interpretation of Computer Programs, second edition.* MIT Press,
 Cambridge, 1996.
 
 Alan Bawden and Jonathan Rees. Syntactic closures. In *Proceedings of
-the 1988 ACM Symposium on Lisp and Functional Programming*, pages
-86--95.
+the 1988 ACM Symposium on Lisp and Functional Programming*, pages 86–95.
 
 S. Bradner. Key words for use in RFCs to Indicate Requirement Levels.
 <http://www.ietf.org/rfc/rfc2119.txt>, 1997.
 
 Robert G. Burger and R. Kent Dybvig. Printing floating-point numbers
-quickly and accurately. In *Proceedings of the ACM SIGPLAN '96
+quickly and accurately. In *Proceedings of the ACM SIGPLAN ’96
 Conference on Programming Language Design and Implementation*,
-pages 108--116.
+pages 108–116.
 
 William Clinger. How to read floating point numbers accurately. In
-*Proceedings of the ACM SIGPLAN '90 Conference on Programming Language
-Design and Implementation*, pages 92--101. Proceedings published as
+*Proceedings of the ACM SIGPLAN ’90 Conference on Programming Language
+Design and Implementation*, pages 92–101. Proceedings published as
 *SIGPLAN Notices* 25(6), June 1990.
 
 William Clinger. Proper Tail Recursion and Space Efficiency. In
@@ -8274,17 +7793,17 @@ University, June 1985.
 
 William Clinger and Jonathan Rees. Macros that work. In *Proceedings of
 the 1991 ACM Conference on Principles of Programming Languages*,
-pages 155--162.
+pages 155–162.
 
-William Clinger and Jonathan Rees, editors. The revised$^{4}$ report on
-the algorithmic language Scheme. In *ACM Lisp Pointers* 4(3),
-pages 1--55, 1991.
+William Clinger and Jonathan Rees, editors. The revised<sup>4</sup>
+report on the algorithmic language Scheme. In *ACM Lisp Pointers* 4(3),
+pages 1–55, 1991.
 
 Mark Davis. Unicode Standard Annex #44, Unicode Character Database.
 <http://unicode.org/reports/tr44/>, 2010.
 
 R. Kent Dybvig, Robert Hieb, and Carl Bruggeman. Syntactic abstraction
-in Scheme. *Lisp and Symbolic Computation* 5(4):295--326, 1993.
+in Scheme. *Lisp and Symbolic Computation* 5(4):295–326, 1993.
 
 Marc Feeley. SRFI 4: Homogeneous Numeric Vector Datatypes.
 <http://srfi.schemers.org/srfi-4/>, 1999.
@@ -8292,15 +7811,15 @@ Marc Feeley. SRFI 4: Homogeneous Numeric Vector Datatypes.
 Carol Fessenden, William Clinger, Daniel P. Friedman, and Christopher
 Haynes. Scheme 311 version 4 reference manual. Indiana University
 Computer Science Technical Report 137, February 1983. Superseded
-by []{.citation cites="Scheme84"}.
+by <span class="citation" cites="Scheme84"></span>.
 
 D. Friedman, C. Haynes, E. Kohlbecker, and M. Wand. Scheme 84 interim
 reference manual. Indiana University Computer Science Technical Report
 153, January 1985.
 
 Martin Gardner. Mathematical Games: The fantastic combinations of John
-Conway's new solitaire game "Life." In *Scientific American*,
-223:120--123, October 1970.
+Conway’s new solitaire game “Life.” In *Scientific American*,
+223:120–123, October 1970.
 
 *IEEE Standard 754-2008. IEEE Standard for Floating-Point Arithmetic.*
 IEEE, New York, 2008.
@@ -8312,42 +7831,42 @@ Richard Kelsey. SRFI 9: Defining Record Types.
 <http://srfi.schemers.org/srfi-9/>, 1999.
 
 Richard Kelsey, William Clinger, and Jonathan Rees, editors. The
-revised$^{5}$ report on the algorithmic language Scheme. *Higher-Order
-and Symbolic Computation*, 11(1):7-105, 1998.
+revised<sup>5</sup> report on the algorithmic language Scheme.
+*Higher-Order and Symbolic Computation*, 11(1):7-105, 1998.
 
 Eugene E. Kohlbecker Jr. *Syntactic Extensions in the Programming
 Language Lisp.* PhD thesis, Indiana University, August 1986.
 
 Eugene E. Kohlbecker Jr., Daniel P. Friedman, Matthias Felleisen, and
 Bruce Duba. Hygienic macro expansion. In *Proceedings of the 1986 ACM
-Conference on Lisp and Functional Programming*, pages 151--161.
+Conference on Lisp and Functional Programming*, pages 151–161.
 
 John McCarthy. Recursive Functions of Symbolic Expressions and Their
 Computation by Machine, Part I. *Communications of the ACM*
-3(4):184--195, April 1960.
+3(4):184–195, April 1960.
 
 MIT Department of Electrical Engineering and Computer Science. Scheme
 manual, seventh edition. September 1984.
 
 Peter Naur et al. Revised report on the algorithmic language Algol 60.
-*Communications of the ACM* 6(1):1--17, January 1963.
+*Communications of the ACM* 6(1):1–17, January 1963.
 
 Paul Penfield, Jr. Principal values and branch cuts in complex APL. In
-*APL '81 Conference Proceedings,* pages 248--256. ACM SIGAPL, San
+*APL ’81 Conference Proceedings,* pages 248–256. ACM SIGAPL, San
 Francisco, September 1981. Proceedings published as *APL Quote Quad*
 12(1), ACM, September 1981.
 
 Jonathan A. Rees and Norman I. Adams IV. T: A dialect of Lisp or,
 lambda: The ultimate software tool. In *Conference Record of the 1982
-ACM Symposium on Lisp and Functional Programming*, pages 114--122.
+ACM Symposium on Lisp and Functional Programming*, pages 114–122.
 
 Jonathan A. Rees, Norman I. Adams IV, and James R. Meehan. The T manual,
 fourth edition. Yale University Computer Science Department, January
 1984.
 
-Jonathan Rees and William Clinger, editors. The revised$^{3}$ report on
-the algorithmic language Scheme. In *ACM SIGPLAN Notices* 21(12),
-pages 37--79, December 1986.
+Jonathan Rees and William Clinger, editors. The revised<sup>3</sup>
+report on the algorithmic language Scheme. In *ACM SIGPLAN Notices*
+21(12), pages 37–79, December 1986.
 
 Olin Shivers. SRFI 1: List Library. <http://srfi.schemers.org/srfi-1/>,
 1999.
@@ -8360,8 +7879,8 @@ Guy Lewis Steele Jr. Rabbit: a compiler for Scheme. MIT Artificial
 Intelligence Laboratory Technical Report 474, May 1978.
 
 Michael Sperber, R. Kent Dybvig, Mathew Flatt, and Anton van Straaten,
-editors. *The revised$^{6}$ report on the algorithmic language Scheme.*
-Cambridge University Press, 2010.
+editors. *The revised<sup>6</sup> report on the algorithmic language
+Scheme.* Cambridge University Press, 2010.
 
 Guy Lewis Steele Jr. *Common Lisp: The Language, second edition.*
 Digital Press, Burlington MA, 1990.
@@ -8386,4 +7905,5 @@ Programming*, November 2003.
 
 International Earth Rotation Service. Historical table of TAI-UTC
 offsets. <http://maia.usno.navy.mil/ser7/tai-utc.dat>
-:::
+
+</div>
