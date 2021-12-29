@@ -1,4 +1,12 @@
-# Summary
+'=̀13
+
+-.375in
+
+plus 2pt minus 2pt plus 2pt
+
+-.5in -.5in
+
+# Summary {#summary .unnumbered}
 
 The report gives a defining description of the programming language
 Scheme. Scheme is a statically scoped and properly tail recursive
@@ -16,23 +24,24 @@ The first three chapters present the fundamental ideas of the language
 and describe the notational conventions used for describing the language
 and for writing programs in the language.
 
-Chapters [4](#expressionchapter) and [5](#programchapter) describe the
-syntax and semantics of expressions, definitions, programs, and
-libraries.
+Chapters [\[expressionchapter\]](#expressionchapter)
+and [\[programchapter\]](#programchapter) describe the syntax and
+semantics of expressions, definitions, programs, and libraries.
 
 Chapter [\[builtinchapter\]](#builtinchapter) describes Scheme's
 built-in procedures, which include all of the language's data
 manipulation and input/output primitives.
 
-Chapter [7](#formalchapter) provides a formal syntax for Scheme written
-in extended BNF, along with a formal denotational semantics. An example
-of the use of the language follows the formal syntax and semantics.
+Chapter [\[formalchapter\]](#formalchapter) provides a formal syntax for
+Scheme written in extended BNF, along with a formal denotational
+semantics. An example of the use of the language follows the formal
+syntax and semantics.
 
-Appendix [8](#stdlibraries) provides a list of the standard libraries
-and the identifiers that they export.
+Appendix [\[stdlibraries\]](#stdlibraries) provides a list of the
+standard libraries and the identifiers that they export.
 
-Appendix [9](#stdfeatures) provides a list of optional but standardized
-implementation feature names.
+Appendix [\[stdfeatures\]](#stdfeatures) provides a list of optional but
+standardized implementation feature names.
 
 The report concludes with a list of references and an alphabetic index.
 
@@ -42,7 +51,7 @@ this report that are copied directly from R$^{5}$RS and R$^{6}$RS. There
 is no intended implication that those editors, individually or
 collectively, support or do not support this report.
 
-# Contents
+# Contents {#contents .unnumbered}
 
 Programming languages should be designed not by piling feature on top of
 feature, but by removing the weaknesses and restrictions that make
@@ -72,7 +81,7 @@ to support hygienic macros, which permit the syntax of a
 block-structured language to be extended in a consistent and reliable
 manner.
 
-### Background
+### Background {#background .unnumbered}
 
 The first description of Scheme was written in 1975 []{.citation
 cites="Scheme75"}. A revised report []{.citation cites="Scheme78"}
@@ -124,7 +133,7 @@ particular, we encourage implementers of Scheme to use this report as a
 starting point for manuals and other documentation, modifying it as
 necessary.
 
-### Acknowledgments
+### Acknowledgments {#acknowledgments .unnumbered}
 
 We would like to thank the members of the Steering Committee, William
 Clinger, Marc Feeley, Chris Hanson, Jonathan Rees, and Olin Shivers, for
@@ -177,10 +186,11 @@ available at http://srfi.schemers.org.
 ## Semantics
 
 This section gives an overview of Scheme's semantics. A detailed
-informal semantics is the subject of chapters [3](#basicchapter)
+informal semantics is the subject of
+chapters [\[basicchapter\]](#basicchapter)
 through [\[builtinchapter\]](#builtinchapter). For reference purposes,
-section [7.2](#formalsemanticssection) provides a formal semantics of
-Scheme.
+section [\[formalsemanticssection\]](#formalsemanticssection) provides a
+formal semantics of Scheme.
 
 Scheme is a statically scoped programming language. Each use of a
 variable is associated with a lexically apparent binding of that
@@ -204,7 +214,7 @@ even if the iterative computation is described by a syntactically
 recursive procedure. Thus with a properly tail-recursive implementation,
 iteration can be expressed using the ordinary procedure-call mechanics,
 so that special iteration constructs are useful only as syntactic sugar.
-See section [3.5](#proper%20tail%20recursion).
+See section [\[proper tail recursion\]](#proper%20tail%20recursion).
 
 Scheme procedures are objects in their own right. Procedures can be
 created dynamically, stored in data structures, returned as results of
@@ -243,9 +253,9 @@ eval procedure evaluates a Scheme program expressed as data.
 
 The read procedure performs syntactic as well as lexical decomposition
 of the data it reads. The read procedure parses its input as data
-(section [7.1.2](#datumsyntax)), not as program.
+(section [\[datumsyntax\]](#datumsyntax)), not as program.
 
-The formal syntax of Scheme is described in section [7.1](#BNF).
+The formal syntax of Scheme is described in section [\[BNF\]](#BNF).
 
 ## Notation and terminology
 
@@ -259,7 +269,7 @@ data. For example, the variable abs is bound to a procedure of one
 argument that computes the absolute value of a number, and the
 variable + is bound to a procedure that computes sums. The full list all
 the standard libraries and the identifiers they export is given in
-Appendix [8](#stdlibraries).
+Appendix [\[stdlibraries\]](#stdlibraries).
 
 All implementations of Scheme:
 
@@ -286,7 +296,7 @@ When speaking of an error situation, this report uses the phrase "an
 error is signaled" to indicate that implementations must detect and
 report the error. An error is signaled by raising a non-continuable
 exception, as if by the procedure raise as described in
-section [6.11](#exceptionsection). The object raised is
+section [\[exceptionsection\]](#exceptionsection). The object raised is
 implementation-dependent and need not be distinct from objects
 previously used for the same purpose. In addition to errors signaled in
 situations described in this report, programmers can signal their own
@@ -295,7 +305,7 @@ errors and handle signaled errors.
 The phrase "an error that satisfies *predicate* is signaled" means that
 an error is signaled as above. Furthermore, if the object that is
 signaled is passed to the specified predicate (such as file-error? or
-read-error?), the predicate returns `#t`.
+read-error?), the predicate returns \#t.
 
 If such wording does not appear in the discussion of an error, then
 implementations are not required to detect or report the error, though
@@ -338,7 +348,7 @@ not with reference to programmer or program behavior.
 
 ### Entry format
 
-Chapters [4](#expressionchapter)
+Chapters [\[expressionchapter\]](#expressionchapter)
 and [\[builtinchapter\]](#builtinchapter) are organized into entries.
 Each entry describes one language feature or a group of related
 features, where a feature is either a syntactic construct or a
@@ -351,28 +361,27 @@ for identifiers in the base library, or
 *template*  *name* library *category*\
 
 where *name* is the short name of a library as defined in
-Appendix [8](#stdlibraries).
+Appendix [\[stdlibraries\]](#stdlibraries).
 
 If *category* is "syntax," the entry describes an expression type, and
 the template gives the syntax of the expression type. Components of
 expressions are designated by syntactic variables, which are written
-using angle brackets, for example $\langle$expression$\rangle$ and
-$\langle$variable$\rangle$. Syntactic variables are intended to denote
-segments of program text; for example, $\langle$expression$\rangle$
-stands for any string of characters which is a syntactically valid
-expression. The notation
+using angle brackets, for example expression and variable. Syntactic
+variables are intended to denote segments of program text; for example,
+expression stands for any string of characters which is a syntactically
+valid expression. The notation
 
 ::: tabbing
 $\ldots$
 :::
 
-indicates zero or more occurrences of a $\langle$thing$\rangle$, and
+indicates zero or more occurrences of a thing, and
 
 ::: tabbing
-$\langle$thing$_{2}$$\rangle$ $\ldots$
+thing$_{2}$ $\ldots$
 :::
 
-indicates one or more occurrences of a $\langle$thing$\rangle$.
+indicates one or more occurrences of a thing.
 
 If *category* is "auxiliary syntax," then the entry describes a syntax
 binding that occurs only as part of specific surrounding expressions.
@@ -394,25 +403,25 @@ two arguments, a vector *vector* and an exact non-negative integer *k*
 indicate that the `make-vector` procedure must be defined to take either
 one or two arguments.
 
-It is an
-error for a procedure to be presented with an argument that it is not
-specified to handle. For succinctness, we follow the convention that if
-an argument name is also the name of a type listed in
-section [3.2](#disjointness), then it is an error if that argument is
-not of the named type. For example, the header line for `vector-ref`
-given above dictates that the first argument to `vector-ref` is a
-vector. The following naming conventions also imply type restrictions:
+It is an error for a procedure to be presented with an argument that it
+is not specified to handle. For succinctness, we follow the convention
+that if an argument name is also the name of a type listed in
+section [\[disjointness\]](#disjointness), then it is an error if that
+argument is not of the named type. For example, the header line for
+`vector-ref` given above dictates that the first argument to
+`vector-ref` is a vector. The following naming conventions also imply
+type restrictions:
 
-  --------------------------------------------------- ----------------------------------------
+  --------------------------------------------------- ----------------------------------------------------
   $alist$                                             association list (list of pairs)
-  $boolean$                                           boolean value (`#t` or `#f`)
+  $boolean$                                           boolean value (#t or \#f)
   $byte$                                              exact integer $0 \leq byte < 256$
   $bytevector$                                        bytevector
   $char$                                              character
   $end$                                               exact non-negative integer
   $k$, $k_{1}$, $\ldots$ $k_{j}$, $\ldots$            exact non-negative integer
   $letter$                                            alphabetic character
-  $list$, $list_{1}$, $\ldots$ $list_{j}$, $\ldots$   list (see section [6.4](#listsection))
+  $list$, $list_{1}$, $\ldots$ $list_{j}$, $\ldots$   list (see section [\[listsection\]](#listsection))
   $n$, $n_{1}$, $\ldots$ $n_{j}$, $\ldots$            integer
   *obj*                                               any object
   $pair$                                              pair
@@ -427,7 +436,7 @@ vector. The following naming conventions also imply type restrictions:
   $x$, $x_{1}$, $\ldots$ $x_{j}$, $\ldots$            real number
   $y$, $y_{1}$, $\ldots$ $y_{j}$, $\ldots$            real number
   $z$, $z_{1}$, $\ldots$ $z_{j}$, $\ldots$            complex number
-  --------------------------------------------------- ----------------------------------------
+  --------------------------------------------------- ----------------------------------------------------
 
 The names $start$ and $end$ are used as indexes into strings, vectors,
 and bytevectors. Their use implies the following:
@@ -450,8 +459,8 @@ and bytevectors. Their use implies the following:
 
 ### Evaluation examples
 
-The symbol "$\Rightarrow$" used in program examples is read "evaluates
-to." For example,
+The symbol "⟶" used in program examples is read "evaluates to." For
+example,
 
       (* 5 8)      $\Longrightarrow$ 40
 
@@ -459,8 +468,8 @@ means that the expression `(* 5 8)` evaluates to the object `40`. Or,
 more precisely: the expression given by the sequence of characters
 "`(* 5 8)`" evaluates, in an environment containing the base library, to
 an object that can be represented externally by the sequence of
-characters "` 40`." See section [3.3](#externalreps) for a discussion of
-external representations of objects.
+characters "` 40`." See section [\[externalreps\]](#externalreps) for a
+discussion of external representations of objects.
 
 ### Naming conventions
 
@@ -472,8 +481,9 @@ of argument.
 
 Similarly, `!` is the final character of the names of procedures that
 store values into previously allocated locations (see
-section [3.4](#storagemodel)). Such procedures are called *mutation
-procedures*. The value returned by a mutation procedure is unspecified.
+section [\[storagemodel\]](#storagemodel)). Such procedures are called
+*mutation procedures*. The value returned by a mutation procedure is
+unspecified.
 
 By convention, "`->`" appears within the names of procedures that take
 an object of one type and return an analogous object of another type.
@@ -489,7 +499,7 @@ A *thunk* is a procedure that does not accept arguments.
 
 This section gives an informal account of some of the lexical
 conventions used in writing Scheme programs. For a formal syntax of
-Scheme, see section [7.1](#BNF).
+Scheme, see section [\[BNF\]](#BNF).
 
 ## Identifiers
 
@@ -508,8 +518,8 @@ more characters enclosed within vertical lines ($|$), analogous to
 string literals. Any character, including whitespace characters, but
 excluding the backslash and vertical line characters, can appear
 verbatim in such an identifier. In addition, characters can be specified
-using either an $\langle$inline hex escape$\rangle$ or the same escapes
-available in strings.
+using either an inline hex escape or the same escapes available in
+strings.
 
 For example, the identifier `|H\x65;llo|` is the same identifier as
 `Hello`, and in an implementation that supports the appropriate Unicode
@@ -535,21 +545,21 @@ Identifiers have two uses within Scheme programs:
 
 -   Any identifier can be used as a variable or as a syntactic keyword
     (see sections [\[variablesection\]](#variablesection)
-    and [4.3](#macrosection)).
+    and [\[macrosection\]](#macrosection)).
 
 -   When an identifier appears as a literal or within a literal (see
     section [\[quote\]](#quote)), it is being used to denote a *symbol*
-    (see section [6.5](#symbolsection)).
+    (see section [\[symbolsection\]](#symbolsection)).
 
 In contrast with earlier revisions of the report []{.citation
 cites="R5RS"}, the syntax distinguishes between upper and lower case in
 identifiers and in characters specified using their names. However, it
 does not distinguish between upper and lower case in numbers, nor in
-$\langle$inline hex escapes$\rangle$ used in the syntax of identifiers,
-characters, or strings. None of the identifiers defined in this report
-contain upper-case characters, even when they appear to do so as a
-result of the English-language convention of capitalizing the first word
-of a sentence.
+inline hex escapes used in the syntax of identifiers, characters, or
+strings. None of the identifiers defined in this report contain
+upper-case characters, even when they appear to do so as a result of the
+English-language convention of capitalizing the first word of a
+sentence.
 
 The following directives give explicit control over case folding.
 
@@ -557,11 +567,12 @@ The following directives give explicit control over case folding.
 #!no-fold-case
 
 These directives can appear anywhere comments are permitted (see
-section [2.2](#wscommentsection)) but must be followed by a delimiter.
-They are treated as comments, except that they affect the reading of
-subsequent data from the same port. The #!fold-case directive causes
-subsequent identifiers and character names to be case-folded as if by
-string-foldcase (see section [6.7](#stringsection)). It has no effect on
+section [\[wscommentsection\]](#wscommentsection)) but must be followed
+by a delimiter. They are treated as comments, except that they affect
+the reading of subsequent data from the same port. The #!fold-case
+directive causes subsequent identifiers and character names to be
+case-folded as if by string-foldcase (see
+section [\[stringsection\]](#stringsection)). It has no effect on
 character literals. The #!no-fold-case directive causes a return to the
 default, non-folding behavior.
 
@@ -582,15 +593,14 @@ exactly like whitespace.
 A semicolon (`;`) indicates the start of a line comment. The comment
 continues to the end of the line on which the semicolon appears.
 
-Another way to indicate a comment is to prefix a $\langle$datum$\rangle$
-(cf. section [7.1.2](#datumsyntax)) with `#;` and optional
-$\langle$whitespace$\rangle$. The comment consists of the comment prefix
-`#;`, the space, and the $\langle$datum$\rangle$ together. This notation
-is useful for "commenting out" sections of code.
+Another way to indicate a comment is to prefix a datum
+(cf. section [\[datumsyntax\]](#datumsyntax)) with `#;` and optional
+whitespace. The comment consists of the comment prefix `#;`, the space,
+and the datum together. This notation is useful for "commenting out"
+sections of code.
 
 Block comments are indicated with properly nested ` #|` and `|#` pairs.
 
-```scheme
     \#|
        The FACT procedure computes the factorial
        of a non-negative integer.
@@ -601,12 +611,11 @@ Block comments are indicated with properly nested ` #|` and `|#` pairs.
             \#;(= n 1)
             1        ;Base case: return 1
             (* n (fact (- n 1))))))%
-```
 
 ## Other notations
 
 For a description of the notations used for numbers, see
-section [6.2](#numbersection).
+section [\[numbersection\]](#numbersection).
 
 `. + -`
 
@@ -614,14 +623,15 @@ section [6.2](#numbersection).
     identifier. A delimited plus or minus sign by itself is also an
     identifier. A delimited period (not occurring within a number or
     identifier) is used in the notation for pairs
-    (section [6.4](#listsection)), and to indicate a rest-parameter in a
-    formal parameter list (section [\[lambda\]](#lambda)). Note that a
-    sequence of two or more periods *is* an identifier.
+    (section [\[listsection\]](#listsection)), and to indicate a
+    rest-parameter in a formal parameter list
+    (section [\[lambda\]](#lambda)). Note that a sequence of two or more
+    periods *is* an identifier.
 
 `( )`
 
 :   Parentheses are used for grouping and to notate lists
-    (section [6.4](#listsection)).
+    (section [\[listsection\]](#listsection)).
 
 `’`
 
@@ -642,13 +652,14 @@ section [6.2](#numbersection).
 `"`
 
 :   The quotation mark character is used to delimit strings
-    (section [6.7](#stringsection)).
+    (section [\[stringsection\]](#stringsection)).
 
-`' `
+`‘ `
 
 :   Backslash is used in the syntax for character constants
-    (section [6.6](#charactersection)) and as an escape character within
-    string constants (section [6.7](#stringsection)) and identifiers
+    (section [\[charactersection\]](#charactersection)) and as an escape
+    character within string constants
+    (section [\[stringsection\]](#stringsection)) and identifiers
     (section [\[extendedalphas\]](#extendedalphas)).
 
     `[ ] { }`
@@ -661,77 +672,71 @@ section [6.2](#numbersection).
 :   The number sign is used for a variety of purposes depending on the
     character that immediately follows it:
 
-`#t` `#f`
+\#t \#f
 
-:   These are the boolean constants (section [6.3](#booleansection)),
-    along with the alternatives `#true` and `#false`.
+:   These are the boolean constants
+    (section [\[booleansection\]](#booleansection)), along with the
+    alternatives `#true` and `#false`.
 
-`#``' `
+`#``‘ `
 
 :   This introduces a character constant
-    (section [6.6](#charactersection)).
+    (section [\[charactersection\]](#charactersection)).
 
 `#``(`
 
-:   This introduces a vector constant (section [6.8](#vectorsection)).
-    Vector constants are terminated by `)` .
+:   This introduces a vector constant
+    (section [\[vectorsection\]](#vectorsection)). Vector constants are
+    terminated by `)` .
 
 `#``u8(`
 
 :   This introduces a bytevector constant
-    (section [6.9](#bytevectorsection)). Bytevector constants are
-    terminated by `)` .
+    (section [\[bytevectorsection\]](#bytevectorsection)). Bytevector
+    constants are terminated by `)` .
 
 `#e #i #b #o #d #x`
 
 :   These are used in the notation for numbers
-    (section [6.2.5](#numbernotations)).
+    (section [\[numbernotations\]](#numbernotations)).
 
-`#\langlen\rangle= #\langlen\rangle#`
+`#n= #n#`
 
 :   These are used for labeling and referencing other literal data
-    (section [2.4](#labelsection)).
+    (section [\[labelsection\]](#labelsection)).
 
 ## Datum labels
 
-\#$\langle$n$\rangle$=$\langle$datum$\rangle$  lexical syntax\
-\#$\langle$n$\rangle$\#  lexical syntax\
-The lexical syntax \#$\langle$n$\rangle$=$\langle$datum$\rangle$ reads
-the same as $\langle$datum$\rangle$, but also results in
-$\langle$datum$\rangle$ being labelled by $\langle$n$\rangle$. It is an
-error if $\langle$n$\rangle$ is not a sequence of digits.
+\#n=datum  lexical syntax\
+\#n\#  lexical syntax\
+The lexical syntax \#n=datum reads the same as datum, but also results
+in datum being labelled by n. It is an error if n is not a sequence of
+digits.
 
-The lexical syntax \#$\langle$n$\rangle$\# serves as a reference to some
-object labelled by \#$\langle$n$\rangle$=; the result is the same object
-as the \#$\langle$n$\rangle$= (see section [6.1](#equivalencesection)).
+The lexical syntax \#n\# serves as a reference to some object labelled
+by \#n=; the result is the same object as the \#n= (see
+section [\[equivalencesection\]](#equivalencesection)).
 
 Together, these syntaxes permit the notation of structures with shared
 or circular substructure.
 
-```scheme
     (let ((x (list 'a 'b 'c)))
       (set-cdr! (cddr x) x)
       x)                       \ev \#0=(a b c . \#0\#)
-```
 
 The scope of a datum label is the portion of the outermost datum in
 which it appears that is to the right of the label. Consequently, a
-reference \#$\langle$n$\rangle$\# can occur only after a label
-\#$\langle$n$\rangle$=; it is an error to attempt a forward reference.
-In addition, it is an error if the reference appears as the labelled
-object itself (as in \#$\langle$n$\rangle$= \#$\langle$n$\rangle$#),
-because the object labelled by \#$\langle$n$\rangle$= is not well
-defined in this case.
+reference \#n\# can occur only after a label \#n=; it is an error to
+attempt a forward reference. In addition, it is an error if the
+reference appears as the labelled object itself (as in \#n= \#n#),
+because the object labelled by \#n= is not well defined in this case.
 
-It is an error for a $\langle$program$\rangle$ or
-$\langle$library$\rangle$ to include circular references except in
-literals. In particular, it is an error for quasiquote
+It is an error for a program or library to include circular references
+except in literals. In particular, it is an error for quasiquote
 (section [\[quasiquote\]](#quasiquote)) to contain them.
 
-```scheme
     \#1=(begin (display \#\backwhack{}x) \#1\#)
                            \ev \scherror%
-```
 
 # Basic concepts
 
@@ -755,13 +760,13 @@ types create new locations and bind variables to those locations. These
 expression types are called *binding constructs*.
 
 Those that bind syntactic keywords are listed in
-section [4.3](#macrosection). The most fundamental of the variable
-binding constructs is the lambda expression, because all other variable
-binding constructs (except top-level bindings) can be explained in terms
-of lambda expressions. The other variable binding constructs are let,
-let\*, letrec, letrec\*, let-values, let\*-values, and do expressions
-(see sections [\[lambda\]](#lambda), [\[letrec\]](#letrec), and
-[\[do\]](#do)).
+section [\[macrosection\]](#macrosection). The most fundamental of the
+variable binding constructs is the lambda expression, because all other
+variable binding constructs (except top-level bindings) can be explained
+in terms of lambda expressions. The other variable binding constructs
+are let, let\*, letrec, letrec\*, let-values, let\*-values, and do
+expressions (see sections [\[lambda\]](#lambda), [\[letrec\]](#letrec),
+and [\[do\]](#do)).
 
 Scheme is a language with block structure. To each place where an
 identifier is bound in a program there corresponds a *region* of the
@@ -773,8 +778,9 @@ of an identifier refers to the binding of the identifier that
 established the innermost of the regions containing the use. If there is
 no binding of the identifier whose region contains the use, then the use
 refers to the binding for the variable in the global environment, if any
-(chapters [4](#expressionchapter) and [6](#initialenv)); if there is no
-binding for the identifier, it is said to be *unbound*.
+(chapters [\[expressionchapter\]](#expressionchapter) and
+[\[initialenv\]](#initialenv)); if there is no binding for the
+identifier, it is said to be *unbound*.
 
 ## Disjointness of types
 
@@ -795,9 +801,10 @@ symbol, vector*, and all record types.
 
 Although there is a separate boolean type, any Scheme value can be used
 as a boolean value for the purpose of a conditional test. As explained
-in section [6.3](#booleansection), all values count as true in such a
-test except for `#f`. This report uses the word "true" to refer to any
-Scheme value except `#f`, and the word "false" to refer to `#f`.
+in section [\[booleansection\]](#booleansection), all values count as
+true in such a test except for \#f. This report uses the word "true" to
+refer to any Scheme value except \#f, and the word "false" to refer to
+\#f.
 
 ## External representations
 
@@ -810,7 +817,8 @@ of the integers 8 and 13 is the sequence of characters "`(8 13)`".
 The external representation of an object is not necessarily unique. The
 integer 28 also has representations "`#e28.000`" and "`#x1c`", and the
 list in the previous paragraph also has the representations
-"`( 08 13 )`" and "`(8 . (13 . ()))`" (see section [6.4](#listsection)).
+"`( 08 13 )`" and "`(8 . (13 . ()))`" (see
+section [\[listsection\]](#listsection)).
 
 Many objects have standard external representations, but some, such as
 procedures, do not have standard representations (although particular
@@ -839,7 +847,8 @@ treat programs as data (or vice versa).
 
 The syntax of external representations of various kinds of objects
 accompanies the description of the primitives for manipulating the
-objects in the appropriate sections of chapter [6](#initialenv).
+objects in the appropriate sections of
+chapter [\[initialenv\]](#initialenv).
 
 ## Storage model
 
@@ -852,8 +861,8 @@ locations as before.
 
 An object fetched from a location, by a variable reference or by a
 procedure such as car, vector-ref, or string-ref, is equivalent in the
-sense of `eqv?` (section [6.1](#equivalencesection)) to the object last
-stored in the location before the fetch.
+sense of `eqv?` (section [\[equivalencesection\]](#equivalencesection))
+to the object last stored in the location before the fetch.
 
 Every location is marked to show whether it is in use. No variable or
 object ever refers to a location that is not in use.
@@ -925,79 +934,58 @@ contexts are defined inductively. Note that a tail context is always
 determined with respect to a particular lambda expression.
 
 -   The last expression within the body of a lambda expression, shown as
-    $\langle$tail expression$\rangle$ below, occurs in a tail context.
-    The same is true of all the bodies of case-lambda expressions.  $|$
-     (lāmbda $\langle$formals$\rangle$ $\langle$expression$\rangle$
-    $\langle$tail expression$\rangle$)
+    tail expression below, occurs in a tail context. The same is true of
+    all the bodies of case-lambda expressions. ̄ $|$ ̄ (lāmbda formals
+    expression tail expression)
 
-    (case-lambda ($\langle$formals$\rangle$
-    $\langle$tail body$\rangle$))
+    (case-lambda (formals tail body))
 
 -   If one of the following expressions is in a tail context, then the
-    subexpressions shown as $\langle$tail expression$\rangle$ are in a
-    tail context. These were derived from rules in the grammar given in
-    chapter [7](#formalchapter) by replacing some occurrences of
-    $\langle$body$\rangle$ with $\langle$tail body$\rangle$, some
-    occurrences of $\langle$expression$\rangle$ with
-    $\langle$tail expression$\rangle$, and some occurrences of
-    $\langle$sequence$\rangle$ with $\langle$tail sequence$\rangle$.
-    Only those rules that contain tail contexts are shown here.
+    subexpressions shown as tail expression are in a tail context. These
+    were derived from rules in the grammar given in
+    chapter [\[formalchapter\]](#formalchapter) by replacing some
+    occurrences of body with tail body, some occurrences of expression
+    with tail expression, and some occurrences of sequence with
+    tail sequence. Only those rules that contain tail contexts are shown
+    here.
 
-     $|$  (if $\langle$expression$\rangle$
-    $\langle$tail expression$\rangle$ $\langle$tail expression$\rangle$)
-    (if $\langle$expression$\rangle$ $\langle$tail expression$\rangle$)
+    ̄ $|$ ̄ (if expression tail expression tail expression) (if
+    expression tail expression)
 
-    (cond $\langle$cond clause$\rangle$$^{+}$) (cond
-    $\langle$cond clause$\rangle$ (else
-    $\langle$tail sequence$\rangle$))
+    (cond cond clause$^{+}$) (cond cond clause (else tail sequence))
 
-    (cāse $\langle$expression$\rangle$ $^{+}$) (cāse
-    $\langle$expression$\rangle$ (else $\langle$tail sequence$\rangle$))
+    (cāse expression $^{+}$) (cāse expression (else tail sequence))
 
-    (and $\langle$expression$\rangle$ $\langle$tail expression$\rangle$)
-    (or $\langle$expression$\rangle$ $\langle$tail expression$\rangle$)
+    (and expression tail expression) (or expression tail expression)
 
-    (when $\langle$test$\rangle$ $\langle$tail sequence$\rangle$)
-    (unless $\langle$test$\rangle$ $\langle$tail sequence$\rangle$)
+    (when test tail sequence) (unless test tail sequence)
 
-    (let ($\langle$binding spec$\rangle$) $\langle$tail body$\rangle$)
-    (let $\langle$variable$\rangle$ ($\langle$binding spec$\rangle$)
-    $\langle$tail body$\rangle$) (let\* ($\langle$binding spec$\rangle$)
-    $\langle$tail body$\rangle$) (letrec
-    ($\langle$binding spec$\rangle$) $\langle$tail body$\rangle$)
-    (letrec\* ($\langle$binding spec$\rangle$)
-    $\langle$tail body$\rangle$) (let-values
-    ($\langle$mv binding spec$\rangle$) $\langle$tail body$\rangle$)
-    (let\*-values ($\langle$mv binding spec$\rangle$)
-    $\langle$tail body$\rangle$)
+    (let (binding spec) tail body) (let variable (binding spec)
+    tail body) (let\* (binding spec) tail body) (letrec (binding spec)
+    tail body) (letrec\* (binding spec) tail body) (let-values
+    (mv binding spec) tail body) (let\*-values (mv binding spec)
+    tail body)
 
-    (let-syntax ($\langle$syntax spec$\rangle$)
-    $\langle$tail body$\rangle$) (letrec-syntax
-    ($\langle$syntax spec$\rangle$) $\langle$tail body$\rangle$)
+    (let-syntax (syntax spec) tail body) (letrec-syntax (syntax spec)
+    tail body)
 
-    (begin $\langle$tail sequence$\rangle$)
+    (begin tail sequence)
 
-    (do ($\langle$iteration spec$\rangle$) ($\langle$test$\rangle$
-    $\langle$tail sequence$\rangle$) )
+    (dō (̄iteration spec) (test tail sequence) )
 
     where
 
-    $\langle$cond clause$\rangle$ $\rightarrow$ ($\langle$test$\rangle$
-    $\langle$tail sequence$\rangle$) $\langle$case clause$\rangle$
-    $\rightarrow$ (($\langle$datum$\rangle$)
-    $\langle$tail sequence$\rangle$)
+    cond clause ⟶ (test tail sequence) case clause ⟶ ((datum)
+    tail sequence)
 
-    $\langle$tail body$\rangle$ $\rightarrow$
-    $\langle$definition$\rangle$ $\langle$tail sequence$\rangle$
-    $\langle$tail sequence$\rangle$ $\rightarrow$
-    $\langle$expression$\rangle$ $\langle$tail expression$\rangle$
+    tail body ⟶ definition tail sequence tail sequence ⟶ expression
+    tail expression
 
 -   If a cond or case expression is in a tail context, and has a clause
-    of the form ($\langle$expression$_{1}$$\rangle$ =>
-    $\langle$expression$_{2}$$\rangle$) then the (implied) call to the
-    procedure that results from the evaluation of
-    $\langle$expression$_{2}$$\rangle$ is in a tail context.
-    $\langle$expression$_{2}$$\rangle$ itself is not in a tail context.
+    of the form (expression$_{1}$ => expression$_{2}$) then the
+    (implied) call to the procedure that results from the evaluation of
+    expression$_{2}$ is in a tail context. expression$_{2}$ itself is
+    not in a tail context.
 
 Certain procedures defined in this report are also required to perform
 tail calls. The first argument passed to `apply` and to
@@ -1010,14 +998,12 @@ In the following example the only tail call is the call to f. None of
 the calls to g or h are tail calls. The reference to x is in a tail
 context, but it is not a call and thus is not a tail call.
 
-```scheme
     %
     (lambda ()
       (if (g)
           (let ((x (h)))
             x)
           (and (g) (f))))
-```
 
 *Note:* Implementations may recognize that some non-tail calls, such as
 the call to h above, can be evaluated as though they were tail calls. In
@@ -1032,7 +1018,7 @@ Expression types are categorized as *primitive* or *derived*. Primitive
 expression types include variables and procedure calls. Derived
 expression types are not semantically primitive, but can instead be
 defined as macros. Suitable syntax definitions of some of the derived
-expressions are given in section [7.3](#derivedsection).
+expressions are given in section [\[derivedsection\]](#derivedsection).
 
 The procedures force, promise?, make-promise, and make-parameter are
 also described in this chapter because they are intimately associated
@@ -1042,55 +1028,49 @@ with the delay, delay-force, and parameterize expression types.
 
 ### Variable references
 
-$\langle$variable$\rangle$  syntax\
+-2ex
+
+variable  syntax\
 An expression consisting of a variable
 (section [\[variablesection\]](#variablesection)) is a variable
 reference. The value of the variable reference is the value stored in
 the location to which the variable is bound. It is an error to reference
 an unbound variable.
 
-```scheme
     (define x 28)
     x   \ev  28%
-```
 
 ### Literal expressions
 
-([\[quote\]]{#quote label="quote"}quote *$\langle$datum$\rangle$*)
- syntax\
-`’`$\langle$datum$\rangle$  syntax\
-$\langle$constant$\rangle$  syntax\
-(quote $\langle$datum$\rangle$) evaluates to
-$\langle$datum$\rangle$.[\[\'\]]{#' label="'"} $\langle$Datum$\rangle$
-can be any external representation of a Scheme object (see
-section [3.3](#externalreps)). This notation is used to include literal
-constants in Scheme code.
+-2ex
 
-```scheme
+(quote *datum*)  syntax\
+`’`datum  syntax\
+constant  syntax\
+(quote datum) evaluates to datum. Datum can be any external
+representation of a Scheme object (see
+section [\[externalreps\]](#externalreps)). This notation is used to
+include literal constants in Scheme code.
+
     %
     (quote a)                     \ev  a
     (quote \sharpsign(a b c))     \ev  \#(a b c)
     (quote (+ 1 2))               \ev  (+ 1 2)%
-```
 
-(quote $\langle$datum$\rangle$) can be abbreviated as
-`’`$\langle$datum$\rangle$. The two notations are equivalent in all
-respects.
+(quote datum) can be abbreviated as `’`datum. The two notations are
+equivalent in all respects.
 
-```scheme
     'a                   \ev  a
     '\#(a b c)           \ev  \#(a b c)
     '()                  \ev  ()
     '(+ 1 2)             \ev  (+ 1 2)
     '(quote a)           \ev  (quote a)
     ''a                  \ev  (quote a)%
-```
 
 Numerical constants, string constants, character constants, vector
 constants, bytevector constants, and boolean constants evaluate to
 themselves; they need not be quoted.
 
-```scheme
     '145932    \ev  145932
     145932     \ev  145932
     '"abc"     \ev  "abc"
@@ -1103,27 +1083,25 @@ themselves; they need not be quoted.
     \#u8(64 65)  \ev  \#u8(64 65)
     '\schtrue  \ev  \schtrue
     \schtrue   \ev  \schtrue%
-```
 
-As noted in section [3.4](#storagemodel), it is an error to attempt to
-alter a constant (i.e. the value of a literal expression) using a
-mutation procedure like set-car! or string-set!.
+As noted in section [\[storagemodel\]](#storagemodel), it is an error to
+attempt to alter a constant (i.e. the value of a literal expression)
+using a mutation procedure like set-car! or string-set!.
 
 ### Procedure calls
 
-($\langle$operator$\rangle$ $\langle$operand$_{1}$$\rangle$ $\ldots\,$)
- syntax\
+-2ex
+
+(operator operand$_{1}$ $\ldots\,$)  syntax\
 A procedure call is written by enclosing in parentheses an expression
 for the procedure to be called followed by expressions for the arguments
 to be passed to it. The operator and operand expressions are evaluated
 (in an unspecified order) and the resulting procedure is passed the
 resulting arguments.
 
-```scheme
     %
     (+ 3 4)                          \ev  7
     ((if \schfalse + *) 3 4)         \ev  12%
-```
 
 The procedures in this document are available as the values of variables
 exported by the standard libraries. For example, the addition and
@@ -1132,10 +1110,10 @@ variables + and \* in the base library. New procedures are created by
 evaluating lambda expressions (see section [\[lambda\]](#lambda)).
 
 Procedure calls can return any number of values (see `values` in
-section [6.10](#proceduresection)). Most of the procedures defined in
-this report return one value or, for procedures such as apply, pass on
-the values returned by a call to one of their arguments. Exceptions are
-noted in the individual descriptions.
+section [\[proceduresection\]](#proceduresection)). Most of the
+procedures defined in this report return one value or, for procedures
+such as apply, pass on the values returned by a call to one of their
+arguments. Exceptions are noted in the individual descriptions.
 
 *Note:* In contrast to other dialects of Lisp, the order of evaluation
 is unspecified, and the operator expression and the operand expressions
@@ -1152,12 +1130,12 @@ expression evaluating to itself. In Scheme, it is an error.
 
 ### Procedures
 
-([\[lambda\]]{#lambda
-label="lambda"}lambda *$\langle$formals$\rangle$ $\langle$body$\rangle$*)
- syntax\
-*Syntax:* $\langle$Formals$\rangle$ is a formal arguments list as
-described below, and $\langle$body$\rangle$ is a sequence of zero or
-more definitions followed by one or more expressions.
+-2ex
+
+(lambda *formals body*)  syntax\
+*Syntax:* Formals is a formal arguments list as described below, and
+body is a sequence of zero or more definitions followed by one or more
+expressions.
 
 *Semantics:* A lambda expression evaluates to a procedure. The
 environment in effect when the lambda expression was evaluated is
@@ -1173,7 +1151,6 @@ section [\[letrecstar\]](#letrecstar)) will be evaluated sequentially in
 the extended environment. The results of the last expression in the body
 will be returned as the results of the procedure call.
 
-```scheme
     (lambda (x) (+ x x))      \ev  {\em{}a procedure}
     ((lambda (x) (+ x x)) 4)  \ev  8
 
@@ -1185,23 +1162,21 @@ will be returned as the results of the procedure call.
       (let ((x 4))
         (lambda (y) (+ x y))))
     (add4 6)                        \ev  10%
-```
 
-$\langle$Formals$\rangle$ have one of the following forms:
+Formals have one of the following forms:
 
--   `(\langlevariable_1\rangle \ldots\,)`: The procedure takes a fixed
-    number of arguments; when the procedure is called, the arguments
-    will be stored in fresh locations that are bound to the
-    corresponding variables.
+-   `(variable_1 \ldots\,)`: The procedure takes a fixed number of
+    arguments; when the procedure is called, the arguments will be
+    stored in fresh locations that are bound to the corresponding
+    variables.
 
--   $\langle$variable$\rangle$: The procedure takes any number of
-    arguments; when the procedure is called, the sequence of actual
-    arguments is converted into a newly allocated list, and the list is
-    stored in a fresh location that is bound to
-    $\langle$variable$\rangle$.
+-   variable: The procedure takes any number of arguments; when the
+    procedure is called, the sequence of actual arguments is converted
+    into a newly allocated list, and the list is stored in a fresh
+    location that is bound to variable.
 
--   `(\langlevariable_1\rangle \ldots\, \langlevariable_{n}\rangle . \langlevariable_{n+1}\rangle)`:
-    If a space-delimited period precedes the last variable, then the
+-   `(variable_1 \ldots\, variable_{n} . variable_{n+1})`: If a
+    space-delimited period precedes the last variable, then the
     procedure takes $n$ or more arguments, where $n$ is the number of
     formal arguments before the period (it is an error if there is not
     at least one). The value stored in the binding of the last variable
@@ -1209,72 +1184,60 @@ $\langle$Formals$\rangle$ have one of the following forms:
     after all the other actual arguments have been matched up against
     the other formal arguments.
 
-It is an error for a $\langle$variable$\rangle$ to appear more than once
-in $\langle$formals$\rangle$.
+It is an error for a variable to appear more than once in formals.
 
-```scheme
     ((lambda x x) 3 4 5 6)          \ev  (3 4 5 6)
     ((lambda (x y . z) z)
      3 4 5 6)                       \ev  (5 6)%
-```
 
 Each procedure created as the result of evaluating a lambda expression
 is (conceptually) tagged with a storage location, in order to make
 `eqv?` and `eq?` work on procedures (see
-section [6.1](#equivalencesection)).
+section [\[equivalencesection\]](#equivalencesection)).
 
 ### Conditionals
 
-([\[if\]]{#if
-label="if"}if *$\langle$test$\rangle$ $\langle$consequent$\rangle$ $\langle$alternate$\rangle$*)
- syntax\
-(if *$\langle$test$\rangle$ $\langle$consequent$\rangle$*)  syntax\
-*Syntax:* $\langle$Test$\rangle$, $\langle$consequent$\rangle$, and
-$\langle$alternate$\rangle$ are expressions.
+-2ex
 
-*Semantics:* An if expression is evaluated as follows: first,
-$\langle$test$\rangle$ is evaluated. If it yields a true value (see
-section [6.3](#booleansection)), then $\langle$consequent$\rangle$ is
-evaluated and its values are returned. Otherwise
-$\langle$alternate$\rangle$ is evaluated and its values are returned. If
-$\langle$test$\rangle$ yields a false value and no
-$\langle$alternate$\rangle$ is specified, then the result of the
-expression is unspecified.
+(if *test consequent alternate*)  syntax\
+(if *test consequent*)  syntax\
+*Syntax:* Test, consequent, and alternate are expressions.
 
-```scheme
+*Semantics:* An if expression is evaluated as follows: first, test is
+evaluated. If it yields a true value (see
+section [\[booleansection\]](#booleansection)), then consequent is
+evaluated and its values are returned. Otherwise alternate is evaluated
+and its values are returned. If test yields a false value and no
+alternate is specified, then the result of the expression is
+unspecified.
+
     (if (> 3 2) 'yes 'no)           \ev  yes
     (if (> 2 3) 'yes 'no)           \ev  no
     (if (> 3 2)
         (- 3 2)
         (+ 3 2))                    \ev  1%
-```
 
 ### Assignments
 
-([\[set!\]]{#set!
-label="set!"}set! *$\langle$variable$\rangle$ $\langle$expression$\rangle$*)
- syntax\
-*Semantics:* $\langle$Expression$\rangle$ is evaluated, and the
-resulting value is stored in the location to which
-$\langle$variable$\rangle$ is bound. It is an error if
-$\langle$variable$\rangle$ is not bound either in some region enclosing
-the set! expression or else globally. The result of the set! expression
-is unspecified.
+-2ex
 
-```scheme
+(set! *variable expression*)  syntax\
+*Semantics:* Expression is evaluated, and the resulting value is stored
+in the location to which variable is bound. It is an error if variable
+is not bound either in some region enclosing the set! expression or else
+globally. The result of the set! expression is unspecified.
+
     (define x 2)
     (+ x 1)                 \ev  3
     (set! x 4)              \ev  \unspecified
     (+ x 1)                 \ev  5%
-```
 
 ### Inclusion
 
-([\[include\]]{#include
-label="include"}include *$\langle$string$_{1}$$\rangle$ $\langle$string$_{2}$$\rangle$ $\ldots\,$*)
- syntax\
-(include-ci *$\langle$string$_{1}$$\rangle$ $\langle$string$_{2}$$\rangle$ $\ldots\,$*)
- syntax\
+-2ex
+
+(include *string$_{1}$ string$_{2}$ $\ldots\,$*)  syntax\
+(include-ci *string$_{1}$ string$_{2}$ $\ldots\,$*)  syntax\
 *Semantics:* Both `include` and `include-ci` take one or more filenames
 expressed as string literals, apply an implementation-specific algorithm
 to find corresponding files, read the contents of the files in the
@@ -1291,58 +1254,49 @@ users to specify other directories to search.
 ## Derived expression types
 
 The constructs in this section are hygienic, as discussed in
-section [4.3](#macrosection). For reference purposes,
-section [7.3](#derivedsection) gives syntax definitions that will
-convert most of the constructs described in this section into the
-primitive constructs described in the previous section.
+section [\[macrosection\]](#macrosection). For reference purposes,
+section [\[derivedsection\]](#derivedsection) gives syntax definitions
+that will convert most of the constructs described in this section into
+the primitive constructs described in the previous section.
 
 ### Conditionals
 
-([\[cond\]]{#cond
-label="cond"}cond *$\langle$clause$_{1}$$\rangle$ $\langle$clause$_{2}$$\rangle$ $\ldots\,$*)
- syntax\
+-2ex
+
+(cond *clause$_{1}$ clause$_{2}$ $\ldots\,$*)  syntax\
 else  auxiliary syntax\
 =>  auxiliary syntax\
-*Syntax:* $\langle$Clauses$\rangle$ take one of two forms, either
+*Syntax:* Clauses take one of two forms, either
 
     (\hyper{test} \hyperi{expression} \dotsfoo)%
 
-where $\langle$test$\rangle$ is any expression, or
+where test is any expression, or
 
     (\hyper{test} => \hyper{expression})%
 
-The last $\langle$clause$\rangle$ can be an "else clause," which has the
-form
+The last clause can be an "else clause," which has the form
 
     (else \hyperi{expression} \hyperii{expression} \dotsfoo)\rm.%
 
-[\[else\]]{#else label="else"} [\[=>\]]{#=> label="=>"}
+*Semantics:* A cond expression is evaluated by evaluating the test
+expressions of successive clauses in order until one of them evaluates
+to a true value (see section [\[booleansection\]](#booleansection)).
+When a test evaluates to a true value, the remaining expressions in its
+clause are evaluated in order, and the results of the last expression in
+the clause are returned as the results of the entire cond expression.
 
-*Semantics:* A cond expression is evaluated by evaluating the
-$\langle$test$\rangle$ expressions of successive
-$\langle$clause$\rangle$s in order until one of them evaluates to a true
-value (see section [6.3](#booleansection)). When a
-$\langle$test$\rangle$ evaluates to a true value, the remaining
-$\langle$expression$\rangle$s in its $\langle$clause$\rangle$ are
-evaluated in order, and the results of the last
-$\langle$expression$\rangle$ in the $\langle$clause$\rangle$ are
-returned as the results of the entire cond expression.
-
-If the selected $\langle$clause$\rangle$ contains only the
-$\langle$test$\rangle$ and no $\langle$expression$\rangle$s, then the
-value of the $\langle$test$\rangle$ is returned as the result. If the
-selected $\langle$clause$\rangle$ uses the `=>` alternate form, then the
-$\langle$expression$\rangle$ is evaluated. It is an error if its value
-is not a procedure that accepts one argument. This procedure is then
-called on the value of the $\langle$test$\rangle$ and the values
+If the selected clause contains only the test and no expressions, then
+the value of the test is returned as the result. If the selected clause
+uses the `=>` alternate form, then the expression is evaluated. It is an
+error if its value is not a procedure that accepts one argument. This
+procedure is then called on the value of the test and the values
 returned by this procedure are returned by the cond expression.
 
-If all $\langle$test$\rangle$s evaluate to `#f`, and there is no else
-clause, then the result of the conditional expression is unspecified; if
-there is an else clause, then its $\langle$expression$\rangle$s are
-evaluated in order, and the values of the last one are returned.
+If all tests evaluate to \#f, and there is no else clause, then the
+result of the conditional expression is unspecified; if there is an else
+clause, then its expressions are evaluated in order, and the values of
+the last one are returned.
 
-```scheme
     (cond ((> 3 2) 'greater)
           ((< 3 2) 'less))         \ev  greater%
 
@@ -1352,62 +1306,45 @@ evaluated in order, and the values of the last one are returned.
 
     (cond ((assv 'b '((a 1) (b 2))) => cadr)
           (else \schfalse{}))         \ev  2%
-```
 
-([\[case\]]{#case
-label="case"}case *$\langle$key$\rangle$ $\langle$clause$_{1}$$\rangle$ $\langle$clause$_{2}$$\rangle$ $\ldots\,$*)
- syntax\
-*Syntax:* $\langle$Key$\rangle$ can be any expression. Each
-$\langle$clause$\rangle$ has the form
+(case *key clause$_{1}$ clause$_{2}$ $\ldots\,$*)  syntax\
+*Syntax:* Key can be any expression. Each clause has the form
 
     ((\hyperi{datum} \dotsfoo) \hyperi{expression} \hyperii{expression} \dotsfoo)\rm,%
 
-where each $\langle$datum$\rangle$ is an external representation of some
-object. It is an error if any of the $\langle$datum$\rangle$s are the
-same anywhere in the expression. Alternatively, a
-$\langle$clause$\rangle$ can be of the form
+where each datum is an external representation of some object. It is an
+error if any of the datums are the same anywhere in the expression.
+Alternatively, a clause can be of the form
 
-```scheme
     ((\hyperi{datum} \dotsfoo) => \hyper{expression})%
-```
 
-The last $\langle$clause$\rangle$ can be an "else clause," which has one
-of the forms
+The last clause can be an "else clause," which has one of the forms
 
-```scheme
     (else \hyperi{expression} \hyperii{expression} \dotsfoo)
-```
 
 or
 
-```scheme
     (else => \hyper{expression})\rm.%
-```
 
-*Semantics:* A case expression is evaluated as follows.
-$\langle$Key$\rangle$ is evaluated and its result is compared against
-each $\langle$datum$\rangle$. If the result of evaluating
-$\langle$key$\rangle$ is the same (in the sense of eqv?; see
-section [\[eqv?\]](#eqv?)) to a $\langle$datum$\rangle$, then the
-expressions in the corresponding $\langle$clause$\rangle$ are evaluated
-in order and the results of the last expression in the
-$\langle$clause$\rangle$ are returned as the results of the case
+*Semantics:* A case expression is evaluated as follows. Key is evaluated
+and its result is compared against each datum. If the result of
+evaluating key is the same (in the sense of eqv?; see
+section [\[eqv?\]](#eqv?)) to a datum, then the expressions in the
+corresponding clause are evaluated in order and the results of the last
+expression in the clause are returned as the results of the case
 expression.
 
-If the result of evaluating $\langle$key$\rangle$ is different from
-every $\langle$datum$\rangle$, then if there is an else clause, its
-expressions are evaluated and the results of the last are the results of
-the case expression; otherwise the result of the case expression is
-unspecified.
+If the result of evaluating key is different from every datum, then if
+there is an else clause, its expressions are evaluated and the results
+of the last are the results of the case expression; otherwise the result
+of the case expression is unspecified.
 
-If the selected $\langle$clause$\rangle$ or else clause uses the `=>`
-alternate form, then the $\langle$expression$\rangle$ is evaluated. It
-is an error if its value is not a procedure accepting one argument. This
-procedure is then called on the value of the $\langle$key$\rangle$ and
-the values returned by this procedure are returned by the case
-expression.
+If the selected clause or else clause uses the `=>` alternate form, then
+the expression is evaluated. It is an error if its value is not a
+procedure accepting one argument. This procedure is then called on the
+value of the key and the values returned by this procedure are returned
+by the case expression.
 
-```scheme
     (case (* 2 3)
       ((2 3 5 7) 'prime)
       ((1 4 6 8 9) 'composite))     \ev  composite
@@ -1418,121 +1355,100 @@ expression.
       ((a e i o u) 'vowel)
       ((w y) 'semivowel)
       (else => (lambda (x) x)))     \ev  c%
-```
 
-([\[and\]]{#and
-label="and"}and *$\langle$test$_{1}$$\rangle$ $\ldots\,$*)  syntax\
-*Semantics:* The $\langle$test$\rangle$ expressions are evaluated from
-left to right, and if any expression evaluates to `#f` (see
-section [6.3](#booleansection)), then `#f` is returned. Any remaining
-expressions are not evaluated. If all the expressions evaluate to true
-values, the values of the last expression are returned. If there are no
-expressions, then `#t` is returned.
+(and *test$_{1}$ $\ldots\,$*)  syntax\
+*Semantics:* The test expressions are evaluated from left to right, and
+if any expression evaluates to \#f (see
+section [\[booleansection\]](#booleansection)), then \#f is returned.
+Any remaining expressions are not evaluated. If all the expressions
+evaluate to true values, the values of the last expression are returned.
+If there are no expressions, then \#t is returned.
 
-```scheme
     (and (= 2 2) (> 2 1))           \ev  \schtrue
     (and (= 2 2) (< 2 1))           \ev  \schfalse
     (and 1 2 'c '(f g))             \ev  (f g)
     (and)                           \ev  \schtrue%
-```
 
-([\[or\]]{#or label="or"}or *$\langle$test$_{1}$$\rangle$ $\ldots\,$*)
- syntax\
-*Semantics:* The $\langle$test$\rangle$ expressions are evaluated from
-left to right, and the value of the first expression that evaluates to a
-true value (see section [6.3](#booleansection)) is returned. Any
+(or *test$_{1}$ $\ldots\,$*)  syntax\
+*Semantics:* The test expressions are evaluated from left to right, and
+the value of the first expression that evaluates to a true value (see
+section [\[booleansection\]](#booleansection)) is returned. Any
 remaining expressions are not evaluated. If all expressions evaluate to
-`#f` or if there are no expressions, then `#f` is returned.
+\#f or if there are no expressions, then \#f is returned.
 
-```scheme
     (or (= 2 2) (> 2 1))            \ev  \schtrue
     (or (= 2 2) (< 2 1))            \ev  \schtrue
     (or \schfalse \schfalse \schfalse) \ev  \schfalse
     (or (memq 'b '(a b c))
         (/ 3 0))                    \ev  (b c)%
-```
 
-([\[when\]]{#when
-label="when"}when *$\langle$test$\rangle$ $\langle$expression$_{1}$$\rangle$ $\langle$expression$_{2}$$\rangle$ $\ldots\,$*)
- syntax\
-*Syntax:* The $\langle$test$\rangle$ is an expression.
+(when *test expression$_{1}$ expression$_{2}$ $\ldots\,$*)  syntax\
+*Syntax:* The test is an expression.
 
 *Semantics:* The test is evaluated, and if it evaluates to a true value,
 the expressions are evaluated in order. The result of the when
 expression is unspecified.
 
-```scheme
     (when (= 1 1.0)
       (display "1")
       (display "2"))  \ev  \unspecified
      \>{\em and prints}  12%
-```
 
-([\[unless\]]{#unless
-label="unless"}unless *$\langle$test$\rangle$ $\langle$expression$_{1}$$\rangle$ $\langle$expression$_{2}$$\rangle$ $\ldots\,$*)
- syntax\
-*Syntax:* The $\langle$test$\rangle$ is an expression.
+(unless *test expression$_{1}$ expression$_{2}$ $\ldots\,$*)  syntax\
+*Syntax:* The test is an expression.
 
-*Semantics:* The test is evaluated, and if it evaluates to `#f`, the
+*Semantics:* The test is evaluated, and if it evaluates to \#f, the
 expressions are evaluated in order. The result of the unless expression
 is unspecified.
 
-```scheme
     (unless (= 1 1.0)
       (display "1")
       (display "2"))  \ev  \unspecified
      \>{\em and prints nothing}%
-```
 
-([\[cond-expand\]]{#cond-expand
-label="cond-expand"}cond-expand *$\langle$ce-clause$_{1}$$\rangle$ $\langle$ce-clause$_{2}$$\rangle$ $\ldots\,$*)
- syntax\
+(cond-expand *ce-clause$_{1}$ ce-clause$_{2}$ $\ldots\,$*)  syntax\
 *Syntax:* The `cond-expand` expression type provides a way to statically
 expand different expressions depending on the implementation. A
-$\langle$ce-clause$\rangle$ takes the following form:
+ce-clause takes the following form:
 
-`(\langlefeature requirement\rangle \langleexpression\rangle \ldots\,)`
+`(feature requirement expression \ldots\,)`
 
 The last clause can be an "else clause," which has the form
 
-`(else \langleexpression\rangle \ldots\,)`
+`(else expression \ldots\,)`
 
-A $\langle$feature requirement$\rangle$ takes one of the following
-forms:
+A feature requirement takes one of the following forms:
 
--   `\langlefeature identifier\rangle`
+-   `feature identifier`
 
--   `(library \langlelibrary name\rangle)`
+-   `(library library name)`
 
--   `(and \langlefeature requirement\rangle \ldots\,)`
+-   `(and feature requirement \ldots\,)`
 
--   `(or \langlefeature requirement\rangle \ldots\,)`
+-   `(or feature requirement \ldots\,)`
 
--   `(not \langlefeature requirement\rangle)`
+-   `(not feature requirement)`
 
 *Semantics:* Each implementation maintains a list of feature identifiers
 which are present, as well as a list of libraries which can be imported.
-The value of a $\langle$feature requirement$\rangle$ is determined by
-replacing each $\langle$feature identifier$\rangle$ and
-`(library \langlelibrary name\rangle)` on the implementation's lists
-with `#t`, and all other feature identifiers and library names with
-`#f`, then evaluating the resulting expression as a Scheme boolean
+The value of a feature requirement is determined by replacing each
+feature identifier and `(library library name)` on the implementation's
+lists with \#t, and all other feature identifiers and library names with
+\#f, then evaluating the resulting expression as a Scheme boolean
 expression under the normal interpretation of and, or, and not.
 
-A `cond-expand` is then expanded by evaluating the
-$\langle$feature requirement$\rangle$s of successive
-$\langle$ce-clause$\rangle$s in order until one of them returns `#t`.
-When a true clause is found, the corresponding
-$\langle$expression$\rangle$s are expanded to a begin, and the remaining
-clauses are ignored. If none of the
-$\langle$feature requirement$\rangle$s evaluate to `#t`, then if there
-is an else clause, its $\langle$expression$\rangle$s are included.
-Otherwise, the behavior of the `cond-expand` is unspecified. Unlike
-cond, cond-expand does not depend on the value of any variables.
+A `cond-expand` is then expanded by evaluating the feature requirements
+of successive ce-clauses in order until one of them returns \#t. When a
+true clause is found, the corresponding expressions are expanded to a
+begin, and the remaining clauses are ignored. If none of the
+feature requirements evaluate to \#t, then if there is an else clause,
+its expressions are included. Otherwise, the behavior of the
+`cond-expand` is unspecified. Unlike cond, cond-expand does not depend
+on the value of any variables.
 
 The exact features provided are implementation-defined, but for
 portability a core set of features is given in
-appendix [9](#stdfeatures).
+appendix [\[stdfeatures\]](#stdfeatures).
 
 ### Binding constructs
 
@@ -1549,29 +1465,22 @@ constructs are analogous to let and let\* respectively, but are designed
 to handle multiple-valued expressions, binding different identifiers to
 the returned values.
 
-([\[let\]]{#let
-label="let"}let *$\langle$bindings$\rangle$ $\langle$body$\rangle$*)
- syntax\
-*Syntax:* $\langle$Bindings$\rangle$ has the form
+(let *bindings body*)  syntax\
+*Syntax:* Bindings has the form
 
     ((\hyperi{variable} \hyperi{init}) \dotsfoo)\rm,%
 
-where each $\langle$init$\rangle$ is an expression, and
-$\langle$body$\rangle$ is a sequence of zero or more definitions
-followed by a sequence of one or more expressions as described in
-section [\[lambda\]](#lambda). It is an error for a
-$\langle$variable$\rangle$ to appear more than once in the list of
-variables being bound.
+where each init is an expression, and body is a sequence of zero or more
+definitions followed by a sequence of one or more expressions as
+described in section [\[lambda\]](#lambda). It is an error for a
+variable to appear more than once in the list of variables being bound.
 
-*Semantics:* The $\langle$init$\rangle$s are evaluated in the current
-environment (in some unspecified order), the $\langle$variable$\rangle$s
-are bound to fresh locations holding the results, the
-$\langle$body$\rangle$ is evaluated in the extended environment, and the
-values of the last expression of $\langle$body$\rangle$ are returned.
-Each binding of a $\langle$variable$\rangle$ has $\langle$body$\rangle$
-as its region.
+*Semantics:* The inits are evaluated in the current environment (in some
+unspecified order), the variables are bound to fresh locations holding
+the results, the body is evaluated in the extended environment, and the
+values of the last expression of body are returned. Each binding of a
+variable has body as its region.
 
-```scheme
     (let ((x 2) (y 3))
       (* x y))                      \ev  6
 
@@ -1579,61 +1488,48 @@ as its region.
       (let ((x 7)
             (z (+ x y)))
         (* z x)))                   \ev  35%
-```
 
 See also "named let," section [\[namedlet\]](#namedlet).
 
-([\[let\*\]]{#let*
-label="let*"}let\* *$\langle$bindings$\rangle$ $\langle$body$\rangle$*)
- syntax\
+(let\* *bindings body*)  syntax\
 
-*Syntax:* $\langle$Bindings$\rangle$ has the form
+*Syntax:* Bindings has the form
 
     ((\hyperi{variable} \hyperi{init}) \dotsfoo)\rm,%
 
-and $\langle$body$\rangle$ is a sequence of zero or more definitions
-followed by one or more expressions as described in
-section [\[lambda\]](#lambda).
+and body is a sequence of zero or more definitions followed by one or
+more expressions as described in section [\[lambda\]](#lambda).
 
 *Semantics:* The let\* binding construct is similar to let, but the
 bindings are performed sequentially from left to right, and the region
-of a binding indicated by ($\langle$variable$\rangle$
-$\langle$init$\rangle$) is that part of the let\* expression to the
-right of the binding. Thus the second binding is done in an environment
-in which the first binding is visible, and so on. The
-$\langle$variable$\rangle$s need not be distinct.
+of a binding indicated by (variable init) is that part of the let\*
+expression to the right of the binding. Thus the second binding is done
+in an environment in which the first binding is visible, and so on. The
+variables need not be distinct.
 
-```scheme
     (let ((x 2) (y 3))
       (let* ((x 7)
              (z (+ x y)))
         (* z x)))             \ev  70%
-```
 
-([\[letrec\]]{#letrec
-label="letrec"}letrec *$\langle$bindings$\rangle$ $\langle$body$\rangle$*)
- syntax\
-*Syntax:* $\langle$Bindings$\rangle$ has the form
+(letrec *bindings body*)  syntax\
+*Syntax:* Bindings has the form
 
     ((\hyperi{variable} \hyperi{init}) \dotsfoo)\rm,%
 
-and $\langle$body$\rangle$ is a sequence of zero or more definitions
-followed by one or more expressions as described in
-section [\[lambda\]](#lambda). It is an error for a
-$\langle$variable$\rangle$ to appear more than once in the list of
-variables being bound.
+and body is a sequence of zero or more definitions followed by one or
+more expressions as described in section [\[lambda\]](#lambda). It is an
+error for a variable to appear more than once in the list of variables
+being bound.
 
-*Semantics:* The $\langle$variable$\rangle$s are bound to fresh
-locations holding unspecified values, the $\langle$init$\rangle$s are
-evaluated in the resulting environment (in some unspecified order), each
-$\langle$variable$\rangle$ is assigned to the result of the
-corresponding $\langle$init$\rangle$, the $\langle$body$\rangle$ is
-evaluated in the resulting environment, and the values of the last
-expression in $\langle$body$\rangle$ are returned. Each binding of a
-$\langle$variable$\rangle$ has the entire letrec expression as its
+*Semantics:* The variables are bound to fresh locations holding
+unspecified values, the inits are evaluated in the resulting environment
+(in some unspecified order), each variable is assigned to the result of
+the corresponding init, the body is evaluated in the resulting
+environment, and the values of the last expression in body are returned.
+Each binding of a variable has the entire letrec expression as its
 region, making it possible to define mutually recursive procedures.
 
-```scheme
     (letrec ((even?
               (lambda (n)
                 (if (zero? n)
@@ -1646,52 +1542,40 @@ region, making it possible to define mutually recursive procedures.
                     (even? (- n 1))))))
       (even? 88))
             \ev  \schtrue%
-```
 
 One restriction on letrec is very important: if it is not possible to
-evaluate each $\langle$init$\rangle$ without assigning or referring to
-the value of any $\langle$variable$\rangle$, it is an error. The
-restriction is necessary because letrec is defined in terms of a
-procedure call where a lambda expression binds the
-$\langle$variable$\rangle$s to the values of the
-$\langle$init$\rangle$s. In the most common uses of letrec, all the
-$\langle$init$\rangle$s are lambda expressions and the restriction is
-satisfied automatically.
+evaluate each init without assigning or referring to the value of any
+variable, it is an error. The restriction is necessary because letrec is
+defined in terms of a procedure call where a lambda expression binds the
+variables to the values of the inits. In the most common uses of letrec,
+all the inits are lambda expressions and the restriction is satisfied
+automatically.
 
-([\[letrec\*\]]{#letrec*
-label="letrec*"}letrec\* *$\langle$bindings$\rangle$ $\langle$body$\rangle$*)
- syntax\
-[\[letrecstar\]]{#letrecstar label="letrecstar"}
-
-*Syntax:* $\langle$Bindings$\rangle$ has the form
+(letrec\* *bindings body*)  syntax\
+*Syntax:* Bindings has the form
 
     ((\hyperi{variable} \hyperi{init}) \dotsfoo)\rm,%
 
-and $\langle$body$\rangle$ is a sequence of zero or more definitions
-followed by one or more expressions as described in
-section [\[lambda\]](#lambda). It is an error for a
-$\langle$variable$\rangle$ to appear more than once in the list of
-variables being bound.
+and body is a sequence of zero or more definitions followed by one or
+more expressions as described in section [\[lambda\]](#lambda). It is an
+error for a variable to appear more than once in the list of variables
+being bound.
 
-*Semantics:* The $\langle$variable$\rangle$s are bound to fresh
-locations, each $\langle$variable$\rangle$ is assigned in left-to-right
-order to the result of evaluating the corresponding
-$\langle$init$\rangle$ (interleaving evaluations and assignments), the
-$\langle$body$\rangle$ is evaluated in the resulting environment, and
-the values of the last expression in $\langle$body$\rangle$ are
-returned. Despite the left-to-right evaluation and assignment order,
-each binding of a $\langle$variable$\rangle$ has the entire letrec\*
+*Semantics:* The variables are bound to fresh locations, each variable
+is assigned in left-to-right order to the result of evaluating the
+corresponding init (interleaving evaluations and assignments), the body
+is evaluated in the resulting environment, and the values of the last
+expression in body are returned. Despite the left-to-right evaluation
+and assignment order, each binding of a variable has the entire letrec\*
 expression as its region, making it possible to define mutually
 recursive procedures.
 
-If it is not possible to evaluate each $\langle$init$\rangle$ without
-assigning or referring to the value of the corresponding
-$\langle$variable$\rangle$ or the $\langle$variable$\rangle$ of any of
-the bindings that follow it in $\langle$bindings$\rangle$, it is an
-error. Another restriction is that it is an error to invoke the
-continuation of an $\langle$init$\rangle$ more than once.
+If it is not possible to evaluate each init without assigning or
+referring to the value of the corresponding variable or the variable of
+any of the bindings that follow it in bindings, it is an error. Another
+restriction is that it is an error to invoke the continuation of an init
+more than once.
 
-```scheme
     ;; Returns the arithmetic, geometric, and
     ;; harmonic means of a nested list of numbers
     (define (means ton)
@@ -1711,100 +1595,83 @@ continuation of an $\langle$init$\rangle$ more than once.
         (values (mean values values)
                 (mean exp log)
                 (mean / /))))
-```
 
 Evaluating (means '(3 (1 4))) returns three values: 8/3,
 2.28942848510666 (approximately), and 36/19.
 
-([\[let-values\]]{#let-values
-label="let-values"}let-values *$\langle$mv binding spec$\rangle$ $\langle$body$\rangle$*)
- syntax\
-*Syntax:* $\langle$Mv binding spec$\rangle$ has the form
+(let-values *mv binding spec body*)  syntax\
+*Syntax:* Mv binding spec has the form
 
     ((\hyperi{formals} \hyperi{init}) \dotsfoo)\rm,%
 
-where each $\langle$init$\rangle$ is an expression, and
-$\langle$body$\rangle$ is zero or more definitions followed by a
-sequence of one or more expressions as described in
+where each init is an expression, and body is zero or more definitions
+followed by a sequence of one or more expressions as described in
 section [\[lambda\]](#lambda). It is an error for a variable to appear
-more than once in the set of $\langle$formals$\rangle$.
+more than once in the set of formals.
 
-*Semantics:* The $\langle$init$\rangle$s are evaluated in the current
-environment (in some unspecified order) as if by invoking
-call-with-values, and the variables occurring in the
-$\langle$formals$\rangle$ are bound to fresh locations holding the
-values returned by the $\langle$init$\rangle$s, where the
-$\langle$formals$\rangle$ are matched to the return values in the same
-way that the $\langle$formals$\rangle$ in a lambda expression are
-matched to the arguments in a procedure call. Then, the
-$\langle$body$\rangle$ is evaluated in the extended environment, and the
-values of the last expression of $\langle$body$\rangle$ are returned.
-Each binding of a $\langle$variable$\rangle$ has $\langle$body$\rangle$
-as its region.
+*Semantics:* The inits are evaluated in the current environment (in some
+unspecified order) as if by invoking call-with-values, and the variables
+occurring in the formals are bound to fresh locations holding the values
+returned by the inits, where the formals are matched to the return
+values in the same way that the formals in a lambda expression are
+matched to the arguments in a procedure call. Then, the body is
+evaluated in the extended environment, and the values of the last
+expression of body are returned. Each binding of a variable has body as
+its region.
 
-It is an error if the $\langle$formals$\rangle$ do not match the number
-of values returned by the corresponding $\langle$init$\rangle$.
+It is an error if the formals do not match the number of values returned
+by the corresponding init.
 
-```scheme
     (let-values (((root rem) (exact-integer-sqrt 32)))
       (* root rem))                \ev  35%
-```
 
-([\[let\*-values\]]{#let*-values
-label="let*-values"}let\*-values *$\langle$mv binding spec$\rangle$ $\langle$body$\rangle$*)
- syntax\
+(let\*-values *mv binding spec body*)  syntax\
 
-*Syntax:* $\langle$Mv binding spec$\rangle$ has the form
+*Syntax:* Mv binding spec has the form
 
     ((\hyper{formals} \hyper{init}) \dotsfoo)\rm,%
 
-and $\langle$body$\rangle$ is a sequence of zero or more definitions
-followed by one or more expressions as described in
-section [\[lambda\]](#lambda). In each $\langle$formals$\rangle$, it is
-an error if any variable appears more than once.
+and body is a sequence of zero or more definitions followed by one or
+more expressions as described in section [\[lambda\]](#lambda). In each
+formals, it is an error if any variable appears more than once.
 
 *Semantics:* The let\*-values construct is similar to let-values, but
-the $\langle$init$\rangle$s are evaluated and bindings created
-sequentially from left to right, with the region of the bindings of each
-$\langle$formals$\rangle$ including the $\langle$init$\rangle$s to its
-right as well as $\langle$body$\rangle$. Thus the second
-$\langle$init$\rangle$ is evaluated in an environment in which the first
-set of bindings is visible and initialized, and so on.
+the inits are evaluated and bindings created sequentially from left to
+right, with the region of the bindings of each formals including the
+inits to its right as well as body. Thus the second init is evaluated in
+an environment in which the first set of bindings is visible and
+initialized, and so on.
 
-```scheme
     (let ((a 'a) (b 'b) (x 'x) (y 'y))
       (let*-values (((a b) (values x y))
                     ((x y) (values a b)))
         (list a b x y)))     \ev (x y x y)%
-```
 
 ### Sequencing
+
+-2ex
 
 Both of Scheme's sequencing constructs are named begin, but the two have
 slightly different forms and uses:
 
-([\[begin\]]{#begin
-label="begin"}begin *$\langle$expression or definition$\rangle$ $\ldots\,$*)
- syntax\
-This form of begin can appear as part of a $\langle$body$\rangle$, or at
-the outermost level of a $\langle$program$\rangle$, or at the REPL, or
-directly nested in a begin that is itself of this form. It causes the
-contained expressions and definitions to be evaluated exactly as if the
-enclosing begin construct were not present.
+(begin *expression or definition $\ldots\,$*)  syntax\
+This form of begin can appear as part of a body, or at the outermost
+level of a program, or at the REPL, or directly nested in a begin that
+is itself of this form. It causes the contained expressions and
+definitions to be evaluated exactly as if the enclosing begin construct
+were not present.
 
 *Rationale:* This form is commonly used in the output of macros (see
-section [4.3](#macrosection)) which need to generate multiple
-definitions and splice them into the context in which they are expanded.
+section [\[macrosection\]](#macrosection)) which need to generate
+multiple definitions and splice them into the context in which they are
+expanded.
 
-(begin *$\langle$expression$_{1}$$\rangle$ $\langle$expression$_{2}$$\rangle$ $\ldots\,$*)
- syntax\
+(begin *expression$_{1}$ expression$_{2}$ $\ldots\,$*)  syntax\
 This form of begin can be used as an ordinary expression. The
-$\langle$expression$\rangle$s are evaluated sequentially from left to
-right, and the values of the last $\langle$expression$\rangle$ are
-returned. This expression type is used to sequence side effects such as
-assignments or input and output.
+expressions are evaluated sequentially from left to right, and the
+values of the last expression are returned. This expression type is used
+to sequence side effects such as assignments or input and output.
 
-```scheme
     (define x 0)
 
     (and (= x 0)
@@ -1814,58 +1681,47 @@ assignments or input and output.
     (begin (display "4 plus 1 equals ")
            (display (+ 4 1)))      \ev  \unspecified
      \>{\em and prints}  4 plus 1 equals 5%
-```
 
 Note that there is a third form of begin used as a library declaration:
 see section [\[librarydeclarations\]](#librarydeclarations).
 
 ### Iteration
 
-(do (($\langle$variable$_{1}$$\rangle$ $\langle$init$_{1}$$\rangle$ $\langle$step$_{1}$$\rangle$)
- syntax\
-[\[do\]]{#do
-label="do"}` \ldots\,) (\langletest\rangle \langleexpression\rangle \ldots\,) \langlecommand\rangle \ldots\,)`
+(do ((variable$_{1}$ init$_{1}$ step$_{1}$)  syntax\
+` \ldots\,) (test expression \ldots\,) command \ldots\,)`
 
-*Syntax:* All of $\langle$init$\rangle$, $\langle$step$\rangle$,
-$\langle$test$\rangle$, and $\langle$command$\rangle$ are expressions.
+*Syntax:* All of init, step, test, and command are expressions.
 
 *Semantics:* A do expression is an iteration construct. It specifies a
 set of variables to be bound, how they are to be initialized at the
 start, and how they are to be updated on each iteration. When a
 termination condition is met, the loop exits after evaluating the
-$\langle$expression$\rangle$s.
+expressions.
 
-A do expression is evaluated as follows: The $\langle$init$\rangle$
-expressions are evaluated (in some unspecified order), the
-$\langle$variable$\rangle$s are bound to fresh locations, the results of
-the $\langle$init$\rangle$ expressions are stored in the bindings of the
-$\langle$variable$\rangle$s, and then the iteration phase begins.
+A do expression is evaluated as follows: The init expressions are
+evaluated (in some unspecified order), the variables are bound to fresh
+locations, the results of the init expressions are stored in the
+bindings of the variables, and then the iteration phase begins.
 
-Each iteration begins by evaluating $\langle$test$\rangle$; if the
-result is false (see section [6.3](#booleansection)), then the
-$\langle$command$\rangle$ expressions are evaluated in order for effect,
-the $\langle$step$\rangle$ expressions are evaluated in some unspecified
-order, the $\langle$variable$\rangle$s are bound to fresh locations, the
-results of the $\langle$step$\rangle$s are stored in the bindings of the
-$\langle$variable$\rangle$s, and the next iteration begins.
+Each iteration begins by evaluating test; if the result is false (see
+section [\[booleansection\]](#booleansection)), then the command
+expressions are evaluated in order for effect, the step expressions are
+evaluated in some unspecified order, the variables are bound to fresh
+locations, the results of the steps are stored in the bindings of the
+variables, and the next iteration begins.
 
-If $\langle$test$\rangle$ evaluates to a true value, then the
-$\langle$expression$\rangle$s are evaluated from left to right and the
-values of the last $\langle$expression$\rangle$ are returned. If no
-$\langle$expression$\rangle$s are present, then the value of the do
-expression is unspecified.
+If test evaluates to a true value, then the expressions are evaluated
+from left to right and the values of the last expression are returned.
+If no expressions are present, then the value of the do expression is
+unspecified.
 
-The region of the binding of a $\langle$variable$\rangle$ consists of
-the entire do expression except for the $\langle$init$\rangle$s. It is
-an error for a $\langle$variable$\rangle$ to appear more than once in
-the list of do variables.
+The region of the binding of a variable consists of the entire do
+expression except for the inits. It is an error for a variable to appear
+more than once in the list of do variables.
 
-A $\langle$step$\rangle$ can be omitted, in which case the effect is the
-same as if ($\langle$variable$\rangle$ $\langle$init$\rangle$
-$\langle$variable$\rangle$) had been written instead of
-($\langle$variable$\rangle$ $\langle$init$\rangle$).
+A step can be omitted, in which case the effect is the same as if
+(variable init variable) had been written instead of (variable init).
 
-```scheme
     (do ((vec (make-vector 5))
          (i 0 (+ i 1)))
         ((= i 5) vec)
@@ -1875,21 +1731,16 @@ $\langle$variable$\rangle$) had been written instead of
       (do ((x x (cdr x))
            (sum 0 (+ sum (car x))))
           ((null? x) sum)))             \ev  25%
-```
 
-(let *$\langle$variable$\rangle$ $\langle$bindings$\rangle$ $\langle$body$\rangle$*)
- syntax\
-[\[namedlet\]]{#namedlet label="namedlet"} *Semantics:* "Named let" is a
-variant on the syntax of `let` which provides a more general looping
-construct than do and can also be used to express recursion. It has the
-same syntax and semantics as ordinary let except that
-$\langle$variable$\rangle$ is bound within $\langle$body$\rangle$ to a
-procedure whose formal arguments are the bound variables and whose body
-is $\langle$body$\rangle$. Thus the execution of $\langle$body$\rangle$
-can be repeated by invoking the procedure named by
-$\langle$variable$\rangle$.
+(let *variable bindings body*)  syntax\
+*Semantics:* "Named let" is a variant on the syntax of `let` which
+provides a more general looping construct than do and can also be used
+to express recursion. It has the same syntax and semantics as ordinary
+let except that variable is bound within body to a procedure whose
+formal arguments are the bound variables and whose body is body. Thus
+the execution of body can be repeated by invoking the procedure named by
+variable.
 
-```scheme
     (let loop ((numbers '(3 -2 1 6 -5))
                (nonneg '())
                (neg '()))
@@ -1903,25 +1754,21 @@ $\langle$variable$\rangle$.
                    nonneg
                    (cons (car numbers) neg))))) %
       \lev  ((6 1 3) (-5 -2))%
-```
 
 ### Delayed evaluation
 
-([\[delay\]]{#delay label="delay"}delay *$\langle$expression$\rangle$*)
- lazy library syntax\
+-2ex
+
+(delay *expression*)  lazy library syntax\
 *Semantics:* The delay construct is used together with the procedure
 `force` to implement *lazy evaluation* or *call by need*.
-`(delay \langleexpression\rangle)` returns an object called a *promise*
-which at some point in the future can be asked (by the force procedure)
-to evaluate $\langle$expression$\rangle$, and deliver the resulting
-value.
+`(delay expression)` returns an object called a *promise* which at some
+point in the future can be asked (by the force procedure) to evaluate
+expression, and deliver the resulting value.
 
-The effect of $\langle$expression$\rangle$ returning multiple values is
-unspecified.
+The effect of expression returning multiple values is unspecified.
 
-([\[delay-force\]]{#delay-force
-label="delay-force"}delay-force *$\langle$expression$\rangle$*)
- lazy library syntax\
+(delay-force *expression*)  lazy library syntax\
 *Semantics:* The expression (delay-force *expression*) is conceptually
 similar to (delay (force *expression*)), with the difference that
 forcing the result of delay-force will in effect result in a tail call
@@ -1931,8 +1778,7 @@ result in a long series of chains of delay and force can be rewritten
 using delay-force to prevent consuming unbounded space during
 evaluation.
 
-([\[force\]]{#force label="force"}force *promise*)
- lazy library procedure\
+(force *promise*)  lazy library procedure\
 The force procedure forces the value of a *promise* created by `delay`,
 `delay-force`, or `make-promise`. If no value has been computed for the
 promise, then a value is computed and returned. The value of the promise
@@ -1942,10 +1788,9 @@ expression is evaluated using the parameter values and exception handler
 of the call to force which first requested its value. If *promise* is
 not a promise, it may be returned unchanged.
 
-```scheme
     (force (delay (+ 1 2)))   \ev  3
     (let ((p (delay (+ 1 2))))
-      (list (force p) (force p)))
+      (list (force p) (force p)))  
                                    \ev  (3 3)
 
     (define integers
@@ -1958,9 +1803,8 @@ not a promise, it may be returned unchanged.
     (define tail
       (lambda (stream) (cdr (force stream))))
 
-    (head (tail (tail integers)))
+    (head (tail (tail integers)))  
                                    \ev  2%
-```
 
 The following example is a mechanical transformation of a lazy
 stream-filtering algorithm into Scheme. Each call to a constructor is
@@ -1970,10 +1814,9 @@ around the body of the procedure ensures that an ever-growing sequence
 of pending promises does not exhaust available storage, because force
 will in effect force such sequences iteratively.
 
-```scheme
     (define (stream-filter p? s)
       (delay-force
-       (if (null? (force s))
+       (if (null? (force s)) 
            (delay '())
            (let ((h (car (force s)))
                  (t (cdr (force s))))
@@ -1983,7 +1826,6 @@ will in effect force such sequences iteratively.
 
     (head (tail (tail (stream-filter odd? integers))))
                                    \ev 5%
-```
 
 The following examples are not intended to illustrate good programming
 style, as delay, force, and delay-force are mainly intended for programs
@@ -1991,7 +1833,6 @@ written in the functional style. However, they do illustrate the
 property that only one value is computed for a promise, no matter how
 many times it is forced.
 
-```scheme
     (define count 0)
     (define p
       (delay (begin (set! count (+ count 1))
@@ -2004,7 +1845,6 @@ many times it is forced.
     p                     \ev  {\it{}a promise, still}
     (begin (set! x 10)
            (force p))     \ev  6%
-```
 
 Various extensions to this semantics of delay, force and delay-force are
 supported in some implementations:
@@ -2014,40 +1854,35 @@ supported in some implementations:
 
 -   It may be the case that there is no means by which a promise can be
     operationally distinguished from its forced value. That is,
-    expressions like the following may evaluate to either `#t` or to
-    `#f`, depending on the implementation:
+    expressions like the following may evaluate to either \#t or to \#f,
+    depending on the implementation:
 
-    ```scheme
         (eqv? (delay 1) 1)          \ev  \unspecified
         (pair? (delay (cons 1 2)))  \ev  \unspecified%
-    ```
 
 -   Implementations may implement "implicit forcing," where the value of
     a promise is forced by procedures that operate only on arguments of
     a certain type, like cdr and \*. However, procedures that operate
     uniformly on their arguments, like list, must not force them.
 
-    ```scheme
-
         (+ (delay (* 3 7)) 13)  \ev  \unspecified
         (car
-         (list (delay (* 3 7)) 13))    \ev {\it{}a promise}%
-    ```
+          (list (delay (* 3 7)) 13))    \ev {\it{}a promise}%
 
-([\[promise?\]]{#promise? label="promise?"}promise? **obj**)
- lazy library procedure\
-The promise? procedure returns `#t` if its argument is a promise, and
-`#f` otherwise. Note that promises are not necessarily disjoint from
-other Scheme types such as procedures.
+(promise? **obj**)  lazy library procedure\
+The promise? procedure returns \#t if its argument is a promise, and \#f
+otherwise. Note that promises are not necessarily disjoint from other
+Scheme types such as procedures.
 
-([\[make-promise\]]{#make-promise
-label="make-promise"}make-promise **obj**)  lazy library procedure\
+(make-promise **obj**)  lazy library procedure\
 The make-promise procedure returns a promise which, when forced, will
 return *obj*. It is similar to delay, but does not delay its argument:
 it is a procedure rather than syntax. If *obj* is already a promise, it
 is returned.
 
 ### Dynamic bindings
+
+-2ex
 
 The *dynamic extent* of a procedure call is the time between when it is
 initiated and when it returns. In Scheme, call-with-current-continuation
@@ -2059,8 +1894,7 @@ This sections introduces *parameter objects*, which can be bound to new
 values for the duration of a dynamic extent. The set of all parameter
 bindings at a given time is called the *dynamic environment*.
 
-([\[make-parameter\]]{#make-parameter
-label="make-parameter"}make-parameter *init*)  procedure\
+(make-parameter *init*)  procedure\
 (make-parameter *init converter*)  procedure\
 Returns a newly allocated parameter object, which is a procedure that
 accepts zero arguments and returns the value associated with the
@@ -2072,31 +1906,25 @@ parameterize, which is described below.
 The effect of passing arguments to a parameter object is
 implementation-dependent.
 
-(parameterize (($\langle$param$_{1}$$\rangle$ $\langle$value$_{1}$$\rangle$) $\ldots\,$)
- syntax\
+(parameterize ((param$_{1}$ value$_{1}$) $\ldots\,$)  syntax\
 ` )`
 
-[\[parameterize\]]{#parameterize label="parameterize"}
+*Syntax:* Both param$_{1}$ and value$_{1}$ are expressions.
 
-*Syntax:* Both $\langle$param$_{1}$$\rangle$ and
-$\langle$value$_{1}$$\rangle$ are expressions.
-
-It is an error if the value of any $\langle$param$\rangle$ expression is
-not a parameter object.
+It is an error if the value of any param expression is not a parameter
+object.
 
 *Semantics:* A parameterize expression is used to change the values
 returned by specified parameter objects during the evaluation of the
 body.
 
-The $\langle$param$\rangle$ and $\langle$value$\rangle$ expressions are
-evaluated in an unspecified order. The $\langle$body$\rangle$ is
-evaluated in a dynamic environment in which calls to the parameters
-return the results of passing the corresponding values to the conversion
-procedure specified when the parameters were created. Then the previous
-values of the parameters are restored without passing them to the
-conversion procedure. The results of the last expression in the
-$\langle$body$\rangle$ are returned as the results of the entire
-parameterize expression.
+The param and value expressions are evaluated in an unspecified order.
+The body is evaluated in a dynamic environment in which calls to the
+parameters return the results of passing the corresponding values to the
+conversion procedure specified when the parameters were created. Then
+the previous values of the parameters are restored without passing them
+to the conversion procedure. The results of the last expression in the
+body are returned as the results of the entire parameterize expression.
 
 *Note:* If the conversion procedure is not idempotent, the results of
 (parameterize ((x (x))) \...), which appears to bind the parameter *x*
@@ -2105,13 +1933,12 @@ to its current value, might not be what the user expects.
 If an implementation supports multiple threads of execution, then
 parameterize must not change the associated values of any parameters in
 any thread other than the current thread and threads created inside
-$\langle$body$\rangle$.
+body.
 
 Parameter objects can be used to specify configurable settings for a
 computation without the need to pass the value to every procedure in the
 call chain explicitly.
 
-```scheme
     (define radix
       (make-parameter
        10
@@ -2131,36 +1958,30 @@ call chain explicitly.
 
     (parameterize ((radix 0))
       (f 12))                                    \ev \scherror%
-```
 
 ### Exception handling
 
 -2ex
 
-(guard ($\langle$variable$\rangle$  syntax\
-` \langlecond clause_2\rangle \ldots\,) )`\
-[\[guard\]]{#guard label="guard"}
+(guard (variable  syntax\
+` cond clause_2 \ldots\,) )`\
+*Syntax:* Each cond clause is as in the specification of cond.
 
-*Syntax:* Each $\langle$cond clause$\rangle$ is as in the specification
-of cond.
-
-*Semantics:* The $\langle$body$\rangle$ is evaluated with an exception
-handler that binds the raised object (see `raise` in
-section [6.11](#exceptionsection)) to $\langle$variable$\rangle$ and,
+*Semantics:* The body is evaluated with an exception handler that binds
+the raised object (see `raise` in
+section [\[exceptionsection\]](#exceptionsection)) to variable and,
 within the scope of that binding, evaluates the clauses as if they were
 the clauses of a cond expression. That implicit cond expression is
 evaluated with the continuation and dynamic environment of the guard
-expression. If every $\langle$cond clause$\rangle$'s
-$\langle$test$\rangle$ evaluates to `#f` and there is no else clause,
-then raise-continuable is invoked on the raised object within the
-dynamic environment of the original call to raise or raise-continuable,
-except that the current exception handler is that of the guard
-expression.
+expression. If every cond clause's test evaluates to \#f and there is no
+else clause, then raise-continuable is invoked on the raised object
+within the dynamic environment of the original call to raise or
+raise-continuable, except that the current exception handler is that of
+the guard expression.
 
-See section [6.11](#exceptionsection) for a more complete discussion of
-exceptions.
+See section [\[exceptionsection\]](#exceptionsection) for a more
+complete discussion of exceptions.
 
-```scheme
     (guard (condition
              ((assq 'a condition) => cdr)
              ((assq 'b condition)))
@@ -2172,39 +1993,35 @@ exceptions.
              ((assq 'b condition)))
       (raise (list (cons 'b 23))))
     \ev (b . 23)%
-```
 
 ### Quasiquotation
 
-([\[quasiquote\]]{#quasiquote
-label="quasiquote"}quasiquote *$\langle$qq template$\rangle$*)  syntax\
-``$\langle$qq template$\rangle$  syntax\
+-2ex
+
+(quasiquote *qq template*)  syntax\
+``qq template  syntax\
 unquote  auxiliary syntax\
-`' `  auxiliary syntax\
+`‘ `  auxiliary syntax\
 unquote-splicing  auxiliary syntax\
-`' ``'`  auxiliary syntax\
+`‘ ``‘`  auxiliary syntax\
 "Quasiquote" expressions are useful for constructing a list or vector
 structure when some but not all of the desired structure is known in
-advance. If no commas appear within the $\langle$qq template$\rangle$,
-the result of evaluating ``$\langle$qq template$\rangle$ is equivalent
-to the result of evaluating `’`$\langle$qq template$\rangle$. If a
-comma[\[,\]]{#, label=","} appears within the
-$\langle$qq template$\rangle$, however, the expression following the
-comma is evaluated ("unquoted") and its result is inserted into the
-structure instead of the comma and the expression. If a comma appears
-followed without intervening whitespace by a commercial at-sign
-(`'`),[\[,@\]]{#,@ label=",@"} then it is an error if the following
+advance. If no commas appear within the qq template, the result of
+evaluating ``qq template is equivalent to the result of evaluating
+`’`qq template. If a comma appears within the qq template, however, the
+expression following the comma is evaluated ("unquoted") and its result
+is inserted into the structure instead of the comma and the expression.
+If a comma appears followed without intervening whitespace by a
+commercial at-sign (`‘`), then it is an error if the following
 expression does not evaluate to a list; the opening and closing
 parentheses of the list are then "stripped away" and the elements of the
 list are inserted in place of the comma at-sign expression sequence. A
-comma at-sign normally appears only within a list or vector
-$\langle$qq template$\rangle$.
+comma at-sign normally appears only within a list or vector qq template.
 
 *Note:* In order to unquote an identifier beginning with @, it is
 necessary to use either an explicit unquote or to put whitespace after
 the comma, to avoid colliding with the comma at-sign sequence.
 
-```scheme
     `(list ,(+ 1 2) 4)  \ev  (list 3 4)
     (let ((name 'a)) `(list ,name ',name)) %
               \lev  (list a (quote a))
@@ -2217,92 +2034,74 @@ the comma, to avoid colliding with the comma at-sign sequence.
     (let ((foo '(foo bar)) (@baz 'baz))
       `(list ,@foo , @baz))%
               \lev  (list foo bar baz)%
-```
 
 Quasiquote expressions can be nested. Substitutions are made only for
 unquoted components appearing at the same nesting level as the outermost
 quasiquote. The nesting level increases by one inside each successive
 quasiquotation, and decreases by one inside each unquotation.
 
-```scheme
     `(a `(b ,(+ 1 2) ,(foo ,(+ 1 3) d) e) f) %
               \lev  (a `(b ,(+ 1 2) ,(foo 4 d) e) f)
     (let ((name1 'x)
           (name2 'y))
       `(a `(b ,,name1 ,',name2 d) e)) %
               \lev  (a `(b ,x ,'y d) e)%
-```
 
 A quasiquote expression may return either newly allocated, mutable
 objects or literal structure for any structure that is constructed at
 run time during the evaluation of the expression. Portions that do not
 need to be rebuilt are always literal. Thus,
 
-```scheme
     (let ((a 3)) `((1 2) ,a ,4 ,'five 6))%
-```
 
 may be treated as equivalent to either of the following expressions:
 
-```scheme
     `((1 2) 3 4 five 6)
 
     (let ((a 3))
       (cons '(1 2)
             (cons a (cons 4 (cons 'five '(6))))))%
-```
 
 However, it is not equivalent to this expression:
 
-```scheme
     (let ((a 3)) (list (list 1 2) a 4 'five 6))%
-```
 
-The two notations `$\langle$qq template$\rangle$ and
-(quasiquote \langleqq template\rangle)` are identical in all respects.
-,$\langle$expression$\rangle$ is identical to (unquote
-$\langle$expression$\rangle$), and ,@$\langle$expression$\rangle$ is
-identical to (unquote-splicing $\langle$expression$\rangle$). The
-`write` procedure may output either format.
+The two notations ``qq template and `(quasiquote qq template)` are
+identical in all respects. ,expression is identical to (unquote
+expression), and ,@expression is identical to (unquote-splicing
+expression). The `write` procedure may output either format.
 
-```scheme
     (quasiquote (list (unquote (+ 1 2)) 4)) %
               \lev  (list 3 4)
     '(quasiquote (list (unquote (+ 1 2)) 4)) %
               \lev  `(list ,(+ 1 2) 4)
          {\em{}i.e.,} (quasiquote (list (unquote (+ 1 2)) 4))%
-```
 
 It is an error if any of the identifiers quasiquote, unquote, or
-unquote-splicing appear in positions within a
-$\langle$qq template$\rangle$ otherwise than as described above.
+unquote-splicing appear in positions within a qq template otherwise than
+as described above.
 
 ### Case-lambda
 
-([\[case-lambda\]]{#case-lambda
-label="case-lambda"}case-lambda *$\langle$clause$\rangle$ $\ldots\,$*)
- case-lambda library syntax\
-*Syntax:* Each $\langle$clause$\rangle$ is of the form
-($\langle$formals$\rangle$ $\langle$body$\rangle$), where
-$\langle$formals$\rangle$ and $\langle$body$\rangle$ have the same
-syntax as in a lambda expression.
+-2ex
+
+(case-lambda *clause $\ldots\,$*)  case-lambda library syntax\
+*Syntax:* Each clause is of the form (formals body), where formals and
+body have the same syntax as in a lambda expression.
 
 *Semantics:* A case-lambda expression evaluates to a procedure that
 accepts a variable number of arguments and is lexically scoped in the
 same manner as a procedure resulting from a lambda expression. When the
-procedure is called, the first $\langle$clause$\rangle$ for which the
-arguments agree with $\langle$formals$\rangle$ is selected, where
-agreement is specified as for the $\langle$formals$\rangle$ of a lambda
-expression. The variables of $\langle$formals$\rangle$ are bound to
-fresh locations, the values of the arguments are stored in those
-locations, the $\langle$body$\rangle$ is evaluated in the extended
-environment, and the results of $\langle$body$\rangle$ are returned as
-the results of the procedure call.
+procedure is called, the first clause for which the arguments agree with
+formals is selected, where agreement is specified as for the formals of
+a lambda expression. The variables of formals are bound to fresh
+locations, the values of the arguments are stored in those locations,
+the body is evaluated in the extended environment, and the results of
+body are returned as the results of the procedure call.
 
-It is an error for the arguments not to agree with the
-$\langle$formals$\rangle$ of any $\langle$clause$\rangle$.
+It is an error for the arguments not to agree with the formals of any
+clause.
 
-```scheme
     (define range
       (case-lambda
        ((e) (range 0 e))
@@ -2312,7 +2111,6 @@ $\langle$formals$\rangle$ of any $\langle$clause$\rangle$.
 
     (range 3)    \ev (0 1 2)
     (range 3 5)  \ev (3 4)%
-```
 
 ## Macros
 
@@ -2321,11 +2119,10 @@ Scheme programs can define and use new derived expression types, called
 
     (\hyper{keyword} {\hyper{datum}} ...)%
 
-where $\langle$keyword$\rangle$ is an identifier that uniquely
-determines the expression type. This identifier is called the *syntactic
-keyword*, or simply *keyword*, of the macro. The number of the
-$\langle$datum$\rangle$s, and their syntax, depends on the expression
-type.
+where keyword is an identifier that uniquely determines the expression
+type. This identifier is called the *syntactic keyword*, or simply
+*keyword*, of the macro. The number of the datums, and their syntax,
+depends on the expression type.
 
 Each instance of a macro is called a *use* of the macro. The set of
 rules that specifies how a use of a macro is transcribed into a more
@@ -2347,7 +2144,7 @@ provided to prevent unintended conflicts:
     or keyword), the identifier will in effect be renamed throughout its
     scope to avoid conflicts with other identifiers. Note that a global
     variable definition may or may not introduce a binding; see
-    section [5.3](#defines).
+    section [\[defines\]](#defines).
 
 -   If a macro transformer inserts a free reference to an identifier,
     the reference refers to the binding that was visible where the
@@ -2369,28 +2166,21 @@ instead of binding variables to locations that contain values. Syntactic
 keywords can also be bound globally or locally with define-syntax; see
 section [\[define-syntax\]](#define-syntax).
 
-([\[let-syntax\]]{#let-syntax
-label="let-syntax"}let-syntax *$\langle$bindings$\rangle$ $\langle$body$\rangle$*)
- syntax\
-*Syntax:* $\langle$Bindings$\rangle$ has the form
+(let-syntax *bindings body*)  syntax\
+*Syntax:* Bindings has the form
 
     ((\hyper{keyword} \hyper{transformer spec}) \dotsfoo)%
 
-Each $\langle$keyword$\rangle$ is an identifier, each
-$\langle$transformer spec$\rangle$ is an instance of syntax-rules, and
-$\langle$body$\rangle$ is a sequence of zero or more definitions
-followed by one or more expressions. It is an error for a
-$\langle$keyword$\rangle$ to appear more than once in the list of
-keywords being bound.
+Each keyword is an identifier, each transformer spec is an instance of
+syntax-rules, and body is a sequence of zero or more definitions
+followed by one or more expressions. It is an error for a keyword to
+appear more than once in the list of keywords being bound.
 
-*Semantics:* The $\langle$body$\rangle$ is expanded in the syntactic
-environment obtained by extending the syntactic environment of the
-let-syntax expression with macros whose keywords are the
-$\langle$keyword$\rangle$s, bound to the specified transformers. Each
-binding of a $\langle$keyword$\rangle$ has $\langle$body$\rangle$ as its
-region.
+*Semantics:* The body is expanded in the syntactic environment obtained
+by extending the syntactic environment of the let-syntax expression with
+macros whose keywords are the keywords, bound to the specified
+transformers. Each binding of a keyword has body as its region.
 
-```scheme
     (let-syntax ((given-that (syntax-rules ()
                          ((given-that test stmt1 stmt2 ...)
                           (if test
@@ -2404,24 +2194,18 @@ region.
       (let-syntax ((m (syntax-rules () ((m) x))))
         (let ((x 'inner))
           (m))))                       \ev  outer%
-```
 
-([\[letrec-syntax\]]{#letrec-syntax
-label="letrec-syntax"}letrec-syntax *$\langle$bindings$\rangle$ $\langle$body$\rangle$*)
- syntax\
+(letrec-syntax *bindings body*)  syntax\
 *Syntax:* Same as for let-syntax.
 
-*Semantics:* The $\langle$body$\rangle$ is expanded in the syntactic
-environment obtained by extending the syntactic environment of the
-letrec-syntax expression with macros whose keywords are the
-$\langle$keyword$\rangle$s, bound to the specified transformers. Each
-binding of a $\langle$keyword$\rangle$ has the
-$\langle$transformer spec$\rangle$s as well as the
-$\langle$body$\rangle$ within its region, so the transformers can
-transcribe expressions into uses of the macros introduced by the
-letrec-syntax expression.
+*Semantics:* The body is expanded in the syntactic environment obtained
+by extending the syntactic environment of the letrec-syntax expression
+with macros whose keywords are the keywords, bound to the specified
+transformers. Each binding of a keyword has the transformer specs as
+well as the body within its region, so the transformers can transcribe
+expressions into uses of the macros introduced by the letrec-syntax
+expression.
 
-```scheme
     (letrec-syntax
         ((my-or (syntax-rules ()
                   ((my-or) \schfalse)
@@ -2440,33 +2224,27 @@ letrec-syntax expression.
                (let temp)
                (if y)
                y)))        \ev  7%
-```
 
 ### Pattern language
 
-A $\langle$transformer spec$\rangle$ has one of the following forms:
+A transformer spec has one of the following forms:
 
-(syntax-rules ($\langle$pattern literal$\rangle$ $\ldots\,$)  syntax\
-` \ldots\,) `
-(syntax-rules $\langle$ellipsis$\rangle$ ($\langle$pattern literal$\rangle$ $\ldots\,$)
+(syntax-rules (pattern literal $\ldots\,$)  syntax\
+` \ldots\,) ` (syntax-rules ellipsis (pattern literal $\ldots\,$)
  syntax\
 ` \ldots\,)`\
 \_  auxiliary syntax\
 $\ldots\,$  auxiliary syntax\
-[\[\_\]]{#_ label="_"}
-
-*Syntax:* It is an error if any of the
-$\langle$pattern literal$\rangle$s, or the $\langle$ellipsis$\rangle$ in
-the second form, is not an identifier. It is also an error if
-$\langle$syntax rule$\rangle$ is not of the form
+*Syntax:* It is an error if any of the pattern literals, or the ellipsis
+in the second form, is not an identifier. It is also an error if
+syntax rule is not of the form
 
     (\hyper{pattern} \hyper{template})%
 
-The $\langle$pattern$\rangle$ in a $\langle$syntax rule$\rangle$ is a
-list $\langle$pattern$\rangle$ whose first element is an identifier.
+The pattern in a syntax rule is a list pattern whose first element is an
+identifier.
 
-A $\langle$pattern$\rangle$ is either an identifier, a constant, or one
-of the following
+A pattern is either an identifier, a constant, or one of the following
 
     (\hyper{pattern} \ldots)
     (\hyper{pattern} \hyper{pattern} \ldots . \hyper{pattern})
@@ -2476,62 +2254,56 @@ of the following
     \#(\hyper{pattern} \ldots)
     \#(\hyper{pattern} \ldots \hyper{pattern} \hyper{ellipsis} \hyper{pattern} \ldots)%
 
-and a $\langle$template$\rangle$ is either an identifier, a constant, or
-one of the following
+and a template is either an identifier, a constant, or one of the
+following
 
     (\hyper{element} \ldots)
     (\hyper{element} \hyper{element} \ldots . \hyper{template})
     (\hyper{ellipsis} \hyper{template})
     \#(\hyper{element} \ldots)%
 
-where an $\langle$element$\rangle$ is a $\langle$template$\rangle$
-optionally followed by an $\langle$ellipsis$\rangle$. An
-$\langle$ellipsis$\rangle$ is the identifier specified in the second
-form of syntax-rules, or the default identifier \... (three consecutive
-periods) otherwise.
+where an element is a template optionally followed by an ellipsis. An
+ellipsis is the identifier specified in the second form of syntax-rules,
+or the default identifier \... (three consecutive periods) otherwise.
 
 *Semantics:* An instance of syntax-rules produces a new macro
 transformer by specifying a sequence of hygienic rewrite rules. A use of
 a macro whose keyword is associated with a transformer specified by
 syntax-rules is matched against the patterns contained in the
-$\langle$syntax rule$\rangle$s, beginning with the leftmost
-$\langle$syntax rule$\rangle$. When a match is found, the macro use is
-transcribed hygienically according to the template.
+syntax rules, beginning with the leftmost syntax rule. When a match is
+found, the macro use is transcribed hygienically according to the
+template.
 
-An identifier appearing within a $\langle$pattern$\rangle$ can be an
-underscore (\_), a literal identifier listed in the list of
-$\langle$pattern literal$\rangle$s, or the $\langle$ellipsis$\rangle$.
-All other identifiers appearing within a $\langle$pattern$\rangle$ are
-*pattern variables*.
+An identifier appearing within a pattern can be an underscore (\_), a
+literal identifier listed in the list of pattern literals, or the
+ellipsis. All other identifiers appearing within a pattern are *pattern
+variables*.
 
-The keyword at the beginning of the pattern in a
-$\langle$syntax rule$\rangle$ is not involved in the matching and is
-considered neither a pattern variable nor a literal identifier.
+The keyword at the beginning of the pattern in a syntax rule is not
+involved in the matching and is considered neither a pattern variable
+nor a literal identifier.
 
 Pattern variables match arbitrary input elements and are used to refer
 to elements of the input in the template. It is an error for the same
-pattern variable to appear more than once in a
-$\langle$pattern$\rangle$.
+pattern variable to appear more than once in a pattern.
 
 Underscores also match arbitrary input elements but are not pattern
 variables and so cannot be used to refer to those elements. If an
-underscore appears in the $\langle$pattern literal$\rangle$s list, then
-that takes precedence and underscores in the $\langle$pattern$\rangle$
-match as literals. Multiple underscores can appear in a
-$\langle$pattern$\rangle$.
+underscore appears in the pattern literals list, then that takes
+precedence and underscores in the pattern match as literals. Multiple
+underscores can appear in a pattern.
 
-Identifiers that appear in ($\langle$pattern literal$\rangle$
-$\ldots\,$) are interpreted as literal identifiers to be matched against
-corresponding elements of the input. An element in the input matches a
-literal identifier if and only if it is an identifier and either both
-its occurrence in the macro expression and its occurrence in the macro
-definition have the same lexical binding, or the two identifiers are the
-same and both have no lexical binding.
+Identifiers that appear in (pattern literal $\ldots\,$) are interpreted
+as literal identifiers to be matched against corresponding elements of
+the input. An element in the input matches a literal identifier if and
+only if it is an identifier and either both its occurrence in the macro
+expression and its occurrence in the macro definition have the same
+lexical binding, or the two identifiers are the same and both have no
+lexical binding.
 
-A subpattern followed by $\langle$ellipsis$\rangle$ can match zero or
-more elements of the input, unless $\langle$ellipsis$\rangle$ appears in
-the $\langle$pattern literal$\rangle$s, in which case it is matched as a
-literal.
+A subpattern followed by ellipsis can match zero or more elements of the
+input, unless ellipsis appears in the pattern literals, in which case it
+is matched as a literal.
 
 More formally, an input expression $E$ matches a pattern $P$ if and only
 if:
@@ -2551,30 +2323,27 @@ if:
     elements that match $P_{1}$ through $P_{n}$, respectively, and whose
     $n$th tail matches $P_{n + 1}$; or
 
--   $P$ is of the form ($P_{1}$ $\ldots$ $P_{k}$ $P_{e}$
-    $\langle$ellipsis$\rangle$ $P_{m + 1}$ $\ldots\,$ $P_{n}$) where $E$
-    is a proper list of $n$ elements, the first $k$ of which match
-    $P_{1}$ through $P_{k}$, respectively, whose next $m - k$ elements
-    each match $P_{e}$, whose remaining $n - m$ elements match
-    $P_{m + 1}$ through $P_{n}$; or
+-   $P$ is of the form ($P_{1}$ $\ldots$ $P_{k}$ $P_{e}$ ellipsis
+    $P_{m + 1}$ $\ldots\,$ $P_{n}$) where $E$ is a proper list of $n$
+    elements, the first $k$ of which match $P_{1}$ through $P_{k}$,
+    respectively, whose next $m - k$ elements each match $P_{e}$, whose
+    remaining $n - m$ elements match $P_{m + 1}$ through $P_{n}$; or
 
--   $P$ is of the form ($P_{1}$ $\ldots$ $P_{k}$ $P_{e}$
-    $\langle$ellipsis$\rangle$ $P_{m + 1}$ $\ldots\,$ $P_{n}$ . $P_{x}$)
-    where $E$ is a list or improper list of $n$ elements, the first $k$
-    of which match $P_{1}$ through $P_{k}$, whose next $m - k$ elements
-    each match $P_{e}$, whose remaining $n - m$ elements match
-    $P_{m + 1}$ through $P_{n}$, and whose $n$th and final cdr matches
-    $P_{x}$; or
+-   $P$ is of the form ($P_{1}$ $\ldots$ $P_{k}$ $P_{e}$ ellipsis
+    $P_{m + 1}$ $\ldots\,$ $P_{n}$ . $P_{x}$) where $E$ is a list or
+    improper list of $n$ elements, the first $k$ of which match $P_{1}$
+    through $P_{k}$, whose next $m - k$ elements each match $P_{e}$,
+    whose remaining $n - m$ elements match $P_{m + 1}$ through $P_{n}$,
+    and whose $n$th and final cdr matches $P_{x}$; or
 
 -   $P$ is a vector of the form #($P_{1}$ $\ldots$ $P_{n}$) and $E$ is a
     vector of $n$ elements that match $P_{1}$ through $P_{n}$; or
 
--   $P$ is of the form #($P_{1}$ $\ldots$ $P_{k}$ $P_{e}$
-    $\langle$ellipsis$\rangle$ $P_{m + 1}$ $\ldots\,$$P_{n}$) where $E$
-    is a vector of $n$ elements the first $k$ of which match $P_{1}$
-    through $P_{k}$, whose next $m - k$ elements each match $P_{e}$, and
-    whose remaining $n - m$ elements match $P_{m + 1}$ through $P_{n}$;
-    or
+-   $P$ is of the form #($P_{1}$ $\ldots$ $P_{k}$ $P_{e}$ ellipsis
+    $P_{m + 1}$ $\ldots\,$$P_{n}$) where $E$ is a vector of $n$ elements
+    the first $k$ of which match $P_{1}$ through $P_{k}$, whose next
+    $m - k$ elements each match $P_{e}$, and whose remaining $n - m$
+    elements match $P_{m + 1}$ through $P_{n}$; or
 
 -   $P$ is a constant and $E$ is equal to $P$ in the sense of the equal?
     procedure.
@@ -2583,33 +2352,29 @@ It is an error to use a macro keyword, within the scope of its binding,
 in an expression that does not match any of the patterns.
 
 When a macro use is transcribed according to the template of the
-matching $\langle$syntax rule$\rangle$, pattern variables that occur in
-the template are replaced by the elements they match in the input.
-Pattern variables that occur in subpatterns followed by one or more
-instances of the identifier $\langle$ellipsis$\rangle$ are allowed only
-in subtemplates that are followed by as many instances of
-$\langle$ellipsis$\rangle$. They are replaced in the output by all of
-the elements they match in the input, distributed as indicated. It is an
+matching syntax rule, pattern variables that occur in the template are
+replaced by the elements they match in the input. Pattern variables that
+occur in subpatterns followed by one or more instances of the identifier
+ellipsis are allowed only in subtemplates that are followed by as many
+instances of ellipsis. They are replaced in the output by all of the
+elements they match in the input, distributed as indicated. It is an
 error if the output cannot be built up as specified.
 
 Identifiers that appear in the template but are not pattern variables or
-the identifier $\langle$ellipsis$\rangle$ are inserted into the output
-as literal identifiers. If a literal identifier is inserted as a free
-identifier then it refers to the binding of that identifier within whose
-scope the instance of syntax-rules appears. If a literal identifier is
-inserted as a bound identifier then it is in effect renamed to prevent
-inadvertent captures of free identifiers.
+the identifier ellipsis are inserted into the output as literal
+identifiers. If a literal identifier is inserted as a free identifier
+then it refers to the binding of that identifier within whose scope the
+instance of syntax-rules appears. If a literal identifier is inserted as
+a bound identifier then it is in effect renamed to prevent inadvertent
+captures of free identifiers.
 
-A template of the form ($\langle$ellipsis$\rangle$
-$\langle$template$\rangle$) is identical to $\langle$template$\rangle$,
+A template of the form (ellipsis template) is identical to template,
 except that ellipses within the template have no special meaning. That
-is, any ellipses contained within $\langle$template$\rangle$ are treated
-as ordinary identifiers. In particular, the template
-($\langle$ellipsis$\rangle$ $\langle$ellipsis$\rangle$) produces a
-single $\langle$ellipsis$\rangle$. This allows syntactic abstractions to
-expand into code containing ellipses.
+is, any ellipses contained within template are treated as ordinary
+identifiers. In particular, the template (ellipsis ellipsis) produces a
+single ellipsis. This allows syntactic abstractions to expand into code
+containing ellipses.
 
-```scheme
     (define-syntax be-like-begin
       (syntax-rules ()
         ((be-like-begin name)
@@ -2620,53 +2385,42 @@ expand into code containing ellipses.
 
     (be-like-begin sequence)
     (sequence 1 2 3 4) \ev 4%
-```
 
 As an example, if `let` and `cond` are defined as in
-section [7.3](#derivedsection) then they are hygienic (as required) and
-the following is not an error.
+section [\[derivedsection\]](#derivedsection) then they are hygienic (as
+required) and the following is not an error.
 
-```scheme
     (let ((=> \schfalse))
       (cond (\schtrue => 'ok)))           \ev ok%
-```
 
 The macro transformer for cond recognizes => as a local variable, and
 hence an expression, and not as the base identifier =>, which the macro
 transformer treats as a syntactic keyword. Thus the example expands into
 
-```scheme
     (let ((=> \schfalse))
       (if \schtrue (begin => 'ok)))%
-```
 
 instead of
 
-```scheme
     (let ((=> \schfalse))
       (let ((temp \schtrue))
         (if temp ('ok temp))))%
-```
 
 which would result in an invalid procedure call.
 
 ### Signaling errors in macro transformers
 
-(syntax-error $\langle$message$\rangle$ $\langle$args$\rangle$ $\ldots\,$)
- syntax\
-[\[syntax-error\]]{#syntax-error label="syntax-error"}
+(syntax-error message args $\ldots\,$)  syntax\
+syntax-error behaves similarly to error
+([\[exceptionsection\]](#exceptionsection)) except that implementations
+with an expansion pass separate from evaluation should signal an error
+as soon as syntax-error is expanded. This can be used as a syntax-rules
+template for a pattern that is an invalid use of the macro, which can
+provide more descriptive error messages. message is a string literal,
+and args arbitrary expressions providing additional information.
+Applications cannot count on being able to catch syntax errors with
+exception handlers or guards.
 
-syntax-error behaves similarly to error ([6.11](#exceptionsection))
-except that implementations with an expansion pass separate from
-evaluation should signal an error as soon as syntax-error is expanded.
-This can be used as a syntax-rules $\langle$template$\rangle$ for a
-$\langle$pattern$\rangle$ that is an invalid use of the macro, which can
-provide more descriptive error messages. $\langle$message$\rangle$ is a
-string literal, and $\langle$args$\rangle$ arbitrary expressions
-providing additional information. Applications cannot count on being
-able to catch syntax errors with exception handlers or guards.
-
-```scheme
     (define-syntax simple-let
       (syntax-rules ()
         ((\_ (head ... ((x . y) val) . tail)
@@ -2677,7 +2431,6 @@ able to catch syntax errors with exception handlers or guards.
         ((\_ ((name val) ...) body1 body2 ...)
          ((lambda (name ...) body1 body2 ...)
            val ...))))%
-```
 
 # Program structure
 
@@ -2687,22 +2440,20 @@ A Scheme program consists of one or more import declarations followed by
 a sequence of expressions and definitions. Import declarations specify
 the libraries on which a program or library depends; a subset of the
 identifiers exported by the libraries are made available to the program.
-Expressions are described in chapter [4](#expressionchapter).
-Definitions are either variable definitions, syntax definitions, or
-record-type definitions, all of which are explained in this chapter.
-They are valid in some, but not all, contexts where expressions are
-allowed, specifically at the outermost level of a
-$\langle$program$\rangle$ and at the beginning of a
-$\langle$body$\rangle$.
+Expressions are described in
+chapter [\[expressionchapter\]](#expressionchapter). Definitions are
+either variable definitions, syntax definitions, or record-type
+definitions, all of which are explained in this chapter. They are valid
+in some, but not all, contexts where expressions are allowed,
+specifically at the outermost level of a program and at the beginning of
+a body.
 
 At the outermost level of a program,
-`(begin \langleexpression or definition_1\rangle \ldots\,)` is
-equivalent to the sequence of expressions and definitions in the
-`begin`. Similarly, in a $\langle$body$\rangle$,
-`(begin \langledefinition_1\rangle \ldots\,)` is equivalent to the
-sequence $\langle$definition$_{1}$$\rangle$ $\ldots\,$. Macros can
-expand into such begin forms. For the formal definition,
-see [\[sequencing\]](#sequencing).
+`(begin expression or definition_1 \ldots\,)` is equivalent to the
+sequence of expressions and definitions in the `begin`. Similarly, in a
+body, `(begin definition_1 \ldots\,)` is equivalent to the sequence
+definition$_{1}$ $\ldots\,$. Macros can expand into such begin forms.
+For the formal definition, see [\[sequencing\]](#sequencing).
 
 Import declarations and definitions cause bindings to be created in the
 global environment or modify the value of existing global bindings. The
@@ -2723,49 +2474,42 @@ library to its location in the file system.
 
 An import declaration takes the following form:
 
-```scheme
     (import \hyper{import-set} \dotsfoo)
-```
 
 An import declaration provides a way to import identifiers exported by a
-library. Each $\langle$import set$\rangle$ names a set of bindings from
-a library and possibly specifies local names for the imported bindings.
-It takes one of the following forms:
+library. Each import set names a set of bindings from a library and
+possibly specifies local names for the imported bindings. It takes one
+of the following forms:
 
--   `\langlelibrary name\rangle`
+-   `library name`
 
--   `(only \langleimport set\rangle \langleidentifier\rangle \ldots\,)`
+-   `(only import set identifier \ldots\,)`
 
--   `(except \langleimport set\rangle \langleidentifier\rangle \ldots\,)`
+-   `(except import set identifier \ldots\,)`
 
--   `(prefix \langleimport set\rangle \langleidentifier\rangle)`
+-   `(prefix import set identifier)`
 
--   `(rename \langleimport set\rangle  (\langleidentifier_1\rangle \langleidentifier_2\rangle) \ldots\,)`
+-   `(rename import set  (identifier_1 identifier_2) \ldots\,)`
 
 In the first form, all of the identifiers in the named library's export
 clauses are imported with the same names (or the exported names if
-exported with `rename`). The additional $\langle$import set$\rangle$
-forms modify this set as follows:
+exported with `rename`). The additional import set forms modify this set
+as follows:
 
--   `only` produces a subset of the given $\langle$import set$\rangle$
-    including only the listed identifiers (after any renaming). It is an
-    error if any of the listed identifiers are not found in the original
-    set.
+-   `only` produces a subset of the given import set including only the
+    listed identifiers (after any renaming). It is an error if any of
+    the listed identifiers are not found in the original set.
 
--   `except` produces a subset of the given
-    $\langle$import set$\rangle$, excluding the listed identifiers
-    (after any renaming). It is an error if any of the listed
-    identifiers are not found in the original set.
+-   `except` produces a subset of the given import set, excluding the
+    listed identifiers (after any renaming). It is an error if any of
+    the listed identifiers are not found in the original set.
 
--   `rename` modifies the given $\langle$import set$\rangle$, replacing
-    each instance of $\langle$identifier$_{1}$$\rangle$ with
-    $\langle$identifier$_{2}$$\rangle$. It is an error if any of the
-    listed $\langle$identifier$_{1}$$\rangle$s are not found in the
-    original set.
+-   `rename` modifies the given import set, replacing each instance of
+    identifier$_{1}$ with identifier$_{2}$. It is an error if any of the
+    listed identifier$_{1}$s are not found in the original set.
 
 -   `prefix` automatically renames all identifiers in the given
-    $\langle$import set$\rangle$, prefixing each with the specified
-    $\langle$identifier$\rangle$.
+    import set, prefixing each with the specified identifier.
 
 In a program or library declaration, it is an error to import the same
 identifier more than once with different bindings, or to redefine or
@@ -2777,31 +2521,26 @@ these actions.
 
 A variable definition binds one or more identifiers and specifies an
 initial value for each of them. The simplest kind of variable definition
-takes one of the following forms:[\[define\]]{#define label="define"}
+takes one of the following forms:
 
--   `(define \langlevariable\rangle \langleexpression\rangle)`
+-   `(define variable expression)`
 
--   `(define (\langlevariable\rangle \langleformals\rangle) \langlebody\rangle)`
+-   `(define (variable formals) body)`
 
-    $\langle$Formals$\rangle$ are either a sequence of zero or more
-    variables, or a sequence of one or more variables followed by a
-    space-delimited period and another variable (as in a lambda
-    expression). This form is equivalent to
+    Formals are either a sequence of zero or more variables, or a
+    sequence of one or more variables followed by a space-delimited
+    period and another variable (as in a lambda expression). This form
+    is equivalent to
 
-    ```scheme
         (define \hyper{variable}
           (lambda (\hyper{formals}) \hyper{body}))\rm.%
-    ```
 
--   `(define (\langlevariable\rangle . \langleformal\rangle) \langlebody\rangle)`
+-   `(define (variable . formal) body)`
 
-    $\langle$Formal$\rangle$ is a single variable. This form is
-    equivalent to
+    Formal is a single variable. This form is equivalent to
 
-    ```scheme
         (define \hyper{variable}
           (lambda \hyper{formal} \hyper{body}))\rm.%
-    ```
 
 ### Top level definitions
 
@@ -2813,64 +2552,55 @@ has essentially the same effect as the assignment expression
 
     (\ide{set!}\ \hyper{variable} \hyper{expression})%
 
-if $\langle$variable$\rangle$ is bound to a non-syntax value. However,
-if $\langle$variable$\rangle$ is not bound, or is a syntactic keyword,
-then the definition will bind $\langle$variable$\rangle$ to a new
-location before performing the assignment, whereas it would be an error
-to perform a set! on an unbound variable.
+if variable is bound to a non-syntax value. However, if variable is not
+bound, or is a syntactic keyword, then the definition will bind variable
+to a new location before performing the assignment, whereas it would be
+an error to perform a set! on an unbound variable.
 
-```scheme
     (define add3
       (lambda (x) (+ x 3)))
     (add3 3)                            \ev  6
     (define first car)
     (first '(1 2))                      \ev  1%
-```
 
 ### Internal definitions
 
-Definitions can occur at the beginning of a $\langle$body$\rangle$ (that
-is, the body of a `lambda`, `let`, `let*`, `letrec`, `letrec*`,
-`let-values`, `let*-values`, `let-syntax`, `letrec-syntax`,
-`parameterize`, `guard`, or `case-lambda`). Note that such a body might
-not be apparent until after expansion of other syntax. Such definitions
-are known as *internal definitions* as opposed to the global definitions
-described above. The variables defined by internal definitions are local
-to the $\langle$body$\rangle$. That is, $\langle$variable$\rangle$ is
-bound rather than assigned, and the region of the binding is the entire
-$\langle$body$\rangle$. For example,
+Definitions can occur at the beginning of a body (that is, the body of a
+`lambda`, `let`, `let*`, `letrec`, `letrec*`, `let-values`,
+`let*-values`, `let-syntax`, `letrec-syntax`, `parameterize`, `guard`,
+or `case-lambda`). Note that such a body might not be apparent until
+after expansion of other syntax. Such definitions are known as *internal
+definitions* as opposed to the global definitions described above. The
+variables defined by internal definitions are local to the body. That
+is, variable is bound rather than assigned, and the region of the
+binding is the entire body. For example,
 
-```scheme
     (let ((x 5))
       (define foo (lambda (y) (bar x y)))
       (define bar (lambda (a b) (+ (* a b) a)))
       (foo (+ x 3)))                \ev  45%
-```
 
-An expanded $\langle$body$\rangle$ containing internal definitions can
-always be converted into a completely equivalent letrec\* expression.
-For example, the let expression in the above example is equivalent to
+An expanded body containing internal definitions can always be converted
+into a completely equivalent letrec\* expression. For example, the let
+expression in the above example is equivalent to
 
-```scheme
     (let ((x 5))
       (letrec* ((foo (lambda (y) (bar x y)))
                 (bar (lambda (a b) (+ (* a b) a))))
         (foo (+ x 3))))%
-```
 
 Just as for the equivalent letrec\* expression, it is an error if it is
-not possible to evaluate each $\langle$expression$\rangle$ of every
-internal definition in a $\langle$body$\rangle$ without assigning or
-referring to the value of the corresponding $\langle$variable$\rangle$
-or the $\langle$variable$\rangle$ of any of the definitions that follow
-it in $\langle$body$\rangle$.
+not possible to evaluate each expression of every internal definition in
+a body without assigning or referring to the value of the corresponding
+variable or the variable of any of the definitions that follow it in
+body.
 
 It is an error to define the same identifier more than once in the same
-$\langle$body$\rangle$.
+body.
 
 Wherever an internal definition can occur,
-`(begin \langledefinition_1\rangle \ldots\,)` is equivalent to the
-sequence of definitions that form the body of the `begin`.
+`(begin definition_1 \ldots\,)` is equivalent to the sequence of
+definitions that form the body of the `begin`.
 
 ### Multiple-value definitions
 
@@ -2878,50 +2608,41 @@ Another kind of definition is provided by define-values, which creates
 multiple definitions from a single expression returning multiple values.
 It is allowed wherever define is allowed.
 
-([\[define-values\]]{#define-values
-label="define-values"}define-values *$\langle$formals$\rangle$ $\langle$expression$\rangle$*)
- syntax\
+(define-values *formals expression*)  syntax\
 
 It is an error if a variable appears more than once in the set of
-$\langle$formals$\rangle$.
+formals.
 
-*Semantics:* $\langle$Expression$\rangle$ is evaluated, and the
-$\langle$formals$\rangle$ are bound to the return values in the same way
-that the $\langle$formals$\rangle$ in a lambda expression are matched to
-the arguments in a procedure call.
+*Semantics:* Expression is evaluated, and the formals are bound to the
+return values in the same way that the formals in a lambda expression
+are matched to the arguments in a procedure call.
 
-```scheme
     (define-values (x y) (exact-integer-sqrt 17))
     (list x y) \ev (4 1)
 
     (let ()
       (define-values (x y) (values 1 2))
       (+ x y))     \ev 3%
-```
 
 ## Syntax definitions
 
-Syntax definitions have this form:[\[define-syntax\]]{#define-syntax
-label="define-syntax"}
+Syntax definitions have this form:
 
-`(define-syntax \langlekeyword\rangle \langletransformer spec\rangle)`
+`(define-syntax keyword transformer spec)`
 
-$\langle$Keyword$\rangle$ is an identifier, and the
-$\langle$transformer spec$\rangle$ is an instance of `syntax-rules`.
-Like variable definitions, syntax definitions can appear at the
-outermost level or nested within a `body`.
+Keyword is an identifier, and the transformer spec is an instance of
+`syntax-rules`. Like variable definitions, syntax definitions can appear
+at the outermost level or nested within a `body`.
 
 If the define-syntax occurs at the outermost level, then the global
-syntactic environment is extended by binding the
-$\langle$keyword$\rangle$ to the specified transformer, but previous
-expansions of any global binding for $\langle$keyword$\rangle$ remain
-unchanged. Otherwise, it is an *internal syntax definition*, and is
-local to the $\langle$body$\rangle$ in which it is defined. Any use of a
-syntax keyword before its corresponding definition is an error. In
+syntactic environment is extended by binding the keyword to the
+specified transformer, but previous expansions of any global binding for
+keyword remain unchanged. Otherwise, it is an *internal syntax
+definition*, and is local to the body in which it is defined. Any use of
+a syntax keyword before its corresponding definition is an error. In
 particular, a use that precedes an inner definition will not apply an
 outer definition.
 
-```scheme
     (let ((x 1) (y 2))
       (define-syntax swap!
         (syntax-rules ()
@@ -2931,7 +2652,6 @@ outer definition.
              (set! b tmp)))))
       (swap! x y)
       (list x y))                \ev (2 1)%
-```
 
 Macros can expand into definitions in any context that permits them.
 However, it is an error for a definition to define an identifier whose
@@ -2943,7 +2663,6 @@ known in order to determine the boundary between the internal
 definitions and the expressions of the body it belongs to. For example,
 the following are errors:
 
-```scheme
     (define define 3)
 
     (begin (define begin list))
@@ -2958,7 +2677,6 @@ the following are errors:
         (foo (plus x y) (+ x y))
         (define foo x)
         (plus foo x)))%
-```
 
 ## Record-type definitions
 
@@ -2969,16 +2687,14 @@ outermost level or in a body. The values of a record type are called
 holds a single location. A predicate, a constructor, and field accessors
 and mutators are defined for each record type.
 
-[\[define-record-type\]]{#define-record-type label="define-record-type"}
-(define-record-type $\langle$name$\rangle$  syntax\
+(define-record-type name  syntax\
 )
 
-*Syntax:* $\langle$name$\rangle$ and $\langle$pred$\rangle$ are
-identifiers. The $\langle$constructor$\rangle$ is of the form
+*Syntax:* name and pred are identifiers. The constructor is of the form
 
     (\hyper{constructor name} \hyper{field name} \dotsfoo)%
 
-and each $\langle$field$\rangle$ is either of the form
+and each field is either of the form
 
     (\hyper{field name} \hyper{accessor name})%
 
@@ -2998,51 +2714,46 @@ same name or structure.
 An instance of define-record-type is equivalent to the following
 definitions:
 
--   $\langle$name$\rangle$ is bound to a representation of the record
-    type itself. This may be a run-time object or a purely syntactic
-    representation. The representation is not utilized in this report,
-    but it serves as a means to identify the record type for use by
-    further language extensions.
+-   name is bound to a representation of the record type itself. This
+    may be a run-time object or a purely syntactic representation. The
+    representation is not utilized in this report, but it serves as a
+    means to identify the record type for use by further language
+    extensions.
 
--   $\langle$constructor name$\rangle$ is bound to a procedure that
-    takes as many arguments as there are $\langle$field name$\rangle$s
-    in the ($\langle$constructor name$\rangle$ $\ldots\,$) subexpression
-    and returns a new record of type $\langle$name$\rangle$. Fields
-    whose names are listed with $\langle$constructor name$\rangle$ have
-    the corresponding argument as their initial value. The initial
-    values of all other fields are unspecified. It is an error for a
-    field name to appear in $\langle$constructor$\rangle$ but not as a
-    $\langle$field name$\rangle$.
+-   constructor name is bound to a procedure that takes as many
+    arguments as there are field names in the (constructor name
+    $\ldots\,$) subexpression and returns a new record of type name.
+    Fields whose names are listed with constructor name have the
+    corresponding argument as their initial value. The initial values of
+    all other fields are unspecified. It is an error for a field name to
+    appear in constructor but not as a field name.
 
--   $\langle$pred$\rangle$ is bound to a predicate that returns `#t`
-    when given a value returned by the procedure bound to
-    $\langle$constructor name$\rangle$ and `#f` for everything else.
+-   pred is bound to a predicate that returns \#t when given a value
+    returned by the procedure bound to constructor name and \#f for
+    everything else.
 
--   Each $\langle$accessor name$\rangle$ is bound to a procedure that
-    takes a record of type $\langle$name$\rangle$ and returns the
-    current value of the corresponding field. It is an error to pass an
-    accessor a value which is not a record of the appropriate type.
+-   Each accessor name is bound to a procedure that takes a record of
+    type name and returns the current value of the corresponding field.
+    It is an error to pass an accessor a value which is not a record of
+    the appropriate type.
 
--   Each $\langle$modifier name$\rangle$ is bound to a procedure that
-    takes a record of type $\langle$name$\rangle$ and a value which
-    becomes the new value of the corresponding field; an unspecified
-    value is returned. It is an error to pass a modifier a first
-    argument which is not a record of the appropriate type.
+-   Each modifier name is bound to a procedure that takes a record of
+    type name and a value which becomes the new value of the
+    corresponding field; an unspecified value is returned. It is an
+    error to pass a modifier a first argument which is not a record of
+    the appropriate type.
 
 For instance, the following record-type definition
 
-```scheme
     (define-record-type <pare>
       (kons x y)
       pare?
       (x kar set-kar!)
       (y kdr))
-```
 
 defines kons to be a constructor, kar and kdr to be accessors, set-kar!
 to be a modifier, and pare? to be a predicate for instances of \<pare>.
 
-```scheme
       (pare? (kons 1 2))        \ev \schtrue
       (pare? (cons 1 2))        \ev \schfalse
       (kar (kons 1 2))          \ev 1
@@ -3050,7 +2761,6 @@ to be a modifier, and pare? to be a predicate for instances of \<pare>.
       (let ((k (kons 1 2)))
         (set-kar! k 3)
         (kar k))                \ev 3
-```
 
 ## Libraries
 
@@ -3061,62 +2771,55 @@ section defines the notation and semantics for libraries.
 ### Library Syntax
 
 A library definition takes the following form:
-[\[define-library\]]{#define-library label="define-library"}
 
-```scheme
     (define-library \hyper{library name}
       \hyper{library declaration} \dotsfoo)
-```
 
-$\langle$library name$\rangle$ is a list whose members are identifiers
-and exact non-negative integers. It is used to identify the library
-uniquely when importing from other programs or libraries. Libraries
-whose first identifier is scheme are reserved for use by this report and
-future versions of this report. Libraries whose first identifier is srfi
-are reserved for libraries implementing Scheme Requests for
-Implementation. It is inadvisable, but not an error, for identifiers in
-library names to contain any of the characters \| `' ` ? \* \< \" : \> +
-\[ \] / or control characters after escapes are expanded.
+library name is a list whose members are identifiers and exact
+non-negative integers. It is used to identify the library uniquely when
+importing from other programs or libraries. Libraries whose first
+identifier is scheme are reserved for use by this report and future
+versions of this report. Libraries whose first identifier is srfi are
+reserved for libraries implementing Scheme Requests for Implementation.
+It is inadvisable, but not an error, for identifiers in library names to
+contain any of the characters \| `‘ ` ? \* \< \" : \> + \[ \] / or
+control characters after escapes are expanded.
 
-[\[librarydeclarations\]]{#librarydeclarations
-label="librarydeclarations"} A $\langle$library declaration$\rangle$ is
-any of:
+A library declaration is any of:
 
--   `(export \langleexport spec\rangle \ldots\,)`
+-   `(export export spec \ldots\,)`
 
--   `(import \langleimport set\rangle \ldots\,)`
+-   `(import import set \ldots\,)`
 
--   `(begin \langlecommand or definition\rangle \ldots\,)`
+-   `(begin command or definition \ldots\,)`
 
--   `(include \langlefilename_1\rangle \langlefilename_2\rangle \ldots\,)`
+-   `(include filename_1 filename_2 \ldots\,)`
 
--   `(include-ci \langlefilename_1\rangle \langlefilename_2\rangle \ldots\,)`
+-   `(include-ci filename_1 filename_2 \ldots\,)`
 
--   `(include-library-declarations \langlefilename_1\rangle \langlefilename_2\rangle \ldots\,)`
+-   `(include-library-declarations filename_1 filename_2 \ldots\,)`
 
--   `(cond-expand \langlece-clause_1\rangle \langlece-clause_2\rangle \ldots\,)`
+-   `(cond-expand ce-clause_1 ce-clause_2 \ldots\,)`
 
 An `export` declaration specifies a list of identifiers which can be
-made visible to other libraries or programs. An
-$\langle$export spec$\rangle$ takes one of the following forms:
+made visible to other libraries or programs. An export spec takes one of
+the following forms:
 
--   $\langle$identifier$\rangle$
+-   identifier
 
--   `(rename \langleidentifier_1\rangle \langleidentifier_2\rangle)`
+-   `(rename identifier_1 identifier_2)`
 
-In an $\langle$export spec$\rangle$, an $\langle$identifier$\rangle$
-names a single binding defined within or imported into the library,
-where the external name for the export is the same as the name of the
-binding within the library. A `rename` spec exports the binding defined
-within or imported into the library and named by
-$\langle$identifier$_{1}$$\rangle$ in each
-`(\langleidentifier_1\rangle \langleidentifier_2\rangle)` pairing, using
-$\langle$identifier$_{2}$$\rangle$ as the external name.
+In an export spec, an identifier names a single binding defined within
+or imported into the library, where the external name for the export is
+the same as the name of the binding within the library. A `rename` spec
+exports the binding defined within or imported into the library and
+named by identifier$_{1}$ in each `(identifier_1 identifier_2)` pairing,
+using identifier$_{2}$ as the external name.
 
 An `import` declaration provides a way to import the identifiers
 exported by another library. It has the same syntax and semantics as an
 import declaration used in a program or at the REPL (see
-section [5.2](#import)).
+section [\[import\]](#import)).
 
 The `begin`, `include`, and `include-ci` declarations are used to
 specify the body of the library. They have the same syntax and semantics
@@ -3170,7 +2873,6 @@ plus a relatively small main program []{.citation cites="life"}. If the
 main program is entered into a REPL, it is not necessary to import the
 base library.
 
-```scheme
     (define-library (example grid)
       (export make rows cols ref each
               (rename put! set!))
@@ -3258,7 +2960,6 @@ base library.
 
     ;; Run for 80 iterations.
     (life grid 80)
-```
 
 ## The REPL
 
@@ -3272,7 +2973,7 @@ generally useful procedures that manipulate data. For example, the
 variable abs is bound to a procedure of one argument that computes the
 absolute value of a number, and the variable + is bound to a procedure
 that computes sums. The full list of (scheme base) bindings can be found
-in Appendix [8](#stdlibraries).
+in Appendix [\[stdlibraries\]](#stdlibraries).
 
 Implementations may provide an initial REPL environment which behaves as
 if all possible variables are bound to locations, most of which contain
@@ -3300,36 +3001,36 @@ A program can use a global variable definition to bind any variable. It
 may subsequently alter any such binding by an assignment (see
 section [\[assignment\]](#assignment)). These operations do not modify
 the behavior of any procedure defined in this report or imported from a
-library (see section [5.6](#libraries)). Altering any global binding
-that has not been introduced by a definition has an unspecified effect
-on the behavior of the procedures defined in this chapter.
+library (see section [\[libraries\]](#libraries)). Altering any global
+binding that has not been introduced by a definition has an unspecified
+effect on the behavior of the procedures defined in this chapter.
 
 When a procedure is said to return a *newly allocated* object, it means
 that the locations in the object are fresh.
 
 ## Equivalence predicates
 
-A *predicate* is a procedure that always returns a boolean value (`#t`
-or `#f`). An *equivalence predicate* is the computational analogue of a
+A *predicate* is a procedure that always returns a boolean value (#t or
+\#f). An *equivalence predicate* is the computational analogue of a
 mathematical equivalence relation; it is symmetric, reflexive, and
 transitive. Of the equivalence predicates described in this section,
 eq? is the finest or most discriminating, equal? is the coarsest, and
 eqv? is slightly less discriminating than eq?.
 
-([\[eqv?\]]{#eqv? label="eqv?"}eqv? **obj$_{1}$* *obj$_{2}$**)
- procedure\
+(eqv? **obj$_{1}$* *obj$_{2}$**)  procedure\
 The eqv? procedure defines a useful equivalence relation on objects.
-Briefly, it returns `#t` if *obj$_{1}$* and *obj$_{2}$* are normally
+Briefly, it returns \#t if *obj$_{1}$* and *obj$_{2}$* are normally
 regarded as the same object. This relation is left slightly open to
 interpretation, but the following partial specification of eqv? holds
 for all implementations of Scheme.
 
-The eqv? procedure returns `#t` if:
+The eqv? procedure returns \#t if:
 
--   *obj$_{1}$* and *obj$_{2}$* are both `#t` or both `#f`.
+-   *obj$_{1}$* and *obj$_{2}$* are both \#t or both \#f.
 
 -   *obj$_{1}$* and *obj$_{2}$* are both symbols and are the same symbol
-    according to the symbol=? procedure (section [6.5](#symbolsection)).
+    according to the symbol=? procedure
+    (section [\[symbolsection\]](#symbolsection)).
 
 -   *obj$_{1}$* and *obj$_{2}$* are both exact numbers and are
     numerically equal (in the sense of =).
@@ -3343,26 +3044,27 @@ The eqv? procedure returns `#t` if:
 
 -   *obj$_{1}$* and *obj$_{2}$* are both characters and are the same
     character according to the char=? procedure
-    (section [6.6](#charactersection)).
+    (section [\[charactersection\]](#charactersection)).
 
 -   *obj$_{1}$* and *obj$_{2}$* are both the empty list.
 
 -   *obj$_{1}$* and *obj$_{2}$* are pairs, vectors, bytevectors,
     records, or strings that denote the same location in the store
-    (section [3.4](#storagemodel)).
+    (section [\[storagemodel\]](#storagemodel)).
 
 -   *obj$_{1}$* and *obj$_{2}$* are procedures whose location tags are
     equal (section [\[lambda\]](#lambda)).
 
-The eqv? procedure returns `#f` if:
+The eqv? procedure returns \#f if:
 
 -   *obj$_{1}$* and *obj$_{2}$* are of different types
-    (section [3.2](#disjointness)).
+    (section [\[disjointness\]](#disjointness)).
 
--   one of *obj$_{1}$* and *obj$_{2}$* is `#t` but the other is `#f`.
+-   one of *obj$_{1}$* and *obj$_{2}$* is \#t but the other is \#f.
 
 -   *obj$_{1}$* and *obj$_{2}$* are symbols but are not the same symbol
-    according to the symbol=? procedure (section [6.5](#symbolsection)).
+    according to the symbol=? procedure
+    (section [\[symbolsection\]](#symbolsection)).
 
 -   one of *obj$_{1}$* and *obj$_{2}$* is an exact number but the other
     is an inexact number.
@@ -3379,7 +3081,7 @@ The eqv? procedure returns `#f` if:
     eqv? is unspecified when both *obj$_{1}$* and *obj$_{2}$* are NaN.
 
 -   *obj$_{1}$* and *obj$_{2}$* are characters for which the char=?
-    procedure returns `#f`.
+    procedure returns \#f.
 
 -   one of *obj$_{1}$* and *obj$_{2}$* is the empty list but the other
     is not.
@@ -3391,7 +3093,9 @@ The eqv? procedure returns `#f` if:
     differently (return different values or have different side effects)
     for some arguments.
 
-```scheme
+```{=html}
+<!-- -->
+```
     (eqv? 'a 'a)                     \ev  \schtrue
     (eqv? 'a 'b)                     \ev  \schfalse
     (eqv? 2 2)                       \ev  \schtrue
@@ -3405,13 +3109,11 @@ The eqv? procedure returns `#f` if:
     (let ((p (lambda (x) x)))
       (eqv? p p))                    \ev  \schtrue
     (eqv? \#f 'nil)                  \ev  \schfalse%
-```
 
 The following examples illustrate cases in which the above rules do not
 fully specify the behavior of eqv?. All that can be said about such
 cases is that the value returned by eqv? must be a boolean.
 
-```scheme
     (eqv? "" "")             \ev  \unspecified
     (eqv? '\#() '\#())         \ev  \unspecified
     (eqv? (lambda (x) x)
@@ -3420,10 +3122,9 @@ cases is that the value returned by eqv? must be a boolean.
           (lambda (y) y))    \ev  \unspecified
     (eqv? 1.0e0 1.0f0)       \ev  \unspecified
     (eqv? +nan.0 +nan.0)     \ev  \unspecified%
-```
 
-Note that (eqv? 0.0 -0.0) will return `#f` if negative zero is
-distinguished, and `#t` if negative zero is not distinguished.
+Note that (eqv? 0.0 -0.0) will return \#f if negative zero is
+distinguished, and \#t if negative zero is not distinguished.
 
 The next set of examples shows the use of eqv? with procedures that have
 local state. The gen-counter procedure must return a distinct procedure
@@ -3433,7 +3134,6 @@ procedures each time, since the local state does not affect the value or
 side effects of the procedures. However, eqv? may or may not detect this
 equivalence.
 
-```scheme
     (define gen-counter
       (lambda ()
         (let ((n 0))
@@ -3460,20 +3160,17 @@ equivalence.
              (g (lambda () (if (eqv? f g) 'g 'both))))
       (eqv? f g))
                             \ev  \schfalse%
-```
 
 Since it is an error to modify constant objects (those returned by
 literal expressions), implementations may share structure between
 constants where appropriate. Thus the value of eqv? on constants is
 sometimes implementation-dependent.
 
-```scheme
     (eqv? '(a) '(a))                 \ev  \unspecified
     (eqv? "a" "a")                   \ev  \unspecified
     (eqv? '(b) (cdr '(a b)))     \ev  \unspecified
     (let ((x '(a)))
       (eqv? x x))                    \ev  \schtrue%
-```
 
 The above definition of eqv? allows implementations latitude in their
 treatment of procedures and literals: implementations may either detect
@@ -3486,11 +3183,11 @@ both.
 numbers, then an implementation of eqv? that simply compares equal-sized
 inexact numbers for bitwise equality is correct by the above definition.
 
-([\[eq?\]]{#eq? label="eq?"}eq? **obj$_{1}$* *obj$_{2}$**)  procedure\
+(eq? **obj$_{1}$* *obj$_{2}$**)  procedure\
 The eq? procedure is similar to eqv? except that in some cases it is
 capable of discerning distinctions finer than those detectable by eqv?.
-It must always return `#f` when eqv? also would, but may return `#f` in
-some cases where eqv? would return `#t`.
+It must always return \#f when eqv? also would, but may return \#f in
+some cases where eqv? would return \#t.
 
 On symbols, booleans, the empty list, pairs, and records, and also on
 non-empty strings, vectors, and bytevectors, eq? and eqv? are guaranteed
@@ -3500,7 +3197,6 @@ behavior is implementation-dependent, but it will always return either
 true or false. On empty strings, empty vectors, and empty bytevectors,
 eq? may also behave differently from eqv?.
 
-```scheme
     (eq? 'a 'a)                     \ev  \schtrue
     (eq? '(a) '(a))                 \ev  \unspecified
     (eq? (list 'a) (list 'a))       \ev  \schfalse
@@ -3518,7 +3214,6 @@ eq? may also behave differently from eqv?.
       (eq? x x))      \ev  \schtrue
     (let ((p (lambda (x) x)))
       (eq? p p))      \ev  \schtrue%
-```
 
 *Rationale:* It will usually be possible to implement eq? much more
 efficiently than eqv?, for example, as a simple pointer comparison
@@ -3527,21 +3222,19 @@ not always possible to compute eqv? of two numbers in constant time,
 whereas eq? implemented as pointer comparison will always finish in
 constant time.
 
-([\[equal?\]]{#equal? label="equal?"}equal? **obj$_{1}$* *obj$_{2}$**)
- procedure\
+(equal? **obj$_{1}$* *obj$_{2}$**)  procedure\
 The equal? procedure, when applied to pairs, vectors, strings and
-bytevectors, recursively compares them, returning `#t` when the
+bytevectors, recursively compares them, returning \#t when the
 unfoldings of its arguments into (possibly infinite) trees are equal (in
-the sense of equal?) as ordered trees, and `#f` otherwise. It returns
-the same as eqv? when applied to booleans, symbols, numbers, characters,
+the sense of equal?) as ordered trees, and \#f otherwise. It returns the
+same as eqv? when applied to booleans, symbols, numbers, characters,
 ports, procedures, and the empty list. If two objects are eqv?, they
-must be equal? as well. In all other cases, equal? may return either
-`#t` or `#f`.
+must be equal? as well. In all other cases, equal? may return either \#t
+or \#f.
 
 Even if its arguments are circular data structures, equal? must always
 terminate.
 
-```scheme
     (equal? 'a 'a)                  \ev  \schtrue
     (equal? '(a) '(a))              \ev  \schtrue
     (equal? '(a (b) c)
@@ -3554,7 +3247,6 @@ terminate.
             '\#2=(a b a b . \#2\#))    \ev  \schtrue
     (equal? (lambda (x) x)
             (lambda (y) y))  \ev  \unspecified%
-```
 
 *Note:* A rule of thumb is that objects are generally equal? if they
 print the same.
@@ -3573,7 +3265,7 @@ Mathematically, numbers are arranged into a tower of subtypes in which
 each level is a subset of the level above it:
 
 ::: tabbing
-         number\
+         n̄umber\
 complex number\
 real number\
 rational number\
@@ -3630,7 +3322,7 @@ given exact arguments. If the operation is unable to produce an exact
 result, then it may either report the violation of an implementation
 restriction or it may silently coerce its result to an inexact value.
 However, (/ 3 4) must not return the mathematically incorrect value 0.
-See section [6.2.3](#restrictions).
+See section [\[restrictions\]](#restrictions).
 
 Except for `exact`, the operations described in this section must
 generally return inexact results when given any inexact arguments. An
@@ -3647,12 +3339,12 @@ in other implementation-specific ways.
 ### Implementation restrictions
 
 Implementations of Scheme are not required to implement the whole tower
-of subtypes given in section [6.2.1](#numericaltypes), but they must
-implement a coherent subset consistent with both the purposes of the
-implementation and the spirit of the Scheme language. For example,
-implementations in which all numbers are real, or in which non-real
-numbers are always inexact, or in which exact numbers are always
-integer, are still quite useful.
+of subtypes given in section [\[numericaltypes\]](#numericaltypes), but
+they must implement a coherent subset consistent with both the purposes
+of the implementation and the spirit of the Scheme language. For
+example, implementations in which all numbers are real, or in which
+non-real numbers are always inexact, or in which exact numbers are
+always integer, are still quite useful.
 
 Implementations may also support only a limited range of numbers of any
 type, subject to the requirements of this section. The supported range
@@ -3855,15 +3547,14 @@ represented without loss of accuracy; the inexact constants were chosen
 so that this is likely to be true in implementations that use IEEE
 binary doubles to represent inexact numbers.
 
-([\[number?\]]{#number? label="number?"}number? *obj*)  procedure\
-([\[complex?\]]{#complex? label="complex?"}complex? *obj*)  procedure\
-([\[real?\]]{#real? label="real?"}real? *obj*)  procedure\
-([\[rational?\]]{#rational? label="rational?"}rational? *obj*)
- procedure\
-([\[integer?\]]{#integer? label="integer?"}integer? *obj*)  procedure\
+(number? *obj*)  procedure\
+(complex? *obj*)  procedure\
+(real? *obj*)  procedure\
+(rational? *obj*)  procedure\
+(integer? *obj*)  procedure\
 These numerical type predicates can be applied to any kind of argument,
-including non-numbers. They return `#t` if the object is of the named
-type, and otherwise they return `#f`. In general, if a type predicate is
+including non-numbers. They return \#t if the object is of the named
+type, and otherwise they return \#f. In general, if a type predicate is
 true of a number then all higher type predicates are also true of that
 number. Consequently, if a type predicate is false of a number, then all
 lower type predicates are also false of that number.
@@ -3874,7 +3565,6 @@ If $z$ is a complex number, then (real? $z$) is true if and only if
 
 The numbers +inf.0, -inf.0, and +nan.0 are real but not rational.
 
-```scheme
     (complex? 3+4i)         \ev  \schtrue
     (complex? 3)            \ev  \schtrue
     (real? 3)               \ev  \schtrue
@@ -3890,7 +3580,6 @@ The numbers +inf.0, -inf.0, and +nan.0 are real but not rational.
     (integer? 3+0i)         \ev  \schtrue
     (integer? 3.0)          \ev  \schtrue
     (integer? 8/4)          \ev  \schtrue%
-```
 
 *Note:* The behavior of these type predicates on inexact numbers is
 unreliable, since any inaccuracy might affect the result.
@@ -3900,80 +3589,61 @@ same as `number?`, but unusual implementations may represent some
 irrational numbers exactly or may extend the number system to support
 some kind of non-complex numbers.
 
-([\[exact?\]]{#exact? label="exact?"}exact? *$z$*)  procedure\
-([\[inexact?\]]{#inexact? label="inexact?"}inexact? *$z$*)  procedure\
+(exact? *$z$*)  procedure\
+(inexact? *$z$*)  procedure\
 These numerical predicates provide tests for the exactness of a
 quantity. For any Scheme number, precisely one of these predicates is
 true.
 
-```scheme
     (exact? 3.0)           \ev  \schfalse
     (exact? \#e3.0)         \ev  \schtrue
     (inexact? 3.)          \ev  \schtrue%
-```
 
-([\[exact-integer?\]]{#exact-integer?
-label="exact-integer?"}exact-integer? *$z$*)  procedure\
-Returns `#t` if $z$ is both exact and an integer; otherwise returns
-`#f`.
+(exact-integer? *$z$*)  procedure\
+Returns \#t if $z$ is both exact and an integer; otherwise returns \#f.
 
-```scheme
     (exact-integer? 32) \ev \schtrue{}
     (exact-integer? 32.0) \ev \schfalse{}
     (exact-integer? 32/5) \ev \schfalse{}%
-```
 
-([\[finite?\]]{#finite? label="finite?"}finite? *$z$*)
- inexact library procedure\
-The finite? procedure returns `#t` on all real numbers except +inf.0,
+(finite? *$z$*)  inexact library procedure\
+The finite? procedure returns \#t on all real numbers except +inf.0,
 -inf.0, and +nan.0, and on complex numbers if their real and imaginary
-parts are both finite. Otherwise it returns `#f`.
+parts are both finite. Otherwise it returns \#f.
 
-```scheme
     (finite? 3)         \ev  \schtrue
     (finite? +inf.0)       \ev  \schfalse
     (finite? 3.0+inf.0i)   \ev  \schfalse%
-```
 
-([\[infinite?\]]{#infinite? label="infinite?"}infinite? *$z$*)
- inexact library procedure\
-The infinite? procedure returns `#t` on the real numbers +inf.0 and
+(infinite? *$z$*)  inexact library procedure\
+The infinite? procedure returns \#t on the real numbers +inf.0 and
 -inf.0, and on complex numbers if their real or imaginary parts or both
-are infinite. Otherwise it returns `#f`.
+are infinite. Otherwise it returns \#f.
 
-```scheme
     (infinite? 3)         \ev  \schfalse
     (infinite? +inf.0)       \ev  \schtrue
     (infinite? +nan.0)       \ev  \schfalse
     (infinite? 3.0+inf.0i)   \ev  \schtrue%
-```
 
-([\[nan?\]]{#nan? label="nan?"}nan? *$z$*)  inexact library procedure\
-The nan? procedure returns `#t` on +nan.0, and on complex numbers if
+(nan? *$z$*)  inexact library procedure\
+The nan? procedure returns \#t on +nan.0, and on complex numbers if
 their real or imaginary parts or both are +nan.0. Otherwise it returns
-`#f`.
+\#f.
 
-```scheme
     (nan? +nan.0)          \ev  \schtrue
     (nan? 32)              \ev  \schfalse
     (nan? +nan.0+5.0i)     \ev  \schtrue
     (nan? 1+2i)            \ev  \schfalse%
-```
 
-([\[=\]]{#= label="="}= *$z_{1}$ $z_{2}$ $z_{3}$ $\ldots\,$*)
- procedure\
-([\[\<\]]{#< label="<"}\< *$x_{1}$ $x_{2}$ $x_{3}$ $\ldots\,$*)
- procedure\
-([\[\>\]]{#> label=">"}\> *$x_{1}$ $x_{2}$ $x_{3}$ $\ldots\,$*)
- procedure\
-([\[\<=\]]{#<= label="<="}\<= *$x_{1}$ $x_{2}$ $x_{3}$ $\ldots\,$*)
- procedure\
-([\[\>=\]]{#>= label=">="}\>= *$x_{1}$ $x_{2}$ $x_{3}$ $\ldots\,$*)
- procedure\
-These procedures return `#t` if their arguments are (respectively):
+(= *$z_{1}$ $z_{2}$ $z_{3}$ $\ldots\,$*)  procedure\
+(\< *$x_{1}$ $x_{2}$ $x_{3}$ $\ldots\,$*)  procedure\
+(> *$x_{1}$ $x_{2}$ $x_{3}$ $\ldots\,$*)  procedure\
+(\<= *$x_{1}$ $x_{2}$ $x_{3}$ $\ldots\,$*)  procedure\
+(>= *$x_{1}$ $x_{2}$ $x_{3}$ $\ldots\,$*)  procedure\
+These procedures return \#t if their arguments are (respectively):
 equal, monotonically increasing, monotonically decreasing, monotonically
-non-decreasing, or monotonically non-increasing, and `#f` otherwise. If
-any of the arguments are +nan.0, all the predicates return `#f`. They do
+non-decreasing, or monotonically non-increasing, and \#f otherwise. If
+any of the arguments are +nan.0, all the predicates return \#f. They do
 not distinguish between inexact zero and inexact negative zero.
 
 These predicates are required to be transitive.
@@ -3994,26 +3664,20 @@ predicates, the results are unreliable because a small inaccuracy can
 affect the result; this is especially true of `=` and `zero?`. When in
 doubt, consult a numerical analyst.
 
-([\[zero?\]]{#zero? label="zero?"}zero? *$z$*)  procedure\
-([\[positive?\]]{#positive? label="positive?"}positive? *$x$*)
- procedure\
-([\[negative?\]]{#negative? label="negative?"}negative? *$x$*)
- procedure\
-([\[odd?\]]{#odd? label="odd?"}odd? *$n$*)  procedure\
-([\[even?\]]{#even? label="even?"}even? *$n$*)  procedure\
+(zero? *$z$*)  procedure\
+(positive? *$x$*)  procedure\
+(negative? *$x$*)  procedure\
+(odd? *$n$*)  procedure\
+(even? *$n$*)  procedure\
 These numerical predicates test a number for a particular property,
-returning `#t` or `#f`. See note above.
+returning \#t or \#f. See note above.
 
-([\[max\]]{#max label="max"}max *$x_{1}$ $x_{2}$ $\ldots\,$*)
- procedure\
-([\[min\]]{#min label="min"}min *$x_{1}$ $x_{2}$ $\ldots\,$*)
- procedure\
+(max *$x_{1}$ $x_{2}$ $\ldots\,$*)  procedure\
+(min *$x_{1}$ $x_{2}$ $\ldots\,$*)  procedure\
 These procedures return the maximum or minimum of their arguments.
 
-```scheme
     (max 3 4)              \ev  4    ; exact
     (max 3.9 4)            \ev  4.0  ; inexact%
-```
 
 *Note:* If any argument is inexact, then the result will also be inexact
 (unless the procedure can prove that the inaccuracy is not large enough
@@ -4023,22 +3687,19 @@ exactness, and the numerical value of the result cannot be represented
 as an inexact number without loss of accuracy, then the procedure may
 report a violation of an implementation restriction.
 
-([\[+\]]{#+ label="+"}+ *$z_{1}$ $\ldots\,$*)  procedure\
-([\[\*\]]{#* label="*"}\* *$z_{1}$ $\ldots\,$*)  procedure\
-
+(+ *$z_{1}$ $\ldots\,$*)  procedure\
+(\* *$z_{1}$ $\ldots\,$*)  procedure\
 These procedures return the sum or product of their arguments.
 
-```scheme
     (+ 3 4)                 \ev  7
     (+ 3)                   \ev  3
     (+)                     \ev  0
     (* 4)                   \ev  4
     (*)                     \ev  1%
-```
 
-([\[-\]]{#- label="-"}- *$z$*)  procedure\
+(- *$z$*)  procedure\
 (- *$z_{1}$ $z_{2}$ $\ldots\,$*)  procedure\
-([\[/\]]{#/ label="/"}/ *$z$*)  procedure\
+(/ *$z$*)  procedure\
 (/ *$z_{1}$ $z_{2}$ $\ldots\,$*)  procedure\
 With two or more arguments, these procedures return the difference or
 quotient of their arguments, associating to the left. With one argument,
@@ -4049,35 +3710,23 @@ It is an error if any argument of / other than the first is an exact
 zero. If the first argument is an exact zero, an implementation may
 return an exact zero unless one of the other arguments is a NaN.
 
-```scheme
     (- 3 4)                 \ev  -1
     (- 3 4 5)               \ev  -6
     (- 3)                   \ev  -3
     (/ 3 4 5)               \ev  3/20
     (/ 3)                   \ev  1/3%
-```
 
-([\[abs\]]{#abs label="abs"}abs *x*)  procedure\
+(abs *x*)  procedure\
 The abs procedure returns the absolute value of its argument.
 
-```scheme
     (abs -7)                \ev  7%
-```
 
-([\[floor/\]]{#floor/ label="floor/"}floor/ *$n_{1}$ $n_{2}$*)
- procedure\
-([\[floor-quotient\]]{#floor-quotient
-label="floor-quotient"}floor-quotient *$n_{1}$ $n_{2}$*)  procedure\
-([\[floor-remainder\]]{#floor-remainder
-label="floor-remainder"}floor-remainder *$n_{1}$ $n_{2}$*)  procedure\
-([\[truncate/\]]{#truncate/
-label="truncate/"}truncate/ *$n_{1}$ $n_{2}$*)  procedure\
-([\[truncate-quotient\]]{#truncate-quotient
-label="truncate-quotient"}truncate-quotient *$n_{1}$ $n_{2}$*)
- procedure\
-([\[truncate-remainder\]]{#truncate-remainder
-label="truncate-remainder"}truncate-remainder *$n_{1}$ $n_{2}$*)
- procedure\
+(floor/ *$n_{1}$ $n_{2}$*)  procedure\
+(floor-quotient *$n_{1}$ $n_{2}$*)  procedure\
+(floor-remainder *$n_{1}$ $n_{2}$*)  procedure\
+(truncate/ *$n_{1}$ $n_{2}$*)  procedure\
+(truncate-quotient *$n_{1}$ $n_{2}$*)  procedure\
+(truncate-remainder *$n_{1}$ $n_{2}$*)  procedure\
 These procedures implement number-theoretic (integer) division. It is an
 error if $n_{2}$ is zero. The procedures ending in / return two
 integers; the other procedures return an integer. All the procedures
@@ -4086,11 +3735,9 @@ compute a quotient $n_{q}$ and remainder $n_{r}$ such that
 {\\hbox{\$n_r\$\\/}}\$]{.math .inline}. For each of the division
 operators, there are three procedures defined as follows:
 
-```
     (\hyper{operator}/ \vri{n} \vrii{n})             \ev \vr{n_q} \vr{n_r}
     (\hyper{operator}-quotient \vri{n} \vrii{n})     \ev \vr{n_q}
     (\hyper{operator}-remainder \vri{n} \vrii{n})    \ev \vr{n_r}%
-```
 
 The remainder $n_{r}$ is determined by the choice of integer $n_{q}$:
 [\${\\hbox{\$n_r\$\\/}} = {\\hbox{\$n_1\$\\/}} - {\\hbox{\$n_2\$\\/}}
@@ -4105,16 +3752,14 @@ different choice of $n_{q}$:
 For any of the operators, and for integers $n_{1}$ and $n_{2}$ with
 $n_{2}$ not equal to 0,
 
-```
          (= \vri{n} (+ (* \vrii{n} (\hyper{operator}-quotient \vri{n} \vrii{n}))
                (\hyper{operator}-remainder \vri{n} \vrii{n})))
                                      \ev  \schtrue%
-```
+
 provided all numbers involved in that computation are exact.
 
 Examples:
 
-```scheme
     (floor/ 5 2)         \ev 2 1
     (floor/ -5 2)        \ev -3 1
     (floor/ 5 -2)        \ev -3 -1
@@ -4124,14 +3769,10 @@ Examples:
     (truncate/ 5 -2)     \ev -2 1
     (truncate/ -5 -2)    \ev 2 -1
     (truncate/ -5.0 -2)  \ev 2.0 -1.0%
-```
 
-([\[quotient\]]{#quotient label="quotient"}quotient *$n_{1}$ $n_{2}$*)
- procedure\
-([\[remainder\]]{#remainder
-label="remainder"}remainder *$n_{1}$ $n_{2}$*)  procedure\
-([\[modulo\]]{#modulo label="modulo"}modulo *$n_{1}$ $n_{2}$*)
- procedure\
+(quotient *$n_{1}$ $n_{2}$*)  procedure\
+(remainder *$n_{1}$ $n_{2}$*)  procedure\
+(modulo *$n_{1}$ $n_{2}$*)  procedure\
 The quotient and remainder procedures are equivalent to
 truncate-quotient and truncate-remainder, respectively, and modulo is
 equivalent to floor-remainder.
@@ -4139,39 +3780,33 @@ equivalent to floor-remainder.
 *Note:* These procedures are provided for backward compatibility with
 earlier versions of this report.
 
-([\[gcd\]]{#gcd label="gcd"}gcd *$n_{1}$ $\ldots\,$*)  procedure\
-([\[lcm\]]{#lcm label="lcm"}lcm *$n_{1}$ $\ldots\,$*)  procedure\
+(gcd *$n_{1}$ $\ldots\,$*)  procedure\
+(lcm *$n_{1}$ $\ldots\,$*)  procedure\
 These procedures return the greatest common divisor or least common
 multiple of their arguments. The result is always non-negative.
 
-```scheme
     (gcd 32 -36)            \ev  4
     (gcd)                   \ev  0
     (lcm 32 -36)            \ev  288
     (lcm 32.0 -36)          \ev  288.0  ; inexact
     (lcm)                   \ev  1%
-```
 
-([\[numerator\]]{#numerator label="numerator"}numerator *$q$*)
- procedure\
-([\[denominator\]]{#denominator label="denominator"}denominator *$q$*)
- procedure\
+(numerator *$q$*)  procedure\
+(denominator *$q$*)  procedure\
 These procedures return the numerator or denominator of their argument;
 the result is computed as if the argument was represented as a fraction
 in lowest terms. The denominator is always positive. The denominator of
 0 is defined to be 1.
 
-```scheme
     (numerator (/ 6 4))  \ev  3
     (denominator (/ 6 4))  \ev  2
     (denominator
       (inexact (/ 6 4))) \ev 2.0%
-```
 
-([\[floor\]]{#floor label="floor"}floor *x*)  procedure\
-([\[ceiling\]]{#ceiling label="ceiling"}ceiling *x*)  procedure\
-([\[truncate\]]{#truncate label="truncate"}truncate *x*)  procedure\
-([\[round\]]{#round label="round"}round *x*)  procedure\
+(floor *x*)  procedure\
+(ceiling *x*)  procedure\
+(truncate *x*)  procedure\
+(round *x*)  procedure\
 These procedures return integers. The floor procedure returns the
 largest integer not larger than $x$. The ceiling procedure returns the
 smallest integer not smaller than $x$, truncate returns the integer
@@ -4188,7 +3823,6 @@ result will also be inexact. If an exact value is needed, the result can
 be passed to the exact procedure. If the argument is infinite or a NaN,
 then it is returned.
 
-```scheme
     (floor -4.3)          \ev  -5.0
     (ceiling -4.3)        \ev  -4.0
     (truncate -4.3)       \ev  -4.0
@@ -4201,10 +3835,8 @@ then it is returned.
 
     (round 7/2)           \ev  4    ; exact
     (round 7)             \ev  7%
-```
 
-([\[rationalize\]]{#rationalize label="rationalize"}rationalize *x y*)
- procedure\
+(rationalize *x y*)  procedure\
 The rationalize procedure returns the *simplest* rational number
 differing from $x$ by no more than $y$. A rational number $r_{1}$ is
 *simpler* than another rational number $r_{2}$ if $r_{1} = p_{1}/q_{1}$
@@ -4217,21 +3849,19 @@ is simpler than every other rational number in that interval (the
 simpler $2/5$ lies between $2/7$ and $3/5$). Note that $0 = 0/1$ is the
 simplest rational of all.
 
-```scheme
     (rationalize
       (exact .3) 1/10)  \ev 1/3    ; exact
     (rationalize .3 1/10)        \ev \#i1/3  ; inexact%
-```
 
-([\[exp\]]{#exp label="exp"}exp *$z$*)  inexact library procedure\
-([\[log\]]{#log label="log"}log *$z$*)  inexact library procedure\
+(exp *$z$*)  inexact library procedure\
+(log *$z$*)  inexact library procedure\
 (log *$z_{1}$ $z_{2}$*)  inexact library procedure\
-([\[sin\]]{#sin label="sin"}sin *$z$*)  inexact library procedure\
-([\[cos\]]{#cos label="cos"}cos *$z$*)  inexact library procedure\
-([\[tan\]]{#tan label="tan"}tan *$z$*)  inexact library procedure\
-([\[asin\]]{#asin label="asin"}asin *$z$*)  inexact library procedure\
-([\[acos\]]{#acos label="acos"}acos *$z$*)  inexact library procedure\
-([\[atan\]]{#atan label="atan"}atan *$z$*)  inexact library procedure\
+(sin *$z$*)  inexact library procedure\
+(cos *$z$*)  inexact library procedure\
+(tan *$z$*)  inexact library procedure\
+(asin *$z$*)  inexact library procedure\
+(acos *$z$*)  inexact library procedure\
+(atan *$z$*)  inexact library procedure\
 (atan *$y$ $x$*)  inexact library procedure\
 These procedures compute the usual transcendental functions. The log
 procedure computes the natural logarithm of $z$ (not the base ten
@@ -4290,26 +3920,21 @@ more detailed discussion of branch cuts, boundary conditions, and
 implementation of these functions. When it is possible, these procedures
 produce a real result from a real argument.
 
-([\[square\]]{#square label="square"}square *$z$*)  procedure\
+(square *$z$*)  procedure\
 Returns the square of $z$. This is equivalent to (\* *z* *z*).
 
-```scheme
     (square 42)       \ev 1764
     (square 2.0)     \ev 4.0%
-```
 
-([\[sqrt\]]{#sqrt label="sqrt"}sqrt *$z$*)  inexact library procedure\
+(sqrt *$z$*)  inexact library procedure\
 Returns the principal square root of $z$. The result will have either a
 positive real part, or a zero real part and a non-negative imaginary
 part.
 
-```scheme
     (sqrt 9)  \ev 3
     (sqrt -1) \ev +i%
-```
 
-([\[exact-integer-sqrt\]]{#exact-integer-sqrt
-label="exact-integer-sqrt"}exact-integer-sqrt *k*)  procedure\
+(exact-integer-sqrt *k*)  procedure\
 Returns two non-negative exact integers $s$ and $r$ where
 [\$\\hbox{\\it{}k\\/} = s\^2 + r\$]{.math .inline} and
 [\$\\hbox{\\it{}k\\/} \< (s+1)\^2\$]{.math .inline}.
@@ -4317,39 +3942,29 @@ Returns two non-negative exact integers $s$ and $r$ where
     (exact-integer-sqrt 4) \ev 2 0
     (exact-integer-sqrt 5) \ev 2 1%
 
-([\[expt\]]{#expt label="expt"}expt *$z_{1}$ $z_{2}$*)  procedure\
+(expt *$z_{1}$ $z_{2}$*)  procedure\
 Returns $z_{1}$ raised to the power $z_{2}$. For nonzero $z_{1}$, this
 is $${z_{1}}^{z_{2}} = e^{z_{2}\log z_{1}}$$ The value of $0^{z}$ is $1$
 if (zero? z), $0$ if (real-part z) is positive, and an error otherwise.
 Similarly for $0.0^{z}$, with inexact results.
 
-([\[make-rectangular\]]{#make-rectangular
-label="make-rectangular"}make-rectangular *$x_{1}$ $x_{2}$*)
- complex library procedure\
-([\[make-polar\]]{#make-polar
-label="make-polar"}make-polar *$x_{3}$ $x_{4}$*)
- complex library procedure\
-([\[real-part\]]{#real-part label="real-part"}real-part *$z$*)
- complex library procedure\
-([\[imag-part\]]{#imag-part label="imag-part"}imag-part *$z$*)
- complex library procedure\
-([\[magnitude\]]{#magnitude label="magnitude"}magnitude *$z$*)
- complex library procedure\
-([\[angle\]]{#angle label="angle"}angle *$z$*)
- complex library procedure\
+(make-rectangular *$x_{1}$ $x_{2}$*)  complex library procedure\
+(make-polar *$x_{3}$ $x_{4}$*)  complex library procedure\
+(real-part *$z$*)  complex library procedure\
+(imag-part *$z$*)  complex library procedure\
+(magnitude *$z$*)  complex library procedure\
+(angle *$z$*)  complex library procedure\
 Let $x_{1}$, $x_{2}$, $x_{3}$, and $x_{4}$ be real numbers and $z$ be a
 complex number such that [\$\${\\hbox{\$z\$\\/}} =
 {\\hbox{\$x_1\$\\/}} + {\\hbox{\$x_2\$\\/}}\\hbox{\$i\$} =
 {\\hbox{\$x_3\$\\/}} \\cdot e\^{i x_4}\$\$]{.math .display} Then all of
 
-```scheme
     (make-rectangular \vri{x} \vrii{x}) \ev \vr{z}
     (make-polar \vriii{x} \vriv{x})     \ev \vr{z}
     (real-part \vr{z})                  \ev \vri{x}
     (imag-part \vr{z})                  \ev \vrii{x}
     (magnitude \vr{z})                  \ev $|\vriii{x}|$
     (angle \vr{z})                      \ev $x_{angle}$%
-```
 
 are true, where $- \pi \leq x_{angle} \leq \pi$ with [\$x\_{angle} =
 {\\hbox{\$x_4\$\\/}} + 2\\pi n\$]{.math .inline} for some integer $n$.
@@ -4363,8 +3978,8 @@ the corresponding argument passed to make-rectangular was exact.
 argument, but abs is in the base library, whereas magnitude is in the
 optional complex library.
 
-([\[inexact\]]{#inexact label="inexact"}inexact *$z$*)  procedure\
-([\[exact\]]{#exact label="exact"}exact *$z$*)  procedure\
+(inexact *$z$*)  procedure\
+(exact *$z$*)  procedure\
 The procedure inexact returns an inexact representation of $z$. The
 value returned is the inexact number that is numerically closest to the
 argument. For inexact arguments, the result is the same as the argument.
@@ -4387,7 +4002,7 @@ violation of an implementation restriction may be reported.
 
 These procedures implement the natural one-to-one correspondence between
 exact and inexact integers throughout an implementation-dependent range.
-See section [6.2.3](#restrictions).
+See section [\[restrictions\]](#restrictions).
 
 *Note:* These procedures were known in R$^{5}$RS as exact-\>inexact and
 inexact-\>exact, respectively, but they have always accepted arguments
@@ -4396,8 +4011,7 @@ being compatible with R$^{6}$RS.
 
 ### Numerical input and output
 
-([\[number-\>string\]]{#number->string
-label="number->string"}number-\>string *z*)  procedure\
+(number-\>string *z*)  procedure\
 (number-\>string *z radix*)  procedure\
 It is an error if $radix$ is not one of 2, 8, 10, or 16.
 
@@ -4405,14 +4019,12 @@ The procedure numberstring takes a number and a radix and returns as a
 string an external representation of the given number in the given radix
 such that
 
-```scheme
     (let ((number \vr{number})
           (radix \vr{radix}))
       (eqv? number
             (string->number (number->string number
                                             radix)
                             radix)))%
-```
 
 is true. It is an error if no possible result makes this expression
 true. If omitted, $radix$ defaults to 10.
@@ -4435,8 +4047,7 @@ above expression is normally satisfied by a result containing a decimal
 point. The unspecified case allows for infinities, NaNs, and unusual
 representations.
 
-([\[string-\>number\]]{#string->number
-label="string->number"}string-\>number *string*)  procedure\
+(string-\>number *string*)  procedure\
 (string-\>number *string radix*)  procedure\
 Returns a number of the maximally precise representation expressed by
 the given $string$. It is an error if $radix$ is not 2, 8, 10, or 16.
@@ -4446,36 +4057,33 @@ explicit radix prefix is present in $string$ (e.g. `"#o177"`). If
 $radix$ is not supplied, then the default radix is 10. If $string$ is
 not a syntactically valid notation for a number, or would result in a
 number that the implementation cannot represent, then string-\>number
-returns `#f`. An error is never signaled due to the content of $string$.
+returns \#f. An error is never signaled due to the content of $string$.
 
-```scheme
     (string->number "100")        \ev  100
     (string->number "100" 16)     \ev  256
     (string->number "1e2")        \ev  100.0%
-```
 
 *Note:* The domain of string-\>number may be restricted by
 implementations in the following ways. If all numbers supported by an
-implementation are real, then string-\>number is permitted to return
-`#f` whenever $string$ uses the polar or rectangular notations for
-complex numbers. If all numbers are integers, then string-\>number may
-return `#f` whenever the fractional notation is used. If all numbers are
-exact, then string-\>number may return `#f` whenever an exponent marker
-or explicit exactness prefix is used. If all inexact numbers are
-integers, then string-\>number may return `#f` whenever a decimal point
-is used.
+implementation are real, then string-\>number is permitted to return \#f
+whenever $string$ uses the polar or rectangular notations for complex
+numbers. If all numbers are integers, then string-\>number may return
+\#f whenever the fractional notation is used. If all numbers are exact,
+then string-\>number may return \#f whenever an exponent marker or
+explicit exactness prefix is used. If all inexact numbers are integers,
+then string-\>number may return \#f whenever a decimal point is used.
 
 The rules used by a particular implementation for string-\>number must
 also be applied to read and to the routine that reads programs, in order
 to maintain consistency between internal numeric processing, I/O, and
 the processing of programs. As a consequence, the R$^{5}$RS permission
-to return `#f` when *string* has an explicit radix prefix has been
+to return \#f when *string* has an explicit radix prefix has been
 withdrawn.
 
 ## Booleans
 
-The standard boolean objects for true and false are written as `#t` and
-`#f`. Alternatively, they can be written `#true` and `#false`,
+The standard boolean objects for true and false are written as \#t and
+\#f. Alternatively, they can be written \#true and \#false,
 respectively. What really matters, though, are the objects that the
 Scheme conditional expressions (if, cond, and, or, when, unless, do)
 treat as true or false. The phrase "a true value" (or sometimes just
@@ -4483,26 +4091,23 @@ treat as true or false. The phrase "a true value" (or sometimes just
 and the phrase "a false value" (or "false") means any object treated as
 false by the conditional expressions.
 
-Of all the Scheme values, only `#f` counts as false in conditional
-expressions. All other Scheme values, including `#t`, count as true.
+Of all the Scheme values, only \#f counts as false in conditional
+expressions. All other Scheme values, including \#t, count as true.
 
-*Note:* Unlike some other dialects of Lisp, Scheme distinguishes `#f`
-and the empty list from each other and from the symbol `nil`.
+*Note:* Unlike some other dialects of Lisp, Scheme distinguishes \#f and
+the empty list from each other and from the symbol `nil`.
 
 Boolean constants evaluate to themselves, so they do not need to be
 quoted in programs.
 
-```
     \schtrue         \ev  \schtrue
     \schfalse        \ev  \schfalse
     '\schfalse       \ev  \schfalse%
-```
 
-([\[not\]]{#not label="not"}not *obj*)  procedure\
-The not procedure returns `#t` if *obj* is false, and returns `#f`
+(not *obj*)  procedure\
+The not procedure returns \#t if *obj* is false, and returns \#f
 otherwise.
 
-```scheme
     (not \schtrue)   \ev  \schfalse
     (not 3)          \ev  \schfalse
     (not (list 3))   \ev  \schfalse
@@ -4510,22 +4115,18 @@ otherwise.
     (not '())        \ev  \schfalse
     (not (list))     \ev  \schfalse
     (not 'nil)       \ev  \schfalse%
-```
 
-([\[boolean?\]]{#boolean? label="boolean?"}boolean? *obj*)  procedure\
-The boolean? predicate returns `#t` if *obj* is either `#t` or `#f` and
-returns `#f` otherwise.
+(boolean? *obj*)  procedure\
+The boolean? predicate returns \#t if *obj* is either \#t or \#f and
+returns \#f otherwise.
 
-```scheme
     (boolean? \schfalse)  \ev  \schtrue
     (boolean? 0)          \ev  \schfalse
     (boolean? '())        \ev  \schfalse%
-```
 
-([\[boolean=?\]]{#boolean=?
-label="boolean=?"}boolean=? **boolean$_{1}$* *boolean$_{2}$* *boolean$_{3}$* $\ldots\,$*)
+(boolean=? **boolean$_{1}$* *boolean$_{2}$* *boolean$_{3}$* $\ldots\,$*)
  procedure\
-Returns `#t` if all the arguments are `#t` or all are `#f`.
+Returns \#t if all the arguments are \#t or all are \#f.
 
 ## Pairs and lists
 
@@ -4567,15 +4168,11 @@ A more streamlined notation can be used for lists: the elements of the
 list are simply enclosed in parentheses and separated by spaces. The
 empty list is written `()`. For example,
 
-```scheme
     (a b c d e)%
-```
 
 and
 
-```scheme
     (a . (b . (c . (d . (e . ())))))%
-```
 
 are equivalent notations for a list of symbols.
 
@@ -4583,20 +4180,16 @@ A chain of pairs not ending in the empty list is called an *improper
 list*. Note that an improper list is not a list. The list and dotted
 notations can be combined to represent improper lists:
 
-```scheme
     (a b c . d)%
-```
 
 is equivalent to
 
-```scheme
     (a . (b . (c . d)))%
-```
+
 Whether a given pair is a list depends upon what is stored in the cdr
 field. When the `set-cdr!` procedure is used, an object can be a list
 one moment and not the next:
 
-```scheme
     (define x (list 'a 'b 'c))
     (define y x)
     y                       \ev  (a b c)
@@ -4608,169 +4201,128 @@ one moment and not the next:
     (list? y)               \ev  \schfalse
     (set-cdr! x x)          \ev  \unspecified
     (list? x)               \ev  \schfalse%
-```
 
 Within literal expressions and representations of objects read by the
-`read` procedure, the forms `’`$\langle$datum$\rangle$,
-``$\langle$datum$\rangle$, `,`$\langle$datum$\rangle$, and
-`,@`$\langle$datum$\rangle$ denote two-element lists whose first
-elements are the symbols `quote`, `quasiquote`, `unquote`, and
-`unquote-splicing`, respectively. The second element in each case is
-$\langle$datum$\rangle$. This convention is supported so that arbitrary
-Scheme programs can be represented as lists. That is, according to
-Scheme's grammar, every $\langle$expression$\rangle$ is also a
-$\langle$datum$\rangle$ (see section [\[datum\]](#datum)). Among other
-things, this permits the use of the read procedure to parse Scheme
-programs. See section [3.3](#externalreps).
+`read` procedure, the forms `’`datum, ``datum, `,`datum, and `,@`datum
+denote two-element lists whose first elements are the symbols `quote`,
+`quasiquote`, `unquote`, and `unquote-splicing`, respectively. The
+second element in each case is datum. This convention is supported so
+that arbitrary Scheme programs can be represented as lists. That is,
+according to Scheme's grammar, every expression is also a datum (see
+section [\[datum\]](#datum)). Among other things, this permits the use
+of the read procedure to parse Scheme programs. See
+section [\[externalreps\]](#externalreps).
 
-([\[pair?\]]{#pair? label="pair?"}pair? *obj*)  procedure\
-The pair? predicate returns `#t` if *obj* is a pair, and otherwise
-returns `#f`.
+(pair? *obj*)  procedure\
+The pair? predicate returns \#t if *obj* is a pair, and otherwise
+returns \#f.
 
-```scheme
     (pair? '(a . b))        \ev  \schtrue
     (pair? '(a b c))        \ev  \schtrue
     (pair? '())             \ev  \schfalse
     (pair? '\#(a b))         \ev  \schfalse%
-```
 
-([\[cons\]]{#cons label="cons"}cons **obj$_{1}$* *obj$_{2}$**)
- procedure\
+(cons **obj$_{1}$* *obj$_{2}$**)  procedure\
 Returns a newly allocated pair whose car is *obj$_{1}$* and whose cdr is
 *obj$_{2}$*. The pair is guaranteed to be different (in the sense of
 eqv?) from every existing object.
 
-```scheme
     (cons 'a '())           \ev  (a)
     (cons '(a) '(b c d))    \ev  ((a) b c d)
     (cons "a" '(b c))       \ev  ("a" b c)
     (cons 'a 3)             \ev  (a . 3)
     (cons '(a b) 'c)        \ev  ((a b) . c)%
-```
 
-([\[car\]]{#car label="car"}car *pair*)  procedure\
+(car *pair*)  procedure\
 Returns the contents of the car field of *pair*. Note that it is an
 error to take the car of the empty list.
 
-```scheme
     (car '(a b c))          \ev  a
     (car '((a) b c d))      \ev  (a)
     (car '(1 . 2))          \ev  1
     (car '())               \ev  \scherror%
-```
 
-([\[cdr\]]{#cdr label="cdr"}cdr *pair*)  procedure\
+(cdr *pair*)  procedure\
 Returns the contents of the cdr field of *pair*. Note that it is an
 error to take the cdr of the empty list.
 
-```scheme
     (cdr '((a) b c d))      \ev  (b c d)
     (cdr '(1 . 2))          \ev  2
     (cdr '())               \ev  \scherror%
-```
 
-([\[set-car!\]]{#set-car! label="set-car!"}set-car! *pair obj*)
- procedure\
+(set-car! *pair obj*)  procedure\
 Stores *obj* in the car field of *pair*.
 
-```scheme
     (define (f) (list 'not-a-constant-list))
     (define (g) '(constant-list))
     (set-car! (f) 3)             \ev  \unspecified
     (set-car! (g) 3)             \ev  \scherror%
-```
 
-([\[set-cdr!\]]{#set-cdr! label="set-cdr!"}set-cdr! *pair obj*)
- procedure\
+(set-cdr! *pair obj*)  procedure\
 Stores *obj* in the cdr field of *pair*.
 
 `(cadr pair)` procedure
 
-([\[caar\]]{#caar label="caar"}caar *pair*)  procedure\
-([\[cadr\]]{#cadr label="cadr"}cadr *pair*)  procedure\
-([\[cdar\]]{#cdar label="cdar"}cdar *pair*)  procedure\
-([\[cddr\]]{#cddr label="cddr"}cddr *pair*)  procedure\
+(caar *pair*)  procedure\
+(cadr *pair*)  procedure\
+(cdar *pair*)  procedure\
+(cddr *pair*)  procedure\
 These procedures are compositions of car and cdr as follows:
 
-```scheme
     (define (caar x) (car (car x)))
     (define (cadr x) (car (cdr x)))
     (define (cdar x) (cdr (car x)))
     (define (cddr x) (cdr (cdr x)))%
-```
 
-([\[caaar\]]{#caaar label="caaar"}caaar *pair*)  cxr library procedure\
-([\[caadr\]]{#caadr label="caadr"}caadr *pair*)  cxr library procedure\
+(caaar *pair*)  cxr library procedure\
+(caadr *pair*)  cxr library procedure\
 to 1 $\vdots$  to 1 $\vdots$\
-[\[cadar\]]{#cadar label="cadar"}[\[caddr\]]{#caddr label="caddr"}
-[\[cdaar\]]{#cdaar label="cdaar"}[\[cdadr\]]{#cdadr
-label="cdadr"}[\[cddar\]]{#cddar label="cddar"}[\[cdddr\]]{#cdddr
-label="cdddr"} [\[caaaar\]]{#caaaar label="caaaar"}[\[caaadr\]]{#caaadr
-label="caaadr"}[\[caadar\]]{#caadar label="caadar"}[\[caaddr\]]{#caaddr
-label="caaddr"} [\[cadaar\]]{#cadaar label="cadaar"}[\[cadadr\]]{#cadadr
-label="cadadr"}[\[caddar\]]{#caddar label="caddar"}[\[cadddr\]]{#cadddr
-label="cadddr"} [\[cdaaar\]]{#cdaaar label="cdaaar"}[\[cdaadr\]]{#cdaadr
-label="cdaadr"}[\[cdadar\]]{#cdadar label="cdadar"}[\[cdaddr\]]{#cdaddr
-label="cdaddr"} [\[cddaar\]]{#cddaar label="cddaar"}[\[cddadr\]]{#cddadr
-label="cddadr"} ([\[cdddar\]]{#cdddar label="cdddar"}cdddar *pair*)
- cxr library procedure\
-([\[cddddr\]]{#cddddr label="cddddr"}cddddr *pair*)
- cxr library procedure\
+(cdddar *pair*)  cxr library procedure\
+(cddddr *pair*)  cxr library procedure\
 These twenty-four procedures are further compositions of car and cdr on
 the same principles. For example, caddr could be defined by
 
-```scheme
     (define caddr (lambda (x) (car (cdr (cdr x))))){\rm.}%
-```
 
 Arbitrary compositions up to four deep are provided.
 
-([\[null?\]]{#null? label="null?"}null? *obj*)  procedure\
-Returns `#t` if *obj* is the empty list, otherwise returns `#f`.
+(null? *obj*)  procedure\
+Returns \#t if *obj* is the empty list, otherwise returns \#f.
 
-([\[list?\]]{#list? label="list?"}list? *obj*)  procedure\
-Returns `#t` if *obj* is a list. Otherwise, it returns `#f`. By
+(list? *obj*)  procedure\
+Returns \#t if *obj* is a list. Otherwise, it returns \#f. By
 definition, all lists have finite length and are terminated by the empty
 list.
 
-```scheme
             (list? '(a b c))     \ev  \schtrue
             (list? '())          \ev  \schtrue
             (list? '(a . b))     \ev  \schfalse
             (let ((x (list 'a)))
               (set-cdr! x x)
               (list? x))         \ev  \schfalse%
-```
 
-([\[make-list\]]{#make-list label="make-list"}make-list *k*)  procedure\
+(make-list *k*)  procedure\
 (make-list *k fill*)  procedure\
 Returns a newly allocated list of *k* elements. If a second argument is
 given, then each element is initialized to *fill*. Otherwise the initial
 contents of each element is unspecified.
 
-```scheme
     (make-list 2 3)   \ev   (3 3)%
-```
 
-([\[list\]]{#list label="list"}list **obj* $\ldots\,$*)  procedure\
+(list **obj* $\ldots\,$*)  procedure\
 Returns a newly allocated list of its arguments.
 
-```scheme
     (list 'a (+ 3 4) 'c)            \ev  (a 7 c)
     (list)                          \ev  ()%
-```
 
-([\[length\]]{#length label="length"}length *list*)  procedure\
+(length *list*)  procedure\
 Returns the length of *list*.
 
-```scheme
     (length '(a b c))               \ev  3
     (length '(a (b) (c d e)))       \ev  3
     (length '())                    \ev  0%
-```
 
-([\[append\]]{#append label="append"}append *list $\ldots\,$*)
- procedure\
+(append *list $\ldots\,$*)  procedure\
 The last argument, if there is one, can be of any type.
 
 Returns a list consisting of the elements of the first *list* followed
@@ -4780,80 +4332,66 @@ returned. Otherwise the resulting list is always newly allocated, except
 that it shares structure with the last argument. An improper list
 results if the last argument is not a proper list.
 
-```scheme
     (append '(x) '(y))              \ev  (x y)
     (append '(a) '(b c d))          \ev  (a b c d)
     (append '(a (b)) '((c)))        \ev  (a (b) (c))%
 
     (append '(a b) '(c . d))        \ev  (a b c . d)
     (append '() 'a)                 \ev  a%
-```
 
-([\[reverse\]]{#reverse label="reverse"}reverse *list*)  procedure\
+(reverse *list*)  procedure\
 Returns a newly allocated list consisting of the elements of *list* in
 reverse order.
 
-```scheme
     (reverse '(a b c))              \ev  (c b a)
     (reverse '(a (b c) d (e (f))))  \lev  ((e (f)) d (b c) a)%
-```
 
-([\[list-tail\]]{#list-tail label="list-tail"}list-tail *list $k$*)
- procedure\
+(list-tail *list $k$*)  procedure\
 It is an error if *list* has fewer than $k$ elements.
 
 Returns the sublist of *list* obtained by omitting the first $k$
 elements. The list-tail procedure could be defined by
 
-```scheme
     (define list-tail
       (lambda (x k)
         (if (zero? k)
             x
             (list-tail (cdr x) (- k 1)))))%
-```
 
-([\[list-ref\]]{#list-ref label="list-ref"}list-ref *list $k$*)
- procedure\
+(list-ref *list $k$*)  procedure\
 The *list* argument can be circular, but it is an error if *list* has
 $k$ or fewer elements.
 
 Returns the $k$th element of *list*. (This is the same as the car of
 `(list-tail list k)`.)
 
-```scheme
     (list-ref '(a b c d) 2)                 \ev  c
     (list-ref '(a b c d)
               (exact (round 1.8))) \lev  c%
-```
 
-([\[list-set!\]]{#list-set! label="list-set!"}list-set! *list k obj*)
- procedure\
+(list-set! *list k obj*)  procedure\
 It is an error if $k$ is not a valid index of *list*.
 
 The list-set! procedure stores *obj* in element $k$ of *list*.
 
-```scheme
     (let ((ls (list 'one 'two 'five!)))
       (list-set! ls 2 'three)
       ls)      \lev  (one two three)
 
     (list-set! '(0 1 2) 1 "oops")  \lev  \scherror  ; constant list%
-```
 
-([\[memq\]]{#memq label="memq"}memq *obj list*)  procedure\
-([\[memv\]]{#memv label="memv"}memv *obj list*)  procedure\
-([\[member\]]{#member label="member"}member *obj list*)  procedure\
+(memq *obj list*)  procedure\
+(memv *obj list*)  procedure\
+(member *obj list*)  procedure\
 (member *obj list compare*)  procedure\
 These procedures return the first sublist of *list* whose car is *obj*,
 where the sublists of *list* are the non-empty lists returned by
 `(list-tail list k)` for *k* less than the length of *list*. If *obj*
-does not occur in *list*, then `#f` (not the empty list) is returned.
-The memq procedure uses eq? to compare *obj* with the elements of
-*list*, while memv uses eqv? and member uses *compare*, if given, and
-equal? otherwise.
+does not occur in *list*, then \#f (not the empty list) is returned. The
+memq procedure uses eq? to compare *obj* with the elements of *list*,
+while memv uses eqv? and member uses *compare*, if given, and equal?
+otherwise.
 
-```scheme
     (memq 'a '(a b c))              \ev  (a b c)
     (memq 'b '(a b c))              \ev  (b c)
     (memq 'a '(b c d))              \ev  \schfalse
@@ -4865,45 +4403,41 @@ equal? otherwise.
             string-ci=?)            \ev  ("b" "c")
     (memq 101 '(100 101 102))       \ev  \unspecified
     (memv 101 '(100 101 102))       \ev  (101 102)%
-```
 
-([\[assq\]]{#assq label="assq"}assq *obj alist*)  procedure\
-([\[assv\]]{#assv label="assv"}assv *obj alist*)  procedure\
-([\[assoc\]]{#assoc label="assoc"}assoc *obj alist*)  procedure\
+(assq *obj alist*)  procedure\
+(assv *obj alist*)  procedure\
+(assoc *obj alist*)  procedure\
 (assoc *obj alist compare*)  procedure\
 It is an error if *alist* (for "association list") is not a list of
 pairs.
 
 These procedures find the first pair in *alist* whose car field is
 *obj*, and returns that pair. If no pair in *alist* has *obj* as its
-car, then `#f` (not the empty list) is returned. The assq procedure uses
+car, then \#f (not the empty list) is returned. The assq procedure uses
 eq? to compare *obj* with the car fields of the pairs in *alist*, while
 assv uses eqv? and assoc uses *compare* if given and equal? otherwise.
 
-```scheme
     (define e '((a 1) (b 2) (c 3)))
     (assq 'a e)     \ev  (a 1)
     (assq 'b e)     \ev  (b 2)
     (assq 'd e)     \ev  \schfalse
     (assq (list 'a) '(((a)) ((b)) ((c))))
                     \ev  \schfalse
-    (assoc (list 'a) '(((a)) ((b)) ((c))))
+    (assoc (list 'a) '(((a)) ((b)) ((c))))   
                                \ev  ((a))
     (assoc 2.0 '((1 1) (2 4) (3 9)) =)
                                \ev (2 4)
-    (assq 5 '((2 3) (5 7) (11 13)))
+    (assq 5 '((2 3) (5 7) (11 13)))    
                                \ev  \unspecified
-    (assv 5 '((2 3) (5 7) (11 13)))
+    (assv 5 '((2 3) (5 7) (11 13)))    
                                \ev  (5 7)%
-```
 
 *Rationale:* Although they are often used as predicates, memq, memv,
 member, assq, assv, and assoc do not have question marks in their names
-because they return potentially useful values rather than just `#t` or
-`#f`.
+because they return potentially useful values rather than just \#t or
+\#f.
 
-([\[list-copy\]]{#list-copy label="list-copy"}list-copy *obj*)
- procedure\
+(list-copy *obj*)  procedure\
 Returns a newly allocated copy of the given *obj* if it is a list. Only
 the pairs themselves are copied; the cars of the result are the same (in
 the sense of eqv?) as the cars of *list*. If *obj* is an improper list,
@@ -4911,13 +4445,11 @@ so is the result, and the final cdrs are the same in the sense of eqv?.
 An *obj* which is not a list is returned unchanged. It is an error if
 *obj* is a circular list.
 
-```scheme
     (define a '(1 8 2 8)) ; a may be immutable
     (define b (list-copy a))
     (set-car! b 3)        ; b is mutable
     b \ev (3 8 2 8)
     a \ev (1 8 2 8)%
-```
 
 ## Symbols
 
@@ -4927,7 +4459,7 @@ spelled the same way. For instance, they can be used the way enumerated
 values are used in other languages.
 
 The rules for writing a symbol are exactly the same as the rules for
-writing an identifier; see sections [2.1](#syntaxsection)
+writing an identifier; see sections [\[syntaxsection\]](#syntaxsection)
 and [\[identifiersyntax\]](#identifiersyntax).
 
 It is guaranteed that any symbol that has been returned as part of a
@@ -4941,49 +4473,41 @@ symbols are the same if and only if their names are spelled the same.
 This report does not specify the behavior of implementation-dependent
 extensions.
 
-([\[symbol?\]]{#symbol? label="symbol?"}symbol? *obj*)  procedure\
-Returns `#t` if *obj* is a symbol, otherwise returns `#f`.
+(symbol? *obj*)  procedure\
+Returns \#t if *obj* is a symbol, otherwise returns \#f.
 
-```scheme
     (symbol? 'foo)          \ev  \schtrue
     (symbol? (car '(a b)))  \ev  \schtrue
     (symbol? "bar")         \ev  \schfalse
     (symbol? 'nil)          \ev  \schtrue
     (symbol? '())           \ev  \schfalse
     (symbol? \schfalse)     \ev  \schfalse%
-```
 
-([\[symbol=?\]]{#symbol=?
-label="symbol=?"}symbol=? **symbol$_{1}$* *symbol$_{2}$* *symbol$_{3}$* $\ldots\,$*)
+(symbol=? **symbol$_{1}$* *symbol$_{2}$* *symbol$_{3}$* $\ldots\,$*)
  procedure\
-Returns `#t` if all the arguments all have the same names in the sense
-of string=?.
+Returns \#t if all the arguments all have the same names in the sense of
+string=?.
 
 *Note:* The definition above assumes that none of the arguments are
 uninterned symbols.
 
-([\[symbol-\>string\]]{#symbol->string
-label="symbol->string"}symbol-\>string *symbol*)  procedure\
+(symbol-\>string *symbol*)  procedure\
 Returns the name of *symbol* as a string, but without adding escapes. It
 is an error to apply mutation procedures like `string-set!` to strings
 returned by this procedure.
 
-```scheme
-    (symbol->string 'flying-fish)
+    (symbol->string 'flying-fish)     
                                       \ev  "flying-fish"
     (symbol->string 'Martin)          \ev  "Martin"
     (symbol->string
-       (string->symbol "Malvina"))
+       (string->symbol "Malvina"))     
                                       \ev  "Malvina"%
-```
 
-([\[string-\>symbol\]]{#string->symbol
-label="string->symbol"}string-\>symbol *string*)  procedure\
+(string-\>symbol *string*)  procedure\
 Returns the symbol whose name is *string*. This procedure can create
 symbols with names containing special characters that would require
 escaping when written, but does not interpret escapes in its input.
 
-```scheme
     (string->symbol "mISSISSIppi")  \lev%
       mISSISSIppi
     (eqv? 'bitBlt (string->symbol "bitBlt"))     \lev  \schtrue
@@ -4993,7 +4517,6 @@ escaping when written, but does not interpret escapes in its input.
     (string=? "K. Harper, M.D."
               (symbol->string
                 (string->symbol "K. Harper, M.D.")))  \lev  \schtrue%
-```
 
 ## Characters
 
@@ -5005,161 +4528,127 @@ and may also support non-Unicode characters as well. Except as otherwise
 specified, the result of applying any of the following procedures to a
 non-Unicode character is implementation-dependent.
 
-Characters are written using the notation
-`#``' `$\langle$character$\rangle$ or
-`#``' `$\langle$character name$\rangle$ or
-`#``' `x$\langle$hex scalar value$\rangle$.
+Characters are written using the notation `#``‘ `character or
+`#``‘ `character name or `#``‘ `xhex scalar value.
 
 The following character names must be supported by all implementations
 with the given values. Implementations may add other names provided they
 cannot be interpreted as hex scalar values preceded by x.
 
   -- --------------------------------------------
-
+     
      ; [U+0007]{.roman}
-
+     
      ; [U+0008]{.roman}
-
+     
      ; [U+007F]{.roman}
-
+     
      ; [U+001B]{.roman}
-
+     
      ; the linefeed character, [U+000A]{.roman}
-
+     
      ; the null character, [U+0000]{.roman}
-
+     
      ; the return character, [U+000D]{.roman}
-
+     
      ; the preferred way to write a space
-
+     
      ; the tab character, [U+0009]{.roman}
   -- --------------------------------------------
 
 Here are some additional examples:
 
   -- -------------------------------------------------
-
+     
      ; lower case letter
-
+     
      ; upper case letter
-
+     
      ; left parenthesis
-
+     
      ; the space character
-
+     
      ; $\lambda$ (if character is supported)
-
+     
      ; $\iota$ (if character and name are supported)
   -- -------------------------------------------------
 
-Case is significant in `#``' `$\langle$character$\rangle$, and in
-`#``' `$\langle$character name$\rangle$, but not in
-`#``' `x$\langle$hex scalar value$\rangle$. If
-$\langle$character$\rangle$ in `#``' `$\langle$character$\rangle$ is
-alphabetic, then any character immediately following
-$\langle$character$\rangle$ cannot be one that can appear in an
-identifier. This rule resolves the ambiguous case where, for example,
-the sequence of characters "`#' space`" could be taken to be either a
-representation of the space character or a representation of the
-character "`#' s`" followed by a representation of the symbol "`pace`."
+Case is significant in `#``‘ `character, and in
+`#``‘ `$\langle$character name$\rangle$, but not in
+`#``‘ `xhex scalar value. If character in `#``‘ `character is
+alphabetic, then any character immediately following character cannot be
+one that can appear in an identifier. This rule resolves the ambiguous
+case where, for example, the sequence of characters "`#‘ space`" could
+be taken to be either a representation of the space character or a
+representation of the character "`#‘ s`" followed by a representation of
+the symbol "`pace`."
 
-Characters written in the `#``' ` notation are self-evaluating. That is,
+Characters written in the `#``‘ ` notation are self-evaluating. That is,
 they do not have to be quoted in programs.
 
 Some of the procedures that operate on characters ignore the difference
 between upper case and lower case. The procedures that ignore case have
 "`-ci`" (for "case insensitive") embedded in their names.
 
-([\[char?\]]{#char? label="char?"}char? *obj*)  procedure\
-Returns `#t` if *obj* is a character, otherwise returns `#f`.
+(char? *obj*)  procedure\
+Returns \#t if *obj* is a character, otherwise returns \#f.
 
-([\[char=?\]]{#char=?
-label="char=?"}char=? *$char_{1}$ $char_{2}$ $char_{3}$ $\ldots\,$*)
- procedure\
-([\[char\<?\]]{#char<?
-label="char<?"}char\<? *$char_{1}$ $char_{2}$ $char_{3}$ $\ldots\,$*)
- procedure\
-([\[char>?\]]{#char>?
-label="char>?"}char>? *$char_{1}$ $char_{2}$ $char_{3}$ $\ldots\,$*)
- procedure\
-([\[char\<=?\]]{#char<=?
-label="char<=?"}char\<=? *$char_{1}$ $char_{2}$ $char_{3}$ $\ldots\,$*)
- procedure\
-([\[char>=?\]]{#char>=?
-label="char>=?"}char>=? *$char_{1}$ $char_{2}$ $char_{3}$ $\ldots\,$*)
- procedure\
-[\[characterequality\]]{#characterequality label="characterequality"}
-
-These procedures return `#t` if the results of passing their arguments
-to charinteger are respectively equal, monotonically increasing,
+(char=? *$char_{1}$ $char_{2}$ $char_{3}$ $\ldots\,$*)  procedure\
+(char\<? *$char_{1}$ $char_{2}$ $char_{3}$ $\ldots\,$*)  procedure\
+(char>? *$char_{1}$ $char_{2}$ $char_{3}$ $\ldots\,$*)  procedure\
+(char\<=? *$char_{1}$ $char_{2}$ $char_{3}$ $\ldots\,$*)  procedure\
+(char>=? *$char_{1}$ $char_{2}$ $char_{3}$ $\ldots\,$*)  procedure\
+These procedures return \#t if the results of passing their arguments to
+charinteger are respectively equal, monotonically increasing,
 monotonically decreasing, monotonically non-decreasing, or monotonically
 non-increasing.
 
 These predicates are required to be transitive.
 
-([\[char-ci=?\]]{#char-ci=?
-label="char-ci=?"}char-ci=? *$char_{1}$ $char_{2}$ $char_{3}$ $\ldots\,$*)
+(char-ci=? *$char_{1}$ $char_{2}$ $char_{3}$ $\ldots\,$*)
  char library procedure\
-([\[char-ci\<?\]]{#char-ci<?
-label="char-ci<?"}char-ci\<? *$char_{1}$ $char_{2}$ $char_{3}$ $\ldots\,$*)
+(char-ci\<? *$char_{1}$ $char_{2}$ $char_{3}$ $\ldots\,$*)
  char library procedure\
-([\[char-ci>?\]]{#char-ci>?
-label="char-ci>?"}char-ci>? *$char_{1}$ $char_{2}$ $char_{3}$ $\ldots\,$*)
+(char-ci>? *$char_{1}$ $char_{2}$ $char_{3}$ $\ldots\,$*)
  char library procedure\
-([\[char-ci\<=?\]]{#char-ci<=?
-label="char-ci<=?"}char-ci\<=? *$char_{1}$ $char_{2}$ $char_{3}$ $\ldots\,$*)
+(char-ci\<=? *$char_{1}$ $char_{2}$ $char_{3}$ $\ldots\,$*)
  char library procedure\
-([\[char-ci>=?\]]{#char-ci>=?
-label="char-ci>=?"}char-ci>=? *$char_{1}$ $char_{2}$ $char_{3}$ $\ldots\,$*)
+(char-ci>=? *$char_{1}$ $char_{2}$ $char_{3}$ $\ldots\,$*)
  char library procedure\
 These procedures are similar to char=? et cetera, but they treat upper
-case and lower case letters as the same. For example, (char-ci=? #`' `A
-\#`' `a) returns `#t`.
+case and lower case letters as the same. For example, (char-ci=? #`‘ `A
+\#`‘ `a) returns \#t.
 
 Specifically, these procedures behave as if char-foldcase were applied
 to their arguments before they were compared.
 
-([\[char-alphabetic?\]]{#char-alphabetic?
-label="char-alphabetic?"}char-alphabetic? *char*)
- char library procedure\
-([\[char-numeric?\]]{#char-numeric?
-label="char-numeric?"}char-numeric? *char*)  char library procedure\
-([\[char-whitespace?\]]{#char-whitespace?
-label="char-whitespace?"}char-whitespace? *char*)
- char library procedure\
-([\[char-upper-case?\]]{#char-upper-case?
-label="char-upper-case?"}char-upper-case? *letter*)
- char library procedure\
-([\[char-lower-case?\]]{#char-lower-case?
-label="char-lower-case?"}char-lower-case? *letter*)
- char library procedure\
-These procedures return `#t` if their arguments are alphabetic, numeric,
+(char-alphabetic? *char*)  char library procedure\
+(char-numeric? *char*)  char library procedure\
+(char-whitespace? *char*)  char library procedure\
+(char-upper-case? *letter*)  char library procedure\
+(char-lower-case? *letter*)  char library procedure\
+These procedures return \#t if their arguments are alphabetic, numeric,
 whitespace, upper case, or lower case characters, respectively,
-otherwise they return `#f`.
+otherwise they return \#f.
 
-Specifically, they must return `#t` when applied to characters with the
+Specifically, they must return \#t when applied to characters with the
 Unicode properties Alphabetic, Numeric_Type=Decimal, White_Space,
-Uppercase, and Lowercase respectively, and `#f` when applied to any
-other Unicode characters. Note that many Unicode characters are
-alphabetic but neither upper nor lower case.
+Uppercase, and Lowercase respectively, and \#f when applied to any other
+Unicode characters. Note that many Unicode characters are alphabetic but
+neither upper nor lower case.
 
-([\[digit-value\]]{#digit-value label="digit-value"}digit-value *char*)
- char library procedure\
+(digit-value *char*)  char library procedure\
 This procedure returns the numeric value (0 to 9) of its argument if it
-is a numeric digit (that is, if char-numeric? returns `#t`), or `#f` on
+is a numeric digit (that is, if char-numeric? returns \#t), or \#f on
 any other character.
 
-```scheme
     (digit-value \#\backwhack{}3) \ev 3
     (digit-value \#\backwhack{}x0664) \ev 4
     (digit-value \#\backwhack{}x0AE6) \ev 0
     (digit-value \#\backwhack{}x0EA6) \ev \schfalse%
-```
 
-([\[char-\>integer\]]{#char->integer
-label="char->integer"}char-\>integer *char*)  procedure\
-([\[integer-\>char\]]{#integer->char
-label="integer->char"}integer-\>char *$n$*)  procedure\
+(char-\>integer *char*)  procedure\
+(integer-\>char *$n$*)  procedure\
 Given a Unicode character, charinteger returns an exact integer between
 0 and `#xD7FF` or between `#xE000` and `#x10FFFF` which is equal to the
 Unicode scalar value of that character. Given a non-Unicode character,
@@ -5170,12 +4659,9 @@ representation internally.
 Given an exact integer that is the value returned by a character when
 charinteger is applied to it, integerchar returns that character.
 
-([\[char-upcase\]]{#char-upcase label="char-upcase"}char-upcase *char*)
- char library procedure\
-([\[char-downcase\]]{#char-downcase
-label="char-downcase"}char-downcase *char*)  char library procedure\
-([\[char-foldcase\]]{#char-foldcase
-label="char-foldcase"}char-foldcase *char*)  char library procedure\
+(char-upcase *char*)  char library procedure\
+(char-downcase *char*)  char library procedure\
+(char-foldcase *char*)  char library procedure\
 The char-upcase procedure, given an argument that is the lowercase part
 of a Unicode casing pair, returns the uppercase member of the pair,
 provided that both characters are supported by the Scheme
@@ -5205,49 +4691,46 @@ equivalents.
 Strings are sequences of characters. Strings are written as sequences of
 characters enclosed within quotation marks (\"). Within a string
 literal, various escape sequences represent characters other than
-themselves. Escape sequences always start with a backslash (`' `):
+themselves. Escape sequences always start with a backslash (`‘ `):
 
--   `' `a : alarm, U+0007
+-   `‘ `a : alarm, U+0007
 
--   `' `b : backspace, U+0008
+-   `‘ `b : backspace, U+0008
 
--   `' `t : character tabulation, U+0009
+-   `‘ `t : character tabulation, U+0009
 
--   `' `n : linefeed, U+000A
+-   `‘ `n : linefeed, U+000A
 
--   `' `r : return, U+000D
+-   `‘ `r : return, U+000D
 
--   `' ``"` : double quote, U+0022
+-   `‘ ``"` : double quote, U+0022
 
--   `' ``' ` : backslash, U+005C
+-   `‘ ``‘ ` : backslash, U+005C
 
--   `' `\| : vertical line, U+007C
+-   `‘ `\| : vertical line, U+007C
 
--   `' `$\langle$intraline whitespace$\rangle$$\langle$line ending$\rangle$
-    $\langle$intraline whitespace$\rangle$ : nothing
+-   `‘ `intraline whitespaceline ending intraline whitespace : nothing
 
--   `' `x$\langle$hex scalar value$\rangle$; : specified character (note
-    the terminating semi-colon).
+-   `‘ `xhex scalar value; : specified character (note the terminating
+    semi-colon).
 
 The result is unspecified if any other character in a string occurs
 after a backslash.
 
 Except for a line ending, any character outside of an escape sequence
 stands for itself in the string literal. A line ending which is preceded
-by `' `$\langle$intraline whitespace$\rangle$ expands to nothing (along
-with any trailing intraline whitespace), and can be used to indent
-strings for improved legibility. Any other line ending has the same
-effect as inserting a `' `n character into the string.
+by `‘ `intraline whitespace expands to nothing (along with any trailing
+intraline whitespace), and can be used to indent strings for improved
+legibility. Any other line ending has the same effect as inserting a
+`‘ `n character into the string.
 
 Examples:
 
-```scheme
     "The word \backwhack{}"recursion\backwhack{}" has many meanings."
     "Another example:\backwhack{}ntwo lines of text"
-    "Here's text \backwhack{}
+    "Here's text \backwhack{} 
        containing just one line"
     "\backwhack{}x03B1; is named GREEK SMALL LETTER ALPHA."%
-```
 
 The *length* of a string is the number of characters that it contains.
 This number is an exact, non-negative integer that is fixed when the
@@ -5260,10 +4743,10 @@ between upper and lower case. The names of the versions that ignore case
 end with "-ci" (for "case insensitive").
 
 Implementations may forbid certain characters from appearing in strings.
-However, with the exception of `#' null`, ASCII characters must not be
+However, with the exception of `#‘ null`, ASCII characters must not be
 forbidden. For example, an implementation might support the entire
 Unicode repertoire, but only allow characters U+0001 to U+00FF (the
-Latin-1 repertoire without `#' null`) in strings.
+Latin-1 repertoire without `#‘ null`) in strings.
 
 It is an error to pass such a forbidden character to make-string,
 string, string-set!, or string-fill!, as part of the list passed to
@@ -5275,42 +4758,36 @@ procedure passed to string-map (see section [\[stringmap\]](#stringmap))
 to return a forbidden character, or for read-string (see
 section [\[readstring\]](#readstring)) to attempt to read one.
 
-([\[string?\]]{#string? label="string?"}string? *obj*)  procedure\
-Returns `#t` if *obj* is a string, otherwise returns `#f`.
+(string? *obj*)  procedure\
+Returns \#t if *obj* is a string, otherwise returns \#f.
 
-([\[make-string\]]{#make-string label="make-string"}make-string *$k$*)
- procedure\
+(make-string *$k$*)  procedure\
 (make-string *$k$ char*)  procedure\
 The make-string procedure returns a newly allocated string of length
 $k$. If *char* is given, then all the characters of the string are
 initialized to *char*, otherwise the contents of the string are
 unspecified.
 
-([\[string\]]{#string label="string"}string *char $\ldots\,$*)
- procedure\
+(string *char $\ldots\,$*)  procedure\
 Returns a newly allocated string composed of the arguments. It is
 analogous to list.
 
-([\[string-length\]]{#string-length
-label="string-length"}string-length *string*)  procedure\
+(string-length *string*)  procedure\
 Returns the number of characters in the given *string*.
 
-([\[string-ref\]]{#string-ref
-label="string-ref"}string-ref *string $k$*)  procedure\
+(string-ref *string $k$*)  procedure\
 It is an error if $k$ is not a valid index of *string*.
 
 The string-ref procedure returns character $k$ of *string* using
 zero-origin indexing. There is no requirement for this procedure to
 execute in constant time.
 
-([\[string-set!\]]{#string-set!
-label="string-set!"}string-set! *string k char*)  procedure\
+(string-set! *string k char*)  procedure\
 It is an error if $k$ is not a valid index of *string*.
 
 The string-set! procedure stores *char* in element $k$ of *string*.
 There is no requirement for this procedure to execute in constant time.
 
-```scheme
     (define (f) (make-string 3 \sharpsign\backwhack{}*))
     (define (g) "***")
     (string-set! (f) 0 \sharpsign\backwhack{}?)  \ev  \unspecified
@@ -5318,47 +4795,36 @@ There is no requirement for this procedure to execute in constant time.
     (string-set! (symbol->string 'immutable)
                  0
                  \sharpsign\backwhack{}?)  \ev  \scherror%
-```
 
-([\[string=?\]]{#string=?
-label="string=?"}string=? *$string_{1}$ $string_{2}$ $string_{3}$ $\ldots\,$*)
+(string=? *$string_{1}$ $string_{2}$ $string_{3}$ $\ldots\,$*)
  procedure\
-Returns `#t` if all the strings are the same length and contain exactly
-the same characters in the same positions, otherwise returns `#f`.
+Returns \#t if all the strings are the same length and contain exactly
+the same characters in the same positions, otherwise returns \#f.
 
-([\[string-ci=?\]]{#string-ci=?
-label="string-ci=?"}string-ci=? *$string_{1}$ $string_{2}$ $string_{3}$ $\ldots\,$*)
+(string-ci=? *$string_{1}$ $string_{2}$ $string_{3}$ $\ldots\,$*)
  char library procedure\
-Returns `#t` if, after case-folding, all the strings are the same length
+Returns \#t if, after case-folding, all the strings are the same length
 and contain the same characters in the same positions, otherwise returns
-`#f`. Specifically, these procedures behave as if string-foldcase were
+\#f. Specifically, these procedures behave as if string-foldcase were
 applied to their arguments before comparing them.
 
-([\[string\<?\]]{#string<?
-label="string<?"}string\<? *$string_{1}$ $string_{2}$ $string_{3}$ $\ldots\,$*)
+(string\<? *$string_{1}$ $string_{2}$ $string_{3}$ $\ldots\,$*)
  procedure\
-([\[string-ci\<?\]]{#string-ci<?
-label="string-ci<?"}string-ci\<? *$string_{1}$ $string_{2}$ $string_{3}$ $\ldots\,$*)
+(string-ci\<? *$string_{1}$ $string_{2}$ $string_{3}$ $\ldots\,$*)
  char library procedure\
-([\[string>?\]]{#string>?
-label="string>?"}string>? *$string_{1}$ $string_{2}$ $string_{3}$ $\ldots\,$*)
+(string>? *$string_{1}$ $string_{2}$ $string_{3}$ $\ldots\,$*)
  procedure\
-([\[string-ci>?\]]{#string-ci>?
-label="string-ci>?"}string-ci>? *$string_{1}$ $string_{2}$ $string_{3}$ $\ldots\,$*)
+(string-ci>? *$string_{1}$ $string_{2}$ $string_{3}$ $\ldots\,$*)
  char library procedure\
-([\[string\<=?\]]{#string<=?
-label="string<=?"}string\<=? *$string_{1}$ $string_{2}$ $string_{3}$ $\ldots\,$*)
+(string\<=? *$string_{1}$ $string_{2}$ $string_{3}$ $\ldots\,$*)
  procedure\
-([\[string-ci\<=?\]]{#string-ci<=?
-label="string-ci<=?"}string-ci\<=? *$string_{1}$ $string_{2}$ $string_{3}$ $\ldots\,$*)
+(string-ci\<=? *$string_{1}$ $string_{2}$ $string_{3}$ $\ldots\,$*)
  char library procedure\
-([\[string>=?\]]{#string>=?
-label="string>=?"}string>=? *$string_{1}$ $string_{2}$ $string_{3}$ $\ldots\,$*)
+(string>=? *$string_{1}$ $string_{2}$ $string_{3}$ $\ldots\,$*)
  procedure\
-([\[string-ci>=?\]]{#string-ci>=?
-label="string-ci>=?"}string-ci>=? *$string_{1}$ $string_{2}$ $string_{3}$ $\ldots\,$*)
+(string-ci>=? *$string_{1}$ $string_{2}$ $string_{3}$ $\ldots\,$*)
  char library procedure\
-These procedures return `#t` if their arguments are (respectively):
+These procedures return \#t if their arguments are (respectively):
 monotonically increasing, monotonically decreasing, monotonically
 non-decreasing, or monotonically non-increasing.
 
@@ -5384,14 +4850,9 @@ The "`-ci`" procedures behave as if they applied string-foldcase to
 their arguments before invoking the corresponding procedures without
 "`-ci`".
 
-([\[string-upcase\]]{#string-upcase
-label="string-upcase"}string-upcase *string*)  char library procedure\
-([\[string-downcase\]]{#string-downcase
-label="string-downcase"}string-downcase *string*)
- char library procedure\
-([\[string-foldcase\]]{#string-foldcase
-label="string-foldcase"}string-foldcase *string*)
- char library procedure\
+(string-upcase *string*)  char library procedure\
+(string-downcase *string*)  char library procedure\
+(string-foldcase *string*)  char library procedure\
 These procedures apply the Unicode full string uppercasing, lowercasing,
 and case-folding algorithms to their arguments and return the result. In
 certain cases, the result differs in length from the argument. If the
@@ -5406,25 +4867,21 @@ cites="uax44"} (part of the Unicode Standard) for details. However,
 implementations of string-downcase are not required to provide this
 behavior, and may choose to change $\Sigma$ to $\sigma$ in all cases.
 
-([\[substring\]]{#substring
-label="substring"}substring *string start end*)  procedure\
+(substring *string start end*)  procedure\
 The substring procedure returns a newly allocated string formed from the
 characters of *string* beginning with index *start* and ending with
 index *end*. This is equivalent to calling string-copy with the same
 arguments, but is provided for backward compatibility and stylistic
 flexibility.
 
-([\[string-append\]]{#string-append
-label="string-append"}string-append **string* $\ldots\,$*)  procedure\
+(string-append **string* $\ldots\,$*)  procedure\
 Returns a newly allocated string whose characters are the concatenation
 of the characters in the given strings.
 
-([\[string-\>list\]]{#string->list
-label="string->list"}string-\>list *string*)  procedure\
+(string-\>list *string*)  procedure\
 (string-\>list *string start*)  procedure\
 (string-\>list *string start end*)  procedure\
-([\[list-\>string\]]{#list->string
-label="list->string"}list-\>string *list*)  procedure\
+(list-\>string *list*)  procedure\
 It is an error if any element of *list* is not a character.
 
 The stringlist procedure returns a newly allocated list of the
@@ -5433,15 +4890,13 @@ newly allocated string formed from the elements in the list *list*. In
 both procedures, order is preserved. stringlist and liststring are
 inverses so far as equal? is concerned.
 
-([\[string-copy\]]{#string-copy
-label="string-copy"}string-copy *string*)  procedure\
+(string-copy *string*)  procedure\
 (string-copy *string start*)  procedure\
 (string-copy *string start end*)  procedure\
 Returns a newly allocated copy of the part of the given *string* between
 *start* and *end*.
 
-([\[string-copy!\]]{#string-copy!
-label="string-copy!"}string-copy! *to at from*)  procedure\
+(string-copy! *to at from*)  procedure\
 (string-copy! *to at from start*)  procedure\
 (string-copy! *to at from start end*)  procedure\
 It is an error if *at* is less than zero or greater than the length of
@@ -5456,15 +4911,12 @@ string and then into the destination. This can be achieved without
 allocating storage by making sure to copy in the correct direction in
 such circumstances.
 
-```scheme
     (define a "12345")
     (define b (string-copy "abcde"))
     (string-copy! b 1 a 0 2)
     b \ev "a12de"%
-```
 
-([\[string-fill!\]]{#string-fill!
-label="string-fill!"}string-fill! *string fill*)  procedure\
+(string-fill! *string fill*)  procedure\
 (string-fill! *string fill start*)  procedure\
 (string-fill! *string fill start end*)  procedure\
 It is an error if *fill* is not a character.
@@ -5491,71 +4943,56 @@ vector of length 3 containing the number zero in element 0, the list (2
 2 2 2) in element 1, and the string \"Anna\" in element 2 can be written
 as follows:
 
-```scheme
     \#(0 (2 2 2 2) "Anna")%
-```
 
 Vector constants are self-evaluating, so they do not need to be quoted
 in programs.
 
-([\[vector?\]]{#vector? label="vector?"}vector? *obj*)  procedure\
-Returns `#t` if *obj* is a vector; otherwise returns `#f`.
+(vector? *obj*)  procedure\
+Returns \#t if *obj* is a vector; otherwise returns \#f.
 
-([\[make-vector\]]{#make-vector label="make-vector"}make-vector *k*)
- procedure\
+(make-vector *k*)  procedure\
 (make-vector *k fill*)  procedure\
 Returns a newly allocated vector of *k* elements. If a second argument
 is given, then each element is initialized to *fill*. Otherwise the
 initial contents of each element is unspecified.
 
-([\[vector\]]{#vector label="vector"}vector *obj $\ldots\,$*)
- procedure\
+(vector *obj $\ldots\,$*)  procedure\
 Returns a newly allocated vector whose elements contain the given
 arguments. It is analogous to list.
 
-```scheme
     (vector 'a 'b 'c)               \ev  \#(a b c)%
-```
 
-([\[vector-length\]]{#vector-length
-label="vector-length"}vector-length *vector*)  procedure\
+(vector-length *vector*)  procedure\
 Returns the number of elements in *vector* as an exact integer.
 
-([\[vector-ref\]]{#vector-ref label="vector-ref"}vector-ref *vector k*)
- procedure\
+(vector-ref *vector k*)  procedure\
 It is an error if $k$ is not a valid index of *vector*.
 
 The vector-ref procedure returns the contents of element $k$ of
 *vector*.
 
-```scheme
     (vector-ref '\#(1 1 2 3 5 8 13 21)
                 5)  \lev  8
     (vector-ref '\#(1 1 2 3 5 8 13 21)
                 (exact
                  (round (* 2 (acos -1))))) \lev 13%
-```
 
-([\[vector-set!\]]{#vector-set!
-label="vector-set!"}vector-set! *vector k obj*)  procedure\
+(vector-set! *vector k obj*)  procedure\
 It is an error if $k$ is not a valid index of *vector*.
 
 The vector-set! procedure stores *obj* in element $k$ of *vector*.
 
-```scheme
     (let ((vec (vector 0 '(2 2 2 2) "Anna")))
       (vector-set! vec 1 '("Sue" "Sue"))
       vec)      \lev  \#(0 ("Sue" "Sue") "Anna")
 
     (vector-set! '\#(0 1 2) 1 "doe")  \lev  \scherror  ; constant vector%
-```
 
-([\[vector-\>list\]]{#vector->list
-label="vector->list"}vector-\>list *vector*)  procedure\
+(vector-\>list *vector*)  procedure\
 (vector-\>list *vector start*)  procedure\
 (vector-\>list *vector start end*)  procedure\
-([\[list-\>vector\]]{#list->vector
-label="list->vector"}list-\>vector *list*)  procedure\
+(list-\>vector *list*)  procedure\
 The vector-\>list procedure returns a newly allocated list of the
 objects contained in the elements of *vector* between *start* and *end*.
 The list-\>vector procedure returns a newly created vector initialized
@@ -5563,22 +5000,16 @@ to the elements of the list *list*.
 
 In both procedures, order is preserved.
 
-```scheme
     (vector->list '\#(dah dah didah))  \lev  (dah dah didah)
     (vector->list '\#(dah dah didah) 1 2) \lev (dah)
     (list->vector '(dididit dah))   \lev  \#(dididit dah)%
-```
 
-([\[vector-\>string\]]{#vector->string
-label="vector->string"}vector-\>string *vector*)  procedure\
+(vector-\>string *vector*)  procedure\
 (vector-\>string *vector start*)  procedure\
 (vector-\>string *vector start end*)  procedure\
-([\[string-\>vector\]]{#string->vector
-label="string->vector"}string-\>vector *string*)  procedure\
+(string-\>vector *string*)  procedure\
 (string-\>vector *string start*)  procedure\
 (string-\>vector *string start end*)  procedure\
-[\[vectortostring\]]{#vectortostring label="vectortostring"}
-
 It is an error if any element of *vector* between *start* and *end* is
 not a character.
 
@@ -5589,31 +5020,25 @@ to the elements of the string *string* between *start* and *end*.
 
 In both procedures, order is preserved.
 
-```scheme
     (string->vector "ABC")  \ev   \#(\#\backwhack{}A \#\backwhack{}B \#\backwhack{}C)
     (vector->string
       \#(\#\backwhack{}1 \#\backwhack{}2 \#\backwhack{}3) \ev "123"
-```
 
-([\[vector-copy\]]{#vector-copy
-label="vector-copy"}vector-copy *vector*)  procedure\
+(vector-copy *vector*)  procedure\
 (vector-copy *vector start*)  procedure\
 (vector-copy *vector start end*)  procedure\
 Returns a newly allocated copy of the elements of the given *vector*
 between *start* and *end*. The elements of the new vector are the same
 (in the sense of eqv?) as the elements of the old.
 
-```scheme
     (define a \#(1 8 2 8)) ; a may be immutable
     (define b (vector-copy a))
     (vector-set! b 0 3)   ; b is mutable
     b \ev \#(3 8 2 8)
     (define c (vector-copy b 1 3))
     c \ev \#(8 2)%
-```
 
-([\[vector-copy!\]]{#vector-copy!
-label="vector-copy!"}vector-copy! *to at from*)  procedure\
+(vector-copy! *to at from*)  procedure\
 (vector-copy! *to at from start*)  procedure\
 (vector-copy! *to at from start end*)  procedure\
 It is an error if *at* is less than zero or greater than the length of
@@ -5628,34 +5053,26 @@ then into the destination. This can be achieved without allocating
 storage by making sure to copy in the correct direction in such
 circumstances.
 
-```scheme
     (define a (vector 1 2 3 4 5))
     (define b (vector 10 20 30 40 50))
     (vector-copy! b 1 a 0 2)
     b \ev \#(10 1 2 40 50)%
-```
 
-([\[vector-append\]]{#vector-append
-label="vector-append"}vector-append **vector* $\ldots\,$*)  procedure\
+(vector-append **vector* $\ldots\,$*)  procedure\
 Returns a newly allocated vector whose elements are the concatenation of
 the elements of the given vectors.
 
-```scheme
     (vector-append \#(a b c) \#(d e f)) \lev \#(a b c d e f)%
-```
 
-([\[vector-fill!\]]{#vector-fill!
-label="vector-fill!"}vector-fill! *vector fill*)  procedure\
+(vector-fill! *vector fill*)  procedure\
 (vector-fill! *vector fill start*)  procedure\
 (vector-fill! *vector fill start end*)  procedure\
 The vector-fill! procedure stores *fill* in the elements of *vector*
 between *start* and *end*.
 
-```scheme
     (define a (vector 1 2 3 4 5))
     (vector-fill! a 'smash 2 4)
     a \lev \#(1 2 smash smash 5)%
-```
 
 ## Bytevectors
 
@@ -5675,80 +5092,59 @@ example, a bytevector of length 3 containing the byte 0 in element 0,
 the byte 10 in element 1, and the byte 5 in element 2 can be written as
 follows:
 
-```scheme
-    #u8(0 10 5)
-```
+    \#u8(0 10 5)%
 
 Bytevector constants are self-evaluating, so they do not need to be
 quoted in programs.
 
-([\[bytevector?\]]{#bytevector? label="bytevector?"}bytevector? *obj*)
- procedure\
-Returns `#t` if *obj* is a bytevector. Otherwise, `#f` is returned.
+(bytevector? *obj*)  procedure\
+Returns \#t if *obj* is a bytevector. Otherwise, \#f is returned.
 
-([\[make-bytevector\]]{#make-bytevector
-label="make-bytevector"}make-bytevector *k*)  procedure\
+(make-bytevector *k*)  procedure\
 (make-bytevector *k byte*)  procedure\
 The make-bytevector procedure returns a newly allocated bytevector of
 length $k$. If *byte* is given, then all elements of the bytevector are
 initialized to *byte*, otherwise the contents of each element are
 unspecified.
 
-```scheme
     (make-bytevector 2 12) \ev \#u8(12 12)%
-```
 
-([\[bytevector\]]{#bytevector
-label="bytevector"}bytevector **byte* $\ldots\,$*)  procedure\
+(bytevector **byte* $\ldots\,$*)  procedure\
 Returns a newly allocated bytevector containing its arguments.
 
-```scheme
     (bytevector 1 3 5 1 3 5)        \ev  \#u8(1 3 5 1 3 5)
     (bytevector)                          \ev  \#u8()%
-```
 
-([\[bytevector-length\]]{#bytevector-length
-label="bytevector-length"}bytevector-length *bytevector*)  procedure\
+(bytevector-length *bytevector*)  procedure\
 Returns the length of *bytevector* in bytes as an exact integer.
 
-([\[bytevector-u8-ref\]]{#bytevector-u8-ref
-label="bytevector-u8-ref"}bytevector-u8-ref *bytevector k*)  procedure\
+(bytevector-u8-ref *bytevector k*)  procedure\
 It is an error if $k$ is not a valid index of *bytevector*.
 
 Returns the *k*th byte of *bytevector*.
 
-```scheme
     (bytevector-u8-ref '\#u8(1 1 2 3 5 8 13 21)
                 5)  \lev  8%
-```
 
-([\[bytevector-u8-set!\]]{#bytevector-u8-set!
-label="bytevector-u8-set!"}bytevector-u8-set! *bytevector k byte*)
- procedure\
+(bytevector-u8-set! *bytevector k byte*)  procedure\
 It is an error if $k$ is not a valid index of *bytevector*.
 
 Stores *byte* as the *k*th byte of *bytevector*.
 
-```scheme
     (let ((bv (bytevector 1 2 3 4)))
       (bytevector-u8-set! bv 1 3)
       bv) \lev \#u8(1 3 3 4)%
-```
 
-([\[bytevector-copy\]]{#bytevector-copy
-label="bytevector-copy"}bytevector-copy *bytevector*)  procedure\
+(bytevector-copy *bytevector*)  procedure\
 (bytevector-copy *bytevector start*)  procedure\
 (bytevector-copy *bytevector start end*)  procedure\
 Returns a newly allocated bytevector containing the bytes in
 *bytevector* between *start* and *end*.
 
-```scheme
     (define a \#u8(1 2 3 4 5))
     (bytevector-copy a 2 4)) \ev \#u8(3 4)%
-```
 
-([\[bytevector-copy!\]]{#bytevector-copy!
-label="bytevector-copy!"}bytevector-copy! *to at from*)  procedure\
+(bytevector-copy! *to at from*)  procedure\
 (bytevector-copy! *to at from start*)  procedure\
 (bytevector-copy! *to at from start end*)  procedure\
 It is an error if *at* is less than zero or greater than the length of
@@ -5763,33 +5159,24 @@ bytevector and then into the destination. This can be achieved without
 allocating storage by making sure to copy in the correct direction in
 such circumstances.
 
-```scheme
     (define a (bytevector 1 2 3 4 5))
     (define b (bytevector 10 20 30 40 50))
     (bytevector-copy! b 1 a 0 2)
     b \ev \#u8(10 1 2 40 50)%
-```
 
 *Note:* This procedure appears in R$^{6}$RS, but places the source
 before the destination, contrary to other such procedures in Scheme.
 
-([\[bytevector-append\]]{#bytevector-append
-label="bytevector-append"}bytevector-append **bytevector* $\ldots\,$*)
- procedure\
+(bytevector-append **bytevector* $\ldots\,$*)  procedure\
 Returns a newly allocated bytevector whose elements are the
 concatenation of the elements in the given bytevectors.
 
-```scheme
     (bytevector-append \#u8(0 1 2) \#u8(3 4 5)) \lev \#u8(0 1 2 3 4 5)%
-```
 
-[\[utf8tostring\]]{#utf8tostring label="utf8tostring"}
-([\[utf8-\>string\]]{#utf8->string
-label="utf8->string"}utf8-\>string *bytevector*)  procedure\
+(utf8-\>string *bytevector*)  procedure\
 (utf8-\>string *bytevector start*)  procedure\
 (utf8-\>string *bytevector start end*)  procedure\
-([\[string-\>utf8\]]{#string->utf8
-label="string->utf8"}string-\>utf8 *string*)  procedure\
+(string-\>utf8 *string*)  procedure\
 (string-\>utf8 *string start*)  procedure\
 (string-\>utf8 *string start end*)  procedure\
 It is an error for *bytevector* to contain invalid UTF-8 byte sequences.
@@ -5801,12 +5188,10 @@ corresponding string; the stringutf8 procedure encodes the characters of
 a string between *start* and *end* and returns the corresponding
 bytevector.
 
-```scheme
     (utf8->string \#u8(\#x41)) \ev "A"
     (string->utf8 "$\lambda$") \ev \#u8(\#xCE \#xBB)%
-```
 
-## Control features {#proceduresection}
+## Control features
 
 This section describes various primitive procedures which control the
 flow of program execution in special ways. Procedures in this section
@@ -5814,27 +5199,22 @@ that invoke procedure arguments always do so in the same dynamic
 environment as the call of the original procedure. The
 procedure? predicate is also described here.
 
-([\[procedure?\]]{#procedure? label="procedure?"}procedure? *obj*)
- procedure\
-Returns `#t` if *obj* is a procedure, otherwise returns `#f`.
+(procedure? *obj*)  procedure\
+Returns \#t if *obj* is a procedure, otherwise returns \#f.
 
-```scheme
     (procedure? car)            \ev  \schtrue
     (procedure? 'car)           \ev  \schfalse
-    (procedure? (lambda (x) (* x x)))
+    (procedure? (lambda (x) (* x x)))   
                                 \ev  \schtrue
-    (procedure? '(lambda (x) (* x x)))
+    (procedure? '(lambda (x) (* x x)))  
                                 \ev  \schfalse
     (call-with-current-continuation procedure?)
                                 \ev  \schtrue%
-```
 
-([\[apply\]]{#apply
-label="apply"}apply *proc *arg$_{1}$* $\ldots$ args*)  procedure\
+(apply *proc *arg$_{1}$* $\ldots$ args*)  procedure\
 The apply procedure calls *proc* with the elements of the list (append
 (list *arg$_{1}$* $\ldots\,$) *args*) as the actual arguments.
 
-```scheme
     (apply + (list 3 4))              \ev  7
 
     (define compose
@@ -5843,10 +5223,8 @@ The apply procedure calls *proc* with the elements of the list (append
           (f (apply g args)))))
 
     ((compose sqrt *) 12 75)              \ev  30%
-```
 
-([\[map\]]{#map
-label="map"}map *proc *list$_{1}$* *list$_{2}$* $\ldots\,$*)  procedure\
+(map *proc *list$_{1}$* *list$_{2}$* $\ldots\,$*)  procedure\
 It is an error if *proc* does not accept as many arguments as there are
 *list*s and return a single value.
 
@@ -5859,7 +5237,6 @@ mutate any of the lists. The dynamic order in which *proc* is applied to
 the elements of the *list*s is unspecified. If multiple returns occur
 from map, the values returned by earlier returns are not mutated.
 
-```scheme
     (map cadr '((a b) (d e) (g h)))   \lev  (b e h)
 
     (map (lambda (n) (expt n n))
@@ -5872,13 +5249,8 @@ from map, the values returned by earlier returns are not mutated.
              (set! count (+ count 1))
              count)
            '(a b)))                 \ev  (1 2) \var{or} (2 1)%
-```
 
-([\[string-map\]]{#string-map
-label="string-map"}string-map *proc *string$_{1}$* *string$_{2}$* $\ldots\,$*)
- procedure\
-[\[stringmap\]]{#stringmap label="stringmap"}
-
+(string-map *proc *string$_{1}$* *string$_{2}$* $\ldots\,$*)  procedure\
 It is an error if *proc* does not accept as many arguments as there are
 *string*s and return a single character.
 
@@ -5890,7 +5262,6 @@ order in which *proc* is applied to the elements of the *string*s is
 unspecified. If multiple returns occur from string-map, the values
 returned by earlier returns are not mutated.
 
-```scheme
     (string-map char-foldcase "AbdEgH") \lev  "abdegh"
 
     (string-map
@@ -5904,11 +5275,8 @@ returned by earlier returns are not mutated.
         c))
      "studlycaps xxx"
      "ululululul")   \lev   "StUdLyCaPs"%
-```
 
-([\[vector-map\]]{#vector-map
-label="vector-map"}vector-map *proc *vector$_{1}$* *vector$_{2}$* $\ldots\,$*)
- procedure\
+(vector-map *proc *vector$_{1}$* *vector$_{2}$* $\ldots\,$*)  procedure\
 It is an error if *proc* does not accept as many arguments as there are
 *vector*s and return a single value.
 
@@ -5920,7 +5288,6 @@ order in which *proc* is applied to the elements of the *vector*s is
 unspecified. If multiple returns occur from vector-map, the values
 returned by earlier returns are not mutated.
 
-```scheme
     (vector-map cadr '\#((a b) (d e) (g h)))   \lev  \#(b e h)
 
     (vector-map (lambda (n) (expt n n))
@@ -5934,11 +5301,8 @@ returned by earlier returns are not mutated.
          (set! count (+ count 1))
          count)
        '\#(a b)))                     \ev  \#(1 2) \var{or} \#(2 1)%
-```
 
-([\[for-each\]]{#for-each
-label="for-each"}for-each *proc *list$_{1}$* *list$_{2}$* $\ldots\,$*)
- procedure\
+(for-each *proc *list$_{1}$* *list$_{2}$* $\ldots\,$*)  procedure\
 It is an error if *proc* does not accept as many arguments as there are
 *list*s.
 
@@ -5953,16 +5317,13 @@ if all of them are circular.
 
 It is an error for *proc* to mutate any of the lists.
 
-```scheme
     (let ((v (make-vector 5)))
       (for-each (lambda (i)
                   (vector-set! v i (* i i)))
                 '(0 1 2 3 4))
       v)                                \ev  \#(0 1 4 9 16)%
-```
 
-([\[string-for-each\]]{#string-for-each
-label="string-for-each"}string-for-each *proc *string$_{1}$* *string$_{2}$* $\ldots\,$*)
+(string-for-each *proc *string$_{1}$* *string$_{2}$* $\ldots\,$*)
  procedure\
 It is an error if *proc* does not accept as many arguments as there are
 *string*s.
@@ -5976,16 +5337,13 @@ unspecified. If more than one *string* is given and not all strings have
 the same length, string-for-each terminates when the shortest string
 runs out. It is an error for *proc* to mutate any of the strings.
 
-```scheme
     (let ((v '()))
       (string-for-each
        (lambda (c) (set! v (cons (char->integer c) v)))
        "abcde")
       v)                         \ev  (101 100 99 98 97)%
-```
 
-([\[vector-for-each\]]{#vector-for-each
-label="vector-for-each"}vector-for-each *proc *vector$_{1}$* *vector$_{2}$* $\ldots\,$*)
+(vector-for-each *proc *vector$_{1}$* *vector$_{2}$* $\ldots\,$*)
  procedure\
 It is an error if *proc* does not accept as many arguments as there are
 *vector*s.
@@ -5999,20 +5357,15 @@ unspecified. If more than one *vector* is given and not all vectors have
 the same length, vector-for-each terminates when the shortest vector
 runs out. It is an error for *proc* to mutate any of the vectors.
 
-```scheme
     (let ((v (make-list 5)))
       (vector-for-each
        (lambda (i) (list-set! v i (* i i)))
        '\#(0 1 2 3 4))
       v)                                \ev  (0 1 4 9 16)%
-```
 
-([\[call-with-current-continuation\]]{#call-with-current-continuation
-label="call-with-current-continuation"}call-with-current-continuation *proc*)
- procedure\
-([\[call/cc\]]{#call/cc label="call/cc"}call/cc *proc*)  procedure\
-[\[continuations\]]{#continuations label="continuations"} It is an error
-if *proc* does not accept one argument.
+(call-with-current-continuation *proc*)  procedure\
+(call/cc *proc*)  procedure\
+It is an error if *proc* does not accept one argument.
 
 The procedure call-with-current-continuation (or its equivalent
 abbreviation call/cc) packages the current continuation (see the
@@ -6048,7 +5401,6 @@ call-with-current-continuation is used. If all real uses were as simple
 as these examples, there would be no need for a procedure with the power
 of call-with-current-continuation.
 
-```scheme
     (call-with-current-continuation
       (lambda (exit)
         (for-each (lambda (x)
@@ -6072,7 +5424,6 @@ of call-with-current-continuation.
     (list-length '(1 2 3 4))            \ev  4
 
     (list-length '(a b . c))            \ev  \schfalse%
-```
 
 *Rationale:*
 
@@ -6098,34 +5449,27 @@ call-with-current-continuation procedure allows Scheme programmers to do
 that by creating a procedure that acts just like the current
 continuation.
 
-([\[values\]]{#values label="values"}values *obj $\ldots$*)  procedure\
+(values *obj $\ldots$*)  procedure\
 Delivers all of its arguments to its continuation. The `values`
 procedure might be defined as follows:
 
-```scheme
     (define (values . things)
-      (call-with-current-continuation
+      (call-with-current-continuation 
         (lambda (cont) (apply cont things))))%
-```
 
-([\[call-with-values\]]{#call-with-values
-label="call-with-values"}call-with-values *producer consumer*)
- procedure\
+(call-with-values *producer consumer*)  procedure\
 Calls its *producer* argument with no arguments and a continuation that,
 when passed some values, calls the *consumer* procedure with those
 values as arguments. The continuation for the call to *consumer* is the
 continuation of the call to `call-with-values`.
 
-```scheme
     (call-with-values (lambda () (values 4 5))
                       (lambda (a b) b))
                                                        \ev  5
 
     (call-with-values * -)                             \ev  -1%
-```
 
-([\[dynamic-wind\]]{#dynamic-wind
-label="dynamic-wind"}dynamic-wind *before thunk after*)  procedure\
+(dynamic-wind *before thunk after*)  procedure\
 Calls *thunk* without arguments, returning the result(s) of this call.
 *Before* and *after* are called, also without arguments, as required by
 the following rules. Note that, in the absence of calls to continuations
@@ -6171,7 +5515,6 @@ first.
 The effect of using a captured continuation to enter or exit the dynamic
 extent of a call to *before* or *after* is unspecified.
 
-```scheme
     (let ((path '())
           (c \#f))
       (let ((add (lambda (s)
@@ -6189,14 +5532,13 @@ extent of a call to *before* or *after* is unspecified.
             (reverse path))))
         \lev (connect talk1 disconnect
                    connect talk2 disconnect)%
-```
 
 ## Exceptions
 
 This section describes Scheme's exception-handling and exception-raising
 procedures. For the concept of Scheme exceptions, see
-section [1.3.2](#errorsituations). See also [\[guard\]](#guard) for the
-guard syntax.
+section [\[errorsituations\]](#errorsituations). See also
+[\[guard\]](#guard) for the guard syntax.
 
 *Exception handler*s are one-argument procedures that determine the
 action the program takes when an exceptional situation is signaled. The
@@ -6208,9 +5550,7 @@ handler, passing it an object encapsulating information about the
 exception. Any procedure accepting one argument can serve as an
 exception handler and any object can be used to represent an exception.
 
-([\[with-exception-handler\]]{#with-exception-handler
-label="with-exception-handler"}with-exception-handler **handler* *thunk**)
- procedure\
+(with-exception-handler **handler* *thunk**)  procedure\
 It is an error if *handler* does not accept one argument. It is also an
 error if *thunk* does not accept zero arguments.
 
@@ -6218,7 +5558,6 @@ The with-exception-handler procedure returns the results of invoking
 *thunk*. *Handler* is installed as the current exception handler in the
 dynamic environment used for the invocation of *thunk*.
 
-```scheme
     (call-with-current-continuation
      (lambda (k)
       (with-exception-handler
@@ -6238,11 +5577,10 @@ dynamic environment used for the invocation of *thunk*.
      (lambda ()
       (+ 1 (raise 'an-error))))
      \>{\em prints}  something went wrong%
-```
 
 After printing, the second example then raises another exception.
 
-([\[raise\]]{#raise label="raise"}raise **obj**)  procedure\
+(raise **obj**)  procedure\
 Raises an exception by invoking the current exception handler on *obj*.
 The handler is called with the same dynamic environment as that of the
 call to raise, except that the current exception handler is the one that
@@ -6251,8 +5589,7 @@ returns, a secondary exception is raised in the same dynamic environment
 as the handler. The relationship between *obj* and the object raised by
 the secondary exception is unspecified.
 
-([\[raise-continuable\]]{#raise-continuable
-label="raise-continuable"}raise-continuable **obj**)  procedure\
+(raise-continuable **obj**)  procedure\
 Raises an exception by invoking the current exception handler on *obj*.
 The handler is called with the same dynamic environment as the call to
 raise-continuable, except that: (1) the current exception handler is the
@@ -6261,7 +5598,6 @@ one that was in place when the handler being called was installed, and
 current exception handler. If the handler returns, the values it returns
 become the values returned by the call to raise-continuable.
 
-```scheme
     (with-exception-handler
       (lambda (con)
         (cond
@@ -6275,18 +5611,15 @@ become the values returned by the call to raise-continuable.
            23)))
        {\it prints:} should be a number
        \ev 65%
-```
 
-([\[error\]]{#error label="error"}error **message* *obj* $\ldots$*)
- procedure\
+(error **message* *obj* $\ldots$*)  procedure\
 *Message* should be a string.
 
 Raises an exception as if by calling raise on a newly allocated
 implementation-defined object which encapsulates the information
 provided by *message*, as well as any *obj*s, known as the *irritants*.
-The procedure error-object? must return `#t` on such objects.
+The procedure error-object? must return \#t on such objects.
 
-```scheme
     (define (null-list? l)
       (cond ((pair? l) \#f)
             ((null? l) \#t)
@@ -6294,51 +5627,37 @@ The procedure error-object? must return `#t` on such objects.
               (error
                 "null-list?: argument out of domain"
                 l))))%
-```
 
-([\[error-object?\]]{#error-object?
-label="error-object?"}error-object? *obj*)  procedure\
-Returns `#t` if *obj* is an object created by error or one of an
-implementation-defined set of objects. Otherwise, it returns `#f`. The
+(error-object? *obj*)  procedure\
+Returns \#t if *obj* is an object created by error or one of an
+implementation-defined set of objects. Otherwise, it returns \#f. The
 objects used to signal errors, including those which satisfy the
 predicates file-error? and read-error?, may or may not satisfy
 error-object?.
 
-([\[error-object-message\]]{#error-object-message
-label="error-object-message"}error-object-message *error-object*)
- procedure\
+(error-object-message *error-object*)  procedure\
 Returns the message encapsulated by *error-object*.
 
-([\[error-object-irritants\]]{#error-object-irritants
-label="error-object-irritants"}error-object-irritants *error-object*)
- procedure\
+(error-object-irritants *error-object*)  procedure\
 Returns a list of the irritants encapsulated by *error-object*.
 
-([\[read-error?\]]{#read-error? label="read-error?"}read-error? *obj*)
- procedure\
-([\[file-error?\]]{#file-error? label="file-error?"}file-error? *obj*)
- procedure\
-Error type predicates. Returns `#t` if *obj* is an object raised by the
+(read-error? *obj*)  procedure\
+(file-error? *obj*)  procedure\
+Error type predicates. Returns \#t if *obj* is an object raised by the
 read procedure or by the inability to open an input or output port on a
-file, respectively. Otherwise, it returns `#f`.
+file, respectively. Otherwise, it returns \#f.
 
 ## Environments and evaluation
 
-([\[environment\]]{#environment
-label="environment"}environment *$list_{1}$ $\ldots\,$*)
- eval library procedure\
-[\[environments\]]{#environments label="environments"}
-
+(environment *$list_{1}$ $\ldots\,$*)  eval library procedure\
 This procedure returns a specifier for the environment that results by
 starting with an empty environment and then importing each *list*,
-considered as an import set, into it. (See section [5.6](#libraries) for
-a description of import sets.) The bindings of the environment
-represented by the specifier are immutable, as is the environment
-itself.
+considered as an import set, into it. (See
+section [\[libraries\]](#libraries) for a description of import sets.)
+The bindings of the environment represented by the specifier are
+immutable, as is the environment itself.
 
-([\[scheme-report-environment\]]{#scheme-report-environment
-label="scheme-report-environment"}scheme-report-environment *version*)
- r5rs library procedure\
+(scheme-report-environment *version*)  r5rs library procedure\
 If *version* is equal to 5, corresponding to R$^{5}$RS,
 scheme-report-environment returns a specifier for an environment that
 contains only the bindings defined in the R$^{5}$RS library.
@@ -6355,9 +5674,7 @@ identifier bound in a scheme-report-environment (for example car) is
 unspecified. Thus both the environment and the bindings it contains may
 be immutable.
 
-([\[null-environment\]]{#null-environment
-label="null-environment"}null-environment *version*)
- r5rs library procedure\
+(null-environment *version*)  r5rs library procedure\
 If *version* is equal to 5, corresponding to R$^{5}$RS, the
 null-environment procedure returns a specifier for an environment that
 contains only the bindings for all syntactic keywords defined in the
@@ -6374,24 +5691,20 @@ identifier bound in a scheme-report-environment (for example car) is
 unspecified. Thus both the environment and the bindings it contains may
 be immutable.
 
-([\[interaction-environment\]]{#interaction-environment
-label="interaction-environment"}interaction-environment)
- repl library procedure\
+(interaction-environment)  repl library procedure\
 This procedure returns a specifier for a mutable environment that
 contains an implementation-defined set of bindings, typically a superset
 of those exported by (scheme base). The intent is that this procedure
 will return the environment in which the implementation would evaluate
 expressions entered by the user into a REPL.
 
-([\[eval\]]{#eval label="eval"}eval *expr-or-def environment-specifier*)
- eval library procedure\
+(eval *expr-or-def environment-specifier*)  eval library procedure\
 If *expr-or-def* is an expression, it is evaluated in the specified
 environment and its values are returned. If it is a definition, the
 specified identifier(s) are defined in the specified environment,
 provided the environment is not immutable. Implementations may extend
 eval to allow other objects.
 
-```scheme
     (eval '(* 7 3) (environment '(scheme base)))
                                                        \ev  21
 
@@ -6402,7 +5715,6 @@ eval to allow other objects.
     (eval '(define foo 32)
           (environment '(scheme base)))
                                                        \ev {\it{} error is signaled}%
-```
 
 ## Input and output
 
@@ -6430,8 +5742,7 @@ binary port types are disjoint is implementation-dependent.
 Ports can be used to access files, devices, and similar things on the
 host system on which the Scheme program is running.
 
-([\[call-with-port\]]{#call-with-port
-label="call-with-port"}call-with-port *port proc*)  procedure\
+(call-with-port *port proc*)  procedure\
 It is an error if *proc* does not accept one argument.
 
 The call-with-port procedure calls *proc* with *port* as an argument. If
@@ -6447,12 +5758,8 @@ escape from the current continuation, then it would be impossible to
 write portable code using both call-with-current-continuation and
 call-with-port.
 
-([\[call-with-input-file\]]{#call-with-input-file
-label="call-with-input-file"}call-with-input-file *string proc*)
- file library procedure\
-([\[call-with-output-file\]]{#call-with-output-file
-label="call-with-output-file"}call-with-output-file *string proc*)
- file library procedure\
+(call-with-input-file *string proc*)  file library procedure\
+(call-with-output-file *string proc*)  file library procedure\
 It is an error if *proc* does not accept one argument.
 
 These procedures obtain a textual port obtained by opening the named
@@ -6460,44 +5767,31 @@ file for input or output as if by open-input-file or open-output-file.
 The port and *proc* are then passed to a procedure equivalent to
 call-with-port.
 
-([\[input-port?\]]{#input-port? label="input-port?"}input-port? *obj*)
- procedure\
-([\[output-port?\]]{#output-port?
-label="output-port?"}output-port? *obj*)  procedure\
-([\[textual-port?\]]{#textual-port?
-label="textual-port?"}textual-port? *obj*)  procedure\
-([\[binary-port?\]]{#binary-port?
-label="binary-port?"}binary-port? *obj*)  procedure\
-([\[port?\]]{#port? label="port?"}port? *obj*)  procedure\
-These procedures return `#t` if *obj* is an input port, output port,
+(input-port? *obj*)  procedure\
+(output-port? *obj*)  procedure\
+(textual-port? *obj*)  procedure\
+(binary-port? *obj*)  procedure\
+(port? *obj*)  procedure\
+These procedures return \#t if *obj* is an input port, output port,
 textual port, binary port, or any kind of port, respectively. Otherwise
-they return `#f`.
+they return \#f.
 
-([\[input-port-open?\]]{#input-port-open?
-label="input-port-open?"}input-port-open? *port*)  procedure\
-([\[output-port-open?\]]{#output-port-open?
-label="output-port-open?"}output-port-open? *port*)  procedure\
-Returns `#t` if *port* is still open and capable of performing input or
-output, respectively, and `#f` otherwise.
+(input-port-open? *port*)  procedure\
+(output-port-open? *port*)  procedure\
+Returns \#t if *port* is still open and capable of performing input or
+output, respectively, and \#f otherwise.
 
-([\[current-input-port\]]{#current-input-port
-label="current-input-port"}current-input-port)  procedure\
-([\[current-output-port\]]{#current-output-port
-label="current-output-port"}current-output-port)  procedure\
-([\[current-error-port\]]{#current-error-port
-label="current-error-port"}current-error-port)  procedure\
+(current-input-port)  procedure\
+(current-output-port)  procedure\
+(current-error-port)  procedure\
 Returns the current default input port, output port, or error port (an
 output port), respectively. These procedures are parameter objects,
 which can be overridden with parameterize (see
 section [\[make-parameter\]](#make-parameter)). The initial bindings for
 these are implementation-defined textual ports.
 
-([\[with-input-from-file\]]{#with-input-from-file
-label="with-input-from-file"}with-input-from-file *string thunk*)
- file library procedure\
-([\[with-output-to-file\]]{#with-output-to-file
-label="with-output-to-file"}with-output-to-file *string thunk*)
- file library procedure\
+(with-input-from-file *string thunk*)  file library procedure\
+(with-output-to-file *string thunk*)  file library procedure\
 The file is opened for input or output as if by open-input-file or
 open-output-file, and the new port is made to be the value returned by
 current-input-port or current-output-port (as used by `(read)`,
@@ -6509,23 +5803,15 @@ escape procedure is used to escape from the continuation of these
 procedures, they behave exactly as if the current input or output port
 had been bound dynamically with parameterize.
 
-([\[open-input-file\]]{#open-input-file
-label="open-input-file"}open-input-file *string*)
- file library procedure\
-([\[open-binary-input-file\]]{#open-binary-input-file
-label="open-binary-input-file"}open-binary-input-file *string*)
- file library procedure\
+(open-input-file *string*)  file library procedure\
+(open-binary-input-file *string*)  file library procedure\
 Takes a *string* for an existing file and returns a textual input port
 or binary input port that is capable of delivering data from the file.
 If the file does not exist or cannot be opened, an error that satisfies
 file-error? is signaled.
 
-([\[open-output-file\]]{#open-output-file
-label="open-output-file"}open-output-file *string*)
- file library procedure\
-([\[open-binary-output-file\]]{#open-binary-output-file
-label="open-binary-output-file"}open-binary-output-file *string*)
- file library procedure\
+(open-output-file *string*)  file library procedure\
+(open-binary-output-file *string*)  file library procedure\
 Takes a *string* naming an output file to be created and returns a
 textual output port or binary output port that is capable of writing
 data to a new file by that name.
@@ -6534,12 +5820,9 @@ If a file with the given name already exists, the effect is unspecified.
 If the file cannot be opened, an error that satisfies file-error? is
 signaled.
 
-([\[close-port\]]{#close-port label="close-port"}close-port *port*)
- procedure\
-([\[close-input-port\]]{#close-input-port
-label="close-input-port"}close-input-port *port*)  procedure\
-([\[close-output-port\]]{#close-output-port
-label="close-output-port"}close-output-port *port*)  procedure\
+(close-port *port*)  procedure\
+(close-input-port *port*)  procedure\
+(close-output-port *port*)  procedure\
 Closes the resource associated with *port*, rendering the *port*
 incapable of delivering or accepting data. It is an error to apply the
 last two procedures to a port which is not an input or output port,
@@ -6550,25 +5833,21 @@ close the input and output sides of the port independently.
 
 These routines have no effect if the port has already been closed.
 
-([\[open-input-string\]]{#open-input-string
-label="open-input-string"}open-input-string *string*)  procedure\
+(open-input-string *string*)  procedure\
 Takes a string and returns a textual input port that delivers characters
 from the string. If the string is modified, the effect is unspecified.
 
-([\[open-output-string\]]{#open-output-string
-label="open-output-string"}open-output-string)  procedure\
+(open-output-string)  procedure\
 Returns a textual output port that will accumulate characters for
 retrieval by get-output-string.
 
-([\[get-output-string\]]{#get-output-string
-label="get-output-string"}get-output-string *port*)  procedure\
+(get-output-string *port*)  procedure\
 It is an error if *port* was not created with open-output-string.
 
 Returns a string consisting of the characters that have been output to
 the port so far in the order they were output. If the result string is
 modified, the effect is unspecified.
 
-```scheme
     (parameterize
         ((current-output-port
           (open-output-string)))
@@ -6578,21 +5857,16 @@ modified, the effect is unspecified.
         (newline)
         (get-output-string (current-output-port)))
     \lev "piece by piece by piece.\backwhack{}n"%
-```
 
-([\[open-input-bytevector\]]{#open-input-bytevector
-label="open-input-bytevector"}open-input-bytevector *bytevector*)
- procedure\
+(open-input-bytevector *bytevector*)  procedure\
 Takes a bytevector and returns a binary input port that delivers bytes
 from the bytevector.
 
-([\[open-output-bytevector\]]{#open-output-bytevector
-label="open-output-bytevector"}open-output-bytevector)  procedure\
+(open-output-bytevector)  procedure\
 Returns a binary output port that will accumulate bytes for retrieval by
 get-output-bytevector.
 
-([\[get-output-bytevector\]]{#get-output-bytevector
-label="get-output-bytevector"}get-output-bytevector *port*)  procedure\
+(get-output-bytevector *port*)  procedure\
 It is an error if *port* was not created with open-output-bytevector.
 
 Returns a bytevector consisting of the bytes that have been output to
@@ -6604,14 +5878,17 @@ If *port* is omitted from any input procedure, it defaults to the value
 returned by (current-input-port). It is an error to attempt an input
 operation on a closed port.
 
-([\[read\]]{#read label="read"}read)  read library procedure\
+ 
+
+(read)  read library procedure\
 (read *port*)  read library procedure\
 The read procedure converts external representations of Scheme objects
 into the objects themselves. That is, it is a parser for the
-non-terminal $\langle$datum$\rangle$ (see sections [\[datum\]](#datum)
-and [6.4](#listsection)). It returns the next object parsable from the
-given textual input *port*, updating *port* to point to the first
-character past the end of the external representation of the object.
+non-terminal datum (see sections [\[datum\]](#datum) and
+[\[listsection\]](#listsection)). It returns the next object parsable
+from the given textual input *port*, updating *port* to point to the
+first character past the end of the external representation of the
+object.
 
 Implementations may support extended syntax to represent record types or
 other types that do not have datum representations.
@@ -6624,13 +5901,13 @@ of an object's external representation, but the external representation
 is incomplete and therefore not parsable, an error that satisfies
 read-error? is signaled.
 
-([\[read-char\]]{#read-char label="read-char"}read-char)  procedure\
+(read-char)  procedure\
 (read-char *port*)  procedure\
 Returns the next character available from the textual input *port*,
 updating the *port* to point to the following character. If no more
 characters are available, an end-of-file object is returned.
 
-([\[peek-char\]]{#peek-char label="peek-char"}peek-char)  procedure\
+(peek-char)  procedure\
 (peek-char *port*)  procedure\
 Returns the next character available from the textual input *port*, but
 *without* updating the *port* to point to the following character. If no
@@ -6644,7 +5921,7 @@ call to peek-char. In particular, a call to peek-char on an interactive
 port will hang waiting for input whenever a call to read-char would have
 hung.
 
-([\[read-line\]]{#read-line label="read-line"}read-line)  procedure\
+(read-line)  procedure\
 (read-line *port*)  procedure\
 Returns the next line of text available from the textual input *port*,
 updating the *port* to point to the following character. If an end of
@@ -6660,71 +5937,64 @@ of a carriage return character followed by a linefeed character.
 Implementations may also recognize other end of line characters or
 sequences.
 
-([\[eof-object?\]]{#eof-object? label="eof-object?"}eof-object? *obj*)
- procedure\
-Returns `#t` if *obj* is an end-of-file object, otherwise returns `#f`.
+(eof-object? *obj*)  procedure\
+Returns \#t if *obj* is an end-of-file object, otherwise returns \#f.
 The precise set of end-of-file objects will vary among implementations,
 but in any case no end-of-file object will ever be an object that can be
 read in using read.
 
-([\[eof-object\]]{#eof-object label="eof-object"}eof-object)  procedure\
+(eof-object)  procedure\
 Returns an end-of-file object, not necessarily unique.
 
-([\[char-ready?\]]{#char-ready? label="char-ready?"}char-ready?)
- procedure\
+(char-ready?)  procedure\
 (char-ready? *port*)  procedure\
-Returns `#t` if a character is ready on the textual input *port* and
-returns `#f` otherwise. If char-ready returns `#t` then the next
-read-char operation on the given *port* is guaranteed not to hang. If
-the *port* is at end of file then char-ready? returns `#t`.
+Returns \#t if a character is ready on the textual input *port* and
+returns \#f otherwise. If char-ready returns \#t then the next read-char
+operation on the given *port* is guaranteed not to hang. If the *port*
+is at end of file then char-ready? returns \#t.
 
 *Rationale:* The char-ready? procedure exists to make it possible for a
 program to accept characters from interactive ports without getting
 stuck waiting for input. Any input editors associated with such ports
 must ensure that characters whose existence has been asserted by
 char-ready? cannot be removed from the input. If char-ready? were to
-return `#f` at end of file, a port at end of file would be
+return \#f at end of file, a port at end of file would be
 indistinguishable from an interactive port that has no ready characters.
 
-([\[read-string\]]{#read-string label="read-string"}read-string *k*)
- procedure\
+(read-string *k*)  procedure\
 (read-string *k port*)  procedure\
-[\[readstring\]]{#readstring label="readstring"}
-
 Reads the next *k* characters, or as many as are available before the
 end of file, from the textual input *port* into a newly allocated string
 in left-to-right order and returns the string. If no characters are
 available before the end of file, an end-of-file object is returned.
 
-([\[read-u8\]]{#read-u8 label="read-u8"}read-u8)  procedure\
+(read-u8)  procedure\
 (read-u8 *port*)  procedure\
 Returns the next byte available from the binary input *port*, updating
 the *port* to point to the following byte. If no more bytes are
 available, an end-of-file object is returned.
 
-([\[peek-u8\]]{#peek-u8 label="peek-u8"}peek-u8)  procedure\
+(peek-u8)  procedure\
 (peek-u8 *port*)  procedure\
 Returns the next byte available from the binary input *port*, but
 *without* updating the *port* to point to the following byte. If no more
 bytes are available, an end-of-file object is returned.
 
-([\[u8-ready?\]]{#u8-ready? label="u8-ready?"}u8-ready?)  procedure\
+(u8-ready?)  procedure\
 (u8-ready? *port*)  procedure\
-Returns `#t` if a byte is ready on the binary input *port* and returns
-`#f` otherwise. If u8-ready? returns `#t` then the next read-u8
-operation on the given *port* is guaranteed not to hang. If the *port*
-is at end of file then u8-ready? returns `#t`.
+Returns \#t if a byte is ready on the binary input *port* and returns
+\#f otherwise. If u8-ready? returns \#t then the next read-u8 operation
+on the given *port* is guaranteed not to hang. If the *port* is at end
+of file then u8-ready? returns \#t.
 
-([\[read-bytevector\]]{#read-bytevector
-label="read-bytevector"}read-bytevector *k*)  procedure\
+(read-bytevector *k*)  procedure\
 (read-bytevector *k port*)  procedure\
 Reads the next *k* bytes, or as many as are available before the end of
 file, from the binary input *port* into a newly allocated bytevector in
 left-to-right order and returns the bytevector. If no bytes are
 available before the end of file, an end-of-file object is returned.
 
-([\[read-bytevector!\]]{#read-bytevector!
-label="read-bytevector!"}read-bytevector! *bytevector*)  procedure\
+(read-bytevector! *bytevector*)  procedure\
 (read-bytevector! *bytevector port*)  procedure\
 (read-bytevector! *bytevector port start*)  procedure\
 (read-bytevector! *bytevector port start end*)  procedure\
@@ -6742,42 +6012,39 @@ If *port* is omitted from any output procedure, it defaults to the value
 returned by (current-output-port). It is an error to attempt an output
 operation on a closed port.
 
-([\[write\]]{#write label="write"}write *obj*)  write library procedure\
+(write *obj*)  write library procedure\
 (write *obj port*)  write library procedure\
 Writes a representation of *obj* to the given textual output *port*.
 Strings that appear in the written representation are enclosed in
 quotation marks, and within those strings backslash and quotation mark
 characters are escaped by backslashes. Symbols that contain non-ASCII
 characters are escaped with vertical lines. Character objects are
-written using the \#`' ` notation.
+written using the \#`‘ ` notation.
 
 If *obj* contains cycles which would cause an infinite loop using the
 normal written representation, then at least the objects that form part
 of the cycle must be represented using datum labels as described in
-section [2.4](#labelsection). Datum labels must not be used if there are
-no cycles.
+section [\[labelsection\]](#labelsection). Datum labels must not be used
+if there are no cycles.
 
 Implementations may support extended syntax to represent record types or
 other types that do not have datum representations.
 
 The write procedure returns an unspecified value.
 
-([\[write-shared\]]{#write-shared
-label="write-shared"}write-shared *obj*)  write library procedure\
+(write-shared *obj*)  write library procedure\
 (write-shared *obj port*)  write library procedure\
 The write-shared procedure is the same as write, except that shared
 structure must be represented using datum labels for all pairs and
 vectors that appear more than once in the output.
 
-([\[write-simple\]]{#write-simple
-label="write-simple"}write-simple *obj*)  write library procedure\
+(write-simple *obj*)  write library procedure\
 (write-simple *obj port*)  write library procedure\
 The write-simple procedure is the same as write, except that shared
 structure is never represented using datum labels. This can cause
 write-simple not to terminate if *obj* contains circular structure.
 
-([\[display\]]{#display label="display"}display *obj*)
- write library procedure\
+(display *obj*)  write library procedure\
 (display *obj port*)  write library procedure\
 Writes a representation of *obj* to the given textual output *port*.
 Strings that appear in the written representation are output as if by
@@ -6798,42 +6065,38 @@ The display procedure returns an unspecified value.
 *Rationale:* The write procedure is intended for producing
 machine-readable output and display for producing human-readable output.
 
-([\[newline\]]{#newline label="newline"}newline)  procedure\
+(newline)  procedure\
 (newline *port*)  procedure\
 Writes an end of line to textual output *port*. Exactly how this is done
 differs from one operating system to another. Returns an unspecified
 value.
 
-([\[write-char\]]{#write-char label="write-char"}write-char *char*)
- procedure\
+(write-char *char*)  procedure\
 (write-char *char port*)  procedure\
 Writes the character *char* (not an external representation of the
 character) to the given textual output *port* and returns an unspecified
 value.
 
-([\[write-string\]]{#write-string
-label="write-string"}write-string *string*)  procedure\
+(write-string *string*)  procedure\
 (write-string *string port*)  procedure\
 (write-string *string port start*)  procedure\
 (write-string *string port start end*)  procedure\
 Writes the characters of *string* from *start* to *end* in left-to-right
 order to the textual output *port*.
 
-([\[write-u8\]]{#write-u8 label="write-u8"}write-u8 *byte*)  procedure\
+(write-u8 *byte*)  procedure\
 (write-u8 *byte port*)  procedure\
 Writes the *byte* to the given binary output *port* and returns an
 unspecified value.
 
-([\[write-bytevector\]]{#write-bytevector
-label="write-bytevector"}write-bytevector *bytevector*)  procedure\
+(write-bytevector *bytevector*)  procedure\
 (write-bytevector *bytevector port*)  procedure\
 (write-bytevector *bytevector port start*)  procedure\
 (write-bytevector *bytevector port start end*)  procedure\
 Writes the bytes of *bytevector* from *start* to *end* in left-to-right
 order to the binary output *port*.
 
-([\[flush-output-port\]]{#flush-output-port
-label="flush-output-port"}flush-output-port)  procedure\
+(flush-output-port)  procedure\
 (flush-output-port *port*)  procedure\
 Flushes any buffered output from the buffer of output-port to the
 underlying file or device and returns an unspecified value.
@@ -6844,7 +6107,7 @@ Questions of system interface generally fall outside of the domain of
 this report. However, the following operations are important enough to
 deserve description here.
 
-([\[load\]]{#load label="load"}load *filename*)  load library procedure\
+(load *filename*)  load library procedure\
 (load *filename environment-specifier*)  load library procedure\
 It is an error if *filename* is not a string.
 
@@ -6864,34 +6127,31 @@ value.
 operation on other kinds of files necessarily varies among
 implementations.
 
-([\[file-exists?\]]{#file-exists?
-label="file-exists?"}file-exists? *filename*)  file library procedure\
+(file-exists? *filename*)  file library procedure\
 It is an error if *filename* is not a string.
 
-The file-exists? procedure returns `#t` if the named file exists at the
-time the procedure is called, and `#f` otherwise.
+The file-exists? procedure returns \#t if the named file exists at the
+time the procedure is called, and \#f otherwise.
 
-([\[delete-file\]]{#delete-file
-label="delete-file"}delete-file *filename*)  file library procedure\
+(delete-file *filename*)  file library procedure\
 It is an error if *filename* is not a string.
 
 The delete-file procedure deletes the named file if it exists and can be
 deleted, and returns an unspecified value. If the file does not exist or
 cannot be deleted, an error that satisfies file-error? is signaled.
 
-([\[command-line\]]{#command-line label="command-line"}command-line)
- process-context library procedure\
+(command-line)  process-context library procedure\
 Returns the command line passed to the process as a list of strings. The
 first string corresponds to the command name, and is
 implementation-dependent. It is an error to mutate any of these strings.
 
-([\[exit\]]{#exit label="exit"}exit)  process-context library procedure\
+(exit)  process-context library procedure\
 (exit *obj*)  process-context library procedure\
 Runs all outstanding dynamic-wind *after* procedures, terminates the
 running program, and communicates an exit value to the operating system.
-If no argument is supplied, or if *obj* is `#t`, the exit procedure
+If no argument is supplied, or if *obj* is \#t, the exit procedure
 should communicate to the operating system that the program exited
-normally. If *obj* is `#f`, the exit procedure should communicate to the
+normally. If *obj* is \#f, the exit procedure should communicate to the
 operating system that the program exited abnormally. Otherwise, exit
 should translate *obj* into an appropriate exit value for the operating
 system, if possible.
@@ -6902,9 +6162,7 @@ continuation.
 *Note:* Because of the requirement to run handlers, this procedure is
 not just the operating system's exit procedure.
 
-([\[emergency-exit\]]{#emergency-exit
-label="emergency-exit"}emergency-exit)
- process-context library procedure\
+(emergency-exit)  process-context library procedure\
 (emergency-exit *obj*)  process-context library procedure\
 Terminates the program without running any outstanding dynamic-wind
 *after* procedures and communicates an exit value to the operating
@@ -6913,40 +6171,31 @@ system in the same manner as exit.
 *Note:* The emergency-exit procedure corresponds to the \_exit procedure
 in Windows and Posix.
 
-([\[get-environment-variable\]]{#get-environment-variable
-label="get-environment-variable"}get-environment-variable *name*)
- process-context library procedure\
+(get-environment-variable *name*)  process-context library procedure\
 Many operating systems provide each running process with an
 *environment* consisting of *environment variables*. (This environment
 is not to be confused with the Scheme environments that can be passed to
 eval: see section [\[environments\]](#environments).) Both the name and
 value of an environment variable are strings. The procedure
 get-environment-variable returns the value of the environment variable
-*name*, or `#f` if the named environment variable is not found. It may
+*name*, or \#f if the named environment variable is not found. It may
 use locale information to encode the name and decode the value of the
 environment variable. It is an error if\
 get-environment-variable can't decode the value. It is also an error to
 mutate the resulting string.
 
-```scheme
     (get-environment-variable "PATH") \lev "/usr/local/bin:/usr/bin:/bin"%
-```
 
-([\[get-environment-variables\]]{#get-environment-variables
-label="get-environment-variables"}get-environment-variables)
- process-context library procedure\
+(get-environment-variables)  process-context library procedure\
 Returns the names and values of all the environment variables as an
 alist, where the car of each entry is the name of an environment
 variable and the cdr is its value, both as strings. The order of the
 list is unspecified. It is an error to mutate any of these strings or
 the alist itself.
 
-```scheme
     (get-environment-variables) \lev (("USER" . "root") ("HOME" . "/"))%
-```
 
-([\[current-second\]]{#current-second
-label="current-second"}current-second)  time library procedure\
+(current-second)  time library procedure\
 Returns an inexact number representing the current time on the
 International Atomic Time (TAI) scale. The value 0.0 represents midnight
 on January 1, 1970 TAI (equivalent to 8.000082 seconds before midnight
@@ -6958,8 +6207,7 @@ the best an implementation can do.
 As of 2018, a TAI-UTC offset table can be found at []{.citation
 cites="TAI"}.
 
-([\[current-jiffy\]]{#current-jiffy label="current-jiffy"}current-jiffy)
- time library procedure\
+(current-jiffy)  time library procedure\
 Returns the number of *jiffies* as an exact integer that have elapsed
 since an arbitrary, implementation-defined epoch. A jiffy is an
 implementation-defined fraction of a second which is defined by the
@@ -6976,55 +6224,48 @@ while a much smaller unit would force many implementations to return
 integers which have to be allocated for most calls, rendering
 current-jiffy less useful for accurate timing measurements.
 
-([\[jiffies-per-second\]]{#jiffies-per-second
-label="jiffies-per-second"}jiffies-per-second)  time library procedure\
+(jiffies-per-second)  time library procedure\
 Returns an exact integer representing the number of jiffies per SI
 second. This value is an implementation-specified constant.
 
-```scheme
     (define (time-length)
       (let ((list (make-list 100000))
             (start (current-jiffy)))
         (length list)
         (/ (- (current-jiffy) start)
            (jiffies-per-second))))%
-```
 
-([\[features\]]{#features label="features"}features)  procedure\
+(features)  procedure\
 Returns a list of the feature identifiers which cond-expand treats as
 true. It is an error to modify this list. Here is an example of what
 features might return:
 
-```scheme
     (features) \ev
       (r7rs ratios exact-complex full-unicode
-       gnu-linux little-endian
+       gnu-linux little-endian 
        fantastic-scheme
        fantastic-scheme-1.0
        space-ship-control-system)%
-```
 
-# Formal syntax and semantics {#formalchapter}
+# Formal syntax and semantics
 
 This chapter provides formal descriptions of what has already been
 described informally in previous chapters of this report.
 
-## Formal syntax {#BNF}
+## Formal syntax
 
 This section provides a formal syntax for Scheme written in an extended
 BNF.
 
 All spaces in the grammar are for legibility. Case is not significant
-except in the definitions of $\langle$letter$\rangle$,
-$\langle$character name$\rangle$ and $\langle$mnemonic escape$\rangle$;
+except in the definitions of letter, character name and mnemonic escape;
 for example, #x1A and #X1a are equivalent, but foo and Foo and
-\#`' `space and \#`' `Space are distinct. $\langle$empty$\rangle$ stands
-for the empty string.
+\#`‘ `space and \#`‘ `Space are distinct. empty stands for the empty
+string.
 
 The following extensions to BNF are used to make the description more
-concise: $\langle$thing$\rangle$ means zero or more occurrences of
-$\langle$thing$\rangle$; and $\langle$thing$\rangle$$^{+}$ means at
-least one $\langle$thing$\rangle$.
+concise: thing means zero or more occurrences of thing; and thing$^{+}$
+means at least one thing.
 
 ### Lexical structure
 
@@ -7033,13 +6274,13 @@ etc.) are formed from sequences of characters. The following sections
 describe how expressions and programs are formed from sequences of
 tokens.
 
-$\langle$Intertoken space$\rangle$ can occur on either side of any
-token, but not within a token.
+Intertoken space can occur on either side of any token, but not within a
+token.
 
 Identifiers that do not begin with a vertical line are terminated by a
-$\langle$delimiter$\rangle$ or by the end of the input. So are dot,
-numbers, characters, and booleans. Identifiers that begin with a
-vertical line are terminated by another vertical line.
+delimiter or by the end of the input. So are dot, numbers, characters,
+and booleans. Identifiers that begin with a vertical line are terminated
+by another vertical line.
 
 The following four characters from the ASCII repertoire are reserved for
 future extensions to the language: `[ ] { }`
@@ -7056,295 +6297,153 @@ character to have a general category of Nd, Mc, or Me. It is also an
 error to use a non-Unicode character in symbols or identifiers.
 
 All Scheme implementations must permit the escape sequence
-`' x<hexdigits>;` to appear in Scheme identifiers that are enclosed in
+`‘ x<hexdigits>;` to appear in Scheme identifiers that are enclosed in
 vertical lines. If the character with the given Unicode scalar value is
 supported by the implementation, identifiers containing such a sequence
 are equivalent to identifiers containing the corresponding character.
 
-̄ $|$  $\langle$token$\rangle$ $\rightarrow$
-$\langle$identifier$\rangle$ $|$ $\langle$boolean$\rangle$ $|$
-$\langle$number$\rangle$ $|$ $\langle$character$\rangle$ $|$
-$\langle$string$\rangle$ $|$ ( $|$ ) $|$ `#`( $|$ `#`u8( $|$ `’` $|$ ``
-$|$ , $|$ ,@ $|$ **.** $\langle$delimiter$\rangle$ $\rightarrow$
-$\langle$whitespace$\rangle$ $|$ $\langle$vertical line$\rangle$ $|$ (
-$|$ ) $|$ \" $|$ ; $\langle$intraline whitespace$\rangle$ $\rightarrow$
-$\langle$space or tab$\rangle$ $\langle$whitespace$\rangle$
-$\rightarrow$ $\langle$intraline whitespace$\rangle$ $|$
-$\langle$line ending$\rangle$ $\langle$vertical line$\rangle$
-$\rightarrow$ \| $\langle$line ending$\rangle$ $\rightarrow$
-$\langle$newline$\rangle$ $|$ $\langle$return$\rangle$
-$\langle$newline$\rangle$ $|$ $\langle$return$\rangle$
-$\langle$comment$\rangle$ $\rightarrow$ ;  $\langle$all subsequent
-characters up to a  line ending$\rangle$ $|$
-$\langle$nested comment$\rangle$ $|$ #;
-$\langle$intertoken space$\rangle$ $\langle$datum$\rangle$
-$\langle$nested comment$\rangle$ $\rightarrow$ #\|
-$\langle$comment text$\rangle$ $\langle$comment cont$\rangle$ \|\#
-$\langle$comment text$\rangle$ $\rightarrow$  $\langle$character
-sequence not containing  `#|` or `|#`$\rangle$
-$\langle$comment cont$\rangle$ $\rightarrow$
-$\langle$nested comment$\rangle$ $\langle$comment text$\rangle$
-$\langle$directive$\rangle$ $\rightarrow$ #!fold-case $|$ #!no-fold-case
+̄ $|$ ̄ token ⟶ identifier $|$ boolean $|$ number $|$ character $|$
+string $|$ ( $|$ ) $|$ `#`( $|$ `#`u8( $|$ `’` $|$ `` $|$ , $|$ ,@ $|$
+**.** delimiter ⟶ whitespace $|$ vertical line $|$ ( $|$ ) $|$ \" $|$ ;
+intraline whitespace ⟶ space or tab whitespace ⟶ intraline whitespace
+$|$ line ending vertical line ⟶ \| line ending ⟶ newline $|$ return
+newline $|$ return comment ⟶ ; ̄ $\langle$all subsequent characters up
+to a  line ending$\rangle$ $|$ nested comment $|$ #; intertoken space
+datum nested comment ⟶ #\| c̄omment text comment cont \|\# comment text ⟶
+̄ $\langle$character sequence not containing  `#|` or `|#`$\rangle$
+comment cont ⟶ nested comment comment text directive ⟶ #!fold-case $|$
+#!no-fold-case
 
-Note that it is ungrammatical to follow a $\langle$directive$\rangle$
-with anything but a $\langle$delimiter$\rangle$ or the end of file.
+Note that it is ungrammatical to follow a directive with anything but a
+delimiter or the end of file.
 
-̄ $|$  $\langle$atmosphere$\rangle$ $\rightarrow$
-$\langle$whitespace$\rangle$ $|$ $\langle$comment$\rangle$ $|$
-$\langle$directive$\rangle$ $\langle$intertoken space$\rangle$
-$\rightarrow$ $\langle$atmosphere$\rangle$
+̄ $|$ ̄ atmosphere ⟶ whitespace $|$ comment $|$ directive
+intertoken space ⟶ atmosphere
 
-[\[extendedalphas\]]{#extendedalphas label="extendedalphas"}
-[\[identifiersyntax\]]{#identifiersyntax label="identifiersyntax"}
+identifier ⟶ $\langle$
 
-$\langle$identifier$\rangle$ $\rightarrow$ $\langle$
+Note that +i, -i and infnan below are exceptions to the
+peculiar identifier rule; they are parsed as numbers, not identifiers.
 
-Note that +i, -i and $\langle$infnan$\rangle$ below are exceptions to
-the $\langle$peculiar identifier$\rangle$ rule; they are parsed as
-numbers, not identifiers.
+̄ $|$ ̄ identifier ⟶ initial subsequent $|$ vertical line symbol element
+vertical line $|$ peculiar identifier initial ⟶ letter $|$
+special initial letter ⟶ a $|$ b $|$ c $|$ \... $|$ z $|$ A $|$ B $|$ C
+$|$ \... $|$ Z special initial ⟶ ! $|$ \$ $|$ % $|$ `&` $|$ \* $|$ / $|$
+: $|$ \< $|$ = $|$ \> $|$ ? $|$ @ $|$ `^` $|$ `_` $|$ `~` subsequent ⟶
+initial $|$ digit $|$ special subsequent digit ⟶ 0 $|$ 1 $|$ 2 $|$ 3 $|$
+4 $|$ 5 $|$ 6 $|$ 7 $|$ 8 $|$ 9 hex digit ⟶ digit $|$ a $|$ b $|$ c $|$
+d $|$ e $|$ f explicit sign ⟶ + $|$ - special subsequent ⟶ explicit sign
+$|$ . $|$ @ inline hex escape ⟶ `‘ `xhex scalar value; hex scalar value
+⟶ hex digit$^{+}$ mnemonic escape ⟶ `‘ `a $|$ `‘ `b $|$ `‘ `t $|$ `‘ `n
+$|$ `‘ `r peculiar identifier ⟶ explicit sign $|$ explicit sign
+sign subsequent subsequent $|$ explicit sign . dot subsequent subsequent
+$|$ . dot subsequent subsequent dot subsequent ⟶ sign subsequent $|$ .
+sign subsequent ⟶ initial $|$ explicit sign $|$ @ symbol element ⟶
+any character other than vertical line or `‘ ` $|$ inline hex escape $|$
+mnemonic escape $|$ `‘ `\|
 
-̄ $|$  $\langle$identifier$\rangle$ $\rightarrow$
-$\langle$initial$\rangle$ $\langle$subsequent$\rangle$ $|$
-$\langle$vertical line$\rangle$ $\langle$symbol element$\rangle$
-$\langle$vertical line$\rangle$ $|$
-$\langle$peculiar identifier$\rangle$ $\langle$initial$\rangle$
-$\rightarrow$ $\langle$letter$\rangle$ $|$
-$\langle$special initial$\rangle$ $\langle$letter$\rangle$ $\rightarrow$
-a $|$ b $|$ c $|$ \... $|$ z $|$ A $|$ B $|$ C $|$ \... $|$ Z
-$\langle$special initial$\rangle$ $\rightarrow$ ! $|$ \$ $|$ % $|$ `&`
-$|$ \* $|$ / $|$ : $|$ \< $|$ = $|$ \> $|$ ? $|$ @ $|$ `^` $|$ `_` $|$
-`~` $\langle$subsequent$\rangle$ $\rightarrow$ $\langle$initial$\rangle$
-$|$ $\langle$digit$\rangle$ $|$ $\langle$special subsequent$\rangle$
-$\langle$digit$\rangle$ $\rightarrow$ 0 $|$ 1 $|$ 2 $|$ 3 $|$ 4 $|$ 5
-$|$ 6 $|$ 7 $|$ 8 $|$ 9 $\langle$hex digit$\rangle$ $\rightarrow$
-$\langle$digit$\rangle$ $|$ a $|$ b $|$ c $|$ d $|$ e $|$ f
-$\langle$explicit sign$\rangle$ $\rightarrow$ + $|$ -
-$\langle$special subsequent$\rangle$ $\rightarrow$
-$\langle$explicit sign$\rangle$ $|$ . $|$ @
-$\langle$inline hex escape$\rangle$ $\rightarrow$
-`' `x$\langle$hex scalar value$\rangle$;
-$\langle$hex scalar value$\rangle$ $\rightarrow$
-$\langle$hex digit$\rangle$$^{+}$ $\langle$mnemonic escape$\rangle$
-$\rightarrow$ `' `a $|$ `' `b $|$ `' `t $|$ `' `n $|$ `' `r
-$\langle$peculiar identifier$\rangle$ $\rightarrow$
-$\langle$explicit sign$\rangle$ $|$ $\langle$explicit sign$\rangle$
-$\langle$sign subsequent$\rangle$ $\langle$subsequent$\rangle$ $|$
-$\langle$explicit sign$\rangle$ . $\langle$dot subsequent$\rangle$
-$\langle$subsequent$\rangle$ $|$ . $\langle$dot subsequent$\rangle$
-$\langle$subsequent$\rangle$ $\langle$dot subsequent$\rangle$
-$\rightarrow$ $\langle$sign subsequent$\rangle$ $|$ .
-$\langle$sign subsequent$\rangle$ $\rightarrow$
-$\langle$initial$\rangle$ $|$ $\langle$explicit sign$\rangle$ $|$ @
-$\langle$symbol element$\rangle$ $\rightarrow$
-$\langle$any character other than $\langle$vertical line$\rangle$ or `' `$\rangle$
-$|$ $\langle$inline hex escape$\rangle$ $|$
-$\langle$mnemonic escape$\rangle$ $|$ `' `\|
+boolean ⟶ \#t $|$ \#f $|$ \#true $|$ \#false
 
-$\langle$boolean$\rangle$ $\rightarrow$ `#t` $|$ `#f` $|$ `#true` $|$
-`#false` [\[charactersyntax\]]{#charactersyntax label="charactersyntax"}
-$\langle$character$\rangle$ $\rightarrow$ \#`' `
-$\langle$any character$\rangle$ $|$ \#`' `
-$\langle$character name$\rangle$ $|$
-\#`' `x$\langle$hex scalar value$\rangle$
-$\langle$character name$\rangle$ $\rightarrow$ alarm $|$ backspace $|$
-delete $|$ escape $|$ newline $|$ null $|$ return $|$ space $|$ tab
+character ⟶ \#`‘ ` any character $|$ \#`‘ ` character name $|$
+\#`‘ `xhex scalar value character name ⟶ alarm $|$ backspace $|$ delete
+$|$ escape $|$ newline $|$ null $|$ return $|$ space $|$ tab
 
-$\langle$string$\rangle$ $\rightarrow$ \"
-$\langle$string element$\rangle$ \" $\langle$string element$\rangle$
-$\rightarrow$ $\langle$any character other than `"` or `' `$\rangle$ $|$
-$\langle$mnemonic escape$\rangle$ $|$ `' ``"` $|$ `' ``' ` $|$ `' `\|
-$|$
-`' `$\langle$intraline whitespace$\rangle$$\langle$line ending$\rangle$
-$\langle$intraline whitespace$\rangle$ $|$
-$\langle$inline hex escape$\rangle$ $\langle$bytevector$\rangle$
-$\rightarrow$ #u8($\langle$byte$\rangle$) $\langle$byte$\rangle$
-$\rightarrow$ $\langle$any exact integer between 0 and 255$\rangle$
+string ⟶ \" string element \" string element ⟶
+any character other than `"` or `‘ ` $|$ mnemonic escape $|$ `‘ ``"` $|$
+`‘ ``‘ ` $|$ `‘ `\| $|$ `‘ `intraline whitespaceline ending
+intraline whitespace $|$ inline hex escape bytevector ⟶ #u8(byte) byte ⟶
+any exact integer between 0 and 255
 
-[\[numbersyntax\]]{#numbersyntax label="numbersyntax"}
+̄ $|$ ̄ number ⟶ num $2$ $|$ num $8$ $|$ num $10$ $|$ num $16$
 
-̄ $|$  $\langle$number$\rangle$ $\rightarrow$ $\langle$num $2$$\rangle$
-$|$ $\langle$num $8$$\rangle$ $|$ $\langle$num $10$$\rangle$ $|$
-$\langle$num $16$$\rangle$
+The following rules for num $R$, complex $R$, real $R$, ureal $R$,
+uinteger $R$, and prefix $R$ are implicitly replicated for $R = 2,8,10,$
+and $16$. There are no rules for decimal $2$, decimal $8$, and
+decimal $16$, which means that numbers containing decimal points or
+exponents are always in decimal radix. Although not shown below, all
+alphabetic characters used in the grammar of numbers can appear in
+either upper or lower case. ̄ $|$ ̄ num $R$ ⟶ prefix $R$ complex $R$
+complex $R$ ⟶ real $R$ $|$ real $R$ @ real $R$ $|$ real $R$ + ureal $R$
+i $|$ real $R$ - ureal $R$ i $|$ real $R$ + i $|$ real $R$ - i $|$
+real $R$ infnan i $|$ + ureal $R$ i $|$ - ureal $R$ i $|$ infnan i $|$ +
+i $|$ - i real $R$ ⟶ sign ureal $R$ $|$ infnan ureal $R$ ⟶ uinteger $R$
+$|$ uinteger $R$ / uinteger $R$ $|$ decimal $R$ decimal $10$ ⟶
+uinteger $10$ suffix $|$ . digit $10$$^{+}$ suffix $|$ digit $10$$^{+}$
+. digit $10$ suffix uinteger $R$ ⟶ digit $R$$^{+}$ prefix $R$ ⟶
+radix $R$ exactness $|$ exactness radix $R$ infnan ⟶ +inf.0 $|$ -inf.0
+$|$ +nan.0 $|$ -nan.0
 
-The following rules for $\langle$num $R$$\rangle$,
-$\langle$complex $R$$\rangle$, $\langle$real $R$$\rangle$,
-$\langle$ureal $R$$\rangle$, $\langle$uinteger $R$$\rangle$, and
-$\langle$prefix $R$$\rangle$ are implicitly replicated for $R = 2,8,10,$
-and $16$. There are no rules for $\langle$decimal $2$$\rangle$,
-$\langle$decimal $8$$\rangle$, and $\langle$decimal $16$$\rangle$, which
-means that numbers containing decimal points or exponents are always in
-decimal radix. Although not shown below, all alphabetic characters used
-in the grammar of numbers can appear in either upper or lower case.
-$|$  $\langle$num $R$$\rangle$ $\rightarrow$
-$\langle$prefix $R$$\rangle$ $\langle$complex $R$$\rangle$
-$\langle$complex $R$$\rangle$ $\rightarrow$ $\langle$real $R$$\rangle$
-$|$ $\langle$real $R$$\rangle$ @ $\langle$real $R$$\rangle$ $|$
-$\langle$real $R$$\rangle$ + $\langle$ureal $R$$\rangle$ i $|$
-$\langle$real $R$$\rangle$ - $\langle$ureal $R$$\rangle$ i $|$
-$\langle$real $R$$\rangle$ + i $|$ $\langle$real $R$$\rangle$ - i $|$
-$\langle$real $R$$\rangle$ $\langle$infnan$\rangle$ i $|$ +
-$\langle$ureal $R$$\rangle$ i $|$ - $\langle$ureal $R$$\rangle$ i $|$
-$\langle$infnan$\rangle$ i $|$ + i $|$ - i $\langle$real $R$$\rangle$
-$\rightarrow$ $\langle$sign$\rangle$ $\langle$ureal $R$$\rangle$ $|$
-$\langle$infnan$\rangle$ $\langle$ureal $R$$\rangle$ $\rightarrow$
-$\langle$uinteger $R$$\rangle$ $|$ $\langle$uinteger $R$$\rangle$ /
-$\langle$uinteger $R$$\rangle$ $|$ $\langle$decimal $R$$\rangle$
-$\langle$decimal $10$$\rangle$ $\rightarrow$
-$\langle$uinteger $10$$\rangle$ $\langle$suffix$\rangle$ $|$ .
-$\langle$digit $10$$\rangle$$^{+}$ $\langle$suffix$\rangle$ $|$
-$\langle$digit $10$$\rangle$$^{+}$ . $\langle$digit $10$$\rangle$
-$\langle$suffix$\rangle$ $\langle$uinteger $R$$\rangle$ $\rightarrow$
-$\langle$digit $R$$\rangle$$^{+}$ $\langle$prefix $R$$\rangle$
-$\rightarrow$ $\langle$radix $R$$\rangle$ $\langle$exactness$\rangle$
-$|$ $\langle$exactness$\rangle$ $\langle$radix $R$$\rangle$
-$\langle$infnan$\rangle$ $\rightarrow$ +inf.0 $|$ -inf.0 $|$ +nan.0 $|$
--nan.0
+̄ $|$ ̄ suffix ⟶ empty $|$ exponent marker sign digit $10$$^{+}$
+exponent marker ⟶ e sign ⟶ empty $|$ + $|$ - exactness ⟶ empty $|$ #i
+$|$ #e radix 2 ⟶ #b radix 8 ⟶ #o radix 10 ⟶ empty $|$ #d radix 16 ⟶ #x
+digit 2 ⟶ 0 $|$ 1 digit 8 ⟶ 0 $|$ 1 $|$ 2 $|$ 3 $|$ 4 $|$ 5 $|$ 6 $|$ 7
+digit 10 ⟶ digit digit 16 ⟶ digit $10$ $|$ a $|$ b $|$ c $|$ d $|$ e $|$
+f
 
-̄ $|$  $\langle$suffix$\rangle$ $\rightarrow$ $\langle$empty$\rangle$
-$|$ $\langle$exponent marker$\rangle$ $\langle$sign$\rangle$
-$\langle$digit $10$$\rangle$$^{+}$ $\langle$exponent marker$\rangle$
-$\rightarrow$ e $\langle$sign$\rangle$ $\rightarrow$
-$\langle$empty$\rangle$ $|$ + $|$ - $\langle$exactness$\rangle$
-$\rightarrow$ $\langle$empty$\rangle$ $|$ #i $|$ #e
-$\langle$radix 2$\rangle$ $\rightarrow$ #b $\langle$radix 8$\rangle$
-$\rightarrow$ #o $\langle$radix 10$\rangle$ $\rightarrow$
-$\langle$empty$\rangle$ $|$ #d $\langle$radix 16$\rangle$ $\rightarrow$
-#x $\langle$digit 2$\rangle$ $\rightarrow$ 0 $|$ 1
-$\langle$digit 8$\rangle$ $\rightarrow$ 0 $|$ 1 $|$ 2 $|$ 3 $|$ 4 $|$ 5
-$|$ 6 $|$ 7 $\langle$digit 10$\rangle$ $\rightarrow$
-$\langle$digit$\rangle$ $\langle$digit 16$\rangle$ $\rightarrow$
-$\langle$digit $10$$\rangle$ $|$ a $|$ b $|$ c $|$ d $|$ e $|$ f
+### External representations
 
-### External representations {#datumsyntax}
+Datum is what the `read` procedure (section [\[read\]](#read))
+successfully parses. Note that any string that parses as an expression
+will also parse as a datum.
 
-$\langle$Datum$\rangle$ is what the `read` procedure
-(section [\[read\]](#read)) successfully parses. Note that any string
-that parses as an $\langle$expression$\rangle$ will also parse as a
-$\langle$datum$\rangle$. [\[datum\]]{#datum label="datum"}
+̄ $|$ ̄ datum ⟶ simple datum $|$ compound datum $|$ label = datum $|$
+label \# simple datum ⟶ boolean $|$ number $|$ character $|$ string $|$
+symbol $|$ bytevector symbol ⟶ identifier compound datum ⟶ list $|$
+vector $|$ abbreviation list ⟶ (datum) $|$ (datum$^{+}$ . datum)
+abbreviation ⟶ abbrev prefix datum abbrev prefix ⟶ ' $|$ ' $|$ , $|$ ,@
+vector ⟶ #(datum) label ⟶ \# uinteger 10
 
-̄ $|$  $\langle$datum$\rangle$ $\rightarrow$
-$\langle$simple datum$\rangle$ $|$ $\langle$compound datum$\rangle$ $|$
-$\langle$label$\rangle$ = $\langle$datum$\rangle$ $|$
-$\langle$label$\rangle$ \# $\langle$simple datum$\rangle$ $\rightarrow$
-$\langle$boolean$\rangle$ $|$ $\langle$number$\rangle$ $|$
-$\langle$character$\rangle$ $|$ $\langle$string$\rangle$ $|$
-$\langle$symbol$\rangle$ $|$ $\langle$bytevector$\rangle$
-$\langle$symbol$\rangle$ $\rightarrow$ $\langle$identifier$\rangle$
-$\langle$compound datum$\rangle$ $\rightarrow$ $\langle$list$\rangle$
-$|$ $\langle$vector$\rangle$ $|$ $\langle$abbreviation$\rangle$
-$\langle$list$\rangle$ $\rightarrow$ ($\langle$datum$\rangle$) $|$
-($\langle$datum$\rangle$$^{+}$ . $\langle$datum$\rangle$)
-$\langle$abbreviation$\rangle$ $\rightarrow$
-$\langle$abbrev prefix$\rangle$ $\langle$datum$\rangle$
-$\langle$abbrev prefix$\rangle$ $\rightarrow$ ' $|$ ' $|$ , $|$ ,@
-$\langle$vector$\rangle$ $\rightarrow$ #($\langle$datum$\rangle$)
-$\langle$label$\rangle$ $\rightarrow$ \# $\langle$uinteger 10$\rangle$
-
-### Expressions {#expressions}
+### Expressions
 
 The definitions in this and the following subsections assume that all
 the syntax keywords defined in this report have been properly imported
 from their libraries, and that none of them have been redefined or
 shadowed.
 
-̄ $|$  $\langle$expression$\rangle$ $\rightarrow$
-$\langle$identifier$\rangle$ $|$ $\langle$literal$\rangle$ $|$
-$\langle$procedure call$\rangle$ $|$ $\langle$lambda expression$\rangle$
-$|$ $\langle$conditional$\rangle$ $|$ $\langle$assignment$\rangle$ $|$
-$\langle$derived expression$\rangle$ $|$ $\langle$macro use$\rangle$ $|$
-$\langle$macro block$\rangle$ $|$ $\langle$includer$\rangle$
+̄ $|$ ̄ expression ⟶ identifier $|$ literal $|$ procedure call $|$
+lambda expression $|$ conditional $|$ assignment $|$ derived expression
+$|$ macro use $|$ macro block $|$ includer
 
-$\langle$literal$\rangle$ $\rightarrow$ $\langle$quotation$\rangle$ $|$
-$\langle$self-evaluating$\rangle$ $\langle$self-evaluating$\rangle$
-$\rightarrow$ $\langle$boolean$\rangle$ $|$ $\langle$number$\rangle$ $|$
-$\langle$vector$\rangle$ $|$ $\langle$character$\rangle$ $|$
-$\langle$string$\rangle$ $|$ $\langle$bytevector$\rangle$
-$\langle$quotation$\rangle$ $\rightarrow$ '$\langle$datum$\rangle$ $|$
-(quote $\langle$datum$\rangle$) $\langle$procedure call$\rangle$
-$\rightarrow$ ($\langle$operator$\rangle$ $\langle$operand$\rangle$)
-$\langle$operator$\rangle$ $\rightarrow$ $\langle$expression$\rangle$
-$\langle$operand$\rangle$ $\rightarrow$ $\langle$expression$\rangle$
+literal ⟶ quotation $|$ self-evaluating self-evaluating ⟶ boolean $|$
+number $|$ vector $|$ character $|$ string $|$ bytevector quotation ⟶
+'datum $|$ (quote datum) procedure call ⟶ (operator operand) operator ⟶
+expression operand ⟶ expression
 
-$\langle$lambda expression$\rangle$ $\rightarrow$ (lambda
-$\langle$formals$\rangle$ $\langle$body$\rangle$)
-$\langle$formals$\rangle$ $\rightarrow$ ($\langle$identifier$\rangle$)
-$|$ $\langle$identifier$\rangle$ $|$ ($\langle$identifier$\rangle$$^{+}$
-. $\langle$identifier$\rangle$) $\langle$body$\rangle$ $\rightarrow$
-$\langle$definition$\rangle$ $\langle$sequence$\rangle$
-$\langle$sequence$\rangle$ $\rightarrow$ $\langle$command$\rangle$
-$\langle$expression$\rangle$ $\langle$command$\rangle$ $\rightarrow$
-$\langle$expression$\rangle$
+lambda expression ⟶ (lambda formals body) formals ⟶ (identifier) $|$
+identifier $|$ (identifier$^{+}$ . identifier) body ⟶ definition
+sequence sequence ⟶ command expression command ⟶ expression
 
-$\langle$conditional$\rangle$ $\rightarrow$ (if $\langle$test$\rangle$
-$\langle$consequent$\rangle$ $\langle$alternate$\rangle$)
-$\langle$test$\rangle$ $\rightarrow$ $\langle$expression$\rangle$
-$\langle$consequent$\rangle$ $\rightarrow$ $\langle$expression$\rangle$
-$\langle$alternate$\rangle$ $\rightarrow$ $\langle$expression$\rangle$
-$|$ $\langle$empty$\rangle$
+conditional ⟶ (if test consequent alternate) test ⟶ expression
+consequent ⟶ expression alternate ⟶ expression $|$ empty
 
-$\langle$assignment$\rangle$ $\rightarrow$ (set!
-$\langle$identifier$\rangle$ $\langle$expression$\rangle$)
+assignment ⟶ (set! identifier expression)
 
-$\langle$derived expression$\rangle$ $\rightarrow$ (cond
-$\langle$cond clause$\rangle$$^{+}$) $|$ (cond
-$\langle$cond clause$\rangle$ (else $\langle$sequence$\rangle$)) $|$
-(cāse $\langle$expression$\rangle$ $^{+}$) $|$ (cāse
-$\langle$expression$\rangle$ (else $\langle$sequence$\rangle$)) $|$
-(cāse $\langle$expression$\rangle$ (else =>
-$\langle$recipient$\rangle$)) $|$ (and $\langle$test$\rangle$) $|$ (or
-$\langle$test$\rangle$) $|$ (when $\langle$test$\rangle$
-$\langle$sequence$\rangle$) $|$ (unless $\langle$test$\rangle$
-$\langle$sequence$\rangle$) $|$ (let ($\langle$binding spec$\rangle$)
-$\langle$body$\rangle$) $|$ (let $\langle$identifier$\rangle$
-($\langle$binding spec$\rangle$) $\langle$body$\rangle$) $|$ (let\*
-($\langle$binding spec$\rangle$) $\langle$body$\rangle$) $|$ (letrec
-($\langle$binding spec$\rangle$) $\langle$body$\rangle$) $|$ (letrec\*
-($\langle$binding spec$\rangle$) $\langle$body$\rangle$) $|$ (let-values
-($\langle$mv binding spec$\rangle$) $\langle$body$\rangle$) $|$
-(let\*-values ($\langle$mv binding spec$\rangle$)
-$\langle$body$\rangle$) $|$ (begin $\langle$sequence$\rangle$) $|$ (do
-($\langle$iteration spec$\rangle$) ($\langle$test$\rangle$
-$\langle$do result$\rangle$) ) $|$ (delay $\langle$expression$\rangle$)
-$|$ (delay-force $\langle$expression$\rangle$) $|$ (pārameterize
-(($\langle$expression$\rangle$ $\langle$expression$\rangle$))
-$\langle$body$\rangle$) $|$ (guard ($\langle$identifier$\rangle$
-$\langle$cond clause$\rangle$) $\langle$body$\rangle$) $|$
-$\langle$quasiquotation$\rangle$ $|$ (cāse-lambda
-$\langle$case-lambda clause$\rangle$)
+derived expression ⟶ (cond cond clause$^{+}$) $|$ (cond cond clause
+(else sequence)) $|$ (cāse expression $^{+}$) $|$ (cāse expression (else
+sequence)) $|$ (cāse expression (else => recipient)) $|$ (and test) $|$
+(or test) $|$ (when test sequence) $|$ (unless test sequence) $|$ (let
+(binding spec) body) $|$ (let identifier (binding spec) body) $|$ (let\*
+(binding spec) body) $|$ (letrec (binding spec) body) $|$ (letrec\*
+(binding spec) body) $|$ (let-values (mv binding spec) body) $|$
+(let\*-values (mv binding spec) body) $|$ (begin sequence) $|$ (dō
+(̄iteration spec) (test do result) ) $|$ (delay expression) $|$
+(delay-force expression) $|$ (pārameterize ((expression expression))
+body) $|$ (guard (identifier cond clause) body) $|$ quasiquotation $|$
+(cāse-lambda case-lambda clause)
 
-$\langle$cond clause$\rangle$ $\rightarrow$ ($\langle$test$\rangle$
-$\langle$sequence$\rangle$) $|$ ($\langle$test$\rangle$) $|$
-($\langle$test$\rangle$ => $\langle$recipient$\rangle$)
-$\langle$recipient$\rangle$ $\rightarrow$ $\langle$expression$\rangle$
-$\langle$case clause$\rangle$ $\rightarrow$ (($\langle$datum$\rangle$)
-$\langle$sequence$\rangle$) $|$ (($\langle$datum$\rangle$) =>
-$\langle$recipient$\rangle$) $\langle$binding spec$\rangle$
-$\rightarrow$ ($\langle$identifier$\rangle$
-$\langle$expression$\rangle$) $\langle$mv binding spec$\rangle$
-$\rightarrow$ ($\langle$formals$\rangle$ $\langle$expression$\rangle$)
-$\langle$iteration spec$\rangle$ $\rightarrow$
-($\langle$identifier$\rangle$ $\langle$init$\rangle$
-$\langle$step$\rangle$) $|$ ($\langle$identifier$\rangle$
-$\langle$init$\rangle$) $\langle$case-lambda clause$\rangle$
-$\rightarrow$ ($\langle$formals$\rangle$ $\langle$body$\rangle$)
-$\langle$init$\rangle$ $\rightarrow$ $\langle$expression$\rangle$
-$\langle$step$\rangle$ $\rightarrow$ $\langle$expression$\rangle$
-$\langle$do result$\rangle$ $\rightarrow$ $\langle$sequence$\rangle$ $|$
-$\langle$empty$\rangle$
+cond clause ⟶ (test sequence) $|$ (test) $|$ (test => recipient)
+recipient ⟶ expression case clause ⟶ ((datum) sequence) $|$ ((datum) =>
+recipient) binding spec ⟶ (identifier expression) mv binding spec ⟶
+(formals expression) iteration spec ⟶ (identifier init step) $|$
+(identifier init) case-lambda clause ⟶ (formals body) init ⟶ expression
+step ⟶ expression do result ⟶ sequence $|$ empty
 
-$\langle$macro use$\rangle$ $\rightarrow$ ($\langle$keyword$\rangle$
-$\langle$datum$\rangle$) $\langle$keyword$\rangle$ $\rightarrow$
-$\langle$identifier$\rangle$
+macro use ⟶ (keyword datum) keyword ⟶ identifier
 
-$\langle$macro block$\rangle$ $\rightarrow$ (let-syntax
-($\langle$syntax spec$\rangle$) $\langle$body$\rangle$) $|$
-(letrec-syntax ($\langle$syntax spec$\rangle$) $\langle$body$\rangle$)
-$\langle$syntax spec$\rangle$ $\rightarrow$ ($\langle$keyword$\rangle$
-$\langle$transformer spec$\rangle$)
+macro block ⟶ (let-syntax (syntax spec) body) $|$ (letrec-syntax
+(syntax spec) body) syntax spec ⟶ (keyword transformer spec)
 
-$\langle$includer$\rangle$ $\rightarrow$ $|$ (include
-$\langle$string$\rangle$$^{+}$) $|$ (include-ci
-$\langle$string$\rangle$$^{+}$)
+includer ⟶ $|$ (include string$^{+}$) $|$ (include-ci string$^{+}$)
 
 ### Quasiquotations
 
@@ -7353,39 +6452,22 @@ is presented as a recipe for generating an infinite number of production
 rules. Imagine a copy of the following rules for $D = 1,2,3,\ldots$,
 where $D$ is the nesting depth.
 
-̄ $|$  $\langle$quasiquotation$\rangle$ $\rightarrow$
-$\langle$quasiquotation 1$\rangle$ $\langle$qq template 0$\rangle$
-$\rightarrow$ $\langle$expression$\rangle$
-$\langle$quasiquotation $D$$\rangle$ $\rightarrow$
-'$\langle$qq template $D$$\rangle$ $|$ (quasiquote
-$\langle$qq template $D$$\rangle$) $\langle$qq template $D$$\rangle$
-$\rightarrow$ $\langle$simple datum$\rangle$ $|$
-$\langle$list qq template $D$$\rangle$ $|$
-$\langle$vector qq template $D$$\rangle$ $|$
-$\langle$unquotation $D$$\rangle$ $\langle$list qq template $D$$\rangle$
-$\rightarrow$ ($\langle$qq template or splice $D$$\rangle$) $|$
-($\langle$qq template or splice $D$$\rangle$$^{+}$
-. $\langle$qq template $D$$\rangle$) $|$
-'$\langle$qq template $D$$\rangle$ $|$
-$\langle$quasiquotation $D + 1$$\rangle$
-$\langle$vector qq template $D$$\rangle$ $\rightarrow$
-#($\langle$qq template or splice $D$$\rangle$)
-$\langle$unquotation $D$$\rangle$ $\rightarrow$
-,$\langle$qq template $D - 1$$\rangle$ $|$ (unquote
-$\langle$qq template $D - 1$$\rangle$)
-$\langle$qq template or splice $D$$\rangle$ $\rightarrow$
-$\langle$qq template $D$$\rangle$ $|$
-$\langle$splicing unquotation $D$$\rangle$
-$\langle$splicing unquotation $D$$\rangle$ $\rightarrow$
-,@$\langle$qq template $D - 1$$\rangle$ $|$ (unquote-splicing
-$\langle$qq template $D - 1$$\rangle$)
+̄ $|$ ̄ quasiquotation ⟶ quasiquotation 1 qq template 0 ⟶ expression
+quasiquotation $D$ ⟶ 'qq template $D$ $|$ (quasiquote qq template $D$)
+qq template $D$ ⟶ simple datum $|$ list qq template $D$ $|$
+vector qq template $D$ $|$ unquotation $D$ list qq template $D$ ⟶
+(qq template or splice $D$) $|$ (qq template or splice $D$$^{+}$
+. qq template $D$) $|$ 'qq template $D$ $|$ quasiquotation $D + 1$
+vector qq template $D$ ⟶ #(qq template or splice $D$) unquotation $D$ ⟶
+,qq template $D - 1$ $|$ (unquote qq template $D - 1$)
+qq template or splice $D$ ⟶ qq template $D$ $|$ splicing unquotation $D$
+splicing unquotation $D$ ⟶ ,@qq template $D - 1$ $|$ (unquote-splicing
+qq template $D - 1$)
 
-In $\langle$quasiquotation$\rangle$s, a
-$\langle$list qq template $D$$\rangle$ can sometimes be confused with
-either an $\langle$unquotation $D$$\rangle$ or a
-$\langle$splicing unquotation $D$$\rangle$. The interpretation as an
-$\langle$unquotation$\rangle$ or
-$\langle$splicing unquotation $D$$\rangle$ takes precedence.
+In quasiquotations, a list qq template $D$ can sometimes be confused
+with either an unquotation $D$ or a splicing unquotation $D$. The
+interpretation as an unquotation or splicing unquotation $D$ takes
+precedence.
 
 ### Transformers
 
@@ -7393,107 +6475,52 @@ $\langle$splicing unquotation $D$$\rangle$ takes precedence.
 pattern must be a list pattern, not a vector pattern or an identifier
 pattern.
 
-̄ $|$  $\langle$transformer spec$\rangle$ $\rightarrow$ (syntax-rules
-($\langle$identifier$\rangle$) $\langle$syntax rule$\rangle$) $|$
-(syntax-rules $\langle$identifier$\rangle$
-($\langle$identifier$\rangle$)   $\langle$syntax rule$\rangle$)
-$\langle$syntax rule$\rangle$ $\rightarrow$ ($\langle$pattern$\rangle$
-$\langle$template$\rangle$) $\langle$pattern$\rangle$ $\rightarrow$
-$\langle$pattern identifier$\rangle$ $|$ $\langle$underscore$\rangle$
-$|$ ($\langle$pattern$\rangle$) $|$ ($\langle$pattern$\rangle$$^{+}$ .
-$\langle$pattern$\rangle$) $|$ ($\langle$pattern$\rangle$
-$\langle$pattern$\rangle$ $\langle$ellipsis$\rangle$
-$\langle$pattern$\rangle$) $|$ ($\langle$pattern$\rangle$
-$\langle$pattern$\rangle$ $\langle$ellipsis$\rangle$
-$\langle$pattern$\rangle$   . $\langle$pattern$\rangle$) $|$
-#($\langle$pattern$\rangle$) $|$ #($\langle$pattern$\rangle$
-$\langle$pattern$\rangle$ $\langle$ellipsis$\rangle$
-$\langle$pattern$\rangle$) $|$ $\langle$pattern datum$\rangle$
-$\langle$pattern datum$\rangle$ $\rightarrow$ $\langle$string$\rangle$
-$|$ $\langle$character$\rangle$ $|$ $\langle$boolean$\rangle$ $|$
-$\langle$number$\rangle$ $|$ $\langle$bytevector$\rangle$
-$\langle$template$\rangle$ $\rightarrow$
-$\langle$pattern identifier$\rangle$ $|$
-($\langle$template element$\rangle$) $|$
-($\langle$template element$\rangle$$^{+}$ . $\langle$template$\rangle$)
-$|$ #($\langle$template element$\rangle$) $|$
-$\langle$template datum$\rangle$ $\langle$template element$\rangle$
-$\rightarrow$ $\langle$template$\rangle$ $|$ $\langle$template$\rangle$
-$\langle$ellipsis$\rangle$ $\langle$template datum$\rangle$
-$\rightarrow$ $\langle$pattern datum$\rangle$
-$\langle$pattern identifier$\rangle$ $\rightarrow$
-$\langle$any identifier except \...$\rangle$ $\langle$ellipsis$\rangle$
-$\rightarrow$ $\langle$an identifier defaulting to \...$\rangle$
-$\langle$underscore$\rangle$ $\rightarrow$
-$\langle$the identifier \_$\rangle$
+̄ $|$ ̄ transformer spec ⟶ (syntax-rules (identifier) syntax rule) $|$
+(syntax-rules identifier (identifier)   syntax rule) syntax rule ⟶
+(pattern template) pattern ⟶ pattern identifier $|$ underscore $|$
+(pattern) $|$ (pattern$^{+}$ . pattern) $|$ (pattern pattern ellipsis
+pattern) $|$ (pattern pattern ellipsis pattern   . pattern) $|$
+#(pattern) $|$ #(pattern pattern ellipsis pattern) $|$ pattern datum
+pattern datum ⟶ string $|$ character $|$ boolean $|$ number $|$
+bytevector template ⟶ pattern identifier $|$ (template element) $|$
+(template element$^{+}$ . template) $|$ #(template element) $|$
+template datum template element ⟶ template $|$ template ellipsis
+template datum ⟶ pattern datum pattern identifier ⟶
+any identifier except \... ellipsis ⟶ an identifier defaulting to \...
+underscore ⟶ the identifier \_
 
 ### Programs and definitions
 
-̄ $|$  $\langle$program$\rangle$ $\rightarrow$
-$\langle$import declaration$\rangle$$^{+}$
-$\langle$command or definition$\rangle$$^{+}$
-$\langle$command or definition$\rangle$ $\rightarrow$
-$\langle$command$\rangle$ $|$ $\langle$definition$\rangle$ $|$ (begin
-$\langle$command or definition$\rangle$$^{+}$)
-$\langle$definition$\rangle$ $\rightarrow$ (define
-$\langle$identifier$\rangle$ $\langle$expression$\rangle$) $|$ (define
-($\langle$identifier$\rangle$ $\langle$def formals$\rangle$)
-$\langle$body$\rangle$) $|$ $\langle$syntax definition$\rangle$ $|$
-(define-values $\langle$formals$\rangle$ $\langle$body$\rangle$) $|$
-(define-record-type $\langle$identifier$\rangle$
-  $\langle$constructor$\rangle$ $\langle$identifier$\rangle$
-$\langle$field spec$\rangle$) $|$ (begin $\langle$definition$\rangle$)
-$\langle$def formals$\rangle$ $\rightarrow$ $\langle$identifier$\rangle$
-$|$ $\langle$identifier$\rangle$ . $\langle$identifier$\rangle$
-$\langle$constructor$\rangle$ $\rightarrow$
-($\langle$identifier$\rangle$ $\langle$field name$\rangle$)
-$\langle$field spec$\rangle$ $\rightarrow$ ($\langle$field name$\rangle$
-$\langle$accessor$\rangle$) $|$ ($\langle$field name$\rangle$
-$\langle$accessor$\rangle$ $\langle$mutator$\rangle$)
-$\langle$field name$\rangle$ $\rightarrow$ $\langle$identifier$\rangle$
-$\langle$accessor$\rangle$ $\rightarrow$ $\langle$identifier$\rangle$
-$\langle$mutator$\rangle$ $\rightarrow$ $\langle$identifier$\rangle$
-$\langle$syntax definition$\rangle$ $\rightarrow$ (define-syntax
-$\langle$keyword$\rangle$ $\langle$transformer spec$\rangle$)
+̄ $|$ ̄ program ⟶ import declaration$^{+}$ command or definition$^{+}$
+command or definition ⟶ command $|$ definition $|$ (begin
+command or definition$^{+}$) definition ⟶ (define identifier expression)
+$|$ (define (identifier def formals) body) $|$ syntax definition $|$
+(define-values formals body) $|$ (define-record-type identifier
+  constructor identifier field spec) $|$ (begin definition) def formals
+⟶ identifier $|$ identifier . identifier constructor ⟶ (identifier
+field name) field spec ⟶ (field name accessor) $|$ (field name accessor
+mutator) field name ⟶ identifier accessor ⟶ identifier mutator ⟶
+identifier syntax definition ⟶ (define-syntax keyword transformer spec)
 
 ### Libraries
 
-̄ $|$  $\langle$library$\rangle$ $\rightarrow$ (dēfine-library
-$\langle$library name$\rangle$ $\langle$library declaration$\rangle$)
-$\langle$library name$\rangle$ $\rightarrow$
-($\langle$library name part$\rangle$$^{+}$)
-$\langle$library name part$\rangle$ $\rightarrow$
-$\langle$identifier$\rangle$ $|$ $\langle$uinteger 10$\rangle$
-$\langle$library declaration$\rangle$ $\rightarrow$ (export
-$\langle$export spec$\rangle$) $|$ $\langle$import declaration$\rangle$
-$|$ (begin $\langle$command or definition$\rangle$) $|$
-$\langle$includer$\rangle$ $|$ (include-library-declarations
-$\langle$string$\rangle$$^{+}$) $|$ (cond-expand
-$\langle$cond-expand clause$\rangle$$^{+}$) $|$ (cond-expand
-$\langle$cond-expand clause$\rangle$$^{+}$ to 1 (else
-$\langle$library declaration$\rangle$))
-$\langle$import declaration$\rangle$ $\rightarrow$ (import
-$\langle$import set$\rangle$$^{+}$) $\langle$export spec$\rangle$
-$\rightarrow$ $\langle$identifier$\rangle$ $|$ (rename
-$\langle$identifier$\rangle$ $\langle$identifier$\rangle$)
-$\langle$import set$\rangle$ $\rightarrow$
-$\langle$library name$\rangle$ $|$ (only $\langle$import set$\rangle$
-$\langle$identifier$\rangle$$^{+}$) $|$ (except
-$\langle$import set$\rangle$ $\langle$identifier$\rangle$$^{+}$) $|$
-(prefix $\langle$import set$\rangle$ $\langle$identifier$\rangle$) $|$
-(rename $\langle$import set$\rangle$ ($\langle$identifier$\rangle$
-$\langle$identifier$\rangle$)$^{+}$)
-$\langle$cond-expand clause$\rangle$ $\rightarrow$
-($\langle$feature requirement$\rangle$
-$\langle$library declaration$\rangle$)
-$\langle$feature requirement$\rangle$ $\rightarrow$
-$\langle$identifier$\rangle$ $|$ (library
-$\langle$library name$\rangle$) $|$ (and
-$\langle$feature requirement$\rangle$) $|$ (or
-$\langle$feature requirement$\rangle$) $|$ (not
-$\langle$feature requirement$\rangle$)
+̄ $|$ ̄ library ⟶ (dēfine-library library name library declaration)
+library name ⟶ (library name part$^{+}$) library name part ⟶ identifier
+$|$ uinteger 10 library declaration ⟶ (export export spec) $|$
+import declaration $|$ (begin command or definition) $|$ includer $|$
+(include-library-declarations string$^{+}$) $|$ (cond-expand
+cond-expand clause$^{+}$) $|$ (cond-expand cond-expand clause$^{+}$ to
+1 (else library declaration)) import declaration ⟶ (import
+import set$^{+}$) export spec ⟶ identifier $|$ (rename identifier
+identifier) import set ⟶ library name $|$ (only import set
+identifier$^{+}$) $|$ (except import set identifier$^{+}$) $|$ (prefix
+import set identifier) $|$ (rename import set (identifier
+identifier)$^{+}$) cond-expand clause ⟶ (feature requirement
+library declaration) feature requirement ⟶ identifier $|$ (library
+library name) $|$ (and feature requirement) $|$ (or feature requirement)
+$|$ (not feature requirement)
 
-## Formal semantics {#formalsemanticssection}
+## Formal semantics
 
 This section provides a formal denotational semantics for the primitive
 expressions of Scheme and selected built-in procedures. The concepts and
@@ -7506,7 +6533,7 @@ below:
   $\langle\,\ldots\,\rangle$                   sequence formation
   $\left. s\downarrow k \right.$               $k$th member of the sequence $s$ (1-based)
   $\# s$                                       length of sequence $s$
-  $s$[\${}\\S\$]{.math .inline}${}t$           concatenation of sequences $s$ and $t$
+  [\$s ⟶{}\\S⟶{} t\$]{.math .inline}           concatenation of sequences $s$ and $t$
   $s \dagger k$                                drop the first $k$ members of sequence $s$
   $\left. t\rightarrow a,b \right.$            McCarthy conditional "if $t$ then $a$ else $b$"
   $\rho\lbrack x/i\rbrack$                     substitution "$\rho$ with $x$ for $i$"
@@ -7530,11 +6557,11 @@ number of arguments), but it is a closer approximation to the intended
 semantics than a left-to-right evaluation would be.
 
 The storage allocator *new* is implementation-dependent, but it must
-obey the following axiom: if [\$\\hbox{\\it new}\$]{.math
-.inline}${}\sigma$[\${}\\hbox{\\raise.13ex\\hbox{\$\\scriptstyle\\in\$}}\$]{.math
-.inline}[\${}{\\tt{}L}\$]{.math .inline}, then $\sigma$[\${}(\\hbox{\\it
-new}\$]{.math .inline}${}\sigma$${}|$[\${}{\\tt{}L})\\downarrow 2 =
-{\\it false}\$]{.math .inline}.
+obey the following axiom: if [\$\\hbox{\\it
+new}⟶{}\\sigma⟶{}\\hbox{\\raise.13ex\\hbox{\$\\scriptstyle\\in\$}}⟶{}{\\tt{}L}\$]{.math
+.inline}, then [\$\\sigma⟶{}(\\hbox{\\it
+new}⟶{}\\sigma⟶{}\\vert⟶{}{\\tt{}L})\\downarrow 2 = {\\it
+false}\$]{.math .inline}.
 
 The definition of [\$\\hbox{\$\\cal K\$}\$]{.math .inline} is omitted
 because an accurate definition of [\$\\hbox{\$\\cal K\$}\$]{.math
@@ -7543,13 +6570,13 @@ because an accurate definition of [\$\\hbox{\$\\cal K\$}\$]{.math
 If P is a program in which all variables are defined before being
 referenced or assigned, then the meaning of P is [\$\$\\hbox{\$\\cal
 E\$}\[\\!\[\\hbox{((lambda (\\hbox{\\rm I}\\hbox{\\rm\*}) \\hbox{\\rm
-P}\') {\\hbox{\\rm\$\\langle\$undefined\$\\rangle\$}}
-\$\\ldots\\,\$)}\]\\!\]\$\$]{.math .display} where I is the sequence of
-variables defined in P, [\$\\hbox{\\rm P}\'\$]{.math .inline} is the
-sequence of expressions obtained by replacing every definition in P by
-an assignment, $\langle$undefined$\rangle$ is an expression that
-evaluates to *undefined*, and [\$\\hbox{\$\\cal E\$}\$]{.math .inline}
-is the semantic function that assigns meaning to expressions.
+P}\') {\\hbox{\\rm\\\<undefined\\\>}} \$\\ldots\\,\$)}\]\\!\]\$\$]{.math
+.display} where I is the sequence of variables defined in P,
+[\$\\hbox{\\rm P}\'\$]{.math .inline} is the sequence of expressions
+obtained by replacing every definition in P by an assignment, undefined
+is an expression that evaluates to *undefined*, and [\$\\hbox{\$\\cal
+E\$}\$]{.math .inline} is the semantic function that assigns meaning to
+expressions.
 
 ### Abstract syntax
 
@@ -7560,11 +6587,11 @@ is the semantic function that assigns meaning to expressions.
     $\Gamma$  .13ex$\in$  Com $=$ Exp   commands
   ---------- ------------ ------------- ---------------------------------
 
-=Exp$\rightarrow$ =to 1  $|$
+=Exp⟶ =to 1 ̄ $|$ ̄
 
-Exp $\rightarrow$ K $|$ I $|$ (E$_{0}$ E) (lambda (I) $\Gamma$ E$_{0}$)
-(lambda (I **.** I) $\Gamma$ E$_{0}$) (lambda I $\Gamma$ E$_{0}$) (if
-E$_{0}$ E$_{1}$ E$_{2}$) $|$ (if E$_{0}$ E$_{1}$) (set! I E)
+Exp ⟶ K $|$ I $|$ (E$_{0}$ E) (lambda (I) $\Gamma$ E$_{0}$) (lambda (I
+**.** I) $\Gamma$ E$_{0}$) (lambda I $\Gamma$ E$_{0}$) (if E$_{0}$
+E$_{1}$ E$_{2}$) $|$ (if E$_{0}$ E$_{1}$) (set! I E)
 
 ### Domain equations
 
@@ -7578,10 +6605,10 @@ E$_{0}$ E$_{1}$ E$_{2}$) $|$ (if E$_{0}$ E$_{1}$) (set! I E)
                             `E`[\$\_{\\rm p}\$]{.math .inline}   =   [\${\\tt{}L}\\times {\\tt{}L}\\times {\\tt{}T}\$]{.math .inline}                                          pairs
                             `E`[\$\_{\\rm v}\$]{.math .inline}   =   [\${\\tt{}L}\\hbox{\\rm\*} \\times {\\tt{}T}\$]{.math .inline}                                            vectors
                             `E`[\$\_{\\rm s}\$]{.math .inline}   =   [\${\\tt{}L}\\hbox{\\rm\*} \\times {\\tt{}T}\$]{.math .inline}                                            strings
-                            `M`                                  =
+                            `M`                                  =                                                                                                             
                                                                                                                                                                                miscellaneous
         $\phi$  .13ex$\in$  `F`                                  =   [\${\\tt{}L}\\times({\\tt{}E}\\hbox{\\rm\*} \\to \\tt{P}\\to {\\tt{}K}\\to {\\tt{}C})\$]{.math .inline}   procedure values
-    $\epsilon$  .13ex$\in$  `E`                                  =
+    $\epsilon$  .13ex$\in$  `E`                                  =                                                                                                             
                                                                                                                                                                                expressed values
       $\sigma$  .13ex$\in$  `S`                                  =   [\${\\tt{}L}\\to({\\tt{}E}\\times{\\tt{}T})\$]{.math .inline}                                             stores
         $\rho$  .13ex$\in$  `U`                                  =   [\$\\hbox{\\rm Ide}\\to{\\tt{}L}\$]{.math .inline}                                                        environments
@@ -7603,284 +6630,230 @@ E$_{0}$ E$_{1}$ E$_{2}$) $|$ (if E$_{0}$ E$_{1}$) (set! I E)
 
 Definition of [\$\\cal K\$]{.math .inline} deliberately omitted.
 
-[\$\\cal E\$]{.math .inline}\[\] =
-$\rightarrow$.$\rightarrow$*send* ([\$\\cal K\$]{.math .inline}\[\]) 
+[\$\\cal E\$]{.math .inline}\[\] = ⟶.⟶*send* ([\$\\cal K\$]{.math
+.inline}\[\]) 
 
-[\$\\cal E\$]{.math .inline}\[\] =
-$\rightarrow$.$\rightarrow$*hold*$\rightarrow$ [\$\\=\$]{.math
-.inline}(*lookup*$\rightarrow$$\rightarrow$I)[\$\\\\ \\\>\$]{.math
-.inline}(*single*($\rightarrow$.$\rightarrow$ [\$\\=\$]{.math .inline}=
-*undefined*[\$\\\\ \\\> \\\> \\hbox{\\hspace\*{2em}}\$]{.math
-.inline}*wrong* "undefined variable",[\$\\\\ \\\>
-\\\>\\hbox{\\hspace\*{1em}}\$]{.math
-.inline}*send*$\rightarrow$$\rightarrow$))
-
-[\$\\cal E\$]{.math .inline}\[\] =[\$\\\\
-\\hbox{\\hspace\*{1em}}\$]{.math
-.inline}$\rightarrow$.$\rightarrow$[\$\\cal E\$]{.math .inline}
-[\$\\=\$]{.math
-.inline}(*permute*(E_0$\rightarrow$§$\rightarrow$E))[\$\\\\
-\\\>\$]{.math .inline}$\rightarrow$[\$\\\\ \\\>\$]{.math
-.inline}$\rightarrow$[\$\\\\ \\\>\$]{.math
-.inline}($\rightarrow$.$\rightarrow$ ([\$\\=\$]{.math
-.inline}($\rightarrow$.$\rightarrow$ *applicate*$\rightarrow$()
-$\rightarrow$() $\rightarrow$)[\$\\\\ \\\> \\\>\$]{.math
-.inline}(*unpermute*$\rightarrow$)))
-
-[\$\\cal E\$]{.math .inline}\[\] =[\$\\\\
-\\hbox{\\hspace\*{1em}}\$]{.math
-.inline}$\rightarrow$.$\rightarrow$$\rightarrow$.$\rightarrow$[\$\\\\
+[\$\\cal E\$]{.math .inline}\[\] = ⟶.⟶*hold*⟶ [\$\\=\$]{.math
+.inline}(*lookup*⟶⟶I)[\$\\\\ \\\>\$]{.math .inline}(*single*(⟶.⟶
+[\$\\=\$]{.math .inline}= *undefined*[\$\\\\ \\\> \\\>
 \\hbox{\\hspace\*{2em}}\$]{.math
-.inline}*new*$\rightarrow$$\rightarrow$.13ex$\in$$\rightarrow$`L`[\$\\\\
-\\hbox{\\hspace\*{3em}}\$]{.math .inline}*send*$\rightarrow$
-[\$\\=\$]{.math .inline}( [\$\\=\$]{.math
-.inline}*new*$\rightarrow$  `L`,[\$\\\\ \\\> \\\>\$]{.math
-.inline}\^\^$\rightarrow$.$\rightarrow$ [\$\\=\$]{.math .inline}\# =
-\#I[\$\\\\ \\\> \\\>\$]{.math .inline}*tievals* [\$\\=\$]{.math
-.inline}($\rightarrow$.$\rightarrow$ [\$\\=\$]{.math
-.inline}(\^$\rightarrow$.$\rightarrow$[\$\\cal C\$]{.math
-.inline}\[\]\^\^ ([\$\\cal E\$]{.math .inline}\[\]\^\^\^))[\$\\\\ \\\>
-\\\> \\\> \\\>\$]{.math
-.inline}(*extends*$\rightarrow$$\rightarrow$I$\rightarrow$))[\$\\\\ \\\>
-\\\> \\\>\$]{.math .inline},[\$\\\\ \\\> \\\>
-\\hbox{\\hspace\*{1em}}\$]{.math
+.inline}*wrong* "undefined variable",[\$\\\\ \\\>
+\\\>\\hbox{\\hspace\*{1em}}\$]{.math .inline}*send*⟶⟶))
+
+[\$\\cal E\$]{.math .inline}\[\] =[\$\\\\
+\\hbox{\\hspace\*{1em}}\$]{.math .inline}⟶.⟶[\$\\cal E\$]{.math .inline}
+[\$\\=\$]{.math .inline}(*permute*(E_0⟶§⟶E))[\$\\\\ \\\>\$]{.math
+.inline}⟶[\$\\\\ \\\>\$]{.math .inline}⟶[\$\\\\ \\\>\$]{.math
+.inline}(⟶.⟶ ([\$\\=\$]{.math .inline}(⟶.⟶ *applicate*⟶() ⟶() ⟶)[\$\\\\
+\\\> \\\>\$]{.math .inline}(*unpermute*⟶)))
+
+[\$\\cal E\$]{.math .inline}\[\] =[\$\\\\
+\\hbox{\\hspace\*{1em}}\$]{.math .inline}⟶.⟶⟶.⟶[\$\\\\
+\\hbox{\\hspace\*{2em}}\$]{.math .inline}*new*⟶⟶.13ex$\in$⟶`L`[\$\\\\
+\\hbox{\\hspace\*{3em}}\$]{.math .inline}*send*⟶ [\$\\=\$]{.math
+.inline}( [\$\\=\$]{.math .inline}*new*⟶  `L`,[\$\\\\ \\\> \\\>\$]{.math
+.inline}\^\^⟶.⟶ [\$\\=\$]{.math .inline}\# = \#I[\$\\\\ \\\>
+\\\>\$]{.math .inline}*tievals* [\$\\=\$]{.math .inline}(⟶.⟶
+[\$\\=\$]{.math .inline}(\^⟶.⟶[\$\\cal C\$]{.math .inline}\[\]\^\^
+([\$\\cal E\$]{.math .inline}\[\]\^\^\^))[\$\\\\ \\\> \\\> \\\>
+\\\>\$]{.math .inline}(*extends*⟶⟶I⟶))[\$\\\\ \\\> \\\> \\\>\$]{.math
+.inline},[\$\\\\ \\\> \\\> \\hbox{\\hspace\*{1em}}\$]{.math
 .inline}*wrong* "wrong number of arguments"[\$\\\\ \\\> \\\>\$]{.math
 .inline} in `E`)[\$\\\\ \\\>\$]{.math .inline}[\$\\\\ \\\>\$]{.math
-.inline}(*update*$\rightarrow$(*new*$\rightarrow$  `L`)
-$\rightarrow$*unspecified* $\rightarrow$),[\$\\\\
-\\hbox{\\hspace\*{3em}}\$]{.math
-.inline}*wrong* "out of memory"$\rightarrow$
+.inline}(*update*⟶(*new*⟶  `L`) ⟶*unspecified* ⟶),[\$\\\\
+\\hbox{\\hspace\*{3em}}\$]{.math .inline}*wrong* "out of memory"⟶
 
 [\$\\cal E\$]{.math .inline}\[\] =[\$\\\\
-\\hbox{\\hspace\*{1em}}\$]{.math
-.inline}$\rightarrow$.$\rightarrow$$\rightarrow$.$\rightarrow$[\$\\\\
-\\hbox{\\hspace\*{2em}}\$]{.math
-.inline}*new*$\rightarrow$$\rightarrow$.13ex$\in$$\rightarrow$`L`[\$\\\\
-\\hbox{\\hspace\*{3em}}\$]{.math .inline}*send*$\rightarrow$
-[\$\\=\$]{.math .inline}( [\$\\=\$]{.math
-.inline}*new*$\rightarrow$  `L`,[\$\\\\ \\\> \\\>\$]{.math
-.inline}\^\^$\rightarrow$.$\rightarrow$ [\$\\=\$]{.math .inline}\#
-#I[\$\\\\ \\\> \\\> \\\>\\hbox{\\hspace\*{1em}}\$]{.math
-.inline}*tievalsrest*[\$\\\\ \\\> \\\>
-\\\>\\hbox{\\hspace\*{2em}}\\=\$]{.math
-.inline}($\rightarrow$.$\rightarrow$ [\$\\=\$]{.math
-.inline}(\^$\rightarrow$.$\rightarrow$[\$\\cal C\$]{.math
-.inline}\[\]\^\^ ([\$\\cal E\$]{.math .inline}\[\]\^\^\^))[\$\\\\ \\\>
-\\\> \\\> \\\> \\\>\$]{.math .inline}(*extends*$\rightarrow$
-$\rightarrow$(I$\rightarrow$§$\rightarrow$I) $\rightarrow$))[\$\\\\ \\\>
-\\\> \\\> \\\>\$]{.math .inline}[\$\\\\ \\\> \\\> \\\> \\\>\$]{.math
+\\hbox{\\hspace\*{1em}}\$]{.math .inline}⟶.⟶⟶.⟶[\$\\\\
+\\hbox{\\hspace\*{2em}}\$]{.math .inline}*new*⟶⟶.13ex$\in$⟶`L`[\$\\\\
+\\hbox{\\hspace\*{3em}}\$]{.math .inline}*send*⟶ [\$\\=\$]{.math
+.inline}( [\$\\=\$]{.math .inline}*new*⟶  `L`,[\$\\\\ \\\> \\\>\$]{.math
+.inline}\^\^⟶.⟶ [\$\\=\$]{.math .inline}\# #I[\$\\\\ \\\> \\\>
+\\\>\\hbox{\\hspace\*{1em}}\$]{.math .inline}*tievalsrest*[\$\\\\ \\\>
+\\\> \\\>\\hbox{\\hspace\*{2em}}\\=\$]{.math .inline}(⟶.⟶
+[\$\\=\$]{.math .inline}(\^⟶.⟶[\$\\cal C\$]{.math .inline}\[\]\^\^
+([\$\\cal E\$]{.math .inline}\[\]\^\^\^))[\$\\\\ \\\> \\\> \\\> \\\>
+\\\>\$]{.math .inline}(*extends*⟶ ⟶(I⟶§⟶I) ⟶))[\$\\\\ \\\> \\\> \\\>
+\\\>\$]{.math .inline}[\$\\\\ \\\> \\\> \\\> \\\>\$]{.math
 .inline}(#I),[\$\\\\ \\\> \\\> \\\>\\hbox{\\hspace\*{1em}}\$]{.math
 .inline}*wrong* "too few arguments" in `E`)[\$\\\\ \\\>\$]{.math
-.inline}[\$\\\\ \\\>\$]{.math
-.inline}(*update*$\rightarrow$(*new*$\rightarrow$  `L`)
-$\rightarrow$*unspecified* $\rightarrow$),[\$\\\\
-\\hbox{\\hspace\*{3em}}\$]{.math
-.inline}*wrong* "out of memory"$\rightarrow$
+.inline}[\$\\\\ \\\>\$]{.math .inline}(*update*⟶(*new*⟶  `L`)
+⟶*unspecified* ⟶),[\$\\\\ \\hbox{\\hspace\*{3em}}\$]{.math
+.inline}*wrong* "out of memory"⟶
 
 [\$\\cal E\$]{.math .inline}\[\] = [\$\\cal E\$]{.math .inline}\[\]
 
 [\$\\cal E\$]{.math .inline}\[\] =[\$\\\\
-\\hbox{\\hspace\*{1em}}\$]{.math .inline}$\rightarrow$.$\rightarrow$
-[\$\\cal E\$]{.math
-.inline}\[\]$\rightarrow$$\rightarrow$(*single*$\rightarrow$($\rightarrow$.$\rightarrow$
-[\$\\=\$]{.math .inline}*truish*$\rightarrow$[\$\\cal E\$]{.math
-.inline}\[\],[\$\\\\ \\\>\\hbox{\\hspace\*{1em}}\$]{.math
+\\hbox{\\hspace\*{1em}}\$]{.math .inline}⟶.⟶ [\$\\cal E\$]{.math
+.inline}\[\]⟶⟶(*single*⟶(⟶.⟶ [\$\\=\$]{.math .inline}*truish*⟶[\$\\cal
+E\$]{.math .inline}\[\],[\$\\\\ \\\>\\hbox{\\hspace\*{1em}}\$]{.math
 .inline}[\$\\cal E\$]{.math .inline}\[\]))
 
 [\$\\cal E\$]{.math .inline}\[\] =[\$\\\\
-\\hbox{\\hspace\*{1em}}\$]{.math .inline}$\rightarrow$.$\rightarrow$
-[\$\\cal E\$]{.math
-.inline}\[\]$\rightarrow$$\rightarrow$(*single*$\rightarrow$($\rightarrow$.$\rightarrow$
-[\$\\=\$]{.math .inline}*truish*$\rightarrow$[\$\\cal E\$]{.math
-.inline}\[\],[\$\\\\ \\\>\\hbox{\\hspace\*{1em}}\$]{.math
-.inline}*send*$\rightarrow$*unspecified*$\rightarrow$))
+\\hbox{\\hspace\*{1em}}\$]{.math .inline}⟶.⟶ [\$\\cal E\$]{.math
+.inline}\[\]⟶⟶(*single*⟶(⟶.⟶ [\$\\=\$]{.math .inline}*truish*⟶[\$\\cal
+E\$]{.math .inline}\[\],[\$\\\\ \\\>\\hbox{\\hspace\*{1em}}\$]{.math
+.inline}*send*⟶*unspecified*⟶))
 
 Here and elsewhere, any expressed value other than *undefined* may be
 used in place of *unspecified*.
 
 [\$\\cal E\$]{.math .inline}\[\] =[\$\\\\
-\\hbox{\\hspace\*{1em}}\$]{.math
-.inline}$\rightarrow$.$\rightarrow$[\$\\cal E\$]{.math
-.inline}\[\]$\rightarrow$$\rightarrow$$\rightarrow$
-(*single*($\rightarrow$.$\rightarrow$*assign*$\rightarrow$
-[\$\\=\$]{.math .inline}(*lookup*$\rightarrow$$\rightarrow$I)[\$\\\\
-\\\>\$]{.math .inline}[\$\\\\ \\\>\$]{.math
-.inline}(*send*$\rightarrow$*unspecified*$\rightarrow$)))
+\\hbox{\\hspace\*{1em}}\$]{.math .inline}⟶.⟶[\$\\cal E\$]{.math
+.inline}\[\]⟶⟶⟶ (*single*(⟶.⟶*assign*⟶ [\$\\=\$]{.math
+.inline}(*lookup*⟶⟶I)[\$\\\\ \\\>\$]{.math .inline}[\$\\\\ \\\>\$]{.math
+.inline}(*send*⟶*unspecified*⟶)))
 
-[\$\\cal E\$]{.math .inline}\[\] =
-$\rightarrow$.$\rightarrow$$\rightarrow$
+[\$\\cal E\$]{.math .inline}\[\] = ⟶.⟶⟶
 
 [\$\\cal E\$]{.math .inline}\[\] =[\$\\\\
-\\hbox{\\hspace\*{1em}}\$]{.math .inline}$\rightarrow$.$\rightarrow$
-[\$\\cal E\$]{.math .inline}\[\]$\rightarrow$$\rightarrow$ (*single*
-(\_0$\rightarrow$.$\rightarrow$[\$\\cal E\$]{.math .inline}\[\]
-$\rightarrow$$\rightarrow$($\rightarrow$.$\rightarrow$
-$\rightarrow$(\_0$\rightarrow$§$\rightarrow$))))
+\\hbox{\\hspace\*{1em}}\$]{.math .inline}⟶.⟶ [\$\\cal E\$]{.math
+.inline}\[\]⟶⟶ (*single* (\_0⟶.⟶[\$\\cal E\$]{.math .inline}\[\] ⟶⟶(⟶.⟶
+⟶(\_0⟶§⟶))))
 
-[\$\\cal C\$]{.math .inline}\[\] =  .$\rightarrow$
+[\$\\cal C\$]{.math .inline}\[\] =  .⟶
 
-[\$\\cal C\$]{.math .inline}\[\] = $\rightarrow$.$\rightarrow$[\$\\cal
-E\$]{.math
-.inline}\[\]$\rightarrow$$\rightarrow$($\rightarrow$.$\rightarrow$
-[\$\\cal C\$]{.math .inline}\[\])
+[\$\\cal C\$]{.math .inline}\[\] = ⟶.⟶[\$\\cal E\$]{.math
+.inline}\[\]⟶⟶(⟶.⟶ [\$\\cal C\$]{.math .inline}\[\])
 
 ### Auxiliary functions
 
-*lookup* : `U`Ide[\$\\\\\$]{.math .inline} *lookup* =
-I$\rightarrow$.$\rightarrow$I
+*lookup* : `U`Ide[\$\\\\\$]{.math .inline} *lookup* = I⟶.⟶I
 
 *extends* : `U`Ide [\$\\\\\$]{.math .inline} *extends* =[\$\\\\
-\\hbox{\\hspace\*{1em}}\$]{.math .inline}I$\rightarrow$.$\rightarrow$
-[\$\\=\$]{.math .inline}#I=0,[\$\\\\ \\\>\$]{.math
-.inline}*extends*$\rightarrow$() $\rightarrow$(I) $\rightarrow$()
+\\hbox{\\hspace\*{1em}}\$]{.math .inline}I⟶.⟶ [\$\\=\$]{.math
+.inline}#I=0,[\$\\\\ \\\>\$]{.math .inline}*extends*⟶() ⟶(I) ⟶()
 
 *wrong* : `X`
 
-*send* : `E`[\$\\\\\$]{.math .inline} *send* =
-$\rightarrow$.$\rightarrow$
+*send* : `E`[\$\\\\\$]{.math .inline} *send* = ⟶.⟶
 
 *single* : (`E`) [\$\\\\\$]{.math .inline} *single* =[\$\\\\
-\\hbox{\\hspace\*{1em}}\$]{.math .inline}$\rightarrow$.$\rightarrow$
-[\$\\=\$]{.math .inline}#=1(),[\$\\\\ \\\>\$]{.math
+\\hbox{\\hspace\*{1em}}\$]{.math .inline}⟶.⟶ [\$\\=\$]{.math
+.inline}#=1(),[\$\\\\ \\\>\$]{.math
 .inline}*wrong* "wrong number of return values"
 
 *new* : `S`(`L`+ { *error* })
 
-*hold* : `L`[\$\\\\\$]{.math .inline} *hold* =
-$\rightarrow$.$\rightarrow$*send* ()
+*hold* : `L`[\$\\\\\$]{.math .inline} *hold* = ⟶.⟶*send* ()
 
-*assign* : `L`[\$\\\\\$]{.math .inline} *assign* =
-$\rightarrow$.$\rightarrow$(*update*$\rightarrow$)
+*assign* : `L`[\$\\\\\$]{.math .inline} *assign* = ⟶.⟶(*update*⟶)
 
-*update* : `L`[\$\\\\\$]{.math .inline} *update* =
-$\rightarrow$.$\rightarrow$
+*update* : `L`[\$\\\\\$]{.math .inline} *update* = ⟶.⟶
 
 *tievals* : (`L` ) [\$\\\\\$]{.math .inline} *tievals* =[\$\\\\
-\\hbox{\\hspace\*{1em}}\$]{.math .inline}$\rightarrow$.$\rightarrow$
-[\$\\=\$]{.math .inline}#=0$\rightarrow$,[\$\\\\ \\\>\$]{.math
-.inline}*new*$\rightarrow$$\rightarrow$.13ex$\in$$\rightarrow$`L`*tievals* 
-[\$\\=\$]{.math
-.inline}($\rightarrow$.$\rightarrow$(*new*$\rightarrow$$\rightarrow$$\rightarrow$`L`
-$\rightarrow$§$\rightarrow$))[\$\\\\ \\\> \\\>\$]{.math
-.inline}()[\$\\\\ \\\> \\\>\$]{.math
-.inline}(*update*(*new*$\rightarrow$$\rightarrow$$\rightarrow$`L`) ()
+\\hbox{\\hspace\*{1em}}\$]{.math .inline}⟶.⟶ [\$\\=\$]{.math
+.inline}#=0⟶,[\$\\\\ \\\>\$]{.math
+.inline}*new*⟶⟶.13ex$\in$⟶`L`*tievals*  [\$\\=\$]{.math
+.inline}(⟶.⟶(*new*⟶⟶⟶`L` ⟶§⟶))[\$\\\\ \\\> \\\>\$]{.math
+.inline}()[\$\\\\ \\\> \\\>\$]{.math .inline}(*update*(*new*⟶⟶⟶`L`) ()
 ),[\$\\\\ \\\>\$]{.math .inline}*wrong* "out of memory"
 
 *tievalsrest* : (`L` ) [\$\\\\\$]{.math .inline} *tievalsrest* =[\$\\\\
-\\hbox{\\hspace\*{1em}}\$]{.math
-.inline}$\rightarrow$.$\rightarrow$*list*$\rightarrow$ [\$\\=\$]{.math
-.inline}(*dropfirst*$\rightarrow$)[\$\\\\ \\\>\$]{.math
-.inline}(*single*($\rightarrow$.$\rightarrow$*tievals*$\rightarrow$$\rightarrow$
-((*takefirst*$\rightarrow$)$\rightarrow$§$\rightarrow$)))
+\\hbox{\\hspace\*{1em}}\$]{.math .inline}⟶.⟶*list*⟶ [\$\\=\$]{.math
+.inline}(*dropfirst*⟶)[\$\\\\ \\\>\$]{.math
+.inline}(*single*(⟶.⟶*tievals*⟶⟶ ((*takefirst*⟶)⟶§⟶)))
 
-*dropfirst* = l n $\rightarrow$.$\rightarrow$ n=0 l, *dropfirst* (l
-)(n - 1)
+*dropfirst* = l n ⟶.⟶ n=0 l, *dropfirst* (l )(n - 1)
 
-*takefirst* = l n $\rightarrow$.$\rightarrow$ n=0 $\rightarrow$, l
-$\rightarrow$§$\rightarrow$(*takefirst* (l )(n - 1))
+*takefirst* = l n ⟶.⟶ n=0 ⟶, l ⟶§⟶(*takefirst* (l )(n - 1))
 
-*truish* : `E`[\$\\\\\$]{.math .inline} *truish* =
-$\rightarrow$.$\rightarrow$ = *false* *false*, *true*
+*truish* : `E`[\$\\\\\$]{.math .inline} *truish* = ⟶.⟶ = *false*
+*false*, *true*
 
 *permute* : Exp Exp
 
 *unpermute* : `E`
 
 *applicate* : `E`
-`P\\ applicate =\\  \hbox{\hspace*{1em}}\longrightarrow.\longrightarrow \=\longrightarrow.13ex\scriptstyle\in\longrightarrowF(\longrightarrow\longrightarrowF), wrong “bad procedure” `
+`P\\ applicate =\\  \hbox{\hspace*{1em}}⟶.⟶ \=⟶.13ex\scriptstyle\in⟶F(⟶⟶F), wrong “bad procedure” `
 
 *onearg* :
-(`E``P) (E P)\\ onearg =\\  \hbox{\hspace*{1em}}\longrightarrow.\longrightarrow \=#=1(),\\     \>wrong “wrong number of arguments” `
+(`E``P) (E P)\\ onearg =\\  \hbox{\hspace*{1em}}⟶.⟶ \=#=1(),\\     \>wrong “wrong number of arguments” `
 
 *twoarg* :
-(`E``P) (E P)\\ twoarg =\\  \hbox{\hspace*{1em}}\longrightarrow.\longrightarrow \=#=2()(),\\     \>wrong “wrong number of arguments” `
+(`E``P) (E P)\\ twoarg =\\  \hbox{\hspace*{1em}}⟶.⟶ \=#=2()(),\\     \>wrong “wrong number of arguments” `
 
 *threearg* :
-(`E``P) (E P)\\ threearg =\\  \hbox{\hspace*{1em}}\longrightarrow.\longrightarrow \=#=3()()(),\\     \>wrong “wrong number of arguments” `
+(`E``P) (E P)\\ threearg =\\  \hbox{\hspace*{1em}}⟶.⟶ \=#=3()()(),\\     \>wrong “wrong number of arguments” `
 
 *list* : `E`
-`P\\ list =\\  \hbox{\hspace*{1em}}\longrightarrow.\longrightarrow \=#=0send\longrightarrownull\longrightarrow,\\     \>list () (single(\longrightarrow.\longrightarrow cons,)) `
+`P\\ list =\\  \hbox{\hspace*{1em}}⟶.⟶ \=#=0send⟶null⟶,\\     \>list () (single(⟶.⟶ cons,)) `
 
 *cons* : `E`
-`P\\ cons =\\  \hbox{\hspace*{1em}}twoarg (_1_2\longrightarrow.\longrightarrow \=new\longrightarrow\longrightarrow.13ex\scriptstyle\in\longrightarrowL\\     \>          \=(^\longrightarrow.\longrightarrow \=new\longrightarrow^\longrightarrow.13ex\scriptstyle\in\longrightarrowL\\     \>  \>send  \=(\=new\longrightarrow\longrightarrow\longrightarrowL, new\longrightarrow^\longrightarrow\longrightarrowL, true\\                                 \>  \>  \>  \> in E)\\     \>  \>  \>\\     \>  \>  \>(update(new\longrightarrow^\longrightarrow\longrightarrowL) _2 ^),\\     \>  \>wrong “out of memory”^)\\     \>(update(new\longrightarrow\longrightarrow\longrightarrowL)_1),\\     \>wrong “out of memory”) `
+`P\\ cons =\\  \hbox{\hspace*{1em}}twoarg (_1_2⟶.⟶ \=new⟶⟶.13ex\scriptstyle\in⟶L\\     \>          \=(^⟶.⟶ \=new⟶^⟶.13ex\scriptstyle\in⟶L\\     \>  \>send  \=(\=new⟶⟶⟶L, new⟶^⟶⟶L, true\\                                 \>  \>  \>  \> in E)\\     \>  \>  \>\\     \>  \>  \>(update(new⟶^⟶⟶L) _2 ^),\\     \>  \>wrong “out of memory”^)\\     \>(update(new⟶⟶⟶L)_1),\\     \>wrong “out of memory”) `
 
 *less* : `E`
-`P\\ less =\\  \hbox{\hspace*{1em}}twoarg (_1_2\longrightarrow.\longrightarrow \=(_1\longrightarrow.13ex\scriptstyle\in\longrightarrowR_2\longrightarrow.13ex\scriptstyle\in\longrightarrowR)\\     \>send  (_1\longrightarrow\longrightarrowR<_2\longrightarrow\longrightarrowR true, false) ,\\     \>wrong “non-numeric argument to <”) `
+`P\\ less =\\  \hbox{\hspace*{1em}}twoarg (_1_2⟶.⟶ \=(_1⟶.13ex\scriptstyle\in⟶R_2⟶.13ex\scriptstyle\in⟶R)\\     \>send  (_1⟶⟶R<_2⟶⟶R true, false) ,\\     \>wrong “non-numeric argument to <”) `
 
 *add* : `E`
-`P\\ add =\\  \hbox{\hspace*{1em}}twoarg (_1_2\longrightarrow.\longrightarrow \=(_1\longrightarrow.13ex\scriptstyle\in\longrightarrowR_2\longrightarrow.13ex\scriptstyle\in\longrightarrowR)\\     \>send  \=((_1\longrightarrow\longrightarrowR+_2\longrightarrow\longrightarrowR) in E) ,\\     \>wrong “non-numeric argument to +”) `
+`P\\ add =\\  \hbox{\hspace*{1em}}twoarg (_1_2⟶.⟶ \=(_1⟶.13ex\scriptstyle\in⟶R_2⟶.13ex\scriptstyle\in⟶R)\\     \>send  \=((_1⟶⟶R+_2⟶⟶R) in E) ,\\     \>wrong “non-numeric argument to +”) `
 
 *car* : `E`
-`P\\ car =\\  \hbox{\hspace*{1em}}onearg (\longrightarrow.\longrightarrow \=\longrightarrow.13ex\scriptstyle\in\longrightarrowE_{\rm p} car-internal\longrightarrow,\\     \>wrong “non-pair argument to car”) `
+`P\\ car =\\  \hbox{\hspace*{1em}}onearg (⟶.⟶ \=⟶.13ex\scriptstyle\in⟶E_{\rm p} car-internal⟶,\\     \>wrong “non-pair argument to car”) `
 
 *car-internal* : `E`[\$\\\\\$]{.math .inline} *car-internal* =
-[\$\\hbox{\\hspace\*{1em}}\$]{.math .inline}$\rightarrow$.$\rightarrow$
-[\$\\=\$]{.math .inline}*hold*  ($\rightarrow$$\rightarrow$`E`[\$\_{\\rm
-p}\$]{.math .inline})
+[\$\\hbox{\\hspace\*{1em}}\$]{.math .inline}⟶.⟶ [\$\\=\$]{.math
+.inline}*hold*  (⟶⟶`E`[\$\_{\\rm p}\$]{.math .inline})
 
 *cdr* : `E` `P `
 
 *cdr-internal* : `E`
 
 *setcar* : `E`
-`P\\ setcar =\\  \hbox{\hspace*{1em}}twoarg (_1_2\longrightarrow.\longrightarrow \=_1\longrightarrow.13ex\scriptstyle\in\longrightarrowE_{\rm p}\\     \>(_1\longrightarrow\longrightarrowE_{\rm p}) assign \=(_1\longrightarrow\longrightarrowE_{\rm p})\\     \>                           \>_2\\     \>                                  \>(send\longrightarrowunspecified\longrightarrow),\\     \>wrong “immutable argument to set-car!”,\\     \>wrong “non-pair argument to set-car!”) `
+`P\\ setcar =\\  \hbox{\hspace*{1em}}twoarg (_1_2⟶.⟶ \=_1⟶.13ex\scriptstyle\in⟶E_{\rm p}\\     \>(_1⟶⟶E_{\rm p}) assign \=(_1⟶⟶E_{\rm p})\\     \>                           \>_2\\     \>                                  \>(send⟶unspecified⟶),\\     \>wrong “immutable argument to set-car!”,\\     \>wrong “non-pair argument to set-car!”) `
 
 *eqv* : `E`
-`P\\ eqv =\\  \hbox{\hspace*{1em}}twoarg (_1_2\longrightarrow.\longrightarrow \=(_1\longrightarrow.13ex\scriptstyle\in\longrightarrowM_2\longrightarrow.13ex\scriptstyle\in\longrightarrowM)\\     \>send  \=(_1\longrightarrow\longrightarrowM= _2\longrightarrow\longrightarrowMtrue, false),\\     \>(_1\longrightarrow.13ex\scriptstyle\in\longrightarrowQ_2\longrightarrow.13ex\scriptstyle\in\longrightarrowQ)\\     \>send  \=(_1\longrightarrow\longrightarrowQ= _2\longrightarrow\longrightarrowQtrue, false),\\     \>(_1\longrightarrow.13ex\scriptstyle\in\longrightarrowH_2\longrightarrow.13ex\scriptstyle\in\longrightarrowH)\\     \>send  \=(_1\longrightarrow\longrightarrowH= _2\longrightarrow\longrightarrowHtrue, false),\\     \>(_1\longrightarrow.13ex\scriptstyle\in\longrightarrowR_2\longrightarrow.13ex\scriptstyle\in\longrightarrowR)\\     \>send  \=(_1\longrightarrow\longrightarrowR=_2\longrightarrow\longrightarrowRtrue, false),\\     \>(_1\longrightarrow.13ex\scriptstyle\in\longrightarrowE_{\rm p}_2\longrightarrow.13ex\scriptstyle\in\longrightarrowE_{\rm p})\\     \>send  \=(\=(\longrightarrow.\longrightarrow (\=(p_1) = (p_2)\\     \>  \>   \>   \>(p_1) = (p_2)) true,\\     \>  \>   \>   \>false)\\     \>  \>   \>(_1\longrightarrow\longrightarrowE_{\rm p})\\     \>  \>   \>(_2\longrightarrow\longrightarrowE_{\rm p}))\\     \>  \>,\\     \>(_1\longrightarrow.13ex\scriptstyle\in\longrightarrowE_{\rm v}_2\longrightarrow.13ex\scriptstyle\in\longrightarrowE_{\rm v}) …,\\     \>(_1\longrightarrow.13ex\scriptstyle\in\longrightarrowE_{\rm s}_2\longrightarrow.13ex\scriptstyle\in\longrightarrowE_{\rm s}) …,\\     \>(_1\longrightarrow.13ex\scriptstyle\in\longrightarrowF_2\longrightarrow.13ex\scriptstyle\in\longrightarrowF)\\     \>send  \=((_1\longrightarrow\longrightarrowF) = (_2\longrightarrow\longrightarrowF) true, false)\\     \>  \>,\\     \>send \longrightarrowfalse\longrightarrow) `
+`P\\ eqv =\\  \hbox{\hspace*{1em}}twoarg (_1_2⟶.⟶ \=(_1⟶.13ex\scriptstyle\in⟶M_2⟶.13ex\scriptstyle\in⟶M)\\     \>send  \=(_1⟶⟶M= _2⟶⟶Mtrue, false),\\     \>(_1⟶.13ex\scriptstyle\in⟶Q_2⟶.13ex\scriptstyle\in⟶Q)\\     \>send  \=(_1⟶⟶Q= _2⟶⟶Qtrue, false),\\     \>(_1⟶.13ex\scriptstyle\in⟶H_2⟶.13ex\scriptstyle\in⟶H)\\     \>send  \=(_1⟶⟶H= _2⟶⟶Htrue, false),\\     \>(_1⟶.13ex\scriptstyle\in⟶R_2⟶.13ex\scriptstyle\in⟶R)\\     \>send  \=(_1⟶⟶R=_2⟶⟶Rtrue, false),\\     \>(_1⟶.13ex\scriptstyle\in⟶E_{\rm p}_2⟶.13ex\scriptstyle\in⟶E_{\rm p})\\     \>send  \=(\=(⟶.⟶ (\=(p_1) = (p_2)\\     \>  \>   \>   \>(p_1) = (p_2)) true,\\     \>  \>   \>   \>false)\\     \>  \>   \>(_1⟶⟶E_{\rm p})\\     \>  \>   \>(_2⟶⟶E_{\rm p}))\\     \>  \>,\\     \>(_1⟶.13ex\scriptstyle\in⟶E_{\rm v}_2⟶.13ex\scriptstyle\in⟶E_{\rm v}) …,\\     \>(_1⟶.13ex\scriptstyle\in⟶E_{\rm s}_2⟶.13ex\scriptstyle\in⟶E_{\rm s}) …,\\     \>(_1⟶.13ex\scriptstyle\in⟶F_2⟶.13ex\scriptstyle\in⟶F)\\     \>send  \=((_1⟶⟶F) = (_2⟶⟶F) true, false)\\     \>  \>,\\     \>send ⟶false⟶) `
 
 *apply* : `E`
-`P\\ apply =\\  \hbox{\hspace*{1em}}twoarg (_1_2\longrightarrow.\longrightarrow \=_1\longrightarrow.13ex\scriptstyle\in\longrightarrowF valueslist\longrightarrow_2 (\longrightarrow.\longrightarrowapplicate\longrightarrow_1),\\     \>wrong “bad procedure argument to apply”) `
+`P\\ apply =\\  \hbox{\hspace*{1em}}twoarg (_1_2⟶.⟶ \=_1⟶.13ex\scriptstyle\in⟶F valueslist⟶_2 (⟶.⟶applicate⟶_1),\\     \>wrong “bad procedure argument to apply”) `
 
 *valueslist* : `E`[\$\\\\\$]{.math .inline} *valueslist* =[\$\\\\
-\\hbox{\\hspace\*{1em}}\$]{.math .inline}$\rightarrow$.$\rightarrow$
-[\$\\=\$]{.math
-.inline}$\rightarrow$.13ex$\in$$\rightarrow$`E`[\$\_{\\rm p}\$]{.math
-.inline}[\$\\\\ \\\>\$]{.math .inline}*cdr-internal*$\rightarrow$
-[\$\\=\$]{.math .inline}[\$\\\\ \\\> \\\>\$]{.math
-.inline}($\rightarrow$.$\rightarrow$ [\$\\=\$]{.math
-.inline}*valueslist*$\rightarrow$[\$\\\\ \\\> \\\> \\\>\$]{.math
-.inline}[\$\\\\ \\\> \\\> \\\>\$]{.math
-.inline}($\rightarrow$.$\rightarrow$[\$\\=\$]{.math
+\\hbox{\\hspace\*{1em}}\$]{.math .inline}⟶.⟶ [\$\\=\$]{.math
+.inline}⟶.13ex$\in$⟶`E`[\$\_{\\rm p}\$]{.math .inline}[\$\\\\
+\\\>\$]{.math .inline}*cdr-internal*⟶ [\$\\=\$]{.math .inline}[\$\\\\
+\\\> \\\>\$]{.math .inline}(⟶.⟶ [\$\\=\$]{.math
+.inline}*valueslist*⟶[\$\\\\ \\\> \\\> \\\>\$]{.math .inline}[\$\\\\
+\\\> \\\> \\\>\$]{.math .inline}(⟶.⟶[\$\\=\$]{.math
 .inline}*car-internal*[\$\\\\ \\\> \\\> \\\> \\\>\$]{.math
-.inline}$\rightarrow$[\$\\\\ \\\> \\\> \\\> \\\>\$]{.math .inline}
-(*single*($\rightarrow$.$\rightarrow$
-($\rightarrow$§$\rightarrow$))))),[\$\\\\ \\\>\$]{.math .inline}=
-*null*$\rightarrow$,[\$\\\\ \\\>\$]{.math
+.inline}⟶[\$\\\\ \\\> \\\> \\\> \\\>\$]{.math .inline} (*single*(⟶.⟶
+(⟶§⟶))))),[\$\\\\ \\\>\$]{.math .inline}= *null*⟶,[\$\\\\ \\\>\$]{.math
 .inline}*wrong* "non-list argument to values-list"
 
 *cwcc* [\$\\=\$]{.math .inline}: `E`
-`P\\ \> \\ cwcc =\\  \hbox{\hspace*{1em}}onearg (\longrightarrow.\longrightarrow \=\longrightarrow.13ex\scriptstyle\in\longrightarrowF\\     \>(\longrightarrow.\longrightarrow \=new\longrightarrow\longrightarrow.13ex\scriptstyle\in\longrightarrowL\\     \>  \>applicate\longrightarrow \=\\     \>  \>  \>\=new\longrightarrow\longrightarrow\longrightarrowL,\\     \>  \>  \>  \> ^^\longrightarrow.\longrightarrow travel\longrightarrow^()\\     \>  \>  \>  in E\\     \>  \>  \>\\     \>  \>  \>\\     \>  \>  \>(update  \=(new\longrightarrow\longrightarrow\longrightarrowL)\\     \>  \>  \>   \>unspecified\\     \>  \>  \>   \>),\\     \>  \>wrong “out of memory” ),\\     \>wrong “bad procedure argument”) `
+`P\\ \> \\ cwcc =\\  \hbox{\hspace*{1em}}onearg (⟶.⟶ \=⟶.13ex\scriptstyle\in⟶F\\     \>(⟶.⟶ \=new⟶⟶.13ex\scriptstyle\in⟶L\\     \>  \>applicate⟶ \=\\     \>  \>  \>\=new⟶⟶⟶L,\\     \>  \>  \>  \> ^^⟶.⟶ travel⟶^()\\     \>  \>  \>  in E\\     \>  \>  \>\\     \>  \>  \>\\     \>  \>  \>(update  \=(new⟶⟶⟶L)\\     \>  \>  \>   \>unspecified\\     \>  \>  \>   \>),\\     \>  \>wrong “out of memory” ),\\     \>wrong “bad procedure argument”) `
 
 *travel* :
-`PP\\ travel = \\   \hbox{\hspace*{1em}}_1_2\longrightarrow.\longrightarrow travelpath\longrightarrow(\=(pathup\longrightarrow_1(commonancest\longrightarrow_1_2)) \longrightarrow§\longrightarrow\\   \> (pathdown\longrightarrow(commonancest\longrightarrow_1_2)_2)) `
+`PP\\ travel = \\   \hbox{\hspace*{1em}}_1_2⟶.⟶ travelpath⟶(\=(pathup⟶_1(commonancest⟶_1_2)) ⟶§⟶\\   \> (pathdown⟶(commonancest⟶_1_2)_2)) `
 
 *pointdepth* :
-`P\\ pointdepth = \\   \hbox{\hspace*{1em}}\longrightarrow.\longrightarrow = root , 1 + (pointdepth\longrightarrow(\longrightarrow\longrightarrow(F P))) `
+`P\\ pointdepth = \\   \hbox{\hspace*{1em}}⟶.⟶ = root , 1 + (pointdepth⟶(⟶⟶(F P))) `
 
 *ancestors* :
-`PP\\ ancestors = \\   \hbox{\hspace*{1em}}\longrightarrow.\longrightarrow = root {}, {}\longrightarrow\longrightarrow(ancestors\longrightarrow(\longrightarrow\longrightarrow(F P))) `
+`PP\\ ancestors = \\   \hbox{\hspace*{1em}}⟶.⟶ = root {}, {}⟶⟶(ancestors⟶(⟶⟶(F P))) `
 
 *commonancest* :
-`PPP\\ commonancest = \\   \hbox{\hspace*{1em}}_1_2\longrightarrow.\longrightarrow\= the only element of \\   \>{ ^\longrightarrow\longrightarrow\= ^(ancestors\longrightarrow_1)\longrightarrow\longrightarrow(ancestors\longrightarrow_2),\\   \>\>pointdepth\longrightarrow^pointdepth\longrightarrow^\\   \>\> ^(ancestors\longrightarrow_1)\longrightarrow\longrightarrow(ancestors\longrightarrow_2)} `
+`PPP\\ commonancest = \\   \hbox{\hspace*{1em}}_1_2⟶.⟶\= the only element of \\   \>{ ^⟶⟶\= ^(ancestors⟶_1)⟶⟶(ancestors⟶_2),\\   \>\>pointdepth⟶^pointdepth⟶^\\   \>\> ^(ancestors⟶_1)⟶⟶(ancestors⟶_2)} `
 
 *pathup* :
-`PP(P)\\ pathup = \\   \hbox{\hspace*{1em}}_1_2\longrightarrow.\longrightarrow \=_1=_2,\\   \>(_1, _1\longrightarrow\longrightarrow(FP)) \longrightarrow§\longrightarrow\\   \>(pathup\longrightarrow(_1\longrightarrow\longrightarrow(FP))_2) `
+`PP(P)\\ pathup = \\   \hbox{\hspace*{1em}}_1_2⟶.⟶ \=_1=_2,\\   \>(_1, _1⟶⟶(FP)) ⟶§⟶\\   \>(pathup⟶(_1⟶⟶(FP))_2) `
 
 *pathdown* :
-`PP(P)\\ pathdown = \\   \hbox{\hspace*{1em}}_1_2\longrightarrow.\longrightarrow \=_1=_2,\\   \>(pathdown\longrightarrow_1(_2\longrightarrow\longrightarrow(FP))) \longrightarrow§\longrightarrow\\   \>(_2, _2\longrightarrow\longrightarrow(FP)) `
+`PP(P)\\ pathdown = \\   \hbox{\hspace*{1em}}_1_2⟶.⟶ \=_1=_2,\\   \>(pathdown⟶_1(_2⟶⟶(FP))) ⟶§⟶\\   \>(_2, _2⟶⟶(FP)) `
 
 *travelpath* :
-(`P) \\ travelpath = \\   \hbox{\hspace*{1em}}\longrightarrow.\longrightarrow \=#=0,\\   \>(())\=(())\\   \>\>(\longrightarrow.\longrightarrowtravelpath\longrightarrow( )) `
+(`P) \\ travelpath = \\   \hbox{\hspace*{1em}}⟶.⟶ \=#=0,\\   \>(())\=(())\\   \>\>(⟶.⟶travelpath⟶( )) `
 
 *dynamicwind* : `E`
-`P\\ dynamicwind = \\ \hbox{\hspace*{1em}}threearg (\=_1_2_3\longrightarrow.\longrightarrow (_1\longrightarrow.13ex\scriptstyle\in\longrightarrowF_2\longrightarrow.13ex\scriptstyle\in\longrightarrowF_3\longrightarrow.13ex\scriptstyle\in\longrightarrowF)\\   \>applicate\longrightarrow \=_1(\=\longrightarrow.\longrightarrow\\   \>\>applicate\longrightarrow\=_2 ((_1\longrightarrow\longrightarrowF,_3\longrightarrow\longrightarrowF,) in P)\\   \>\>\>(\longrightarrow.\longrightarrowapplicate\longrightarrow_3(\longrightarrow.\longrightarrow))),\\   \>wrong “bad procedure argument”) `
+`P\\ dynamicwind = \\ \hbox{\hspace*{1em}}threearg (\=_1_2_3⟶.⟶ (_1⟶.13ex\scriptstyle\in⟶F_2⟶.13ex\scriptstyle\in⟶F_3⟶.13ex\scriptstyle\in⟶F)\\   \>applicate⟶ \=_1(\=⟶.⟶\\   \>\>applicate⟶\=_2 ((_1⟶⟶F,_3⟶⟶F,) in P)\\   \>\>\>(⟶.⟶applicate⟶_3(⟶.⟶))),\\   \>wrong “bad procedure argument”) `
 
-*values* : `E` `P\\ values = \longrightarrow.\longrightarrow `
+*values* : `E` `P\\ values = ⟶.⟶ `
 
 *cwv* : `E`
-`P \\ cwv =\\  \hbox{\hspace*{1em}}twoarg (_1_2\longrightarrow.\longrightarrow \=applicate\longrightarrow_1\longrightarrow (\longrightarrow.\longrightarrowapplicate\longrightarrow_2\longrightarrow)) `
+`P \\ cwv =\\  \hbox{\hspace*{1em}}twoarg (_1_2⟶.⟶ \=applicate⟶_1⟶ (⟶.⟶applicate⟶_2⟶)) `
 
-## Derived expression types {#derivedsection}
+## Derived expression types
 
 This section gives syntax definitions for the derived expression types
 in terms of the primitive expression types (literal, variable, call,
@@ -7888,7 +6861,6 @@ lambda, if, and set!), except for quasiquote.
 
 Conditional derived syntax types:
 
-```scheme
     (define-syntax \ide{cond}
       (syntax-rules (else =>)
         ((cond (else result1 result2 ...))
@@ -7974,11 +6946,9 @@ Conditional derived syntax types:
         ((unless test result1 result2 ...)
          (if (not test)
              (begin result1 result2 ...)))))
-```
 
 Binding constructs:
 
-```scheme
     (define-syntax \ide{let}
       (syntax-rules ()
         ((let ((name val) ...) body1 body2 ...)
@@ -7999,7 +6969,6 @@ Binding constructs:
          (let ((name1 val1))
            (let* ((name2 val2) ...)
              body1 body2 ...)))))
-```
 
 The following letrec macro uses the symbol \<undefined> in place of an
 expression which returns something that when stored in a location makes
@@ -8009,7 +6978,6 @@ temporary names needed to avoid specifying the order in which the values
 are evaluated. This could also be accomplished by using an auxiliary
 macro.
 
-```scheme
     (define-syntax \ide{letrec}
       (syntax-rules ()
         ((letrec ((var1 init1) ...) body ...)
@@ -8052,28 +7020,28 @@ macro.
         ((let-values (binding ...) body0 body1 ...)
          (let-values "bind"
              (binding ...) () (begin body0 body1 ...)))
-
+        
         ((let-values "bind" () tmps body)
          (let tmps body))
-
+        
         ((let-values "bind" ((b0 e0)
              binding ...) tmps body)
          (let-values "mktmp" b0 e0 ()
              (binding ...) tmps body))
-
+        
         ((let-values "mktmp" () e0 args
              bindings tmps body)
-         (call-with-values
+         (call-with-values 
            (lambda () e0)
            (lambda args
              (let-values "bind"
                  bindings tmps body))))
-
+        
         ((let-values "mktmp" (a . b) e0 (arg ...)
              bindings (tmp ...) body)
          (let-values "mktmp" b e0 (arg ... x)
              bindings (tmp ... (a x)) body))
-
+        
         ((let-values "mktmp" a e0 (arg ...)
             bindings (tmp ...) body)
          (call-with-values
@@ -8136,14 +7104,12 @@ macro.
       (syntax-rules ()
         ((begin exp ...)
          ((lambda () exp ...)))))
-```
 
 The following alternative expansion for begin does not make use of the
 ability to write more than one expression in the body of a lambda
 expression. In any case, note that these rules apply only if the body of
 the begin contains no definitions.
 
-```scheme
     (define-syntax begin
       (syntax-rules ()
         ((begin exp)
@@ -8153,13 +7119,11 @@ the begin contains no definitions.
              (lambda () exp1)
            (lambda args
              (begin exp2 ...))))))
-```
 
 The following syntax definition of do uses a trick to expand the
 variable clauses. As with letrec above, an auxiliary macro would also
 work. The expression (if #f #f) is used to obtain an unspecific value.
 
-```scheme
     (define-syntax \ide{do}
       (syntax-rules ()
         ((do ((var init step ...) ...)
@@ -8182,65 +7146,49 @@ work. The expression (if #f #f) is used to obtain an unspecific value.
          x)
         ((do "step" x y)
          y)))
-```
 
 Here is a possible implementation of delay, force and delay-force. We
 define the expression
 
-```scheme
     (delay-force \hyper{expression})%
-```
 
 to have the same meaning as the procedure call
 
-```scheme
     (make-promise \schfalse{} (lambda () \hyper{expression}))%
-```
 
 as follows
 
-```scheme
     (define-syntax delay-force
       (syntax-rules ()
-        ((delay-force expression)
+        ((delay-force expression) 
          (make-promise \schfalse{} (lambda () expression)))))%
-```
 
 and we define the expression
 
-```scheme
     (delay \hyper{expression})%
-```
 
 to have the same meaning as:
 
-```scheme
     (delay-force (make-promise \schtrue{} \hyper{expression}))%
-```
 
 as follows
 
-```scheme
     (define-syntax delay
       (syntax-rules ()
         ((delay expression)
          (delay-force (make-promise \schtrue{} expression)))))%
-```
 
 where make-promise is defined as follows:
 
-```scheme
     (define make-promise
       (lambda (done? proc)
         (list (cons done? proc))))%
-```
 
 Finally, we define force to call the procedure expressions in promises
 iteratively using a trampoline technique following []{.citation
 cites="srfi45"} until a non-lazy result (i.e. a value created by delay
 instead of delay-force) is returned, as follows:
 
-```scheme
     (define (force promise)
       (if (promise-done? promise)
           (promise-value promise)
@@ -8248,11 +7196,9 @@ instead of delay-force) is returned, as follows:
             (unless (promise-done? promise)
               (promise-update! promise* promise))
             (force promise))))%
-```
 
 with the following promise accessors:
 
-```scheme
     (define promise-done?
       (lambda (x) (car (car x))))
     (define promise-value
@@ -8262,14 +7208,12 @@ with the following promise accessors:
         (set-car! (car old) (promise-done? new))
         (set-cdr! (car old) (promise-value new))
         (set-car! new (car old))))%
-```
 
 The following implementation of make-parameter and parameterize is
 suitable for an implementation with no threads. Parameter objects are
 implemented here as procedures, using two arbitrary unique objects
 \<param-set!> and \<param-convert>:
 
-```scheme
     (define (make-parameter init . o)
       (let* ((converter
               (if (pair? o) (car o) (lambda (x) x)))
@@ -8284,12 +7228,10 @@ implemented here as procedures, using two arbitrary unique objects
             converter)
            (else
             (error "bad parameter syntax"))))))%
-```
 
 Then parameterize uses dynamic-wind to dynamically rebind the associated
 value:
 
-```scheme
     (define-syntax parameterize
       (syntax-rules ()
         ((parameterize ("step")
@@ -8316,12 +7258,10 @@ value:
                        ()
                        ((param value) ...)
                        body))))
-```
 
 The following implementation of guard depends on an auxiliary macro,
 here called guard-aux.
 
-```scheme
     (define-syntax guard
       (syntax-rules ()
         ((guard (var clause ...) e1 e2 ...)
@@ -8353,7 +7293,7 @@ here called guard-aux.
          (begin result1 result2 ...))
         ((guard-aux reraise (test => result))
          (let ((temp test))
-           (if temp
+           (if temp 
                (result temp)
                reraise)))
         ((guard-aux reraise (test => result)
@@ -8404,13 +7344,11 @@ here called guard-aux.
                               args)
                              (cl . rest))))))
                (cl (params body0 ...) ...)))))))
-```
 
 This definition of cond-expand does not interact with the features
 procedure. It requires that each feature identifier provided by the
 implementation be explicitly mentioned.
 
-```scheme
     (define-syntax cond-expand
       ;; Extend this to mention all feature ids and libraries
       (syntax-rules (and or not else r7rs library verbatim base)
@@ -8469,9 +7407,8 @@ implementation be explicitly mentioned.
                        body ...)
                       more-clauses ...)
            (cond-expand more-clauses ...))))
-```
 
-# Standard Libraries {#stdlibraries}
+# Standard Libraries
 
 This section lists the exports provided by the standard libraries. The
 libraries are factored so as to separate features which might not be
@@ -8659,7 +7596,7 @@ caddar could be defined by
 
 The procedures car and cdr themselves and the four two-level
 compositions are included in the base library. See
-section [6.4](#listsection).
+section [\[listsection\]](#listsection).
 
     {\cf caaaar}                  {\cf caaadr}
     {\cf caaar}                   {\cf caadar}
@@ -8773,17 +7710,17 @@ caadr caar cadaar cadadr cadar caddar cadddr caddr cadr
 call-with-current-continuation call-with-input-file
 call-with-output-file call-with-values car case cdaaar cdaadr cdaar
 cdadar cdaddr cdadr cdar cddaar cddadr cddar cdddar cddddr cdddr cddr
-cdr ceiling char-\>integer char-alphabetic?  char-ci\<=? char-ci\<?
+cdr ceiling char-\>integer char-alphabetic?  char-ci\<=? char-ci\<? 
 char-ci=? char-ci>=?  char-ci>? char-downcase char-lower-case?
 char-numeric?  char-ready? char-upcase char-upper-case?
-char-whitespace?  char\<=? char\<?  char=? char>=?  char>? char?
+char-whitespace?  char\<=? char\<?  char=? char>=?  char>? char? 
 close-input-port close-output-port complex? cond cons cos
 current-input-port current-output-port define define-syntax delay
-denominator display do dynamic-wind else eof-object? eq?  equal? eqv?
+denominator display do dynamic-wind else eof-object? eq?  equal? eqv? 
 eval even?  exact-\>inexact exact?  exp expt floor for-each force gcd if
 imag-part inexact-\>exact inexact?  input-port? integer-\>char integer?
 interaction-environment lambda lcm length let let\* let-syntax letrec
-letrec-syntax list list-\>string list-\>vector list-ref list-tail list?
+letrec-syntax list list-\>string list-\>vector list-ref list-tail list? 
 load log magnitude make-polar make-rectangular make-string make-vector
 map max member memq memv min modulo negative? newline not
 null-environment null? number-\>string number? numerator odd?
@@ -8792,20 +7729,18 @@ positive?  procedure? quasiquote quote quotient rational? rationalize
 read read-char real-part real?  remainder reverse round
 scheme-report-environment set! set-car! set-cdr! sin sqrt string
 string-\>list string-\>number string-\>symbol string-append
-string-ci\<=?  string-ci\<? string-ci=?  string-ci>=? string-ci>?
+string-ci\<=?  string-ci\<? string-ci=?  string-ci>=? string-ci>? 
 string-copy string-fill! string-length string-ref string-set!
 string\<=?  string\<? string=?  string>=? string>?  string? substring
 symbol-\>string symbol?  syntax-rules tan truncate values vector
 vector-\>list vector-fill! vector-length vector-ref vector-set! vector?
 with-input-from-file with-output-to-file write write-char zero?
 
-# Standard Feature Identifiers {#stdfeatures}
+# Standard Feature Identifiers
 
 An implementation may provide any or all of the feature identifiers
 listed below for use by cond-expand and features, but must not provide a
 feature identifier if it does not provide the corresponding feature.
-
-[\[standard_features\]]{#standard_features label="standard_features"}
 
 r7rs
 
@@ -8864,7 +7799,9 @@ The name and version of this implementation.
 
 # Language changes {#language-changes .unnumbered}
 
-### Incompatibilities with R$^{5}$RS {#incompatibilities .unnumbered}
+1ex
+
+### Incompatibilities with R$^{5}$RS {#incompatibilities-with-r5rs .unnumbered}
 
 This section enumerates the incompatibilities between this report and
 the "Revised$^{5}$ report" []{.citation cites="R5RS"}.
@@ -8899,12 +7836,12 @@ complete.*
     longer required.
 
 -   Implementations of stringnumber are no longer permitted to return
-    `#f` when the argument contains an explicit radix prefix, and must
-    be compatible with read and the syntax of numbers in programs.
+    \#f when the argument contains an explicit radix prefix, and must be
+    compatible with read and the syntax of numbers in programs.
 
 -   The procedures transcript-on and transcript-off have been removed.
 
-### Other language changes since R$^{5}$RS {#differences .unnumbered}
+### Other language changes since R$^{5}$RS {#other-language-changes-since-r5rs .unnumbered}
 
 This section enumerates the additional differences between this report
 and the "Revised$^{5}$ report" []{.citation cites="R5RS"}.
@@ -9038,8 +7975,8 @@ complete.*
 -   The - and / procedures and the character and string comparison
     predicates are now required to support more than two arguments.
 
--   The forms `#true` and `#false` are now supported as well as `#t` and
-    `#f`.
+-   The forms \#true and \#false are now supported as well as \#t and
+    \#f.
 
 -   The procedures make-list, list-copy, list-set!, string-map,
     string-for-each, string-\>vector, vector-append, vector-copy,
@@ -9118,7 +8055,7 @@ Standard Libraries document.
 
 -   The grouping of standardized identifiers into libraries is different
     from the R$^{6}$RS approach. In particular, procedures which are
-    optional in R$^{5}$RS  either expressly or by implication, have been
+    optional in R$^{5}$RS  either expressly or by implication, have been
     removed from the base library. Only the base library itself is an
     absolute requirement.
 
@@ -9178,6 +8115,8 @@ Standard Libraries document.
 
 # Additional material {#additional-material .unnumbered}
 
+1ex
+
 The Scheme community website at http://schemers.org contains additional
 resources for learning and programming, job and event postings, and
 Scheme user group information.
@@ -9191,6 +8130,8 @@ On-line Scheme discussions are held using IRC on the #scheme channel at
 irc.freenode.net and on the Usenet discussion group comp.lang.scheme.
 
 # Example {#example .unnumbered}
+
+1ex
 
 The procedure integrate-system integrates the system
 $$y_{k}^{\prime} = f_{k}\left( y_{1},y_{2},\ldots,y_{n} \right),\; k = 1,\ldots,n$$
@@ -9206,7 +8147,6 @@ length of the integration step.
 The value returned by integrate-system is an infinite stream of system
 states.
 
-```scheme
     (define (integrate-system system-derivative
                               initial-state
                               h)
@@ -9216,13 +8156,11 @@ states.
                         (delay (map-streams next
                                             states)))))
           states)))%
-```
 
 The procedure runge-kutta-4 takes a function, `f`, that produces a
 system derivative from a system state. It produces a function that takes
 a system state and produces a new system state.
 
-```scheme
     (define (runge-kutta-4 f h)
       (let ((*h (scale-vector h))
             (*2 (scale-vector 2))
@@ -9263,34 +8201,28 @@ a system state and produces a new system state.
 
     (define (scale-vector s)
       (elementwise (lambda (x) (* x s))))%
-```
 
 The map-streams procedure is analogous to map: it applies its first
 argument (a procedure) to all the elements of its second argument (a
 stream).
 
-```scheme
     (define (map-streams f s)
       (cons (f (head s))
             (delay (map-streams f (tail s)))))%
-```
 
 Infinite streams are implemented as pairs whose car holds the first
 element of the stream and whose cdr holds a promise to deliver the rest
 of the stream.
 
-```scheme
     (define head car)
     (define (tail stream)
       (force (cdr stream)))%
-```
 
 The following illustrates the use of integrate-system in integrating the
 system [\$\$C {dv_C \\over dt} = -i_L - {v_C \\over R}\$\$]{.math
 .display} [\$\$L {di_L \\over dt} = v_C\$\$]{.math .display} which
 models a damped oscillator.
 
-```scheme
     (define (damped-oscillator R L C)
       (lambda (state)
         (let ((Vc (vector-ref state 0))
@@ -9303,7 +8235,6 @@ models a damped oscillator.
          (damped-oscillator 10000 1000 .001)
          '\#(1 0)
          .01))%
-```
 
 ::: thebibliography
 999

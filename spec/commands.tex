@@ -33,10 +33,10 @@
 \newcommand{\dotsfoo}{$\ldots\,$}
 
 \newcommand{\sharpfoo}[1]{{\tt\##1}}
-\newcommand{\schfalse}{\sharpfoo{f}}
-\newcommand{\schtrue}{\sharpfoo{t}}
-\newcommand{\sharpfalse}{\sharpfoo{false}}
-\newcommand{\sharptrue}{\sharpfoo{true}}
+\newcommand{\schfalse}{\#{f}}
+\newcommand{\schtrue}{\#{t}}
+\newcommand{\sharpfalse}{\#{false}}
+\newcommand{\sharptrue}{\#{true}}
 
 \newcommand{\singlequote}{{\tt'}}  %\char19
 \newcommand{\doublequote}{{\tt"}}
@@ -53,7 +53,7 @@
 % Knuth's \in sucks big boulders
 \def\elem{\hbox{\raise.13ex\hbox{$\scriptstyle\in$}}}
 
-\newcommand{\meta}[1]{{\noindent\hbox{\rm$\langle$#1$\rangle$}}}
+\newcommand{\meta}[1]{{\noindent\hbox{\rm\<#1\>}}}
 \let\hyper=\meta
 \newcommand{\hyperi}[1]{\hyper{#1$_1$}}
 \newcommand{\hyperii}[1]{\hyper{#1$_2$}}
@@ -76,7 +76,7 @@
 \newcommand{\vrj}[1]{\vr{#1_j}}
 \newcommand{\vrn}[1]{\vr{#1_n}}
 
-
+ 
 \newcommand{\defining}[1]{\mainindex{#1}{\em #1}}
 \newcommand{\ide}[1]{{\schindex{#1}\frenchspacing\tt{#1}}}
 
@@ -118,22 +118,22 @@
 % \newcommand{\cf}{\frenchspacing\frobq\tt}
 
 % Same as \obeycr, but doesn't do a \@gobblecr.
-{\catcode`\^^M=13 \gdef\myobeycr{\catcode`\^^M=13 \def^^M{\\}}%
-\gdef\restorecr{\catcode`\^^M=5 }}
+%% {\catcode`\^^M=13 \gdef\myobeycr{\catcode`\^^M=13 \def^^M{\\}}%
+%% \gdef\restorecr{\catcode`\^^M=5 }}
 
-{\catcode`\^^I=13 \gdef\obeytabs{\catcode`\^^I=13 \def^^I{\hbox{\hskip 4em}}}}
+%% {\catcode`\^^I=13 \gdef\obeytabs{\catcode`\^^I=13 \def^^I{\hbox{\hskip 4em}}}}
 
-{\obeyspaces\gdef {\hbox{\hskip0.5em}}}
+%% {\obeyspaces\gdef {\hbox{\hskip0.5em}}}
 
-\gdef\gobblecr{\@gobblecr}
+%% \gdef\gobblecr{\@gobblecr}
 
-\def\setupcode{\@makeother\^}
+%% \def\setupcode{\@makeother\^}
 
 % Scheme example environment
 % At 11 points, one column, these are about 56 characters wide.
 % That's 32 characters to the left of the => and about 20 to the right.
 
-\newcommand{\evalsto}{$\Longrightarrow$}
+\newcommand{\evalsto}{⟶}
 
 % Rationale
 
@@ -148,6 +148,8 @@
 \egroup}
 
 % Manual entries
+
+\renewcommand{\label}[1]{}
 
 \newenvironment{entry}[1]{
   #1
@@ -190,7 +192,7 @@
 \newcommand{\arbno}[1]{#1\hbox{\rm*}}  
 \newcommand{\atleastone}[1]{#1\hbox{$^+$}}
 
-\newcommand{\goesto}{$\longrightarrow$}
+\newcommand{\goesto}{⟶}
 
 % Feature identifiers
 \newcommand{\feature}[2]{
