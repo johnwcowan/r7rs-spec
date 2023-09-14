@@ -1851,14 +1851,9 @@ exception handlers or guards.
 \begin{scheme}
 (define-syntax simple-let
   (syntax-rules ()
-    ((\_ (head ... ((x . y) val) . tail)
-        body1 body2 ...)
-     (syntax-error
-      "expected an identifier but got"
-      (x . y)))
-    ((\_ ((name val) ...) body1 body2 ...)
-     ((lambda (name ...) body1 body2 ...)
-       val ...))))%
+    ((simple-let ((x . y) val) body1 body2 ...)
+     (syntax-error "expected an identifier" (x . y)))
+    ((simple-let (name val) body1 body2 ...)
 \end{scheme}
 
 \end{entry}
