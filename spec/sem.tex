@@ -473,7 +473,7 @@ be used in place of {\it unspecified}.
 \begin{semfun}
 \fun{cons}          :  \arbno{\EXP} \to \DP \to \EC \to \CC$\\$
 \fun{cons} =$\\
- \go{1}$\fun{twoarg}\,(\lambda\epsilon_1\epsilon_2\kappa\omega\sigma\:.\:
+ \go{1}$\fun{twoarg}\,(\lambda\epsilon_1\epsilon_2\omega\kappa\sigma\:.\:
    $\=$\fun{new}\:\sigma\:\elem\:\LOC\rightarrow$\\
     \> 
         \=$(\lambda\sigma^\prime\:.\:
@@ -532,7 +532,7 @@ be used in place of {\it unspecified}.
 \begin{semfun}
 \fun{car-internal}          :  \EXP \to \EC \to \CC$\\$
 \fun{car-internal} =
- $\go{1}$\lambda\epsilon\omega\kappa\:.\:
+ $\go{1}$\lambda\epsilon\kappa\:.\:
    $\=$\fun{hold}\, (\epsilon\:\vert\:\PAI\elt 1) \kappa
 \end{semfun}
 
@@ -765,7 +765,7 @@ be used in place of {\it unspecified}.
 \fun{cwv} =$\\
  \go{1}$\fun{twoarg}\,(\lambda\epsilon_1\epsilon_2\omega\kappa\:.\:
    $\=$\fun{applicate}\:\epsilon_1\langle\:\rangle\omega
-(\lambda\arbno{\epsilon}\:.\:\fun{applicate}\:\epsilon_2\:\arbno{\epsilon}\omega))
+(\lambda\arbno{\epsilon}\:.\:\fun{applicate}\:\epsilon_2\:\arbno{\epsilon}\omega\kappa))
 \end{semfun}
 
 \egroup  % end smallish
